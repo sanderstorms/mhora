@@ -80,8 +80,15 @@ namespace mhora.Hora
                     dir = HMSInfo.dir_type.NS;
                 }
 
-                min = int.Parse((string)arr[2]);
-                sec = int.Parse((string)arr[3]);
+                if (int.TryParse((string)arr[2], out min) == false)
+                {
+                    //todo: warning
+                }
+
+                if (int.TryParse((string)arr[3], out sec) == false)
+                {
+                    //todo: warning
+                }
             }
 
             if (hour < -180 || hour > 180)
