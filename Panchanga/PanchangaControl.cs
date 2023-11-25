@@ -282,7 +282,7 @@ namespace mhora.Panchanga
             bCompute.Enabled = false;
             bOpts.Enabled    = false;
             ContextMenu      = null;
-            ComputeEntries();
+            Invoke((Action) ComputeEntries);
             Invoke(m_DelegateComputeFinished);
         }
 
@@ -582,7 +582,7 @@ namespace mhora.Panchanga
 
 
             locals.Add(local);
-            DisplayEntry(local);
+            Invoke((Action) (() => DisplayEntry(local)));
         }
 
         private void DisplayEntry(PanchangaLocalMoments local)
