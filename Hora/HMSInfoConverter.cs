@@ -22,7 +22,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace mhora.Hora
+namespace Mhora.Hora
 {
     internal class HMSInfoConverter : ExpandableObjectConverter
     {

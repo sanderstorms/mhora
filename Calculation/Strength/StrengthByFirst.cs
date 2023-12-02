@@ -16,9 +16,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Varga;
+using Mhora.Varga;
 
-namespace mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength
 {
     // Stronger rasi is the first one
     // Stronger graha is the first one

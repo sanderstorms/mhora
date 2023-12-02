@@ -16,11 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
-using mhora.Varga;
+using Mhora.Body;
+using Mhora.Varga;
 
-namespace mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength
 {
     // Stronger graha has longer length
     // Stronger rasi has a graha with longer length placed therein

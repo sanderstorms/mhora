@@ -16,16 +16,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Settings;
+using Mhora.Body;
+using Mhora.Calculation;
+using Mhora.Settings;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     public class Sarvatobhadra81Control : MhoraControl
     {

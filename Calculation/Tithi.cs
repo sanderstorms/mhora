@@ -18,9 +18,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.ComponentModel;
 using System.Diagnostics;
-using mhora.Util;
+using Mhora.Util;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     public class Tithi
     {
@@ -200,7 +200,7 @@ namespace mhora.Calculation
             // 1 based index starting with prathama
             var t = (int)value;
 
-            //Console.WriteLine ("Looking for lord of tithi {0}", t);
+            //mhora.Log.Debug ("Looking for lord of tithi {0}", t);
             // check for new moon and full moon 
             if (t == 30)
             {

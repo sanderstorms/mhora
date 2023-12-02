@@ -21,14 +21,14 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Components.Property;
-using mhora.Delegates;
-using mhora.Settings;
-using mhora.Util;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Components.Property;
+using Mhora.Delegates;
+using Mhora.Settings;
+using Mhora.Util;
+using Mhora.Varga;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     public class RasiStrengthsControl : Form
     {

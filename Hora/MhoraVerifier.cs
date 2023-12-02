@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System.Security.Cryptography;
 using System.Text;
 
-namespace mhora.Hora
+namespace Mhora.Hora
 {
     /// <summary>
     ///     Summary description for Base64Encoder.

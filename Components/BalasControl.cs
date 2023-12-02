@@ -20,9 +20,9 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using mhora.Calculation;
+using Mhora.Calculation;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     public class BalasControl : MhoraControl
     {

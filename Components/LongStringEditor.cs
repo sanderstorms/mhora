@@ -20,7 +20,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     /// <summary>
     ///     Summary description for LongStringEditor.

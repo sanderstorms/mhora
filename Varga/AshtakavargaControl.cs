@@ -22,14 +22,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Chart;
-using mhora.Components;
-using mhora.Components.Property;
-using mhora.Delegates;
-using mhora.Settings;
+using Mhora.Calculation;
+using Mhora.Chart;
+using Mhora.Components;
+using Mhora.Components.Property;
+using Mhora.Delegates;
+using Mhora.Settings;
 
-namespace mhora.Varga
+namespace Mhora.Varga
 {
     public class AshtakavargaControl : MhoraControl
     {

@@ -24,17 +24,17 @@ using System.Threading;
 using System.Windows.Forms;
 using Genghis.Windows.Forms;
 using IWshRuntimeLibrary;
-using mhora.Calculation;
-using mhora.Components;
-using mhora.Components.SplashScreen;
-using mhora.Hora;
-using mhora.Jhora;
-using mhora.Settings;
-using mhora.SwissEph;
-using mhora.Util;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Components;
+using Mhora.Components.SplashScreen;
+using Mhora.Hora;
+using Mhora.Jhora;
+using Mhora.Settings;
+using Mhora.SwissEph;
+using Mhora.Util;
+using Mhora.Varga;
 
-namespace mhora
+namespace Mhora
 {
     /// <summary>
     ///     Summary description for MhoraContainer.
@@ -482,7 +482,7 @@ namespace mhora
 
         private void MhoraContainer_Load(object sender, EventArgs e)
         {
-            gOpts                          = MhoraGlobalOptions.readFromFile();
+            gOpts                          = MhoraGlobalOptions.ReadFromFile();
             MhoraGlobalOptions.mainControl = this;
             if (MhoraGlobalOptions.Instance.ShowSplashScreen)
             {
@@ -702,7 +702,7 @@ namespace mhora
         {
             if (MhoraGlobalOptions.Instance.SavePrefsOnExit)
             {
-                MhoraGlobalOptions.Instance.saveToFile();
+                MhoraGlobalOptions.Instance.SaveToFile();
             }
         }
 
@@ -731,13 +731,13 @@ namespace mhora
 
         private void mSavePreferences_Click(object sender, EventArgs e)
         {
-            MhoraGlobalOptions.Instance.saveToFile();
+            MhoraGlobalOptions.Instance.SaveToFile();
         }
 
         private object updateDisplayPreferences(object o)
         {
             MhoraGlobalOptions.NotifyDisplayChange();
-            sweph.swe_set_ephe_path(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
+            sweph.SetPath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
             return o;
         }
 
@@ -788,7 +788,7 @@ namespace mhora
                     var _path_split = f.FullName.Split('/', '\\');
                     var path_split  = new ArrayList(_path_split);
                     Link.Update(pathTo, f.FullName, (string)path_split[path_split.Count - 1], true);
-                    //Console.WriteLine(f.FullName);
+                    //mhora.Log.Debug(f.FullName);
                 }
             }
 
@@ -838,19 +838,19 @@ namespace mhora
 
         private void mIncreaseFontSize_Click(object sender, EventArgs e)
         {
-            MhoraGlobalOptions.Instance.increaseFontSize();
+            MhoraGlobalOptions.Instance.IncreaseFontSize();
             MhoraGlobalOptions.NotifyDisplayChange();
         }
 
         private void mDecreaseFontSize_Click(object sender, EventArgs e)
         {
-            MhoraGlobalOptions.Instance.decreaseFontSize();
+            MhoraGlobalOptions.Instance.DecreaseFontSize();
             MhoraGlobalOptions.NotifyDisplayChange();
         }
 
         public object updateCalcPreferences(object o)
         {
-            sweph.swe_set_ephe_path(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
+            sweph.SetPath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
             MhoraGlobalOptions.NotifyCalculationChange();
             return o;
         }

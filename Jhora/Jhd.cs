@@ -19,10 +19,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using mhora.Calculation;
-using mhora.Hora;
+using Mhora.Calculation;
+using Mhora.Hora;
 
-namespace mhora.Jhora
+namespace Mhora.Jhora
 {
     public class Jhd : IFileToHoraInfo
     {

@@ -16,19 +16,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Components;
-using mhora.Settings;
-using mhora.SwissEph;
-using mhora.Util;
-using mhora.Varga;
+using Mhora.Body;
+using Mhora.Calculation;
+using Mhora.Components;
+using Mhora.Settings;
+using Mhora.SwissEph;
+using Mhora.Util;
+using Mhora.Varga;
 
-namespace mhora
+namespace Mhora
 {
     /// <summary>
     ///     Summary description for DasaControl.
@@ -1030,7 +1030,7 @@ namespace mhora
                 di.Selected = true;
             }
 
-            //Console.WriteLine ("MouseMove: {0} {1}", e.Y, li != null ? li.Index : -1);
+            //mhora.Log.Debug ("MouseMove: {0} {1}", e.Y, li != null ? li.Index : -1);
             //if (li != null)
             //	li.Selected = true;
         }
@@ -1042,7 +1042,7 @@ namespace mhora
 
         private void dasaItemList_MouseEnter(object sender, EventArgs e)
         {
-            //Console.WriteLine ("Mouse Enter");
+            //mhora.Log.Debug ("Mouse Enter");
             //this.dasaItemList.Focus();
             //this.dasaItemList.Items[0].Selected = true;
         }
@@ -1072,7 +1072,7 @@ namespace mhora
             }
 
             var li = dasaItemList.GetItemAt(e.X, e.Y);
-            //Console.WriteLine ("MouseMove Click: {0} {1}", e.Y, li != null ? li.Index : -1);
+            //mhora.Log.Debug ("MouseMove Click: {0} {1}", e.Y, li != null ? li.Index : -1);
             if (li != null)
             {
                 li.Selected = true;
@@ -1251,7 +1251,7 @@ namespace mhora
             double months          = 0;
             while (date_current < date_to_surpass)
             {
-                Console.WriteLine("{0} > {1}",
+                mhora.Log.Debug("{0} > {1}",
                                   new Moment(date_current, h),
                                   new Moment(date_to_surpass, h));
 
@@ -1454,7 +1454,7 @@ namespace mhora
 
                 if (ut_m >= ut_start && ut_m < ut_end)
                 {
-                    Console.WriteLine("Found: Looking for {0} between {1} and {2}", m, m_start, m_end);
+                    mhora.Log.Debug("Found: Looking for {0} between {1} and {2}", m, m_start, m_end);
 
                     if (levels > di.entry.level)
                     {

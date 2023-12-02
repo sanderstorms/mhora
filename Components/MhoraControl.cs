@@ -20,11 +20,11 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Settings;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Settings;
+using Mhora.Varga;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     /// <summary>
     ///     Summary description for MhoraControl.

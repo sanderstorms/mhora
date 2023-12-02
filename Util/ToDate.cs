@@ -18,10 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Diagnostics;
-using mhora.Calculation;
-using mhora.SwissEph;
+using Mhora.Calculation;
+using Mhora.SwissEph;
 
-namespace mhora.Util
+namespace Mhora.Util
 {
     public class ToDate
     {
@@ -109,7 +109,7 @@ namespace mhora.Util
             _years  = (_years - Math.Floor(_years)) * numDays;
             tDays   = _years;
 
-            //Console.WriteLine ("Searching for {0} {1} {2}", tYears, tMonths, tDays);
+            //mhora.Log.Debug ("Searching for {0} {1} {2}", tYears, tMonths, tDays);
             lon = spos - soff;
             l   = new Longitude(lon);
             jd  = t.LinearSearch(h.baseUT + tYears * 365.2425, l, t.LongitudeOfSun);
@@ -134,7 +134,7 @@ namespace mhora.Util
             jd    += h.info.tz.toDouble() / 24.0;
             jd    += offset;
 
-            sweph.swe_revjul(jd, ref year, ref month, ref day, ref dhour);
+            sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
             Moment.doubleToHMS(dhour, ref hour, ref minute, ref second);
             return new Moment(year, month, day, hour, minute, second);
         }
@@ -161,11 +161,11 @@ namespace mhora.Util
             switch (type)
             {
                 case DateType.FixedYear:
-                    //Console.WriteLine("Finding {0} fixed years of length {1}", years, yearLength);
+                    //mhora.Log.Debug("Finding {0} fixed years of length {1}", years, yearLength);
                     jd = baseUT + years * yearLength;
-                    //Console.WriteLine("tz = {0}", (h.info.tz.toDouble()) / 24.0);
+                    //mhora.Log.Debug("tz = {0}", (h.info.tz.toDouble()) / 24.0);
                     jd += offset;
-                    sweph.swe_revjul(jd, ref year, ref month, ref day, ref dhour);
+                    sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
                     Moment.doubleToHMS(dhour, ref hour, ref minute, ref second);
                     return new Moment(year, month, day, hour, minute, second);
                 case DateType.SolarYear:
@@ -185,7 +185,7 @@ namespace mhora.Util
                     jd =  t.LinearSearch(h.baseUT + years * 365.2425, l, t.LongitudeOfSun);
                     jd += h.info.tz.toDouble() / 24.0;
                     jd += offset;
-                    sweph.swe_revjul(jd, ref year, ref month, ref day, ref dhour);
+                    sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
                     Moment.doubleToHMS(dhour, ref hour, ref minute, ref second);
                     return new Moment(year, month, day, hour, minute, second);
                 case DateType.TithiPraveshYear:
@@ -206,7 +206,7 @@ namespace mhora.Util
                     jd =  h.baseUT;
                     var tithi_base = new Longitude(mpos - spos);
                     var days       = years * yearLength;
-                    //Console.WriteLine("Find {0} tithi days", days);
+                    //mhora.Log.Debug("Find {0} tithi days", days);
                     while (days >= 30 * 12.0)
                     {
                         jd   =  t.LinearSearch(jd + 29.52916 * 12.0, tithi_base, t.LongitudeOfTithiDir);
@@ -214,11 +214,11 @@ namespace mhora.Util
                     }
 
                     tithi_base = tithi_base.add(new Longitude(days * 12.0));
-                    //Console.WriteLine ("Searching from {0} for {1}", t.LongitudeOfTithiDir(jd+days*28.0/30.0), tithi_base);
+                    //mhora.Log.Debug ("Searching from {0} for {1}", t.LongitudeOfTithiDir(jd+days*28.0/30.0), tithi_base);
                     jd =  t.LinearSearch(jd + days * 28.0 / 30.0, tithi_base, t.LongitudeOfTithiDir);
                     jd += h.info.tz.toDouble() / 24.0;
                     jd += offset;
-                    sweph.swe_revjul(jd, ref year, ref month, ref day, ref dhour);
+                    sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
                     Moment.doubleToHMS(dhour, ref hour, ref minute, ref second);
                     return new Moment(year, month, day, hour, minute, second);
                 case DateType.YogaYear:
@@ -227,7 +227,7 @@ namespace mhora.Util
                     jd =  h.baseUT;
                     var yoga_base = new Longitude(mpos + spos);
                     var yogaDays  = years * yearLength;
-                    //Console.WriteLine ("Find {0} yoga days", yogaDays);
+                    //mhora.Log.Debug ("Find {0} yoga days", yogaDays);
                     while (yogaDays >= 27 * 12)
                     {
                         jd       =  t.LinearSearch(jd + 305, yoga_base, t.LongitudeOfSunMoonYogaDir);
@@ -238,7 +238,7 @@ namespace mhora.Util
                     jd        =  t.LinearSearch(jd + yogaDays * 28.0 / 30.0, yoga_base, t.LongitudeOfSunMoonYogaDir);
                     jd        += h.info.tz.toDouble() / 24.0;
                     jd        += offset;
-                    sweph.swe_revjul(jd, ref year, ref month, ref day, ref dhour);
+                    sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
                     Moment.doubleToHMS(dhour, ref hour, ref minute, ref second);
                     return new Moment(year, month, day, hour, minute, second);
                 default:
@@ -257,13 +257,13 @@ namespace mhora.Util
                     new_baseut =  h.baseUT;
                     var tithi = t.LongitudeOfTithi(new_baseut);
                     l = tithi.add(new Longitude(lon));
-                    //Console.WriteLine("{0} {1} {2}", 354.35, 354.35*yearLength/360.0, yearLength);
+                    //mhora.Log.Debug("{0} {1} {2}", 354.35, 354.35*yearLength/360.0, yearLength);
                     var tyear_approx = 354.35 * yearLength / 360.0; /*357.93765*/
                     var lapp         = t.LongitudeOfTithi(new_baseut + years * tyear_approx).value;
                     jd =  t.LinearSearch(new_baseut + years * tyear_approx, l, t.LongitudeOfTithiDir);
                     jd += offset;
                     //jd += (h.info.tz.toDouble() / 24.0);
-                    sweph.swe_revjul(jd, ref year, ref month, ref day, ref dhour);
+                    sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
                     Moment.doubleToHMS(dhour, ref hour, ref minute, ref second);
                     return new Moment(year, month, day, hour, minute, second);
             }

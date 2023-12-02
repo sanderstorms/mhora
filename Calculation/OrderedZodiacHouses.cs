@@ -20,7 +20,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     [TypeConverter(typeof(OrderedZodiacHousesConverter))]
     public class OrderedZodiacHouses : ICloneable

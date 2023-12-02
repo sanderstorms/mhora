@@ -19,12 +19,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using mhora.Calculation;
-using mhora.Components.Property;
-using mhora.Hora;
-using mhora.Util;
+using Mhora.Calculation;
+using Mhora.Components.Property;
+using Mhora.Hora;
+using Mhora.Util;
 
-namespace mhora.Settings
+namespace Mhora.Settings
 {
     [Serializable]
     public class HoroscopeOptions : MhoraSerializableOptions, ICloneable, ISerializable

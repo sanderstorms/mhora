@@ -16,10 +16,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
-using mhora.Varga;
+using Mhora.Body;
+using Mhora.Varga;
 
-namespace mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength
 {
     // Stronger rasi has more planets in moola trikona
     // Stronger planet is in moola trikona rasi

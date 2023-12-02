@@ -16,9 +16,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Varga;
+using Mhora.Varga;
 
-namespace mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength
 {
     // Stronger rasi has its lord in a house of different oddity
     // Stronger graha in such a rasi
@@ -60,7 +60,7 @@ namespace mhora.Calculation.Strength
             var ldpos  = h.CalculateDivisionPosition(lbpos, dtype);
             var zh_lor = ldpos.zodiac_house;
 
-            //System.Console.WriteLine("   DiffOddity {0} {1} {2}", zh.ToString(), zh_lor.value.ToString(), (int)zh %2==(int)zh_lor.value%2);
+            //System.mhora.Log.Debug("   DiffOddity {0} {1} {2}", zh.ToString(), zh_lor.value.ToString(), (int)zh %2==(int)zh_lor.value%2);
             if ((int)zh % 2 == (int)zh_lor.value % 2)
             {
                 return 0;

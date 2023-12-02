@@ -17,11 +17,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using mhora.Calculation;
-using mhora.Settings;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Settings;
+using Mhora.Varga;
 
-namespace mhora
+namespace Mhora
 {
     public class SuDasa : Dasa, IDasa
     {
@@ -112,7 +112,7 @@ namespace mhora
                                 30.0 *
                                 ((DasaEntry)al[0]).dasaLength;
 
-            //Console.WriteLine ("Completed {0}, going back {1} of {2} years", bp_sl.longitude.toZodiacHouseOffset() / 30.0,
+            //mhora.Log.Debug ("Completed {0}, going back {1} of {2} years", bp_sl.longitude.toZodiacHouseOffset() / 30.0,
             //	offset_length, ((DasaEntry)al[0]).dasaLength);
 
             cycle_length -= offset_length;

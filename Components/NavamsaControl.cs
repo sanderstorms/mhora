@@ -21,11 +21,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Chart;
-using mhora.Settings;
+using Mhora.Calculation;
+using Mhora.Chart;
+using Mhora.Settings;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     public class NavamsaControl : MhoraControl
     {

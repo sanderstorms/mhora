@@ -20,10 +20,10 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using mhora.Settings;
-using mhora.SwissEph;
+using Mhora.Settings;
+using Mhora.SwissEph;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     /// <summary>
     ///     Specified a Moment. This can be used for charts, dasa times etc
@@ -79,7 +79,7 @@ namespace mhora.Calculation
         {
             double time = 0;
             tjd_ut += h.info.tz.toDouble() / 24.0;
-            sweph.swe_revjul(tjd_ut, ref m_year, ref m_month, ref m_day, ref time);
+            sweph.RevJul(tjd_ut, ref m_year, ref m_month, ref m_day, ref time);
             doubleToHMS(time, ref m_hour, ref m_minute, ref m_second);
         }
 
@@ -156,12 +156,12 @@ namespace mhora.Calculation
 
         public double toUniversalTime()
         {
-            return sweph.swe_julday(m_year, m_month, m_day, time);
+            return sweph.JulDay(m_year, m_month, m_day, time);
         }
 
         public double toUniversalTime(Horoscope h)
         {
-            var local_ut = sweph.swe_julday(year, month, day, time);
+            var local_ut = sweph.JulDay(year, month, day, time);
             return local_ut - h.info.tz.toDouble() / 24.0;
         }
 

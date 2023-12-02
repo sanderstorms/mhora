@@ -19,12 +19,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using mhora.Calculation;
-using mhora.Components.Property;
-using mhora.Settings;
-using mhora.Util;
+using Mhora.Calculation;
+using Mhora.Components.Property;
+using Mhora.Settings;
+using Mhora.Util;
 
-namespace mhora.Hora
+namespace Mhora.Hora
 {
     /// <summary>
     ///     A class containing all required input from the user for a given chart

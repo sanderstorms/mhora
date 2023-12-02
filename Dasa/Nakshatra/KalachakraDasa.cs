@@ -18,10 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using mhora.Calculation;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Varga;
 
-namespace mhora
+namespace Mhora
 {
     public class KalachakraDasa : Dasa, IDasa
     {

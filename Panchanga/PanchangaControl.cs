@@ -16,20 +16,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Components;
-using mhora.Hora;
-using mhora.Settings;
-using mhora.SwissEph;
-using mhora.Varga;
+using Mhora.Body;
+using Mhora.Calculation;
+using Mhora.Components;
+using Mhora.Hora;
+using Mhora.Settings;
+using Mhora.SwissEph;
+using Mhora.Varga;
 
-namespace mhora.Panchanga
+namespace Mhora.Panchanga
 {
     public class PanchangaControl : MhoraControl
     {
@@ -276,7 +276,7 @@ namespace mhora.Panchanga
             //}
             //fProgress = new ProgressDialog(opts.NumDays);
             //fProgress.setProgress(opts.NumDays/2);
-            Console.WriteLine("Starting threaded computation");
+            mhora.Log.Debug("Starting threaded computation");
             //fProgress.ShowDialog();
             //this.mutexProgress.Close();
             bCompute.Enabled = false;
@@ -288,7 +288,7 @@ namespace mhora.Panchanga
 
         private void ComputeFinished()
         {
-            Console.WriteLine("Thread finished execution");
+            mhora.Log.Debug("Thread finished execution");
             bResultsInvalid  = false;
             bCompute.Enabled = true;
             bOpts.Enabled    = true;
@@ -345,7 +345,7 @@ namespace mhora.Panchanga
                 day   = 0;
             double hour = 0;
             found_ut += h.info.tz.toDouble() / 24.0;
-            sweph.swe_revjul(found_ut, ref year, ref month, ref day, ref hour);
+            sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
             var m = new Moment(year, month, day, hour);
             return m;
         }
@@ -358,7 +358,7 @@ namespace mhora.Panchanga
             double time = 0;
 
             ut += h.info.tz.toDouble() / 24.0;
-            sweph.swe_revjul(ut, ref year, ref month, ref day, ref time);
+            sweph.RevJul(ut, ref year, ref month, ref day, ref time);
             return timeToString(time);
         }
 
@@ -400,7 +400,7 @@ namespace mhora.Panchanga
             h.populateSunrisetCacheHelper(ut - 0.5, ref sunrise, ref sunset, ref ut_sr);
             sweph.releaseLock(h);
 
-            sweph.swe_revjul(ut_sr, ref year, ref month, ref day, ref hour);
+            sweph.RevJul(ut_sr, ref year, ref month, ref day, ref hour);
             var moment_sr = new Moment(year, month, day, hour);
             var moment_ut = new Moment(ut, h);
             var infoCurr  = new HoraInfo(moment_ut, h.info.lat, h.info.lon, h.info.tz);
@@ -412,8 +412,8 @@ namespace mhora.Panchanga
             local.sunrise    = hCurr.sunrise;
             local.sunset     = sunset;
             local.sunrise_ut = ut_sr;
-            sweph.swe_revjul(ut, ref year, ref month, ref day, ref hour);
-            local.wday = (Basics.Weekday)sweph.swe_day_of_week(ut);
+            sweph.RevJul(ut, ref year, ref month, ref day, ref hour);
+            local.wday = (Basics.Weekday)sweph.DayOfWeek(ut);
 
 
             local.kalas_ut = hCurr.getKalaCuspsUt();
@@ -562,7 +562,7 @@ namespace mhora.Panchanga
                                                         t.GenericLongitude);
 
                     globals.nakshatras_ut.Add(new PanchangaMomentInfo(ut_found, (int)nak_curr.value));
-                    Console.WriteLine("Found nakshatra {0}", nak_curr.value);
+                    mhora.Log.Debug("Found nakshatra {0}", nak_curr.value);
                     local.nakshatra_index_end++;
                 }
 
@@ -593,7 +593,7 @@ namespace mhora.Panchanga
                 year  = 0;
             double time = 0;
 
-            sweph.swe_revjul(local.sunrise_ut, ref year, ref month, ref day, ref time);
+            sweph.RevJul(local.sunrise_ut, ref year, ref month, ref day, ref time);
             var m = new Moment(year, month, day, time);
             mList.Items.Add(string.Format("{0}, {1}", local.wday, m.ToDateString()));
 

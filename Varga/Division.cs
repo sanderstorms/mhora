@@ -22,10 +22,10 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Components.Property;
+using Mhora.Calculation;
+using Mhora.Components.Property;
 
-namespace mhora.Varga
+namespace Mhora.Varga
 {
     [Serializable]
     [TypeConverter(typeof(DivisionConverter))]

@@ -20,9 +20,9 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-using mhora.Calculation;
+using Mhora.Calculation;
 
-namespace mhora
+namespace Mhora
 {
     internal class DasaEntryConverter : ExpandableObjectConverter
     {

@@ -18,10 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using mhora.Calculation;
-using mhora.Delegates;
+using Mhora.Calculation;
+using Mhora.Delegates;
 
-namespace mhora
+namespace Mhora
 {
     // Wrapper around vimsottari dasa that starts the initial dasa
     // based on the yoga

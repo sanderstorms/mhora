@@ -17,10 +17,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using mhora.Calculation;
-using mhora.SwissEph;
+using Mhora.Calculation;
+using Mhora.SwissEph;
 
-namespace mhora
+namespace Mhora
 {
     public class KaranaPraveshDasa : Dasa, IDasa
     {
@@ -111,7 +111,7 @@ namespace mhora
                 case 1:
                     al     = new ArrayList(13);
                     length = pdi.dasaLength / 13.0;
-                    //Console.WriteLine("AD length is {0}", length);
+                    //mhora.Log.Debug("AD length is {0}", length);
                     for (var i = 0; i < 13; i++)
                     {
                         var di = new DasaEntry(Body.Body.Name.Other, start, length, level, desc[level - 2]);
@@ -123,11 +123,11 @@ namespace mhora
                 case 2:
                     al     = new ArrayList(60);
                     length = pdi.dasaLength / 60.0;
-                    //Console.WriteLine("PD length is {0}", length);
+                    //mhora.Log.Debug("PD length is {0}", length);
                     for (var i = 0; i < 60; i++)
                     {
                         var di = new DasaEntry(Body.Body.Name.Other, start, length, level, desc[level - 2]);
-                        //Console.WriteLine ("PD: Starg {0}, length {1}", start, length);
+                        //mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
                         al.Add(di);
                         start += length;
                     }

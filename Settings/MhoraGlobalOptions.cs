@@ -24,11 +24,11 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
-using mhora.Components.Property;
-using mhora.Hora;
-using mhora.Varga;
+using Mhora.Components.Property;
+using Mhora.Hora;
+using Mhora.Varga;
 
-namespace mhora.Settings
+namespace Mhora.Settings
 {
     /// <summary>
     ///     Summary description for GlobalOptions.
@@ -691,24 +691,24 @@ namespace mhora.Settings
             CalculationPrefsChanged(Instance.HOptions);
         }
 
-        private Font addToFontSizesHelper(Font f, int i)
+        private Font AddToFontSizesHelper(Font f, int i)
         {
             return new Font(f.FontFamily, f.SizeInPoints + i);
         }
 
         private void addToFontSizes(int i)
         {
-            mfFixedWidth = addToFontSizesHelper(mfFixedWidth, i);
-            mfGeneral    = addToFontSizesHelper(mfGeneral, i);
-            mfVarga      = addToFontSizesHelper(mfVarga, i);
+            mfFixedWidth = AddToFontSizesHelper(mfFixedWidth, i);
+            mfGeneral    = AddToFontSizesHelper(mfGeneral, i);
+            mfVarga      = AddToFontSizesHelper(mfVarga, i);
         }
 
-        public void increaseFontSize()
+        public void IncreaseFontSize()
         {
             addToFontSizes(1);
         }
 
-        public void decreaseFontSize()
+        public void DecreaseFontSize()
         {
             addToFontSizes(-1);
         }
@@ -732,34 +732,46 @@ namespace mhora.Settings
         }
 
 
-        public static MhoraGlobalOptions readFromFile()
+        public static MhoraGlobalOptions ReadFromFile()
         {
             var gOpts = new MhoraGlobalOptions();
             try
             {
-                FileStream sOut;
-                sOut = new FileStream(getOptsFilename(), FileMode.Open, FileAccess.Read);
-                var formatter = new BinaryFormatter();
-                formatter.AssemblyFormat = FormatterAssemblyStyle.Simple;
-                gOpts                    = (MhoraGlobalOptions)formatter.Deserialize(sOut);
-                sOut.Close();
+                using (var sOut = new FileStream(getOptsFilename(), FileMode.Open, FileAccess.Read))
+                {
+                    var formatter = new BinaryFormatter
+                    {
+                        AssemblyFormat = FormatterAssemblyStyle.Simple
+                    };
+                    gOpts  = (MhoraGlobalOptions)formatter.Deserialize(sOut);
+                    sOut.Close();
+                }
             }
             catch
             {
-                Console.WriteLine("MHora: Unable to read user preferences", "GlobalOptions");
+                mhora.Log.Debug("MHora: Unable to read user preferences", "GlobalOptions");
             }
 
             Instance = gOpts;
             return gOpts;
         }
 
-        public void saveToFile()
+        public void SaveToFile()
         {
-            Console.WriteLine("Saving Preferences to {0}", getOptsFilename());
-            var sOut      = new FileStream(getOptsFilename(), FileMode.OpenOrCreate, FileAccess.Write);
-            var formatter = new BinaryFormatter();
-            formatter.Serialize(sOut, this);
-            sOut.Close();
+            mhora.Log.Debug("Saving Preferences to {0}", getOptsFilename());
+            try
+            {
+                using (var sOut = new FileStream(getOptsFilename(), FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    var formatter = new BinaryFormatter();
+                    formatter.Serialize(sOut, this);
+                    sOut.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                mhora.Log.Exception(e);
+            }
         }
     }
 }

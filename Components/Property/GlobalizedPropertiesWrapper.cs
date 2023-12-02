@@ -19,9 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections;
 using System.ComponentModel;
-using mhora.Delegates;
+using Mhora.Delegates;
 
-namespace mhora.Components.Property
+namespace Mhora.Components.Property
 {
     public class GlobalizedPropertiesWrapper : ICustomTypeDescriptor
     {
@@ -112,17 +112,17 @@ namespace mhora.Components.Property
                 }
                 //retProps.Add (new GlobalizedPropertyDescriptor(oProp));
 
-                //Console.WriteLine ("Enumerating property {0}", oProp.DisplayName);
+                //mhora.Log.Debug ("Enumerating property {0}", oProp.DisplayName);
                 //PGDisplayName invisible = (PGDisplayName)oProp.Attributes[typeof(PGNotVisible)];
                 //if (invisible == null)
                 //else
-                //	Console.WriteLine ("Property {0} is invisible", oProp.DisplayName);
+                //	mhora.Log.Debug ("Property {0} is invisible", oProp.DisplayName);
             }
 
             orderedProperties.Sort();
             foreach (PropertyOrderPair pop in orderedProperties)
             {
-                Console.WriteLine("Adding sorted {0}", pop.Name);
+                mhora.Log.Debug("Adding sorted {0}", pop.Name);
                 retProps.Add(new GlobalizedPropertyDescriptor(pop.Property));
             }
 
@@ -148,7 +148,7 @@ namespace mhora.Components.Property
             }
 
             return true;
-            //	Console.WriteLine ("Property {0} is invisible", prop.DisplayName);
+            //	mhora.Log.Debug ("Property {0} is invisible", prop.DisplayName);
             //return true;
         }
     }

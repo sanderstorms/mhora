@@ -20,10 +20,10 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Runtime.Serialization;
-using mhora.Calculation;
-using mhora.Settings;
+using Mhora.Calculation;
+using Mhora.Settings;
 
-namespace mhora.Hora
+namespace Mhora.Hora
 {
     [Serializable]
     public class UserEvent : MhoraSerializableOptions, ICloneable, ISerializable

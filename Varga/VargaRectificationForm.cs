@@ -16,18 +16,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Components;
-using mhora.Settings;
-using mhora.SwissEph;
+using Mhora.Body;
+using Mhora.Calculation;
+using Mhora.Components;
+using Mhora.Settings;
+using Mhora.SwissEph;
 
-namespace mhora.Varga
+namespace Mhora.Varga
 {
     /// <summary>
     ///     Summary description for VargaRectificationForm.
@@ -107,14 +107,14 @@ namespace mhora.Varga
                 day   = 0;
             double hour = 0;
             found_ut += h.info.tz.toDouble() / 24.0;
-            sweph.swe_revjul(found_ut, ref year, ref month, ref day, ref hour);
+            sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
             var m = new Moment(year, month, day, hour);
             return m;
         }
 
         private double momentToUT(Moment m)
         {
-            var local_ut = sweph.swe_julday(m.year, m.month, m.day, m.time);
+            var local_ut = sweph.JulDay(m.year, m.month, m.day, m.time);
             return local_ut - h.info.tz.toDouble() / 24.0;
         }
 
@@ -157,7 +157,7 @@ namespace mhora.Varga
                 var dtype = opts.Divisions[i];
                 var al    = new ArrayList();
                 var zal   = new ArrayList();
-                //Console.WriteLine ("Calculating cusps for {0} between {1} and {2}", 
+                //mhora.Log.Debug ("Calculating cusps for {0} between {1} and {2}", 
                 //	dtype, this.utToMoment(ut_lower), this.utToMoment(ut_higher));
                 var ut_curr = ut_lower - 1.0 / (24.0 * 60.0);
 
@@ -173,7 +173,7 @@ namespace mhora.Varga
 
                 var dp = bp.toDivisionPosition(dtype);
 
-                //Console.WriteLine ("Longitude at {0} is {1} as is in varga rasi {2}",
+                //mhora.Log.Debug ("Longitude at {0} is {1} as is in varga rasi {2}",
                 //	this.utToMoment(ut_curr), bp.longitude, dp.zodiac_house.value);
 
                 //bp.longitude = new Longitude(dp.cusp_lower - 0.2);
@@ -185,7 +185,7 @@ namespace mhora.Varga
                     var foundLon = new Longitude(0);
                     var bForward = true;
 
-                    //Console.WriteLine ("    Starting search at {0}", this.utToMoment(ut_curr));
+                    //mhora.Log.Debug ("    Starting search at {0}", this.utToMoment(ut_curr));
 
                     ut_curr = cs.TransitSearch(mBody,
                                                utToMoment(ut_curr),
@@ -199,14 +199,14 @@ namespace mhora.Varga
 
                     if (ut_curr >= ut_lower && ut_curr <= ut_higher + 1.0 / (24.0 * 60.0 * 60.0) * 5.0)
                     {
-                        //	Console.WriteLine ("{0}: {1} at {2}",
+                        //	mhora.Log.Debug ("{0}: {1} at {2}",
                         //		dtype, foundLon, this.utToMoment(ut_curr));
                         al.Add(ut_curr);
                         zal.Add(dp.zodiac_house.value);
                     }
                     else if (ut_curr > ut_higher)
                     {
-                        //	Console.WriteLine ("- {0}: {1} at {2}",
+                        //	mhora.Log.Debug ("- {0}: {1} at {2}",
                         //		dtype, foundLon, this.utToMoment(ut_curr));						
                         break;
                     }
@@ -223,7 +223,7 @@ namespace mhora.Varga
             //{
             //	for (int j=0; j<momentCusps[i].Length; j++)
             //	{
-            //		Console.WriteLine ("Cusp for {0} at {1}", opts.Divisions[i], momentCusps[i][j]);
+            //		mhora.Log.Debug ("Cusp for {0} at {1}", opts.Divisions[i], momentCusps[i][j]);
             //	}
             //}
         }
@@ -431,7 +431,7 @@ namespace mhora.Varga
                 {
                     var ut_curr = momentCusps[iVarga][j];
                     var perc    = (ut_curr - ut_lower) / (ut_higher - ut_lower) * 100.0;
-                    //Console.WriteLine ("Varga {0}, perc {1}", opts.Divisions[iVarga], perc);
+                    //mhora.Log.Debug ("Varga {0}, perc {1}", opts.Divisions[iVarga], perc);
                     x_offset = (float)((ut_curr - ut_lower) / (ut_higher - ut_lower) * bar_width) + vname_width;
 
                     //(float)((ut_curr-ut_lower)/(ut_higher/ut_lower)*bar_width);
@@ -539,7 +539,7 @@ namespace mhora.Varga
             bmpBuffer = null;
             Invalidate();
 
-            //Console.WriteLine ("Click at {0}. Width at {1}. Percentage is {2}", 
+            //mhora.Log.Debug ("Click at {0}. Width at {1}. Percentage is {2}", 
             //	click_width, bar_width, perc);
         }
 

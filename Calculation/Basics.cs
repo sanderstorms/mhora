@@ -16,18 +16,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
-using mhora.Settings;
-using mhora.SwissEph;
-using mhora.Util;
-using mhora.Varga;
+using Mhora.Body;
+using Mhora.Settings;
+using Mhora.SwissEph;
+using Mhora.Util;
+using Mhora.Varga;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     /// <summary>
     ///     Simple functions that don't belong anywhere else
@@ -700,12 +700,12 @@ namespace mhora.Calculation
             };
             try
             {
-                sweph.swe_calc_ut(ut, ipl, 0, xx);
+                sweph.CalcUT(ut, ipl, 0, xx);
                 return new Longitude(xx[0]);
             }
             catch (SwephException exc)
             {
-                Console.WriteLine("Sweph: {0}\n", exc.status);
+                mhora.Log.Debug("Sweph: {0}\n", exc.status);
                 throw new Exception(string.Empty);
             }
         }
@@ -722,7 +722,7 @@ namespace mhora.Calculation
         {
             if (body == Body.Body.Name.Lagna)
             {
-                var b = new Position(h, body, type, new Longitude(sweph.swe_lagna(ut)), 0, 0, 0, 0, 0);
+                var b = new Position(h, body, type, new Longitude(sweph.Lagna(ut)), 0, 0, 0, 0, 0);
                 return b;
             }
 
@@ -737,7 +737,7 @@ namespace mhora.Calculation
             };
             try
             {
-                sweph.swe_calc_ut(ut, ipl, 0, xx);
+                sweph.CalcUT(ut, ipl, 0, xx);
 
                 var b = new Position(h,
                                          body,
@@ -752,7 +752,7 @@ namespace mhora.Calculation
             }
             catch (SwephException exc)
             {
-                Console.WriteLine("Sweph: {0}\n", exc.status);
+                mhora.Log.Debug("Sweph: {0}\n", exc.status);
                 throw new Exception(string.Empty);
             }
         }
@@ -775,8 +775,8 @@ namespace mhora.Calculation
             // The order of the array must reflect the order define in Basics.GrahaIndex
             var std_grahas = new ArrayList(20);
 
-            sweph.swe_set_ephe_path(ephe_path);
-            var julday_ut = sweph.swe_julday(hi.tob.year,
+            sweph.SetPath(ephe_path);
+            var julday_ut = sweph.JulDay(hi.tob.year,
                                              hi.tob.month,
                                              hi.tob.day,
                                              hi.tob.time - hi.tz.toDouble());
@@ -811,7 +811,7 @@ namespace mhora.Calculation
             std_grahas.Add(rahu);
             std_grahas.Add(ketu);
 
-            var asc = sweph.swe_lagna(julday_ut);
+            var asc = sweph.Lagna(julday_ut);
             std_grahas.Add(new Position(h, Body.Body.Name.Lagna, BodyType.Name.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
 
             var ista_ghati = normalize_exc(0.0, 24.0, hi.tob.time - sunrise) * 2.5;

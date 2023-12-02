@@ -16,19 +16,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Components;
-using mhora.Components.Property;
-using mhora.Hora;
-using mhora.Settings;
-using mhora.SwissEph;
-using mhora.Util;
+using Mhora.Body;
+using Mhora.Calculation;
+using Mhora.Components;
+using Mhora.Components.Property;
+using Mhora.Hora;
+using Mhora.Settings;
+using Mhora.SwissEph;
+using Mhora.Util;
 
-namespace mhora
+namespace Mhora
 {
     public class TransitSearch : MhoraControl
     {
@@ -446,7 +446,7 @@ namespace mhora
                 day   = 0;
             double hour = 0;
             found_ut += h.info.tz.toDouble() / 24.0;
-            sweph.swe_revjul(found_ut, ref year, ref month, ref day, ref hour);
+            sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
             var m = new Moment(year, month, day, hour);
             var inf = new HoraInfo(m,
                                    (HMSInfo)h.info.lat.Clone(),
@@ -455,7 +455,7 @@ namespace mhora
             var hTransit = new Horoscope(inf,
                                          (HoroscopeOptions)h.options.Clone());
 
-            sweph.swe_revjul(found_ut + 5.0, ref year, ref month, ref day, ref hour);
+            sweph.RevJul(found_ut + 5.0, ref year, ref month, ref day, ref hour);
             m2 = new Moment(year, month, day, hour);
             return hTransit;
         }
@@ -506,7 +506,7 @@ namespace mhora
             var r = new Retrogression(h, opts.SearchBody);
 
             var start_lon = r.GetLon(h.baseUT);
-            //Console.WriteLine ("Real start lon is {0}", start_lon);
+            //mhora.Log.Debug ("Real start lon is {0}", start_lon);
             var curr_julday = h.baseUT;
             var t           = new Transit(h, opts.SearchBody);
             while (totalProgression >= 360.0)
@@ -524,7 +524,7 @@ namespace mhora
 
             //bool bDiscard = true;
             //Longitude got_lon = t.GenericLongitude(curr_julday, ref bDiscard);
-            //Console.WriteLine ("Found Progressed Sun at {0}+{1}={2}={3}", 
+            //mhora.Log.Debug ("Found Progressed Sun at {0}+{1}={2}={3}", 
             //	start_lon.value, new Longitude(totalProgressionOrig).value,
             //	got_lon.value, got_lon.sub(start_lon.add(totalProgressionOrig)).value
             //	);
@@ -552,14 +552,14 @@ namespace mhora
             var julday_ut = opts.StartDate.toUniversalTime() - h.info.tz.toDouble() / 24.0;
             var ut_diff   = julday_ut                        - h.baseUT;
 
-            //Console.WriteLine ("Expected ut_diff is {0}", ut_diff);
+            //mhora.Log.Debug ("Expected ut_diff is {0}", ut_diff);
             var bDummy = true;
             sweph.obtainLock(h);
             var t         = new Transit(h);
             var lon_start = t.LongitudeOfSun(h.baseUT, ref bDummy);
             var lon_prog  = t.LongitudeOfSun(julday_ut, ref bDummy);
 
-            //Console.WriteLine ("Progression lons are {0} and {1}", lon_start, lon_prog);
+            //mhora.Log.Debug ("Progression lons are {0} and {1}", lon_start, lon_prog);
 
             var dExpectedLon = ut_diff * 360.0 / 365.2425;
             var lon_expected = lon_start.add(dExpectedLon);
@@ -577,11 +577,11 @@ namespace mhora
 
             var dp = h.getPosition(opts.SearchBody).toDivisionPosition(opts.Division);
 
-            //Console.WriteLine ("Sun progress {0} degrees in elapsed time", dExpectedLon);
+            //mhora.Log.Debug ("Sun progress {0} degrees in elapsed time", dExpectedLon);
 
             var ret = dExpectedLon / 360.0 * (30.0 / Basics.numPartsInDivision(opts.Division));
             //(dp.cusp_higher - dp.cusp_lower);
-            //Console.WriteLine ("Progressing by {0} degrees", ret);
+            //mhora.Log.Debug ("Progressing by {0} degrees", ret);
             return ret;
         }
 
@@ -596,7 +596,7 @@ namespace mhora
 
             var dp                = h.getPosition(opts.SearchBody).toDivisionPosition(opts.Division);
             var yearlyProgression = (dp.cusp_higher - dp.cusp_lower) / 30.0;
-            var julday_ut = sweph.swe_julday(opts.StartDate.year,
+            var julday_ut = sweph.JulDay(opts.StartDate.year,
                                              opts.StartDate.month,
                                              opts.StartDate.day,
                                              opts.StartDate.hour + opts.StartDate.minute / 60.0 + opts.StartDate.second / 3600.0);
@@ -611,7 +611,7 @@ namespace mhora
             var totalProgression     = GetProgressionDegree();
             var totalProgressionOrig = totalProgression;
 
-            //Console.WriteLine ("Total Progression is {0}", totalProgression);
+            //mhora.Log.Debug ("Total Progression is {0}", totalProgression);
             var becomesDirect = false;
             sweph.obtainLock(h);
             var    r        = new Retrogression(h, opts.SearchBody);
@@ -627,26 +627,26 @@ namespace mhora
 
                 if (false == becomesDirect && next_lon.sub(curr_lon).value >= totalProgression)
                 {
-                    //Console.WriteLine ("1 Found {0} in {1}", totalProgression, next_lon.sub(curr_lon).value);
+                    //mhora.Log.Debug ("1 Found {0} in {1}", totalProgression, next_lon.sub(curr_lon).value);
                     found_ut = r.GetTransitForward(curr_ut, curr_lon.add(totalProgression));
                     break;
                 }
 
                 if (becomesDirect && curr_lon.sub(next_lon).value >= totalProgression)
                 {
-                    //Console.WriteLine ("2 Found {0} in {1}", totalProgression, curr_lon.sub(next_lon).value);
+                    //mhora.Log.Debug ("2 Found {0} in {1}", totalProgression, curr_lon.sub(next_lon).value);
                     found_ut = r.GetTransitForward(curr_ut, curr_lon.sub(totalProgression));
                     break;
                 }
 
                 if (false == becomesDirect)
                 {
-                    //Console.WriteLine ("Progression: {0} degrees gone in direct motion", next_lon.sub(curr_lon).value);
+                    //mhora.Log.Debug ("Progression: {0} degrees gone in direct motion", next_lon.sub(curr_lon).value);
                     totalProgression -= next_lon.sub(curr_lon).value;
                 }
                 else
                 {
-                    //Console.WriteLine ("Progression: {0} degrees gone in retro motion", curr_lon.sub(next_lon).value);
+                    //mhora.Log.Debug ("Progression: {0} degrees gone in retro motion", curr_lon.sub(next_lon).value);
                     totalProgression -= curr_lon.sub(next_lon).value;
                 }
 
@@ -723,7 +723,7 @@ namespace mhora
                 day   = 0;
             double hour = 0;
             found_ut += h.info.tz.toDouble() / 24.0;
-            sweph.swe_revjul(found_ut, ref year, ref month, ref day, ref hour);
+            sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
             var m = new Moment(year, month, day, hour);
             var inf = new HoraInfo(m,
                                    (HMSInfo)h.info.lat.Clone(),
@@ -734,11 +734,11 @@ namespace mhora
 
             if (opts.Forward)
             {
-                sweph.swe_revjul(found_ut + 5.0, ref year, ref month, ref day, ref hour);
+                sweph.RevJul(found_ut + 5.0, ref year, ref month, ref day, ref hour);
             }
             else
             {
-                sweph.swe_revjul(found_ut - 5.0, ref year, ref month, ref day, ref hour);
+                sweph.RevJul(found_ut - 5.0, ref year, ref month, ref day, ref hour);
             }
 
             var m2 = new Moment(year, month, day, hour);
@@ -785,7 +785,7 @@ namespace mhora
             }
 
 
-            sweph.swe_revjul(ut, ref year, ref month, ref day, ref hour);
+            sweph.RevJul(ut, ref year, ref month, ref day, ref hour);
             var m2 = new Moment(year, month, day, hour);
             opts.StartDate = m2;
             updateOptions();
@@ -1123,7 +1123,7 @@ namespace mhora
             var julday_ut = opts.StartDate.toUniversalTime(h);
             var tret      = new double[10];
             sweph.obtainLock(h);
-            sweph.swe_sol_eclipse_when_glob(julday_ut, tret, opts.Forward);
+            sweph.SolEclipseWhenGlob(julday_ut, tret, opts.Forward);
             sweph.releaseLock(h);
             SolarEclipseHelper(tret[2], "Global Solar Eclipse Begins");
             SolarEclipseHelper(tret[3], "   Global Solar Eclipse Ends");
@@ -1150,7 +1150,7 @@ namespace mhora
             var tret      = new double[10];
             var attr      = new double[10];
             sweph.obtainLock(h);
-            sweph.swe_sol_eclipse_when_loc(h.info, julday_ut, tret, attr, opts.Forward);
+            sweph.SolEclipseWhenLoc(h.info, julday_ut, tret, attr, opts.Forward);
             sweph.releaseLock(h);
             SolarEclipseHelper(tret[0], "Local Solar Eclipse Maximum");
             SolarEclipseHelper(tret[1], tret[0] - 1, tret[0] + 1, "   Local Solar Eclipse 1st Contact");
@@ -1174,7 +1174,7 @@ namespace mhora
             var julday_ut = opts.StartDate.toUniversalTime(h);
             var tret      = new double[10];
             sweph.obtainLock(h);
-            sweph.swe_lun_eclipse_when(julday_ut, tret, opts.Forward);
+            sweph.LunEclipseWhen(julday_ut, tret, opts.Forward);
             sweph.releaseLock(h);
             SolarEclipseHelper(tret[0], "Lunar Eclipse Maximum");
             SolarEclipseHelper(tret[2], tret[0] - 1, tret[0] + 1, "   Lunar Eclipse Begins");

@@ -19,12 +19,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Hora;
-using mhora.Settings;
-using mhora.SwissEph;
+using Mhora.Calculation;
+using Mhora.Hora;
+using Mhora.Settings;
+using Mhora.SwissEph;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     /// <summary>
     ///     Summary description for KeyInfoControl.
@@ -359,7 +359,7 @@ namespace mhora.Components
             {
                 sweph.obtainLock(h);
                 li = new ListViewItem("Ayanamsa");
-                var aya      = sweph.swe_get_ayanamsa_ut(h.baseUT);
+                var aya      = sweph.GetAyanamsaUT(h.baseUT);
                 var aya_hour = (int)Math.Floor(aya);
                 aya = (aya - Math.Floor(aya)) * 60.0;
                 var aya_min = (int)Math.Floor(aya);

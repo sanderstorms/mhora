@@ -17,9 +17,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using mhora.Calculation;
+using Mhora.Calculation;
 
-namespace mhora
+namespace Mhora
 {
     /// <summary>
     ///     Base class to be implemented by Vimsottari/Ashtottari like dasas
@@ -70,7 +70,7 @@ namespace mhora
             var g              = common.lordOfNakshatra(n);
             var perc_traversed = lon.percentageOfNakshatra();
             var start          = cycle * common.paramAyus() - perc_traversed / 100.0 * common.lengthOfDasa(g);
-            //System.Console.WriteLine ("{0} {1} {2}", common.lengthOfDasa(g), perc_traversed, start);
+            //System.mhora.Log.Debug ("{0} {1} {2}", common.lengthOfDasa(g), perc_traversed, start);
 
             // Calculate a "seed" dasaItem, to make use of the AntarDasa function
             var di = new DasaEntry(g, start, common.paramAyus(), 0, string.Empty);

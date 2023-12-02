@@ -20,7 +20,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     [Serializable]
     [TypeConverter(typeof(LongitudeConverter))]
@@ -87,7 +87,7 @@ namespace mhora.Calculation
 
             var bRet = cusp_higher.sub(cusp_lower).value <= 180 && diff1 <= diff2;
 
-            Console.WriteLine("Is it true that {0} < {1} < {2}? {3}", this, cusp_lower, cusp_higher, bRet);
+            mhora.Log.Debug("Is it true that {0} < {1} < {2}? {3}", this, cusp_lower, cusp_higher, bRet);
             return bRet;
         }
 

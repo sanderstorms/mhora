@@ -22,7 +22,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     internal class MomentConverter : ExpandableObjectConverter
     {
@@ -100,7 +100,7 @@ namespace mhora.Calculation
             object                 value,
             Type                   destType)
         {
-            Console.WriteLine("Foo: destType is {0}", destType);
+            mhora.Log.Debug("Foo: destType is {0}", destType);
             // Trace.Assert (destType == typeof(string) && value is Moment, "MomentConverter::ConvertTo 1");
             var m = (Moment)value;
             return m.ToString();

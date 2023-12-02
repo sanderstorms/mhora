@@ -17,9 +17,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using mhora.Calculation;
+using Mhora.Calculation;
 
-namespace mhora.Panchanga
+namespace Mhora.Panchanga
 {
     public class PanchangaLocalMoments
     {

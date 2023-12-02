@@ -19,10 +19,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections;
 using System.Diagnostics;
-using mhora.Calculation;
-using mhora.Delegates;
+using Mhora.Calculation;
+using Mhora.Delegates;
 
-namespace mhora
+namespace Mhora
 {
     // Wrapper around ashtottari dasa that starts the initial dasa
     // based on the tithi. We do not reimplement ashtottari dasa 

@@ -17,12 +17,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
-using mhora.Calculation;
-using mhora.Components.Property;
-using mhora.Util;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Components.Property;
+using Mhora.Util;
+using Mhora.Varga;
 
-namespace mhora
+namespace Mhora
 {
     public abstract class Dasa
     {

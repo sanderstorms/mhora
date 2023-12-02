@@ -22,7 +22,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     internal class OrderedZodiacHousesConverter : ExpandableObjectConverter
     {

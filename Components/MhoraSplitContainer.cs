@@ -21,7 +21,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     /// <summary>
     ///     Summary description for MhoraSplitContainer.

@@ -16,9 +16,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Varga;
+using Mhora.Varga;
 
-namespace mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength
 {
     // Stronger rasi has a graha which has traversed larger longitude
     // Stronger graha has traversed larger longitude in its house

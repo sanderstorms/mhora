@@ -17,9 +17,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.ComponentModel;
-using mhora.Calculation;
+using Mhora.Calculation;
 
-namespace mhora
+namespace Mhora
 {
     [TypeConverter(typeof(DasaEntryConverter))]
     public class DasaEntry

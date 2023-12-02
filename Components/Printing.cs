@@ -16,16 +16,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
 using System.Collections;
 using System.Drawing;
 using System.Drawing.Printing;
-using mhora.Calculation;
-using mhora.Util;
-using mhora.Varga;
+using Mhora.Body;
+using Mhora.Calculation;
+using Mhora.Util;
+using Mhora.Varga;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     public class MhoraPrintDocument : PrintDocument
     {

@@ -18,10 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Diagnostics;
-using mhora.SwissEph;
-using mhora.Varga;
+using Mhora.SwissEph;
+using Mhora.Varga;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     /// <summary>
     ///     Summary description for Balas.
@@ -155,7 +155,7 @@ namespace mhora.Calculation
             debLon = debLon.add(powerlessHouse[(int)b] * 30.0 + 15.0);
             var posLon = h.getPosition(b).longitude;
 
-            Console.WriteLine("digBala {0} {1} {2}", b, posLon.value, debLon.value);
+            mhora.Log.Debug("digBala {0} {1} {2}", b, posLon.value, debLon.value);
 
             var diff = posLon.sub(debLon).value;
             if (diff > 180)
@@ -306,7 +306,7 @@ namespace mhora.Calculation
 
         public void kalaHelper(ref Body.Body.Name yearLord, ref Body.Body.Name monthLord)
         {
-            var ut_arghana = sweph.swe_julday(1827, 5, 2, -h.info.tz.toDouble() + 12.0 / 24.0);
+            var ut_arghana = sweph.JulDay(1827, 5, 2, -h.info.tz.toDouble() + 12.0 / 24.0);
             var ut_noon    = h.baseUT - h.info.tob.time / 24.0 + 12.0 / 24.0;
 
             var diff = ut_noon - ut_arghana;
@@ -334,8 +334,8 @@ namespace mhora.Calculation
                 diff -= 7.0;
             }
 
-            yearLord  = Basics.weekdayRuler((Basics.Weekday)sweph.swe_day_of_week(ut_noon - diff_year));
-            monthLord = Basics.weekdayRuler((Basics.Weekday)sweph.swe_day_of_week(ut_noon - diff_month));
+            yearLord  = Basics.weekdayRuler((Basics.Weekday)sweph.DayOfWeek(ut_noon - diff_year));
+            monthLord = Basics.weekdayRuler((Basics.Weekday)sweph.DayOfWeek(ut_noon - diff_month));
         }
 
         public double abdaBala(Body.Body.Name b)

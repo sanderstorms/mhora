@@ -19,13 +19,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Components;
-using mhora.Ghata;
-using mhora.Settings;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Components;
+using Mhora.Ghata;
+using Mhora.Settings;
+using Mhora.Varga;
 
-namespace mhora.Kuta
+namespace Mhora.Kuta
 {
     public class KutaMatchingControl : MhoraControl
     {

@@ -16,20 +16,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Kuta;
-using mhora.Panchanga;
-using mhora.Settings;
-using mhora.SwissEph;
-using mhora.Util;
-using mhora.Varga;
+using Mhora.Body;
+using Mhora.Calculation;
+using Mhora.Kuta;
+using Mhora.Panchanga;
+using Mhora.Settings;
+using Mhora.SwissEph;
+using Mhora.Util;
+using Mhora.Varga;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     /// <summary>
     ///     Summary description for MhoraControlContainer.

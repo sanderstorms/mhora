@@ -20,11 +20,11 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.SwissEph;
-using mhora.Util;
+using Mhora.Calculation;
+using Mhora.SwissEph;
+using Mhora.Util;
 
-namespace mhora
+namespace Mhora
 {
     /// <summary>
     ///     Summary description for Dasa3Parts.

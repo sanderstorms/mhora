@@ -19,9 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using mhora.Calculation;
+using Mhora.Calculation;
 
-namespace mhora.Varga
+namespace Mhora.Varga
 {
     internal class DivisionConverter : ExpandableObjectConverter
     {

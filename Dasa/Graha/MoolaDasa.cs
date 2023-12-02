@@ -19,12 +19,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections;
 using System.ComponentModel;
-using mhora.Calculation;
-using mhora.Calculation.Strength;
-using mhora.Components.Property;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Calculation.Strength;
+using Mhora.Components.Property;
+using Mhora.Varga;
 
-namespace mhora
+namespace Mhora
 {
     public class MoolaDasa : Dasa, IDasa
     {

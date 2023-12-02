@@ -21,10 +21,10 @@ using System.Collections;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using mhora.Components.Property;
-using mhora.Varga;
+using Mhora.Components.Property;
+using Mhora.Varga;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     /*
 	 * Here's the syntax that we take
@@ -123,14 +123,14 @@ namespace mhora.Calculation
         {
             rootNode = new Node(null, rule, _dtype);
 
-            //Console.WriteLine ("");
-            //Console.WriteLine ("Evaluating yoga .{0}.", rule);
+            //mhora.Log.Debug ("");
+            //mhora.Log.Debug ("Evaluating yoga .{0}.", rule);
             generateSimpleParseTree();
             expandSimpleNodes();
             var bRet = reduceTree();
 
-            //Console.WriteLine ("Final: {0} = {1}", bRet, rule);
-            //Console.WriteLine ("");
+            //mhora.Log.Debug ("Final: {0} = {1}", bRet, rule);
+            //mhora.Log.Debug ("");
             return bRet;
         }
 
@@ -350,7 +350,7 @@ namespace mhora.Calculation
 
         public bool reduceTree(Node n)
         {
-            //Console.WriteLine ("Enter ReduceTree {0} {1}", n.type, n.term);
+            //mhora.Log.Debug ("Enter ReduceTree {0} {1}", n.type, n.term);
             var bRet = false;
             switch (n.type)
             {
@@ -389,7 +389,7 @@ namespace mhora.Calculation
             }
 
         reduceTreeDone:
-            //Console.WriteLine ("Exit ReduceTree {0} {1} {2}", n.type, n.term, bRet);
+            //mhora.Log.Debug ("Exit ReduceTree {0} {1} {2}", n.type, n.term, bRet);
             return bRet;
         }
 
@@ -413,7 +413,7 @@ namespace mhora.Calculation
             {
                 n.dtype = stringToDivision(mDiv.Groups[1].Value);
                 text    = text.Replace(mDiv.Groups[1].Value, string.Empty);
-                //				Console.WriteLine ("Match. Replaced {0}. Text now {1}", 
+                //				mhora.Log.Debug ("Match. Replaced {0}. Text now {1}", 
                 //					mDiv.Groups[1].Value, text);
             }
 
@@ -422,7 +422,7 @@ namespace mhora.Calculation
             {
                 n.type = Node.EType.Single;
                 n.term = text;
-                //Console.WriteLine ("Need to evaluate simple node {0}", text);
+                //mhora.Log.Debug ("Need to evaluate simple node {0}", text);
                 return;
             }
 
@@ -468,7 +468,7 @@ namespace mhora.Calculation
                 }
             }
 
-            //Console.WriteLine ("Need to evaluate complex node {0}", text);
+            //mhora.Log.Debug ("Need to evaluate complex node {0}", text);
         }
 
         public void generateSimpleParseTree()
@@ -815,7 +815,7 @@ namespace mhora.Calculation
                 sNew += ">";
             }
 
-            //Console.WriteLine ("{0} evals to {1}", sTerm, sNew);
+            //mhora.Log.Debug ("{0} evals to {1}", sTerm, sNew);
             return sNew;
         }
 
@@ -823,7 +823,7 @@ namespace mhora.Calculation
         {
             while (true)
             {
-                //Console.WriteLine ("Simplifying basic term: .{0}.", sTerm);		
+                //mhora.Log.Debug ("Simplifying basic term: .{0}.", sTerm);		
                 var m = Regex.Match(sTerm, "<[^<>]*>");
 
                 // No terms found. Nothing to do.
@@ -846,7 +846,7 @@ namespace mhora.Calculation
                 // Found a term, evaluated it. Nothing happened. Done.
                 var newInner = replaceBasicNodeTerm(d, sInner);
 
-                //Console.WriteLine ("{0} && {1}", newInner.Length, m.Value.Length);
+                //mhora.Log.Debug ("{0} && {1}", newInner.Length, m.Value.Length);
 
                 if (newInner == m.Value.ToLower())
                 {
@@ -877,7 +877,7 @@ namespace mhora.Calculation
             n.term = trimWhitespace(sNew);
 
             //cats = this.trimWhitespace(cats);
-            //Console.WriteLine ("Cats = {0}", cats);
+            //mhora.Log.Debug ("Cats = {0}", cats);
         }
 
         public void expandSimpleNode(Queue q, Node n)
@@ -888,7 +888,7 @@ namespace mhora.Calculation
 
             var eLogic = Node.EType.Or;
 
-            //Console.WriteLine ("Inner logic: n.term is {0}", n.term);
+            //mhora.Log.Debug ("Inner logic: n.term is {0}", n.term);
             if (n.term[0] == '&' && n.term[1] == '&')
             {
                 eLogic = Node.EType.And;
@@ -898,7 +898,7 @@ namespace mhora.Calculation
             {
                 n.term = trimWhitespace(n.term.Substring(2, n.term.Length - 2));
             }
-            //Console.WriteLine ("Inner logic: n.term is now {0}", n.term);
+            //mhora.Log.Debug ("Inner logic: n.term is now {0}", n.term);
 
             // find num Vals etc
             var simpleTerms         = n.term.Split(' ');
@@ -920,7 +920,7 @@ namespace mhora.Calculation
                 }
             }
 
-            //Console.WriteLine ("Exp: {0} requires {1} exps", n.term, numExps);
+            //mhora.Log.Debug ("Exp: {0} requires {1} exps", n.term, numExps);
 
             // done
             if (numExps <= 1)
@@ -987,7 +987,7 @@ namespace mhora.Calculation
             {
                 var nChild = new Node(n, trimWhitespace(sNew[i]), n.dtype);
                 n.addChild(nChild);
-                //Console.WriteLine ("sNew[{0}]: {1}", i, sNew[i]);
+                //mhora.Log.Debug ("sNew[{0}]: {1}", i, sNew[i]);
             }
         }
 

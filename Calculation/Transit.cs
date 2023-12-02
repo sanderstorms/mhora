@@ -16,11 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
-using mhora.SwissEph;
+using Mhora.Body;
+using Mhora.SwissEph;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     public class Transit
     {
@@ -59,7 +59,7 @@ namespace mhora.Calculation
         {
             if (b == Body.Body.Name.Lagna)
             {
-                return new Longitude(sweph.swe_lagna(ut));
+                return new Longitude(sweph.Lagna(ut));
             }
 
             var bp = Basics.CalculateSingleBodyPosition(ut,

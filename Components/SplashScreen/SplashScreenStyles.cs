@@ -52,7 +52,7 @@
 
 using System;
 
-namespace mhora.Components.SplashScreen
+namespace Mhora.Components.SplashScreen
 {
     [Flags]
     public enum SplashScreenStyles

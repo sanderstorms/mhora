@@ -3,53 +3,22 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using Mhora.Database;
+using SyslogLogging;
 
-namespace mhora
+namespace Mhora
 {
     internal static class mhora
     {
         private static bool _running;
         private static string _workingDir;
 
-        public static bool Running
-        {
-            get
-            {
-                return (_running);
-            }
-        }
-
-        public static Assembly ActiveAssembly
-        {
-            get
-            {
-                if (_running)
-                {
-                    return (Assembly.GetEntryAssembly());
-                }
-                return (Assembly.GetExecutingAssembly());
-            }
-        }
-
-        public static string WorkingDir
-        {
-            get
-            {
-                if (_workingDir == null)
-                {
-                    _workingDir = Path.GetDirectoryName(ActiveAssembly.Location);
-                }
-                return (_workingDir);
-            }
-        }
-
-        internal static Version Version
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version;
-            }
-        }
+        internal static bool Running => (_running);
+        internal static Assembly ActiveAssembly => _running ? Assembly.GetEntryAssembly() : Assembly.GetExecutingAssembly();
+        internal static string WorkingDir => (_workingDir ??= Path.GetDirectoryName(ActiveAssembly.Location));
+        internal static Version Version => Assembly.GetExecutingAssembly().GetName().Version;
+        private static LoggingModule _log;
+        internal static LoggingModule Log => (_log ??= new LoggingModule());
 
         internal static string VersionString
         {
@@ -87,6 +56,14 @@ namespace mhora
             }
         }
 
+        private static void InitDb()
+        {
+            var cityDb = CityDb.Instance;
+            var geoNames = GeoNames.Instance;
+            var timeZones = TimeZoneDb.Instance;
+
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -98,10 +75,14 @@ namespace mhora
             Application.ThreadException += ThreadExceptionRaised;
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
+            Log.Settings.LogFilename = Path.Combine(WorkingDir, "debug.txt");
+            Log.Settings.FileLogging = FileLoggingMode.SingleLogFile;
+
+            InitDb();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MhoraContainer());
-
             AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionEventRaised;
             Application.ThreadException -= ThreadExceptionRaised;
             _running = false;
@@ -110,11 +91,13 @@ namespace mhora
 
         private static void ThreadExceptionRaised(object sender, ThreadExceptionEventArgs e)
         {
+            Log.Exception(e.Exception);
         }
 
         private static void UnhandledExceptionEventRaised(object sender, UnhandledExceptionEventArgs e)
         {
             var exception = (Exception)e.ExceptionObject;
+            Log.Exception(exception);
         }
     }
 }

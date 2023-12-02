@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace mhora.Util
+namespace Mhora.Util
 {
     public static class Dll
     {

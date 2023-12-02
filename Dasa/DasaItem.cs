@@ -17,11 +17,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Settings;
-using mhora.Util;
+using Mhora.Calculation;
+using Mhora.Settings;
+using Mhora.Util;
 
-namespace mhora
+namespace Mhora
 {
     /// <summary>
     ///     Specifies a DasaItem which can be used by any of the Dasa Systems.

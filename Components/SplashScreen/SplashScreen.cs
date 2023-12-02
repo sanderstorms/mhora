@@ -53,7 +53,7 @@
 using System;
 using System.Threading;
 using System.Windows.Forms;
-using mhora.Components.SplashScreen;
+using Mhora.Components.SplashScreen;
 using Timer = System.Windows.Forms.Timer;
 
 namespace Genghis.Windows.Forms

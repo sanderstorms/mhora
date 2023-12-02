@@ -16,11 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
-using mhora.SwissEph;
+using Mhora.Body;
+using Mhora.SwissEph;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     public class Retrogression
     {
@@ -79,14 +79,14 @@ namespace mhora.Calculation
             var bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
             while (Transit.CircLonLessThan(bp.longitude, lonToFind))
             {
-                //Console.WriteLine("- {0} {1}", bp.longitude.value, lonToFind.value);
+                //mhora.Log.Debug("- {0} {1}", bp.longitude.value, lonToFind.value);
                 ut++;
                 bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
             }
 
             while (Transit.CircLonLessThan(lonToFind, bp.longitude))
             {
-                //Console.WriteLine("+ {0} {1}", bp.longitude.value, lonToFind.value);
+                //mhora.Log.Debug("+ {0} {1}", bp.longitude.value, lonToFind.value);
                 ut--;
                 bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
             }
@@ -120,22 +120,22 @@ namespace mhora.Calculation
                 var bp_next = Basics.CalculateSingleBodyPosition(ut_curr, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
                 var bp_curr = Basics.CalculateSingleBodyPosition(ut_next, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
 
-                //Console.WriteLine ("{0}, {1}, {2}", becomesDirect, bp_curr.longitude, bp_next.longitude);
+                //mhora.Log.Debug ("{0}, {1}, {2}", becomesDirect, bp_curr.longitude, bp_next.longitude);
 
                 if (false                                  == becomesDirect &&
                     lonToFind.sub(bp_curr.longitude).value <= bp_next.longitude.sub(bp_curr.longitude).value)
                 {
-                    //Console.WriteLine ("+ Found {0} between {1} and {2}", lonToFind, bp_curr.longitude, bp_next.longitude);
+                    //mhora.Log.Debug ("+ Found {0} between {1} and {2}", lonToFind, bp_curr.longitude, bp_next.longitude);
                     break;
                 }
 
                 if (becomesDirect &&
                     lonToFind.sub(bp_next.longitude).value <= bp_curr.longitude.sub(bp_next.longitude).value)
                 {
-                    //Console.WriteLine ("- Found {0} betweeen {1} and {2}", lonToFind, bp_next.longitude, bp_curr.longitude);
+                    //mhora.Log.Debug ("- Found {0} betweeen {1} and {2}", lonToFind, bp_next.longitude, bp_curr.longitude);
                     break;
                 }
-                //Console.WriteLine ("{3} Didn't find {0} betweeen {1} and {2}", lonToFind, bp_curr.longitude, bp_next.longitude, ut_curr);
+                //mhora.Log.Debug ("{3} Didn't find {0} betweeen {1} and {2}", lonToFind, bp_curr.longitude, bp_next.longitude, ut_curr);
             }
 
             if (false == becomesDirect)
@@ -168,10 +168,10 @@ namespace mhora.Calculation
                     month = 0,
                     year  = 0;
                 double hour = 0;
-                sweph.swe_revjul(ut_start, ref year, ref month, ref day, ref hour);
+                sweph.RevJul(ut_start, ref year, ref month, ref day, ref hour);
                 var m = new Moment(year, month, day, hour);
 
-                //Console.WriteLine ("F {3} Lagna search for {0} between {1} and {2}",
+                //mhora.Log.Debug ("F {3} Lagna search for {0} between {1} and {2}",
                 //lonToFind, lon_start, lon_end, m);
 
                 if (lonToFind.sub(lon_start).value <= lon_end.sub(lon_start).value)
@@ -200,10 +200,10 @@ namespace mhora.Calculation
                     month = 0,
                     year  = 0;
                 double hour = 0;
-                sweph.swe_revjul(ut_start, ref year, ref month, ref day, ref hour);
+                sweph.RevJul(ut_start, ref year, ref month, ref day, ref hour);
                 var m = new Moment(year, month, day, hour);
 
-                //Console.WriteLine ("B {3} Lagna search for {0} between {1} and {2}",
+                //mhora.Log.Debug ("B {3} Lagna search for {0} between {1} and {2}",
                 //lonToFind, lon_start, lon_end, m);
 
                 if (lonToFind.sub(lon_end).value <= lon_start.sub(lon_end).value)
@@ -242,22 +242,22 @@ namespace mhora.Calculation
                 var bp_curr = Basics.CalculateSingleBodyPosition(ut_curr, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
                 var bp_next = Basics.CalculateSingleBodyPosition(ut_next, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
 
-                //Console.WriteLine ("{0}, {1}, {2}", becomesDirect, bp_curr.longitude, bp_next.longitude);
+                //mhora.Log.Debug ("{0}, {1}, {2}", becomesDirect, bp_curr.longitude, bp_next.longitude);
 
                 if (false                                  == becomesDirect &&
                     lonToFind.sub(bp_curr.longitude).value <= bp_next.longitude.sub(bp_curr.longitude).value)
                 {
-                    //Console.WriteLine ("+ Found {0} between {1} and {2}", lonToFind, bp_curr.longitude, bp_next.longitude);
+                    //mhora.Log.Debug ("+ Found {0} between {1} and {2}", lonToFind, bp_curr.longitude, bp_next.longitude);
                     break;
                 }
 
                 if (becomesDirect &&
                     lonToFind.sub(bp_next.longitude).value <= bp_curr.longitude.sub(bp_next.longitude).value)
                 {
-                    //Console.WriteLine ("- Found {0} betweeen {1} and {2}", lonToFind, bp_next.longitude, bp_curr.longitude);
+                    //mhora.Log.Debug ("- Found {0} betweeen {1} and {2}", lonToFind, bp_next.longitude, bp_curr.longitude);
                     break;
                 }
-                //Console.WriteLine ("{3} Didn't find {0} betweeen {1} and {2}", lonToFind, bp_curr.longitude, bp_next.longitude, ut_curr);
+                //mhora.Log.Debug ("{3} Didn't find {0} betweeen {1} and {2}", lonToFind, bp_curr.longitude, bp_next.longitude, ut_curr);
             }
 
             if (false == becomesDirect)
@@ -278,7 +278,7 @@ namespace mhora.Calculation
         {
             if (b == Body.Body.Name.Lagna)
             {
-                return new Longitude(sweph.swe_lagna(ut));
+                return new Longitude(sweph.Lagna(ut));
             }
 
             var bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
@@ -350,7 +350,7 @@ namespace mhora.Calculation
             var speed_middle = GetSpeed(ut_middle);
             var speed_end    = GetSpeed(ut_end);
 
-            //Console.WriteLine ("Speed BinarySearchNormal {0} UT: {2} Speed {1}", b, speed_middle, ut_middle);
+            //mhora.Log.Debug ("Speed BinarySearchNormal {0} UT: {2} Speed {1}", b, speed_middle, ut_middle);
 
             if (speed_start > 0 && speed_end < 0)
             {
@@ -401,7 +401,7 @@ namespace mhora.Calculation
                     var bp_l = Basics.CalculateSingleBodyPosition(lower_ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
                     var bp_h = Basics.CalculateSingleBodyPosition(higher_ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
 
-                    //Console.WriteLine ("DChecking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
+                    //mhora.Log.Debug ("DChecking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
                     // If first one is retro, we're exactly at the cusp
                     // If higher is still direct, contine
                     if (bp_l.speed_longitude < 0 && bp_h.speed_longitude > 0)
@@ -435,7 +435,7 @@ namespace mhora.Calculation
                     var bp_l = Basics.CalculateSingleBodyPosition(lower_ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
                     var bp_h = Basics.CalculateSingleBodyPosition(higher_ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
 
-                    //Console.WriteLine ("R Checking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
+                    //mhora.Log.Debug ("R Checking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
                     if (bp_l.speed_longitude > 0 && bp_h.speed_longitude <= 0)
                     {
                         break;
@@ -475,7 +475,7 @@ namespace mhora.Calculation
                     var bp_l = Basics.CalculateSingleBodyPosition(lower_ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
                     var bp_h = Basics.CalculateSingleBodyPosition(higher_ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
 
-                    //Console.WriteLine ("DChecking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
+                    //mhora.Log.Debug ("DChecking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
                     // If first one is retro, we're exactly at the cusp
                     // If higher is still direct, contine
                     if (bp_l.speed_longitude > 0 && bp_h.speed_longitude < 0)
@@ -507,7 +507,7 @@ namespace mhora.Calculation
                     var bp_l = Basics.CalculateSingleBodyPosition(lower_ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
                     var bp_h = Basics.CalculateSingleBodyPosition(higher_ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
 
-                    //Console.WriteLine ("R Checking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
+                    //mhora.Log.Debug ("R Checking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
                     if (bp_l.speed_longitude < 0 && bp_h.speed_longitude >= 0)
                     {
                         break;

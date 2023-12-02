@@ -18,10 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.ComponentModel;
 using System.Diagnostics;
-using mhora.Calculation;
-using mhora.Util;
+using Mhora.Calculation;
+using Mhora.Util;
 
-namespace mhora.Body
+namespace Mhora.Body
 {
     /// <summary>
     ///     A compile-time list of every body we will use in this program

@@ -20,9 +20,9 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms.Design;
-using mhora.Components;
+using Mhora.Components;
 
-namespace mhora.Hora
+namespace Mhora.Hora
 {
     public class UIStringTypeEditor : UITypeEditor
     {

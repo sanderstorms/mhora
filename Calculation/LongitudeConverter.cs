@@ -21,7 +21,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     /// <summary>
     ///     A package of longitude related functions. These are useful enough that

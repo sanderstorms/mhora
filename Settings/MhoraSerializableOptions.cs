@@ -22,12 +22,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
-using mhora.Calculation;
-using mhora.Components.Property;
-using mhora.Delegates;
-using mhora.Hora;
+using Mhora.Calculation;
+using Mhora.Components.Property;
+using Mhora.Delegates;
+using Mhora.Hora;
 
-namespace mhora.Settings
+namespace Mhora.Settings
 {
     [Serializable]
     public class MhoraSerializableOptions
@@ -38,14 +38,14 @@ namespace mhora.Settings
             for (var i = 0; i < mi.Length; i++)
             {
                 var fi = (FieldInfo)mi[i];
-                //Console.WriteLine ("User Preferences: Reading {0}", fi);
+                //mhora.Log.Debug ("User Preferences: Reading {0}", fi);
                 try
                 {
                     fi.SetValue(this, info.GetValue(fi.Name, fi.FieldType));
                 }
                 catch
                 {
-                    //Console.WriteLine ("    Not found");
+                    //mhora.Log.Debug ("    Not found");
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace mhora.Settings
             var mi = FormatterServices.GetSerializableMembers(ty, context);
             for (var i = 0; i < mi.Length; i++)
             {
-                //Console.WriteLine ("User Preferences: Writing {0}", mi[i].Name);
+                //mhora.Log.Debug ("User Preferences: Writing {0}", mi[i].Name);
                 info.AddValue(mi[i].Name, ((FieldInfo)mi[i]).GetValue(this));
             }
         }

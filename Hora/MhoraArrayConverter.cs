@@ -20,7 +20,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace mhora.Hora
+namespace Mhora.Hora
 {
     internal class MhoraArrayConverter : ArrayConverter
     {

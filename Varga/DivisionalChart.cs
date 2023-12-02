@@ -16,7 +16,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -24,14 +23,15 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Chart;
-using mhora.Components;
-using mhora.Components.Property;
-using mhora.Settings;
-using mhora.Util;
+using Mhora.Body;
+using Mhora.Calculation;
+using Mhora.Chart;
+using Mhora.Components;
+using Mhora.Components.Property;
+using Mhora.Settings;
+using Mhora.Util;
 
-namespace mhora.Varga
+namespace Mhora.Varga
 {
     /// <summary>
     ///     Summary description for DivisionalChart.

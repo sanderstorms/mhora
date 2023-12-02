@@ -18,9 +18,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using System.Diagnostics;
-using mhora.Calculation;
+using Mhora.Calculation;
 
-namespace mhora
+namespace Mhora
 {
     public class DwisaptatiSamaDasa : NakshatraDasa, INakshatraDasa
     {

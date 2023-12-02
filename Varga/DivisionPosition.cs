@@ -16,10 +16,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
-using mhora.Calculation;
+using Mhora.Body;
+using Mhora.Calculation;
 
-namespace mhora.Varga
+namespace Mhora.Varga
 {
     /// <summary>
     ///     Specifies a DivisionPosition, i.e. a position in a varga chart like Rasi

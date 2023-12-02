@@ -19,15 +19,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Components;
-using mhora.Hora;
-using mhora.Panchanga;
-using mhora.Settings;
-using mhora.Util;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Components;
+using Mhora.Hora;
+using Mhora.Panchanga;
+using Mhora.Settings;
+using Mhora.Util;
+using Mhora.Varga;
 
-namespace mhora.Jhora
+namespace Mhora.Jhora
 {
     /// <summary>
     ///     Summary description for JhoraMainTab.

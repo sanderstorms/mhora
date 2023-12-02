@@ -20,12 +20,12 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
-using mhora.Calculation;
-using mhora.Components.Property;
-using mhora.Util;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Components.Property;
+using Mhora.Util;
+using Mhora.Varga;
 
-namespace mhora
+namespace Mhora
 {
     public class VimsottariDasa : NakshatraDasa, INakshatraDasa
     {

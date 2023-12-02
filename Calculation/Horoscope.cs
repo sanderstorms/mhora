@@ -16,16 +16,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
 using System.Collections;
 using System.Diagnostics;
-using mhora.Hora;
-using mhora.Settings;
-using mhora.SwissEph;
-using mhora.Varga;
+using System.Windows.Forms;
+using Mhora.Body;
+using Mhora.Hora;
+using Mhora.Settings;
+using Mhora.SwissEph;
+using Mhora.Varga;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     /// <summary>
     ///     Contains all the information for a horoscope. i.e. All ephemeris lookups
@@ -460,15 +461,15 @@ namespace mhora.Calculation
                 0
             };
             var midnight_ut = _baseUT - _info.tob.time / 24.0;
-            sweph.swe_lmt(midnight_ut, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, tret);
+            sweph.Lmt(midnight_ut, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, tret);
             var lmt_noon_1   = tret[0];
             var lmt_offset_1 = lmt_noon_1 - (midnight_ut + 12.0 / 24.0);
-            sweph.swe_lmt(midnight_ut, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, tret);
+            sweph.Lmt(midnight_ut, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, tret);
             var lmt_noon_2   = tret[0];
             var lmt_offset_2 = lmt_noon_2 - (midnight_ut + 12.0 / 24.0);
 
             var ret_lmt_offset = (lmt_offset_1 + lmt_offset_2) / 2.0;
-            //Console.WriteLine("LMT: {0}, {1}", lmt_offset_1, lmt_offset_2);
+            //mhora.Log.Debug("LMT: {0}, {1}", lmt_offset_1, lmt_offset_2);
 
             return ret_lmt_offset;
         #if DND
@@ -532,12 +533,16 @@ namespace mhora.Calculation
                         0
                     };
 
-                    sweph.swe_rise(ut, sweph.SE_SUN, srflag, geopos, 0.0, 0.0, tret);
+                    if (sweph.Rise(ut, sweph.SE_SUN, srflag, geopos, 0.0, 0.0, tret) < 0)
+                    {
+                        MessageBox.Show("Invalid data");
+                        return;
+                    }
                     sr_ut = tret[0];
-                    sweph.swe_revjul(tret[0], ref year, ref month, ref day, ref hour);
+                    sweph.RevJul(tret[0], ref year, ref month, ref day, ref hour);
                     sr = hour + info.tz.toDouble();
-                    sweph.swe_set(tret[0], sweph.SE_SUN, srflag, geopos, 0.0, 0.0, tret);
-                    sweph.swe_revjul(tret[0], ref year, ref month, ref day, ref hour);
+                    sweph.Set(tret[0], sweph.SE_SUN, srflag, geopos, 0.0, 0.0, tret);
+                    sweph.RevJul(tret[0], ref year, ref month, ref day, ref hour);
                     ss = hour + info.tz.toDouble();
                     sr = Basics.normalize_exc(0.0, 24.0, sr);
                     ss = Basics.normalize_exc(0.0, 24.0, ss);
@@ -760,7 +765,7 @@ namespace mhora.Calculation
             //{
             //	Moment m1 = new Moment(cusps[j], this);
             //	Moment m2 = new Moment(cusps[j+1], this);
-            //	Console.WriteLine ("Seeing if dob is between {0} and {1}", m1, m2);
+            //	mhora.Log.Debug ("Seeing if dob is between {0} and {1}", m1, m2);
             //}
             for (j = 0; j < 23; j++)
             {
@@ -770,7 +775,7 @@ namespace mhora.Calculation
                 }
             }
 
-            //Console.WriteLine ("Found hora in the {0}th hora", j);
+            //mhora.Log.Debug ("Found hora in the {0}th hora", j);
             i += j;
             while (i >= 7)
             {
@@ -803,7 +808,7 @@ namespace mhora.Calculation
         private void calculateUpagrahasSingle(Body.Body.Name b, double tjd)
         {
             var lon = new Longitude(0);
-            lon.value = sweph.swe_lagna(tjd);
+            lon.value = sweph.Lagna(tjd);
             var bp = new Position(this,
                                       b,
                                       BodyType.Name.Upagraha,
@@ -846,7 +851,7 @@ namespace mhora.Calculation
                    dEnd   = 0;
 
             var m         = info.tob;
-            dStart = dEnd = sweph.swe_julday(m.year, m.month, m.day, -info.tz.toDouble());
+            dStart = dEnd = sweph.JulDay(m.year, m.month, m.day, -info.tz.toDouble());
             var bStart    = calculateUpagrahasStart();
 
             if (isDayBirth())
@@ -971,21 +976,21 @@ namespace mhora.Calculation
         private void calculateWeekday()
         {
             var m  = info.tob;
-            var jd = sweph.swe_julday(m.year, m.month, m.day, 12.0);
+            var jd = sweph.JulDay(m.year, m.month, m.day, 12.0);
             if (info.tob.time < sunrise)
             {
                 jd -= 1;
             }
 
-            wday = (Basics.Weekday)sweph.swe_day_of_week(jd);
+            wday = (Basics.Weekday)sweph.DayOfWeek(jd);
 
-            jd = sweph.swe_julday(m.year, m.month, m.day, 12.0);
+            jd = sweph.JulDay(m.year, m.month, m.day, 12.0);
             if (info.tob.time < lmt_sunrise)
             {
                 jd -= 1;
             }
 
-            lmt_wday = (Basics.Weekday)sweph.swe_day_of_week(jd);
+            lmt_wday = (Basics.Weekday)sweph.DayOfWeek(jd);
         }
 
         private void addChandraLagna(string desc, Longitude lon)
@@ -1002,7 +1007,7 @@ namespace mhora.Calculation
                 new Longitude(bp_moon.extrapolateLongitude(new Division(Basics.DivisionType.Navamsa)).toZodiacHouseBase());
             lon_base = lon_base.add(bp_moon.longitude.toZodiacHouseOffset());
 
-            //Console.WriteLine ("Starting Chandra Ayur Lagna from {0}", lon_base);
+            //mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
 
             var ista_ghati = Basics.normalize_exc(0.0, 24.0, info.tob.time - sunrise) * 2.5;
             var gl_lon     = lon_base.add(new Longitude(ista_ghati        * 30.0));
@@ -1142,7 +1147,7 @@ namespace mhora.Calculation
             var ascmc  = new double[10];
 
             sweph.obtainLock(this);
-            sweph.swe_houses_ex(baseUT,
+            sweph.HousesEx(baseUT,
                                 sweph.SEFLG_SIDEREAL,
                                 info.lat.toDouble(),
                                 info.lon.toDouble(),
@@ -1174,14 +1179,14 @@ namespace mhora.Calculation
             // The stuff here is largely order sensitive
             // Try to add new definitions to the end
 
-            baseUT = sweph.swe_julday(info.tob.year,
+            baseUT = sweph.JulDay(info.tob.year,
                                       info.tob.month,
                                       info.tob.day,
                                       info.tob.time - info.tz.toDouble());
 
 
             sweph.obtainLock(this);
-            sweph.swe_set_ephe_path(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
+            sweph.SetPath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
             // Find LMT offset
             populateLmt();
             // Sunrise (depends on lmt)
@@ -1284,7 +1289,7 @@ namespace mhora.Calculation
             {
                 var specialDiff = diff * (i - 1);
                 var tjd         = baseUT + specialDiff / 24.0;
-                var asc         = sweph.swe_lagna(tjd);
+                var asc         = sweph.Lagna(tjd);
                 var desc        = string.Format("Special Lagna ({0:00})", i);
                 addOtherPosition(desc, new Longitude(asc));
             }

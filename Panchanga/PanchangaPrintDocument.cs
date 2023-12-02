@@ -20,13 +20,13 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.Drawing.Printing;
-using mhora.Calculation;
-using mhora.Hora;
-using mhora.Settings;
-using mhora.SwissEph;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Hora;
+using Mhora.Settings;
+using Mhora.SwissEph;
+using Mhora.Varga;
 
-namespace mhora.Panchanga
+namespace Mhora.Panchanga
 {
     /// <summary>
     ///     Summary description for PanchangaPrintDocument.
@@ -179,7 +179,7 @@ namespace mhora.Panchanga
                 day   = 0;
             double hour = 0;
             found_ut += h.info.tz.toDouble() / 24.0;
-            sweph.swe_revjul(found_ut, ref year, ref month, ref day, ref hour);
+            sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
             var m = new Moment(year, month, day, hour);
             return m;
         }

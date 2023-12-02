@@ -19,10 +19,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections;
 using System.Diagnostics;
-using mhora.Calculation;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Varga;
 
-namespace mhora.Body
+namespace Mhora.Body
 {
     /// <summary>
     ///     Specifies a BodyPosition, i.e. the astronomical characteristics of a body like
@@ -50,7 +50,7 @@ namespace mhora.Body
             name            = aname;
             type            = atype;
             h               = _h;
-            //Console.WriteLine ("{0} {1} {2}", aname.ToString(), lon.value, splon);
+            //mhora.Log.Debug ("{0} {1} {2}", aname.ToString(), lon.value, splon);
         }
 
         public Longitude longitude
@@ -123,7 +123,7 @@ namespace mhora.Body
             dp.part        =  part;
 
             //if (dp.type == BodyType.Name.Graha || dp.type == BodyType.Name.Lagna)
-            //Console.WriteLine ("D: {0} {1} {2} {3} {4} {5}", 
+            //mhora.Log.Debug ("D: {0} {1} {2} {3} {4} {5}", 
             //	n, dp.name, cusp_length,
             //	dp.cusp_lower, m_lon.value, dp.cusp_higher);
 
@@ -187,7 +187,7 @@ namespace mhora.Body
             {
                 if (longitude.sub(cusps[i]).value < cusps[i + 1].sub(cusps[i]).value)
                 {
-                    //Console.WriteLine ("Found {4} - {0} in cusp {3} between {1} and {2}", this.m_lon.value,
+                    //mhora.Log.Debug ("Found {4} - {0} in cusp {3} between {1} and {2}", this.m_lon.value,
                     //	cusps[i].value, cusps[i+1].value, i+1, this.name.ToString());
 
                     return new DivisionPosition(name,
@@ -350,7 +350,7 @@ namespace mhora.Body
         {
             var zh = longitude.toZodiacHouse();
 
-            Console.WriteLine("{2} in {3}: OddEven is {0}, DayNight is {1}",
+            mhora.Log.Debug("{2} in {3}: OddEven is {0}, DayNight is {1}",
                               HoraSunOddEven(),
                               HoraSunDayNight(),
                               name,
@@ -365,7 +365,7 @@ namespace mhora.Body
                 zh = zh.add(7);
             }
 
-            Console.WriteLine("{0} ends in {1}", name, zh.value);
+            mhora.Log.Debug("{0} ends in {1}", name, zh.value);
 
             var dp = new DivisionPosition(name, type, zh, 0, 0, 0);
             populateRegularCusps(2, dp);

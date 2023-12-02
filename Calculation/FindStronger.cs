@@ -19,12 +19,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections;
 using System.ComponentModel;
-using mhora.Calculation.Strength;
-using mhora.Settings;
-using mhora.Util;
-using mhora.Varga;
+using Mhora.Calculation.Strength;
+using Mhora.Settings;
+using Mhora.Util;
+using Mhora.Varga;
 
-namespace mhora.Calculation
+namespace Mhora.Calculation
 {
     public class FindStronger
     {
@@ -442,7 +442,7 @@ namespace mhora.Calculation
             {
                 for (var j = 0; j < length - 1; j++)
                 {
-                    //System.Console.WriteLine ("Comparing {0} and {1}", i, j);
+                    //System.mhora.Log.Debug ("Comparing {0} and {1}", i, j);
                     if (false == CmpRasi(rasis[j], rasis[j + 1], false))
                     {
                         var temp = rasis[j];
@@ -519,10 +519,10 @@ namespace mhora.Calculation
             var bFound = true;
             winner = 0;
 
-            //System.Console.WriteLine("Rasi: {0} {1}", za.ToString(), zb.ToString());
+            //System.mhora.Log.Debug("Rasi: {0} {1}", za.ToString(), zb.ToString());
             foreach (ERasiStrength s in rules)
             {
-                //System.Console.WriteLine("Rasi::{0}", s);
+                //System.mhora.Log.Debug("Rasi::{0}", s);
                 switch (s)
                 {
                     case ERasiStrength.Conjunction:
@@ -769,7 +769,7 @@ namespace mhora.Calculation
             winner = 0;
             foreach (EGrahaStrength s in rules)
             {
-                //Console.WriteLine("Trying {0}. Curr is {1}", s, winner);
+                //mhora.Log.Debug("Trying {0}. Curr is {1}", s, winner);
                 switch (s)
                 {
                     case EGrahaStrength.Conjunction:

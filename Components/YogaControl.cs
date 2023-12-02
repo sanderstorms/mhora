@@ -21,12 +21,12 @@ using System.ComponentModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Components.Property;
-using mhora.Settings;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Components.Property;
+using Mhora.Settings;
+using Mhora.Varga;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     public class YogaControl : MhoraControl
     {

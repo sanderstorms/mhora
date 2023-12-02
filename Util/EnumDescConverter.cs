@@ -31,7 +31,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace mhora.Util
+namespace Mhora.Util
 {
     /// <summary>
     ///     EnumConverter supporting System.ComponentModel.DescriptionAttribute

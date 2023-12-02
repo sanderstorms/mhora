@@ -16,18 +16,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using mhora.Body;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Components.Property;
-using mhora.Delegates;
-using mhora.Settings;
-using mhora.Varga;
+using Mhora.Body;
+using Mhora.Calculation;
+using Mhora.Components.Property;
+using Mhora.Delegates;
+using Mhora.Settings;
+using Mhora.Varga;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     /// <summary>
     ///     Summary description for BasicCalculationsControl.
@@ -981,8 +981,8 @@ namespace mhora.Components
             mList.Columns.Add("Nakshatra (27)", -1, HorizontalAlignment.Left);
             mList.Columns.Add("Nakshatra (28)", -1, HorizontalAlignment.Left);
 
-            var nmoon   = h.getPosition(global::mhora.Body.Body.Name.Moon).longitude.toNakshatra();
-            var nmoon28 = h.getPosition(global::mhora.Body.Body.Name.Moon).longitude.toNakshatra28();
+            var nmoon   = h.getPosition(global::Mhora.Body.Body.Name.Moon).longitude.toNakshatra();
+            var nmoon28 = h.getPosition(global::Mhora.Body.Body.Name.Moon).longitude.toNakshatra28();
             for (var i = 0; i < specialIndices.Length; i++)
             {
                 var sn   = nmoon.add(specialIndices[i]);
@@ -1010,15 +1010,15 @@ namespace mhora.Components
             var max = 0;
             if (vt == ViewType.ViewCharaKarakas)
             {
-                max = (int)global::mhora.Body.Body.Name.Rahu;
+                max = (int)global::Mhora.Body.Body.Name.Rahu;
             }
             else
             {
-                max = (int)global::mhora.Body.Body.Name.Saturn;
+                max = (int)global::Mhora.Body.Body.Name.Saturn;
             }
 
 
-            for (var i = (int)global::mhora.Body.Body.Name.Sun; i <= max; i++)
+            for (var i = (int)global::Mhora.Body.Body.Name.Sun; i <= max; i++)
             {
                 var b   = (Body.Body.Name)i;
                 var bp  = h.getPosition(b);
@@ -1032,7 +1032,7 @@ namespace mhora.Components
             {
                 var li = new ListViewItem();
                 var bk = (KarakaComparer)al[i];
-                li.Text = global::mhora.Body.Body.toString(bk.GetPosition.name);
+                li.Text = global::Mhora.Body.Body.toString(bk.GetPosition.name);
                 if (vt == ViewType.ViewCharaKarakas)
                 {
                     li.SubItems.Add(karakas[i]);
@@ -1059,7 +1059,7 @@ namespace mhora.Components
             li.Text = b.ToString();
             li.SubItems.Add(name);
             li.SubItems.Add(dp.zodiac_house.value.ToString());
-            li.SubItems.Add(global::mhora.Body.Body.toString(h.LordOfZodiacHouse(dp.zodiac_house, div)));
+            li.SubItems.Add(global::Mhora.Body.Body.toString(h.LordOfZodiacHouse(dp.zodiac_house, div)));
             mList.Items.Add(li);
         }
 
@@ -1075,7 +1075,7 @@ namespace mhora.Components
             foreach (DivisionPosition dp in al)
             {
                 var desc = string.Empty;
-                if (dp.name == global::mhora.Body.Body.Name.Other)
+                if (dp.name == global::Mhora.Body.Body.Name.Other)
                 {
                     desc = dp.otherString;
                 }
@@ -1103,9 +1103,9 @@ namespace mhora.Components
 
             Body.Body.Name[] bodyReferences =
             {
-                global::mhora.Body.Body.Name.Lagna,
-                global::mhora.Body.Body.Name.Moon,
-                global::mhora.Body.Body.Name.Sun
+                global::Mhora.Body.Body.Name.Lagna,
+                global::Mhora.Body.Body.Name.Moon,
+                global::Mhora.Body.Body.Name.Sun
             };
 
             foreach (var b in bodyReferences)
@@ -1135,11 +1135,11 @@ namespace mhora.Components
             mList.Columns.Add("Alertness", -1, HorizontalAlignment.Left);
             mList.Columns.Add("Mood", -2, HorizontalAlignment.Left);
 
-            for (var i = (int)global::mhora.Body.Body.Name.Sun; i <= (int)global::mhora.Body.Body.Name.Ketu; i++)
+            for (var i = (int)global::Mhora.Body.Body.Name.Sun; i <= (int)global::Mhora.Body.Body.Name.Ketu; i++)
             {
                 var b  = (Body.Body.Name)i;
                 var li = new ListViewItem();
-                li.Text = global::mhora.Body.Body.toString(b);
+                li.Text = global::Mhora.Body.Body.toString(b);
                 var dp            = h.getPosition(b).toDivisionPosition(new Division(Basics.DivisionType.Panchamsa));
                 var avastha_index = -1;
                 switch ((int)dp.zodiac_house.value % 2)
@@ -1167,7 +1167,7 @@ namespace mhora.Components
             mList.Columns.Add("Latta", -1, HorizontalAlignment.Left);
             mList.Columns.Add("Aspected", -2, HorizontalAlignment.Left);
 
-            for (var i = (int)global::mhora.Body.Body.Name.Sun; i <= (int)global::mhora.Body.Body.Name.Rahu; i++)
+            for (var i = (int)global::Mhora.Body.Body.Name.Sun; i <= (int)global::Mhora.Body.Body.Name.Rahu; i++)
             {
                 var b          = (Body.Body.Name)i;
                 var dirForward = true;
@@ -1203,7 +1203,7 @@ namespace mhora.Components
                     }
                 }
 
-                var li  = new ListViewItem(global::mhora.Body.Body.toString(b));
+                var li  = new ListViewItem(global::Mhora.Body.Body.toString(b));
                 var fmt = string.Format("{0:00}-{1}", latta_aspects[i], l.value);
                 li.SubItems.Add(fmt);
                 li.SubItems.Add(nak_fmt);
@@ -1225,11 +1225,11 @@ namespace mhora.Components
             mList.Columns.Add("Distance (AU)", -1, HorizontalAlignment.Left);
             mList.Columns.Add("/ day", -1, HorizontalAlignment.Left);
 
-            for (var i = (int)global::mhora.Body.Body.Name.Sun; i <= (int)global::mhora.Body.Body.Name.Saturn; i++)
+            for (var i = (int)global::Mhora.Body.Body.Name.Sun; i <= (int)global::Mhora.Body.Body.Name.Saturn; i++)
             {
                 var b  = (Body.Body.Name)i;
                 var bp = h.getPosition(b);
-                var li = new ListViewItem(global::mhora.Body.Body.toString(b));
+                var li = new ListViewItem(global::Mhora.Body.Body.toString(b));
                 li.SubItems.Add(bp.longitude.value.ToString());
                 li.SubItems.Add(bp.speed_longitude.ToString());
                 li.SubItems.Add(bp.latitude.ToString());
@@ -1268,8 +1268,8 @@ namespace mhora.Components
             mList.Columns.Add("Tithi", -1, HorizontalAlignment.Left);
             mList.Columns.Add("% Left", -1, HorizontalAlignment.Left);
 
-            var spos      = h.getPosition(global::mhora.Body.Body.Name.Sun).longitude;
-            var mpos      = h.getPosition(global::mhora.Body.Body.Name.Moon).longitude;
+            var spos      = h.getPosition(global::Mhora.Body.Body.Name.Sun).longitude;
+            var mpos      = h.getPosition(global::Mhora.Body.Body.Name.Moon).longitude;
             var baseTithi = mpos.sub(spos).value;
             for (var i = 1; i <= 12; i++)
             {
@@ -1381,8 +1381,8 @@ namespace mhora.Components
             mList.Columns.Add("Cusp End", -1, HorizontalAlignment.Left);
             mList.Columns.Add("Rasi", -2, HorizontalAlignment.Left);
 
-            var lpos = h.getPosition(global::mhora.Body.Body.Name.Lagna).longitude.add(0);
-            var bp   = new Position(h, global::mhora.Body.Body.Name.Lagna, BodyType.Name.Lagna, lpos, 0, 0, 0, 0, 0);
+            var lpos = h.getPosition(global::Mhora.Body.Body.Name.Lagna).longitude.add(0);
+            var bp   = new Position(h, global::Mhora.Body.Body.Name.Lagna, BodyType.Name.Lagna, lpos, 0, 0, 0, 0, 0);
             for (var i = 0; i < 12; i++)
             {
                 var dp = bp.toDivisionPosition(options.DivisionType);
@@ -1438,8 +1438,8 @@ namespace mhora.Components
         {
             var dir = bp.speed_longitude >= 0.0 ? string.Empty : " (R)";
 
-            if (bp.name == global::mhora.Body.Body.Name.Other ||
-                bp.name == global::mhora.Body.Body.Name.MrityuPoint)
+            if (bp.name == global::Mhora.Body.Body.Name.Other ||
+                bp.name == global::Mhora.Body.Body.Name.MrityuPoint)
             {
                 return bp.otherString + dir;
             }
@@ -1452,14 +1452,14 @@ namespace mhora.Components
             switch (vt)
             {
                 case ViewType.ViewMrityuLongitudes:
-                    if (bp.name == global::mhora.Body.Body.Name.MrityuPoint)
+                    if (bp.name == global::Mhora.Body.Body.Name.MrityuPoint)
                     {
                         return true;
                     }
 
                     return false;
                 case ViewType.ViewOtherLongitudes:
-                    if (bp.name == global::mhora.Body.Body.Name.Other &&
+                    if (bp.name == global::Mhora.Body.Body.Name.Other &&
                         bp.type != BodyType.Name.Sahama)
                     {
                         return true;
@@ -1474,8 +1474,8 @@ namespace mhora.Components
 
                     return false;
                 case ViewType.ViewBasicGrahas:
-                    if (bp.name == global::mhora.Body.Body.Name.MrityuPoint ||
-                        bp.name == global::mhora.Body.Body.Name.Other)
+                    if (bp.name == global::Mhora.Body.Body.Name.MrityuPoint ||
+                        bp.name == global::Mhora.Body.Body.Name.Other)
                     {
                         return false;
                     }
@@ -1492,7 +1492,7 @@ namespace mhora.Components
             mList.Items.Clear();
 
             var al = new ArrayList();
-            for (var i = (int)global::mhora.Body.Body.Name.Sun; i <= (int)global::mhora.Body.Body.Name.Rahu; i++)
+            for (var i = (int)global::Mhora.Body.Body.Name.Sun; i <= (int)global::Mhora.Body.Body.Name.Rahu; i++)
             {
                 var b   = (Body.Body.Name)i;
                 var bp  = h.getPosition(b);
@@ -1531,7 +1531,7 @@ namespace mhora.Components
                 var li = new ListViewItem();
                 li.Text = GetBodyString(bp);
 
-                if ((int)bp.name >= (int)global::mhora.Body.Body.Name.Sun && (int)bp.name <= (int)global::mhora.Body.Body.Name.Rahu)
+                if ((int)bp.name >= (int)global::Mhora.Body.Body.Name.Sun && (int)bp.name <= (int)global::Mhora.Body.Body.Name.Rahu)
                 {
                     li.Text = string.Format("{0}   {1}",
                                             li.Text,

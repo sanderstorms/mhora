@@ -29,7 +29,7 @@ using System.IO;
 using System.Windows.Forms;
 using IWshRuntimeLibrary;
 
-namespace mhora.Util
+namespace Mhora.Util
 {
     /// <summary>
     ///     Summary description for Link.

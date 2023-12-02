@@ -21,13 +21,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using mhora.Calculation;
-using mhora.Hora;
-using mhora.Jhora;
-using mhora.Settings;
-using mhora.Varga;
+using Mhora.Calculation;
+using Mhora.Hora;
+using Mhora.Jhora;
+using Mhora.Settings;
+using Mhora.Varga;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     /// <summary>
     ///     Summary description for MhoraChild.
