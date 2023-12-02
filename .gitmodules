@@ -10,3 +10,6 @@
 [submodule "Lib/LoggingModule"]
 	path = Lib/LoggingModule
 	url = ../LoggingModule.git
+[submodule "Lib/CsharpSQLite"]
+	path = Lib/CsharpSQLite
+	url = ../CsharpSQLite
