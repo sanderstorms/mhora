@@ -205,6 +205,12 @@
     <Compile Include="Components\AboutSjc.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Components\BirthDetailsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\BirthDetailsDialog.Designer.cs">
+      <DependentUpon>BirthDetailsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database\CityDb.cs" />
     <Compile Include="Database\GeoNames.cs" />
     <Compile Include="Database\TimeZoneDb.cs" />
@@ -491,6 +497,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\AboutSjc.resx">
       <DependentUpon>AboutSjc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\BirthDetailsDialog.resx">
+      <DependentUpon>BirthDetailsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Varga\AshtakavargaControl.resx">
       <DependentUpon>AshtakavargaControl.cs</DependentUpon>
