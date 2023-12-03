@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using mhora.Components;
 using Mhora.Database;
 using SyslogLogging;
 
@@ -82,6 +83,11 @@ namespace Mhora
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            using (var birthDetails = new BirthDetailsDialog())
+            {
+                birthDetails.ShowDialog();
+            }
             Application.Run(new MhoraContainer());
             AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionEventRaised;
             Application.ThreadException -= ThreadExceptionRaised;

@@ -13,3 +13,7 @@
 [submodule "Lib/CsharpSQLite"]
 	path = Lib/CsharpSQLite
 	url = ../CsharpSQLite
+[submodule "Lib/TimePicker"]
+	path = Lib/TimePicker
+	url = ../TimePicker.git
+	branch = develop

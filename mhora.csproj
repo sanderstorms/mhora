@@ -651,6 +651,10 @@
       <Project>{c2965b29-71fd-4c7c-9cc8-09205dd3d6b1}</Project>
       <Name>SujaySarma.Data.Files.TokenLimitedFiles</Name>
     </ProjectReference>
+    <ProjectReference Include="Lib\TimePicker\TimePicker.csproj">
+      <Project>{dc913fb0-ed16-4b1b-bb35-73e99e3fd853}</Project>
+      <Name>TimePicker</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
