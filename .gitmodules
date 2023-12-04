@@ -1,9 +1,3 @@
-[submodule "Database/world_city_location_times"]
-	path = Database/world_city_location_times
-	url = ../world_city_location_times.git
-[submodule "Database/mysql-world-cities-db"]
-	path = Database/mysql-world-cities-db
-	url = ../mysql-world-cities-db.git
 [submodule "Lib/SujaySarma.Data.Files.TokenLimitedFiles"]
 	path = Lib/SujaySarma.Data.Files.TokenLimitedFiles
 	url = ../SujaySarma.Data.Files.TokenLimitedFiles
