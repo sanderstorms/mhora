@@ -3,8 +3,11 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using Mhora.Calculation;
+using Mhora.Util;
 using SujaySarma.Data.Files.TokenLimitedFiles;
 using SujaySarma.Data.Files.TokenLimitedFiles.Attributes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Mhora.Database
 {
@@ -75,9 +78,10 @@ namespace Mhora.Database
             {
                 var csvFile = Path.Combine(mhora.WorkingDir, "Database", CsvFile);
                 
-                if (File.Exists(CsvFile))
+                if (File.Exists(csvFile))
                 {
-                    _table ??= TokenLimitedFileReader.GetTable(CsvFile, ';');
+                    _table ??= TokenLimitedFileReader.GetTable(csvFile, ';');
+                    _table.TableName = "Geonames";
                 }
                 return (_table);
             }
