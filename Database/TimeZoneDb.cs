@@ -1,31 +1,64 @@
-﻿using SujaySarma.Data.Files.TokenLimitedFiles;
+﻿using System.Collections.Generic;
+using SujaySarma.Data.Files.TokenLimitedFiles;
 using SujaySarma.Data.Files.TokenLimitedFiles.Attributes;
-using System.Data;
 using System.IO;
+using System.Data;
+using mhora.Database;
+using SqlNado;
 
 namespace Mhora.Database
 {
     public class TimeZoneDb
     {
-        private static TimeZoneDb _instance;
-        private const string CsvFile = "timezones.csv";
+        public static TimeZoneDb _instance;
+        public const string CsvFile = "timezones.csv";
 
-        [FileField("Country code(s)")]
-        private string countryCode;
-        [FileField("TZ identifier")]
-        private string identifier;
-        [FileField("Country code(s)")]
-        private string indentifier;
-        [FileField("Embedded comments")]
-        private string comments;
-        [FileField("Type")]
-        private string type;
-        [FileField("UTC offset")]
-        private string utcOffset;
-        [FileField("Time zone")]
-        private string timeZone;
-        [FileField("Source")]
-        private string source;
+        [SQLiteTable(Name = "TimeZones")]
+        public class Timezone
+        {
+            [SQLiteColumn(IsPrimaryKey = true)]
+            [FileField("Country code(s)")]
+            public string CountryCode
+            {
+                get;
+                set;
+            }
+
+            [FileField("TZ identifier")]
+             public string Identifier
+             {
+                 get;
+                 set;
+             }
+
+             [FileField("Embedded comments")]
+             public string Comments
+             {
+                 get;
+                 set;
+             }
+
+             [FileField("UTC offset")]
+             public string UtcOffset
+             {
+                 get;
+                 set;
+             }
+
+             [FileField("Dst")]
+             public string Dst
+             {
+                 get;
+                 set;
+             }
+
+             [FileField("Time zone")]
+             public string TimeZone
+             {
+                 get;
+                 set;
+             }
+         }
 
         protected TimeZoneDb()
         {
@@ -40,7 +73,6 @@ namespace Mhora.Database
             }
         }
 
-
         DataTable _table;
         public DataTable Table
         {
@@ -52,6 +84,50 @@ namespace Mhora.Database
                     _table ??= TokenLimitedFileReader.GetTable(csvFile, ';');
                 }
                 return (_table);
+            }
+        }
+
+        public Timezone this[int index]
+        {
+            get
+            {
+                var entry = new TimeZoneDb.Timezone();
+                var timeZone = Table.Rows[index];
+                for (int col = 0; col < Table.Columns.Count; col++)
+                {
+                    var name = Table.Columns[col].ColumnName;
+                    var value = timeZone[col].ToString();
+                    entry.SetValue(name, value);
+                }
+
+                return (entry);
+            }
+        }
+
+        public List<Timezone> _timeZones;
+
+        public List<Timezone> TimeZones
+        {
+            get
+            {
+                if (_timeZones == null)
+                {
+                    _timeZones = new List<Timezone>();
+                    foreach (DataRow timeZone in Table.Rows)
+                    {
+                        var entry = new TimeZoneDb.Timezone();
+
+                        for (int col = 0; col < Table.Columns.Count; col++)
+                        {
+                            var name = Table.Columns[col].ColumnName;
+                            var value = timeZone[col].ToString();
+                            entry.SetValue(name, value);
+                        }
+                        _timeZones.Add(entry);
+                    }
+                }
+
+                return (_timeZones);
             }
         }
     }

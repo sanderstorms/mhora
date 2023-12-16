@@ -4,10 +4,10 @@
 [submodule "Lib/LoggingModule"]
 	path = Lib/LoggingModule
 	url = ../LoggingModule.git
-[submodule "Lib/CsharpSQLite"]
-	path = Lib/CsharpSQLite
-	url = ../CsharpSQLite
 [submodule "Lib/TimePicker"]
 	path = Lib/TimePicker
 	url = ../TimePicker.git
 	branch = develop
+[submodule "Lib/SQLNado"]
+	path = Lib/SQLNado
+	url = ../SQLNado.git

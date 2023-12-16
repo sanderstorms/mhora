@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using mhora.Components;
 using Mhora.Database;
+using SqlNado;
 using SyslogLogging;
 
 namespace Mhora
@@ -57,12 +60,24 @@ namespace Mhora
             }
         }
 
+        private static DataTable _geoNames;
+        private static List<TimeZoneDb.Timezone> _timeZones;
         private static void InitDb()
         {
-            var cityDb = CityDb.Instance;
-            var geoNames = GeoNames.Instance;
-            var timeZones = TimeZoneDb.Instance;
+            _geoNames = GeoNamesDb.Instance.Table;
+            _timeZones = TimeZoneDb.Instance.TimeZones;
 
+            if (File.Exists("Countries.db") == false)
+            {
+                using (var db = new SQLiteDatabase("Countries.db"))
+                {
+                    db.SynchronizeSchema<TimeZoneDb.Timezone>();
+                    foreach (var timeZone in _timeZones)
+                    {
+                        db.Save(timeZone);
+                    }
+                }
+            }
         }
 
         /// <summary>
