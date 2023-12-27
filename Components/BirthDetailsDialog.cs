@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace mhora.Components
+namespace Mhora.Components
 {
     public partial class BirthDetailsDialog : Form
     {

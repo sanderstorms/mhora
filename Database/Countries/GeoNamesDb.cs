@@ -5,7 +5,7 @@ using SqlNado;
 using SujaySarma.Data.Files.TokenLimitedFiles;
 using SujaySarma.Data.Files.TokenLimitedFiles.Attributes;
 
-namespace mhora.Database.Countries
+namespace Mhora.Database.Countries
 {
     public class GeoNamesDb
     {

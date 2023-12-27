@@ -26,7 +26,6 @@ using System.Windows.Forms;
 using Genghis.Windows.Forms;
 using IWshRuntimeLibrary;
 using Mhora.Calculation;
-using mhora.Components;
 using Mhora.Components;
 using Mhora.Components.SplashScreen;
 using Mhora.Hora;

@@ -7,15 +7,15 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using mhora.Controls;
-using mhora.Database;
-using mhora.Database.Countries;
-using mhora.Database.World;
+using Mhora.Controls;
+using Mhora.Database;
+using Mhora.Database.Countries;
+using Mhora.Database.World;
 using Newtonsoft.Json;
 using SqlNado;
 using SqlNado.Query;
 using SyslogLogging;
-using TimeZone = mhora.Database.TimeZone;
+using TimeZone = Mhora.Database.TimeZone;
 
 namespace Mhora
 {

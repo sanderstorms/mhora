@@ -1,4 +1,4 @@
-﻿namespace mhora.Controls
+﻿namespace Mhora.Controls
 {
     partial class ProgressFm
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ProgressBar = new mhora.Controls.ProgressBar();
+            this.ProgressBar = new ProgressBar();
             this.SuspendLayout();
             // 
             // ProgressBar

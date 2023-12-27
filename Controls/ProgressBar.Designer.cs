@@ -1,4 +1,4 @@
-﻿namespace mhora.Controls
+﻿namespace Mhora.Controls
 {
     partial class ProgressBar
     {

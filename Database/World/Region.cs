@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using SqlNado;
 
-namespace mhora.Database.World
+namespace Mhora.Database.World
 {
     [SQLiteTable(Name = "regions")]
     public class Region

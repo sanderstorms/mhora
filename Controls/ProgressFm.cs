@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace mhora.Controls
+namespace Mhora.Controls
 {
     public partial class ProgressFm : Form
     {

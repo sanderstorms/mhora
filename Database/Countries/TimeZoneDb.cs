@@ -5,7 +5,7 @@ using System.IO;
 using System.Data;
 using SqlNado;
 
-namespace mhora.Database.Countries
+namespace Mhora.Database.Countries
 {
     public class TimeZoneDb
     {

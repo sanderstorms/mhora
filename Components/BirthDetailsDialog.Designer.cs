@@ -1,4 +1,4 @@
-﻿namespace mhora.Components
+﻿namespace Mhora.Components
 {
     partial class BirthDetailsDialog
     {

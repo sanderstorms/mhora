@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace mhora.Util
+namespace Mhora.Util
 {
     public static class SevenZip
     {

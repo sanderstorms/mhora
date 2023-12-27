@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace mhora.Util
+namespace Mhora.Util
 {
     public static class StringExtension
     {

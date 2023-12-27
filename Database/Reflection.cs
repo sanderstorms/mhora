@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using SujaySarma.Data.Files.TokenLimitedFiles.Attributes;
 
-namespace mhora.Database
+namespace Mhora.Database
 {
     public static class Reflection
     {

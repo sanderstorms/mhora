@@ -4,7 +4,7 @@ using SqlNado;
 using SujaySarma.Data.Files.TokenLimitedFiles;
 using SujaySarma.Data.Files.TokenLimitedFiles.Attributes;
 
-namespace mhora.Database
+namespace Mhora.Database
 {
     public class CountryCode
     {

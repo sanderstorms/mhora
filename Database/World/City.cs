@@ -4,7 +4,7 @@ using SqlNado;
 using SqlNado.Query;
 using SqlNado.Utilities;
 
-namespace mhora.Database.World
+namespace Mhora.Database.World
 {
     [SQLiteTable(Name = "cities")]
     public class City : SQLiteBaseObject

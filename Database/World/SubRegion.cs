@@ -6,7 +6,7 @@ using SqlNado;
 using SqlNado.Query;
 using SqlNado.Utilities;
 
-namespace mhora.Database.World
+namespace Mhora.Database.World
 {
     [SQLiteTable(Name = "subregions")]
     public class SubRegion : SQLiteBaseObject

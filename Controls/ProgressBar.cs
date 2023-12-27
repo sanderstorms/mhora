@@ -5,7 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Windows.Forms;
 
-namespace mhora.Controls
+namespace Mhora.Controls
 {
     public partial class ProgressBar : UserControl
     {
