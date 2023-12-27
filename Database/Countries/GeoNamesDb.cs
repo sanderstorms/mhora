@@ -1,65 +1,87 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Drawing;
 using System.IO;
-using mhora.Database;
 using SqlNado;
 using SujaySarma.Data.Files.TokenLimitedFiles;
 using SujaySarma.Data.Files.TokenLimitedFiles.Attributes;
-using static Mhora.Database.TimeZoneDb;
 
-namespace Mhora.Database
+namespace mhora.Database.Countries
 {
     public class GeoNamesDb
     {
         private static GeoNamesDb _instance;
-        private const  string   CsvFile = "geonames-all-cities-with-a-population-1000.csv";
+        public const  string   CsvFile = "geonames-all-cities-with-a-population-1000.csv";
 
         [SQLiteTable(Name = "Places")]
         public class GeoName
         {
+            [SQLiteColumn(IsPrimaryKey = true)]
             [FileField("Geoname ID")]
-            private int id;
+            public int Id
+            {
+                get;
+                set;
+            }
             [FileField("Name")]
-            private string name;
+            public string Name
+            {
+                get;
+                set;
+            }
             [FileField("ASCII Name")]
-            private string asciiName;
+            public string AsciiName
+            {
+                get;
+                set;
+            }
             [FileField("Alternate Names")]
-            private string alternateName;
-            [FileField("Feature Class")]
-            private string featureClass;
-            [FileField("Feature Code")]
-            private string featureCode;
+            public string AlternateName
+            {
+                get;
+                set;
+            }
             [FileField("Country Code")]
-            private string countryCode;
+            public string CountryCode
+            {
+                get;
+                set;
+            }
             [FileField("Country name EN")]
-            private string countryNameEN;
+            public string CountryNameEn
+            {
+                get;
+                set;
+            }
             [FileField("Country Code 2")]
-            private string countryCode2;
-            [FileField("Admin1 Code")]
-            private string admin1Code;
-            [FileField("Admin2 Code")]
-            private string admin2Code;
-            [FileField("Admin3 Code")]
-            private string admin3Code;
-            [FileField("Admin4 Code")]
-            private string admin4Code;
-            [FileField("Population")]
-            private int population;
+            public string CountryCode2
+            {
+                get;
+                set;
+            }
             [FileField("Elevation")]
-            private int elevation;
-            [FileField("DIgital Elevation Model")]
-            private int digitalElevationModel;
+            public int Elevation
+            {
+                get;
+                set;
+            }
             [FileField("Timezone")]
-            private string timeZone;
-            [FileField("Modification date")]
-            private DateTime modificationDate;
-            [FileField("LABEL EN")]
-            private string LabelEN;
+            public string TimeZone
+            {
+                get;
+                set;
+            }
+           [FileField("LABEL EN")]
+            public string LabelEn
+            {
+                get;
+                set;
+            }
             [FileField("Coordinates")]
-            private PointF coordinates;
+            public PointF Coordinates
+            {
+                get;
+                set;
+            }
         }
         protected GeoNamesDb ()
         {
@@ -79,7 +101,7 @@ namespace Mhora.Database
         {
             get
             {
-                var csvFile = Path.Combine(mhora.WorkingDir, "Database", CsvFile);
+                var csvFile = Path.Combine(Mhora.mhora.WorkingDir, "Database", CsvFile);
                 if (File.Exists(csvFile))
                 {
                     _table ??= TokenLimitedFileReader.GetTable(csvFile, ';');

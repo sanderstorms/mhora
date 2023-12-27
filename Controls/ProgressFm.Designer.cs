@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ProgressBar = new ProgressBar();
+            this.ProgressBar = new mhora.Controls.ProgressBar();
             this.SuspendLayout();
             // 
             // ProgressBar
@@ -36,8 +36,8 @@
             this.ProgressBar.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ProgressBar.Location = new System.Drawing.Point(10, 10);
             this.ProgressBar.Name = "ProgressBar";
-            this.ProgressBar.ProgressBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.ProgressBar.ProgressBarColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ProgressBar.ProgressBackColor = System.Drawing.SystemColors.ControlDark;
+            this.ProgressBar.ProgressBarColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.ProgressBar.ProgressFont = new System.Drawing.Font("Microsoft Sans Serif", 62F, System.Drawing.FontStyle.Bold);
             this.ProgressBar.ProgressFontColor = System.Drawing.Color.Black;
             this.ProgressBar.Size = new System.Drawing.Size(428, 53);
@@ -52,9 +52,10 @@
             this.ClientSize = new System.Drawing.Size(450, 74);
             this.ControlBox = false;
             this.Controls.Add(this.ProgressBar);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ProgressFm";
             this.TopMost = true;
+            this.TransparencyKey = System.Drawing.SystemColors.Control;
             this.ResumeLayout(false);
 
         }

@@ -21,10 +21,12 @@ using System.Collections;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Genghis.Windows.Forms;
 using IWshRuntimeLibrary;
 using Mhora.Calculation;
+using mhora.Components;
 using Mhora.Components;
 using Mhora.Components.SplashScreen;
 using Mhora.Hora;
@@ -41,6 +43,7 @@ namespace Mhora
     /// </summary>
     public class MhoraContainer : Form
     {
+        private bool               _showForm;
         private int                childCount;
         private IContainer         components;
         public  MhoraGlobalOptions gOpts;
@@ -94,6 +97,22 @@ namespace Mhora
             // TODO: Add any constructor code after InitializeComponent call
             //
             childCount = 0;
+
+            CreateHandle();
+            Task.Run(() =>
+            {
+                Invoke(async () =>
+                {
+                    await mhora.InitDb();
+                    _showForm = true;
+                    Visible = true;
+                });
+            });
+        }
+
+        protected sealed override void CreateHandle()
+        {
+            base.CreateHandle();
         }
 
         /// <summary>
@@ -473,15 +492,38 @@ namespace Mhora
             this.Text           =  "Mudgala Hora 0.1";
             this.WindowState    =  System.Windows.Forms.FormWindowState.Maximized;
             this.Closing        += new System.ComponentModel.CancelEventHandler(this.MhoraContainer_Closing);
-            this.Load           += new System.EventHandler(this.MhoraContainer_Load);
             this.ResumeLayout(false);
         }
 
-#endregion
+        #endregion
 
+        /// <inheritdoc />
+        /// <summary>
+        /// Make controls visible or not
+        /// </summary>
+        /// <param name="showControl">visible ?</param>
 
-        private void MhoraContainer_Load(object sender, EventArgs e)
+        protected override void SetVisibleCore(bool showControl)
         {
+            if (mhora.Running)
+            {
+                var visible = (showControl & _showForm);
+                base.SetVisibleCore(visible);
+                if (visible)
+                {
+                    BringToFront();
+                }
+            }
+            else
+            {
+                base.SetVisibleCore(showControl);
+            }
+        }
+
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
             gOpts                          = MhoraGlobalOptions.ReadFromFile();
             MhoraGlobalOptions.mainControl = this;
             if (MhoraGlobalOptions.Instance.ShowSplashScreen)
@@ -492,6 +534,11 @@ namespace Mhora
             }
 
             openNewJhdFile();
+
+            using (var birthDetails = new BirthDetailsDialog())
+            {
+                birthDetails.ShowDialog();
+            }
         }
 
         private void menuItemNewView_Click(object sender, EventArgs e)

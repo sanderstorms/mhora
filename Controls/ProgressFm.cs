@@ -14,6 +14,15 @@ namespace mhora.Controls
             {
                 return (ProgressBar.Value);
             }
+            set
+            {
+                ProgressBar.Value = value;
+            }
+        }
+
+        public void Step()
+        {
+            ProgressBar.Step();
         }
     }
 }

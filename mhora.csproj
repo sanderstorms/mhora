@@ -103,7 +103,7 @@
     <BaseAddress>285212672</BaseAddress>
     <FileAlignment>4096</FileAlignment>
     <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
@@ -151,6 +151,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
@@ -224,15 +225,21 @@
     <Compile Include="Controls\ProgressFm.Designer.cs">
       <DependentUpon>ProgressFm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\CountryDb.cs" />
-    <Compile Include="Database\CustomerDb.cs" />
-    <Compile Include="Database\GeoNamesDb.cs" />
+    <Compile Include="Database\CountryCode.cs" />
+    <Compile Include="Database\Countries\GeoNamesDb.cs" />
     <Compile Include="Database\Reflection.cs" />
-    <Compile Include="Database\TimeZoneDb.cs" />
+    <Compile Include="Database\TimeZone.cs" />
+    <Compile Include="Database\Countries\TimeZoneDb.cs" />
+    <Compile Include="Database\World\City.cs" />
+    <Compile Include="Database\World\Country.cs" />
+    <Compile Include="Database\World\Region.cs" />
+    <Compile Include="Database\World\State.cs" />
+    <Compile Include="Database\World\SubRegion.cs" />
     <Compile Include="mhora.cs" />
     <Compile Include="Settings\ApplyOptions.cs" />
     <Compile Include="Settings\MhoraGlobalOptions.cs" />
     <Compile Include="Util\Dll.cs" />
+    <Compile Include="Util\SevenZip.cs" />
     <Compile Include="Util\StringExtension.cs" />
     <Compile Include="Varga\Ashtakavarga.cs">
       <SubType>Code</SubType>
@@ -642,10 +649,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Database\geonames-all-cities-with-a-population-1000.csv">
+    <None Include="Database\Country Codes.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Database\timezones.csv">
+    <None Include="Database\Countries\geonames-all-cities-with-a-population-1000.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Database\Countries\timezones.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Database\TimeZones.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -658,6 +671,10 @@
     <ProjectReference Include="Lib\LoggingModule\src\LoggingModule\LoggingModule.csproj">
       <Project>{981bcd48-5ebf-42e8-93e9-7601f71282e1}</Project>
       <Name>LoggingModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="Lib\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{2915f8fb-b739-4b02-a7c9-a86b48b0a96f}</Project>
+      <Name>Newtonsoft.Json</Name>
     </ProjectReference>
     <ProjectReference Include="Lib\SQLNado\SqlNado\SqlNado.csproj">
       <Project>{646b3044-b868-4612-9832-57f292873ce9}</Project>

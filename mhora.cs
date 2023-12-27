@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using mhora.Components;
-using Mhora.Database;
+using mhora.Controls;
+using mhora.Database;
+using mhora.Database.Countries;
+using mhora.Database.World;
+using Newtonsoft.Json;
 using SqlNado;
+using SqlNado.Query;
 using SyslogLogging;
+using TimeZone = mhora.Database.TimeZone;
 
 namespace Mhora
 {
@@ -60,22 +67,46 @@ namespace Mhora
             }
         }
 
-        private static DataTable _geoNames;
-        private static List<TimeZoneDb.Timezone> _timeZones;
-        private static void InitDb()
+        private static DataTable _countryCodes;
+        private static TimeZones _timeZones;
+        public static async Task InitDb()
         {
-            _geoNames = GeoNamesDb.Instance.Table;
-            _timeZones = TimeZoneDb.Instance.TimeZones;
+            _countryCodes = CountryCode.Instance.Table;
+            var jsonPath = Path.Combine(WorkingDir, "DataBase", "TimeZones.json");
 
-            if (File.Exists("Countries.db") == false)
+            // deserialize JSON directly from a file
+            using (StreamReader file = File.OpenText(jsonPath))
             {
-                using (var db = new SQLiteDatabase("Countries.db"))
+                JsonSerializer serializer = new JsonSerializer();
+                try
                 {
-                    db.SynchronizeSchema<TimeZoneDb.Timezone>();
-                    foreach (var timeZone in _timeZones)
+                    _timeZones = (TimeZones)serializer.Deserialize(file, typeof(TimeZones));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+            if (File.Exists("world.db"))
+            {
+                try
+                {
+                    using var db = new SQLiteDatabase("world.db");
+                    var query = Query.From<City>().Where(city => city.Name == "Amsterdam").SelectAll();
+                    var cities = db.Load<City>(query.ToString()).ToArray();
+                    if (cities.Length > 0)
                     {
-                        db.Save(timeZone);
+                        foreach (var city in cities)
+                        {
+                            var country = city.Country;
+                            var timeZone = _timeZones.FindId(country.Timezones[0].zoneName);
+                            var translations = country.Translations;
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
                 }
             }
         }
@@ -90,19 +121,12 @@ namespace Mhora
             AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionEventRaised;
             Application.ThreadException += ThreadExceptionRaised;
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
             Log.Settings.LogFilename = Path.Combine(WorkingDir, "debug.txt");
             Log.Settings.FileLogging = FileLoggingMode.SingleLogFile;
 
-            InitDb();
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            using (var birthDetails = new BirthDetailsDialog())
-            {
-                birthDetails.ShowDialog();
-            }
             Application.Run(new MhoraContainer());
             AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionEventRaised;
             Application.ThreadException -= ThreadExceptionRaised;

@@ -3,14 +3,13 @@ using SujaySarma.Data.Files.TokenLimitedFiles;
 using SujaySarma.Data.Files.TokenLimitedFiles.Attributes;
 using System.IO;
 using System.Data;
-using mhora.Database;
 using SqlNado;
 
-namespace Mhora.Database
+namespace mhora.Database.Countries
 {
     public class TimeZoneDb
     {
-        public static TimeZoneDb _instance;
+        private static TimeZoneDb _instance;
         public const string CsvFile = "timezones.csv";
 
         [SQLiteTable(Name = "TimeZones")]
@@ -78,7 +77,7 @@ namespace Mhora.Database
         {
             get
             {
-                var csvFile = Path.Combine(mhora.WorkingDir, "Database", CsvFile);
+                var csvFile = Path.Combine(Mhora.mhora.WorkingDir, "Database", CsvFile);
                 if (File.Exists(csvFile))
                 {
                     _table ??= TokenLimitedFileReader.GetTable(csvFile, ';');
@@ -91,7 +90,7 @@ namespace Mhora.Database
         {
             get
             {
-                var entry = new TimeZoneDb.Timezone();
+                var entry = new Timezone();
                 var timeZone = Table.Rows[index];
                 for (int col = 0; col < Table.Columns.Count; col++)
                 {
@@ -115,7 +114,7 @@ namespace Mhora.Database
                     _timeZones = new List<Timezone>();
                     foreach (DataRow timeZone in Table.Rows)
                     {
-                        var entry = new TimeZoneDb.Timezone();
+                        var entry = new Timezone();
 
                         for (int col = 0; col < Table.Columns.Count; col++)
                         {

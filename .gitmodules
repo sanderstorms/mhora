@@ -11,3 +11,6 @@
 [submodule "Lib/SQLNado"]
 	path = Lib/SQLNado
 	url = ../SQLNado.git
+[submodule "Lib/Newtonsoft.Json"]
+	path = Lib/Newtonsoft.Json
+	url = ../../JamesNK/Newtonsoft.Json.git
