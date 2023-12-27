@@ -69,7 +69,7 @@ namespace Mhora.Components
         private void OnCountrySelected(object sender, EventArgs e)
         {
             _country = (Country)comboBoxCountry.SelectedItem;
-            var states = Query.From<State>().Where(state => state.CountryId == Country.Id).SelectAll().ToString();
+            var states = Query.From<State>().Where(state => state.CountryId == _country.Id).SelectAll().ToString();
 
             _states = _db.Load<State>(states).ToList();
 
@@ -81,7 +81,7 @@ namespace Mhora.Components
         private void OnStateSelected(object sender, EventArgs e)
         {
             _state = (State)comboBoxState.SelectedItem;
-            var cities = Query.From<City>().Where(city => city.StateId == State.Id).SelectAll().ToString();
+            var cities = Query.From<City>().Where(city => city.StateId == _state.Id).SelectAll().ToString();
 
             _cities = _db.Load<City>(cities).ToList();
             _timeZone = mhora.TimeZones.FindId(_country.Timezones[0].zoneName);
