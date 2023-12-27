@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 
-namespace mhora.Database
+namespace Mhora.Database
 {
     public class TimeZone
     {
         public string id { get; set; }
         public List<string> aliases { get; set; }
         public Dictionary<string, string> location { get; set; }
-        public List<string> offset { get; set; }
-        public string currentOfset { get; set; }
+        public List<string> offsets { get; set; }
     }
 
     public class TimeZones 
