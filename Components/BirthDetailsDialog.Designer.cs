@@ -7,19 +7,6 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -30,6 +17,10 @@
         {
             this.tabControlBirthDetails = new System.Windows.Forms.TabControl();
             this.tabBirthData = new System.Windows.Forms.TabPage();
+            this.comboBoxCity = new System.Windows.Forms.ComboBox();
+            this.comboBoxState = new System.Windows.Forms.ComboBox();
+            this.comboBoxCountry = new System.Windows.Forms.ComboBox();
+            this.timePicker1 = new TimePicker.Opulos.Core.UI.TimePicker();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.groupBoxGender = new System.Windows.Forms.GroupBox();
             this.rbFemale = new System.Windows.Forms.RadioButton();
@@ -49,7 +40,10 @@
             this.tabEvents = new System.Windows.Forms.TabPage();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.timePicker1 = new TimePicker.Opulos.Core.UI.TimePicker();
+            this.txtLongitude = new System.Windows.Forms.TextBox();
+            this.txtLatitude = new System.Windows.Forms.TextBox();
+            this.txtTimezone = new System.Windows.Forms.TextBox();
+            this.txtDst = new System.Windows.Forms.TextBox();
             this.tabControlBirthDetails.SuspendLayout();
             this.tabBirthData.SuspendLayout();
             this.groupBoxGender.SuspendLayout();
@@ -68,6 +62,13 @@
             // 
             // tabBirthData
             // 
+            this.tabBirthData.Controls.Add(this.txtDst);
+            this.tabBirthData.Controls.Add(this.txtTimezone);
+            this.tabBirthData.Controls.Add(this.txtLatitude);
+            this.tabBirthData.Controls.Add(this.txtLongitude);
+            this.tabBirthData.Controls.Add(this.comboBoxCity);
+            this.tabBirthData.Controls.Add(this.comboBoxState);
+            this.tabBirthData.Controls.Add(this.comboBoxCountry);
             this.tabBirthData.Controls.Add(this.timePicker1);
             this.tabBirthData.Controls.Add(this.dateTimePicker);
             this.tabBirthData.Controls.Add(this.groupBoxGender);
@@ -90,6 +91,65 @@
             this.tabBirthData.TabIndex = 0;
             this.tabBirthData.Text = "Birth data";
             this.tabBirthData.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxCity
+            // 
+            this.comboBoxCity.FormattingEnabled = true;
+            this.comboBoxCity.Location = new System.Drawing.Point(153, 253);
+            this.comboBoxCity.Name = "comboBoxCity";
+            this.comboBoxCity.Size = new System.Drawing.Size(376, 28);
+            this.comboBoxCity.TabIndex = 19;
+            this.comboBoxCity.SelectedIndexChanged += new System.EventHandler(this.OnCitySelected);
+            // 
+            // comboBoxState
+            // 
+            this.comboBoxState.FormattingEnabled = true;
+            this.comboBoxState.Location = new System.Drawing.Point(153, 214);
+            this.comboBoxState.Name = "comboBoxState";
+            this.comboBoxState.Size = new System.Drawing.Size(376, 28);
+            this.comboBoxState.TabIndex = 18;
+            this.comboBoxState.SelectedIndexChanged += new System.EventHandler(this.OnStateSelected);
+            // 
+            // comboBoxCountry
+            // 
+            this.comboBoxCountry.FormattingEnabled = true;
+            this.comboBoxCountry.Location = new System.Drawing.Point(153, 175);
+            this.comboBoxCountry.Name = "comboBoxCountry";
+            this.comboBoxCountry.Size = new System.Drawing.Size(376, 28);
+            this.comboBoxCountry.TabIndex = 17;
+            this.comboBoxCountry.SelectedIndexChanged += new System.EventHandler(this.OnCountrySelected);
+            // 
+            // timePicker1
+            // 
+            this.timePicker1.AutoCloseMenuFocusLost = true;
+            this.timePicker1.AutoCloseMenuWindowChanged = true;
+            this.timePicker1.ByDigit = false;
+            this.timePicker1.CaretVisible = false;
+            this.timePicker1.CaretWrapsAround = true;
+            this.timePicker1.ChopRunningText = true;
+            this.timePicker1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.timePicker1.CutCopyMaskFormat = System.Windows.Forms.MaskFormat.IncludePromptAndLiterals;
+            this.timePicker1.DateTimeFormat = "HH:mm:ss.fff";
+            this.timePicker1.DeleteKeyShiftsTextLeft = true;
+            this.timePicker1.EscapeKeyRevertsValue = false;
+            this.timePicker1.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
+            this.timePicker1.KeepSelectedIncludesWhitespace = false;
+            this.timePicker1.KeepTokenSelected = true;
+            this.timePicker1.Location = new System.Drawing.Point(153, 139);
+            this.timePicker1.Mask = "99:99:99.999";
+            this.timePicker1.Name = "timePicker1";
+            this.timePicker1.PromptChar = '0';
+            this.timePicker1.Size = new System.Drawing.Size(126, 27);
+            this.timePicker1.SplitChars = null;
+            this.timePicker1.TabIndex = 14;
+            this.timePicker1.TextMaskFormat = System.Windows.Forms.MaskFormat.IncludePromptAndLiterals;
+            this.timePicker1.UseMaxValueIfTooLarge = false;
+            this.timePicker1.Value = new System.DateTime(((long)(0)));
+            this.timePicker1.ValuesCarryOver = false;
+            this.timePicker1.ValuesWrapAround = true;
+            this.timePicker1.ValuesWrapIfNoCarryRoom = true;
+            this.timePicker1.ValueTooLargeFixMode = TimePicker.Opulos.Core.UI.ValueFixMode.KeepExistingValue;
+            this.timePicker1.ValueTooSmallFixMode = TimePicker.Opulos.Core.UI.ValueFixMode.KeepExistingValue;
             // 
             // dateTimePicker
             // 
@@ -141,7 +201,7 @@
             // labDST
             // 
             this.labDST.AutoSize = true;
-            this.labDST.Location = new System.Drawing.Point(16, 384);
+            this.labDST.Location = new System.Drawing.Point(16, 410);
             this.labDST.Name = "labDST";
             this.labDST.Size = new System.Drawing.Size(43, 20);
             this.labDST.TabIndex = 10;
@@ -150,7 +210,7 @@
             // labTimezone
             // 
             this.labTimezone.AutoSize = true;
-            this.labTimezone.Location = new System.Drawing.Point(16, 349);
+            this.labTimezone.Location = new System.Drawing.Point(16, 375);
             this.labTimezone.Name = "labTimezone";
             this.labTimezone.Size = new System.Drawing.Size(82, 20);
             this.labTimezone.TabIndex = 9;
@@ -159,7 +219,7 @@
             // labLatitude
             // 
             this.labLatitude.AutoSize = true;
-            this.labLatitude.Location = new System.Drawing.Point(16, 314);
+            this.labLatitude.Location = new System.Drawing.Point(16, 340);
             this.labLatitude.Name = "labLatitude";
             this.labLatitude.Size = new System.Drawing.Size(69, 20);
             this.labLatitude.TabIndex = 8;
@@ -168,7 +228,7 @@
             // labLongitude
             // 
             this.labLongitude.AutoSize = true;
-            this.labLongitude.Location = new System.Drawing.Point(16, 279);
+            this.labLongitude.Location = new System.Drawing.Point(16, 305);
             this.labLongitude.Name = "labLongitude";
             this.labLongitude.Size = new System.Drawing.Size(82, 20);
             this.labLongitude.TabIndex = 7;
@@ -177,7 +237,7 @@
             // labCity
             // 
             this.labCity.AutoSize = true;
-            this.labCity.Location = new System.Drawing.Point(16, 244);
+            this.labCity.Location = new System.Drawing.Point(16, 256);
             this.labCity.Name = "labCity";
             this.labCity.Size = new System.Drawing.Size(38, 20);
             this.labCity.TabIndex = 6;
@@ -186,7 +246,7 @@
             // labState
             // 
             this.labState.AutoSize = true;
-            this.labState.Location = new System.Drawing.Point(16, 209);
+            this.labState.Location = new System.Drawing.Point(16, 217);
             this.labState.Name = "labState";
             this.labState.Size = new System.Drawing.Size(48, 20);
             this.labState.TabIndex = 5;
@@ -195,7 +255,7 @@
             // labCountry
             // 
             this.labCountry.AutoSize = true;
-            this.labCountry.Location = new System.Drawing.Point(16, 174);
+            this.labCountry.Location = new System.Drawing.Point(16, 178);
             this.labCountry.Name = "labCountry";
             this.labCountry.Size = new System.Drawing.Size(67, 20);
             this.labCountry.TabIndex = 4;
@@ -268,37 +328,33 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // timePicker1
+            // txtLongitude
             // 
-            this.timePicker1.AutoCloseMenuFocusLost = true;
-            this.timePicker1.AutoCloseMenuWindowChanged = true;
-            this.timePicker1.ByDigit = false;
-            this.timePicker1.CaretVisible = false;
-            this.timePicker1.CaretWrapsAround = true;
-            this.timePicker1.ChopRunningText = true;
-            this.timePicker1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.timePicker1.CutCopyMaskFormat = System.Windows.Forms.MaskFormat.IncludePromptAndLiterals;
-            this.timePicker1.DateTimeFormat = "HH:mm:ss.fff";
-            this.timePicker1.DeleteKeyShiftsTextLeft = true;
-            this.timePicker1.EscapeKeyRevertsValue = false;
-            this.timePicker1.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
-            this.timePicker1.KeepSelectedIncludesWhitespace = false;
-            this.timePicker1.KeepTokenSelected = true;
-            this.timePicker1.Location = new System.Drawing.Point(153, 139);
-            this.timePicker1.Mask = "99:99:99.999";
-            this.timePicker1.Name = "timePicker1";
-            this.timePicker1.PromptChar = '0';
-            this.timePicker1.Size = new System.Drawing.Size(157, 27);
-            this.timePicker1.SplitChars = null;
-            this.timePicker1.TabIndex = 14;
-            this.timePicker1.TextMaskFormat = System.Windows.Forms.MaskFormat.IncludePromptAndLiterals;
-            this.timePicker1.UseMaxValueIfTooLarge = false;
-            this.timePicker1.Value = new System.DateTime(((long)(0)));
-            this.timePicker1.ValuesCarryOver = false;
-            this.timePicker1.ValuesWrapAround = true;
-            this.timePicker1.ValuesWrapIfNoCarryRoom = true;
-            this.timePicker1.ValueTooLargeFixMode = TimePicker.Opulos.Core.UI.ValueFixMode.KeepExistingValue;
-            this.timePicker1.ValueTooSmallFixMode = TimePicker.Opulos.Core.UI.ValueFixMode.KeepExistingValue;
+            this.txtLongitude.Location = new System.Drawing.Point(152, 298);
+            this.txtLongitude.Name = "txtLongitude";
+            this.txtLongitude.Size = new System.Drawing.Size(377, 27);
+            this.txtLongitude.TabIndex = 20;
+            // 
+            // txtLatitude
+            // 
+            this.txtLatitude.Location = new System.Drawing.Point(152, 337);
+            this.txtLatitude.Name = "txtLatitude";
+            this.txtLatitude.Size = new System.Drawing.Size(377, 27);
+            this.txtLatitude.TabIndex = 21;
+            // 
+            // txtTimezone
+            // 
+            this.txtTimezone.Location = new System.Drawing.Point(152, 375);
+            this.txtTimezone.Name = "txtTimezone";
+            this.txtTimezone.Size = new System.Drawing.Size(377, 27);
+            this.txtTimezone.TabIndex = 22;
+            // 
+            // txtDst
+            // 
+            this.txtDst.Location = new System.Drawing.Point(152, 410);
+            this.txtDst.Name = "txtDst";
+            this.txtDst.Size = new System.Drawing.Size(377, 27);
+            this.txtDst.TabIndex = 23;
             // 
             // BirthDetailsDialog
             // 
@@ -342,5 +398,12 @@
         private System.Windows.Forms.RadioButton rbMale;
         private System.Windows.Forms.TextBox textBox1;
         private TimePicker.Opulos.Core.UI.TimePicker timePicker1;
+        private System.Windows.Forms.ComboBox comboBoxState;
+        private System.Windows.Forms.ComboBox comboBoxCountry;
+        private System.Windows.Forms.ComboBox comboBoxCity;
+        private System.Windows.Forms.TextBox txtDst;
+        private System.Windows.Forms.TextBox txtTimezone;
+        private System.Windows.Forms.TextBox txtLatitude;
+        private System.Windows.Forms.TextBox txtLongitude;
     }
 }

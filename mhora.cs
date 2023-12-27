@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -7,15 +6,12 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Mhora.Controls;
 using Mhora.Database;
-using Mhora.Database.Countries;
 using Mhora.Database.World;
 using Newtonsoft.Json;
 using SqlNado;
 using SqlNado.Query;
 using SyslogLogging;
-using TimeZone = Mhora.Database.TimeZone;
 
 namespace Mhora
 {
@@ -69,6 +65,15 @@ namespace Mhora
 
         private static DataTable _countryCodes;
         private static TimeZones _timeZones;
+
+        public static TimeZones TimeZones
+        {
+            get
+            {
+                return (_timeZones);
+            }
+        }
+
         public static async Task InitDb()
         {
             _countryCodes = CountryCode.Instance.Table;
