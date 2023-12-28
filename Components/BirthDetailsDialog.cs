@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Mhora.Database.World;
+using mhora.Util;
 using SqlNado;
 using SqlNado.Query;
 using TimeZone = Mhora.Database.TimeZone;
@@ -106,9 +107,14 @@ public partial class BirthDetailsDialog : Form
     {
         City = (City) comboBoxCity.SelectedItem;
 
-        txtLongitude.Text = City.Longitude.ToString("0.0000");
-        txtLatitude.Text  = City.Latitude.ToString("0.0000");
-        txtTimezone.Text  = _timeZone.offsets[0];
+        txtLongitude.Text  = City.Longitude.ToString("0.0000");
+        txtLatitude.Text   = City.Latitude.ToString("0.0000");
+        var location = new LocationConverter.DmsLocation(City.Longitude, City.Latitude);
+        var str = location.ToString().Split(',');
+
+        txtLongitude2.Text = str [0];
+        txtLatitude2.Text  = str [1];
+        txtTimezone.Text   = _timeZone.offsets[0];
 
         if (_timeZone.offsets.Count > 1)
         {

@@ -17,6 +17,12 @@
         {
             this.tabControlBirthDetails = new System.Windows.Forms.TabControl();
             this.tabBirthData = new System.Windows.Forms.TabPage();
+            this.txtDst = new System.Windows.Forms.TextBox();
+            this.txtTimezone = new System.Windows.Forms.TextBox();
+            this.txtLatitude2 = new System.Windows.Forms.TextBox();
+            this.txtLongitude2 = new System.Windows.Forms.TextBox();
+            this.txtLatitude = new System.Windows.Forms.TextBox();
+            this.txtLongitude = new System.Windows.Forms.TextBox();
             this.comboBoxCity = new System.Windows.Forms.ComboBox();
             this.comboBoxState = new System.Windows.Forms.ComboBox();
             this.comboBoxCountry = new System.Windows.Forms.ComboBox();
@@ -40,10 +46,6 @@
             this.tabEvents = new System.Windows.Forms.TabPage();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.txtLongitude = new System.Windows.Forms.TextBox();
-            this.txtLatitude = new System.Windows.Forms.TextBox();
-            this.txtTimezone = new System.Windows.Forms.TextBox();
-            this.txtDst = new System.Windows.Forms.TextBox();
             this.tabControlBirthDetails.SuspendLayout();
             this.tabBirthData.SuspendLayout();
             this.groupBoxGender.SuspendLayout();
@@ -64,6 +66,8 @@
             // 
             this.tabBirthData.Controls.Add(this.txtDst);
             this.tabBirthData.Controls.Add(this.txtTimezone);
+            this.tabBirthData.Controls.Add(this.txtLatitude2);
+            this.tabBirthData.Controls.Add(this.txtLongitude2);
             this.tabBirthData.Controls.Add(this.txtLatitude);
             this.tabBirthData.Controls.Add(this.txtLongitude);
             this.tabBirthData.Controls.Add(this.comboBoxCity);
@@ -91,6 +95,48 @@
             this.tabBirthData.TabIndex = 0;
             this.tabBirthData.Text = "Birth data";
             this.tabBirthData.UseVisualStyleBackColor = true;
+            // 
+            // txtDst
+            // 
+            this.txtDst.Location = new System.Drawing.Point(348, 375);
+            this.txtDst.Name = "txtDst";
+            this.txtDst.Size = new System.Drawing.Size(75, 27);
+            this.txtDst.TabIndex = 27;
+            // 
+            // txtTimezone
+            // 
+            this.txtTimezone.Location = new System.Drawing.Point(153, 375);
+            this.txtTimezone.Name = "txtTimezone";
+            this.txtTimezone.Size = new System.Drawing.Size(75, 27);
+            this.txtTimezone.TabIndex = 26;
+            // 
+            // txtLatitude2
+            // 
+            this.txtLatitude2.Location = new System.Drawing.Point(303, 337);
+            this.txtLatitude2.Name = "txtLatitude2";
+            this.txtLatitude2.Size = new System.Drawing.Size(127, 27);
+            this.txtLatitude2.TabIndex = 25;
+            // 
+            // txtLongitude2
+            // 
+            this.txtLongitude2.Location = new System.Drawing.Point(303, 298);
+            this.txtLongitude2.Name = "txtLongitude2";
+            this.txtLongitude2.Size = new System.Drawing.Size(127, 27);
+            this.txtLongitude2.TabIndex = 24;
+            // 
+            // txtLatitude
+            // 
+            this.txtLatitude.Location = new System.Drawing.Point(152, 337);
+            this.txtLatitude.Name = "txtLatitude";
+            this.txtLatitude.Size = new System.Drawing.Size(127, 27);
+            this.txtLatitude.TabIndex = 21;
+            // 
+            // txtLongitude
+            // 
+            this.txtLongitude.Location = new System.Drawing.Point(152, 298);
+            this.txtLongitude.Name = "txtLongitude";
+            this.txtLongitude.Size = new System.Drawing.Size(127, 27);
+            this.txtLongitude.TabIndex = 20;
             // 
             // comboBoxCity
             // 
@@ -201,7 +247,7 @@
             // labDST
             // 
             this.labDST.AutoSize = true;
-            this.labDST.Location = new System.Drawing.Point(16, 410);
+            this.labDST.Location = new System.Drawing.Point(299, 375);
             this.labDST.Name = "labDST";
             this.labDST.Size = new System.Drawing.Size(43, 20);
             this.labDST.TabIndex = 10;
@@ -328,34 +374,6 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // txtLongitude
-            // 
-            this.txtLongitude.Location = new System.Drawing.Point(152, 298);
-            this.txtLongitude.Name = "txtLongitude";
-            this.txtLongitude.Size = new System.Drawing.Size(377, 27);
-            this.txtLongitude.TabIndex = 20;
-            // 
-            // txtLatitude
-            // 
-            this.txtLatitude.Location = new System.Drawing.Point(152, 337);
-            this.txtLatitude.Name = "txtLatitude";
-            this.txtLatitude.Size = new System.Drawing.Size(377, 27);
-            this.txtLatitude.TabIndex = 21;
-            // 
-            // txtTimezone
-            // 
-            this.txtTimezone.Location = new System.Drawing.Point(152, 375);
-            this.txtTimezone.Name = "txtTimezone";
-            this.txtTimezone.Size = new System.Drawing.Size(377, 27);
-            this.txtTimezone.TabIndex = 22;
-            // 
-            // txtDst
-            // 
-            this.txtDst.Location = new System.Drawing.Point(152, 410);
-            this.txtDst.Name = "txtDst";
-            this.txtDst.Size = new System.Drawing.Size(377, 27);
-            this.txtDst.TabIndex = 23;
-            // 
             // BirthDetailsDialog
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -401,9 +419,11 @@
         private System.Windows.Forms.ComboBox comboBoxState;
         private System.Windows.Forms.ComboBox comboBoxCountry;
         private System.Windows.Forms.ComboBox comboBoxCity;
-        private System.Windows.Forms.TextBox txtDst;
-        private System.Windows.Forms.TextBox txtTimezone;
         private System.Windows.Forms.TextBox txtLatitude;
         private System.Windows.Forms.TextBox txtLongitude;
+        private System.Windows.Forms.TextBox txtLatitude2;
+        private System.Windows.Forms.TextBox txtLongitude2;
+        private System.Windows.Forms.TextBox txtDst;
+        private System.Windows.Forms.TextBox txtTimezone;
     }
 }
