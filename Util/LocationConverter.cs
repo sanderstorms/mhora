@@ -2,7 +2,7 @@
 
 namespace mhora.Util
 {
-    public class LocationConverter
+    public static class LocationConverter
     {
         public class DecimalLocation
         {
@@ -63,9 +63,9 @@ namespace mhora.Util
 
             public DmsPoint(decimal degrees, PointType type)
             {
-                Degrees = ExtractDegrees(degrees);
-                Minutes = ExtractMinutes(degrees);
-                Seconds = ExtractSeconds(degrees);
+                Degrees = degrees.ExtractDegrees();
+                Minutes = degrees.ExtractMinutes();
+                Seconds = degrees.ExtractSeconds();
                 Type    = type;
             }
 
@@ -94,18 +94,18 @@ namespace mhora.Util
             Lon
         }
 
-        public static int ExtractDegrees(decimal value)
+        public static int ExtractDegrees(this decimal value)
         {
             return (int) value;
         }
 
-        public static int ExtractMinutes(decimal value)
+        public static int ExtractMinutes(this decimal value)
         {
             value = Math.Abs(value);
             return (int) ((value - ExtractDegrees(value)) * 60);
         }
 
-        public static int ExtractSeconds(decimal value)
+        public static int ExtractSeconds(this decimal value)
         {
             value = Math.Abs(value);
             decimal minutes = (value - ExtractDegrees(value)) * 60;
