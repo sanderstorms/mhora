@@ -239,6 +239,7 @@
     <Compile Include="Settings\ApplyOptions.cs" />
     <Compile Include="Settings\MhoraGlobalOptions.cs" />
     <Compile Include="Util\Dll.cs" />
+    <Compile Include="Util\LocationConverter.cs" />
     <Compile Include="Util\SevenZip.cs" />
     <Compile Include="Util\StringExtension.cs" />
     <Compile Include="Varga\Ashtakavarga.cs">
