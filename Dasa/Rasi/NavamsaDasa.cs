@@ -21,105 +21,104 @@ using Mhora.Calculation;
 using Mhora.Settings;
 using Mhora.Varga;
 
-namespace Mhora
+namespace Mhora;
+
+public class NavamsaDasa : Dasa, IDasa
 {
-    public class NavamsaDasa : Dasa, IDasa
+    private readonly Horoscope           h;
+    private readonly RasiDasaUserOptions options;
+
+    public NavamsaDasa(Horoscope _h)
     {
-        private readonly Horoscope           h;
-        private readonly RasiDasaUserOptions options;
+        h       = _h;
+        options = new RasiDasaUserOptions(h, FindStronger.RulesNavamsaDasaRasi(h));
+    }
 
-        public NavamsaDasa(Horoscope _h)
+    public double paramAyus()
+    {
+        return 108;
+    }
+
+    public void recalculateOptions()
+    {
+        options.recalculate();
+    }
+
+    public ArrayList Dasa(int cycle)
+    {
+        var al      = new ArrayList(12);
+        var zh_seed = h.getPosition(Body.Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
+
+        if (!zh_seed.isOdd())
         {
-            h       = _h;
-            options = new RasiDasaUserOptions(h, FindStronger.RulesNavamsaDasaRasi(h));
+            zh_seed = zh_seed.AdarsaSign();
         }
 
-        public double paramAyus()
+        var dasa_length_sum = 0.0;
+        var dasa_length     = 9.0;
+        for (var i = 1; i <= 12; i++)
         {
-            return 108;
+            var zh_dasa = zh_seed.add(i);
+            var di      = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+            al.Add(di);
+            dasa_length_sum += dasa_length;
         }
 
-        public void recalculateOptions()
+        var cycle_length = cycle * paramAyus();
+        foreach (DasaEntry di in al)
         {
-            options.recalculate();
+            di.startUT += cycle_length;
         }
 
-        public ArrayList Dasa(int cycle)
+        return al;
+    }
+
+    public ArrayList AntarDasa(DasaEntry pdi)
+    {
+        var al = new ArrayList(12);
+
+        var zh_first    = new ZodiacHouse(pdi.zodiacHouse);
+        var zh_stronger = zh_first.add(1);
+        if (!zh_stronger.isOdd())
         {
-            var al      = new ArrayList(12);
-            var zh_seed = h.getPosition(Body.Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
-
-            if (!zh_seed.isOdd())
-            {
-                zh_seed = zh_seed.AdarsaSign();
-            }
-
-            var dasa_length_sum = 0.0;
-            var dasa_length     = 9.0;
-            for (var i = 1; i <= 12; i++)
-            {
-                var zh_dasa = zh_seed.add(i);
-                var di      = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
-                al.Add(di);
-                dasa_length_sum += dasa_length;
-            }
-
-            var cycle_length = cycle * paramAyus();
-            foreach (DasaEntry di in al)
-            {
-                di.startUT += cycle_length;
-            }
-
-            return al;
+            zh_stronger = zh_stronger.AdarsaSign();
         }
 
-        public ArrayList AntarDasa(DasaEntry pdi)
+        var dasa_start = pdi.startUT;
+
+        for (var i = 1; i <= 12; i++)
         {
-            var al = new ArrayList(12);
-
-            var zh_first    = new ZodiacHouse(pdi.zodiacHouse);
-            var zh_stronger = zh_first.add(1);
-            if (!zh_stronger.isOdd())
-            {
-                zh_stronger = zh_stronger.AdarsaSign();
-            }
-
-            var dasa_start = pdi.startUT;
-
-            for (var i = 1; i <= 12; i++)
-            {
-                var zh_dasa = zh_stronger.add(i);
-                var di      = new DasaEntry(zh_dasa.value, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.value);
-                al.Add(di);
-                dasa_start += pdi.dasaLength / 12.0;
-            }
-
-            return al;
+            var zh_dasa = zh_stronger.add(i);
+            var di      = new DasaEntry(zh_dasa.value, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.value);
+            al.Add(di);
+            dasa_start += pdi.dasaLength / 12.0;
         }
 
-        public string Description()
-        {
-            return "Navamsa Dasa";
-        }
+        return al;
+    }
 
-        public object GetOptions()
-        {
-            return options.Clone();
-        }
+    public string Description()
+    {
+        return "Navamsa Dasa";
+    }
 
-        public object SetOptions(object a)
-        {
-            var uo = (RasiDasaUserOptions)a;
-            options.CopyFrom(uo);
-            RecalculateEvent();
-            return options.Clone();
-        }
+    public object GetOptions()
+    {
+        return options.Clone();
+    }
 
-        public new void DivisionChanged(Division div)
-        {
-            var newOpts = (RasiDasaUserOptions)options.Clone();
-            newOpts.Division = (Division)div.Clone();
-            SetOptions(newOpts);
-        }
+    public object SetOptions(object a)
+    {
+        var uo = (RasiDasaUserOptions) a;
+        options.CopyFrom(uo);
+        RecalculateEvent();
+        return options.Clone();
+    }
+
+    public new void DivisionChanged(Division div)
+    {
+        var newOpts = (RasiDasaUserOptions) options.Clone();
+        newOpts.Division = (Division) div.Clone();
+        SetOptions(newOpts);
     }
 }

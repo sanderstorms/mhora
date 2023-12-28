@@ -21,77 +21,76 @@ using System.Collections;
 using Mhora.Calculation;
 using Mhora.Components.Property;
 
-namespace Mhora
+namespace Mhora;
+
+public class TattwaDasa : Dasa, IDasa
 {
-    public class TattwaDasa : Dasa, IDasa
+    private readonly Horoscope h;
+
+    public TattwaDasa(Horoscope _h)
     {
-        private readonly Horoscope h;
+        h = _h;
+    }
 
-        public TattwaDasa(Horoscope _h)
+    public double paramAyus()
+    {
+        return 1.0 / 24.0 / 60.0;
+    }
+
+    public void recalculateOptions()
+    {
+    }
+
+    public ArrayList Dasa(int cycle)
+    {
+        var al = new ArrayList();
+
+        var day_length = h.next_sunrise + 24.0 - h.sunrise;
+        var day_sr     = Math.Floor(h.baseUT)  + h.sunrise / 24.0;
+
+        return al;
+    }
+
+    public ArrayList AntarDasa(DasaEntry pdi)
+    {
+        return new ArrayList();
+    }
+
+    public string Description()
+    {
+        return "Tattwa Dasa";
+    }
+
+    public object GetOptions()
+    {
+        return new object();
+    }
+
+    public object SetOptions(object o)
+    {
+        return o;
+    }
+
+    public class UserOptions
+    {
+        public enum Tattwa
         {
-            h = _h;
+            Bhoomi,
+            Jala,
+            Agni,
+            Vayu,
+            Akasha
         }
 
-        public double paramAyus()
+        public Tattwa _startTattwa;
+
+        [PGDisplayName("Seed Tattwa")]
+        public Tattwa StartTattwa
         {
-            return 1.0 / 24.0 / 60.0;
-        }
-
-        public void recalculateOptions()
-        {
-        }
-
-        public ArrayList Dasa(int cycle)
-        {
-            var al = new ArrayList();
-
-            var day_length = h.next_sunrise + 24.0 - h.sunrise;
-            var day_sr     = Math.Floor(h.baseUT)  + h.sunrise / 24.0;
-
-            return al;
-        }
-
-        public ArrayList AntarDasa(DasaEntry pdi)
-        {
-            return new ArrayList();
-        }
-
-        public string Description()
-        {
-            return "Tattwa Dasa";
-        }
-
-        public object GetOptions()
-        {
-            return new object();
-        }
-
-        public object SetOptions(object o)
-        {
-            return o;
-        }
-
-        public class UserOptions
-        {
-            public enum Tattwa
-            {
-                Bhoomi,
-                Jala,
-                Agni,
-                Vayu,
-                Akasha
-            }
-
-            public Tattwa _startTattwa;
-
-            [PGDisplayName("Seed Tattwa")]
-            public Tattwa StartTattwa
-            {
-                get =>
-                    _startTattwa;
-                set =>
-                    _startTattwa = value;
-            }
+            get =>
+                _startTattwa;
+            set =>
+                _startTattwa = value;
         }
     }
 }

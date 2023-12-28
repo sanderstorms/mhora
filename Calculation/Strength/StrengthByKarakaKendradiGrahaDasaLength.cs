@@ -20,70 +20,68 @@ using System;
 using Mhora.Body;
 using Mhora.Varga;
 
-namespace Mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength;
+
+// Stronger graha has longer length
+// Stronger rasi has a graha with longer length placed therein
+public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    // Stronger graha has longer length
-    // Stronger rasi has a graha with longer length placed therein
-    public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
+    public StrengthByKarakaKendradiGrahaDasaLength(Horoscope h, Division dtype) : base(h, dtype, false)
     {
-        public StrengthByKarakaKendradiGrahaDasaLength(Horoscope h, Division dtype)
-            : base(h, dtype, false)
+    }
+
+    public bool stronger(Body.Body.Name m, Body.Body.Name n)
+    {
+        var a = value(m);
+        var b = value(n);
+        if (a > b)
         {
+            return true;
         }
 
-        public bool stronger(Body.Body.Name m, Body.Body.Name n)
+        if (a < b)
         {
-            var a = value(m);
-            var b = value(n);
-            if (a > b)
-            {
-                return true;
-            }
-
-            if (a < b)
-            {
-                return false;
-            }
-
-            throw new EqualStrength();
+            return false;
         }
 
-        public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+        throw new EqualStrength();
+    }
+
+    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+    {
+        var a = value(za);
+        var b = value(zb);
+        if (a > b)
         {
-            var a = value(za);
-            var b = value(zb);
-            if (a > b)
-            {
-                return true;
-            }
-
-            if (a < b)
-            {
-                return false;
-            }
-
-            throw new EqualStrength();
+            return true;
         }
 
-        protected double value(ZodiacHouse.Name zh)
+        if (a < b)
         {
-            double length = 0;
-            foreach (Position bp in h.positionList)
+            return false;
+        }
+
+        throw new EqualStrength();
+    }
+
+    protected double value(ZodiacHouse.Name zh)
+    {
+        double length = 0;
+        foreach (Position bp in h.positionList)
+        {
+            if (bp.type == BodyType.Name.Graha)
             {
-                if (bp.type == BodyType.Name.Graha)
-                {
-                    var dp = bp.toDivisionPosition(dtype);
-                    length = Math.Max(length, KarakaKendradiGrahaDasa.LengthOfDasa(h, dtype, bp.name, dp));
-                }
+                var dp = bp.toDivisionPosition(dtype);
+                length = Math.Max(length, KarakaKendradiGrahaDasa.LengthOfDasa(h, dtype, bp.name, dp));
             }
-
-            return length;
         }
 
-        protected double value(Body.Body.Name b)
-        {
-            var dp = h.getPosition(b).toDivisionPosition(dtype);
-            return KarakaKendradiGrahaDasa.LengthOfDasa(h, dtype, b, dp);
-        }
+        return length;
+    }
+
+    protected double value(Body.Body.Name b)
+    {
+        var dp = h.getPosition(b).toDivisionPosition(dtype);
+        return KarakaKendradiGrahaDasa.LengthOfDasa(h, dtype, b, dp);
     }
 }

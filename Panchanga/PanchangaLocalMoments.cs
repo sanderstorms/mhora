@@ -19,30 +19,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System.Collections;
 using Mhora.Calculation;
 
-namespace Mhora.Panchanga
+namespace Mhora.Panchanga;
+
+public class PanchangaLocalMoments
 {
-    public class PanchangaLocalMoments
-    {
-        public int              gulika_kala_index;
-        public int              hora_base;
-        public double[]         horas_ut;
-        public int              kala_base;
-        public double[]         kalas_ut;
-        public int              karana_index_end;
-        public int              karana_index_start;
-        public ZodiacHouse.Name lagna_zh;
-        public ArrayList        lagnas_ut = new ArrayList();
-        public int              nakshatra_index_end;
-        public int              nakshatra_index_start;
-        public int              rahu_kala_index;
-        public int              smyoga_index_end;
-        public int              smyoga_index_start;
-        public double           sunrise;
-        public double           sunrise_ut;
-        public double           sunset;
-        public int              tithi_index_end;
-        public int              tithi_index_start;
-        public Basics.Weekday   wday;
-        public int              yama_kala_index;
-    }
+    public int              gulika_kala_index;
+    public int              hora_base;
+    public double[]         horas_ut;
+    public int              kala_base;
+    public double[]         kalas_ut;
+    public int              karana_index_end;
+    public int              karana_index_start;
+    public ZodiacHouse.Name lagna_zh;
+    public ArrayList        lagnas_ut = new();
+    public int              nakshatra_index_end;
+    public int              nakshatra_index_start;
+    public int              rahu_kala_index;
+    public int              smyoga_index_end;
+    public int              smyoga_index_start;
+    public double           sunrise;
+    public double           sunrise_ut;
+    public double           sunset;
+    public int              tithi_index_end;
+    public int              tithi_index_start;
+    public Basics.Weekday   wday;
+    public int              yama_kala_index;
 }

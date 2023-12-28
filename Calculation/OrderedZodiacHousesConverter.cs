@@ -22,88 +22,80 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace Mhora.Calculation
+namespace Mhora.Calculation;
+
+internal class OrderedZodiacHousesConverter : ExpandableObjectConverter
 {
-    internal class OrderedZodiacHousesConverter : ExpandableObjectConverter
+    public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
+        if (t == typeof(string))
         {
-            if (t == typeof(string))
+            return true;
+        }
+
+        return base.CanConvertFrom(context, t);
+    }
+
+    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
+    {
+        Trace.Assert(value is string, "OrderedZodiacHousesConverter::ConvertFrom 1");
+        var s = (string) value;
+
+        var oz  = new OrderedZodiacHouses();
+        var al  = new ArrayList();
+        var arr = s.Split('.', ' ', ':', ',');
+        foreach (var szh_mixed in arr)
+        {
+            var szh = szh_mixed.ToLower();
+            switch (szh)
             {
-                return true;
+                case "ari":
+                    al.Add(ZodiacHouse.Name.Ari);
+                    break;
+                case "tau":
+                    al.Add(ZodiacHouse.Name.Tau);
+                    break;
+                case "gem":
+                    al.Add(ZodiacHouse.Name.Gem);
+                    break;
+                case "can":
+                    al.Add(ZodiacHouse.Name.Can);
+                    break;
+                case "leo":
+                    al.Add(ZodiacHouse.Name.Leo);
+                    break;
+                case "vir":
+                    al.Add(ZodiacHouse.Name.Vir);
+                    break;
+                case "lib":
+                    al.Add(ZodiacHouse.Name.Lib);
+                    break;
+                case "sco":
+                    al.Add(ZodiacHouse.Name.Sco);
+                    break;
+                case "sag":
+                    al.Add(ZodiacHouse.Name.Sag);
+                    break;
+                case "cap":
+                    al.Add(ZodiacHouse.Name.Cap);
+                    break;
+                case "aqu":
+                    al.Add(ZodiacHouse.Name.Aqu);
+                    break;
+                case "pis":
+                    al.Add(ZodiacHouse.Name.Pis);
+                    break;
             }
-
-            return base.CanConvertFrom(context, t);
         }
 
-        public override object ConvertFrom(
-            ITypeDescriptorContext context,
-            CultureInfo            info,
-            object                 value)
-        {
-            Trace.Assert(value is string, "OrderedZodiacHousesConverter::ConvertFrom 1");
-            var s = (string)value;
+        oz.houses = (ArrayList) al.Clone();
+        return oz;
+    }
 
-            var oz  = new OrderedZodiacHouses();
-            var al  = new ArrayList();
-            var arr = s.Split('.', ' ', ':', ',');
-            foreach (var szh_mixed in arr)
-            {
-                var szh = szh_mixed.ToLower();
-                switch (szh)
-                {
-                    case "ari":
-                        al.Add(ZodiacHouse.Name.Ari);
-                        break;
-                    case "tau":
-                        al.Add(ZodiacHouse.Name.Tau);
-                        break;
-                    case "gem":
-                        al.Add(ZodiacHouse.Name.Gem);
-                        break;
-                    case "can":
-                        al.Add(ZodiacHouse.Name.Can);
-                        break;
-                    case "leo":
-                        al.Add(ZodiacHouse.Name.Leo);
-                        break;
-                    case "vir":
-                        al.Add(ZodiacHouse.Name.Vir);
-                        break;
-                    case "lib":
-                        al.Add(ZodiacHouse.Name.Lib);
-                        break;
-                    case "sco":
-                        al.Add(ZodiacHouse.Name.Sco);
-                        break;
-                    case "sag":
-                        al.Add(ZodiacHouse.Name.Sag);
-                        break;
-                    case "cap":
-                        al.Add(ZodiacHouse.Name.Cap);
-                        break;
-                    case "aqu":
-                        al.Add(ZodiacHouse.Name.Aqu);
-                        break;
-                    case "pis":
-                        al.Add(ZodiacHouse.Name.Pis);
-                        break;
-                }
-            }
-
-            oz.houses = (ArrayList)al.Clone();
-            return oz;
-        }
-
-        public override object ConvertTo(
-            ITypeDescriptorContext context,
-            CultureInfo            culture,
-            object                 value,
-            Type                   destType)
-        {
-            Trace.Assert(destType == typeof(string) && value is OrderedZodiacHouses, "HMSInfo::ConvertTo 1");
-            var oz = (OrderedZodiacHouses)value;
-            return oz.ToString();
-        }
+    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
+    {
+        Trace.Assert(destType == typeof(string) && value is OrderedZodiacHouses, "HMSInfo::ConvertTo 1");
+        var oz = (OrderedZodiacHouses) value;
+        return oz.ToString();
     }
 }

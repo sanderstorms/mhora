@@ -22,82 +22,64 @@ using System.Diagnostics;
 using System.Globalization;
 using Mhora.Calculation;
 
-namespace Mhora
+namespace Mhora;
+
+internal class DasaEntryConverter : ExpandableObjectConverter
 {
-    internal class DasaEntryConverter : ExpandableObjectConverter
+    public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
+        if (t == typeof(string))
         {
-            if (t == typeof(string))
-            {
-                return true;
-            }
-
-            return base.CanConvertFrom(context, t);
+            return true;
         }
 
-        public override object ConvertFrom(
-            ITypeDescriptorContext context,
-            CultureInfo            info,
-            object                 value)
+        return base.CanConvertFrom(context, t);
+    }
+
+    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
+    {
+        Trace.Assert(value is string, "DasaEntryConverter::ConvertFrom 1");
+        var s = (string) value;
+
+        var de  = new DasaEntry(Body.Body.Name.Lagna, 0.0, 0.0, 1, "None");
+        var arr = s.Split(',');
+        if (arr.Length >= 1)
         {
-            Trace.Assert(value is string, "DasaEntryConverter::ConvertFrom 1");
-            var s = (string)value;
-
-            var de  = new DasaEntry(Body.Body.Name.Lagna, 0.0, 0.0, 1, "None");
-            var arr = s.Split(',');
-            if (arr.Length >= 1)
-            {
-                de.shortDesc = arr[0];
-            }
-
-            if (arr.Length >= 2)
-            {
-                de.level = int.Parse(arr[1]);
-            }
-
-            if (arr.Length >= 3)
-            {
-                de.startUT = double.Parse(arr[2]);
-            }
-
-            if (arr.Length >= 4)
-            {
-                de.dasaLength = double.Parse(arr[3]);
-            }
-
-            if (arr.Length >= 5)
-            {
-                de.graha = (Body.Body.Name)int.Parse(arr[4]);
-            }
-
-            if (arr.Length >= 6)
-            {
-                de.zodiacHouse = (ZodiacHouse.Name)int.Parse(arr[5]);
-            }
-
-            return de;
+            de.shortDesc = arr[0];
         }
 
-        public override object ConvertTo(
-            ITypeDescriptorContext context,
-            CultureInfo            culture,
-            object                 value,
-            Type                   destType)
+        if (arr.Length >= 2)
         {
-            Trace.Assert(destType == typeof(string) && value is DasaEntry, "DasaItem::ConvertTo 1");
-            var de = (DasaEntry)value;
-            return de.shortDesc  +
-                   ","           +
-                   de.level      +
-                   ","           +
-                   de.startUT    +
-                   ","           +
-                   de.dasaLength +
-                   ","           +
-                   (int)de.graha +
-                   ","           +
-                   (int)de.zodiacHouse;
+            de.level = int.Parse(arr[1]);
         }
+
+        if (arr.Length >= 3)
+        {
+            de.startUT = double.Parse(arr[2]);
+        }
+
+        if (arr.Length >= 4)
+        {
+            de.dasaLength = double.Parse(arr[3]);
+        }
+
+        if (arr.Length >= 5)
+        {
+            de.graha = (Body.Body.Name) int.Parse(arr[4]);
+        }
+
+        if (arr.Length >= 6)
+        {
+            de.zodiacHouse = (ZodiacHouse.Name) int.Parse(arr[5]);
+        }
+
+        return de;
+    }
+
+    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
+    {
+        Trace.Assert(destType == typeof(string) && value is DasaEntry, "DasaItem::ConvertTo 1");
+        var de = (DasaEntry) value;
+        return de.shortDesc + "," + de.level + "," + de.startUT + "," + de.dasaLength + "," + (int) de.graha + "," + (int) de.zodiacHouse;
     }
 }

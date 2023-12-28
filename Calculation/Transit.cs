@@ -20,211 +20,205 @@ using System;
 using Mhora.Body;
 using Mhora.SwissEph;
 
-namespace Mhora.Calculation
+namespace Mhora.Calculation;
+
+public class Transit
 {
-    public class Transit
+    private readonly Body.Body.Name b;
+    private readonly Horoscope      h;
+
+    public Transit(Horoscope _h)
     {
-        private readonly Body.Body.Name b;
-        private readonly Horoscope h;
+        h = _h;
+        b = Body.Body.Name.Other;
+    }
 
-        public Transit(Horoscope _h)
-        {
-            h = _h;
-            b = Body.Body.Name.Other;
-        }
-
-        public Transit(Horoscope _h, Body.Body.Name _b)
-        {
-            h = _h;
-            b = _b;
-        }
+    public Transit(Horoscope _h, Body.Body.Name _b)
+    {
+        h = _h;
+        b = _b;
+    }
 
 
-        public Longitude LongitudeOfSun(double ut, ref bool bDirRetro)
-        {
-            var bp = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Body.Name.Sun, BodyType.Name.Graha, h);
-            if (bp.speed_longitude >= 0)
-            {
-                bDirRetro = false;
-            }
-            else
-            {
-                bDirRetro = true;
-            }
-
-            return bp.longitude;
-        }
-
-        public Longitude GenericLongitude(double ut, ref bool bDirRetro)
-        {
-            if (b == Body.Body.Name.Lagna)
-            {
-                return new Longitude(sweph.Lagna(ut));
-            }
-
-            var bp = Basics.CalculateSingleBodyPosition(ut,
-                                                        sweph.BodyNameToSweph(b),
-                                                        b,
-                                                        BodyType.Name.Other,
-                                                        h);
-            if (bp.speed_longitude >= 0)
-            {
-                bDirRetro = false;
-            }
-            else
-            {
-                bDirRetro = true;
-            }
-
-            return bp.longitude;
-        }
-
-        public Longitude LongitudeOfTithiDir(double ut, ref bool bDirRetro)
+    public Longitude LongitudeOfSun(double ut, ref bool bDirRetro)
+    {
+        var bp = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Body.Name.Sun, BodyType.Name.Graha, h);
+        if (bp.speed_longitude >= 0)
         {
             bDirRetro = false;
-            return LongitudeOfTithi(ut);
         }
-
-        public Longitude LongitudeOfTithi(double ut)
+        else
         {
-            var bp_sun  = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Body.Name.Sun, BodyType.Name.Graha, h);
-            var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Body.Name.Moon, BodyType.Name.Graha, h);
-            var rel     = bp_moon.longitude.sub(bp_sun.longitude);
-            return rel;
+            bDirRetro = true;
         }
 
-        public Longitude LongitudeOfMoonDir(double ut, ref bool bDirRetro)
+        return bp.longitude;
+    }
+
+    public Longitude GenericLongitude(double ut, ref bool bDirRetro)
+    {
+        if (b == Body.Body.Name.Lagna)
         {
-            bDirRetro = false;
-            return LongitudeOfMoon(ut);
+            return new Longitude(sweph.Lagna(ut));
         }
 
-        public Longitude LongitudeOfMoon(double ut)
-        {
-            var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Body.Name.Moon, BodyType.Name.Graha, h);
-            return bp_moon.longitude.add(0);
-        }
-
-        public Longitude LongitudeOfSunMoonYogaDir(double ut, ref bool bDirRetro)
+        var bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, BodyType.Name.Other, h);
+        if (bp.speed_longitude >= 0)
         {
             bDirRetro = false;
-            return LongitudeOfSunMoonYoga(ut);
+        }
+        else
+        {
+            bDirRetro = true;
         }
 
-        public Longitude LongitudeOfSunMoonYoga(double ut)
+        return bp.longitude;
+    }
+
+    public Longitude LongitudeOfTithiDir(double ut, ref bool bDirRetro)
+    {
+        bDirRetro = false;
+        return LongitudeOfTithi(ut);
+    }
+
+    public Longitude LongitudeOfTithi(double ut)
+    {
+        var bp_sun  = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Body.Name.Sun, BodyType.Name.Graha, h);
+        var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Body.Name.Moon, BodyType.Name.Graha, h);
+        var rel     = bp_moon.longitude.sub(bp_sun.longitude);
+        return rel;
+    }
+
+    public Longitude LongitudeOfMoonDir(double ut, ref bool bDirRetro)
+    {
+        bDirRetro = false;
+        return LongitudeOfMoon(ut);
+    }
+
+    public Longitude LongitudeOfMoon(double ut)
+    {
+        var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Body.Name.Moon, BodyType.Name.Graha, h);
+        return bp_moon.longitude.add(0);
+    }
+
+    public Longitude LongitudeOfSunMoonYogaDir(double ut, ref bool bDirRetro)
+    {
+        bDirRetro = false;
+        return LongitudeOfSunMoonYoga(ut);
+    }
+
+    public Longitude LongitudeOfSunMoonYoga(double ut)
+    {
+        var bp_sun  = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Body.Name.Sun, BodyType.Name.Graha, h);
+        var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Body.Name.Moon, BodyType.Name.Graha, h);
+        var rel     = bp_moon.longitude.add(bp_sun.longitude);
+        return rel;
+    }
+
+    public bool CircularLonLessThan(Longitude a, Longitude b)
+    {
+        return CircLonLessThan(a, b);
+    }
+
+    public static bool CircLonLessThan(Longitude a, Longitude b)
+    {
+        var bounds = 40.0;
+
+        if (a.value > 360.0 - bounds && b.value < bounds)
         {
-            var bp_sun  = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Body.Name.Sun, BodyType.Name.Graha, h);
-            var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Body.Name.Moon, BodyType.Name.Graha, h);
-            var rel     = bp_moon.longitude.add(bp_sun.longitude);
-            return rel;
+            return true;
         }
 
-        public bool CircularLonLessThan(Longitude a, Longitude b)
+        if (a.value < bounds && b.value > 360.0 - bounds)
         {
-            return CircLonLessThan(a, b);
+            return false;
         }
 
-        public static bool CircLonLessThan(Longitude a, Longitude b)
-        {
-            var bounds = 40.0;
+        return a.value < b.value;
+    }
 
-            if (a.value > 360.0 - bounds && b.value < bounds)
+    public double LinearSearch(double approx_ut, Longitude lon_to_find, ReturnLon func)
+    {
+        var day_start = LinearSearchApprox(approx_ut, lon_to_find, func);
+        var day_found = LinearSearchBinary(day_start, day_start + 1.0, lon_to_find, func);
+        return day_found;
+    }
+
+    public double LinearSearchBinary(double ut_start, double ut_end, Longitude lon_to_find, ReturnLon func)
+    {
+        var bDiscard = true;
+        if (Math.Abs(ut_end - ut_start) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
+        {
+            if (CircLonLessThan(func(ut_start, ref bDiscard), lon_to_find))
             {
-                return true;
+                return ut_end;
             }
 
-            if (a.value < bounds && b.value > 360.0 - bounds)
-            {
-                return false;
-            }
-
-            return a.value < b.value;
+            return ut_start;
         }
 
-        public double LinearSearch(double approx_ut, Longitude lon_to_find, ReturnLon func)
+        var ut_middle = (ut_start + ut_end) / 2.0;
+        var lon       = func(ut_middle, ref bDiscard);
+        if (CircularLonLessThan(lon, lon_to_find))
         {
-            var day_start = LinearSearchApprox(approx_ut, lon_to_find, func);
-            var day_found = LinearSearchBinary(day_start, day_start + 1.0, lon_to_find, func);
-            return day_found;
+            return LinearSearchBinary(ut_middle, ut_end, lon_to_find, func);
         }
 
-        public double LinearSearchBinary(double ut_start, double ut_end, Longitude lon_to_find, ReturnLon func)
+        return LinearSearchBinary(ut_start, ut_middle, lon_to_find, func);
+    }
+
+    public double NonLinearSearch(double ut, Body.Body.Name b, Longitude lon_to_find, ReturnLon func)
+    {
+        var rDir_start = false;
+        var rDir_end   = false;
+        var bDayFound  = false;
+        ut -= 1.0;
+        do
         {
-            var bDiscard = true;
-            if (Math.Abs(ut_end - ut_start) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
+            ut += 1.0;
+            var l_start = func(ut, ref rDir_start);
+            var l_end   = func(ut + 1.0, ref rDir_end);
+            if (CircularLonLessThan(l_start, lon_to_find) && CircularLonLessThan(lon_to_find, l_end))
             {
-                if (CircLonLessThan(func(ut_start, ref bDiscard), lon_to_find))
-                {
-                    return ut_end;
-                }
-
-                return ut_start;
+                bDayFound = true;
             }
+        }
+        while (bDayFound == false);
 
-            var ut_middle = (ut_start + ut_end) / 2.0;
-            var lon       = func(ut_middle, ref bDiscard);
-            if (CircularLonLessThan(lon, lon_to_find))
-            {
-                return LinearSearchBinary(ut_middle, ut_end, lon_to_find, func);
-            }
-
-            return LinearSearchBinary(ut_start, ut_middle, lon_to_find, func);
+        if (rDir_start == false && rDir_end == false)
+        {
+            LinearSearchBinary(ut, ut + 1.0, lon_to_find, LongitudeOfSun);
         }
 
-        public double NonLinearSearch(double ut, Body.Body.Name b, Longitude lon_to_find, ReturnLon func)
+        return ut;
+    }
+
+    public double LinearSearchApprox(double approx_ut, Longitude lon_to_find, ReturnLon func)
+    {
+        var bDiscard = true;
+        var ut       = Math.Floor(approx_ut);
+        var lon      = func(ut, ref bDiscard);
+
+        if (CircularLonLessThan(lon, lon_to_find))
         {
-            var rDir_start = false;
-            var rDir_end   = false;
-            var bDayFound  = false;
+            while (CircularLonLessThan(lon, lon_to_find))
+            {
+                ut  += 1.0;
+                lon =  func(ut, ref bDiscard);
+            }
+
             ut -= 1.0;
-            do
-            {
-                ut += 1.0;
-                var l_start = func(ut, ref rDir_start);
-                var l_end   = func(ut + 1.0, ref rDir_end);
-                if (CircularLonLessThan(l_start, lon_to_find) &&
-                    CircularLonLessThan(lon_to_find, l_end))
-                {
-                    bDayFound = true;
-                }
-            }
-            while (bDayFound == false);
-
-            if (rDir_start == false && rDir_end == false)
-            {
-                LinearSearchBinary(ut, ut + 1.0, lon_to_find, LongitudeOfSun);
-            }
-
-            return ut;
         }
-
-        public double LinearSearchApprox(double approx_ut, Longitude lon_to_find, ReturnLon func)
+        else
         {
-            var bDiscard = true;
-            var ut       = Math.Floor(approx_ut);
-            var lon      = func(ut, ref bDiscard);
-
-            if (CircularLonLessThan(lon, lon_to_find))
+            while (!CircularLonLessThan(lon, lon_to_find))
             {
-                while (CircularLonLessThan(lon, lon_to_find))
-                {
-                    ut  += 1.0;
-                    lon =  func(ut, ref bDiscard);
-                }
-
-                ut -= 1.0;
+                ut  -= 1.0;
+                lon =  func(ut, ref bDiscard);
             }
-            else
-            {
-                while (!CircularLonLessThan(lon, lon_to_find))
-                {
-                    ut  -= 1.0;
-                    lon =  func(ut, ref bDiscard);
-                }
-            }
-
-            var l = func(ut, ref bDiscard);
-            return ut;
         }
+
+        var l = func(ut, ref bDiscard);
+        return ut;
     }
 }

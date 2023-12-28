@@ -18,19 +18,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Calculation;
 
-namespace Mhora
-{
-    public class NarayanaSamaDasa : NarayanaDasa, IDasa
-    {
-        public NarayanaSamaDasa(Horoscope _h)
-            : base(_h)
-        {
-            bSama = true;
-        }
+namespace Mhora;
 
-        public new string Description()
-        {
-            return "Narayana Sama Dasa for " + options.Division + " seeded from " + options.SeedRasi;
-        }
+public class NarayanaSamaDasa : NarayanaDasa, IDasa
+{
+    public NarayanaSamaDasa(Horoscope _h) : base(_h)
+    {
+        bSama = true;
+    }
+
+    public new string Description()
+    {
+        return "Narayana Sama Dasa for " + options.Division + " seeded from " + options.SeedRasi;
     }
 }

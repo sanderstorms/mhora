@@ -19,65 +19,63 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 
-namespace Mhora.Components.Property
+namespace Mhora.Components.Property;
+
+public class GlobalizedPropertyDescriptor : PropertyDescriptor
 {
-    public class GlobalizedPropertyDescriptor : PropertyDescriptor
+    private readonly PropertyDescriptor basePropertyDescriptor;
+
+    public GlobalizedPropertyDescriptor(PropertyDescriptor basePropertyDescriptor) : base(basePropertyDescriptor)
     {
-        private readonly PropertyDescriptor basePropertyDescriptor;
+        this.basePropertyDescriptor = basePropertyDescriptor;
+    }
 
-        public GlobalizedPropertyDescriptor(PropertyDescriptor basePropertyDescriptor)
-            : base(basePropertyDescriptor)
+    public override Type ComponentType => basePropertyDescriptor.ComponentType;
+
+    public override string DisplayName
+    {
+        get
         {
-            this.basePropertyDescriptor = basePropertyDescriptor;
-        }
-
-        public override Type ComponentType => basePropertyDescriptor.ComponentType;
-
-        public override string DisplayName
-        {
-            get
+            var dn = (PGDisplayName) basePropertyDescriptor.Attributes[typeof(PGDisplayName)];
+            if (dn != null)
             {
-                var dn = (PGDisplayName)basePropertyDescriptor.Attributes[typeof(PGDisplayName)];
-                if (dn != null)
-                {
-                    return dn.DisplayName;
-                }
-
-                return basePropertyDescriptor.DisplayName;
+                return dn.DisplayName;
             }
+
+            return basePropertyDescriptor.DisplayName;
         }
+    }
 
-        public override string Description => basePropertyDescriptor.Description;
+    public override string Description => basePropertyDescriptor.Description;
 
-        public override bool IsReadOnly => basePropertyDescriptor.IsReadOnly;
+    public override bool IsReadOnly => basePropertyDescriptor.IsReadOnly;
 
-        public override string Name => basePropertyDescriptor.Name;
+    public override string Name => basePropertyDescriptor.Name;
 
-        public override Type PropertyType => basePropertyDescriptor.PropertyType;
+    public override Type PropertyType => basePropertyDescriptor.PropertyType;
 
-        public override bool CanResetValue(object component)
-        {
-            return basePropertyDescriptor.CanResetValue(component);
-        }
+    public override bool CanResetValue(object component)
+    {
+        return basePropertyDescriptor.CanResetValue(component);
+    }
 
-        public override object GetValue(object component)
-        {
-            return basePropertyDescriptor.GetValue(component);
-        }
+    public override object GetValue(object component)
+    {
+        return basePropertyDescriptor.GetValue(component);
+    }
 
-        public override void ResetValue(object component)
-        {
-            basePropertyDescriptor.ResetValue(component);
-        }
+    public override void ResetValue(object component)
+    {
+        basePropertyDescriptor.ResetValue(component);
+    }
 
-        public override bool ShouldSerializeValue(object component)
-        {
-            return basePropertyDescriptor.ShouldSerializeValue(component);
-        }
+    public override bool ShouldSerializeValue(object component)
+    {
+        return basePropertyDescriptor.ShouldSerializeValue(component);
+    }
 
-        public override void SetValue(object component, object value)
-        {
-            basePropertyDescriptor.SetValue(component, value);
-        }
+    public override void SetValue(object component, object value)
+    {
+        basePropertyDescriptor.SetValue(component, value);
     }
 }

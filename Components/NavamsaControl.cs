@@ -25,324 +25,322 @@ using Mhora.Calculation;
 using Mhora.Chart;
 using Mhora.Settings;
 
-namespace Mhora.Components
+namespace Mhora.Components;
+
+public class NavamsaControl : MhoraControl
 {
-    public class NavamsaControl : MhoraControl
+    private readonly IContainer  components = null;
+    private readonly string[]    nak_s;
+    private readonly Pen         pn_black;
+    private readonly Pen         pn_grey;
+    private readonly Pen         pn_lgrey;
+    public           Bitmap      bmpBuffer;
+    private          ContextMenu contextMenu;
+    private          Font        f;
+    private          MenuItem    menuItem1;
+    public           bool        PrintMode = false;
+
+    public NavamsaControl(Horoscope _h)
     {
-        public           Bitmap      bmpBuffer;
-        private readonly IContainer  components = null;
-        private          ContextMenu contextMenu;
-        private          Font        f;
-        private          MenuItem    menuItem1;
-        private readonly string[]    nak_s;
-        private readonly Pen         pn_black;
-        private readonly Pen         pn_grey;
-        private readonly Pen         pn_lgrey;
-        public           bool        PrintMode = false;
-
-        public NavamsaControl(Horoscope _h)
+        // This call is required by the Windows Form Designer.
+        InitializeComponent();
+        h                                      =  _h;
+        MhoraGlobalOptions.DisplayPrefsChanged += onRedisplay;
+        h.Changed                              += onRecalculate;
+        pn_black                               =  new Pen(Color.Black, (float) 0.1);
+        pn_grey                                =  new Pen(Color.Gray, (float) 0.1);
+        pn_lgrey                               =  new Pen(Color.LightGray, (float) 0.1);
+        nak_s = new string[27]
         {
-            // This call is required by the Windows Form Designer.
-            InitializeComponent();
-            h                                      =  _h;
-            MhoraGlobalOptions.DisplayPrefsChanged += onRedisplay;
-            h.Changed                              += onRecalculate;
-            pn_black                               =  new Pen(Color.Black, (float)0.1);
-            pn_grey                                =  new Pen(Color.Gray, (float)0.1);
-            pn_lgrey                               =  new Pen(Color.LightGray, (float)0.1);
-            nak_s = new string[27]
-            {
-                "Asw",
-                "Bha",
-                "Kri",
-                "Roh",
-                "Mri",
-                "Ard",
-                "Pun",
-                "Pus",
-                "Asl",
-                "Mag",
-                "PPl",
-                "UPh",
-                "Has",
-                "Chi",
-                "Swa",
-                "Vis",
-                "Anu",
-                "Jye",
-                "Moo",
-                "PAs",
-                "UAs",
-                "Sra",
-                "Dha",
-                "Sha",
-                "PBh",
-                "UBh",
-                "Rev"
-            };
-            AddViewsToContextMenu(contextMenu);
-            onRedisplay(MhoraGlobalOptions.Instance);
-        }
+            "Asw",
+            "Bha",
+            "Kri",
+            "Roh",
+            "Mri",
+            "Ard",
+            "Pun",
+            "Pus",
+            "Asl",
+            "Mag",
+            "PPl",
+            "UPh",
+            "Has",
+            "Chi",
+            "Swa",
+            "Vis",
+            "Anu",
+            "Jye",
+            "Moo",
+            "PAs",
+            "UAs",
+            "Sra",
+            "Dha",
+            "Sha",
+            "PBh",
+            "UBh",
+            "Rev"
+        };
+        AddViewsToContextMenu(contextMenu);
+        onRedisplay(MhoraGlobalOptions.Instance);
+    }
 
-        /// <summary>
-        ///     Clean up any resources being used.
-        /// </summary>
-        protected override void Dispose(bool disposing)
+    /// <summary>
+    ///     Clean up any resources being used.
+    /// </summary>
+    protected override void Dispose(bool disposing)
+    {
+        MhoraGlobalOptions.DisplayPrefsChanged -= onRedisplay;
+        h.Changed                              -= onRecalculate;
+        if (disposing)
         {
-            MhoraGlobalOptions.DisplayPrefsChanged -= onRedisplay;
-            h.Changed                              -= onRecalculate;
-            if (disposing)
+            if (components != null)
             {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
+                components.Dispose();
             }
-
-            base.Dispose(disposing);
         }
+
+        base.Dispose(disposing);
+    }
 
 #region Designer generated code
 
-        /// <summary>
-        ///     Required method for Designer support - do not modify
-        ///     the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
+    /// <summary>
+    ///     Required method for Designer support - do not modify
+    ///     the contents of this method with the code editor.
+    /// </summary>
+    private void InitializeComponent()
+    {
+        this.contextMenu = new System.Windows.Forms.ContextMenu();
+        this.menuItem1   = new System.Windows.Forms.MenuItem();
+        // 
+        // contextMenu
+        // 
+        this.contextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
         {
-            this.contextMenu = new System.Windows.Forms.ContextMenu();
-            this.menuItem1   = new System.Windows.Forms.MenuItem();
-            // 
-            // contextMenu
-            // 
-            this.contextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-            {
-                this.menuItem1
-            });
-            // 
-            // menuItem1
-            // 
-            this.menuItem1.Index = 0;
-            this.menuItem1.Text  = "-";
-            // 
-            // NavamsaControl
-            // 
-            this.ContextMenu =  this.contextMenu;
-            this.Name        =  "NavamsaControl";
-            this.Size        =  new System.Drawing.Size(376, 240);
-            this.Resize      += new System.EventHandler(this.NavamsaControl_Resize);
-            this.Load        += new System.EventHandler(this.NavamsaControl_Load);
-            this.Paint       += new System.Windows.Forms.PaintEventHandler(this.NavamsaControl_Paint);
-        }
+            this.menuItem1
+        });
+        // 
+        // menuItem1
+        // 
+        this.menuItem1.Index = 0;
+        this.menuItem1.Text  = "-";
+        // 
+        // NavamsaControl
+        // 
+        this.ContextMenu =  this.contextMenu;
+        this.Name        =  "NavamsaControl";
+        this.Size        =  new System.Drawing.Size(376, 240);
+        this.Resize      += new System.EventHandler(this.NavamsaControl_Resize);
+        this.Load        += new System.EventHandler(this.NavamsaControl_Load);
+        this.Paint       += new System.Windows.Forms.PaintEventHandler(this.NavamsaControl_Paint);
+    }
 
 #endregion
 
-        public void onRedisplay(object o)
+    public void onRedisplay(object o)
+    {
+        f = new Font(MhoraGlobalOptions.Instance.GeneralFont.FontFamily, MhoraGlobalOptions.Instance.GeneralFont.SizeInPoints - 5);
+        DrawToBuffer(true);
+        Invalidate();
+    }
+
+    public void onRecalculate(object o)
+    {
+        DrawToBuffer(true);
+        Invalidate();
+    }
+
+    private void ResetChakra(Graphics g, double rot)
+    {
+        var size  = Math.Min(bmpBuffer.Width, bmpBuffer.Height);
+        var scale = (float) size / 300;
+        g.ResetTransform();
+        g.TranslateTransform(bmpBuffer.Width / 2, bmpBuffer.Height / 2);
+        g.ScaleTransform(scale, scale);
+        g.SmoothingMode = SmoothingMode.HighQuality;
+        g.RotateTransform((float) (270.0 - rot));
+    }
+
+    private void DrawInnerChakra(Graphics g)
+    {
+        var size  = Math.Min(bmpBuffer.Width, bmpBuffer.Height);
+        var scale = (float) size / 300 / 3;
+        g.ResetTransform();
+        g.TranslateTransform(bmpBuffer.Width / 2, bmpBuffer.Height / 2);
+        g.ScaleTransform(scale, scale);
+        g.SmoothingMode = SmoothingMode.HighQuality;
+        var dc = new EastIndianChart();
+        g.TranslateTransform(-1 * dc.GetLength() / 2, -1 * dc.GetLength() / 2);
+        dc.DrawOutline(g);
+    }
+
+    public void DrawChakra(Graphics g)
+    {
+        //this.DrawInnerChakra(g);
+
+        if (false == PrintMode)
         {
-            f = new Font(MhoraGlobalOptions.Instance.GeneralFont.FontFamily,
-                         MhoraGlobalOptions.Instance.GeneralFont.SizeInPoints - 5);
-            DrawToBuffer(true);
-            Invalidate();
+            g.Clear(MhoraGlobalOptions.Instance.ChakraBackgroundColor);
         }
 
-        public void onRecalculate(object o)
+        ResetChakra(g, 0.0);
+        g.DrawEllipse(pn_grey, -40, -40, 80, 80);
+        g.DrawEllipse(pn_grey, -125, -125, 250, 250);
+        g.DrawEllipse(pn_grey, -105, -105, 210, 210);
+        g.DrawEllipse(pn_grey, -115, -115, 230, 230);
+
+        var bodies = new Body.Body.Name[10]
         {
-            DrawToBuffer(true);
-            Invalidate();
+            Body.Body.Name.Lagna,
+            Body.Body.Name.Sun,
+            Body.Body.Name.Moon,
+            Body.Body.Name.Mars,
+            Body.Body.Name.Mercury,
+            Body.Body.Name.Jupiter,
+            Body.Body.Name.Venus,
+            Body.Body.Name.Saturn,
+            Body.Body.Name.Rahu,
+            Body.Body.Name.Ketu
+        };
+
+        for (var i = 0; i < 12; i++)
+        {
+            ResetChakra(g, i * 30);
+            g.DrawLine(pn_lgrey, 40, 0, 125, 0);
         }
 
-        private void ResetChakra(Graphics g, double rot)
+        for (var i = 0; i < 12; i++)
         {
-            var size  = Math.Min(bmpBuffer.Width, bmpBuffer.Height);
-            var scale = (float)size / 300;
-            g.ResetTransform();
-            g.TranslateTransform(bmpBuffer.Width / 2, bmpBuffer.Height / 2);
-            g.ScaleTransform(scale, scale);
-            g.SmoothingMode = SmoothingMode.HighQuality;
-            g.RotateTransform((float)(270.0 - rot));
+            ResetChakra(g, i * 30 + 15);
+            var z  = (ZodiacHouse.Name) (i + 1);
+            var sz = g.MeasureString(z.ToString(), f);
+            g.DrawString(z.ToString(), f, Brushes.Gray, 40 - sz.Width, 0);
         }
 
-        private void DrawInnerChakra(Graphics g)
+        for (var i = 0; i < 27; i++)
         {
-            var size  = Math.Min(bmpBuffer.Width, bmpBuffer.Height);
-            var scale = (float)size / 300 / 3;
-            g.ResetTransform();
-            g.TranslateTransform(bmpBuffer.Width / 2, bmpBuffer.Height / 2);
-            g.ScaleTransform(scale, scale);
-            g.SmoothingMode = SmoothingMode.HighQuality;
-            var dc = new EastIndianChart();
-            g.TranslateTransform(-1 * dc.GetLength() / 2, -1 * dc.GetLength() / 2);
-            dc.DrawOutline(g);
+            ResetChakra(g, (i + 1) * (360.0 / 27.0)); //+((360.0/27.0)/2.0));
+            g.TranslateTransform(105, 0);
+            g.RotateTransform((float) 90.0);
+            var sz = g.MeasureString(nak_s[i], f);
+            g.DrawString(nak_s[i], f, Brushes.Gray, (float) (360.0 / 27.0) - sz.Width / 2, sz.Height / 2);
         }
 
-        public void DrawChakra(Graphics g)
+        for (var i = 0; i < 27 * 4; i++)
         {
-            //this.DrawInnerChakra(g);
-
-            if (false == PrintMode)
+            ResetChakra(g, i * (360.0 / (27.0 * 4.0)));
+            var p = pn_lgrey;
+            if (i % 12 == 0)
             {
-                g.Clear(MhoraGlobalOptions.Instance.ChakraBackgroundColor);
+                p = pn_black;
             }
 
-            ResetChakra(g, 0.0);
-            g.DrawEllipse(pn_grey, -40, -40, 80, 80);
-            g.DrawEllipse(pn_grey, -125, -125, 250, 250);
-            g.DrawEllipse(pn_grey, -105, -105, 210, 210);
-            g.DrawEllipse(pn_grey, -115, -115, 230, 230);
+            g.DrawLine(p, 115, 0, 125, 0);
 
-            var bodies = new Body.Body.Name[10]
+            p = pn_lgrey;
+            if (i % 4 == 0)
             {
-                Body.Body.Name.Lagna,
-                Body.Body.Name.Sun,
-                Body.Body.Name.Moon,
-                Body.Body.Name.Mars,
-                Body.Body.Name.Mercury,
-                Body.Body.Name.Jupiter,
-                Body.Body.Name.Venus,
-                Body.Body.Name.Saturn,
-                Body.Body.Name.Rahu,
-                Body.Body.Name.Ketu
-            };
-
-            for (var i = 0; i < 12; i++)
-            {
-                ResetChakra(g, i * 30);
-                g.DrawLine(pn_lgrey, 40, 0, 125, 0);
+                p = pn_black;
             }
 
-            for (var i = 0; i < 12; i++)
-            {
-                ResetChakra(g, i * 30 + 15);
-                var z  = (ZodiacHouse.Name)(i + 1);
-                var sz = g.MeasureString(z.ToString(), f);
-                g.DrawString(z.ToString(), f, Brushes.Gray, 40 - sz.Width, 0);
-            }
-
-            for (var i = 0; i < 27; i++)
-            {
-                ResetChakra(g, (i + 1) * (360.0 / 27.0)); //+((360.0/27.0)/2.0));
-                g.TranslateTransform(105, 0);
-                g.RotateTransform((float)90.0);
-                var sz = g.MeasureString(nak_s[i], f);
-                g.DrawString(nak_s[i], f, Brushes.Gray, (float)(360.0 / 27.0) - sz.Width / 2, sz.Height / 2);
-            }
-
-            for (var i = 0; i < 27 * 4; i++)
-            {
-                ResetChakra(g, i * (360.0 / (27.0 * 4.0)));
-                var p = pn_lgrey;
-                if (i % 12 == 0)
-                {
-                    p = pn_black;
-                }
-
-                g.DrawLine(p, 115, 0, 125, 0);
-
-                p = pn_lgrey;
-                if (i % 4 == 0)
-                {
-                    p = pn_black;
-                }
-
-                g.DrawLine(p, 105, 0, 115, 0);
-            }
-
-            var dist_sat = h.getPosition(Body.Body.Name.Saturn).distance;
-            foreach (var b in bodies)
-            {
-                var   pn_b = new Pen(MhoraGlobalOptions.Instance.getBinduColor(b));
-                Brush br_b = new SolidBrush(MhoraGlobalOptions.Instance.getBinduColor(b));
-                var   bp   = h.getPosition(b);
-                ResetChakra(g, bp.longitude.value);
-                var chWidth = 2;
-                g.DrawEllipse(pn_black, 110 - chWidth, 0, 1, 1);
-                g.FillEllipse(br_b, 120     - chWidth, -chWidth, chWidth * 2, chWidth * 2);
-                g.DrawEllipse(pn_grey, 120  - chWidth, -chWidth, chWidth * 2, chWidth * 2);
-                var sz = g.MeasureString(b.ToString(), f);
-                g.DrawString(b.ToString(), f, Brushes.Black, 125, -sz.Height / 2);
-
-                // current position with distance
-                var dist = (int)(bp.distance / dist_sat * (105 - 40 - chWidth * 2));
-                g.FillEllipse(br_b, 40    + dist - chWidth, -chWidth, chWidth * 2, chWidth * 2);
-                g.DrawEllipse(pn_grey, 40 + dist - chWidth, -chWidth, chWidth * 2, chWidth * 2);
-
-                // speed
-                var dspSize = bp.speed_longitude / 360.0 * 12000.0;
-                if (bp.speed_longitude < 0)
-                {
-                    dspSize *= 2.0;
-                }
-
-                var spSize = (int)dspSize;
-                if (spSize > 40)
-                {
-                    spSize = 40;
-                }
-
-                if (bp.speed_longitude > 0)
-                {
-                    g.DrawLine(pn_lgrey, 40 + dist, -chWidth, 40 + dist, -spSize);
-                }
-                else
-                {
-                    g.DrawLine(pn_lgrey, 40 + dist, chWidth, 40 + dist, -spSize);
-                }
-            }
+            g.DrawLine(p, 105, 0, 115, 0);
         }
 
-        private Image DrawToBuffer(bool bRecalc)
+        var dist_sat = h.getPosition(Body.Body.Name.Saturn).distance;
+        foreach (var b in bodies)
         {
-            if (bmpBuffer != null && bmpBuffer.Size != Size)
+            var   pn_b = new Pen(MhoraGlobalOptions.Instance.getBinduColor(b));
+            Brush br_b = new SolidBrush(MhoraGlobalOptions.Instance.getBinduColor(b));
+            var   bp   = h.getPosition(b);
+            ResetChakra(g, bp.longitude.value);
+            var chWidth = 2;
+            g.DrawEllipse(pn_black, 110 - chWidth, 0, 1, 1);
+            g.FillEllipse(br_b, 120     - chWidth, -chWidth, chWidth * 2, chWidth * 2);
+            g.DrawEllipse(pn_grey, 120  - chWidth, -chWidth, chWidth * 2, chWidth * 2);
+            var sz = g.MeasureString(b.ToString(), f);
+            g.DrawString(b.ToString(), f, Brushes.Black, 125, -sz.Height / 2);
+
+            // current position with distance
+            var dist = (int) (bp.distance / dist_sat * (105 - 40 - chWidth * 2));
+            g.FillEllipse(br_b, 40    + dist - chWidth, -chWidth, chWidth * 2, chWidth * 2);
+            g.DrawEllipse(pn_grey, 40 + dist - chWidth, -chWidth, chWidth * 2, chWidth * 2);
+
+            // speed
+            var dspSize = bp.speed_longitude / 360.0 * 12000.0;
+            if (bp.speed_longitude < 0)
             {
-                bmpBuffer.Dispose();
-                bmpBuffer = null;
+                dspSize *= 2.0;
             }
 
-            if (Width == 0 || Height == 0)
+            var spSize = (int) dspSize;
+            if (spSize > 40)
             {
-                return bmpBuffer;
+                spSize = 40;
             }
 
-            if (bRecalc == false && Width == bmpBuffer.Width && Height == bmpBuffer.Height)
+            if (bp.speed_longitude > 0)
             {
-                return bmpBuffer;
+                g.DrawLine(pn_lgrey, 40 + dist, -chWidth, 40 + dist, -spSize);
             }
+            else
+            {
+                g.DrawLine(pn_lgrey, 40 + dist, chWidth, 40 + dist, -spSize);
+            }
+        }
+    }
 
-            var displayGraphics = CreateGraphics();
-            bmpBuffer = new Bitmap(Width, Height, displayGraphics);
-            var imageGraphics = Graphics.FromImage(bmpBuffer);
-            DrawChakra(imageGraphics);
-            displayGraphics.Dispose();
+    private Image DrawToBuffer(bool bRecalc)
+    {
+        if (bmpBuffer != null && bmpBuffer.Size != Size)
+        {
+            bmpBuffer.Dispose();
+            bmpBuffer = null;
+        }
+
+        if (Width == 0 || Height == 0)
+        {
             return bmpBuffer;
         }
 
-        public Bitmap DrawToBitmap(int size)
+        if (bRecalc == false && Width == bmpBuffer.Width && Height == bmpBuffer.Height)
         {
-            bmpBuffer = new Bitmap(size, size);
-            var imageGraphics = Graphics.FromImage(bmpBuffer);
-            DrawChakra(imageGraphics);
             return bmpBuffer;
         }
 
+        var displayGraphics = CreateGraphics();
+        bmpBuffer = new Bitmap(Width, Height, displayGraphics);
+        var imageGraphics = Graphics.FromImage(bmpBuffer);
+        DrawChakra(imageGraphics);
+        displayGraphics.Dispose();
+        return bmpBuffer;
+    }
 
-        private void NavamsaControl_Load(object sender, EventArgs e)
-        {
-        }
+    public Bitmap DrawToBitmap(int size)
+    {
+        bmpBuffer = new Bitmap(size, size);
+        var imageGraphics = Graphics.FromImage(bmpBuffer);
+        DrawChakra(imageGraphics);
+        return bmpBuffer;
+    }
 
-        private void NavamsaControl_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.DrawImage(bmpBuffer, 0, 0);
-        }
 
-        private void NavamsaControl_Resize(object sender, EventArgs e)
-        {
-            DrawToBuffer(true);
-            Invalidate();
-        }
+    private void NavamsaControl_Load(object sender, EventArgs e)
+    {
+    }
 
-        protected override void copyToClipboard()
-        {
-            Clipboard.SetDataObject(bmpBuffer);
-        }
+    private void NavamsaControl_Paint(object sender, PaintEventArgs e)
+    {
+        e.Graphics.DrawImage(bmpBuffer, 0, 0);
+    }
+
+    private void NavamsaControl_Resize(object sender, EventArgs e)
+    {
+        DrawToBuffer(true);
+        Invalidate();
+    }
+
+    protected override void copyToClipboard()
+    {
+        Clipboard.SetDataObject(bmpBuffer);
     }
 }

@@ -6,145 +6,173 @@ using SqlNado;
 using SqlNado.Query;
 using SqlNado.Utilities;
 
-namespace Mhora.Database.World
+namespace Mhora.Database.World;
+
+[SQLiteTable(Name = "countries")]
+public class Country : SQLiteBaseObject
 {
-    [SQLiteTable(Name = "countries")]
-    public class Country : SQLiteBaseObject
+    private List<TimeZone> _timeZone;
+
+    private Dictionary<string, string> _translations;
+
+    public Country(SQLiteDatabase database) : base(database)
     {
-        public class TimeZone
+    }
+
+    [SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]
+    public int Id { get; set; }
+
+    [SQLiteColumn(Name = "name")]
+    public string Name { get; set; }
+
+    [SQLiteColumn(Name = "iso3")]
+    public string Iso3 { get; set; }
+
+    [SQLiteColumn(Name = "numeric_code")]
+    public string NumericCode { get; set; }
+
+    [SQLiteColumn(Name = "iso2")]
+    public string Iso2 { get; set; }
+
+    [SQLiteColumn(Name = "phonecode")]
+    public string PhoneCode { get; set; }
+
+    [SQLiteColumn(Name = "capital")]
+    public string Capital { get; set; }
+
+    [SQLiteColumn(Name = "currency")]
+    public string Currency { get; set; }
+
+    [SQLiteColumn(Name = "currency_name")]
+    public string CurrencyName { get; set; }
+
+    [SQLiteColumn(Name = "currency_symbol")]
+    public string CurrencySymbol { get; set; }
+
+    [SQLiteColumn(Name = "tld")]
+    public string Tld { get; set; }
+
+    [SQLiteColumn(Name = "native")]
+    public string Native { get; set; }
+
+    [SQLiteColumn(Name = "region")]
+    public string RegionName { get; set; }
+
+    [SQLiteColumn(Name = "region_id")] //Foreign key Region.id
+    public int RegionId { get; set; }
+
+    [SQLiteColumn(Name = "subregion")]
+    public string SubRegionName { get; set; }
+
+    [SQLiteColumn(Name = "subregion_id")] //foreign key SubRegions.id
+    public int SubRegionId { get; set; }
+
+    [SQLiteColumn(Name = "nationality")]
+    public string Nationality { get; set; }
+
+    [SQLiteColumn(Name = "timezones")]
+    public string TimeZonesJson { get; set; }
+
+    [SQLiteColumn(Name = "translations")]
+    public string TranslationsJson { get; set; }
+
+    [SQLiteColumn(Name = "latitude")]
+    public double Latitude { get; set; }
+
+    [SQLiteColumn(Name = "longitude")]
+    public double Longitude { get; set; }
+
+    [SQLiteColumn(Name = "emoji")]
+    public string Emoji { get; set; }
+
+    [SQLiteColumn(Name = "emojiU")]
+    public string EmojiU { get; set; }
+
+    [SQLiteColumn(Name = "created_at")]
+    public DateTime CreatedAt { get; set; }
+
+    [SQLiteColumn(Name = "updated_at")]
+    public DateTime UpdatedAt { get; set; }
+
+    [SQLiteColumn(Name = "flag")]
+    public int Flag { get; set; }
+
+    [SQLiteColumn(Name = "wikiDataId")]
+    public string WikiDataId { get; set; }
+
+    public Region Region
+    {
+        get
         {
-            public string zoneName { get; set; }
-            public int gmtOffset { get; set; }
-            public string gmtOffsetName { get; set; }
-            public string abbreviation { get; set; }
-            public string tzName { get; set; }
+            var query   = Query.From<Region>().Where(region => region.Id == RegionId).SelectAll();
+            var regions = Database?.Load<Region>(query.ToString()).ToList();
+            if (regions?.Count > 0)
+            {
+                return regions[0];
+            }
+
+            return null;
         }
+    }
 
-        [SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]
-        public int Id { get; set; }
-        [SQLiteColumn(Name = "name")]
-        public string Name { get; set; }
-        [SQLiteColumn(Name = "iso3")]
-        public string Iso3 { get; set; }
-        [SQLiteColumn(Name = "numeric_code")]
-        public string NumericCode { get; set; }
-        [SQLiteColumn(Name = "iso2")]
-        public string Iso2 { get; set; }
-        [SQLiteColumn(Name = "phonecode")]
-        public string PhoneCode { get; set; }
-        [SQLiteColumn(Name = "capital")]
-        public string Capital { get; set; }
-        [SQLiteColumn(Name = "currency")]
-        public string Currency { get; set; }
-        [SQLiteColumn(Name = "currency_name")]
-        public string CurrencyName { get; set; }
-        [SQLiteColumn(Name = "currency_symbol")]
-        public string CurrencySymbol { get; set; }
-        [SQLiteColumn(Name = "tld")]
-        public string Tld { get; set; }
-        [SQLiteColumn(Name = "native")]
-        public string Native { get; set; }
-        [SQLiteColumn(Name = "region")]
-        public string RegionName { get; set; }
-        [SQLiteColumn(Name = "region_id")]  //Foreign key Region.id
-        public int RegionId { get; set; }
-        [SQLiteColumn(Name = "subregion")]
-        public string SubRegionName { get; set; }
-        [SQLiteColumn(Name = "subregion_id")] //foreign key SubRegions.id
-        public int SubRegionId { get; set; }
-        [SQLiteColumn(Name = "nationality")]
-        public string Nationality { get; set; }
-        [SQLiteColumn(Name = "timezones")]
-        public string TimeZonesJson { get; set; }
-        [SQLiteColumn(Name = "translations")]
-        public string TranslationsJson { get; set; }
-        [SQLiteColumn(Name = "latitude")]
-        public double Latitude { get; set; }
-        [SQLiteColumn(Name = "longitude")]
-        public double Longitude { get; set; }
-        [SQLiteColumn(Name = "emoji")]
-        public string Emoji { get; set; }
-        [SQLiteColumn(Name = "emojiU")]
-        public string EmojiU { get; set; }
-        [SQLiteColumn(Name = "created_at")]
-        public DateTime CreatedAt { get; set; }
-        [SQLiteColumn(Name = "updated_at")]
-        public DateTime UpdatedAt { get; set; }
-        [SQLiteColumn(Name = "flag")]
-        public int Flag { get; set; }
-        [SQLiteColumn(Name = "wikiDataId")]
-        public string WikiDataId { get; set; }
-         public Country (SQLiteDatabase database) : base(database)
+    public SubRegion SubRegion
+    {
+        get
         {
-         }
+            var query     = Query.From<SubRegion>().Where(subRegion => subRegion.Id == SubRegionId).SelectAll();
+            var subRegion = Database?.Load<SubRegion>(query.ToString()).ToList();
+            if (subRegion?.Count > 0)
+            {
+                return subRegion[0];
+            }
 
-         public Region Region
-         {
-             get
-             {
-                 var query = Query.From<Region>().Where(region => region.Id == RegionId).SelectAll();
-                 var regions = Database?.Load<Region>(query.ToString()).ToList();
-                 if (regions?.Count > 0)
-                 {
-                     return (regions[0]);
-                 }
+            return null;
+        }
+    }
 
-                 return (null);
-             }
-         }
+    [SQLiteColumn(Ignore = true)]
+    public List<TimeZone> Timezones
+    {
+        get
+        {
+            try
+            {
+                _timeZone ??= JsonConvert.DeserializeObject<List<TimeZone>>(TimeZonesJson);
+            }
+            catch (Exception e)
+            {
+                _timeZone ??= new List<TimeZone>();
+            }
 
-         public SubRegion SubRegion
-         {
-             get
-             {
-                 var query = Query.From<SubRegion>().Where(subRegion => subRegion.Id == SubRegionId).SelectAll();
-                 var subRegion = Database?.Load<SubRegion>(query.ToString()).ToList();
-                 if (subRegion?.Count > 0)
-                 {
-                     return (subRegion[0]);
-                 }
+            return _timeZone;
+        }
+    }
 
-                 return (null);
-             }
-         }
+    [SQLiteColumn(Ignore = true)]
+    public Dictionary<string, string> Translations
+    {
+        get
+        {
+            try
+            {
+                _translations ??= JsonConvert.DeserializeObject<Dictionary<string, string>>(TranslationsJson);
+            }
+            catch (Exception e)
+            {
+                _translations = new Dictionary<string, string>();
+            }
 
-         private List <TimeZone> _timeZone;
-         [SQLiteColumn(Ignore = true)]
-         public List <TimeZone> Timezones
-         {
-             get
-             {
-                 try
-                 {
-                     _timeZone ??= JsonConvert.DeserializeObject<List<TimeZone>>(TimeZonesJson);
-                 }
-                 catch (Exception e)
-                 {
-                     _timeZone ??= new List<TimeZone>();
-                 }
+            return _translations;
+        }
+    }
 
-                 return (_timeZone);
-             }
-         }
-
-         private Dictionary<string, string> _translations;
-        [SQLiteColumn(Ignore = true)]
-         public Dictionary<string, string> Translations
-         {
-             get
-             {
-                 try
-                 {
-                     _translations ??= JsonConvert.DeserializeObject < Dictionary<string, string>>(TranslationsJson);
-                 }
-                 catch (Exception e)
-                 {
-                     _translations = new Dictionary<string, string>();
-                 }
-
-                 return (_translations);
-             }
-         }
+    public class TimeZone
+    {
+        public string zoneName      { get; set; }
+        public int    gmtOffset     { get; set; }
+        public string gmtOffsetName { get; set; }
+        public string abbreviation  { get; set; }
+        public string tzName        { get; set; }
     }
 }
 
@@ -179,4 +207,3 @@ namespace Mhora.Database.World
 //    , CONSTRAINT `country_continent_final` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`)
 //    , CONSTRAINT `country_subregion_final` FOREIGN KEY (`subregion_id`) REFERENCES `subregions` (`id`)
 //    );
-

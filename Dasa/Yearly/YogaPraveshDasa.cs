@@ -20,130 +20,128 @@ using System.Collections;
 using Mhora.Calculation;
 using Mhora.SwissEph;
 
-namespace Mhora
+namespace Mhora;
+
+public class YogaPraveshDasa : Dasa, IDasa
 {
-    public class YogaPraveshDasa : Dasa, IDasa
+    private Horoscope h;
+
+    public YogaPraveshDasa(Horoscope _h)
     {
-        private Horoscope h;
+        h = _h;
+    }
 
-        public YogaPraveshDasa(Horoscope _h)
+    public object GetOptions()
+    {
+        return new object();
+    }
+
+    public object SetOptions(object a)
+    {
+        return new object();
+    }
+
+    public void recalculateOptions()
+    {
+    }
+
+    public double paramAyus()
+    {
+        return 60.0;
+    }
+
+    public ArrayList Dasa(int cycle)
+    {
+        var al          = new ArrayList(60);
+        var cycle_start = cycle * paramAyus();
+        for (var i = 0; i < 60; i++)
         {
-            h = _h;
+            var start = cycle_start + i;
+            var di    = new DasaEntry(Body.Body.Name.Other, start, 1.0, 1, "Yoga Pravesh Year");
+            al.Add(di);
         }
 
-        public object GetOptions()
+        return al;
+    }
+
+    public ArrayList AntarDasa(DasaEntry pdi)
+    {
+        string[] desc =
         {
-            return new object();
-        }
-
-        public object SetOptions(object a)
+            "  Month: ",
+            "    Yoga: "
+        };
+        if (pdi.level == 3)
         {
-            return new object();
-        }
-
-        public void recalculateOptions()
-        {
-        }
-
-        public double paramAyus()
-        {
-            return 60.0;
-        }
-
-        public ArrayList Dasa(int cycle)
-        {
-            var al          = new ArrayList(60);
-            var cycle_start = cycle * paramAyus();
-            for (var i = 0; i < 60; i++)
-            {
-                var start = cycle_start + i;
-                var di    = new DasaEntry(Body.Body.Name.Other, start, 1.0, 1, "Yoga Pravesh Year");
-                al.Add(di);
-            }
-
-            return al;
-        }
-
-        public ArrayList AntarDasa(DasaEntry pdi)
-        {
-            string[] desc =
-            {
-                "  Month: ",
-                "    Yoga: "
-            };
-            if (pdi.level == 3)
-            {
-                return new ArrayList();
-            }
-
-            ArrayList al;
-            double start  = 0.0,
-                   length = 0.0;
-            var level = 0;
-
-            al    = null;
-            start = pdi.startUT;
-            level = pdi.level + 1;
-
-            switch (pdi.level)
-            {
-                case 1:
-                    al     = new ArrayList(15);
-                    length = pdi.dasaLength / 15.0;
-                    //mhora.Log.Debug("AD length is {0}", length);
-                    for (var i = 0; i < 15; i++)
-                    {
-                        var di = new DasaEntry(Body.Body.Name.Other, start, length, level, desc[level - 2]);
-                        al.Add(di);
-                        start += length;
-                    }
-
-                    return al;
-                case 2:
-                    al     = new ArrayList(27);
-                    length = pdi.dasaLength / 27.0;
-                    //mhora.Log.Debug("PD length is {0}", length);
-                    for (var i = 0; i < 27; i++)
-                    {
-                        var di = new DasaEntry(Body.Body.Name.Other, start, length, level, desc[level - 2]);
-                        //mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
-                        al.Add(di);
-                        start += length;
-                    }
-
-                    return al;
-            }
-
             return new ArrayList();
-            ;
         }
 
-        public new string EntryDescription(DasaEntry pdi, Moment start, Moment end)
+        ArrayList al;
+        double    start = 0.0, length = 0.0;
+        var       level = 0;
+
+        al    = null;
+        start = pdi.startUT;
+        level = pdi.level + 1;
+
+        switch (pdi.level)
         {
-            if (pdi.level == 2)
-            {
-                var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Body.Name.Sun));
-                var zh = l.toZodiacHouse();
-                return zh.ToString();
-            }
+            case 1:
+                al     = new ArrayList(15);
+                length = pdi.dasaLength / 15.0;
+                //mhora.Log.Debug("AD length is {0}", length);
+                for (var i = 0; i < 15; i++)
+                {
+                    var di = new DasaEntry(Body.Body.Name.Other, start, length, level, desc[level - 2]);
+                    al.Add(di);
+                    start += length;
+                }
 
-            if (pdi.level == 3)
-            {
-                var lSun  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Body.Name.Sun));
-                var lMoon = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Body.Name.Moon));
-                var l     = lMoon.add(lSun);
+                return al;
+            case 2:
+                al     = new ArrayList(27);
+                length = pdi.dasaLength / 27.0;
+                //mhora.Log.Debug("PD length is {0}", length);
+                for (var i = 0; i < 27; i++)
+                {
+                    var di = new DasaEntry(Body.Body.Name.Other, start, length, level, desc[level - 2]);
+                    //mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
+                    al.Add(di);
+                    start += length;
+                }
 
-                // this seems wrong. Why should we need to go to the next yoga here?
-                var y = l.toSunMoonYoga().add(2);
-                return y.ToString();
-            }
-
-            return string.Empty;
+                return al;
         }
 
-        public string Description()
+        return new ArrayList();
+        ;
+    }
+
+    public new string EntryDescription(DasaEntry pdi, Moment start, Moment end)
+    {
+        if (pdi.level == 2)
         {
-            return "Yoga Pravesh Chart Dasa";
+            var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Body.Name.Sun));
+            var zh = l.toZodiacHouse();
+            return zh.ToString();
         }
+
+        if (pdi.level == 3)
+        {
+            var lSun  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Body.Name.Sun));
+            var lMoon = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Body.Name.Moon));
+            var l     = lMoon.add(lSun);
+
+            // this seems wrong. Why should we need to go to the next yoga here?
+            var y = l.toSunMoonYoga().add(2);
+            return y.ToString();
+        }
+
+        return string.Empty;
+    }
+
+    public string Description()
+    {
+        return "Yoga Pravesh Chart Dasa";
     }
 }

@@ -17,11 +17,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 
+namespace Mhora.Calculation.Strength;
 
-namespace Mhora.Calculation.Strength
+public interface IStrengthGraha
 {
-    public interface IStrengthGraha
-    {
-        bool stronger(Body.Body.Name m, Body.Body.Name n);
-    }
+    bool stronger(Body.Body.Name m, Body.Body.Name n);
 }

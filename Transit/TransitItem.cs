@@ -19,20 +19,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System.Windows.Forms;
 using Mhora.Calculation;
 
-namespace Mhora
+namespace Mhora;
+
+public class TransitItem : ListViewItem
 {
-    public class TransitItem : ListViewItem
+    private readonly Horoscope h;
+
+    public TransitItem(Horoscope _h)
     {
-        private readonly Horoscope h;
+        h = _h;
+    }
 
-        public TransitItem(Horoscope _h)
-        {
-            h = _h;
-        }
-
-        public Horoscope GetHoroscope()
-        {
-            return h;
-        }
+    public Horoscope GetHoroscope()
+    {
+        return h;
     }
 }

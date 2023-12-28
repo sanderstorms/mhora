@@ -13,141 +13,142 @@ using SqlNado;
 using SqlNado.Query;
 using SyslogLogging;
 
-namespace Mhora
+namespace Mhora;
+
+internal static class mhora
 {
-    internal static class mhora
+    private static string        _workingDir;
+    private static LoggingModule _log;
+
+    private static DataTable _countryCodes;
+
+    internal static bool Running
     {
-        private static bool _running;
-        private static string _workingDir;
+        get;
+        private set;
+    }
 
-        internal static bool Running => (_running);
-        internal static Assembly ActiveAssembly => _running ? Assembly.GetEntryAssembly() : Assembly.GetExecutingAssembly();
-        internal static string WorkingDir => (_workingDir ??= Path.GetDirectoryName(ActiveAssembly.Location));
-        internal static Version Version => Assembly.GetExecutingAssembly().GetName().Version;
-        private static LoggingModule _log;
-        internal static LoggingModule Log => (_log ??= new LoggingModule());
+    internal static Assembly      ActiveAssembly => Running ? Assembly.GetEntryAssembly() : Assembly.GetExecutingAssembly();
+    internal static string        WorkingDir     => _workingDir ??= Path.GetDirectoryName(ActiveAssembly.Location);
+    internal static Version       Version        => Assembly.GetExecutingAssembly().GetName().Version;
+    internal static LoggingModule Log            => _log ??= new LoggingModule();
 
-        internal static string VersionString
+    internal static string VersionString
+    {
+        get
         {
-            get
+            var versionString = Version.ToString();
+
+            switch (Version.Build)
             {
-                string versionString = Version.ToString();
-
-                switch (Version.Build)
+                case 0:
                 {
-                    case 0:
-                    {
-                        versionString += " (beta)";
-                    }
-                    break;
-
-                    case 1:
-                    {
-                        versionString += " (release candidate)";
-                    }
-                    break;
-
-                    case 2:
-                    {
-                    }
-                    break;
-
-                    default:
-                    {
-                        versionString += " (?)";
-                    }
-                    break;
+                    versionString += " (beta)";
                 }
+                    break;
 
-                return versionString;
+                case 1:
+                {
+                    versionString += " (release candidate)";
+                }
+                    break;
+
+                case 2:
+                {
+                }
+                    break;
+
+                default:
+                {
+                    versionString += " (?)";
+                }
+                    break;
+            }
+
+            return versionString;
+        }
+    }
+
+    public static TimeZones TimeZones
+    {
+        get;
+        private set;
+    }
+
+    public static async Task InitDb()
+    {
+        _countryCodes = CountryCode.Instance.Table;
+        var jsonPath = Path.Combine(WorkingDir, "DataBase", "TimeZones.json");
+
+        // deserialize JSON directly from a file
+        using (var file = File.OpenText(jsonPath))
+        {
+            var serializer = new JsonSerializer();
+            try
+            {
+                TimeZones = (TimeZones) serializer.Deserialize(file, typeof(TimeZones));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
-        private static DataTable _countryCodes;
-        private static TimeZones _timeZones;
-
-        public static TimeZones TimeZones
+        if (File.Exists("world.db"))
         {
-            get
+            try
             {
-                return (_timeZones);
-            }
-        }
-
-        public static async Task InitDb()
-        {
-            _countryCodes = CountryCode.Instance.Table;
-            var jsonPath = Path.Combine(WorkingDir, "DataBase", "TimeZones.json");
-
-            // deserialize JSON directly from a file
-            using (StreamReader file = File.OpenText(jsonPath))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                try
+                using var db     = new SQLiteDatabase("world.db");
+                var       query  = Query.From<City>().Where(city => city.Name == "Amsterdam").SelectAll();
+                var       cities = db.Load<City>(query.ToString()).ToArray();
+                if (cities.Length > 0)
                 {
-                    _timeZones = (TimeZones)serializer.Deserialize(file, typeof(TimeZones));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-            }
-            if (File.Exists("world.db"))
-            {
-                try
-                {
-                    using var db = new SQLiteDatabase("world.db");
-                    var query = Query.From<City>().Where(city => city.Name == "Amsterdam").SelectAll();
-                    var cities = db.Load<City>(query.ToString()).ToArray();
-                    if (cities.Length > 0)
+                    foreach (var city in cities)
                     {
-                        foreach (var city in cities)
-                        {
-                            var country = city.Country;
-                            var timeZone = _timeZones.FindId(country.Timezones[0].zoneName);
-                            var translations = country.Translations;
-                        }
+                        var country      = city.Country;
+                        var timeZone     = TimeZones.FindId(country.Timezones[0].zoneName);
+                        var translations = country.Translations;
                     }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
+    }
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        private static void Main(string[] args)
-        {
-            _running = true;
-            AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionEventRaised;
-            Application.ThreadException += ThreadExceptionRaised;
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+    /// <summary>
+    ///     The main entry point for the application.
+    /// </summary>
+    [STAThread]
+    private static void Main(string[] args)
+    {
+        Running                                    =  true;
+        AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionEventRaised;
+        Application.ThreadException                += ThreadExceptionRaised;
+        Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
 
-            Log.Settings.LogFilename = Path.Combine(WorkingDir, "debug.txt");
-            Log.Settings.FileLogging = FileLoggingMode.SingleLogFile;
+        Log.Settings.LogFilename = Path.Combine(WorkingDir, "debug.txt");
+        Log.Settings.FileLogging = FileLoggingMode.SingleLogFile;
 
-            Application.Run(new MhoraContainer());
-            AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionEventRaised;
-            Application.ThreadException -= ThreadExceptionRaised;
-            _running = false;
-        }
+        Application.Run(new MhoraContainer());
+        AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionEventRaised;
+        Application.ThreadException                -= ThreadExceptionRaised;
+        Running                                    =  false;
+    }
 
 
-        private static void ThreadExceptionRaised(object sender, ThreadExceptionEventArgs e)
-        {
-            Log.Exception(e.Exception);
-        }
+    private static void ThreadExceptionRaised(object sender, ThreadExceptionEventArgs e)
+    {
+        Log.Exception(e.Exception);
+    }
 
-        private static void UnhandledExceptionEventRaised(object sender, UnhandledExceptionEventArgs e)
-        {
-            var exception = (Exception)e.ExceptionObject;
-            Log.Exception(exception);
-        }
+    private static void UnhandledExceptionEventRaised(object sender, UnhandledExceptionEventArgs e)
+    {
+        var exception = (Exception) e.ExceptionObject;
+        Log.Exception(exception);
     }
 }

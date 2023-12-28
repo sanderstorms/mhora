@@ -18,75 +18,72 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Varga;
 
-namespace Mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength;
+
+// Stronger rasi has a graha which has traversed larger longitude
+// Stronger graha has traversed larger longitude in its house
+public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    // Stronger rasi has a graha which has traversed larger longitude
-    // Stronger graha has traversed larger longitude in its house
-    public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
+    public StrengthByLongitude(Horoscope h, Division dtype) : base(h, dtype, true)
     {
-        public StrengthByLongitude(Horoscope h, Division dtype)
-            : base(h, dtype, true)
+    }
+
+    public bool stronger(Body.Body.Name m, Body.Body.Name n)
+    {
+        var lonm = karakaLongitude(m);
+        var lonn = karakaLongitude(n);
+        if (lonm > lonn)
         {
+            return true;
         }
 
-        public bool stronger(Body.Body.Name m, Body.Body.Name n)
+        if (lonn > lonm)
         {
-            var lonm = karakaLongitude(m);
-            var lonn = karakaLongitude(n);
-            if (lonm > lonn)
-            {
-                return true;
-            }
-
-            if (lonn > lonm)
-            {
-                return false;
-            }
-
-            throw new EqualStrength();
+            return false;
         }
 
-        public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+        throw new EqualStrength();
+    }
+
+    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+    {
+        Body.Body.Name[] karakaBodies =
         {
-            Body.Body.Name[] karakaBodies =
-            {
-                Body.Body.Name.Sun,
-                Body.Body.Name.Moon,
-                Body.Body.Name.Mars,
-                Body.Body.Name.Mercury,
-                Body.Body.Name.Jupiter,
-                Body.Body.Name.Venus,
-                Body.Body.Name.Saturn,
-                Body.Body.Name.Rahu
-            };
+            Body.Body.Name.Sun,
+            Body.Body.Name.Moon,
+            Body.Body.Name.Mars,
+            Body.Body.Name.Mercury,
+            Body.Body.Name.Jupiter,
+            Body.Body.Name.Venus,
+            Body.Body.Name.Saturn,
+            Body.Body.Name.Rahu
+        };
 
-            double lona = 0.0,
-                   lonb = 0.0;
-            foreach (var bn in karakaBodies)
+        double lona = 0.0, lonb = 0.0;
+        foreach (var bn in karakaBodies)
+        {
+            var div    = h.getPosition(bn).toDivisionPosition(new Division(Basics.DivisionType.Rasi));
+            var offset = karakaLongitude(bn);
+            if (div.zodiac_house.value == za && offset > lona)
             {
-                var div    = h.getPosition(bn).toDivisionPosition(new Division(Basics.DivisionType.Rasi));
-                var offset = karakaLongitude(bn);
-                if (div.zodiac_house.value == za && offset > lona)
-                {
-                    lona = offset;
-                }
-                else if (div.zodiac_house.value == zb && offset > lonb)
-                {
-                    lonb = offset;
-                }
+                lona = offset;
             }
-
-            if (lona > lonb)
+            else if (div.zodiac_house.value == zb && offset > lonb)
             {
-                return true;
+                lonb = offset;
             }
-
-            if (lonb > lona)
-            {
-                return false;
-            }
-
-            throw new EqualStrength();
         }
+
+        if (lona > lonb)
+        {
+            return true;
+        }
+
+        if (lonb > lona)
+        {
+            return false;
+        }
+
+        throw new EqualStrength();
     }
 }

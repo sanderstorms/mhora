@@ -18,57 +18,54 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Varga;
 
-namespace Mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength;
+
+// Stronger rasi has larger number of grahas in kendras
+// Stronger graha is in such a rasi
+public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    // Stronger rasi has larger number of grahas in kendras
-    // Stronger graha is in such a rasi
-    public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
+    public StrengthByKendraConjunction(Horoscope h, Division dtype) : base(h, dtype, true)
     {
-        public StrengthByKendraConjunction(Horoscope h, Division dtype)
-            : base(h, dtype, true)
+    }
+
+    public bool stronger(Body.Body.Name m, Body.Body.Name n)
+    {
+        return stronger(h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value, h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value);
+    }
+
+    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+    {
+        var numa = value(za);
+        var numb = value(zb);
+        if (numa > numb)
         {
+            return true;
         }
 
-        public bool stronger(Body.Body.Name m, Body.Body.Name n)
+        if (numb > numa)
         {
-            return stronger(h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value,
-                            h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value);
+            return false;
         }
 
-        public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+        throw new EqualStrength();
+    }
+
+    public int value(ZodiacHouse.Name _zh)
+    {
+        var kendras = new int[4]
         {
-            var numa = value(za);
-            var numb = value(zb);
-            if (numa > numb)
-            {
-                return true;
-            }
-
-            if (numb > numa)
-            {
-                return false;
-            }
-
-            throw new EqualStrength();
+            1,
+            4,
+            7,
+            10
+        };
+        var numGrahas = 0;
+        var zh        = new ZodiacHouse(_zh);
+        foreach (var i in kendras)
+        {
+            numGrahas += numGrahasInZodiacHouse(zh.add(i).value);
         }
 
-        public int value(ZodiacHouse.Name _zh)
-        {
-            var kendras = new int[4]
-            {
-                1,
-                4,
-                7,
-                10
-            };
-            var numGrahas = 0;
-            var zh        = new ZodiacHouse(_zh);
-            foreach (var i in kendras)
-            {
-                numGrahas += numGrahasInZodiacHouse(zh.add(i).value);
-            }
-
-            return numGrahas;
-        }
+        return numGrahas;
     }
 }

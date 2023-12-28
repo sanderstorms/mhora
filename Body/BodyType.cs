@@ -16,27 +16,26 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-namespace Mhora.Body
+namespace Mhora.Body;
+
+/// <summary>
+///     Mutually exclusive classes of BodyTypes
+/// </summary>
+public class BodyType
 {
-    /// <summary>
-    ///     Mutually exclusive classes of BodyTypes
-    /// </summary>
-    public class BodyType
+    public enum Name
     {
-        public enum Name
-        {
-            Lagna,
-            Graha,
-            NonLunarNode,
-            SpecialLagna,
-            ChandraLagna,
-            BhavaArudha,
-            BhavaArudhaSecondary,
-            GrahaArudha,
-            Varnada,
-            Upagraha,
-            Sahama,
-            Other
-        }
+        Lagna,
+        Graha,
+        NonLunarNode,
+        SpecialLagna,
+        ChandraLagna,
+        BhavaArudha,
+        BhavaArudhaSecondary,
+        GrahaArudha,
+        Varnada,
+        Upagraha,
+        Sahama,
+        Other
     }
 }

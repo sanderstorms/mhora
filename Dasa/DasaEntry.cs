@@ -19,93 +19,92 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System.ComponentModel;
 using Mhora.Calculation;
 
-namespace Mhora
+namespace Mhora;
+
+[TypeConverter(typeof(DasaEntryConverter))]
+public class DasaEntry
 {
-    [TypeConverter(typeof(DasaEntryConverter))]
-    public class DasaEntry
+    public double           dasaLength; // 1 year = 360 days = 360 degrees is used internally!!!!
+    public Body.Body.Name   graha;
+    public int              level;
+    public string           shortDesc;
+    public double           startUT;
+    public ZodiacHouse.Name zodiacHouse;
+
+    public DasaEntry(Body.Body.Name _graha, double _startUT, double _dasaLength, int _level, string _shortDesc)
     {
-        public double           dasaLength; // 1 year = 360 days = 360 degrees is used internally!!!!
-        public Body.Body.Name        graha;
-        public int              level;
-        public string           shortDesc;
-        public double           startUT;
-        public ZodiacHouse.Name zodiacHouse;
+        graha = _graha;
+        Construct(_startUT, _dasaLength, _level, _shortDesc);
+    }
 
-        public DasaEntry(Body.Body.Name _graha, double _startUT, double _dasaLength, int _level, string _shortDesc)
-        {
-            graha = _graha;
-            Construct(_startUT, _dasaLength, _level, _shortDesc);
-        }
+    public DasaEntry(ZodiacHouse.Name _zodiacHouse, double _startUT, double _dasaLength, int _level, string _shortDesc)
+    {
+        zodiacHouse = _zodiacHouse;
+        Construct(_startUT, _dasaLength, _level, _shortDesc);
+    }
 
-        public DasaEntry(ZodiacHouse.Name _zodiacHouse, double _startUT, double _dasaLength, int _level, string _shortDesc)
-        {
-            zodiacHouse = _zodiacHouse;
-            Construct(_startUT, _dasaLength, _level, _shortDesc);
-        }
+    public DasaEntry()
+    {
+        startUT     = dasaLength = 0.0;
+        level       = 1;
+        shortDesc   = "Jup";
+        graha       = Body.Body.Name.Jupiter;
+        zodiacHouse = ZodiacHouse.Name.Ari;
+    }
 
-        public DasaEntry()
-        {
-            startUT     = dasaLength = 0.0;
-            level       = 1;
-            shortDesc   = "Jup";
-            graha       = Body.Body.Name.Jupiter;
-            zodiacHouse = ZodiacHouse.Name.Ari;
-        }
+    public string DasaName
+    {
+        get =>
+            shortDesc;
+        set =>
+            shortDesc = value;
+    }
 
-        public string DasaName
-        {
-            get =>
-                shortDesc;
-            set =>
-                shortDesc = value;
-        }
+    public int DasaLevel
+    {
+        get =>
+            level;
+        set =>
+            level = value;
+    }
 
-        public int DasaLevel
-        {
-            get =>
-                level;
-            set =>
-                level = value;
-        }
+    public double StartUT
+    {
+        get =>
+            startUT;
+        set =>
+            startUT = value;
+    }
 
-        public double StartUT
-        {
-            get =>
-                startUT;
-            set =>
-                startUT = value;
-        }
+    public double DasaLength
+    {
+        get =>
+            dasaLength;
+        set =>
+            dasaLength = value;
+    }
 
-        public double DasaLength
-        {
-            get =>
-                dasaLength;
-            set =>
-                dasaLength = value;
-        }
+    public Body.Body.Name Graha
+    {
+        get =>
+            graha;
+        set =>
+            graha = value;
+    }
 
-        public Body.Body.Name Graha
-        {
-            get =>
-                graha;
-            set =>
-                graha = value;
-        }
+    public ZodiacHouse.Name ZHouse
+    {
+        get =>
+            zodiacHouse;
+        set =>
+            zodiacHouse = value;
+    }
 
-        public ZodiacHouse.Name ZHouse
-        {
-            get =>
-                zodiacHouse;
-            set =>
-                zodiacHouse = value;
-        }
-
-        private void Construct(double _startUT, double _dasaLength, int _level, string _shortDesc)
-        {
-            startUT    = _startUT;
-            dasaLength = _dasaLength;
-            level      = _level;
-            shortDesc  = _shortDesc;
-        }
+    private void Construct(double _startUT, double _dasaLength, int _level, string _shortDesc)
+    {
+        startUT    = _startUT;
+        dasaLength = _dasaLength;
+        level      = _level;
+        shortDesc  = _shortDesc;
     }
 }

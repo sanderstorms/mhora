@@ -18,11 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Calculation;
 
-namespace Mhora
+namespace Mhora;
+
+public interface INakshatraYogaDasa : IDasa
 {
-    public interface INakshatraYogaDasa : IDasa
-    {
-        Body.Body.Name lordOfYoga(Longitude   l);
-        double    lengthOfDasa(Body.Body.Name plt);
-    }
+    Body.Body.Name lordOfYoga(Longitude        l);
+    double         lengthOfDasa(Body.Body.Name plt);
 }

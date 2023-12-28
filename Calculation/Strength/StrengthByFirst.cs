@@ -18,25 +18,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Varga;
 
-namespace Mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength;
+
+// Stronger rasi is the first one
+// Stronger graha is the first one
+public class StrengthByFirst : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    // Stronger rasi is the first one
-    // Stronger graha is the first one
-    public class StrengthByFirst : BaseStrength, IStrengthRasi, IStrengthGraha
+    public StrengthByFirst(Horoscope h, Division dtype) : base(h, dtype, true)
     {
-        public StrengthByFirst(Horoscope h, Division dtype)
-            : base(h, dtype, true)
-        {
-        }
+    }
 
-        public bool stronger(Body.Body.Name m, Body.Body.Name n)
-        {
-            return true;
-        }
+    public bool stronger(Body.Body.Name m, Body.Body.Name n)
+    {
+        return true;
+    }
 
-        public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-        {
-            return true;
-        }
+    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+    {
+        return true;
     }
 }

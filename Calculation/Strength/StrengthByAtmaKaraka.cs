@@ -18,55 +18,53 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Varga;
 
-namespace Mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength;
+
+// Stronger rasi contains AK
+// Stronger graha is AK
+public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    // Stronger rasi contains AK
-    // Stronger graha is AK
-    public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
+    public StrengthByAtmaKaraka(Horoscope h, Division dtype) : base(h, dtype, true)
     {
-        public StrengthByAtmaKaraka(Horoscope h, Division dtype)
-            : base(h, dtype, true)
+    }
+
+    public bool stronger(Body.Body.Name m, Body.Body.Name n)
+    {
+        var ak = findAtmaKaraka();
+        if (m == ak)
         {
+            return true;
         }
 
-        public bool stronger(Body.Body.Name m, Body.Body.Name n)
+        if (n == ak)
         {
-            var ak = findAtmaKaraka();
-            if (m == ak)
+            return false;
+        }
+
+        throw new EqualStrength();
+    }
+
+    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+    {
+        var ala = findGrahasInHouse(za);
+        var alb = findGrahasInHouse(zb);
+        var ak  = findAtmaKaraka();
+        foreach (Body.Body.Name ba in ala)
+        {
+            if (ba == ak)
             {
                 return true;
             }
+        }
 
-            if (n == ak)
+        foreach (Body.Body.Name bb in alb)
+        {
+            if (bb == ak)
             {
                 return false;
             }
-
-            throw new EqualStrength();
         }
 
-        public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-        {
-            var ala = findGrahasInHouse(za);
-            var alb = findGrahasInHouse(zb);
-            var ak  = findAtmaKaraka();
-            foreach (Body.Body.Name ba in ala)
-            {
-                if (ba == ak)
-                {
-                    return true;
-                }
-            }
-
-            foreach (Body.Body.Name bb in alb)
-            {
-                if (bb == ak)
-                {
-                    return false;
-                }
-            }
-
-            throw new EqualStrength();
-        }
+        throw new EqualStrength();
     }
 }

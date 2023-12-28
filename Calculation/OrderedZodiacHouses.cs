@@ -20,35 +20,34 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 
-namespace Mhora.Calculation
+namespace Mhora.Calculation;
+
+[TypeConverter(typeof(OrderedZodiacHousesConverter))]
+public class OrderedZodiacHouses : ICloneable
 {
-    [TypeConverter(typeof(OrderedZodiacHousesConverter))]
-    public class OrderedZodiacHouses : ICloneable
+    public ArrayList houses;
+
+    public OrderedZodiacHouses()
     {
-        public ArrayList houses;
+        houses = new ArrayList();
+    }
 
-        public OrderedZodiacHouses()
+    public object Clone()
+    {
+        var oz = new OrderedZodiacHouses();
+        oz.houses = (ArrayList) houses.Clone();
+        return oz;
+    }
+
+    public override string ToString()
+    {
+        var s     = string.Empty;
+        var names = (ZodiacHouse.Name[]) houses.ToArray(typeof(ZodiacHouse.Name));
+        foreach (var zn in names)
         {
-            houses = new ArrayList();
+            s += zn + " ";
         }
 
-        public object Clone()
-        {
-            var oz = new OrderedZodiacHouses();
-            oz.houses = (ArrayList)houses.Clone();
-            return oz;
-        }
-
-        public override string ToString()
-        {
-            var s     = string.Empty;
-            var names = (ZodiacHouse.Name[])houses.ToArray(typeof(ZodiacHouse.Name));
-            foreach (var zn in names)
-            {
-                s += zn + " ";
-            }
-
-            return s;
-        }
+        return s;
     }
 }

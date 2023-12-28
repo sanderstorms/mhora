@@ -4,98 +4,93 @@ using SqlNado;
 using SujaySarma.Data.Files.TokenLimitedFiles;
 using SujaySarma.Data.Files.TokenLimitedFiles.Attributes;
 
-namespace Mhora.Database
+namespace Mhora.Database;
+
+public class CountryCode
 {
-    public class CountryCode
+    public const   string      CsvFile = "Country codes.csv";
+    private static CountryCode _instance;
+
+
+    private DataTable _table;
+
+    public static CountryCode Instance => _instance ??= new CountryCode();
+
+    public DataTable Table
     {
-        private static CountryCode _instance;
-        public const string CsvFile = "Country codes.csv";
-
-        [SQLiteTable(Name = "Countries")]
-        public class Country
+        get
         {
-            [FileField("name")]
-            public string Name
+            var csvFile = Path.Combine(mhora.WorkingDir, "Database", CsvFile);
+            if (File.Exists(csvFile))
             {
-                get;
-                set;
+                _table ??= TokenLimitedFileReader.GetTable(csvFile);
             }
 
-            [SQLiteColumn(IsPrimaryKey = true)]
-            [FileField("alpha-2")]
-            public string Code
+            return _table;
+        }
+    }
+
+    public CountryCode this[int index]
+    {
+        get
+        {
+            var entry   = new CountryCode();
+            var geoName = Table.Rows[index];
+            for (var col = 0; col < Table.Columns.Count; col++)
             {
-                get;
-                set;
+                var name  = Table.Columns[col].ColumnName;
+                var value = geoName[col].ToString();
+                entry.SetValue(name, value);
             }
 
-            [FileField("alpha-3")]
-            public string Code2
-            {
-                get;
-                set;
-            }
+            return entry;
+        }
+    }
 
-            [FileField("region")]
-            public string Region
-            {
-                get;
-                set;
-            }
-
-            [FileField("sub-region")]
-            public string SubRegion
-            {
-                get;
-                set;
-            }
-
-            [FileField("intermediate-region")]
-            public string IntermediateRegion
-            {
-                get;
-                set;
-            }
+    [SQLiteTable(Name = "Countries")]
+    public class Country
+    {
+        [FileField("name")]
+        public string Name
+        {
+            get;
+            set;
         }
 
-        public static CountryCode Instance
+        [SQLiteColumn(IsPrimaryKey = true)]
+        [FileField("alpha-2")]
+        public string Code
         {
-            get
-            {
-                return (_instance ??= new CountryCode());
-            }
+            get;
+            set;
         }
 
-
-        DataTable _table;
-        public DataTable Table
+        [FileField("alpha-3")]
+        public string Code2
         {
-            get
-            {
-                var csvFile = Path.Combine(Mhora.mhora.WorkingDir, "Database", CsvFile);
-                if (File.Exists(csvFile))
-                {
-                    _table ??= TokenLimitedFileReader.GetTable(csvFile, ',');
-                }
-                return (_table);
-            }
+            get;
+            set;
         }
 
-        public CountryCode this[int index]
+        [FileField("region")]
+        public string Region
         {
-            get
-            {
-                var entry = new CountryCode();
-                var geoName = Table.Rows[index];
-                for (int col = 0; col < Table.Columns.Count; col++)
-                {
-                    var name = Table.Columns[col].ColumnName;
-                    var value = geoName[col].ToString();
-                    entry.SetValue(name, value);
-                }
-
-                return (entry);
-            }
+            get;
+            set;
         }
-   }
+
+        [FileField("sub-region")]
+        public string SubRegion
+        {
+            get;
+            set;
+        }
+
+        [FileField("intermediate-region")]
+        public string IntermediateRegion
+        {
+            get;
+            set;
+        }
+    }
 }

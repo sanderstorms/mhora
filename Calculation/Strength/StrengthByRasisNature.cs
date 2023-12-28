@@ -18,56 +18,54 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Varga;
 
-namespace Mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength;
+
+// Stronger rasi by nature (moveable, fixed, dual)
+// Stronger graha in such a rasi
+public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    // Stronger rasi by nature (moveable, fixed, dual)
-    // Stronger graha in such a rasi
-    public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
+    public StrengthByRasisNature(Horoscope h, Division dtype) : base(h, dtype, true)
     {
-        public StrengthByRasisNature(Horoscope h, Division dtype)
-            : base(h, dtype, true)
+    }
+
+    public bool stronger(Body.Body.Name m, Body.Body.Name n)
+    {
+        var za = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
+        var zb = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
+        return stronger(za, zb);
+    }
+
+    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+    {
+        int[] vals =
         {
+            3,
+            1,
+            2
+        }; // dual, move, fix
+        var a = naturalValueForRasi(za);
+        var b = naturalValueForRasi(zb);
+        if (a > b)
+        {
+            return true;
         }
 
-        public bool stronger(Body.Body.Name m, Body.Body.Name n)
+        if (a < b)
         {
-            var za = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
-            var zb = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
-            return stronger(za, zb);
+            return false;
         }
 
-        public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+        throw new EqualStrength();
+    }
+
+    public int naturalValueForRasi(ZodiacHouse.Name zha)
+    {
+        int[] vals =
         {
-            int[] vals =
-            {
-                3,
-                1,
-                2
-            }; // dual, move, fix
-            var a = naturalValueForRasi(za);
-            var b = naturalValueForRasi(zb);
-            if (a > b)
-            {
-                return true;
-            }
-
-            if (a < b)
-            {
-                return false;
-            }
-
-            throw new EqualStrength();
-        }
-
-        public int naturalValueForRasi(ZodiacHouse.Name zha)
-        {
-            int[] vals =
-            {
-                3,
-                1,
-                2
-            }; // dual, move, fix
-            return vals[(int)zha % 3];
-        }
+            3,
+            1,
+            2
+        }; // dual, move, fix
+        return vals[(int) zha % 3];
     }
 }

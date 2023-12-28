@@ -20,111 +20,109 @@ using System.Collections;
 using Mhora.Body;
 using Mhora.Varga;
 
-namespace Mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength;
+
+public abstract class BaseStrength
 {
-    public abstract class BaseStrength
+    protected bool      bUseSimpleLords;
+    protected Division  dtype;
+    protected Horoscope h;
+    protected ArrayList std_div_pos;
+    protected ArrayList std_grahas;
+
+    protected BaseStrength(Horoscope _h, Division _dtype, bool _bUseSimpleLords)
     {
-        protected bool      bUseSimpleLords;
-        protected Division  dtype;
-        protected Horoscope h;
-        protected ArrayList std_div_pos;
-        protected ArrayList std_grahas;
+        h               = _h;
+        dtype           = _dtype;
+        bUseSimpleLords = _bUseSimpleLords;
+        std_div_pos     = h.CalculateDivisionPositions(dtype);
+    }
 
-        protected BaseStrength(Horoscope _h, Division _dtype, bool _bUseSimpleLords)
+    protected Body.Body.Name GetStrengthLord(ZodiacHouse.Name zh)
+    {
+        if (bUseSimpleLords)
         {
-            h               = _h;
-            dtype           = _dtype;
-            bUseSimpleLords = _bUseSimpleLords;
-            std_div_pos     = h.CalculateDivisionPositions(dtype);
+            return Basics.SimpleLordOfZodiacHouse(zh);
         }
 
-        protected Body.Body.Name GetStrengthLord(ZodiacHouse.Name zh)
+        return h.LordOfZodiacHouse(new ZodiacHouse(zh), dtype);
+    }
+
+    protected Body.Body.Name GetStrengthLord(ZodiacHouse zh)
+    {
+        return GetStrengthLord(zh.value);
+    }
+
+    protected int numGrahasInZodiacHouse(ZodiacHouse.Name zh)
+    {
+        var num = 0;
+        foreach (DivisionPosition dp in std_div_pos)
         {
-            if (bUseSimpleLords)
+            if (dp.type != BodyType.Name.Graha)
             {
-                return Basics.SimpleLordOfZodiacHouse(zh);
+                continue;
             }
 
-            return h.LordOfZodiacHouse(new ZodiacHouse(zh), dtype);
-        }
-
-        protected Body.Body.Name GetStrengthLord(ZodiacHouse zh)
-        {
-            return GetStrengthLord(zh.value);
-        }
-
-        protected int numGrahasInZodiacHouse(ZodiacHouse.Name zh)
-        {
-            var num = 0;
-            foreach (DivisionPosition dp in std_div_pos)
+            if (dp.zodiac_house.value == zh)
             {
-                if (dp.type != BodyType.Name.Graha)
-                {
-                    continue;
-                }
+                num = num + 1;
+            }
+        }
 
-                if (dp.zodiac_house.value == zh)
-                {
-                    num = num + 1;
-                }
+        return num;
+    }
+
+    protected double karakaLongitude(Body.Body.Name b)
+    {
+        var lon = h.getPosition(b).longitude.toZodiacHouseOffset();
+        if (b == Body.Body.Name.Rahu || b == Body.Body.Name.Ketu)
+        {
+            lon = 30.0 - lon;
+        }
+
+        return lon;
+    }
+
+    protected Body.Body.Name findAtmaKaraka()
+    {
+        Body.Body.Name[] karakaBodies =
+        {
+            Body.Body.Name.Sun,
+            Body.Body.Name.Moon,
+            Body.Body.Name.Mars,
+            Body.Body.Name.Mercury,
+            Body.Body.Name.Jupiter,
+            Body.Body.Name.Venus,
+            Body.Body.Name.Saturn,
+            Body.Body.Name.Rahu
+        };
+        var lon = 0.0;
+        var ret = Body.Body.Name.Sun;
+        foreach (var bn in karakaBodies)
+        {
+            var offset = karakaLongitude(bn);
+            if (offset > lon)
+            {
+                lon = offset;
             }
 
-            return num;
+            ret = bn;
         }
 
-        protected double karakaLongitude(Body.Body.Name b)
+        return ret;
+    }
+
+    public ArrayList findGrahasInHouse(ZodiacHouse.Name zh)
+    {
+        var ret = new ArrayList();
+        foreach (DivisionPosition dp in std_div_pos)
         {
-            var lon = h.getPosition(b).longitude.toZodiacHouseOffset();
-            if (b == Body.Body.Name.Rahu || b == Body.Body.Name.Ketu)
+            if (dp.type == BodyType.Name.Graha && dp.zodiac_house.value == zh)
             {
-                lon = 30.0 - lon;
+                ret.Add(dp.name);
             }
-
-            return lon;
         }
 
-        protected Body.Body.Name findAtmaKaraka()
-        {
-            Body.Body.Name[] karakaBodies =
-            {
-                Body.Body.Name.Sun,
-                Body.Body.Name.Moon,
-                Body.Body.Name.Mars,
-                Body.Body.Name.Mercury,
-                Body.Body.Name.Jupiter,
-                Body.Body.Name.Venus,
-                Body.Body.Name.Saturn,
-                Body.Body.Name.Rahu
-            };
-            var lon = 0.0;
-            var ret = Body.Body.Name.Sun;
-            foreach (var bn in karakaBodies)
-            {
-                var offset = karakaLongitude(bn);
-                if (offset > lon)
-                {
-                    lon = offset;
-                }
-
-                ret = bn;
-            }
-
-            return ret;
-        }
-
-        public ArrayList findGrahasInHouse(ZodiacHouse.Name zh)
-        {
-            var ret = new ArrayList();
-            foreach (DivisionPosition dp in std_div_pos)
-            {
-                if (dp.type               == BodyType.Name.Graha &&
-                    dp.zodiac_house.value == zh)
-                {
-                    ret.Add(dp.name);
-                }
-            }
-
-            return ret;
-        }
+        return ret;
     }
 }

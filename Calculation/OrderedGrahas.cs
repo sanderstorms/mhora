@@ -20,34 +20,33 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 
-namespace Mhora.Calculation
+namespace Mhora.Calculation;
+
+[TypeConverter(typeof(OrderedGrahasConverter))]
+public class OrderedGrahas : ICloneable
 {
-    [TypeConverter(typeof(OrderedGrahasConverter))]
-    public class OrderedGrahas : ICloneable
+    public ArrayList grahas;
+
+    public OrderedGrahas()
     {
-        public ArrayList grahas;
+        grahas = new ArrayList();
+    }
 
-        public OrderedGrahas()
+    public object Clone()
+    {
+        var oz = new OrderedGrahas();
+        oz.grahas = (ArrayList) grahas.Clone();
+        return oz;
+    }
+
+    public override string ToString()
+    {
+        var s = string.Empty;
+        foreach (Body.Body.Name bn in grahas)
         {
-            grahas = new ArrayList();
+            s += Body.Body.toShortString(bn) + " ";
         }
 
-        public object Clone()
-        {
-            var oz = new OrderedGrahas();
-            oz.grahas = (ArrayList)grahas.Clone();
-            return oz;
-        }
-
-        public override string ToString()
-        {
-            var s = string.Empty;
-            foreach (Body.Body.Name bn in grahas)
-            {
-                s += Body.Body.toShortString(bn) + " ";
-            }
-
-            return s;
-        }
+        return s;
     }
 }

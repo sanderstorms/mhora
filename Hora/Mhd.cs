@@ -21,47 +21,46 @@ using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
-namespace Mhora.Hora
+namespace Mhora.Hora;
+
+/// <summary>
+///     Class deals with reading the Jhd file specification
+///     used by Jagannatha Hora
+/// </summary>
+public class Mhd : IFileToHoraInfo
 {
-    /// <summary>
-    ///     Class deals with reading the Jhd file specification
-    ///     used by Jagannatha Hora
-    /// </summary>
-    public class Mhd : IFileToHoraInfo
+    private readonly string fname;
+
+    public Mhd(string fileName)
     {
-        private readonly string fname;
+        fname = fileName;
+    }
 
-        public Mhd(string fileName)
+    public HoraInfo toHoraInfo()
+    {
+        try
         {
-            fname = fileName;
-        }
-
-        public HoraInfo toHoraInfo()
-        {
-            try
-            {
-                var        hi = new HoraInfo();
-                FileStream sOut;
-                sOut = new FileStream(fname, FileMode.Open, FileAccess.Read);
-                var formatter = new BinaryFormatter();
-                formatter.AssemblyFormat = FormatterAssemblyStyle.Simple;
-                hi                       = (HoraInfo)formatter.Deserialize(sOut);
-                sOut.Close();
-                return hi;
-            }
-            catch
-            {
-                MessageBox.Show("Unable to read file");
-                return new HoraInfo();
-            }
-        }
-
-        public void ToFile(HoraInfo hi)
-        {
-            var sOut      = new FileStream(fname, FileMode.OpenOrCreate, FileAccess.Write);
+            var        hi = new HoraInfo();
+            FileStream sOut;
+            sOut = new FileStream(fname, FileMode.Open, FileAccess.Read);
             var formatter = new BinaryFormatter();
-            formatter.Serialize(sOut, hi);
+            formatter.AssemblyFormat = FormatterAssemblyStyle.Simple;
+            hi                       = (HoraInfo) formatter.Deserialize(sOut);
             sOut.Close();
+            return hi;
         }
+        catch
+        {
+            MessageBox.Show("Unable to read file");
+            return new HoraInfo();
+        }
+    }
+
+    public void ToFile(HoraInfo hi)
+    {
+        var sOut      = new FileStream(fname, FileMode.OpenOrCreate, FileAccess.Write);
+        var formatter = new BinaryFormatter();
+        formatter.Serialize(sOut, hi);
+        sOut.Close();
     }
 }

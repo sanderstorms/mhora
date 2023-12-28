@@ -21,124 +21,123 @@ using System.Collections;
 using Mhora.Calculation;
 using Mhora.Delegates;
 
-namespace Mhora
+namespace Mhora;
+
+// Wrapper around vimsottari dasa that starts the initial dasa
+// based on the yoga
+public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaDasa
 {
-    // Wrapper around vimsottari dasa that starts the initial dasa
-    // based on the yoga
-    public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaDasa
+    private readonly Horoscope      h;
+    private readonly VimsottariDasa vd;
+    private          UserOptions    options;
+
+    public YogaVimsottariDasa(Horoscope _h)
     {
-        private readonly Horoscope      h;
-        private          UserOptions    options;
-        private readonly VimsottariDasa vd;
+        options    = new UserOptions();
+        common     = this;
+        yogaCommon = this;
+        h          = _h;
+        vd         = new VimsottariDasa(h);
+    }
 
-        public YogaVimsottariDasa(Horoscope _h)
+    public override object GetOptions()
+    {
+        return options.Clone();
+    }
+
+    public override object SetOptions(object a)
+    {
+        options = (UserOptions) options.SetOptions(a);
+        if (RecalculateEvent != null)
         {
-            options    = new UserOptions();
-            common     = this;
-            yogaCommon = this;
-            h          = _h;
-            vd         = new VimsottariDasa(h);
+            RecalculateEvent();
         }
 
-        public override object GetOptions()
+        return options.Clone();
+    }
+
+    public ArrayList Dasa(int cycle)
+    {
+        var t = new Transit(h);
+        var l = t.LongitudeOfSunMoonYoga(h.baseUT);
+        return _YogaDasa(l, 1, cycle);
+    }
+
+    public ArrayList AntarDasa(DasaEntry di)
+    {
+        return _AntarDasa(di);
+    }
+
+    public string Description()
+    {
+        return "Yoga Vimsottari Dasa";
+    }
+
+    public double paramAyus()
+    {
+        return vd.paramAyus();
+    }
+
+    public int numberOfDasaItems()
+    {
+        return vd.numberOfDasaItems();
+    }
+
+    public DasaEntry nextDasaLord(DasaEntry di)
+    {
+        return vd.nextDasaLord(di);
+    }
+
+    public double lengthOfDasa(Body.Body.Name plt)
+    {
+        return vd.lengthOfDasa(plt);
+    }
+
+    public Body.Body.Name lordOfNakshatra(Nakshatra n)
+    {
+        throw new Exception();
+        return Body.Body.Name.Lagna;
+    }
+
+    public Body.Body.Name lordOfYoga(Longitude l)
+    {
+        return l.toSunMoonYoga().getLord();
+    }
+
+    public class UserOptions : ICloneable
+    {
+        public bool bExpungeTravelled = true;
+
+        public UserOptions()
         {
-            return options.Clone();
+            bExpungeTravelled = true;
         }
 
-        public override object SetOptions(object a)
+        [PGNotVisible]
+        public bool UseYogaRemainder
         {
-            options = (UserOptions)options.SetOptions(a);
-            if (RecalculateEvent != null)
+            get =>
+                bExpungeTravelled;
+            set =>
+                bExpungeTravelled = value;
+        }
+
+        public object Clone()
+        {
+            var options = new UserOptions();
+            options.bExpungeTravelled = bExpungeTravelled;
+            return options;
+        }
+
+        public object SetOptions(object b)
+        {
+            if (b is UserOptions)
             {
-                RecalculateEvent();
+                var uo = (UserOptions) b;
+                bExpungeTravelled = uo.bExpungeTravelled;
             }
 
-            return options.Clone();
-        }
-
-        public ArrayList Dasa(int cycle)
-        {
-            var t = new Transit(h);
-            var l = t.LongitudeOfSunMoonYoga(h.baseUT);
-            return _YogaDasa(l, 1, cycle);
-        }
-
-        public ArrayList AntarDasa(DasaEntry di)
-        {
-            return _AntarDasa(di);
-        }
-
-        public string Description()
-        {
-            return "Yoga Vimsottari Dasa";
-        }
-
-        public double paramAyus()
-        {
-            return vd.paramAyus();
-        }
-
-        public int numberOfDasaItems()
-        {
-            return vd.numberOfDasaItems();
-        }
-
-        public DasaEntry nextDasaLord(DasaEntry di)
-        {
-            return vd.nextDasaLord(di);
-        }
-
-        public double lengthOfDasa(Body.Body.Name plt)
-        {
-            return vd.lengthOfDasa(plt);
-        }
-
-        public Body.Body.Name lordOfNakshatra(Nakshatra n)
-        {
-            throw new Exception();
-            return Body.Body.Name.Lagna;
-        }
-
-        public Body.Body.Name lordOfYoga(Longitude l)
-        {
-            return l.toSunMoonYoga().getLord();
-        }
-
-        public class UserOptions : ICloneable
-        {
-            public bool bExpungeTravelled = true;
-
-            public UserOptions()
-            {
-                bExpungeTravelled = true;
-            }
-
-            [PGNotVisible]
-            public bool UseYogaRemainder
-            {
-                get =>
-                    bExpungeTravelled;
-                set =>
-                    bExpungeTravelled = value;
-            }
-
-            public object Clone()
-            {
-                var options = new UserOptions();
-                options.bExpungeTravelled = bExpungeTravelled;
-                return options;
-            }
-
-            public object SetOptions(object b)
-            {
-                if (b is UserOptions)
-                {
-                    var uo = (UserOptions)b;
-                    bExpungeTravelled = uo.bExpungeTravelled;
-                }
-
-                return Clone();
-            }
+            return Clone();
         }
     }
 }

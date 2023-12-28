@@ -16,15 +16,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-namespace Mhora
+namespace Mhora;
+
+/// <summary>
+///     An interface which should be used by those whose properties
+///     should be updateable using the mhoraOptions form.
+/// </summary>
+public interface IUpdateable
 {
-    /// <summary>
-    ///     An interface which should be used by those whose properties
-    ///     should be updateable using the mhoraOptions form.
-    /// </summary>
-    public interface IUpdateable
-    {
-        object GetOptions();
-        object SetOptions(object a);
-    }
+    object GetOptions();
+    object SetOptions(object a);
 }

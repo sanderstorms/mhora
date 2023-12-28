@@ -18,62 +18,60 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Varga;
 
-namespace Mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength;
+
+// Stronger rasi has a larger narayana dasa length
+// Stronger graha is in such a rasi
+public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    // Stronger rasi has a larger narayana dasa length
-    // Stronger graha is in such a rasi
-    public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
+    public StrengthByNarayanaDasaLength(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
     {
-        public StrengthByNarayanaDasaLength(Horoscope h, Division dtype, bool bSimpleLord)
-            : base(h, dtype, bSimpleLord)
+    }
+
+    public bool stronger(Body.Body.Name m, Body.Body.Name n)
+    {
+        var a = value(m);
+        var b = value(n);
+        if (a > b)
         {
+            return true;
         }
 
-        public bool stronger(Body.Body.Name m, Body.Body.Name n)
+        if (a < b)
         {
-            var a = value(m);
-            var b = value(n);
-            if (a > b)
-            {
-                return true;
-            }
-
-            if (a < b)
-            {
-                return false;
-            }
-
-            throw new EqualStrength();
+            return false;
         }
 
-        public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+        throw new EqualStrength();
+    }
+
+    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+    {
+        var a = value(za);
+        var b = value(zb);
+        if (a > b)
         {
-            var a = value(za);
-            var b = value(zb);
-            if (a > b)
-            {
-                return true;
-            }
-
-            if (a < b)
-            {
-                return false;
-            }
-
-            throw new EqualStrength();
+            return true;
         }
 
-        protected int value(ZodiacHouse.Name _zh)
+        if (a < b)
         {
-            var bl = GetStrengthLord(_zh);
-            var pl = h.getPosition(bl).toDivisionPosition(dtype);
-            return Dasa.NarayanaDasaLength(new ZodiacHouse(_zh), pl);
+            return false;
         }
 
-        protected int value(Body.Body.Name bm)
-        {
-            var zm = h.getPosition(bm).toDivisionPosition(dtype).zodiac_house.value;
-            return value(zm);
-        }
+        throw new EqualStrength();
+    }
+
+    protected int value(ZodiacHouse.Name _zh)
+    {
+        var bl = GetStrengthLord(_zh);
+        var pl = h.getPosition(bl).toDivisionPosition(dtype);
+        return Dasa.NarayanaDasaLength(new ZodiacHouse(_zh), pl);
+    }
+
+    protected int value(Body.Body.Name bm)
+    {
+        var zm = h.getPosition(bm).toDivisionPosition(dtype).zodiac_house.value;
+        return value(zm);
     }
 }

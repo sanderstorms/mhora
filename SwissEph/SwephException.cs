@@ -18,23 +18,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 
-namespace Mhora.SwissEph
+namespace Mhora.SwissEph;
+
+/// <summary>
+///     Errors found withitn the unmanaged Swiss Ephemeris Library
+/// </summary>
+public class SwephException : Exception
 {
-    /// <summary>
-    ///     Errors found withitn the unmanaged Swiss Ephemeris Library
-    /// </summary>
-    public class SwephException : Exception
+    public string status;
+
+    public SwephException()
     {
-        public string status;
+        status = null;
+    }
 
-        public SwephException()
-        {
-            status = null;
-        }
-
-        public SwephException(string message)
-        {
-            status = message;
-        }
+    public SwephException(string message)
+    {
+        status = message;
     }
 }

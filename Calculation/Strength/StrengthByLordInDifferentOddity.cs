@@ -18,55 +18,53 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Varga;
 
-namespace Mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength;
+
+// Stronger rasi has its lord in a house of different oddity
+// Stronger graha in such a rasi
+public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    // Stronger rasi has its lord in a house of different oddity
-    // Stronger graha in such a rasi
-    public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStrengthGraha
+    public StrengthByLordInDifferentOddity(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
     {
-        public StrengthByLordInDifferentOddity(Horoscope h, Division dtype, bool bSimpleLord)
-            : base(h, dtype, bSimpleLord)
+    }
+
+    public bool stronger(Body.Body.Name ba, Body.Body.Name bb)
+    {
+        var za = h.getPosition(ba).toDivisionPosition(dtype).zodiac_house.value;
+        var zb = h.getPosition(bb).toDivisionPosition(dtype).zodiac_house.value;
+        return stronger(za, zb);
+    }
+
+    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+    {
+        var a = oddityValueForZodiacHouse(za);
+        var b = oddityValueForZodiacHouse(zb);
+        if (a > b)
         {
+            return true;
         }
 
-        public bool stronger(Body.Body.Name ba, Body.Body.Name bb)
+        if (a < b)
         {
-            var za = h.getPosition(ba).toDivisionPosition(dtype).zodiac_house.value;
-            var zb = h.getPosition(bb).toDivisionPosition(dtype).zodiac_house.value;
-            return stronger(za, zb);
+            return false;
         }
 
-        public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+        throw new EqualStrength();
+    }
+
+    protected int oddityValueForZodiacHouse(ZodiacHouse.Name zh)
+    {
+        var lname  = GetStrengthLord(zh);
+        var lbpos  = h.getPosition(lname);
+        var ldpos  = h.CalculateDivisionPosition(lbpos, dtype);
+        var zh_lor = ldpos.zodiac_house;
+
+        //System.mhora.Log.Debug("   DiffOddity {0} {1} {2}", zh.ToString(), zh_lor.value.ToString(), (int)zh %2==(int)zh_lor.value%2);
+        if ((int) zh % 2 == (int) zh_lor.value % 2)
         {
-            var a = oddityValueForZodiacHouse(za);
-            var b = oddityValueForZodiacHouse(zb);
-            if (a > b)
-            {
-                return true;
-            }
-
-            if (a < b)
-            {
-                return false;
-            }
-
-            throw new EqualStrength();
+            return 0;
         }
 
-        protected int oddityValueForZodiacHouse(ZodiacHouse.Name zh)
-        {
-            var lname  = GetStrengthLord(zh);
-            var lbpos  = h.getPosition(lname);
-            var ldpos  = h.CalculateDivisionPosition(lbpos, dtype);
-            var zh_lor = ldpos.zodiac_house;
-
-            //System.mhora.Log.Debug("   DiffOddity {0} {1} {2}", zh.ToString(), zh_lor.value.ToString(), (int)zh %2==(int)zh_lor.value%2);
-            if ((int)zh % 2 == (int)zh_lor.value % 2)
-            {
-                return 0;
-            }
-
-            return 1;
-        }
+        return 1;
     }
 }

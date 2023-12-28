@@ -22,147 +22,146 @@ using Mhora.Components.Property;
 using Mhora.Util;
 using Mhora.Varga;
 
-namespace Mhora
+namespace Mhora;
+
+public abstract class Dasa
 {
-    public abstract class Dasa
+    public Recalculate RecalculateEvent;
+
+    public static int NarayanaDasaLength(ZodiacHouse zh, DivisionPosition dp)
     {
-        public Recalculate RecalculateEvent;
+        var length = 0;
 
-        public static int NarayanaDasaLength(ZodiacHouse zh, DivisionPosition dp)
+        if (zh.isOddFooted())
         {
-            var length = 0;
-
-            if (zh.isOddFooted())
-            {
-                length = zh.numHousesBetween(dp.zodiac_house);
-            }
-            else
-            {
-                length = zh.numHousesBetweenReverse(dp.zodiac_house);
-            }
-
-            if (dp.isExaltedPhalita())
-            {
-                length++;
-            }
-            else if (dp.isDebilitatedPhalita())
-            {
-                length--;
-            }
-
-            length = Basics.normalize_inc(1, 12, length - 1);
-            return length;
+            length = zh.numHousesBetween(dp.zodiac_house);
+        }
+        else
+        {
+            length = zh.numHousesBetweenReverse(dp.zodiac_house);
         }
 
-
-        public event EvtChanged Changed;
-
-        public void DivisionChanged(Division d)
+        if (dp.isExaltedPhalita())
         {
+            length++;
+        }
+        else if (dp.isDebilitatedPhalita())
+        {
+            length--;
         }
 
-        public void OnChanged()
+        length = Basics.normalize_inc(1, 12, length - 1);
+        return length;
+    }
+
+
+    public event EvtChanged Changed;
+
+    public void DivisionChanged(Division d)
+    {
+    }
+
+    public void OnChanged()
+    {
+        if (Changed != null)
         {
-            if (Changed != null)
-            {
-                Changed(this);
-            }
+            Changed(this);
+        }
+    }
+
+    public string EntryDescription(DasaEntry de, Moment start, Moment end)
+    {
+        return string.Empty;
+    }
+
+    public class Options : ICloneable
+    {
+        private double _Compression;
+        private double _YearLength;
+
+        public Options()
+        {
+            YearType     = ToDate.DateType.SolarYear;
+            _YearLength  = 360.0;
+            _Compression = 0.0;
         }
 
-        public string EntryDescription(DasaEntry de, Moment start, Moment end)
+        [PGDisplayName("Year Type")]
+        public ToDate.DateType YearType
         {
-            return string.Empty;
+            get;
+            set;
         }
 
-        public class Options : ICloneable
+        [PGDisplayName("Dasa Compression")]
+        public double Compression
         {
-            private double _Compression;
-            private double _YearLength;
-
-            public Options()
+            get =>
+                _Compression;
+            set
             {
-                YearType     = ToDate.DateType.SolarYear;
-                _YearLength  = 360.0;
-                _Compression = 0.0;
-            }
-
-            [PGDisplayName("Year Type")]
-            public ToDate.DateType YearType
-            {
-                get;
-                set;
-            }
-
-            [PGDisplayName("Dasa Compression")]
-            public double Compression
-            {
-                get =>
-                    _Compression;
-                set
+                if (value >= 0.0)
                 {
-                    if (value >= 0.0)
-                    {
-                        _Compression = value;
-                    }
+                    _Compression = value;
                 }
             }
+        }
 
-            [PGDisplayName("Year Length")]
-            public double YearLength
+        [PGDisplayName("Year Length")]
+        public double YearLength
+        {
+            get =>
+                _YearLength;
+            set
             {
-                get =>
-                    _YearLength;
-                set
+                if (value >= 0.0)
                 {
-                    if (value >= 0.0)
-                    {
-                        _YearLength = value;
-                    }
+                    _YearLength = value;
                 }
             }
+        }
 
-            [PGDisplayName("Offset Dates by Days")]
-            public double OffsetDays
-            {
-                get;
-                set;
-            }
+        [PGDisplayName("Offset Dates by Days")]
+        public double OffsetDays
+        {
+            get;
+            set;
+        }
 
-            [PGDisplayName("Offset Dates by Hours")]
-            public double OffsetHours
-            {
-                get;
-                set;
-            }
+        [PGDisplayName("Offset Dates by Hours")]
+        public double OffsetHours
+        {
+            get;
+            set;
+        }
 
-            [PGDisplayName("Offset Dates by Minutes")]
-            public double OffsetMinutes
-            {
-                get;
-                set;
-            }
+        [PGDisplayName("Offset Dates by Minutes")]
+        public double OffsetMinutes
+        {
+            get;
+            set;
+        }
 
-            public object Clone()
-            {
-                var o = new Options();
-                o.YearLength    = YearLength;
-                o.YearType      = YearType;
-                o.Compression   = Compression;
-                o.OffsetDays    = OffsetDays;
-                o.OffsetHours   = OffsetHours;
-                o.OffsetMinutes = OffsetMinutes;
-                return o;
-            }
+        public object Clone()
+        {
+            var o = new Options();
+            o.YearLength    = YearLength;
+            o.YearType      = YearType;
+            o.Compression   = Compression;
+            o.OffsetDays    = OffsetDays;
+            o.OffsetHours   = OffsetHours;
+            o.OffsetMinutes = OffsetMinutes;
+            return o;
+        }
 
-            public void Copy(Options o)
-            {
-                YearLength    = o.YearLength;
-                YearType      = o.YearType;
-                Compression   = o.Compression;
-                OffsetDays    = o.OffsetDays;
-                OffsetHours   = o.OffsetHours;
-                OffsetMinutes = o.OffsetMinutes;
-            }
+        public void Copy(Options o)
+        {
+            YearLength    = o.YearLength;
+            YearType      = o.YearType;
+            Compression   = o.Compression;
+            OffsetDays    = o.OffsetDays;
+            OffsetHours   = o.OffsetHours;
+            OffsetMinutes = o.OffsetMinutes;
         }
     }
 }

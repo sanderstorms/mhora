@@ -5,126 +5,131 @@ using SqlNado;
 using SujaySarma.Data.Files.TokenLimitedFiles;
 using SujaySarma.Data.Files.TokenLimitedFiles.Attributes;
 
-namespace Mhora.Database.Countries
+namespace Mhora.Database.Countries;
+
+public class GeoNamesDb
 {
-    public class GeoNamesDb
+    public const   string     CsvFile = "geonames-all-cities-with-a-population-1000.csv";
+    private static GeoNamesDb _instance;
+
+    private DataTable _table;
+
+    protected GeoNamesDb()
     {
-        private static GeoNamesDb _instance;
-        public const  string   CsvFile = "geonames-all-cities-with-a-population-1000.csv";
+    }
 
-        [SQLiteTable(Name = "Places")]
-        public class GeoName
+    public static GeoNamesDb Instance => _instance ??= new GeoNamesDb();
+
+    public DataTable Table
+    {
+        get
         {
-            [SQLiteColumn(IsPrimaryKey = true)]
-            [FileField("Geoname ID")]
-            public int Id
+            var csvFile = Path.Combine(mhora.WorkingDir, "Database", CsvFile);
+            if (File.Exists(csvFile))
             {
-                get;
-                set;
+                _table ??= TokenLimitedFileReader.GetTable(csvFile, ';');
             }
-            [FileField("Name")]
-            public string Name
-            {
-                get;
-                set;
-            }
-            [FileField("ASCII Name")]
-            public string AsciiName
-            {
-                get;
-                set;
-            }
-            [FileField("Alternate Names")]
-            public string AlternateName
-            {
-                get;
-                set;
-            }
-            [FileField("Country Code")]
-            public string CountryCode
-            {
-                get;
-                set;
-            }
-            [FileField("Country name EN")]
-            public string CountryNameEn
-            {
-                get;
-                set;
-            }
-            [FileField("Country Code 2")]
-            public string CountryCode2
-            {
-                get;
-                set;
-            }
-            [FileField("Elevation")]
-            public int Elevation
-            {
-                get;
-                set;
-            }
-            [FileField("Timezone")]
-            public string TimeZone
-            {
-                get;
-                set;
-            }
-           [FileField("LABEL EN")]
-            public string LabelEn
-            {
-                get;
-                set;
-            }
-            [FileField("Coordinates")]
-            public PointF Coordinates
-            {
-                get;
-                set;
-            }
+
+            return _table;
         }
-        protected GeoNamesDb ()
+    }
+
+    public GeoName this[int index]
+    {
+        get
         {
-            
+            var entry   = new GeoName();
+            var geoName = Table.Rows[index];
+            for (var col = 0; col < Table.Columns.Count; col++)
+            {
+                var name  = Table.Columns[col].ColumnName;
+                var value = geoName[col].ToString();
+                entry.SetValue(name, value);
+            }
+
+            return entry;
+        }
+    }
+
+    [SQLiteTable(Name = "Places")]
+    public class GeoName
+    {
+        [SQLiteColumn(IsPrimaryKey = true)]
+        [FileField("Geoname ID")]
+        public int Id
+        {
+            get;
+            set;
         }
 
-        public static GeoNamesDb Instance
+        [FileField("Name")]
+        public string Name
         {
-            get
-            {
-                return (_instance ??= new GeoNamesDb());
-            }
+            get;
+            set;
         }
 
-        DataTable _table;
-        public DataTable Table
+        [FileField("ASCII Name")]
+        public string AsciiName
         {
-            get
-            {
-                var csvFile = Path.Combine(Mhora.mhora.WorkingDir, "Database", CsvFile);
-                if (File.Exists(csvFile))
-                {
-                    _table ??= TokenLimitedFileReader.GetTable(csvFile, ';');
-                }
-                return (_table);
-            }
+            get;
+            set;
         }
 
-        public GeoName this[int index]
+        [FileField("Alternate Names")]
+        public string AlternateName
         {
-            get
-            {
-                var entry = new GeoName();
-                var geoName = Table.Rows[index];
-                for (int col = 0; col < Table.Columns.Count; col++)
-                {
-                    var name = Table.Columns[col].ColumnName;
-                    var value = geoName[col].ToString();
-                    entry.SetValue(name, value);
-                }
-
-                return (entry);
-            }
+            get;
+            set;
         }
-   }
+
+        [FileField("Country Code")]
+        public string CountryCode
+        {
+            get;
+            set;
+        }
+
+        [FileField("Country name EN")]
+        public string CountryNameEn
+        {
+            get;
+            set;
+        }
+
+        [FileField("Country Code 2")]
+        public string CountryCode2
+        {
+            get;
+            set;
+        }
+
+        [FileField("Elevation")]
+        public int Elevation
+        {
+            get;
+            set;
+        }
+
+        [FileField("Timezone")]
+        public string TimeZone
+        {
+            get;
+            set;
+        }
+
+        [FileField("LABEL EN")]
+        public string LabelEn
+        {
+            get;
+            set;
+        }
+
+        [FileField("Coordinates")]
+        public PointF Coordinates
+        {
+            get;
+            set;
+        }
+    }
 }

@@ -20,91 +20,90 @@ using System;
 using System.Collections;
 using Mhora.Calculation;
 
-namespace Mhora
+namespace Mhora;
+
+public class NaisargikaGrahaDasaSP : Dasa, IDasa
 {
-    public class NaisargikaGrahaDasaSP : Dasa, IDasa
+    private readonly UserOptions options;
+    private          Horoscope   h;
+
+    public NaisargikaGrahaDasaSP(Horoscope _h)
     {
-        private          Horoscope   h;
-        private readonly UserOptions options;
+        h       = _h;
+        options = new UserOptions();
+    }
 
-        public NaisargikaGrahaDasaSP(Horoscope _h)
-        {
-            h       = _h;
-            options = new UserOptions();
-        }
+    public double paramAyus()
+    {
+        return 108.0;
+    }
 
-        public double paramAyus()
-        {
-            return 108.0;
-        }
+    public void recalculateOptions()
+    {
+    }
 
-        public void recalculateOptions()
+    public ArrayList Dasa(int cycle)
+    {
+        var al = new ArrayList(36);
+        Body.Body.Name[] order =
         {
-        }
+            Body.Body.Name.Moon,
+            Body.Body.Name.Mercury,
+            Body.Body.Name.Mars,
+            Body.Body.Name.Venus,
+            Body.Body.Name.Jupiter,
+            Body.Body.Name.Sun,
+            Body.Body.Name.Ketu,
+            Body.Body.Name.Rahu,
+            Body.Body.Name.Saturn
+        };
 
-        public ArrayList Dasa(int cycle)
+        var cycle_start = paramAyus() * cycle;
+        var curr        = 0.0;
+        for (var i = 0; i < 3; i++)
         {
-            var al = new ArrayList(36);
-            Body.Body.Name[] order =
+            foreach (var bn in order)
             {
-                Body.Body.Name.Moon,
-                Body.Body.Name.Mercury,
-                Body.Body.Name.Mars,
-                Body.Body.Name.Venus,
-                Body.Body.Name.Jupiter,
-                Body.Body.Name.Sun,
-                Body.Body.Name.Ketu,
-                Body.Body.Name.Rahu,
-                Body.Body.Name.Saturn
-            };
-
-            var cycle_start = paramAyus() * cycle;
-            var curr        = 0.0;
-            for (var i = 0; i < 3; i++)
-            {
-                foreach (var bn in order)
-                {
-                    al.Add(new DasaEntry(bn, cycle_start + curr, 4.0, 1, bn.ToString()));
-                    curr += 4.0;
-                }
+                al.Add(new DasaEntry(bn, cycle_start + curr, 4.0, 1, bn.ToString()));
+                curr += 4.0;
             }
-
-            return al;
         }
 
-        public ArrayList AntarDasa(DasaEntry pdi)
+        return al;
+    }
+
+    public ArrayList AntarDasa(DasaEntry pdi)
+    {
+        return new ArrayList();
+    }
+
+    public string Description()
+    {
+        return "Naisargika Graha Dasa (SP)";
+    }
+
+    public object GetOptions()
+    {
+        return options.Clone();
+    }
+
+    public object SetOptions(object a)
+    {
+        var uo = (UserOptions) a;
+        if (RecalculateEvent != null)
         {
-            return new ArrayList();
+            RecalculateEvent();
         }
 
-        public string Description()
-        {
-            return "Naisargika Graha Dasa (SP)";
-        }
+        return options.Clone();
+    }
 
-        public object GetOptions()
+    public class UserOptions : ICloneable
+    {
+        public object Clone()
         {
-            return options.Clone();
-        }
-
-        public object SetOptions(object a)
-        {
-            var uo = (UserOptions)a;
-            if (RecalculateEvent != null)
-            {
-                RecalculateEvent();
-            }
-
-            return options.Clone();
-        }
-
-        public class UserOptions : ICloneable
-        {
-            public object Clone()
-            {
-                var uo = new UserOptions();
-                return uo;
-            }
+            var uo = new UserOptions();
+            return uo;
         }
     }
 }

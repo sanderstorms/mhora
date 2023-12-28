@@ -19,82 +19,80 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using Mhora.Body;
 using Mhora.Varga;
 
-namespace Mhora.Calculation.Strength
+namespace Mhora.Calculation.Strength;
+
+// Stronger rasi has more planets in own house
+// Stronger planet is in own house
+public class StrengthByOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    // Stronger rasi has more planets in own house
-    // Stronger planet is in own house
-    public class StrengthByOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
+    public StrengthByOwnHouse(Horoscope h, Division dtype) : base(h, dtype, true)
     {
-        public StrengthByOwnHouse(Horoscope h, Division dtype)
-            : base(h, dtype, true)
+    }
+
+    public bool stronger(Body.Body.Name m, Body.Body.Name n)
+    {
+        var valm = value(m);
+        var valn = value(n);
+
+        if (valm > valn)
         {
+            return true;
         }
 
-        public bool stronger(Body.Body.Name m, Body.Body.Name n)
+        if (valn > valm)
         {
-            var valm = value(m);
-            var valn = value(n);
-
-            if (valm > valn)
-            {
-                return true;
-            }
-
-            if (valn > valm)
-            {
-                return false;
-            }
-
-            throw new EqualStrength();
+            return false;
         }
 
-        public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+        throw new EqualStrength();
+    }
+
+    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+    {
+        var vala = value(za);
+        var valb = value(zb);
+
+        if (vala > valb)
         {
-            var vala = value(za);
-            var valb = value(zb);
-
-            if (vala > valb)
-            {
-                return true;
-            }
-
-            if (valb > vala)
-            {
-                return false;
-            }
-
-            throw new EqualStrength();
+            return true;
         }
 
-        public int value(ZodiacHouse.Name zn)
+        if (valb > vala)
         {
-            var ret = 0;
-            foreach (DivisionPosition dp in std_div_pos)
-            {
-                if (dp.type != BodyType.Name.Graha)
-                {
-                    continue;
-                }
-
-                if (dp.zodiac_house.value != zn)
-                {
-                    continue;
-                }
-
-                ret += value(dp.name);
-            }
-
-            return ret;
+            return false;
         }
 
-        public int value(Body.Body.Name b)
+        throw new EqualStrength();
+    }
+
+    public int value(ZodiacHouse.Name zn)
+    {
+        var ret = 0;
+        foreach (DivisionPosition dp in std_div_pos)
         {
-            if (h.getPosition(b).toDivisionPosition(dtype).isInOwnHouse())
+            if (dp.type != BodyType.Name.Graha)
             {
-                return 1;
+                continue;
             }
 
-            return 0;
+            if (dp.zodiac_house.value != zn)
+            {
+                continue;
+            }
+
+            ret += value(dp.name);
         }
+
+        return ret;
+    }
+
+    public int value(Body.Body.Name b)
+    {
+        if (h.getPosition(b).toDivisionPosition(dtype).isInOwnHouse())
+        {
+            return 1;
+        }
+
+        return 0;
     }
 }

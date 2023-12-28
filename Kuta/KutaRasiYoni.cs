@@ -18,32 +18,34 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Calculation;
 
-namespace Mhora.Kuta
+namespace Mhora.Kuta;
+
+public class KutaRasiYoni
 {
-    public class KutaRasiYoni
+    public enum EType
     {
-        public enum EType
+        IPakshi,
+        IReptile,
+        IPasu,
+        INara
+    }
+
+    public static EType getType(ZodiacHouse z)
+    {
+        switch (z.value)
         {
-            IPakshi,
-            IReptile,
-            IPasu,
-            INara
+            case ZodiacHouse.Name.Cap:
+            case ZodiacHouse.Name.Pis:
+                return EType.IPakshi;
+            case ZodiacHouse.Name.Can:
+            case ZodiacHouse.Name.Sco:
+                return EType.IReptile;
+            case ZodiacHouse.Name.Ari:
+            case ZodiacHouse.Name.Tau:
+            case ZodiacHouse.Name.Leo:
+                return EType.IPasu;
         }
 
-        public static EType getType(ZodiacHouse z)
-        {
-            switch (z.value)
-            {
-                case ZodiacHouse.Name.Cap:
-                case ZodiacHouse.Name.Pis: return EType.IPakshi;
-                case ZodiacHouse.Name.Can:
-                case ZodiacHouse.Name.Sco: return EType.IReptile;
-                case ZodiacHouse.Name.Ari:
-                case ZodiacHouse.Name.Tau:
-                case ZodiacHouse.Name.Leo: return EType.IPasu;
-            }
-
-            return EType.INara;
-        }
+        return EType.INara;
     }
 }

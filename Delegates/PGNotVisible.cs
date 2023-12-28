@@ -18,9 +18,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 
-namespace Mhora.Delegates
+namespace Mhora.Delegates;
+
+public class PGNotVisible : Attribute
 {
-    public class PGNotVisible : Attribute
-    {
-    }
 }

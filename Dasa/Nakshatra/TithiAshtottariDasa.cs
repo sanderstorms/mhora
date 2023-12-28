@@ -22,155 +22,154 @@ using System.Diagnostics;
 using Mhora.Calculation;
 using Mhora.Delegates;
 
-namespace Mhora
+namespace Mhora;
+
+// Wrapper around ashtottari dasa that starts the initial dasa
+// based on the tithi. We do not reimplement ashtottari dasa 
+// semantics here.
+public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTithiDasa
 {
-    // Wrapper around ashtottari dasa that starts the initial dasa
-    // based on the tithi. We do not reimplement ashtottari dasa 
-    // semantics here.
-    public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTithiDasa
+    private readonly AshtottariDasa ad;
+    private readonly Horoscope      h;
+    private          UserOptions    options;
+
+    public TithiAshtottariDasa(Horoscope _h)
     {
-        private readonly AshtottariDasa ad;
-        private readonly Horoscope      h;
-        private          UserOptions    options;
+        options     = new UserOptions();
+        tithiCommon = this;
+        common      = this;
+        h           = _h;
+        ad          = new AshtottariDasa(h);
+    }
 
-        public TithiAshtottariDasa(Horoscope _h)
+    public override object GetOptions()
+    {
+        return options.Clone();
+    }
+
+    public override object SetOptions(object a)
+    {
+        options = (UserOptions) options.SetOptions(a);
+        if (RecalculateEvent != null)
         {
-            options     = new UserOptions();
-            tithiCommon = this;
-            common      = this;
-            h           = _h;
-            ad          = new AshtottariDasa(h);
+            RecalculateEvent();
         }
 
-        public override object GetOptions()
-        {
-            return options.Clone();
-        }
+        return options.Clone();
+    }
 
-        public override object SetOptions(object a)
+    public ArrayList Dasa(int cycle)
+    {
+        var mpos = h.getPosition(Body.Body.Name.Moon).longitude;
+        var spos = h.getPosition(Body.Body.Name.Sun).longitude;
+
+        var tithi = mpos.sub(spos);
+        if (options.UseTithiRemainder == false)
         {
-            options = (UserOptions)options.SetOptions(a);
-            if (RecalculateEvent != null)
+            var offset = tithi.value;
+            while (offset >= 12.0)
             {
-                RecalculateEvent();
+                offset -= 12.0;
             }
 
-            return options.Clone();
+            tithi = tithi.sub(new Longitude(offset));
         }
 
-        public ArrayList Dasa(int cycle)
-        {
-            var mpos = h.getPosition(Body.Body.Name.Moon).longitude;
-            var spos = h.getPosition(Body.Body.Name.Sun).longitude;
+        return _TithiDasa(tithi, options.TithiOffset, cycle);
+    }
 
-            var tithi = mpos.sub(spos);
-            if (options.UseTithiRemainder == false)
+    public ArrayList AntarDasa(DasaEntry di)
+    {
+        return _AntarDasa(di);
+    }
+
+    public string Description()
+    {
+        return string.Format("({0}) Tithi Ashtottari Dasa", options.TithiOffset);
+    }
+
+    public double paramAyus()
+    {
+        return ad.paramAyus();
+    }
+
+    public int numberOfDasaItems()
+    {
+        return ad.numberOfDasaItems();
+    }
+
+    public DasaEntry nextDasaLord(DasaEntry di)
+    {
+        return ad.nextDasaLord(di);
+    }
+
+    public double lengthOfDasa(Body.Body.Name plt)
+    {
+        return ad.lengthOfDasa(plt);
+    }
+
+    public Body.Body.Name lordOfNakshatra(Nakshatra n)
+    {
+        Debug.Assert(false, "TithiAshtottari::lordOfNakshatra");
+        return Body.Body.Name.Sun;
+    }
+
+    public Body.Body.Name lordOfTithi(Longitude l)
+    {
+        return l.toTithi().getLord();
+    }
+
+    public class UserOptions : ICloneable
+    {
+        public bool bExpungeTravelled = true;
+        public int  mTithiOffset      = 1;
+
+        public UserOptions()
+        {
+            mTithiOffset      = 1;
+            bExpungeTravelled = true;
+        }
+
+        [PGNotVisible]
+        public bool UseTithiRemainder
+        {
+            get =>
+                bExpungeTravelled;
+            set =>
+                bExpungeTravelled = value;
+        }
+
+        public int TithiOffset
+        {
+            get =>
+                mTithiOffset;
+            set
             {
-                var offset = tithi.value;
-                while (offset >= 12.0)
+                if (value >= 1 && value <= 30)
                 {
-                    offset -= 12.0;
-                }
-
-                tithi = tithi.sub(new Longitude(offset));
-            }
-
-            return _TithiDasa(tithi, options.TithiOffset, cycle);
-        }
-
-        public ArrayList AntarDasa(DasaEntry di)
-        {
-            return _AntarDasa(di);
-        }
-
-        public string Description()
-        {
-            return string.Format("({0}) Tithi Ashtottari Dasa", options.TithiOffset);
-        }
-
-        public double paramAyus()
-        {
-            return ad.paramAyus();
-        }
-
-        public int numberOfDasaItems()
-        {
-            return ad.numberOfDasaItems();
-        }
-
-        public DasaEntry nextDasaLord(DasaEntry di)
-        {
-            return ad.nextDasaLord(di);
-        }
-
-        public double lengthOfDasa(Body.Body.Name plt)
-        {
-            return ad.lengthOfDasa(plt);
-        }
-
-        public Body.Body.Name lordOfNakshatra(Nakshatra n)
-        {
-            Debug.Assert(false, "TithiAshtottari::lordOfNakshatra");
-            return Body.Body.Name.Sun;
-        }
-
-        public Body.Body.Name lordOfTithi(Longitude l)
-        {
-            return l.toTithi().getLord();
-        }
-
-        public class UserOptions : ICloneable
-        {
-            public bool bExpungeTravelled = true;
-            public int  mTithiOffset      = 1;
-
-            public UserOptions()
-            {
-                mTithiOffset      = 1;
-                bExpungeTravelled = true;
-            }
-
-            [PGNotVisible]
-            public bool UseTithiRemainder
-            {
-                get =>
-                    bExpungeTravelled;
-                set =>
-                    bExpungeTravelled = value;
-            }
-
-            public int TithiOffset
-            {
-                get =>
-                    mTithiOffset;
-                set
-                {
-                    if (value >= 1 && value <= 30)
-                    {
-                        mTithiOffset = value;
-                    }
+                    mTithiOffset = value;
                 }
             }
+        }
 
-            public object Clone()
+        public object Clone()
+        {
+            var options = new UserOptions();
+            options.mTithiOffset      = mTithiOffset;
+            options.bExpungeTravelled = bExpungeTravelled;
+            return options;
+        }
+
+        public object SetOptions(object b)
+        {
+            if (b is UserOptions)
             {
-                var options = new UserOptions();
-                options.mTithiOffset      = mTithiOffset;
-                options.bExpungeTravelled = bExpungeTravelled;
-                return options;
+                var uo = (UserOptions) b;
+                mTithiOffset      = uo.mTithiOffset;
+                bExpungeTravelled = uo.bExpungeTravelled;
             }
 
-            public object SetOptions(object b)
-            {
-                if (b is UserOptions)
-                {
-                    var uo = (UserOptions)b;
-                    mTithiOffset      = uo.mTithiOffset;
-                    bExpungeTravelled = uo.bExpungeTravelled;
-                }
-
-                return Clone();
-            }
+            return Clone();
         }
     }
 }

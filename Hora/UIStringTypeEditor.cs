@@ -22,30 +22,29 @@ using System.Drawing.Design;
 using System.Windows.Forms.Design;
 using Mhora.Components;
 
-namespace Mhora.Hora
+namespace Mhora.Hora;
+
+public class UIStringTypeEditor : UITypeEditor
 {
-    public class UIStringTypeEditor : UITypeEditor
+    private IWindowsFormsEditorService edSvc;
+
+    public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
     {
-        private IWindowsFormsEditorService edSvc;
-
-        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+        edSvc = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
+        var stringInit = string.Empty;
+        if (value is string)
         {
-            edSvc = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-            var stringInit = string.Empty;
-            if (value is string)
-            {
-                stringInit = (string)value;
-            }
-
-            var le = new LongStringEditor(stringInit);
-            le.TitleText = "Event Description";
-            edSvc.ShowDialog(le);
-            return le.EditorText;
+            stringInit = (string) value;
         }
 
-        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
-        {
-            return UITypeEditorEditStyle.Modal;
-        }
+        var le = new LongStringEditor(stringInit);
+        le.TitleText = "Event Description";
+        edSvc.ShowDialog(le);
+        return le.EditorText;
+    }
+
+    public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+    {
+        return UITypeEditorEditStyle.Modal;
     }
 }

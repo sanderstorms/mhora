@@ -19,16 +19,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System.Drawing;
 using Mhora.Calculation;
 
-namespace Mhora.Chart
+namespace Mhora.Chart;
+
+public interface IDrawChart
 {
-    public interface IDrawChart
-    {
-        Point GetDegreeOffset(Longitude       l);
-        Point GetSingleItemOffset(ZodiacHouse zh);
-        Point GetItemOffset(ZodiacHouse       zh, int n);
-        Point GetSmallItemOffset(ZodiacHouse  zh, int n);
-        Point GetInnerSquareOffset();
-        void  DrawOutline(Graphics g);
-        int   GetLength();
-    }
+    Point GetDegreeOffset(Longitude       l);
+    Point GetSingleItemOffset(ZodiacHouse zh);
+    Point GetItemOffset(ZodiacHouse       zh, int n);
+    Point GetSmallItemOffset(ZodiacHouse  zh, int n);
+    Point GetInnerSquareOffset();
+    void  DrawOutline(Graphics g);
+    int   GetLength();
 }

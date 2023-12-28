@@ -18,94 +18,98 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Diagnostics;
 
-namespace Mhora.Kuta
+namespace Mhora.Kuta;
+
+public class KutaVihanga
 {
-    public class KutaVihanga
+    public enum EDominator
     {
-        public enum EDominator
+        IEqual,
+        IMale,
+        IFemale
+    }
+
+    public enum EType
+    {
+        IBharandhaka,
+        IPingala,
+        ICrow,
+        ICock,
+        IPeacock
+    }
+
+    public static EDominator getDominator(Nakshatra m, Nakshatra n)
+    {
+        var em = getType(m);
+        var en = getType(n);
+
+        EType[] order =
         {
-            IEqual,
-            IMale,
-            IFemale
-        }
-
-        public enum EType
+            EType.IPeacock,
+            EType.ICock,
+            EType.ICrow,
+            EType.IPingala
+        };
+        if (em == en)
         {
-            IBharandhaka,
-            IPingala,
-            ICrow,
-            ICock,
-            IPeacock
-        }
-
-        public static EDominator getDominator(Nakshatra m, Nakshatra n)
-        {
-            var em = getType(m);
-            var en = getType(n);
-
-            EType[] order =
-            {
-                EType.IPeacock,
-                EType.ICock,
-                EType.ICrow,
-                EType.IPingala
-            };
-            if (em == en)
-            {
-                return EDominator.IEqual;
-            }
-
-            for (var i = 0; i < order.Length; i++)
-            {
-                if (em == order[i])
-                {
-                    return EDominator.IMale;
-                }
-
-                if (en == order[i])
-                {
-                    return EDominator.IFemale;
-                }
-            }
-
             return EDominator.IEqual;
         }
 
-        public static EType getType(Nakshatra n)
+        for (var i = 0; i < order.Length; i++)
         {
-            switch (n.value)
+            if (em == order[i])
             {
-                case Nakshatra.Name.Aswini:
-                case Nakshatra.Name.Bharani:
-                case Nakshatra.Name.Krittika:
-                case Nakshatra.Name.Rohini:
-                case Nakshatra.Name.Mrigarirsa: return EType.IBharandhaka;
-                case Nakshatra.Name.Aridra:
-                case Nakshatra.Name.Punarvasu:
-                case Nakshatra.Name.Pushya:
-                case Nakshatra.Name.Aslesha:
-                case Nakshatra.Name.Makha:
-                case Nakshatra.Name.PoorvaPhalguni: return EType.IPingala;
-                case Nakshatra.Name.UttaraPhalguni:
-                case Nakshatra.Name.Hasta:
-                case Nakshatra.Name.Chittra:
-                case Nakshatra.Name.Swati:
-                case Nakshatra.Name.Vishaka:
-                case Nakshatra.Name.Anuradha: return EType.ICrow;
-                case Nakshatra.Name.Jyestha:
-                case Nakshatra.Name.Moola:
-                case Nakshatra.Name.PoorvaShada:
-                case Nakshatra.Name.UttaraShada:
-                case Nakshatra.Name.Sravana: return EType.ICock;
-                case Nakshatra.Name.Dhanishta:
-                case Nakshatra.Name.Satabisha:
-                case Nakshatra.Name.PoorvaBhadra:
-                case Nakshatra.Name.UttaraBhadra:
-                case Nakshatra.Name.Revati: return EType.IPeacock;
+                return EDominator.IMale;
             }
 
-            Debug.Assert(false, "KutaVibhanga::getType");
-            return EType.IBharandhaka;
+            if (en == order[i])
+            {
+                return EDominator.IFemale;
+            }
         }
+
+        return EDominator.IEqual;
+    }
+
+    public static EType getType(Nakshatra n)
+    {
+        switch (n.value)
+        {
+            case Nakshatra.Name.Aswini:
+            case Nakshatra.Name.Bharani:
+            case Nakshatra.Name.Krittika:
+            case Nakshatra.Name.Rohini:
+            case Nakshatra.Name.Mrigarirsa:
+                return EType.IBharandhaka;
+            case Nakshatra.Name.Aridra:
+            case Nakshatra.Name.Punarvasu:
+            case Nakshatra.Name.Pushya:
+            case Nakshatra.Name.Aslesha:
+            case Nakshatra.Name.Makha:
+            case Nakshatra.Name.PoorvaPhalguni:
+                return EType.IPingala;
+            case Nakshatra.Name.UttaraPhalguni:
+            case Nakshatra.Name.Hasta:
+            case Nakshatra.Name.Chittra:
+            case Nakshatra.Name.Swati:
+            case Nakshatra.Name.Vishaka:
+            case Nakshatra.Name.Anuradha:
+                return EType.ICrow;
+            case Nakshatra.Name.Jyestha:
+            case Nakshatra.Name.Moola:
+            case Nakshatra.Name.PoorvaShada:
+            case Nakshatra.Name.UttaraShada:
+            case Nakshatra.Name.Sravana:
+                return EType.ICock;
+            case Nakshatra.Name.Dhanishta:
+            case Nakshatra.Name.Satabisha:
+            case Nakshatra.Name.PoorvaBhadra:
+            case Nakshatra.Name.UttaraBhadra:
+            case Nakshatra.Name.Revati:
+                return EType.IPeacock;
+        }
+
+        Debug.Assert(false, "KutaVibhanga::getType");
+        return EType.IBharandhaka;
     }
 }

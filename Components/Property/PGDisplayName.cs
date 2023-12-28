@@ -18,15 +18,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 
-namespace Mhora.Components.Property
-{
-    public class PGDisplayName : Attribute
-    {
-        public string DisplayName;
+namespace Mhora.Components.Property;
 
-        public PGDisplayName(string _display)
-        {
-            DisplayName = _display;
-        }
+public class PGDisplayName : Attribute
+{
+    public string DisplayName;
+
+    public PGDisplayName(string _display)
+    {
+        DisplayName = _display;
     }
 }

@@ -18,55 +18,54 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Calculation;
 
-namespace Mhora.Ghata
-{
-    public class GhatakaTithi
-    {
-        public static bool checkTithi(ZodiacHouse janmaRasi, Tithi t)
-        {
-            var ja = janmaRasi.value;
-            var gh = Tithi.NandaType.Nanda;
-            switch (ja)
-            {
-                case ZodiacHouse.Name.Ari:
-                    gh = Tithi.NandaType.Nanda;
-                    break;
-                case ZodiacHouse.Name.Tau:
-                    gh = Tithi.NandaType.Purna;
-                    break;
-                case ZodiacHouse.Name.Gem:
-                    gh = Tithi.NandaType.Bhadra;
-                    break;
-                case ZodiacHouse.Name.Can:
-                    gh = Tithi.NandaType.Bhadra;
-                    break;
-                case ZodiacHouse.Name.Leo:
-                    gh = Tithi.NandaType.Jaya;
-                    break;
-                case ZodiacHouse.Name.Vir:
-                    gh = Tithi.NandaType.Purna;
-                    break;
-                case ZodiacHouse.Name.Lib:
-                    gh = Tithi.NandaType.Rikta;
-                    break;
-                case ZodiacHouse.Name.Sco:
-                    gh = Tithi.NandaType.Nanda;
-                    break;
-                case ZodiacHouse.Name.Sag:
-                    gh = Tithi.NandaType.Jaya;
-                    break;
-                case ZodiacHouse.Name.Cap:
-                    gh = Tithi.NandaType.Rikta;
-                    break;
-                case ZodiacHouse.Name.Aqu:
-                    gh = Tithi.NandaType.Jaya;
-                    break;
-                case ZodiacHouse.Name.Pis:
-                    gh = Tithi.NandaType.Purna;
-                    break;
-            }
+namespace Mhora.Ghata;
 
-            return t.toNandaType() == gh;
+public class GhatakaTithi
+{
+    public static bool checkTithi(ZodiacHouse janmaRasi, Tithi t)
+    {
+        var ja = janmaRasi.value;
+        var gh = Tithi.NandaType.Nanda;
+        switch (ja)
+        {
+            case ZodiacHouse.Name.Ari:
+                gh = Tithi.NandaType.Nanda;
+                break;
+            case ZodiacHouse.Name.Tau:
+                gh = Tithi.NandaType.Purna;
+                break;
+            case ZodiacHouse.Name.Gem:
+                gh = Tithi.NandaType.Bhadra;
+                break;
+            case ZodiacHouse.Name.Can:
+                gh = Tithi.NandaType.Bhadra;
+                break;
+            case ZodiacHouse.Name.Leo:
+                gh = Tithi.NandaType.Jaya;
+                break;
+            case ZodiacHouse.Name.Vir:
+                gh = Tithi.NandaType.Purna;
+                break;
+            case ZodiacHouse.Name.Lib:
+                gh = Tithi.NandaType.Rikta;
+                break;
+            case ZodiacHouse.Name.Sco:
+                gh = Tithi.NandaType.Nanda;
+                break;
+            case ZodiacHouse.Name.Sag:
+                gh = Tithi.NandaType.Jaya;
+                break;
+            case ZodiacHouse.Name.Cap:
+                gh = Tithi.NandaType.Rikta;
+                break;
+            case ZodiacHouse.Name.Aqu:
+                gh = Tithi.NandaType.Jaya;
+                break;
+            case ZodiacHouse.Name.Pis:
+                gh = Tithi.NandaType.Purna;
+                break;
         }
+
+        return t.toNandaType() == gh;
     }
 }

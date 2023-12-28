@@ -18,56 +18,55 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Calculation;
 
-namespace Mhora.Ghata
-{
-    public class GhatakaStar
-    {
-        public static bool checkStar(ZodiacHouse janmaRasi, Nakshatra nak)
-        {
-            var ja = janmaRasi.value;
-            var gh = Nakshatra.Name.Aswini;
-            switch (ja)
-            {
-                case ZodiacHouse.Name.Ari:
-                    gh = Nakshatra.Name.Makha;
-                    break;
-                case ZodiacHouse.Name.Tau:
-                    gh = Nakshatra.Name.Hasta;
-                    break;
-                case ZodiacHouse.Name.Gem:
-                    gh = Nakshatra.Name.Swati;
-                    break;
-                case ZodiacHouse.Name.Can:
-                    gh = Nakshatra.Name.Anuradha;
-                    break;
-                case ZodiacHouse.Name.Leo:
-                    gh = Nakshatra.Name.Moola;
-                    break;
-                case ZodiacHouse.Name.Vir:
-                    gh = Nakshatra.Name.Sravana;
-                    break;
-                case ZodiacHouse.Name.Lib:
-                    gh = Nakshatra.Name.Satabisha;
-                    break;
-                case ZodiacHouse.Name.Sco:
-                    gh = Nakshatra.Name.Revati;
-                    break;
-                // FIXME dveja nakshatra?????
-                case ZodiacHouse.Name.Sag:
-                    gh = Nakshatra.Name.Revati;
-                    break;
-                case ZodiacHouse.Name.Cap:
-                    gh = Nakshatra.Name.Rohini;
-                    break;
-                case ZodiacHouse.Name.Aqu:
-                    gh = Nakshatra.Name.Aridra;
-                    break;
-                case ZodiacHouse.Name.Pis:
-                    gh = Nakshatra.Name.Aslesha;
-                    break;
-            }
+namespace Mhora.Ghata;
 
-            return nak.value == gh;
+public class GhatakaStar
+{
+    public static bool checkStar(ZodiacHouse janmaRasi, Nakshatra nak)
+    {
+        var ja = janmaRasi.value;
+        var gh = Nakshatra.Name.Aswini;
+        switch (ja)
+        {
+            case ZodiacHouse.Name.Ari:
+                gh = Nakshatra.Name.Makha;
+                break;
+            case ZodiacHouse.Name.Tau:
+                gh = Nakshatra.Name.Hasta;
+                break;
+            case ZodiacHouse.Name.Gem:
+                gh = Nakshatra.Name.Swati;
+                break;
+            case ZodiacHouse.Name.Can:
+                gh = Nakshatra.Name.Anuradha;
+                break;
+            case ZodiacHouse.Name.Leo:
+                gh = Nakshatra.Name.Moola;
+                break;
+            case ZodiacHouse.Name.Vir:
+                gh = Nakshatra.Name.Sravana;
+                break;
+            case ZodiacHouse.Name.Lib:
+                gh = Nakshatra.Name.Satabisha;
+                break;
+            case ZodiacHouse.Name.Sco:
+                gh = Nakshatra.Name.Revati;
+                break;
+            // FIXME dveja nakshatra?????
+            case ZodiacHouse.Name.Sag:
+                gh = Nakshatra.Name.Revati;
+                break;
+            case ZodiacHouse.Name.Cap:
+                gh = Nakshatra.Name.Rohini;
+                break;
+            case ZodiacHouse.Name.Aqu:
+                gh = Nakshatra.Name.Aridra;
+                break;
+            case ZodiacHouse.Name.Pis:
+                gh = Nakshatra.Name.Aslesha;
+                break;
         }
+
+        return nak.value == gh;
     }
 }

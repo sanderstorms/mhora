@@ -17,17 +17,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 
+namespace Mhora;
 
-namespace Mhora
+/// <summary>
+///     A helper interface for all Vimsottari/Ashtottari Dasa like dasas
+/// </summary>
+public interface INakshatraDasa : IDasa
 {
-    /// <summary>
-    ///     A helper interface for all Vimsottari/Ashtottari Dasa like dasas
-    /// </summary>
-    public interface INakshatraDasa : IDasa
-    {
-        int       numberOfDasaItems();            // Number of dasas for 1 cycle
-        DasaEntry nextDasaLord(DasaEntry    di);  // Order of Dasas
-        double    lengthOfDasa(Body.Body.Name    plt); // Length of a maha dasa
-        Body.Body.Name lordOfNakshatra(Nakshatra n);   // Dasa lord of given nakshatra
-    }
+    int            numberOfDasaItems();              // Number of dasas for 1 cycle
+    DasaEntry      nextDasaLord(DasaEntry      di);  // Order of Dasas
+    double         lengthOfDasa(Body.Body.Name plt); // Length of a maha dasa
+    Body.Body.Name lordOfNakshatra(Nakshatra   n);   // Dasa lord of given nakshatra
 }

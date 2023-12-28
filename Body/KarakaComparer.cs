@@ -19,38 +19,37 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Diagnostics;
 
-namespace Mhora.Body
+namespace Mhora.Body;
+
+public class KarakaComparer : IComparable
 {
-    public class KarakaComparer : IComparable
+    public KarakaComparer(Position _bp)
     {
-        public KarakaComparer(Position _bp)
+        GetPosition = _bp;
+    }
+
+    public Position GetPosition
+    {
+        get;
+        set;
+    }
+
+    public int CompareTo(object obj)
+    {
+        Debug.Assert(obj is KarakaComparer);
+        var offa = getOffset();
+        var offb = ((KarakaComparer) obj).getOffset();
+        return offb.CompareTo(offa);
+    }
+
+    public double getOffset()
+    {
+        var off = GetPosition.longitude.toZodiacHouseOffset();
+        if (GetPosition.name == Body.Name.Rahu)
         {
-            GetPosition = _bp;
+            off = 30.0 - off;
         }
 
-        public Position GetPosition
-        {
-            get;
-            set;
-        }
-
-        public int CompareTo(object obj)
-        {
-            Debug.Assert(obj is KarakaComparer);
-            var offa = getOffset();
-            var offb = ((KarakaComparer)obj).getOffset();
-            return offb.CompareTo(offa);
-        }
-
-        public double getOffset()
-        {
-            var off = GetPosition.longitude.toZodiacHouseOffset();
-            if (GetPosition.name == Body.Name.Rahu)
-            {
-                off = 30.0 - off;
-            }
-
-            return off;
-        }
+        return off;
     }
 }

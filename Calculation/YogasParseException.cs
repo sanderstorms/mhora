@@ -18,20 +18,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 
-namespace Mhora.Calculation
+namespace Mhora.Calculation;
+
+public class YogasParseException : Exception
 {
-    public class YogasParseException : Exception
+    public string status;
+
+    public YogasParseException()
     {
-        public string status;
+        status = null;
+    }
 
-        public YogasParseException()
-        {
-            status = null;
-        }
-
-        public YogasParseException(string message)
-        {
-            status = message;
-        }
+    public YogasParseException(string message)
+    {
+        status = message;
     }
 }

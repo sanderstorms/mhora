@@ -18,23 +18,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 
-namespace Mhora.Components.Property
+namespace Mhora.Components.Property;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class PropertyOrderAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public class PropertyOrderAttribute : Attribute
+    //
+    // Simple attribute to allow the order of a property to be specified
+    //
+
+    public PropertyOrderAttribute(int order)
     {
-        //
-        // Simple attribute to allow the order of a property to be specified
-        //
+        Order = order;
+    }
 
-        public PropertyOrderAttribute(int order)
-        {
-            Order = order;
-        }
-
-        public int Order
-        {
-            get;
-        }
+    public int Order
+    {
+        get;
     }
 }
