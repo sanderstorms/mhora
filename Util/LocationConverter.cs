@@ -13,6 +13,20 @@ namespace mhora.Util
             {
                 return $"{Latitude:f5}, {Longitude:f5}";
             }
+
+            public static implicit operator DmsLocation (DecimalLocation location)
+            {
+                if (location == null)
+                {
+                    return null;
+                }
+
+                return new DecimalLocation
+                {
+                    Latitude  = location.Latitude,
+                    Longitude = location.Longitude
+                };
+            }
         }
 
         public class DmsLocation
@@ -24,6 +38,20 @@ namespace mhora.Util
             {
                 return $"{Latitude}, {Longitude}";
             }
+
+            public static implicit operator DecimalLocation(DmsLocation location)
+            {
+                if (location == null)
+                {
+                    return null;
+                }
+
+                return new DmsLocation
+                {
+                    Latitude  = new DmsPoint(location.Latitude, PointType.Lat),
+                    Longitude = new DmsPoint(location.Longitude, PointType.Lon)
+                };
+            }
         }
 
         public class DmsPoint
@@ -33,9 +61,30 @@ namespace mhora.Util
             public int       Seconds { get; set; }
             public PointType Type    { get; set; }
 
+            public DmsPoint(decimal degrees, PointType type)
+            {
+                Degrees = ExtractDegrees(degrees);
+                Minutes = ExtractMinutes(degrees);
+                Seconds = ExtractSeconds(degrees);
+                Type    = type;
+            }
+
             public override string ToString()
             {
-                return $"{Math.Abs(Degrees)} {Minutes} {Seconds} {(Type == PointType.Lat ? Degrees < 0 ? "S" : "N" : Degrees < 0 ? "W" : "E")}";
+                return $"{Math.Abs(Degrees)} {Minutes} {Seconds} " +
+                       $"{(Type == PointType.Lat ? 
+                           Degrees < 0 ? "S" : "N" : 
+                           Degrees < 0 ? "W" : "E")}";
+            }
+
+            public static implicit operator decimal(DmsPoint point)
+            {
+                if (point == null)
+                {
+                    return default(decimal);
+                }
+
+                return point.Degrees + (decimal)point.Minutes / 60 + (decimal)point.Seconds / 3600;
             }
         }
 
@@ -43,56 +92,6 @@ namespace mhora.Util
         {
             Lat,
             Lon
-        }
-
-        public static DecimalLocation Convert(DmsLocation dmsLocation)
-        {
-            if (dmsLocation == null)
-            {
-                return null;
-            }
-
-            return new DecimalLocation
-            {
-                Latitude  = CalculateDecimal(dmsLocation.Latitude),
-                Longitude = CalculateDecimal(dmsLocation.Longitude)
-            };
-        }
-
-        public static DmsLocation Convert(DecimalLocation decimalLocation)
-        {
-            if (decimalLocation == null)
-            {
-                return null;
-            }
-
-            return new DmsLocation
-            {
-                Latitude = new DmsPoint
-                {
-                    Degrees = ExtractDegrees(decimalLocation.Latitude),
-                    Minutes = ExtractMinutes(decimalLocation.Latitude),
-                    Seconds = ExtractSeconds(decimalLocation.Latitude),
-                    Type    = PointType.Lat
-                },
-                Longitude = new DmsPoint
-                {
-                    Degrees = ExtractDegrees(decimalLocation.Longitude),
-                    Minutes = ExtractMinutes(decimalLocation.Longitude),
-                    Seconds = ExtractSeconds(decimalLocation.Longitude),
-                    Type    = PointType.Lon
-                }
-            };
-        }
-
-        public static decimal CalculateDecimal(DmsPoint point)
-        {
-            if (point == null)
-            {
-                return default(decimal);
-            }
-
-            return point.Degrees + (decimal) point.Minutes / 60 + (decimal) point.Seconds / 3600;
         }
 
         public static int ExtractDegrees(decimal value)
