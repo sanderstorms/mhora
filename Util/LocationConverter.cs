@@ -71,12 +71,11 @@ namespace mhora.Util
                 Type    = type;
             }
 
+            public string Direction => (Type == PointType.Lat ? Degrees < 0 ? "S" : "N" : Degrees < 0 ? "W" : "E");
+
             public override string ToString()
             {
-                return $"{Math.Abs(Degrees):00} " +
-                       $"{(Type == PointType.Lat ? 
-                           Degrees < 0 ? "S" : "N" : 
-                           Degrees < 0 ? "W" : "E")}" + $" {Minutes:00}'{Seconds:00}";
+                return $"{Math.Abs(Degrees):00} {Direction} {Minutes:00}'{Seconds:00}";
             }
 
             public static implicit operator double(DmsPoint point)

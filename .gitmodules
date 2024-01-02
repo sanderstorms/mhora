@@ -14,3 +14,6 @@
 [submodule "Lib/Newtonsoft.Json"]
 	path = Lib/Newtonsoft.Json
 	url = ../../JamesNK/Newtonsoft.Json.git
+[submodule "Lib/SQLinq"]
+	path = Lib/SQLinq
+	url = ../SQLinq.git

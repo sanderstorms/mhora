@@ -531,11 +531,12 @@ public class MhoraContainer : Form
             ss.Close(null, 1000);
         }
 
-        openNewJhdFile();
-
         using (var birthDetails = new BirthDetailsDialog())
         {
-            birthDetails.ShowDialog();
+            if (birthDetails.ShowDialog() == DialogResult.OK)
+            {
+                AddChild(birthDetails.Horoscope, "test");
+            }
         }
     }
 

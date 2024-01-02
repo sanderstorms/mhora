@@ -26,7 +26,7 @@
             this.comboBoxCity = new System.Windows.Forms.ComboBox();
             this.comboBoxState = new System.Windows.Forms.ComboBox();
             this.comboBoxCountry = new System.Windows.Forms.ComboBox();
-            this.timePicker1 = new TimePicker.Opulos.Core.UI.TimePicker();
+            this.timePicker = new TimePicker.Opulos.Core.UI.TimePicker();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.groupBoxGender = new System.Windows.Forms.GroupBox();
             this.rbFemale = new System.Windows.Forms.RadioButton();
@@ -73,7 +73,7 @@
             this.tabBirthData.Controls.Add(this.comboBoxCity);
             this.tabBirthData.Controls.Add(this.comboBoxState);
             this.tabBirthData.Controls.Add(this.comboBoxCountry);
-            this.tabBirthData.Controls.Add(this.timePicker1);
+            this.tabBirthData.Controls.Add(this.timePicker);
             this.tabBirthData.Controls.Add(this.dateTimePicker);
             this.tabBirthData.Controls.Add(this.groupBoxGender);
             this.tabBirthData.Controls.Add(this.textBox1);
@@ -145,10 +145,14 @@
             this.comboBoxCity.Name = "comboBoxCity";
             this.comboBoxCity.Size = new System.Drawing.Size(376, 28);
             this.comboBoxCity.TabIndex = 19;
+            this.comboBoxCity.DropDown += new System.EventHandler(this.OnCityDropDown);
             this.comboBoxCity.SelectedIndexChanged += new System.EventHandler(this.OnCitySelected);
+            this.comboBoxCity.DropDownClosed += new System.EventHandler(this.OnCityDropDownClose);
             // 
             // comboBoxState
             // 
+            this.comboBoxState.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.comboBoxState.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxState.FormattingEnabled = true;
             this.comboBoxState.Location = new System.Drawing.Point(153, 214);
             this.comboBoxState.Name = "comboBoxState";
@@ -158,6 +162,8 @@
             // 
             // comboBoxCountry
             // 
+            this.comboBoxCountry.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.comboBoxCountry.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxCountry.FormattingEnabled = true;
             this.comboBoxCountry.Location = new System.Drawing.Point(153, 175);
             this.comboBoxCountry.Name = "comboBoxCountry";
@@ -165,43 +171,42 @@
             this.comboBoxCountry.TabIndex = 17;
             this.comboBoxCountry.SelectedIndexChanged += new System.EventHandler(this.OnCountrySelected);
             // 
-            // timePicker1
+            // timePicker
             // 
-            this.timePicker1.AutoCloseMenuFocusLost = true;
-            this.timePicker1.AutoCloseMenuWindowChanged = true;
-            this.timePicker1.ByDigit = false;
-            this.timePicker1.CaretVisible = false;
-            this.timePicker1.CaretWrapsAround = true;
-            this.timePicker1.ChopRunningText = true;
-            this.timePicker1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.timePicker1.CutCopyMaskFormat = System.Windows.Forms.MaskFormat.IncludePromptAndLiterals;
-            this.timePicker1.DateTimeFormat = "HH:mm:ss.fff";
-            this.timePicker1.DeleteKeyShiftsTextLeft = true;
-            this.timePicker1.EscapeKeyRevertsValue = false;
-            this.timePicker1.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
-            this.timePicker1.KeepSelectedIncludesWhitespace = false;
-            this.timePicker1.KeepTokenSelected = true;
-            this.timePicker1.Location = new System.Drawing.Point(153, 139);
-            this.timePicker1.Mask = "99:99:99.999";
-            this.timePicker1.Name = "timePicker1";
-            this.timePicker1.PromptChar = '0';
-            this.timePicker1.Size = new System.Drawing.Size(126, 27);
-            this.timePicker1.SplitChars = null;
-            this.timePicker1.TabIndex = 14;
-            this.timePicker1.TextMaskFormat = System.Windows.Forms.MaskFormat.IncludePromptAndLiterals;
-            this.timePicker1.UseMaxValueIfTooLarge = false;
-            this.timePicker1.Value = new System.DateTime(((long)(0)));
-            this.timePicker1.ValuesCarryOver = false;
-            this.timePicker1.ValuesWrapAround = true;
-            this.timePicker1.ValuesWrapIfNoCarryRoom = true;
-            this.timePicker1.ValueTooLargeFixMode = TimePicker.Opulos.Core.UI.ValueFixMode.KeepExistingValue;
-            this.timePicker1.ValueTooSmallFixMode = TimePicker.Opulos.Core.UI.ValueFixMode.KeepExistingValue;
+            this.timePicker.AutoCloseMenuFocusLost = true;
+            this.timePicker.AutoCloseMenuWindowChanged = true;
+            this.timePicker.ByDigit = false;
+            this.timePicker.CaretVisible = false;
+            this.timePicker.CaretWrapsAround = true;
+            this.timePicker.ChopRunningText = true;
+            this.timePicker.Cursor = System.Windows.Forms.Cursors.Default;
+            this.timePicker.CutCopyMaskFormat = System.Windows.Forms.MaskFormat.IncludePromptAndLiterals;
+            this.timePicker.DateTimeFormat = "HH:mm:ss.fff";
+            this.timePicker.DeleteKeyShiftsTextLeft = true;
+            this.timePicker.EscapeKeyRevertsValue = false;
+            this.timePicker.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
+            this.timePicker.KeepSelectedIncludesWhitespace = false;
+            this.timePicker.KeepTokenSelected = true;
+            this.timePicker.Location = new System.Drawing.Point(153, 139);
+            this.timePicker.Mask = "99:99:99.999";
+            this.timePicker.Name = "timePicker";
+            this.timePicker.PromptChar = '0';
+            this.timePicker.Size = new System.Drawing.Size(126, 27);
+            this.timePicker.SplitChars = null;
+            this.timePicker.TabIndex = 14;
+            this.timePicker.TextMaskFormat = System.Windows.Forms.MaskFormat.IncludePromptAndLiterals;
+            this.timePicker.UseMaxValueIfTooLarge = false;
+            this.timePicker.Value = new System.DateTime(((long)(0)));
+            this.timePicker.ValuesCarryOver = false;
+            this.timePicker.ValuesWrapAround = true;
+            this.timePicker.ValuesWrapIfNoCarryRoom = true;
+            this.timePicker.ValueTooLargeFixMode = TimePicker.Opulos.Core.UI.ValueFixMode.KeepExistingValue;
+            this.timePicker.ValueTooSmallFixMode = TimePicker.Opulos.Core.UI.ValueFixMode.KeepExistingValue;
             // 
             // dateTimePicker
             // 
             this.dateTimePicker.Location = new System.Drawing.Point(153, 104);
             this.dateTimePicker.Name = "dateTimePicker";
-            this.dateTimePicker.ShowUpDown = true;
             this.dateTimePicker.Size = new System.Drawing.Size(376, 27);
             this.dateTimePicker.TabIndex = 13;
             // 
@@ -415,7 +420,7 @@
         private System.Windows.Forms.RadioButton rbFemale;
         private System.Windows.Forms.RadioButton rbMale;
         private System.Windows.Forms.TextBox textBox1;
-        private TimePicker.Opulos.Core.UI.TimePicker timePicker1;
+        private TimePicker.Opulos.Core.UI.TimePicker timePicker;
         private System.Windows.Forms.ComboBox comboBoxState;
         private System.Windows.Forms.ComboBox comboBoxCountry;
         private System.Windows.Forms.ComboBox comboBoxCity;

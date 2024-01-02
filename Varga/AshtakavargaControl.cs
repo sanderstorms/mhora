@@ -36,7 +36,8 @@ public class AshtakavargaControl : MhoraControl
     public enum EChartStyle
     {
         SouthIndian,
-        EastIndian
+        EastIndian,
+        NorthIndian
     }
 
     public enum EDisplayStyle
@@ -303,9 +304,12 @@ public class AshtakavargaControl : MhoraControl
             case EChartStyle.SouthIndian:
                 dc = new SouthIndianChart();
                 break;
+            case EChartStyle.NorthIndian:
+	            dc = new NorthIndianChart(h.getPosition(Body.Body.Name.Lagna));
+	            break;
         }
 
-        Body.Body.Name[] bin_body =
+		Body.Body.Name[] bin_body =
         {
             Body.Body.Name.Lagna,
             Body.Body.Name.Lagna,
@@ -510,9 +514,12 @@ public class AshtakavargaControl : MhoraControl
             case EChartStyle.SouthIndian:
                 dc = new SouthIndianChart();
                 break;
+            case EChartStyle.NorthIndian:
+	            dc = new NorthIndianChart(h.getPosition(Body.Body.Name.Lagna));
+	            break;
         }
 
-        var innerSize  = (int) ((float) Math.Min(bmpBuffer.Width, bmpBuffer.Height) / 3.15);
+		var innerSize  = (int) ((float) Math.Min(bmpBuffer.Width, bmpBuffer.Height) / 3.15);
         var scaleInner = innerSize / (float) dc.GetLength();
 
         g.ResetTransform();

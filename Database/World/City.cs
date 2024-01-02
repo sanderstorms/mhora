@@ -7,11 +7,32 @@ using SqlNado.Utilities;
 namespace Mhora.Database.World;
 
 [SQLiteTable(Name = "cities")]
-public class City : SQLiteBaseObject
+public class City : SQLiteBaseObject, IComparable
 {
     public City(SQLiteDatabase database) : base(database)
     {
     }
+
+    public override string ToString()
+    {
+        return $"{Name} ({State.Name}";
+    }
+
+    public int CompareTo(object obj)
+    {
+        if (obj is string str)
+        {
+            return (string.Compare(ToString(), str, StringComparison.Ordinal));
+        }
+
+        if (obj is City city)
+        {
+            return (CompareTo(obj.ToString()));
+        }
+
+        return (0);
+    }
+
 
     [SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]
     public int Id { get; set; }

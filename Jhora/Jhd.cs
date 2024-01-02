@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using Mhora.Calculation;
@@ -113,7 +114,7 @@ public class Jhd : IFileToHoraInfo
             s = new string(s.ToCharArray(1, s.Length - 1));
         }
 
-        var dhour = double.Parse(s);
+        var dhour = double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture);
         dhour  = dhour < 0 ? Math.Ceiling(dhour) : Math.Floor(dhour);
         hour   = (int) dhour;
         minute = int.Parse(s2.Substring(0, 2));

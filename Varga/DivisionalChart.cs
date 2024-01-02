@@ -1358,9 +1358,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
     {
         switch (cs)
         {
-            case UserOptions.EChartStyle.EastIndian:
-                dc = new EastIndianChart();
+            case UserOptions.EChartStyle.NorthIndian:
+                dc = new NorthIndianChart(h.getPosition(Body.Body.Name.Lagna));
                 return;
+            case UserOptions.EChartStyle.EastIndian:
+	            dc = new EastIndianChart();
+	            return;
             case UserOptions.EChartStyle.SouthIndian:
             default:
                 dc = new SouthIndianChart();
@@ -1968,10 +1971,13 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
             SouthIndian,
 
             [Description("East Indian Square (Sun)")]
-            EastIndian
+            EastIndian,
+
+            [Description("North Indian Diamond (Sun)")]
+            NorthIndian
         }
 
-        [TypeConverter(typeof(EnumDescConverter))]
+		[TypeConverter(typeof(EnumDescConverter))]
         public enum EViewStyle
         {
             [Description("Regular")]

@@ -9,7 +9,7 @@ using SqlNado.Utilities;
 namespace Mhora.Database.World;
 
 [SQLiteTable(Name = "countries")]
-public class Country : SQLiteBaseObject
+public class Country : SQLiteBaseObject, IComparable
 {
     private List<TimeZone> _timeZone;
 
@@ -18,6 +18,27 @@ public class Country : SQLiteBaseObject
     public Country(SQLiteDatabase database) : base(database)
     {
     }
+
+    public override string ToString()
+    {
+        return $"{Name} ({Region?.Name})";
+    }
+
+    public int CompareTo(object obj)
+    {
+        if (obj is string str)
+        {
+            return (string.Compare(ToString(), str, StringComparison.Ordinal));
+        }
+
+        if (obj is Country country)
+        {
+            return (CompareTo(obj.ToString()));
+        }
+
+        return (0);
+    }
+
 
     [SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]
     public int Id { get; set; }
@@ -145,6 +166,23 @@ public class Country : SQLiteBaseObject
             }
 
             return _timeZone;
+        }
+    }
+
+    [SQLiteColumn(Ignore = true)]
+    public TimeZoneInfo TimeZoneInfo
+    {
+        get
+        {
+            try
+            {
+                return (TimeZoneInfo.FindSystemTimeZoneById(Timezones[0].zoneName));
+
+            }
+            catch (Exception e)
+            {
+                return (null);
+            }
         }
     }
 

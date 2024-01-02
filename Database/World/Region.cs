@@ -2,12 +2,37 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using SqlNado;
+using SqlNado.Utilities;
 
 namespace Mhora.Database.World;
 
 [SQLiteTable(Name = "regions")]
-public class Region
+public class Region : SQLiteBaseObject, IComparable
 {
+    public Region(SQLiteDatabase database) : base(database)
+    {
+    }
+
+    public override string ToString()
+    {
+        return Name;
+    }
+
+    public int CompareTo(object obj)
+    {
+        if (obj is string str)
+        {
+            return (string.Compare(ToString(), str, StringComparison.Ordinal));
+        }
+
+        if (obj is Region region)
+        {
+            return (CompareTo(obj.ToString()));
+        }
+
+        return (0);
+    }
+
     private Dictionary<string, string> _translations;
 
     [SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]

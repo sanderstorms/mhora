@@ -152,6 +152,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
@@ -201,6 +203,7 @@
     <Compile Include="Calculation\Strength\StrengthByRasisNature.cs" />
     <Compile Include="Calculation\Strength\StrengthByVimsottariDasaLength.cs" />
     <Compile Include="Calculation\Transit.cs" />
+    <Compile Include="Chart\NorthIndianChart.cs" />
     <Compile Include="Components\AboutMhora.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -225,11 +228,8 @@
     <Compile Include="Controls\ProgressFm.Designer.cs">
       <DependentUpon>ProgressFm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\CountryCode.cs" />
-    <Compile Include="Database\Countries\GeoNamesDb.cs" />
     <Compile Include="Database\Reflection.cs" />
-    <Compile Include="Database\TimeZone.cs" />
-    <Compile Include="Database\Countries\TimeZoneDb.cs" />
+    <Compile Include="Database\World\TimeZone.cs" />
     <Compile Include="Database\World\City.cs" />
     <Compile Include="Database\World\Country.cs" />
     <Compile Include="Database\World\Region.cs" />
@@ -239,6 +239,7 @@
     <Compile Include="Settings\ApplyOptions.cs" />
     <Compile Include="Settings\MhoraGlobalOptions.cs" />
     <Compile Include="Util\Dll.cs" />
+    <Compile Include="Util\EnumHelper.cs" />
     <Compile Include="Util\LocationConverter.cs" />
     <Compile Include="Util\SevenZip.cs" />
     <Compile Include="Util\StringExtension.cs" />
@@ -650,15 +651,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Database\Country Codes.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Database\Countries\geonames-all-cities-with-a-population-1000.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Database\Countries\timezones.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Database\TimeZones.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -676,6 +668,10 @@
     <ProjectReference Include="Lib\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj">
       <Project>{2915f8fb-b739-4b02-a7c9-a86b48b0a96f}</Project>
       <Name>Newtonsoft.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="Lib\SQLinq\SQLinq\SQLinq.csproj">
+      <Project>{95af6dbe-d796-469b-97d1-0c23d664d384}</Project>
+      <Name>SQLinq</Name>
     </ProjectReference>
     <ProjectReference Include="Lib\SQLNado\SqlNado\SqlNado.csproj">
       <Project>{646b3044-b868-4612-9832-57f292873ce9}</Project>

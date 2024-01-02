@@ -9,7 +9,7 @@ using SqlNado.Utilities;
 namespace Mhora.Database.World;
 
 [SQLiteTable(Name = "subregions")]
-public class SubRegion : SQLiteBaseObject
+public class SubRegion : SQLiteBaseObject, IComparable
 {
     private Region _region;
 
@@ -18,6 +18,27 @@ public class SubRegion : SQLiteBaseObject
     public SubRegion(SQLiteDatabase database) : base(database)
     {
     }
+
+    public override string ToString()
+    {
+        return Name;
+    }
+
+    public int CompareTo(object obj)
+    {
+        if (obj is string str)
+        {
+            return (string.Compare(ToString(), str, StringComparison.Ordinal));
+        }
+
+        if (obj is SubRegion subRegion)
+        {
+            return (CompareTo(obj.ToString()));
+        }
+
+        return (0);
+    }
+
 
     [SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]
     public int Id { get; set; }

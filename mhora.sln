@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlNado", "Lib\SQLNado\SqlN
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Newtonsoft.Json", "Lib\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj", "{2915F8FB-B739-4B02-A7C9-A86B48B0A96F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLinq", "Lib\SQLinq\SQLinq\SQLinq.csproj", "{95AF6DBE-D796-469B-97D1-0C23D664D384}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{2915F8FB-B739-4B02-A7C9-A86B48B0A96F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2915F8FB-B739-4B02-A7C9-A86B48B0A96F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2915F8FB-B739-4B02-A7C9-A86B48B0A96F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95AF6DBE-D796-469B-97D1-0C23D664D384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95AF6DBE-D796-469B-97D1-0C23D664D384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95AF6DBE-D796-469B-97D1-0C23D664D384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95AF6DBE-D796-469B-97D1-0C23D664D384}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

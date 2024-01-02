@@ -6,12 +6,11 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Mhora.Database;
 using Mhora.Database.World;
-using Newtonsoft.Json;
 using SqlNado;
 using SqlNado.Query;
 using SyslogLogging;
+using TimeZone = mhora.Database.World.TimeZone;
 
 namespace Mhora;
 
@@ -45,55 +44,32 @@ internal static class mhora
                 {
                     versionString += " (beta)";
                 }
-                    break;
+                break;
 
                 case 1:
                 {
                     versionString += " (release candidate)";
                 }
-                    break;
+                break;
 
                 case 2:
                 {
                 }
-                    break;
+                break;
 
                 default:
                 {
                     versionString += " (?)";
                 }
-                    break;
+                break;
             }
 
             return versionString;
         }
     }
 
-    public static TimeZones TimeZones
-    {
-        get;
-        private set;
-    }
-
     public static async Task InitDb()
     {
-        _countryCodes = CountryCode.Instance.Table;
-        var jsonPath = Path.Combine(WorkingDir, "DataBase", "TimeZones.json");
-
-        // deserialize JSON directly from a file
-        using (var file = File.OpenText(jsonPath))
-        {
-            var serializer = new JsonSerializer();
-            try
-            {
-                TimeZones = (TimeZones) serializer.Deserialize(file, typeof(TimeZones));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
-
         if (File.Exists("world.db"))
         {
             try
@@ -106,7 +82,8 @@ internal static class mhora
                     foreach (var city in cities)
                     {
                         var country      = city.Country;
-                        var timeZone     = TimeZones.FindId(country.Timezones[0].zoneName);
+                        var timeZone     = TimeZone.TimeZones.FindId(country.Timezones[0].zoneName);
+                        var info         = timeZone.TimeZoneInfo;
                         var translations = country.Translations;
                     }
                 }
