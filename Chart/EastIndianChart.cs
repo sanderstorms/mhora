@@ -54,7 +54,12 @@ public class EastIndianChart : IDrawChart
         return new Point(xw / 3, yw / 3);
     }
 
-    public Point GetDegreeOffset(Longitude l)
+    public Point GetBodyTextPosition(Longitude l, Size itemSize)
+    {
+	    return (Point.Empty);
+    }
+
+	public Point GetBodyPosition(Longitude l)
     {
         var zh      = l.toZodiacHouse().value;
         var dOffset = l.toZodiacHouseOffset();
@@ -87,7 +92,7 @@ public class EastIndianChart : IDrawChart
         return pBase;
     }
 
-    public Point GetSingleItemOffset(ZodiacHouse zh)
+    public Point GetSingleItemOffset(ZodiacHouse zh, Size itemSize)
     {
         switch (zh.value)
         {

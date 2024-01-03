@@ -32,13 +32,10 @@ public class NorthIndianChart : IDrawChart
     private const int xo = 0;
     private const int yo = 0;
 
-	private const    int      hxs  = 200;
-	private const    int      hys  = 125;
-	private const    int      hsys = 75;
-	private readonly Pen      pn_black;
-	private readonly Position _lagna;
+	private readonly Pen         pn_black;
+	private readonly ZodiacHouse _lagna;
 
-	public NorthIndianChart(Position lagna)
+	public NorthIndianChart(ZodiacHouse lagna)
     {
 	    _lagna = lagna;
 		pn_black = new Pen(Color.Black, (float) 0.1);
@@ -49,22 +46,70 @@ public class NorthIndianChart : IDrawChart
         return xw;
     }
 
-    public Point GetDegreeOffset(Longitude l)
+    public int Bhava(ZodiacHouse zh)
     {
-        var zh         = l.toZodiacHouse();
+	    var bhava = ((zh.value.Index() - _lagna.value.Index()) + 1);
 
-		var dOffset = (l.toZodiacHouseOffset() - 15.0);
-        var pBase   = GetZhouseOffset(l.toZodiacHouse());
+	    if (bhava <= 0)
+	    {
+		    bhava = 12 + bhava;
+	    }
+		return (bhava);
+	}
 
-        var lagna = _lagna.longitude.toZodiacHouse();
-        var house = ((zh.value.Index() - lagna.value.Index()) + 1);
+    public Point GetBodyTextPosition(Longitude l, Size itemSize)
+    {
+	    var p     = GetBodyPosition(l);
+	    var bhava = Bhava(l.toZodiacHouse());
 
-        if (house <= 0)
-        {
-	        house = 12 + house;
-        }
+	    p.X -= (itemSize.Width / 2);
+		p.Y -= (itemSize.Height / 2);
 
-		switch (house)
+	    switch (bhava)
+	    {
+		    case 12:
+		    case 1:
+		    case 2:
+		    {
+			    p.Y += 10;
+		    }
+			break;
+
+		    case 3:
+		    case 4:
+		    case 5:
+		    {
+				p.X += 10;
+		    }
+			break;
+
+		    case 6:
+		    case 7:
+		    case 8:
+		    {
+			    p.Y -= 10;
+		    }
+			break;
+
+		    case 9:
+		    case 10:
+		    case 11:
+		    {
+				p.X -= 10;
+		    }
+			break;
+	    }
+
+		return (p);
+    }
+
+	public Point GetBodyPosition(Longitude l)
+    {
+	    var dOffset = (l.toZodiacHouseOffset() - 15.0);
+	    var bhava   = Bhava(l.toZodiacHouse());
+	    var pBase   = GetBhavaCentre(bhava);
+
+		switch (bhava)
         {
 	        case 12:
 	        case 2:
@@ -106,33 +151,25 @@ public class NorthIndianChart : IDrawChart
 		return pBase;
     }
 
-    private Point GetZhouseOffset(ZodiacHouse zh)
+    private Point GetBhavaCentre(int bhava)
     {
-	    var lagna = _lagna.longitude.toZodiacHouse();
-	    var house = ((zh.value.Index() - lagna.value.Index()) + 1);
-
-	    if (house <= 0)
+		switch (bhava)
 	    {
-		    house = 12 + house;
-	    }
+			case 12: return new Point(xo + xw * 3 / 4, yo + yw * 1 / 10);
+		    case 1:  return new Point(xo + xw * 2 / 4, yo + yw * 2 /  8);
+		    case 2:  return new Point(xo + xw * 1 / 4, yo + yw * 1 / 10);
 
-		switch (house)
-	    {
-			case 12: return new Point(xo + xw * 3 / 4, yo + yw * 1 / 8);
-		    case 1:  return new Point(xo + xw * 2 / 4, yo + yw * 2 / 8);
-		    case 2:  return new Point(xo + xw * 1 / 4, yo + yw * 1 / 8);
+		    case 3: return new Point(xo + xw * 1 / 10, yo + yw * 1 / 4);
+		    case 4: return new Point(xo + xw * 2 /  8, yo + yw * 2 / 4);
+		    case 5: return new Point(xo + xw * 1 / 10, yo + yw * 3 / 4);
 
-		    case 3: return new Point(xo + xw * 1 / 8, yo + yw * 1 / 4);
-		    case 4: return new Point(xo + xw * 2 / 8, yo + yw * 2 / 4);
-		    case 5: return new Point(xo + xw * 1 / 8, yo + yw * 3 / 4);
+		    case 6: return new Point(xo + xw * 1 / 4, yo + yw * 9 / 10);
+		    case 7: return new Point(xo + xw * 2 / 4, yo + yw * 6 /  8);
+		    case 8: return new Point(xo + xw * 3 / 4, yo + yw * 9 / 10);
 
-		    case 6: return new Point(xo + xw * 1 / 4, yo + yw * 7 / 8);
-		    case 7: return new Point(xo + xw * 2 / 4, yo + yw * 6 / 8);
-		    case 8: return new Point(xo + xw * 3 / 4, yo + yw * 7 / 8);
-
-		    case 9:  return new Point(xo + xw * 7 / 8, yo + yw * 3 / 4);
-		    case 10: return new Point(xo + xw * 6 / 8, yo + yw * 2 / 4);
-		    case 11: return new Point(xo + xw * 7 / 8, yo + yw * 1 / 4);
+		    case 9:  return new Point(xo + xw * 9 / 10, yo + yw * 3 / 4);
+		    case 10: return new Point(xo + xw * 6 /  8, yo + yw * 2 / 4);
+		    case 11: return new Point(xo + xw * 9 / 10, yo + yw * 1 / 4);
 	    }
 
 	    return new Point(0, 0);
@@ -155,70 +192,36 @@ public class NorthIndianChart : IDrawChart
 
 	}
 
-	public Point GetSingleItemOffset(ZodiacHouse zh)
+	public Point GetSingleItemOffset(ZodiacHouse zh, Size itemSize)
 	{
-		var lagna = _lagna.longitude.toZodiacHouse();
-		var house = zh.value.Index() - lagna.value.Index() + 1;
-		if (house <= 0)
-		{
-			house += 12;
-		}
+		var bhava = Bhava(zh);
 
-		var offset = GetZhouseOffset(zh);
+		var offset = GetBhavaCentre(bhava);
+		offset.X -= itemSize.Width  / 2;
+		offset.Y -= itemSize.Height / 2;
 
-		switch (house)
-		{
-			case 12:
-			case 1:
-			case 2:
-			{
-				offset.Y -= 20;
-			}
-			break;
-
-			case 3:
-			case 4:
-			case 5:
-			{
-				offset.X -= 20;
-			}
-			break;
-
-			case 6:
-			case 7:
-			case 8:
-			{
-				offset.Y += 5;
-			}
-			break;
-
-			case 9:
-			case 10:
-			case 11:
-			{
-				//offset.X += 20;
-			}
-			break;
-		}
-
-		return offset;
+		return (offset);
 	}
 
 	public Point GetItemOffset(ZodiacHouse zh, int n)
 	{
-		var p = GetZhouseOffset(zh);
-		var q = GetZhouseItemOffset(n);
+		var bhava = Bhava(zh);
+
+		var p     = GetBhavaCentre(bhava);
+		var q     = GetZhouseItemOffset(bhava, n);
 		return new Point(p.X + q.X, p.Y + q.Y);
 	}
 
 	public Point GetSmallItemOffset(ZodiacHouse zh, int n)
 	{
-		var p = GetZhouseOffset(zh);
-		var q = GetSmallZhouseItemOffset(n);
+		var bhava = Bhava(zh);
+
+		var p     = GetBhavaCentre(bhava);
+		var q     = GetZhouseItemOffset(bhava, n);
 		return new Point(p.X + q.X, p.Y + q.Y);
 	}
 
-	private Point GetSmallZhouseItemOffset(int n)
+	private Point GetSmallZhouseItemOffset(int bhava, int n)
 	{
 		if (n >= 7)
 		{
@@ -238,21 +241,30 @@ public class NorthIndianChart : IDrawChart
 		};
 		n = item_map[n - 1];
 
-		var xiw = hxs  / 4;
-		var yiw = hsys / 6;
+		var xiw = xw / 8;
+		var yiw = yw / 8;
 
 		var row = (int)Math.Floor(n / (double)3);
 		var col = n - row * 3;
 
-		return new Point(xiw * row / 3, hys / 4 + yiw * col / 3);
+
+		return new Point(xiw * row / 3, yiw * col / 3);
 	}
 
-	private Point GetZhouseItemOffset(int n)
+	private Point GetZhouseItemOffset(int bhava, int n)
 	{
 		if (n >= 10)
 		{
 			Debug.WriteLine("North Indian Chart is too small for data");
-			return GetSmallZhouseItemOffset(n - 10 + 1);
+			return GetSmallZhouseItemOffset(bhava, n - 10 + 1);
+		}
+
+		switch (n)
+		{
+			case 1: return new Point(15, 15);
+			case 2: return new Point(-15, -15);
+			case 3: return new Point(15, -15);
+			case 4: return new Point(-15, 15);
 		}
 
 		var item_map = new int[10]
@@ -270,8 +282,8 @@ public class NorthIndianChart : IDrawChart
 		};
 		n = item_map[n] - 1;
 
-		var xiw = hxs / 4;
-		var yiw = hys / 4;
+		var xiw = xw / 8;
+		var yiw = yw / 8;
 
 		var col = (int)Math.Floor(n / (double)3);
 		var row = n - col * 3;

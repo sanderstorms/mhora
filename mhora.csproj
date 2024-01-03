@@ -279,6 +279,7 @@
     <Compile Include="Dasa\DasaEntryConverter.cs" />
     <Compile Include="Dasa\DasaItem.cs" />
     <Compile Include="Delegates\DelegateComputeFinished.cs" />
+    <Compile Include="Varga\ChartItems.cs" />
     <Compile Include="Varga\Division.cs" />
     <Compile Include="Varga\DivisionConverter.cs" />
     <Compile Include="Varga\DivisionPosition.cs" />

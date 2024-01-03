@@ -30,12 +30,11 @@ public class DivisionPosition
     public double         cusp_higher;
     public double         cusp_lower;
     public Body.Body.Name name;
-    public string         otherString;
+    private string        _description;
     public int            part;
     public int            ruler_index;
     public BodyType.Name  type;
     public ZodiacHouse    zodiac_house;
-
 
     public DivisionPosition(Body.Body.Name _name, BodyType.Name _type, ZodiacHouse _zodiac_house, double _cusp_lower, double _cusp_higher, int _part)
     {
@@ -46,6 +45,23 @@ public class DivisionPosition
         cusp_higher  = _cusp_higher;
         part         = _part;
         ruler_index  = 0;
+    }
+
+    public string Description
+    {
+	    get
+	    {
+		    if (string.IsNullOrEmpty(_description) == false)
+		    {
+			    return (_description);
+			}
+
+		    return (Body.Body.toShortString(name));
+	    }
+	    set
+	    {
+		    _description = value;
+	    }
     }
 
     public bool isInMoolaTrikona()

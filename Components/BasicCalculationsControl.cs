@@ -1078,7 +1078,7 @@ public class BasicCalculationsControl : MhoraControl
             var desc = string.Empty;
             if (dp.name == Mhora.Body.Body.Name.Other)
             {
-                desc = dp.otherString;
+                desc = dp.Description;
             }
             else
             {

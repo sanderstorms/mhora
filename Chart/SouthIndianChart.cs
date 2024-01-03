@@ -50,7 +50,12 @@ public class SouthIndianChart : IDrawChart
         return xw;
     }
 
-    public Point GetDegreeOffset(Longitude l)
+    public Point GetBodyTextPosition(Longitude l, Size itemSize)
+    {
+	    return (Point.Empty);
+    }
+
+	public Point GetBodyPosition(Longitude l)
     {
         var zh      = l.toZodiacHouse().value;
         var dOffset = l.toZodiacHouseOffset();
@@ -102,7 +107,7 @@ public class SouthIndianChart : IDrawChart
         g.DrawLine(pn_black, xo     + xw * 3 / 4, yo     + yw              / 2, xo + xw, yo + yw / 2);
     }
 
-    public Point GetSingleItemOffset(ZodiacHouse zh)
+    public Point GetSingleItemOffset(ZodiacHouse zh, Size itemSize)
     {
         var p = GetZhouseOffset(zh);
         return new Point(p.X + 15, p.Y + 15);

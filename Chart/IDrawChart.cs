@@ -23,8 +23,9 @@ namespace Mhora.Chart;
 
 public interface IDrawChart
 {
-    Point GetDegreeOffset(Longitude       l);
-    Point GetSingleItemOffset(ZodiacHouse zh);
+    Point GetBodyPosition(Longitude     l);
+    Point GetBodyTextPosition(Longitude l, Size itemSize);
+	Point GetSingleItemOffset(ZodiacHouse zh, Size itemSize);
     Point GetItemOffset(ZodiacHouse       zh, int n);
     Point GetSmallItemOffset(ZodiacHouse  zh, int n);
     Point GetInnerSquareOffset();

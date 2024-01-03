@@ -18,10 +18,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 using Mhora.Body;
 using Mhora.Calculation;
@@ -29,7 +31,9 @@ using Mhora.Chart;
 using Mhora.Components;
 using Mhora.Components.Property;
 using Mhora.Settings;
+using mhora.Util;
 using Mhora.Util;
+using mhora.Varga;
 
 namespace Mhora.Varga;
 
@@ -54,7 +58,9 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
     private IDrawChart  dc;
     private ArrayList   div_pos;
 
-    private Font fBase = new(MhoraGlobalOptions.Instance.VargaFont.FontFamily, MhoraGlobalOptions.Instance.VargaFont.SizeInPoints);
+    ChartItems items = new ChartItems();
+
+	private Font fBase = new(MhoraGlobalOptions.Instance.VargaFont.FontFamily, MhoraGlobalOptions.Instance.VargaFont.SizeInPoints);
 
     private ArrayList graha_arudha_pos;
 
@@ -198,8 +204,8 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
         MhoraGlobalOptions.DisplayPrefsChanged += OnRedisplay;
         OnRecalculate(h);
         SetChartStyle(options.ChartStyle);
-        //dc = new SouthIndianChart();
-        //dc = new EastIndianChart();
+		//dc = new SouthIndianChart();
+		//dc = new EastIndianChart();
     }
 
     /// <summary>
@@ -861,50 +867,50 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
         AddViewsToContextMenu(contextMenu);
     }
 
-    private Point GetOffset(ZodiacHouse zh, int item)
+    private void DrawItems(Graphics g, bool large)
     {
-        return dc.GetSmallItemOffset(zh, item);
+	    var signs = Enum.GetValues(typeof(ZodiacHouse.Name)).OfType<ZodiacHouse.Name>();
+	    foreach (var sign in signs)
+	    {
+		    var dpList = items[sign];
+
+		    for (int item = 0; item < dpList.Count; item++)
+		    {
+                var dp = dpList[item];
+                DrawItem(g, dp, item + 1, large);
+		    }
+	    }
     }
 
-    private void AddItem(Graphics g, ZodiacHouse zh, int item, DivisionPosition dp, bool large)
+    private void DrawItem(Graphics g, DivisionPosition dp, int item, bool large)
     {
-        string s = null;
-
-        if (dp.type == BodyType.Name.GrahaArudha || dp.type == BodyType.Name.Varnada)
-        {
-            s = dp.otherString;
-        }
-        else
-        {
-            s = Body.Body.toShortString(dp.name);
-        }
-
-        AddItem(g, zh, item, dp, large, s);
-    }
-
-    private void AddItem(Graphics g, ZodiacHouse zh, int item, DivisionPosition dp, bool large, string s)
-    {
-        Point p;
-        Font  f;
+	    Point p = Point.Empty;
+	    Font  f;
 
         if (large)
         {
-            p = dc.GetItemOffset(zh, item);
-            f = fBase;
-            if (dp.type == BodyType.Name.Graha)
+			f = fBase;
+            if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
             {
                 var bp = h.getPosition(dp.name);
                 if (bp.speed_longitude < 0.0 && bp.name != Body.Body.Name.Rahu && bp.name != Body.Body.Name.Ketu)
                 {
                     f = new Font(fBase.Name, fBase.Size, FontStyle.Underline);
                 }
+
+                var strSize = g.MeasureString(dp.Description, f);
+                p       = dc.GetBodyTextPosition(bp.longitude, Size.Round(strSize));
             }
-            else if (dp.name == Body.Body.Name.Lagna)
+			else if (dp.name == Body.Body.Name.Lagna)
             {
                 f = new Font(fBase.Name, fBase.Size, FontStyle.Bold);
             }
+            if (p.IsEmpty)
+            {
+	            p = dc.GetItemOffset(dp.zodiac_house, item);
+            }
         }
-        else
+		else
         {
             var fs = FontStyle.Regular;
             if (dp.type == BodyType.Name.BhavaArudhaSecondary)
@@ -912,7 +918,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
                 fs = FontStyle.Italic;
             }
 
-            p = dc.GetSmallItemOffset(zh, item);
+            p = dc.GetSmallItemOffset(dp.zodiac_house, item);
             f = new Font(fBase.Name, fBase.SizeInPoints - 1, fs);
         }
 
@@ -952,22 +958,23 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
         //SizeF sf = g.MeasureString (s, f, this.Width);
         //g.FillRectangle(r, p.X, p.Y, sf.Width, sf.Height);
-        g.DrawString(s, f2, b, p.X, p.Y);
+        g.DrawString(dp.Description, f2, b, p.X, p.Y);
 
         if (options.Varga.MultipleDivisions.Length == 1 && options.Varga.MultipleDivisions[0].Varga == Basics.DivisionType.Rasi && PrintMode == false && (dp.type == BodyType.Name.Graha || dp.type == BodyType.Name.Lagna))
         {
-            var   pLon = dc.GetDegreeOffset(h.getPosition(dp.name).longitude);
+            var   pLon = dc.GetBodyPosition(h.getPosition(dp.name).longitude);
             var   pn   = new Pen(MhoraGlobalOptions.Instance.getBinduColor(dp.name), (float) 0.01);
             Brush br   = new SolidBrush(MhoraGlobalOptions.Instance.getBinduColor(dp.name));
-            g.FillEllipse(br, pLon.X - 1, pLon.Y - 1, 4, 4);
+            g.FillEllipse(br, pLon.X - 2, pLon.Y - 2, 4, 4);
             //g.DrawEllipse(pn, pLon.X-1, pLon.Y-1, 2, 2);
-            g.DrawEllipse(new Pen(Color.Gray), pLon.X - 1, pLon.Y - 1, 4, 4);
+            g.DrawEllipse(new Pen(Color.Gray), pLon.X - 2, pLon.Y - 2, 4, 4);
         }
     }
 
 
     private void PaintObjects(Graphics g)
     {
+	    items.Clear();
         switch (options.ViewStyle)
         {
             case UserOptions.EViewStyle.Panchanga:
@@ -988,22 +995,6 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
     private void PaintCharaKarakas(Graphics g)
     {
-        var nItems = new int[13]
-        {
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-        };
         var al = new ArrayList();
 
         // number of karakas to display
@@ -1036,67 +1027,40 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
         }
 
 
-        // display bodies
-        for (var i = 0; i <= max; i++)
-        {
-            var b  = (Body.Body.Name) i;
-            var dp = (DivisionPosition) div_pos[i];
-            var zh = dp.zodiac_house;
-            var j  = (int) zh.value;
-            nItems[j]++;
-            if (options.ViewStyle == UserOptions.EViewStyle.CharaKarakas7)
-            {
-                AddItem(g, zh, nItems[j], dp, true, karakas_s7[kindex[i]]);
-            }
-            else
-            {
-                AddItem(g, zh, nItems[j], dp, true, karakas_s[kindex[i]]);
-            }
-        }
+		// display bodies
+		for (var i = 0; i <= max; i++)
+		{
+			var dp = (DivisionPosition)div_pos[i];
 
-        var dp2 = (DivisionPosition) div_pos[(int) Body.Body.Name.Lagna];
-        var zh2 = dp2.zodiac_house;
-        var j2  = (int) zh2.value;
-        nItems[j2]++;
-        AddItem(g, zh2, nItems[j2], dp2, true);
+			if (options.ViewStyle == UserOptions.EViewStyle.CharaKarakas7)
+			{
+				dp.Description = karakas_s7[kindex[i]];
+			}
+			else
+			{
+				dp.Description = karakas_s[kindex[i]];
+			}
+			items.Add(dp);
+		}
+
+		var dp2 = (DivisionPosition) div_pos[(int) Body.Body.Name.Lagna];
+        items.Add(dp2);
+        DrawItems(g, true);
     }
 
     private void PaintDualGrahaArudhasView(Graphics g)
     {
-        var nItems = new int[13]
-        {
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-        };
-
-        DivisionPosition dpo;
-        int              i;
-        dpo = h.getPosition(Body.Body.Name.Lagna).toDivisionPosition(options.Varga);
-        i   = (int) dpo.zodiac_house.value;
-        nItems[i]++;
-        AddItem(g, dpo.zodiac_house, nItems[i], dpo, true);
-
-
+        var dpo = h.getPosition(Body.Body.Name.Lagna).toDivisionPosition(options.Varga);
+        items.Add(dpo);
+ 
         foreach (DivisionPosition dp in graha_arudha_pos)
         {
-            i = (int) dp.zodiac_house.value;
-            nItems[i]++;
-            AddItem(g, dp.zodiac_house, nItems[i], dp, true);
+            items.Add(dp);
         }
+        DrawItems(g, true);
     }
 
-    private void PaintSAV(Graphics g)
+	private void PaintSAV(Graphics g)
     {
         if (PrintMode)
         {
@@ -1113,31 +1077,17 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
         var   f  = MhoraGlobalOptions.Instance.GeneralFont;
         for (var i = 1; i <= 12; i++)
         {
-            var zhi = zh.add(i);
-            var p   = dc.GetSingleItemOffset(zhi);
-            g.DrawString(sav_bindus[i - 1].ToString(), f, b, p.X, p.Y);
+	        var str  = sav_bindus[i - 1].ToString();
+	        var size = g.MeasureString(str, f);
+			var zhi  = zh.add(i);
+            var p    = dc.GetSingleItemOffset(zhi, Size.Round(size));
+            g.DrawString(str, f, b, p.X, p.Y);
         }
     }
 
     private void PaintNormalView(Graphics g)
     {
-        var nItems = new int[13]
-        {
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-        };
-        var bItems = new Body.Body.Name[10]
+		var bItems = new Body.Body.Name[10]
         {
             Body.Body.Name.Lagna,
             Body.Body.Name.Sun,
@@ -1183,15 +1133,13 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
                 continue;
             }
 
-            var zh = dp.zodiac_house;
-            var i  = (int) zh.value;
-            nItems[i]++;
-            AddItem(g, zh, nItems[i], dp, true);
+            items.Add(dp);
         }
 
 
         if (options.ViewStyle == UserOptions.EViewStyle.Panchanga)
         {
+	        DrawItems(g, true);
             return;
         }
 
@@ -1202,17 +1150,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
                 continue;
             }
 
-            var zh = dp.zodiac_house;
-            var i  = (int) zh.value;
-            nItems[i]++;
-            AddItem(g, zh, nItems[i], dp, true);
+            items.Add(dp);
         }
 
-        for (var k = 1; k < 13; k++)
-        {
-            nItems[k] = 0;
-        }
-
+        DrawItems(g, true);
+        items.Clear();
+ 
         ArrayList secondary_pos = null;
 
         if (options.ViewStyle == UserOptions.EViewStyle.Normal)
@@ -1226,14 +1169,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
         foreach (DivisionPosition dp in secondary_pos)
         {
-            var zh = dp.zodiac_house;
-            var i  = (int) zh.value;
-            nItems[i]++;
-            AddItem(g, zh, nItems[i], dp, false);
+            items.Add(dp);
         }
+        DrawItems(g, false);
     }
 
-    private void DivisionalChart_Paint(object sender, PaintEventArgs e)
+	private void DivisionalChart_Paint(object sender, PaintEventArgs e)
     {
         var g = e.Graphics;
         DrawChart(g);
@@ -1356,10 +1297,13 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
     private void SetChartStyle(UserOptions.EChartStyle cs)
     {
-        switch (cs)
+	    var dpo   = h.getPosition(Body.Body.Name.Lagna).toDivisionPosition(options.Varga);
+	    var lagna = dpo.zodiac_house;
+
+		switch (cs)
         {
             case UserOptions.EChartStyle.NorthIndian:
-                dc = new NorthIndianChart(h.getPosition(Body.Body.Name.Lagna));
+                dc = new NorthIndianChart(lagna);
                 return;
             case UserOptions.EChartStyle.EastIndian:
 	            dc = new EastIndianChart();
@@ -1418,6 +1362,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
         arudha_pos       = h.CalculateArudhaDivisionPositions(options.Varga);
         varnada_pos      = h.CalculateVarnadaDivisionPositions(options.Varga);
         graha_arudha_pos = h.CalculateGrahaArudhaDivisionPositions(options.Varga);
+        SetChartStyle(options.ChartStyle);
         CalculateBindus();
         Invalidate();
     }

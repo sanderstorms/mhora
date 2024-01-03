@@ -189,7 +189,7 @@ public class Horoscope : ICloneable
         }
 
         var dp2 = new DivisionPosition(Body.Body.Name.Other, BodyType.Name.GrahaArudha, zhsum, 0, 0, 0);
-        dp2.otherString = string.Format("{0}{1}", Body.Body.toShortString(bn), hse);
+        dp2.Description = string.Format("{0}{1}", Body.Body.toShortString(bn), hse);
         return dp2;
     }
 
@@ -331,7 +331,7 @@ public class Horoscope : ICloneable
             }
 
             var div_pos = new DivisionPosition(Body.Body.Name.Other, BodyType.Name.Varnada, zh_v, 0, 0, 0);
-            div_pos.otherString = varnada_strs[i - 1];
+            div_pos.Description = varnada_strs[i - 1];
             al.Add(div_pos);
         }
 

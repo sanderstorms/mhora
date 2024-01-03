@@ -292,6 +292,7 @@ public class AshtakavargaControl : MhoraControl
             g.Clear(BackColor);
         }
 
+        var        lagna  = h.getPosition(Body.Body.Name.Lagna).longitude.toZodiacHouse();
         var        offset = 5;
         var        size   = Math.Min(bmpBuffer.Width, bmpBuffer.Height) / 3 - 10;
         IDrawChart dc     = null;
@@ -305,7 +306,7 @@ public class AshtakavargaControl : MhoraControl
                 dc = new SouthIndianChart();
                 break;
             case EChartStyle.NorthIndian:
-	            dc = new NorthIndianChart(h.getPosition(Body.Body.Name.Lagna));
+	            dc = new NorthIndianChart(lagna);
 	            break;
         }
 
@@ -379,8 +380,11 @@ public class AshtakavargaControl : MhoraControl
                         f = fBigBold;
                     }
 
-                    var p = dc.GetSingleItemOffset(new ZodiacHouse((ZodiacHouse.Name) z + 1));
-                    g.DrawString(bin[z].ToString(), f, b_black, p);
+                    var str  = bin[z].ToString();
+                    var strSize = g.MeasureString(str, fBig);
+
+					var p = dc.GetSingleItemOffset(new ZodiacHouse((ZodiacHouse.Name) z + 1), Size.Round(strSize));
+                    g.DrawString(str, f, b_black, p);
                 }
 
                 var sz = g.MeasureString(strs[off], fBig);
@@ -504,7 +508,8 @@ public class AshtakavargaControl : MhoraControl
 
     private void DrawChanchaInner(Graphics g)
     {
-        IDrawChart dc = null;
+	    var        lagna = h.getPosition(Body.Body.Name.Lagna).longitude.toZodiacHouse();
+        IDrawChart dc    = null;
         switch (userOptions.ChartStyle)
         {
             default:
@@ -515,7 +520,7 @@ public class AshtakavargaControl : MhoraControl
                 dc = new SouthIndianChart();
                 break;
             case EChartStyle.NorthIndian:
-	            dc = new NorthIndianChart(h.getPosition(Body.Body.Name.Lagna));
+	            dc = new NorthIndianChart(lagna);
 	            break;
         }
 
@@ -549,9 +554,11 @@ public class AshtakavargaControl : MhoraControl
 
         for (var i = 0; i < 12; i++)
         {
-            var zh = new ZodiacHouse((ZodiacHouse.Name) i + 1);
-            var p  = dc.GetSingleItemOffset(zh);
-            g.DrawString(inner_bindus[i].ToString(), fBig, b_black, p);
+            var zh   = new ZodiacHouse((ZodiacHouse.Name) i + 1);
+            var str  = inner_bindus[i].ToString();
+            var size = g.MeasureString(str, fBig);
+            var p    = dc.GetSingleItemOffset(zh, Size.Round(size));
+            g.DrawString(str, fBig, b_black, p);
         }
 
         var av_desc = "SAV";
