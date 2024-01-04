@@ -277,6 +277,31 @@ public class NorthIndianChart : IDrawChart
 	{
 		var bhava = Bhava(zh);
 
+		var pos1 = new[]
+		{
+			new Point(xw / 2, 10),
+			new Point(8, 0),
+
+			new Point(0, 10),
+			new Point(10, (yw / 2) - 5),
+			new Point(0, (yw / 2) + 10),
+
+			new Point((xw / 2) - 20 , yw - 5),
+			new Point((xw / 2) - 5  , yw - 15),
+			new Point((xw / 2) + 10 , yw - 5),
+
+			new Point(xw - 10, yw - 20),
+			new Point(xw - 20, (yw / 2) - 5),
+			new Point(xw - 10, 10),
+
+			new Point(10, yw - 20)
+		};
+
+		if (n == 1)
+		{
+			return pos1[bhava - 1];
+		}
+
 		var p     = GetBhavaCentre(bhava);
 		var q     = GetSmallZhouseItemOffset(bhava, n);
 		return new Point(p.X + q.X, p.Y + q.Y);
