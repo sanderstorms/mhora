@@ -19,7 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using Mhora.Body;
 using Mhora.Calculation;
 using mhora.Util;
 
@@ -27,26 +26,106 @@ namespace Mhora.Chart;
 
 public class NorthIndianChart : IDrawChart
 {
-    private const int xw = 200;
-    private const int yw = 200;
-    private const int xo = 0;
-    private const int yo = 0;
+    private const    int    xw = 200;
+    private const    int    yw = 200;
+    private const    int    xo = 0;
+    private const    int    yo = 0;
+	private readonly double diagonal;
+	private readonly int    offset;
+	private readonly int    travel;
 
 	private readonly Pen         pn_black;
 	private readonly ZodiacHouse _lagna;
 
+	public Point [] BodyOffset = new Point[12];
+	
 	public NorthIndianChart(ZodiacHouse lagna)
     {
-	    _lagna = lagna;
+	    _lagna   = lagna;
 		pn_black = new Pen(Color.Black, (float) 0.1);
+		diagonal = Math.Sqrt(xw * xw + yw * yw);
+
+		var r      = (diagonal / 2);
+		var r2     = (r        / 6); //1/3 edge triangle
+		offset = (int)(Math.Sqrt(r2 * r2 / 2));
+		var r3 = 2 * r2;
+		travel = (int)(Math.Sqrt(r3 * r3 * 2));
+
+		var offset2 = 2 * offset;
+		BodyOffset[0].X = ((xw / 2) + offset2);
+		BodyOffset[0].Y = offset2;
+
+		BodyOffset[3].X = offset2;
+		BodyOffset[3].Y = ((yw / 2) - offset2);
+
+		BodyOffset[6].X = (xw / 2) - offset2;
+		BodyOffset[6].Y = (yw - offset2);
+
+		BodyOffset[9].X = (xw - offset2);
+		BodyOffset[9].Y = (yw / 2) + offset2;
+
+		BodyOffset[1].X = (xw / 2) - offset;
+		BodyOffset[1].Y = offset;
+
+		BodyOffset[2].X = offset;
+		BodyOffset[2].Y = offset;
+
+		BodyOffset[4].X = offset;
+		BodyOffset[4].Y = (yw / 2) + offset;
+
+		BodyOffset[5].X = offset;
+		BodyOffset[5].Y = yw - offset;
+
+		BodyOffset[7].X = (xw / 2) + offset;
+		BodyOffset[7].Y = (yw - offset);
+
+		BodyOffset[8].X = xw - offset;
+		BodyOffset[8].Y = yw - offset;
+
+		BodyOffset[10].X = xw - offset;
+		BodyOffset[10].Y = (yw / 2) - offset;
+
+		BodyOffset[11].X = (xw - offset);
+		BodyOffset[11].Y = offset;
     }
 
-    public int GetLength()
+	public int GetLength()
     {
         return xw;
     }
 
-    public int Bhava(ZodiacHouse zh)
+	public bool SeparateGrahaHandling => (true);
+
+	public Point GetInnerSquareOffset()
+    {
+	    return new Point(0, 0);
+    }
+
+    public void DrawOutline(Graphics g)
+    {
+	    g.DrawLine(pn_black, xw, yw, 0, 0);
+	    g.DrawLine(pn_black, 0, yw, xw, 0);
+
+	    g.DrawLine(pn_black, xw    / 2, yw, xw, yw / 2);
+	    g.DrawLine(pn_black, xw    / 2, 0, xw, yw  / 2);
+	    g.DrawLine(pn_black, xw    / 2, 0, 0, yw   / 2);
+	    g.DrawLine(pn_black, 0, yw / 2, xw         / 2, yw);
+		/*
+	    var r      = (diagonal / 2);
+	    var r2     = (r / 6);
+	    var offset = (int)(Math.Sqrt(r2 * r2 / 2));
+
+		var ri   = (int) r;
+	    var o    = (int) ((xw - r) / 2);
+	    var diff = (int) (xw - r);
+	    g.DrawEllipse(pn_black, o, o, ri, ri);
+
+	    g.DrawRectangle(pn_black, offset, offset, xw - 2 * offset, yw - 2 * offset);
+	    g.DrawRectangle(pn_black, 2 * offset, 2 * offset, xw - 4 * offset, yw - 4 * offset);
+		*/	
+    }
+
+	public int Bhava(ZodiacHouse zh)
     {
 	    var bhava = ((zh.value.Index() - _lagna.value.Index()) + 1);
 
@@ -71,7 +150,7 @@ public class NorthIndianChart : IDrawChart
 		    case 1:
 		    case 2:
 		    {
-			    p.Y += 10;
+			    p.Y -= 10;
 		    }
 			break;
 
@@ -79,7 +158,7 @@ public class NorthIndianChart : IDrawChart
 		    case 4:
 		    case 5:
 		    {
-				p.X += 10;
+				p.X -= 10;
 		    }
 			break;
 
@@ -87,7 +166,7 @@ public class NorthIndianChart : IDrawChart
 		    case 7:
 		    case 8:
 		    {
-			    p.Y -= 10;
+			    p.Y += 10;
 		    }
 			break;
 
@@ -95,7 +174,7 @@ public class NorthIndianChart : IDrawChart
 		    case 10:
 		    case 11:
 		    {
-				p.X -= 10;
+				p.X += 10;
 		    }
 			break;
 	    }
@@ -103,52 +182,51 @@ public class NorthIndianChart : IDrawChart
 		return (p);
     }
 
+	//X = r * cosine(angle)  
+	// Y = r * sine(angle)
 	public Point GetBodyPosition(Longitude l)
-    {
-	    var dOffset = (l.toZodiacHouseOffset() - 15.0);
-	    var bhava   = Bhava(l.toZodiacHouse());
-	    var pBase   = GetBhavaCentre(bhava);
+	{
+		var dOffset = l.toZodiacHouseOffset();
+		var bhava   = Bhava(l.toZodiacHouse());
+		var factor  = ((travel - 4) / 30.0);
+		var degrees = (int) (dOffset * factor);
 
+		var offset = BodyOffset [bhava - 1];
 		switch (bhava)
         {
 	        case 12:
+	        case 1:
 	        case 2:
+	        {
+		        offset.X -= (degrees + 2);
+			}
+			break;
+
+	        case 3:
+	        case 4:
+	        case 5:
+	        {
+		        offset.Y += degrees + 2;
+	        }
+			break;
+
 	        case 6:
+	        case 7:
 	        case 8:
 	        {
-		        var margin = (xw / 6) / 15.0;
-				pBase.X += (int) (dOffset * margin);
+		        offset.X += degrees + 2;
 	        } 
 		    break;
 
-	        case 3:
-	        case 5:
-	        case 9:
-	        case 11:
+			default:
 	        {
-		        var margin = (yw / 6) / 15.0;
-		        pBase.Y += (int)(dOffset * margin);
+		        offset.Y -= (degrees + 2);
 			}
 			break;
 
-	        case 1:
-	        case 7:
-	        {
-		        var margin = (xw / 4) / 15.0;
-		        pBase.X += (int)(dOffset * margin);
-			}
-			break;
-
-	        case 4:
-	        case 10:
-	        {
-		        var margin = (yw / 4)  / 15.0;
-		        pBase.Y += (int)(dOffset * margin);
-	        }
-		    break;
 		}
 
-		return pBase;
+		return offset;
     }
 
     private Point GetBhavaCentre(int bhava)
@@ -175,23 +253,6 @@ public class NorthIndianChart : IDrawChart
 	    return new Point(0, 0);
     }
 
-	public Point GetInnerSquareOffset()
-    {
-	    return new Point(0, 0);
-    }
-
-	public void DrawOutline(Graphics g)
-    {
-	    g.DrawLine(pn_black, xw, yw, 0, 0);
-	    g.DrawLine(pn_black, 0, yw, xw, 0);
-
-	    g.DrawLine(pn_black, xw / 2, yw, xw, yw / 2);
-	    g.DrawLine(pn_black, xw / 2, 0, xw, yw  / 2);
-	    g.DrawLine(pn_black, xw / 2, 0, 0, yw   / 2);
-	    g.DrawLine(pn_black, 0, yw / 2, xw / 2, yw );
-
-	}
-
 	public Point GetSingleItemOffset(ZodiacHouse zh, Size itemSize)
 	{
 		var bhava = Bhava(zh);
@@ -217,38 +278,52 @@ public class NorthIndianChart : IDrawChart
 		var bhava = Bhava(zh);
 
 		var p     = GetBhavaCentre(bhava);
-		var q     = GetZhouseItemOffset(bhava, n);
+		var q     = GetSmallZhouseItemOffset(bhava, n);
 		return new Point(p.X + q.X, p.Y + q.Y);
 	}
 
 	private Point GetSmallZhouseItemOffset(int bhava, int n)
 	{
-		if (n >= 7)
+		var offset = BodyOffset[bhava - 1];
+
+		switch (bhava)
 		{
-			Debug.WriteLine("North Indian Chart (s) is too small for data");
-			return new Point(0, 0);
+			case 12:
+			case 1:
+			case 2:
+			{
+				offset.Y +=  20;
+				offset.X -= (n * 20);
+			}
+			break;
+
+			case 6:
+			case 7:
+			case 8:
+			{
+				offset.Y -= 20;
+				offset.X += (n * 20);
+			}
+			break;
+
+			case 3:
+			case 4:
+			case 5:
+			{
+				offset.X += 20;
+				offset.Y += (n * 20);
+			}
+			break;
+
+			default:
+			{
+				offset.X -= 20;
+				offset.Y -= (n * 20);
+			}
+			break;
 		}
 
-		var item_map = new int[7]
-		{
-			0,
-			6,
-			2,
-			3,
-			4,
-			2,
-			1
-		};
-		n = item_map[n - 1];
-
-		var xiw = xw / 8;
-		var yiw = yw / 8;
-
-		var row = (int)Math.Floor(n / (double)3);
-		var col = n - row * 3;
-
-
-		return new Point(xiw * row / 3, yiw * col / 3);
+		return offset;
 	}
 
 	private Point GetZhouseItemOffset(int bhava, int n)
@@ -259,37 +334,64 @@ public class NorthIndianChart : IDrawChart
 			return GetSmallZhouseItemOffset(bhava, n - 10 + 1);
 		}
 
-		switch (n)
+		var shift = new Point[4];
+
+		shift[0].Y = -offset;  //Up
+		shift[1].X = -offset;  //Left
+		shift[2].X = offset;   //Right
+		shift[3].X = -offset;  //Down
+
+		int shiftDirection = 0;
+
+		n--;
+		switch (bhava)
 		{
-			case 1: return new Point(15, 15);
-			case 2: return new Point(-15, -15);
-			case 3: return new Point(15, -15);
-			case 4: return new Point(-15, 15);
+			case 1:
+			case 4:
+			case 7:
+			case 10:
+			{
+				shiftDirection = (n % 4);
+			}
+			break;
+
+			case 2:
+			case 12:
+			{
+				shiftDirection = (n % 3)  + 1;
+			}
+			break;
+
+			case 6:
+			case 8:
+			{
+				shiftDirection = (n % 3);
+			}
+			break;
+
+			case 3:
+			case 5:
+			{
+				if (n >= 1)
+				{
+					n++;
+				}
+				shiftDirection = (n % 4);
+			}
+			break;
+
+			default:
+			{
+				if (n >= 2)
+				{
+					n++;
+				}
+				shiftDirection = (n % 4);
+			}
+			break;
 		}
 
-		var item_map = new int[10]
-		{
-			0,
-			5,
-			7,
-			9,
-			3,
-			1,
-			2,
-			4,
-			6,
-			8
-		};
-		n = item_map[n] - 1;
-
-		var xiw = xw / 8;
-		var yiw = yw / 8;
-
-		var col = (int)Math.Floor(n / (double)3);
-		var row = n - col * 3;
-
-		return new Point(xiw * row / 3, yiw * col / 3);
+		return (shift[shiftDirection]);
 	}
-
 
 }

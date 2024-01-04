@@ -37,6 +37,8 @@ public class EastIndianChart : IDrawChart
         return xw;
     }
 
+    public bool SeparateGrahaHandling => (false);
+
     public void DrawOutline(Graphics g)
     {
         g.DrawLine(pn_black, xw        / 3, 0, xw      / 3, yw);

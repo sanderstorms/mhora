@@ -872,13 +872,25 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	    var signs = Enum.GetValues(typeof(ZodiacHouse.Name)).OfType<ZodiacHouse.Name>();
 	    foreach (var sign in signs)
 	    {
+		    var graha  = 1;
+		    var itemNr = 1;
 		    var dpList = items[sign];
 
 		    for (int item = 0; item < dpList.Count; item++)
 		    {
                 var dp = dpList[item];
-                DrawItem(g, dp, item + 1, large);
-		    }
+                if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
+                {
+	                if (dc.SeparateGrahaHandling)
+	                {
+		                dpList.Remove(dp);
+		                item--;
+		                DrawItem(g, dp, graha++, large);
+		                continue;
+					}
+				}
+	            DrawItem(g, dp, itemNr++, large);
+			}
 	    }
     }
 
@@ -892,18 +904,18 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			f = fBase;
             if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
             {
-                var bp = h.getPosition(dp.name);
-                if (bp.speed_longitude < 0.0 && bp.name != Body.Body.Name.Rahu && bp.name != Body.Body.Name.Ketu)
-                {
-                    f = new Font(fBase.Name, fBase.Size, FontStyle.Underline);
-                }
-
+	            var bp = h.getPosition(dp.name);
+	            if (dp.name == Body.Body.Name.Lagna)
+	            {
+		            f = new Font(fBase.Name, fBase.Size, FontStyle.Bold);
+	            }
+                else if (bp.speed_longitude < 0.0 && bp.name != Body.Body.Name.Rahu && bp.name != Body.Body.Name.Ketu)
+	            {
+		            f = new Font(fBase.Name, fBase.Size, FontStyle.Underline);
+	            }
+ 
                 var strSize = g.MeasureString(dp.Description, f);
-                p       = dc.GetBodyTextPosition(bp.longitude, Size.Round(strSize));
-            }
-			else if (dp.name == Body.Body.Name.Lagna)
-            {
-                f = new Font(fBase.Name, fBase.Size, FontStyle.Bold);
+                p = dc.GetBodyTextPosition(bp.longitude, Size.Round(strSize));
             }
             if (p.IsEmpty)
             {

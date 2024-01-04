@@ -40,7 +40,9 @@ public class SouthIndianChart : IDrawChart
         pn_black = new Pen(Color.Black, (float) 0.1);
     }
 
-    public Point GetInnerSquareOffset()
+    public bool SeparateGrahaHandling => (false);
+
+	public Point GetInnerSquareOffset()
     {
         return new Point(xw / 4, yw / 4);
     }
