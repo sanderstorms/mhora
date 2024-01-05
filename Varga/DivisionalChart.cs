@@ -203,8 +203,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
         h.Changed                              += OnRecalculate;
         MhoraGlobalOptions.DisplayPrefsChanged += OnRedisplay;
         OnRecalculate(h);
-        SetChartStyle(options.ChartStyle);
-		//dc = new SouthIndianChart();
+ 		//dc = new SouthIndianChart();
 		//dc = new EastIndianChart();
     }
 
@@ -879,7 +878,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		    for (int item = 0; item < dpList.Count; item++)
 		    {
                 var dp = dpList[item];
-                if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
+ 				if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
                 {
 	                if (dc.SeparateGrahaHandling)
 	                {
@@ -905,7 +904,8 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
             if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
             {
 	            var bp = h.getPosition(dp.name);
-	            if (dp.name == Body.Body.Name.Lagna)
+                
+				if (dp.name == Body.Body.Name.Lagna)
 	            {
 		            f = new Font(fBase.Name, fBase.Size, FontStyle.Bold);
 	            }
@@ -915,8 +915,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	            }
  
                 var strSize = g.MeasureString(dp.Description, f);
-                p = dc.GetBodyTextPosition(bp.longitude, Size.Round(strSize));
-            }
+
+                if (options.Varga.MultipleDivisions.Length == 1 && options.Varga.MultipleDivisions[0].Varga == Basics.DivisionType.Rasi && PrintMode == false && (dp.type == BodyType.Name.Graha || dp.type == BodyType.Name.Lagna))
+                {
+					p = dc.GetBodyTextPosition(bp.longitude, Size.Round(strSize));
+				}
+			}
             if (p.IsEmpty)
             {
 	            p = dc.GetItemOffset(dp.zodiac_house, item);
@@ -1084,6 +1088,11 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
             return;
         }
 
+        if (sav_bindus == null)
+        {
+            return;
+        }
+
         var   zh = new ZodiacHouse(ZodiacHouse.Name.Ari);
         Brush b  = new SolidBrush(MhoraGlobalOptions.Instance.VargaSAVColor);
         var   f  = MhoraGlobalOptions.Instance.GeneralFont;
@@ -1133,6 +1142,10 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			}
 #endif
 
+	    if (div_pos == null)
+	    {
+            return;
+	    }
         foreach (DivisionPosition dp in div_pos)
         {
             if (options.ViewStyle == UserOptions.EViewStyle.Panchanga && dp.type != BodyType.Name.Graha)
@@ -2017,6 +2030,31 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
             Varga      = uo.Varga;
             ShowInner  = uo.ShowInner;
             return uo;
+        }
+
+        public bool Equals(UserOptions other)
+        {
+	        if (ChartStyle != other.ChartStyle)
+	        {
+		        return (false);
+	        }
+
+	        if (ViewStyle != other.ViewStyle)
+	        {
+		        return (false);
+	        }
+
+	        if (Varga != other.Varga)
+	        {
+		        return (false);
+	        }
+
+	        if (ShowInner != other.ShowInner)
+	        {
+		        return (false);
+	        }
+
+	        return (true);
         }
     }
 }

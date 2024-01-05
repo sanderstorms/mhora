@@ -64,6 +64,11 @@ public class DivisionPosition
 	    }
     }
 
+    public override string ToString()
+    {
+	    return string.Format("{0} ({1})", Description, zodiac_house);
+    }
+
     public bool isInMoolaTrikona()
     {
         switch (name)

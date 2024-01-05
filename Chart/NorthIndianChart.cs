@@ -279,27 +279,52 @@ public class NorthIndianChart : IDrawChart
 
 		var pos1 = new[]
 		{
-			new Point(xw / 2, 10),
+			new Point((xw / 2) - 5, 5),
 			new Point(8, 0),
 
 			new Point(0, 10),
-			new Point(10, (yw / 2) - 5),
-			new Point(0, (yw / 2) + 10),
+			new Point(5, (yw / 2) - 5),
+			new Point(0, (yw / 2) + 15),
 
-			new Point((xw / 2) - 20 , yw - 5),
+			new Point((xw / 2) - 20 , yw - 8),
 			new Point((xw / 2) - 5  , yw - 15),
-			new Point((xw / 2) + 10 , yw - 5),
+			new Point((xw / 2) + 10 , yw - 8),
 
 			new Point(xw - 10, yw - 20),
 			new Point(xw - 20, (yw / 2) - 5),
 			new Point(xw - 10, 10),
 
-			new Point(10, yw - 20)
+			new Point((xw  / 2) + 10, 0)
 		};
+
+		var pos2 = new[]
+		{
+			new Point((xw / 4) - 5, (yw / 4)),
+			new Point((xw /2) - 20, 0),
+
+			new Point(0, (yw  / 2) - 20),
+			new Point((xw / 2) - 10, (yw / 2) + 5),
+			new Point((xw / 4) - 20, (yw - (yw  / 4)) - 5),
+
+			new Point((xw / 4) - 5 , yw - (yw / 4) + 5),
+			new Point((xw / 2)      - 5  , (yw / 2) - 15),
+			new Point(xw - 15  , yw - 8),
+
+			new Point(xw - 10, (yw / 2) + 10),
+			new Point((xw          / 2) + 5, (yw  / 2) - 5),
+			new Point(xw                - 0, (yw / 2) - 5),
+
+			new Point(xw - 20, 0)
+		};
+
 
 		if (n == 1)
 		{
 			return pos1[bhava - 1];
+		}
+		if (n == 2)
+		{
+			return pos2[bhava - 1];
 		}
 
 		var p     = GetBhavaCentre(bhava);
