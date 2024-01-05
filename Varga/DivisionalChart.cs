@@ -878,17 +878,20 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		    for (int item = 0; item < dpList.Count; item++)
 		    {
                 var dp = dpList[item];
- 				if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
+                if (options.Varga.MultipleDivisions.Length == 1 && options.Varga.MultipleDivisions[0].Varga == Basics.DivisionType.Rasi && PrintMode == false)
                 {
-	                if (dc.SeparateGrahaHandling)
+	                if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
 	                {
-		                dpList.Remove(dp);
-		                item--;
-		                DrawItem(g, dp, graha++, large);
-		                continue;
-					}
+		                if (dc.SeparateGrahaHandling)
+		                {
+			                dpList.Remove(dp);
+			                item--;
+			                DrawItem(g, dp, graha++, large);
+			                continue;
+		                }
+	                }
 				}
-	            DrawItem(g, dp, itemNr++, large);
+				DrawItem(g, dp, itemNr++, large);
 			}
 	    }
     }
