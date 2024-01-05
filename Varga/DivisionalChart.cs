@@ -925,7 +925,8 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			}
             if (p.IsEmpty)
             {
-	            p = dc.GetItemOffset(dp.zodiac_house, item);
+	            var strSize = g.MeasureString(dp.Description, f);
+	            p = dc.GetItemOffset(dp.zodiac_house, Size.Round(strSize), item);
             }
         }
 		else
@@ -935,9 +936,10 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
             {
                 fs = FontStyle.Italic;
             }
-
-            p = dc.GetSmallItemOffset(dp.zodiac_house, item);
             f = new Font(fBase.Name, fBase.SizeInPoints - 1, fs);
+
+			var strSize = g.MeasureString(dp.Description, f);
+            p = dc.GetSmallItemOffset(dp.zodiac_house, Size.Round(strSize), item);
         }
 
         if (dp.type == BodyType.Name.GrahaArudha)

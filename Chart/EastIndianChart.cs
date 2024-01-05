@@ -108,13 +108,13 @@ public class EastIndianChart : IDrawChart
         }
     }
 
-    public Point GetItemOffset(ZodiacHouse zh, int n)
+    public Point GetItemOffset(ZodiacHouse zh, Size itemSize, int n)
     {
         var pret = GetGemOffset(n);
         return FromGemOffset(zh, pret);
     }
 
-    public Point GetSmallItemOffset(ZodiacHouse zh, int n)
+    public Point GetSmallItemOffset(ZodiacHouse zh, Size itemSize, int n)
     {
         var wi = xw / 3 / 5;
         //int yi = (xw/3)/6;

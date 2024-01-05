@@ -115,14 +115,14 @@ public class SouthIndianChart : IDrawChart
         return new Point(p.X + 15, p.Y + 15);
     }
 
-    public Point GetItemOffset(ZodiacHouse zh, int n)
+    public Point GetItemOffset(ZodiacHouse zh, Size itemSize, int n)
     {
         var p = GetZhouseOffset(zh);
         var q = GetZhouseItemOffset(n);
         return new Point(p.X + q.X, p.Y + q.Y);
     }
 
-    public Point GetSmallItemOffset(ZodiacHouse zh, int n)
+    public Point GetSmallItemOffset(ZodiacHouse zh, Size itemSize, int n)
     {
         var p = GetZhouseOffset(zh);
         var q = GetSmallZhouseItemOffset(n);

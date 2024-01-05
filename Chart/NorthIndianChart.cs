@@ -320,7 +320,7 @@ public class NorthIndianChart : IDrawChart
 		return (offset);
 	}
 
-	public Point GetItemOffset(ZodiacHouse zh, int n)
+	public Point GetItemOffset(ZodiacHouse zh, Size itemSize, int n)
 	{
 		var bhava = Bhava(zh);
 
@@ -329,7 +329,7 @@ public class NorthIndianChart : IDrawChart
 		return new Point(p.X + q.X, p.Y + q.Y);
 	}
 
-	public Point GetSmallItemOffset(ZodiacHouse zh, int n)
+	public Point GetSmallItemOffset(ZodiacHouse zh, Size itemSize, int n)
 	{
 		var bhava = Bhava(zh);
 
