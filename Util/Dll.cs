@@ -59,7 +59,7 @@ public static class Dll
 
     public static bool LoadUnmanagedModule(string module)
     {
-        var loadDirectory = mhora.WorkingDir;
+        var loadDirectory = Application.WorkingDir;
         var subfolder     = IntPtr.Size == 8 ? "x64" : "x86";
 
         if (!string.IsNullOrEmpty(subfolder))

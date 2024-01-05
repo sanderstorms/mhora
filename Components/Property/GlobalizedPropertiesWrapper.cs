@@ -122,7 +122,7 @@ public class GlobalizedPropertiesWrapper : ICustomTypeDescriptor
         orderedProperties.Sort();
         foreach (PropertyOrderPair pop in orderedProperties)
         {
-            mhora.Log.Debug("Adding sorted {0}", pop.Name);
+            Application.Log.Debug("Adding sorted {0}", pop.Name);
             retProps.Add(new GlobalizedPropertyDescriptor(pop.Property));
         }
 

@@ -278,7 +278,7 @@ public class PanchangaControl : MhoraControl
         //}
         //fProgress = new ProgressDialog(opts.NumDays);
         //fProgress.setProgress(opts.NumDays/2);
-        mhora.Log.Debug("Starting threaded computation");
+        Application.Log.Debug("Starting threaded computation");
         //fProgress.ShowDialog();
         //this.mutexProgress.Close();
         bCompute.Enabled = false;
@@ -290,7 +290,7 @@ public class PanchangaControl : MhoraControl
 
     private void ComputeFinished()
     {
-        mhora.Log.Debug("Thread finished execution");
+        Application.Log.Debug("Thread finished execution");
         bResultsInvalid  = false;
         bCompute.Enabled = true;
         bOpts.Enabled    = true;
@@ -538,7 +538,7 @@ public class PanchangaControl : MhoraControl
                 var ut_found   = t.LinearSearchBinary(ut_sr, ut_sr + 1.0, new Longitude(dLonToFind), t.GenericLongitude);
 
                 globals.nakshatras_ut.Add(new PanchangaMomentInfo(ut_found, (int) nak_curr.value));
-                mhora.Log.Debug("Found nakshatra {0}", nak_curr.value);
+                Application.Log.Debug("Found nakshatra {0}", nak_curr.value);
                 local.nakshatra_index_end++;
             }
 

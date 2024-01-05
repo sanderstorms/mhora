@@ -102,7 +102,7 @@ public class MhoraContainer : Form
         {
             Invoke(async () =>
             {
-                await mhora.InitDb();
+                await Application.InitDb();
                 _showForm = true;
                 Visible   = true;
             });
@@ -503,7 +503,7 @@ public class MhoraContainer : Form
     /// <param name="showControl">visible ?</param>
     protected override void SetVisibleCore(bool showControl)
     {
-        if (mhora.Running)
+        if (Application.Running)
         {
             var visible = showControl & _showForm;
             base.SetVisibleCore(visible);

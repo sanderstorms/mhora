@@ -21,7 +21,7 @@ public class TimeZone
 	    {
 		    if (_timezones == null)
 		    {
-			    var jsonPath = Path.Combine(Mhora.mhora.WorkingDir, "DataBase", "TimeZones.json");
+			    var jsonPath = Path.Combine(Mhora.Application.WorkingDir, "DataBase", "TimeZones.json");
 
 			    // deserialize JSON directly from a file
 			    using (var file = File.OpenText(jsonPath))

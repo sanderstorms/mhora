@@ -23,7 +23,7 @@ public static class SevenZip
         }
         catch (Exception ex)
         {
-            mhora.Log.Exception(ex);
+            Application.Log.Exception(ex);
         }
     }
 
@@ -36,7 +36,7 @@ public static class SevenZip
         }
         catch (Exception ex)
         {
-            mhora.Log.Exception(ex);
+            Application.Log.Exception(ex);
         }
     }
 

@@ -88,7 +88,7 @@ internal class MomentConverter : ExpandableObjectConverter
 
     public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
     {
-        mhora.Log.Debug("Foo: destType is {0}", destType);
+        Application.Log.Debug("Foo: destType is {0}", destType);
         // Trace.Assert (destType == typeof(string) && value is Moment, "MomentConverter::ConvertTo 1");
         var m = (Moment) value;
         return m.ToString();

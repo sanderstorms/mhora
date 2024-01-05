@@ -87,7 +87,7 @@ public class Longitude
 
         var bRet = cusp_higher.sub(cusp_lower).value <= 180 && diff1 <= diff2;
 
-        mhora.Log.Debug("Is it true that {0} < {1} < {2}? {3}", this, cusp_lower, cusp_higher, bRet);
+        Application.Log.Debug("Is it true that {0} < {1} < {2}? {3}", this, cusp_lower, cusp_higher, bRet);
         return bRet;
     }
 

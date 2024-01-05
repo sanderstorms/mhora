@@ -338,7 +338,7 @@ public class Position : ICloneable
     {
         var zh = longitude.toZodiacHouse();
 
-        mhora.Log.Debug("{2} in {3}: OddEven is {0}, DayNight is {1}", HoraSunOddEven(), HoraSunDayNight(), name, zh.value);
+        Application.Log.Debug("{2} in {3}: OddEven is {0}, DayNight is {1}", HoraSunOddEven(), HoraSunDayNight(), name, zh.value);
 
         if (HoraSunDayNight() && false == HoraSunOddEven())
         {
@@ -349,7 +349,7 @@ public class Position : ICloneable
             zh = zh.add(7);
         }
 
-        mhora.Log.Debug("{0} ends in {1}", name, zh.value);
+        Application.Log.Debug("{0} ends in {1}", name, zh.value);
 
         var dp = new DivisionPosition(name, type, zh, 0, 0, 0);
         dp.Longitude = zh.DivisionalLongitude(longitude, 2);

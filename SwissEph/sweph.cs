@@ -261,7 +261,7 @@ public class sweph
 
         if (ret < 0)
         {
-            mhora.Log.Debug("Sweph Error: {0}", serr);
+            Application.Log.Debug("Sweph Error: {0}", serr);
             throw new SwephException(serr.ToString());
         }
     }

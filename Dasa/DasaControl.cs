@@ -1238,7 +1238,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
         double months          = 0;
         while (date_current < date_to_surpass)
         {
-            mhora.Log.Debug("{0} > {1}", new Moment(date_current, h), new Moment(date_to_surpass, h));
+            Application.Log.Debug("{0} > {1}", new Moment(date_current, h), new Moment(date_to_surpass, h));
 
             months++;
             date_current = td_yoga.AddYears(months / 12.0).toUniversalTime();
@@ -1438,7 +1438,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
             if (ut_m >= ut_start && ut_m < ut_end)
             {
-                mhora.Log.Debug("Found: Looking for {0} between {1} and {2}", m, m_start, m_end);
+                Application.Log.Debug("Found: Looking for {0} between {1} and {2}", m, m_start, m_end);
 
                 if (levels > di.entry.level)
                 {

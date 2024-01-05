@@ -120,7 +120,7 @@ public partial class BirthDetailsDialog : Form
 			}
 			catch (Exception ex)
             {
-                mhora.Log.Exception(ex);
+                Application.Log.Exception(ex);
             }
         }
     }

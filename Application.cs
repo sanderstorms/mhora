@@ -14,7 +14,7 @@ using TimeZone = mhora.Database.World.TimeZone;
 
 namespace Mhora;
 
-internal static class mhora
+internal static class Application
 {
     private static string        _workingDir;
     private static LoggingModule _log;
@@ -103,17 +103,17 @@ internal static class mhora
     {
         Running                                    =  true;
         AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionEventRaised;
-        Application.ThreadException                += ThreadExceptionRaised;
-        Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-        Application.EnableVisualStyles();
-        Application.SetCompatibleTextRenderingDefault(false);
+        System.Windows.Forms.Application.ThreadException                += ThreadExceptionRaised;
+        System.Windows.Forms.Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+        System.Windows.Forms.Application.EnableVisualStyles();
+        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
         Log.Settings.LogFilename = Path.Combine(WorkingDir, "debug.txt");
         Log.Settings.FileLogging = FileLoggingMode.SingleLogFile;
 
-        Application.Run(new MhoraContainer());
+        System.Windows.Forms.Application.Run(new MhoraContainer());
         AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionEventRaised;
-        Application.ThreadException                -= ThreadExceptionRaised;
+        System.Windows.Forms.Application.ThreadException                -= ThreadExceptionRaised;
         Running                                    =  false;
     }
 

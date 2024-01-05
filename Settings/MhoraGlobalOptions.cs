@@ -745,7 +745,7 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
         }
         catch
         {
-            mhora.Log.Debug("MHora: Unable to read user preferences", "GlobalOptions");
+            Application.Log.Debug("MHora: Unable to read user preferences", "GlobalOptions");
         }
 
         Instance = gOpts;
@@ -754,7 +754,7 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 
     public void SaveToFile()
     {
-        mhora.Log.Debug("Saving Preferences to {0}", getOptsFilename());
+        Application.Log.Debug("Saving Preferences to {0}", getOptsFilename());
         try
         {
             using (var sOut = new FileStream(getOptsFilename(), FileMode.OpenOrCreate, FileAccess.Write))
@@ -766,7 +766,7 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
         }
         catch (Exception e)
         {
-            mhora.Log.Exception(e);
+            Application.Log.Exception(e);
         }
     }
 }

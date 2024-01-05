@@ -154,7 +154,7 @@ public class ShadBalas
         debLon = debLon.add(powerlessHouse[(int) b] * 30.0 + 15.0);
         var posLon = h.getPosition(b).longitude;
 
-        mhora.Log.Debug("digBala {0} {1} {2}", b, posLon.value, debLon.value);
+        Application.Log.Debug("digBala {0} {1} {2}", b, posLon.value, debLon.value);
 
         var diff = posLon.sub(debLon).value;
         if (diff > 180)

@@ -711,7 +711,7 @@ public class Basics
         }
         catch (SwephException exc)
         {
-            mhora.Log.Debug("Sweph: {0}\n", exc.status);
+            Application.Log.Debug("Sweph: {0}\n", exc.status);
             throw new Exception(string.Empty);
         }
     }
@@ -750,7 +750,7 @@ public class Basics
         }
         catch (SwephException exc)
         {
-            mhora.Log.Debug("Sweph: {0}\n", exc.status);
+            Application.Log.Debug("Sweph: {0}\n", exc.status);
             throw new Exception(string.Empty);
         }
     }

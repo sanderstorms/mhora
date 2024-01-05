@@ -18,9 +18,9 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>mhora</RootNamespace>
+    <RootNamespace>Mhora</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>Mhora.mhora</StartupObject>
+    <StartupObject>Mhora.Application</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -235,7 +235,7 @@
     <Compile Include="Database\World\Region.cs" />
     <Compile Include="Database\World\State.cs" />
     <Compile Include="Database\World\SubRegion.cs" />
-    <Compile Include="mhora.cs" />
+    <Compile Include="Application.cs" />
     <Compile Include="Settings\ApplyOptions.cs" />
     <Compile Include="Settings\MhoraGlobalOptions.cs" />
     <Compile Include="Util\Dll.cs" />
@@ -538,6 +538,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\BasicCalculationsControl.resx">
       <DependentUpon>BasicCalculationsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\ChooseHoroscopeControl.resx">
       <DependentUpon>ChooseHoroscopeControl.cs</DependentUpon>
@@ -660,6 +661,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dasa\Other\" />
+    <Folder Include="Tables\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Lib\LoggingModule\src\LoggingModule\LoggingModule.csproj">
