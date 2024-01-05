@@ -238,6 +238,7 @@
     <Compile Include="Application.cs" />
     <Compile Include="Settings\ApplyOptions.cs" />
     <Compile Include="Settings\MhoraGlobalOptions.cs" />
+    <Compile Include="Tables\Varga.cs" />
     <Compile Include="Util\Dll.cs" />
     <Compile Include="Util\EnumHelper.cs" />
     <Compile Include="Util\LocationConverter.cs" />
@@ -661,7 +662,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dasa\Other\" />
-    <Folder Include="Tables\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Lib\LoggingModule\src\LoggingModule\LoggingModule.csproj">
