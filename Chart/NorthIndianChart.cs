@@ -326,6 +326,10 @@ public class NorthIndianChart : IDrawChart
 
 		var p     = GetBhavaCentre(bhava);
 		var q     = GetZhouseItemOffset(bhava, n);
+
+		p.X -= (itemSize.Width  / 2);
+		p.Y -= (itemSize.Height / 2);
+
 		return new Point(p.X + q.X, p.Y + q.Y);
 	}
 
@@ -362,7 +366,7 @@ public class NorthIndianChart : IDrawChart
 			new Point((xw / 2) - 10, (yw / 2) + 5),
 			new Point((xw / 4) - 20, (yw - (yw  / 4)) - 5),
 
-			new Point((xw / 4) - 5 , yw - (yw / 4) + 5),
+			new Point(5, yw - 8),
 			new Point((xw / 2)      - 5  , (yw / 2) - 15),
 			new Point(xw - 15  , yw - 8),
 
@@ -384,6 +388,10 @@ public class NorthIndianChart : IDrawChart
 		}
 
 		var p     = GetBhavaCentre(bhava);
+
+		p.X -= (itemSize.Width  / 2);
+		p.Y -= (itemSize.Height / 2);
+
 		var q     = GetSmallZhouseItemOffset(bhava, n);
 		return new Point(p.X + q.X, p.Y + q.Y);
 	}
