@@ -110,6 +110,62 @@ public class NorthIndianChart : IDrawChart
 	    g.DrawLine(pn_black, xw    / 2, 0, xw, yw  / 2);
 	    g.DrawLine(pn_black, xw    / 2, 0, 0, yw   / 2);
 	    g.DrawLine(pn_black, 0, yw / 2, xw         / 2, yw);
+
+	    var fnt   = new Font("Arial", 4.75f);
+	    var rashi = _lagna.value.Index();
+		for (int bhava = 1; bhava <= 12; bhava++)
+		{
+			var p = GetBhavaCentre(bhava);
+
+			var strSize = g.MeasureString(rashi.ToString(), fnt);
+
+			switch (bhava)
+		    {
+			    case 12:
+			    case 1:
+			    case 2:
+			    {
+				    p.X -= (int)(strSize.Width / 2);
+				    p.Y += 10;
+			    }
+				break;
+
+			    case 3:
+			    case 4:
+			    case 5:
+			    {
+				    p.Y -= (int)(strSize.Height / 2);
+					p.X += 10;
+			    }
+				break;
+
+			    case 6:
+			    case 7:
+			    case 8:
+			    {
+				    p.X -= (int)(strSize.Width / 2);
+				    p.Y -= 15;
+			    }
+				break;
+
+			    case 9:
+			    case 10:
+			    case 11:
+			    {
+				    p.Y -= (int)(strSize.Height / 2);
+					p.X -= 20;
+			    }
+				break;
+		    }
+
+			g.DrawString(rashi.ToString(), fnt, Brushes.Blue, p);
+			rashi++;
+			rashi %= 12;
+			if (rashi == 0)
+			{
+				rashi++;
+			}
+		}
 		/*
 	    var r      = (diagonal / 2);
 	    var r2     = (r / 6);
@@ -122,8 +178,8 @@ public class NorthIndianChart : IDrawChart
 
 	    g.DrawRectangle(pn_black, offset, offset, xw - 2 * offset, yw - 2 * offset);
 	    g.DrawRectangle(pn_black, 2 * offset, 2 * offset, xw - 4 * offset, yw - 4 * offset);
-		*/	
-    }
+		*/
+	}
 
 	public int Bhava(ZodiacHouse zh)
 	{
