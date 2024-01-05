@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Diagnostics;
+using mhora.Util;
 
 namespace Mhora.Calculation;
 
@@ -112,7 +113,24 @@ public class ZodiacHouse : ICloneable
         return ret;
     }
 
-    public bool isDaySign()
+    public Longitude Origin
+    {
+	    get
+	    {
+		    return new Longitude((value.Index() - 1) * 30.0);
+	    }
+    }
+
+    public Longitude DivisionalLongitude(Longitude longitude, int nrOfDivisions)
+    {
+	    var houseBase = Origin;
+	    var div       = (30.0 / nrOfDivisions);
+	    var offset    = (longitude.value % div);
+
+	    return new Longitude(houseBase.value + offset * nrOfDivisions);
+    }
+
+	public bool isDaySign()
     {
         switch (value)
         {

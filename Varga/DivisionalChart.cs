@@ -878,7 +878,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		    for (int item = 0; item < dpList.Count; item++)
 		    {
                 var dp = dpList[item];
-                if (options.Varga.MultipleDivisions.Length == 1 && options.Varga.MultipleDivisions[0].Varga == Basics.DivisionType.Rasi && PrintMode == false)
+                if (PrintMode == false)
                 {
 	                if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
 	                {
@@ -907,7 +907,6 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
             if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
             {
 	            var bp = h.getPosition(dp.name);
-                
 				if (dp.name == Body.Body.Name.Lagna)
 	            {
 		            f = new Font(fBase.Name, fBase.Size, FontStyle.Bold);
@@ -919,9 +918,9 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
  
                 var strSize = g.MeasureString(dp.Description, f);
 
-                if (options.Varga.MultipleDivisions.Length == 1 && options.Varga.MultipleDivisions[0].Varga == Basics.DivisionType.Rasi && PrintMode == false && (dp.type == BodyType.Name.Graha || dp.type == BodyType.Name.Lagna))
+                if ((PrintMode == false) && (dp.HasLongitude))
                 {
-					p = dc.GetBodyTextPosition(bp.longitude, Size.Round(strSize));
+					p = dc.GetBodyTextPosition(dp.Longitude, Size.Round(strSize));
 				}
 			}
             if (p.IsEmpty)
@@ -979,9 +978,9 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
         //g.FillRectangle(r, p.X, p.Y, sf.Width, sf.Height);
         g.DrawString(dp.Description, f2, b, p.X, p.Y);
 
-        if (options.Varga.MultipleDivisions.Length == 1 && options.Varga.MultipleDivisions[0].Varga == Basics.DivisionType.Rasi && PrintMode == false && (dp.type == BodyType.Name.Graha || dp.type == BodyType.Name.Lagna))
+        if (PrintMode == false && dp.HasLongitude)
         {
-            var   pLon = dc.GetBodyPosition(h.getPosition(dp.name).longitude);
+            var   pLon = dc.GetBodyPosition(dp.Longitude);
             var   pn   = new Pen(MhoraGlobalOptions.Instance.getBinduColor(dp.name), (float) 0.01);
             Brush br   = new SolidBrush(MhoraGlobalOptions.Instance.getBinduColor(dp.name));
             g.FillEllipse(br, pLon.X - 2, pLon.Y - 2, 4, 4);

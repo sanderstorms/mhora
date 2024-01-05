@@ -126,7 +126,7 @@ public class NorthIndianChart : IDrawChart
     }
 
 	public int Bhava(ZodiacHouse zh)
-    {
+	{
 	    var bhava = ((zh.value.Index() - _lagna.value.Index()) + 1);
 
 	    if (bhava <= 0)

@@ -189,6 +189,7 @@ public class Horoscope : ICloneable
         }
 
         var dp2 = new DivisionPosition(Body.Body.Name.Other, BodyType.Name.GrahaArudha, zhsum, 0, 0, 0);
+        //dp2.Longitude   = zhsum.DivisionalLongitude(dp.Longitude, dpl.part);
         dp2.Description = string.Format("{0}{1}", Body.Body.toShortString(bn), hse);
         return dp2;
     }
@@ -331,7 +332,8 @@ public class Horoscope : ICloneable
             }
 
             var div_pos = new DivisionPosition(Body.Body.Name.Other, BodyType.Name.Varnada, zh_v, 0, 0, 0);
-            div_pos.Description = varnada_strs[i - 1];
+
+			div_pos.Description = varnada_strs[i - 1];
             al.Add(div_pos);
         }
 
@@ -350,7 +352,10 @@ public class Horoscope : ICloneable
             zhsum = zhsum.add(10);
         }
 
-        return new DivisionPosition(aname, btype, zhsum, 0, 0, 0);
+        var dp = new DivisionPosition(aname, btype, zhsum, 0, 0, 0);
+		//dp.Longitude = zhsum.DivisionalLongitude(bp.longitude, dp.part);
+
+		return (dp);
     }
 
     public ArrayList CalculateArudhaDivisionPositions(Division d)

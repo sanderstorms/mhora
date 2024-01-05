@@ -27,14 +27,16 @@ namespace Mhora.Varga;
 /// </summary>
 public class DivisionPosition
 {
-    public double         cusp_higher;
-    public double         cusp_lower;
-    public Body.Body.Name name;
-    private string        _description;
-    public int            part;
-    public int            ruler_index;
-    public BodyType.Name  type;
-    public ZodiacHouse    zodiac_house;
+    public  double         cusp_higher;
+    public  double         cusp_lower;
+    public  Body.Body.Name name;
+    private string         _description;
+    public  int            part;
+    public  int            ruler_index;
+    public  BodyType.Name  type;
+    public  ZodiacHouse    zodiac_house;
+    private Longitude      _longitude;
+    private bool           _hasLongitude;
 
     public DivisionPosition(Body.Body.Name _name, BodyType.Name _type, ZodiacHouse _zodiac_house, double _cusp_lower, double _cusp_higher, int _part)
     {
@@ -45,6 +47,7 @@ public class DivisionPosition
         cusp_higher  = _cusp_higher;
         part         = _part;
         ruler_index  = 0;
+		_longitude   = _zodiac_house.Origin;
     }
 
     public string Description
@@ -58,11 +61,23 @@ public class DivisionPosition
 
 		    return (Body.Body.toShortString(name));
 	    }
+	    set => _description = value;
+    }
+
+    public Longitude Longitude
+    {
+	    get => (_longitude);
 	    set
 	    {
-		    _description = value;
-	    }
+		    _longitude    = value;
+		    if ((type == BodyType.Name.Graha) || (type == BodyType.Name.Lagna))
+		    {
+			    _hasLongitude = true;
+			}
+		}
     }
+
+    public bool HasLongitude => (_hasLongitude);
 
     public override string ToString()
     {
