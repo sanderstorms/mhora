@@ -464,7 +464,7 @@ public class MhoraContainer : Form
 		this.IsMdiContainer =  true;
 		this.Menu           =  this.MdiMenu;
 		this.Name           =  "MhoraContainer";
-		this.Text           =  "Mudgala Hora 0.1";
+		this.Text           =  "Mudgala Hora 0.2";
 		this.WindowState    =  System.Windows.Forms.FormWindowState.Maximized;
 		this.Closing        += new System.ComponentModel.CancelEventHandler(this.MhoraContainer_Closing);
 		this.ResumeLayout(false);
