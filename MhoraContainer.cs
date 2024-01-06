@@ -348,7 +348,7 @@ public class MhoraContainer : Form
 		// 
 		// menuItemHelp
 		// 
-		this.menuItemHelp.Index = 4;
+		this.menuItemHelp.Index = 3;
 		this.menuItemHelp.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
 		{
 			this.menuItemHelpAboutMhora,
