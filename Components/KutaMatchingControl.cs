@@ -65,7 +65,7 @@ public class KutaMatchingControl : MhoraControl
 	{
 		tbHorMale.Text   = "Current Chart";
 		tbHorFemale.Text = "Current Chart";
-		foreach (var f in ((MhoraContainer) MhoraGlobalOptions.mainControl).MdiChildren)
+		foreach (var f in (MhoraGlobalOptions.mainControl).MdiChildren)
 		{
 			if (f is MhoraChild)
 			{

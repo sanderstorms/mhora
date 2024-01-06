@@ -168,6 +168,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util\Base64Decoder.cs" />
     <Compile Include="Elements\Calculation\CuspTransitSearch.cs" />
     <Compile Include="Elements\Calculation\FindStronger.cs" />
@@ -377,9 +383,6 @@
     <Compile Include="Components\MhoraChild.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MhoraContainer.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Components\MhoraControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -563,15 +566,15 @@
     <EmbeddedResource Include="Components\KutaMatchingControl.resx">
       <DependentUpon>KutaMatchingControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Localization.resx" />
     <EmbeddedResource Include="Components\LongStringEditor.resx">
       <DependentUpon>LongStringEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\MhoraChild.resx">
       <DependentUpon>MhoraChild.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MhoraContainer.resx">
-      <DependentUpon>MhoraContainer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\MhoraControl.resx">
       <DependentUpon>MhoraControl.cs</DependentUpon>

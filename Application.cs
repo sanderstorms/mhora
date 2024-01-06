@@ -111,7 +111,7 @@ internal static class Application
 		Log.Settings.LogFilename = Path.Combine(WorkingDir, "debug.txt");
 		Log.Settings.FileLogging = FileLoggingMode.SingleLogFile;
 
-		System.Windows.Forms.Application.Run(new MhoraContainer());
+		System.Windows.Forms.Application.Run(new MainForm());
 		AppDomain.CurrentDomain.UnhandledException       -= UnhandledExceptionEventRaised;
 		System.Windows.Forms.Application.ThreadException -= ThreadExceptionRaised;
 		Running                                          =  false;

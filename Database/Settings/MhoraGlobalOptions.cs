@@ -51,7 +51,7 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 
 	//[NonSerialized]	public static object Reference = null;
 	[NonSerialized]
-	public static object mainControl;
+	public static MainForm mainControl;
 
 	public static MhoraGlobalOptions Instance;
 

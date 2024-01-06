@@ -721,7 +721,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		sweph.releaseLock(h);
 
 		var mchild = (MhoraChild) ParentForm;
-		var mcont  = (MhoraContainer) ParentForm.ParentForm;
+		var mcont  = (MainForm) ParentForm.ParentForm;
 
 		mcont.AddChild(h2, mchild.Name + ": Dasa Entry - (" + di.entry.shortDesc + ") " + id.Description());
 	}
@@ -751,7 +751,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		h2.info.defaultYearType        = ToDate.DateType.FixedYear;
 
 		var mchild = (MhoraChild) ParentForm;
-		var mcont  = (MhoraContainer) ParentForm.ParentForm;
+		var mcont  = (MainForm) ParentForm.ParentForm;
 
 		mcont.AddChild(h2, mchild.Name + ": Dasa Entry - (" + di.entry.shortDesc + ") " + id.Description());
 	}
@@ -788,7 +788,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		h2.OnChanged();
 
 		var mchild = (MhoraChild) ParentForm;
-		var mcont  = (MhoraContainer) ParentForm.ParentForm;
+		var mcont  = (MainForm) ParentForm.ParentForm;
 
 		mcont.AddChild(h2, mchild.Name + ": Dasa Entry Sunrise - (" + di.entry.shortDesc + ") " + id.Description());
 	}
@@ -1392,7 +1392,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		h2.info.tob = m;
 
 		var mchild = (MhoraChild) ParentForm;
-		var mcont  = (MhoraContainer) ParentForm.ParentForm;
+		var mcont  = (MainForm) ParentForm.ParentForm;
 
 		mcont.AddChild(h2, mchild.Name + ": Dasa Entry Chart - (((" + di.entry.shortDesc + "))) " + id.Description());
 	}

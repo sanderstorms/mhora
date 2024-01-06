@@ -808,7 +808,7 @@ public class TransitSearch : MhoraControl
 		var mcTransit = new MhoraChild(hTransit);
 		mcTransit.Name      = "Transit Chart";
 		mcTransit.Text      = "Transit Chart";
-		mcTransit.MdiParent = (MhoraContainer) MhoraGlobalOptions.mainControl;
+		mcTransit.MdiParent = MhoraGlobalOptions.mainControl;
 		mcTransit.Show();
 	}
 
