@@ -20,13 +20,13 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Mhora.Components.Dasa.Nakshatra;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Dasas.Nakshatra;
 using Mhora.Tables;
 using Tithi = Mhora.Tables.Tithi;
 

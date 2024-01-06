@@ -19,10 +19,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Mhora.Components.Dasa.Nakshatra;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Dasas.Nakshatra;
 using Mhora.Elements.Hora;
 using Mhora.SwissEph;
 using Mhora.Tables;

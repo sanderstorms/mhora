@@ -20,12 +20,12 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using Mhora.Components.Dasa;
-using Mhora.Components.Dasa.Yearly;
 using Mhora.Components.Panchanga;
 using Mhora.Components.Transit;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Dasas.Yearly;
 using Mhora.Elements.Hora;
 using Mhora.Util;
 

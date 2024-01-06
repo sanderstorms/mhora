@@ -24,6 +24,7 @@ using Mhora.Components.Varga;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Dasas;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
@@ -106,7 +107,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		// TODO: Add any initialization after the InitForm call
 		h           = _h;
 		id          = _id;
-		DasaOptions = new Dasa.Options();
+		DasaOptions = new Elements.Dasas.Dasa.Options();
 
 		if (h.info.defaultYearCompression != 0)
 		{
@@ -121,7 +122,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		mShowEvents.Checked = MhoraGlobalOptions.Instance.DasaShowEvents;
 		ResetDisplayOptions(MhoraGlobalOptions.Instance);
 
-		var d = (Dasa) id;
+		var d = (Elements.Dasas.Dasa) id;
 		d.RecalculateEvent                     += recalculateEntries;
 		MhoraGlobalOptions.DisplayPrefsChanged += ResetDisplayOptions;
 		h.Changed                              += OnRecalculate;
@@ -138,7 +139,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		//this.LocateChartEvents();
 	}
 
-	public Dasa.Options DasaOptions
+	public Elements.Dasas.Dasa.Options DasaOptions
 	{
 		get;
 	}
@@ -156,13 +157,13 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		{
 			if (value)
 			{
-				h.Changed           += OnRecalculate;
-				((Dasa) id).Changed += OnDasaChanged;
+				h.Changed                          += OnRecalculate;
+				((Elements.Dasas.Dasa) id).Changed += OnDasaChanged;
 			}
 			else
 			{
-				h.Changed           -= OnRecalculate;
-				((Dasa) id).Changed += OnDasaChanged;
+				h.Changed                          -= OnRecalculate;
+				((Elements.Dasas.Dasa) id).Changed += OnDasaChanged;
 			}
 		}
 	}
@@ -996,7 +997,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private object SetDasaOptions(object o)
 	{
-		var opts = (Dasa.Options) o;
+		var opts = (Elements.Dasas.Dasa.Options) o;
 		DasaOptions.Copy(opts);
 		SetDasaYearType();
 		Reset();

@@ -21,11 +21,12 @@ using System.Collections;
 using System.Drawing;
 using System.Drawing.Printing;
 using Mhora.Components.Dasa;
-using Mhora.Components.Dasa.Nakshatra;
-using Mhora.Components.Dasa.Rasi;
 using Mhora.Components.Varga;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Dasas;
+using Mhora.Elements.Dasas.Nakshatra;
+using Mhora.Elements.Dasas.Rasi;
 using Mhora.Tables;
 using Mhora.Util;
 

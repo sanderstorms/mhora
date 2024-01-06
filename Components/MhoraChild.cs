@@ -22,12 +22,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Mhora.Components.Dasa;
-using Mhora.Components.Dasa.Nakshatra;
 using Mhora.Components.Jhora;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Dasas.Nakshatra;
 using Mhora.Elements.Hora;
 using Mhora.Tables;
 
