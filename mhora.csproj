@@ -655,9 +655,7 @@
     <None Include="packages.config" />
     <None Include="Properties\app.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="el\Dasa\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="Lib\LoggingModule\src\LoggingModule\LoggingModule.csproj">
       <Project>{981bcd48-5ebf-42e8-93e9-7601f71282e1}</Project>
