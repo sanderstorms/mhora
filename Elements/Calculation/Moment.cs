@@ -20,6 +20,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using Mhora.Components.Converter;
 using Mhora.Database.Settings;
 using Mhora.SwissEph;
 

@@ -21,8 +21,10 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using Mhora.Elements;
+using Mhora.Elements.Calculation;
 
-namespace Mhora.Elements.Calculation;
+namespace Mhora.Components.Converter;
 
 internal class OrderedZodiacHousesConverter : ExpandableObjectConverter
 {

@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections;
 using System.ComponentModel;
+using Mhora.Components.Converter;
 
 namespace Mhora.Elements.Calculation;
 

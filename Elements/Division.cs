@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
+using Mhora.Components.Converter;
 using Mhora.Components.Property;
 using Mhora.Components.Varga;
 using Mhora.Tables;

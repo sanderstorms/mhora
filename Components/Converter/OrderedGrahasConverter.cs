@@ -17,17 +17,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using Mhora.Elements;
+using Mhora.Elements.Calculation;
 
-namespace Mhora.Elements.Calculation;
+namespace Mhora.Components.Converter;
 
-/// <summary>
-///     A package of longitude related functions. These are useful enough that
-///     I have justified using an object instead of a simple double value type
-/// </summary>
-internal class LongitudeConverter : ExpandableObjectConverter
+internal class OrderedGrahasConverter : ExpandableObjectConverter
 {
 	public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
 	{
@@ -41,74 +40,58 @@ internal class LongitudeConverter : ExpandableObjectConverter
 
 	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
 	{
-		Trace.Assert(value is string, "LongitudeConverter::ConvertFrom 1");
+		Trace.Assert(value is string, "OrderedGrahasConverter::ConvertFrom 1");
 		var s = (string) value;
 
-		var arr = s.Split('.', ' ', ':');
-
-		double lonValue = 0;
-		if (arr.Length >= 1)
+		var oz  = new OrderedGrahas();
+		var al  = new ArrayList();
+		var arr = s.Split('.', ' ', ':', ',');
+		foreach (var szh_mixed in arr)
 		{
-			lonValue = int.Parse(arr[0]);
-		}
-
-		if (arr.Length >= 2)
-		{
-			switch (arr[1].ToLower())
+			var szh = szh_mixed.ToLower();
+			switch (szh)
 			{
-				case "ari":
-					lonValue += 0.0;
+				case "as":
+					al.Add(Body.Name.Lagna);
 					break;
-				case "tau":
-					lonValue += 30.0;
+				case "su":
+					al.Add(Body.Name.Sun);
 					break;
-				case "gem":
-					lonValue += 60.0;
+				case "mo":
+					al.Add(Body.Name.Moon);
 					break;
-				case "can":
-					lonValue += 90.0;
+				case "ma":
+					al.Add(Body.Name.Mars);
 					break;
-				case "leo":
-					lonValue += 120.0;
+				case "me":
+					al.Add(Body.Name.Mercury);
 					break;
-				case "vir":
-					lonValue += 150.0;
+				case "ju":
+					al.Add(Body.Name.Jupiter);
 					break;
-				case "lib":
-					lonValue += 180.0;
+				case "ve":
+					al.Add(Body.Name.Venus);
 					break;
-				case "sco":
-					lonValue += 210.0;
+				case "sa":
+					al.Add(Body.Name.Saturn);
 					break;
-				case "sag":
-					lonValue += 240.0;
+				case "ra":
+					al.Add(Body.Name.Rahu);
 					break;
-				case "cap":
-					lonValue += 270.0;
-					break;
-				case "aqu":
-					lonValue += 300.0;
-					break;
-				case "pis":
-					lonValue += 330.0;
+				case "ke":
+					al.Add(Body.Name.Ketu);
 					break;
 			}
 		}
 
-		double divider = 60;
-		for (var i = 2; i < arr.Length; i++)
-		{
-			lonValue += double.Parse(arr[i]) / divider;
-			divider  *= 60.0;
-		}
-
-		return new Longitude(lonValue);
+		oz.grahas = (ArrayList) al.Clone();
+		return oz;
 	}
 
 	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
 	{
-		Trace.Assert(destType == typeof(string) && value is Longitude, "Longitude::ConvertTo 1");
-		var lon = (Longitude) value;
-		return lon.ToString();
+		Trace.Assert(destType == typeof(string) && value is OrderedGrahas, "OrderedGrahas::ConvertTo 1");
+		var oz = (OrderedGrahas) value;
+		return oz.ToString();
 	}
 }

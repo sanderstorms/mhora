@@ -21,8 +21,9 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using Mhora.Elements.Hora;
 
-namespace Mhora.Elements.Hora;
+namespace Mhora.Components.Converter;
 
 internal class HMSInfoConverter : ExpandableObjectConverter
 {

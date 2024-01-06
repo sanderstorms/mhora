@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using Mhora.Components.Converter;
 using Mhora.Database.Settings;
 
 namespace Mhora.Elements.Hora;

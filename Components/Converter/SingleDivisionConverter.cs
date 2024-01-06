@@ -22,9 +22,9 @@ using System.Globalization;
 using Mhora.Elements;
 using Mhora.Tables;
 
-namespace Mhora.Components.Varga;
+namespace Mhora.Components.Converter;
 
-internal class DivisionConverter : ExpandableObjectConverter
+internal class SingleDivisionConverter : ExpandableObjectConverter
 {
 	public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
 	{
@@ -38,12 +38,18 @@ internal class DivisionConverter : ExpandableObjectConverter
 
 	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
 	{
-		return new Division(Basics.DivisionType.Rasi);
+		return new Division.SingleDivision(Basics.DivisionType.Rasi);
 	}
 
 	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
 	{
 		//Trace.Assert (destType == typeof(string) && value is Division, "DivisionConverter::ConvertTo 1");
-		return "Varga";
+		var dSingle = value as Division.SingleDivision;
+		if (dSingle == null)
+		{
+			return "Single Varga";
+		}
+
+		return dSingle.ToString();
 	}
 }

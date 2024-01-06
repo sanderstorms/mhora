@@ -277,12 +277,12 @@
     </Compile>
     <Compile Include="Elements\Dasas\Dasa.cs" />
     <Compile Include="Elements\Dasas\DasaEntry.cs" />
-    <Compile Include="Components\Dasa\DasaEntryConverter.cs" />
+    <Compile Include="Components\Converter\DasaEntryConverter.cs" />
     <Compile Include="Components\Dasa\DasaItem.cs" />
     <Compile Include="Components\Delegates\DelegateComputeFinished.cs" />
     <Compile Include="Components\Varga\ChartItems.cs" />
     <Compile Include="Elements\Division.cs" />
-    <Compile Include="Components\Varga\DivisionConverter.cs" />
+    <Compile Include="Components\Converter\DivisionConverter.cs" />
     <Compile Include="Elements\DivisionPosition.cs" />
     <Compile Include="Elements\Dasas\Rasi\DrigDasa.cs" />
     <Compile Include="Elements\Dasas\Nakshatra\DwadashottariDasa.cs" />
@@ -298,7 +298,7 @@
     <Compile Include="Components\Property\GlobalizedPropertiesWrapper.cs" />
     <Compile Include="Components\Property\GlobalizedPropertyDescriptor.cs" />
     <Compile Include="Elements\Hora\HMSInfo.cs" />
-    <Compile Include="Elements\Hora\HMSInfoConverter.cs" />
+    <Compile Include="Components\Converter\HMSInfoConverter.cs" />
     <Compile Include="Elements\Hora\HoraInfo.cs" />
     <Compile Include="Elements\Calculation\Horoscope.cs" />
     <Compile Include="Database\Settings\HoroscopeOptions.cs" />
@@ -328,7 +328,7 @@
     <Compile Include="Elements\Kuta\KutaVihanga.cs" />
     <Compile Include="Elements\Dasas\Rasi\LagnaKendradiRasiDasa.cs" />
     <Compile Include="Elements\Longitude.cs" />
-    <Compile Include="Elements\Calculation\LongitudeConverter.cs" />
+    <Compile Include="Components\Converter\LongitudeConverter.cs" />
     <Compile Include="Elements\Dasas\Rasi\MandookaDasa.cs" />
     <Compile Include="Elements\Hora\Mhd.cs" />
     <Compile Include="Elements\Hora\MhoraArrayConverter.cs" />
@@ -396,7 +396,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Elements\Calculation\Moment.cs" />
-    <Compile Include="Elements\Calculation\MomentConverter.cs" />
+    <Compile Include="Components\Converter\MomentConverter.cs" />
     <Compile Include="Elements\Dasas\Graha\MoolaDasa.cs" />
     <Compile Include="Elements\Dasas\Graha\NaisargikaGrahaDasa.cs" />
     <Compile Include="Elements\Dasas\Graha\NaisargikaGrahaDasaSP.cs" />
@@ -413,9 +413,9 @@
     <Compile Include="Elements\Dasas\Rasi\NavamsaDasa.cs" />
     <Compile Include="Elements\Dasas\Rasi\NirayaanaShoolaDasa.cs" />
     <Compile Include="Elements\Calculation\OrderedGrahas.cs" />
-    <Compile Include="Elements\Calculation\OrderedGrahasConverter.cs" />
+    <Compile Include="Components\Converter\OrderedGrahasConverter.cs" />
     <Compile Include="Elements\Calculation\OrderedZodiacHouses.cs" />
-    <Compile Include="Elements\Calculation\OrderedZodiacHousesConverter.cs" />
+    <Compile Include="Components\Converter\OrderedZodiacHousesConverter.cs" />
     <Compile Include="Components\Panchanga\PanchangaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -446,7 +446,7 @@
     <Compile Include="Elements\Dasas\Nakshatra\ShatTrimshaSamaDasa.cs" />
     <Compile Include="Elements\Dasas\Nakshatra\ShodashottariDasa.cs" />
     <Compile Include="Elements\Dasas\Rasi\ShoolaDasa.cs" />
-    <Compile Include="Components\Varga\SingleDivisionConverter.cs" />
+    <Compile Include="Components\Converter\SingleDivisionConverter.cs" />
     <Compile Include="Chart\SouthIndianChart.cs" />
     <Compile Include="Components\SplashScreen\SplashScreen.cs">
       <SubType>Code</SubType>

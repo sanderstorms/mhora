@@ -17,15 +17,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-using Mhora.Elements;
-using Mhora.Elements.Dasas;
+using Mhora.Elements.Calculation;
 
-namespace Mhora.Components.Dasa;
+namespace Mhora.Components.Converter;
 
-internal class DasaEntryConverter : ExpandableObjectConverter
+internal class MomentConverter : ExpandableObjectConverter
 {
 	public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
 	{
@@ -39,48 +39,59 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 
 	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
 	{
-		Trace.Assert(value is string, "DasaEntryConverter::ConvertFrom 1");
+		Trace.Assert(value is string, "MomentConverter::ConvertFrom 1");
 		var s = (string) value;
 
-		var de  = new DasaEntry(Body.Name.Lagna, 0.0, 0.0, 1, "None");
-		var arr = s.Split(',');
-		if (arr.Length >= 1)
+		int day = 1, month = 1, year = 1, hour = 1, min = 1, sec = 1;
+
+		var _arr = s.Split(' ', ':');
+		var arr  = new ArrayList(_arr);
+
+		if ((string) arr[arr.Count - 1] == string.Empty)
 		{
-			de.shortDesc = arr[0];
+			arr[arr.Count - 1] = "0";
 		}
 
-		if (arr.Length >= 2)
+		if (arr.Count >= 3)
 		{
-			de.level = int.Parse(arr[1]);
+			while (arr.Count < 6)
+			{
+				arr.Add("0");
+			}
+
+			day   = int.Parse((string) arr[0]);
+			month = Moment.FromStringMonth((string) arr[1]);
+			year  = int.Parse((string) arr[2]);
+			hour  = int.Parse((string) arr[3]);
+			min   = int.Parse((string) arr[4]);
+			sec   = int.Parse((string) arr[5]);
 		}
 
-		if (arr.Length >= 3)
+		//if (day < 1 || day > 31) day = 1;
+		if (hour < 0 || hour > 23)
 		{
-			de.startUT = double.Parse(arr[2]);
+			hour = 12;
 		}
 
-		if (arr.Length >= 4)
+		if (min < 0 || min > 120)
 		{
-			de.dasaLength = double.Parse(arr[3]);
+			min = 30;
 		}
 
-		if (arr.Length >= 5)
+		if (sec < 0 || sec > 120)
 		{
-			de.graha = (Body.Name) int.Parse(arr[4]);
+			sec = 30;
 		}
 
-		if (arr.Length >= 6)
-		{
-			de.zodiacHouse = (ZodiacHouse.Name) int.Parse(arr[5]);
-		}
-
-		return de;
+		var m = new Moment(year, month, day, hour, min, sec);
+		return m;
 	}
 
 	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
 	{
-		Trace.Assert(destType == typeof(string) && value is DasaEntry, "DasaItem::ConvertTo 1");
-		var de = (DasaEntry) value;
-		return de.shortDesc + "," + de.level + "," + de.startUT + "," + de.dasaLength + "," + (int) de.graha + "," + (int) de.zodiacHouse;
+		Application.Log.Debug("Foo: destType is {0}", destType);
+		// Trace.Assert (destType == typeof(string) && value is Moment, "MomentConverter::ConvertTo 1");
+		var m = (Moment) value;
+		return m.ToString();
 	}
 }
