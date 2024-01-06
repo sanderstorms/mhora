@@ -24,7 +24,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Genghis.Windows.Forms;
-using IWshRuntimeLibrary;
 using Mhora.Calculation;
 using Mhora.Components;
 using Mhora.Components.SplashScreen;
@@ -56,13 +55,11 @@ public class MhoraContainer : Form
 	private MenuItem           menuItem1;
 	private MenuItem           menuItem2;
 	private MenuItem           menuItem4;
-	private MenuItem           menuItemAdvanced;
 	private MenuItem           menuItemFile;
 	private MenuItem           menuItemFileExit;
 	private MenuItem           menuItemFileNew;
 	private MenuItem           menuItemFileNewPrasna;
 	private MenuItem           menuItemFileOpen;
-	private MenuItem           menuItemFindCharts;
 	private MenuItem           menuItemHelp;
 	private MenuItem           menuItemHelpAboutMhora;
 	private MenuItem           menuItemHelpAboutSjc;
@@ -161,8 +158,6 @@ public class MhoraContainer : Form
 		this.menuItemWindowCascade     = new System.Windows.Forms.MenuItem();
 		this.menuItem1                 = new System.Windows.Forms.MenuItem();
 		this.menuItemNewView           = new System.Windows.Forms.MenuItem();
-		this.menuItemAdvanced          = new System.Windows.Forms.MenuItem();
-		this.menuItemFindCharts        = new System.Windows.Forms.MenuItem();
 		this.menuItemHelp              = new System.Windows.Forms.MenuItem();
 		this.menuItemHelpAboutMhora    = new System.Windows.Forms.MenuItem();
 		this.menuItemHelpAboutSjc      = new System.Windows.Forms.MenuItem();
@@ -187,7 +182,6 @@ public class MhoraContainer : Form
 			this.menuItemFile,
 			this.mViewPreferences,
 			this.menuItemWindow,
-			this.menuItemAdvanced,
 			this.menuItemHelp
 		});
 		// 
@@ -351,23 +345,6 @@ public class MhoraContainer : Form
 		this.menuItemNewView.Index =  3;
 		this.menuItemNewView.Text  =  "&New View";
 		this.menuItemNewView.Click += new System.EventHandler(this.menuItemNewView_Click);
-		// 
-		// menuItemAdvanced
-		// 
-		this.menuItemAdvanced.Enabled = false;
-		this.menuItemAdvanced.Index   = 3;
-		this.menuItemAdvanced.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-		{
-			this.menuItemFindCharts
-		});
-		this.menuItemAdvanced.MergeOrder = 2;
-		this.menuItemAdvanced.Text       = "Advanced";
-		// 
-		// menuItemFindCharts
-		// 
-		this.menuItemFindCharts.Index =  0;
-		this.menuItemFindCharts.Text  =  "Find Charts";
-		this.menuItemFindCharts.Click += new System.EventHandler(this.menuItemFindCharts_Click);
 		// 
 		// menuItemHelp
 		// 
@@ -807,52 +784,6 @@ public class MhoraContainer : Form
 		}
 
 		return false;
-	}
-
-	private void findCharts(string pathFrom, string pathTo)
-	{
-		WshShell shell = new WshShellClass();
-		var      di    = new DirectoryInfo(pathFrom);
-
-		foreach (var f in di.GetFiles("*.jhd"))
-		{
-			var bMatch = false;
-			try
-			{
-				bMatch = checkJhd(f.FullName);
-			}
-			catch
-			{
-			}
-
-			if (bMatch)
-			{
-				var _path_split = f.FullName.Split('/', '\\');
-				var path_split  = new ArrayList(_path_split);
-				Link.Update(pathTo, f.FullName, (string) path_split[path_split.Count - 1], true);
-				//mhora.Log.Debug(f.FullName);
-			}
-		}
-
-		foreach (var d in di.GetDirectories())
-		{
-			findCharts(d.FullName, pathTo);
-		}
-	}
-
-	private void menuItemFindCharts_Click(object sender, EventArgs e)
-	{
-		var fFrom = new FolderBrowserDialog();
-		fFrom.Description = "Folder containing charts to search";
-		fFrom.ShowDialog();
-		var pathFrom = fFrom.SelectedPath;
-
-		var fTo = new FolderBrowserDialog();
-		fTo.Description = "Folder where shortcuts should be created";
-		fTo.ShowDialog();
-		var pathTo = fTo.SelectedPath;
-
-		findCharts(pathFrom, pathTo);
 	}
 
 	private void mResetPreferences_Click(object sender, EventArgs e)
