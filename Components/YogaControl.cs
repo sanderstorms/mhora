@@ -21,10 +21,12 @@ using System.ComponentModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Mhora.Calculation;
 using Mhora.Components.Property;
-using Mhora.Settings;
-using Mhora.Varga;
+using Mhora.Components.Varga;
+using Mhora.Database.Settings;
+using Mhora.Elements;
+using Mhora.Elements.Calculation;
+using Mhora.Tables;
 
 namespace Mhora.Components;
 

@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Mhora.Calculation;
-using Mhora.Settings;
+using Mhora.Database.Settings;
+using Mhora.Elements.Calculation;
 
 namespace Mhora.Components;
 

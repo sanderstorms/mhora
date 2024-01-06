@@ -21,11 +21,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using Mhora.Body;
-using Mhora.Calculation;
-using Mhora.Settings;
+using Mhora.Database.Settings;
+using Mhora.Elements;
+using Mhora.Elements.Calculation;
 using Mhora.Tables;
-using Mhora.Tables.Nakshatra;
+using Mhora.Tables;
 
 namespace Mhora.Components;
 
@@ -189,7 +189,7 @@ public class Sarvatobhadra81Control : MhoraControl
 
         foreach (Position bp in h.positionList)
         {
-            if (bp.type != Tables.Body.Type.Graha && bp.type != Tables.Body.Type.Lagna)
+            if (bp.type != Elements.Body.Type.Graha && bp.type != Elements.Body.Type.Lagna)
             {
                 continue;
             }
@@ -199,7 +199,7 @@ public class Sarvatobhadra81Control : MhoraControl
             var pxBase = GetCellInRectangle(9, 26, (int) n.value);
             var pxOff  = GetItemOffset(items[(int) n.value]);
             var px     = new Point(pxBase.X + pxOff.X, pxBase.Y + pxOff.Y);
-            var s      = Tables.Body.toShortString(bp.name);
+            var s      = Elements.Body.toShortString(bp.name);
             g.DrawString(s, f, Brushes.Maroon, px.X, px.Y);
         }
     }

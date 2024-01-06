@@ -21,12 +21,14 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Mhora.Calculation;
+using Mhora.Components.Delegates;
 using Mhora.Components.Property;
-using Mhora.Delegates;
-using Mhora.Settings;
+using Mhora.Components.Varga;
+using Mhora.Database.Settings;
+using Mhora.Elements;
+using Mhora.Elements.Calculation;
+using Mhora.Tables;
 using Mhora.Util;
-using Mhora.Varga;
 
 namespace Mhora.Components;
 

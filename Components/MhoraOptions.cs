@@ -20,6 +20,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using Mhora.Components.Property;
+using Mhora.Database.Settings;
 
 namespace Mhora.Components;
 

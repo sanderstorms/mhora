@@ -21,12 +21,14 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Mhora.Calculation;
+using Mhora.Components.Delegates;
 using Mhora.Components.Property;
-using Mhora.Delegates;
-using Mhora.Settings;
+using Mhora.Components.Varga;
+using Mhora.Database.Settings;
+using Mhora.Elements;
+using Mhora.Elements.Calculation;
+using Mhora.Tables;
 using Mhora.Util;
-using Mhora.Varga;
 
 namespace Mhora.Components;
 
@@ -215,15 +217,15 @@ public class GrahaStrengthsControl : Form
 
 	private void InitializeComboBoxes()
 	{
-		for (var i = (int) Tables.Body.Name.Sun; i <= (int) Tables.Body.Name.Lagna; i++)
+		for (var i = (int) Elements.Body.Name.Sun; i <= (int) Elements.Body.Name.Lagna; i++)
 		{
-			var s = Tables.Body.toString((Tables.Body.Name) i);
+			var s = Elements.Body.toString((Elements.Body.Name) i);
 			cbGraha1.Items.Add(s);
 			cbGraha2.Items.Add(s);
 		}
 
-		cbGraha1.SelectedIndex = (int) Tables.Body.Name.Mars;
-		cbGraha2.SelectedIndex = (int) Tables.Body.Name.Ketu;
+		cbGraha1.SelectedIndex = (int) Elements.Body.Name.Mars;
+		cbGraha2.SelectedIndex = (int) Elements.Body.Name.Ketu;
 
 		cbStrength.Items.Add("Co-Lord");
 		cbStrength.Items.Add("Naisargika Graha Dasa");
@@ -248,8 +250,8 @@ public class GrahaStrengthsControl : Form
 		mList.Columns.Add("Winner", -1, HorizontalAlignment.Left);
 
 		var winner = 0;
-		var b1     = (Tables.Body.Name) cbGraha1.SelectedIndex;
-		var b2     = (Tables.Body.Name) cbGraha2.SelectedIndex;
+		var b1     = (Elements.Body.Name) cbGraha1.SelectedIndex;
+		var b2     = (Elements.Body.Name) cbGraha2.SelectedIndex;
 
 		var bSimpleLord = false;
 		var al          = GetRules(ref bSimpleLord);
@@ -265,7 +267,7 @@ public class GrahaStrengthsControl : Form
 
 			if (winner == 0)
 			{
-				li.SubItems.Add(Tables.Body.toString(bw));
+				li.SubItems.Add(Elements.Body.toString(bw));
 			}
 
 			mList.Items.Add(li);
@@ -291,8 +293,8 @@ public class GrahaStrengthsControl : Form
 		if (cbStrength.SelectedIndex == RVimsottariDasa)
 		{
 			options.Division       = new Division(Basics.DivisionType.BhavaPada);
-			cbGraha1.SelectedIndex = (int) Tables.Body.Name.Lagna;
-			cbGraha1.SelectedIndex = (int) Tables.Body.Name.Moon;
+			cbGraha1.SelectedIndex = (int) Elements.Body.Name.Lagna;
+			cbGraha1.SelectedIndex = (int) Elements.Body.Name.Moon;
 		}
 
 		lVarga.Text = options.Division.ToString();
@@ -305,17 +307,17 @@ public class GrahaStrengthsControl : Form
 		{
 			switch (cbGraha1.SelectedIndex)
 			{
-				case (int) Tables.Body.Name.Mars:
-					cbGraha2.SelectedIndex = (int) Tables.Body.Name.Ketu;
+				case (int) Elements.Body.Name.Mars:
+					cbGraha2.SelectedIndex = (int) Elements.Body.Name.Ketu;
 					break;
-				case (int) Tables.Body.Name.Ketu:
-					cbGraha2.SelectedIndex = (int) Tables.Body.Name.Mars;
+				case (int) Elements.Body.Name.Ketu:
+					cbGraha2.SelectedIndex = (int) Elements.Body.Name.Mars;
 					break;
-				case (int) Tables.Body.Name.Saturn:
-					cbGraha2.SelectedIndex = (int) Tables.Body.Name.Rahu;
+				case (int) Elements.Body.Name.Saturn:
+					cbGraha2.SelectedIndex = (int) Elements.Body.Name.Rahu;
 					break;
-				case (int) Tables.Body.Name.Rahu:
-					cbGraha2.SelectedIndex = (int) Tables.Body.Name.Saturn;
+				case (int) Elements.Body.Name.Rahu:
+					cbGraha2.SelectedIndex = (int) Elements.Body.Name.Saturn;
 					break;
 			}
 		}

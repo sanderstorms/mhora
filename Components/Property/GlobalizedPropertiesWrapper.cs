@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections;
 using System.ComponentModel;
-using Mhora.Delegates;
+using Mhora.Components.Delegates;
 
 namespace Mhora.Components.Property;
 

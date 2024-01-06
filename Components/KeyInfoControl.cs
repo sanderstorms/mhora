@@ -19,10 +19,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Mhora.Calculation;
-using Mhora.Hora;
-using Mhora.Settings;
+using Mhora.Components.Dasa.Nakshatra;
+using Mhora.Database.Settings;
+using Mhora.Elements.Calculation;
+using Mhora.Elements.Hora;
 using Mhora.SwissEph;
+using Mhora.Tables;
 
 namespace Mhora.Components;
 
@@ -226,7 +228,7 @@ public class KeyInfoControl : MhoraControl
             mList.Items.Add(li);
         }
         {
-            var ltithi = h.getPosition(Tables.Body.Name.Moon).longitude.sub(h.getPosition(Tables.Body.Name.Sun).longitude);
+            var ltithi = h.getPosition(Elements.Body.Name.Moon).longitude.sub(h.getPosition(Elements.Body.Name.Sun).longitude);
             var offset = 360.0 / 30.0 - ltithi.toTithiOffset();
             var ti     = ltithi.toTithi();
             var tiLord = ti.getLord();
@@ -236,7 +238,7 @@ public class KeyInfoControl : MhoraControl
             mList.Items.Add(li);
         }
         {
-            var lmoon     = h.getPosition(Tables.Body.Name.Moon).longitude;
+            var lmoon     = h.getPosition(Elements.Body.Name.Moon).longitude;
             var nmoon     = lmoon.toNakshatra();
             var nmoonLord = VimsottariDasa.LordOfNakshatra(nmoon);
             var offset    = 360.0 / 27.0 - lmoon.toNakshatraOffset();
@@ -248,7 +250,7 @@ public class KeyInfoControl : MhoraControl
         }
         {
             li = new ListViewItem("Karana");
-            var lkarana = h.getPosition(Tables.Body.Name.Moon).longitude.sub(h.getPosition(Tables.Body.Name.Sun).longitude);
+            var lkarana = h.getPosition(Elements.Body.Name.Moon).longitude.sub(h.getPosition(Elements.Body.Name.Sun).longitude);
             var koffset = 360.0 / 60.0 - lkarana.toKaranaOffset();
             var k       = lkarana.toKarana();
             var kLord   = k.getLord();
@@ -258,7 +260,7 @@ public class KeyInfoControl : MhoraControl
         }
         {
             li = new ListViewItem("Yoga");
-            var smLon  = h.getPosition(Tables.Body.Name.Sun).longitude.add(h.getPosition(Tables.Body.Name.Moon).longitude);
+            var smLon  = h.getPosition(Elements.Body.Name.Sun).longitude.add(h.getPosition(Elements.Body.Name.Moon).longitude);
             var offset = 360.0 / 27.0 - smLon.toSunMoonYogaOffset();
             var smYoga = smLon.toSunMoonYoga();
             var smLord = smYoga.getLord();
@@ -304,7 +306,7 @@ public class KeyInfoControl : MhoraControl
                 vgOff = 9;
             }
 
-            var b = (Tables.Body.Name) ((int) Tables.Body.Name.Sun + vgOff - 1);
+            var b = (Elements.Body.Name) ((int) Elements.Body.Name.Sun + vgOff - 1);
             li = new ListViewItem("Vighatika Graha");
             var fmt = string.Format("{0}", b);
             li.SubItems.Add(fmt);

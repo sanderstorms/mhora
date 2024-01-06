@@ -168,34 +168,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calculation\Base64Decoder.cs" />
-    <Compile Include="Calculation\CuspTransitSearch.cs" />
-    <Compile Include="Calculation\FindStronger.cs" />
-    <Compile Include="Calculation\Retrogression.cs" />
-    <Compile Include="Calculation\Strength\BaseStrength.cs" />
-    <Compile Include="Calculation\Strength\EqualStrength.cs" />
-    <Compile Include="Calculation\Strength\IStrengthGraha.cs" />
-    <Compile Include="Calculation\Strength\IStrengthRasi.cs" />
-    <Compile Include="Calculation\Strength\StrengthByAspectsGraha.cs" />
-    <Compile Include="Calculation\Strength\StrengthByAspectsRasi.cs" />
-    <Compile Include="Calculation\Strength\StrengthByAtmaKaraka.cs" />
-    <Compile Include="Calculation\Strength\StrengthByConjunction.cs" />
-    <Compile Include="Calculation\Strength\StrengthByExaltation.cs" />
-    <Compile Include="Calculation\Strength\StrengthByFirst.cs" />
-    <Compile Include="Calculation\Strength\StrengthByKarakaKendradiGrahaDasaLength.cs" />
-    <Compile Include="Calculation\Strength\StrengthByKendraConjunction.cs" />
-    <Compile Include="Calculation\Strength\StrengthByLongitude.cs" />
-    <Compile Include="Calculation\Strength\StrengthByLordInDifferentOddity.cs" />
-    <Compile Include="Calculation\Strength\StrengthByLordInOwnHouse.cs" />
-    <Compile Include="Calculation\Strength\StrengthByLordIsAtmaKaraka.cs" />
-    <Compile Include="Calculation\Strength\StrengthByLordsLongitude.cs" />
-    <Compile Include="Calculation\Strength\StrengthByLordsNature.cs" />
-    <Compile Include="Calculation\Strength\StrengthByMoolaTrikona.cs" />
-    <Compile Include="Calculation\Strength\StrengthByNarayanaDasaLength.cs" />
-    <Compile Include="Calculation\Strength\StrengthByOwnHouse.cs" />
-    <Compile Include="Calculation\Strength\StrengthByRasisNature.cs" />
-    <Compile Include="Calculation\Strength\StrengthByVimsottariDasaLength.cs" />
-    <Compile Include="Calculation\Transit.cs" />
+    <Compile Include="Util\Base64Decoder.cs" />
+    <Compile Include="Elements\Calculation\CuspTransitSearch.cs" />
+    <Compile Include="Elements\Calculation\FindStronger.cs" />
+    <Compile Include="Elements\Calculation\Retrogression.cs" />
+    <Compile Include="Elements\Calculation\Strength\BaseStrength.cs" />
+    <Compile Include="Elements\Calculation\Strength\EqualStrength.cs" />
+    <Compile Include="Elements\Calculation\Strength\IStrengthGraha.cs" />
+    <Compile Include="Elements\Calculation\Strength\IStrengthRasi.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByAspectsGraha.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByAspectsRasi.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByAtmaKaraka.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByConjunction.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByExaltation.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByFirst.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByKarakaKendradiGrahaDasaLength.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByKendraConjunction.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLongitude.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLordInDifferentOddity.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLordInOwnHouse.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLordIsAtmaKaraka.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLordsLongitude.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLordsNature.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByMoolaTrikona.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByNarayanaDasaLength.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByOwnHouse.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByRasisNature.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByVimsottariDasaLength.cs" />
+    <Compile Include="Elements\Calculation\Transit.cs" />
     <Compile Include="Chart\NorthIndianChart.cs" />
     <Compile Include="Components\AboutMhora.cs">
       <SubType>Form</SubType>
@@ -209,16 +209,16 @@
     <Compile Include="Components\BirthDetailsDialog.Designer.cs">
       <DependentUpon>BirthDetailsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ProgressBar.cs">
+    <Compile Include="Components\Controls\ProgressBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ProgressBar.Designer.cs">
+    <Compile Include="Components\Controls\ProgressBar.Designer.cs">
       <DependentUpon>ProgressBar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ProgressFm.cs">
+    <Compile Include="Components\Controls\ProgressFm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\ProgressFm.Designer.cs">
+    <Compile Include="Components\Controls\ProgressFm.Designer.cs">
       <DependentUpon>ProgressFm.cs</DependentUpon>
     </Compile>
     <Compile Include="Database\Reflection.cs" />
@@ -229,8 +229,8 @@
     <Compile Include="Database\World\State.cs" />
     <Compile Include="Database\World\SubRegion.cs" />
     <Compile Include="Application.cs" />
-    <Compile Include="Settings\ApplyOptions.cs" />
-    <Compile Include="Settings\MhoraGlobalOptions.cs" />
+    <Compile Include="Database\Settings\ApplyOptions.cs" />
+    <Compile Include="Database\Settings\MhoraGlobalOptions.cs" />
     <Compile Include="Tables\Hora.cs" />
     <Compile Include="Tables\Karaka.cs" />
     <Compile Include="Tables\Sarvatobhadra.cs" />
@@ -242,17 +242,17 @@
     <Compile Include="Util\LocationConverter.cs" />
     <Compile Include="Util\SevenZip.cs" />
     <Compile Include="Util\StringExtension.cs" />
-    <Compile Include="Tables\Ashtakavarga.cs">
+    <Compile Include="Elements\Ashtakavarga.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Varga\AshtakavargaControl.cs">
+    <Compile Include="Components\Varga\AshtakavargaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Dasa\Nakshatra\AshtottariDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\AshtottariDasa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Calculation\Balas.cs">
+    <Compile Include="Elements\Calculation\Balas.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Components\BalasControl.cs">
@@ -261,114 +261,114 @@
     <Compile Include="Components\BasicCalculationsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Calculation\Basics.cs">
+    <Compile Include="Tables\Basics.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tables\Body.cs" />
-    <Compile Include="Body\KarakaComparer.cs" />
-    <Compile Include="Body\Position.cs" />
-    <Compile Include="Dasa\Rasi\CharaDasa.cs" />
-    <Compile Include="Dasa\Nakshatra\ChaturashitiSamaDasa.cs" />
+    <Compile Include="Elements\Body.cs" />
+    <Compile Include="Elements\KarakaComparer.cs" />
+    <Compile Include="Elements\Position.cs" />
+    <Compile Include="Components\Dasa\Rasi\CharaDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\ChaturashitiSamaDasa.cs" />
     <Compile Include="Components\ChooseHoroscopeControl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dasa\Dasa.cs" />
-    <Compile Include="Dasa\DasaEntry.cs" />
-    <Compile Include="Dasa\DasaEntryConverter.cs" />
-    <Compile Include="Dasa\DasaItem.cs" />
-    <Compile Include="Delegates\DelegateComputeFinished.cs" />
-    <Compile Include="Varga\ChartItems.cs" />
-    <Compile Include="Varga\Division.cs" />
-    <Compile Include="Varga\DivisionConverter.cs" />
-    <Compile Include="Varga\DivisionPosition.cs" />
-    <Compile Include="Dasa\Rasi\DrigDasa.cs" />
-    <Compile Include="Dasa\Nakshatra\DwadashottariDasa.cs" />
-    <Compile Include="Dasa\Nakshatra\DwisaptatiSamaDasa.cs" />
+    <Compile Include="Components\Dasa\Dasa.cs" />
+    <Compile Include="Components\Dasa\DasaEntry.cs" />
+    <Compile Include="Components\Dasa\DasaEntryConverter.cs" />
+    <Compile Include="Components\Dasa\DasaItem.cs" />
+    <Compile Include="Components\Delegates\DelegateComputeFinished.cs" />
+    <Compile Include="Components\Varga\ChartItems.cs" />
+    <Compile Include="Elements\Division.cs" />
+    <Compile Include="Components\Varga\DivisionConverter.cs" />
+    <Compile Include="Elements\DivisionPosition.cs" />
+    <Compile Include="Components\Dasa\Rasi\DrigDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\DwadashottariDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\DwisaptatiSamaDasa.cs" />
     <Compile Include="Chart\EastIndianChart.cs" />
-    <Compile Include="Delegates\EvtChanged.cs" />
-    <Compile Include="Ghataka\GhatakaDay.cs" />
-    <Compile Include="Ghataka\GhatakaLagnaOpp.cs" />
-    <Compile Include="Ghataka\GhatakaLagnaSame.cs" />
-    <Compile Include="Ghataka\GhatakaMoon.cs" />
-    <Compile Include="Ghataka\GhatakaStar.cs" />
-    <Compile Include="Ghataka\GhatakaTithi.cs" />
+    <Compile Include="Components\Delegates\EvtChanged.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaDay.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaLagnaOpp.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaLagnaSame.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaMoon.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaStar.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaTithi.cs" />
     <Compile Include="Components\Property\GlobalizedPropertiesWrapper.cs" />
     <Compile Include="Components\Property\GlobalizedPropertyDescriptor.cs" />
-    <Compile Include="Hora\HMSInfo.cs" />
-    <Compile Include="Hora\HMSInfoConverter.cs" />
-    <Compile Include="Hora\HoraInfo.cs" />
-    <Compile Include="Calculation\Horoscope.cs" />
-    <Compile Include="Settings\HoroscopeOptions.cs" />
-    <Compile Include="Dasa\IDasa.cs" />
+    <Compile Include="Elements\Hora\HMSInfo.cs" />
+    <Compile Include="Elements\Hora\HMSInfoConverter.cs" />
+    <Compile Include="Elements\Hora\HoraInfo.cs" />
+    <Compile Include="Elements\Calculation\Horoscope.cs" />
+    <Compile Include="Database\Settings\HoroscopeOptions.cs" />
+    <Compile Include="Components\Dasa\IDasa.cs" />
     <Compile Include="Chart\IDrawChart.cs" />
-    <Compile Include="Hora\IFileToHoraInfo.cs" />
-    <Compile Include="Dasa\Nakshatra\INakshatraDasa.cs" />
-    <Compile Include="Dasa\Nakshatra\INakshatraKaranaDasa.cs" />
-    <Compile Include="Dasa\Nakshatra\INakshatraTithiDasa.cs" />
-    <Compile Include="Dasa\Nakshatra\INakshatraYogaDasa.cs" />
-    <Compile Include="Dasa\IUpdateable.cs" />
-    <Compile Include="Jhora\Jhd.cs" />
-    <Compile Include="Dasa\Nakshatra\KalachakraDasa.cs" />
-    <Compile Include="Dasa\Graha\KarakaKendradiGrahaDasa.cs" />
-    <Compile Include="Calculation\Karana.cs" />
-    <Compile Include="Dasa\Nakshatra\KaranaChaturashitiSamaDasa.cs" />
-    <Compile Include="Dasa\Yearly\KaranaPraveshDasa.cs" />
-    <Compile Include="Kuta\KutaBhutaNakshatra.cs" />
-    <Compile Include="Kuta\KutaGana.cs" />
-    <Compile Include="Kuta\KutaGotra.cs" />
-    <Compile Include="Kuta\KutaNadi.cs" />
-    <Compile Include="Kuta\KutaNakshatraYoni.cs" />
-    <Compile Include="Kuta\KutaRajju.cs" />
-    <Compile Include="Kuta\KutaRasiYoni.cs" />
-    <Compile Include="Kuta\KutaVarna.cs" />
-    <Compile Include="Kuta\KutaVedha.cs" />
-    <Compile Include="Kuta\KutaVihanga.cs" />
-    <Compile Include="Dasa\Rasi\LagnaKendradiRasiDasa.cs" />
-    <Compile Include="Calculation\Longitude.cs" />
-    <Compile Include="Calculation\LongitudeConverter.cs" />
-    <Compile Include="Dasa\Rasi\MandookaDasa.cs" />
-    <Compile Include="Hora\Mhd.cs" />
-    <Compile Include="Hora\MhoraArrayConverter.cs" />
-    <Compile Include="Hora\MhoraVerifier.cs">
+    <Compile Include="Elements\Hora\IFileToHoraInfo.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\INakshatraDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\INakshatraKaranaDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\INakshatraTithiDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\INakshatraYogaDasa.cs" />
+    <Compile Include="Components\Dasa\IUpdateable.cs" />
+    <Compile Include="Components\Jhora\Jhd.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\KalachakraDasa.cs" />
+    <Compile Include="Components\Dasa\Graha\KarakaKendradiGrahaDasa.cs" />
+    <Compile Include="Elements\Karana.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\KaranaChaturashitiSamaDasa.cs" />
+    <Compile Include="Components\Dasa\Yearly\KaranaPraveshDasa.cs" />
+    <Compile Include="Components\Kuta\KutaBhutaNakshatra.cs" />
+    <Compile Include="Components\Kuta\KutaGana.cs" />
+    <Compile Include="Components\Kuta\KutaGotra.cs" />
+    <Compile Include="Components\Kuta\KutaNadi.cs" />
+    <Compile Include="Components\Kuta\KutaNakshatraYoni.cs" />
+    <Compile Include="Components\Kuta\KutaRajju.cs" />
+    <Compile Include="Components\Kuta\KutaRasiYoni.cs" />
+    <Compile Include="Components\Kuta\KutaVarna.cs" />
+    <Compile Include="Components\Kuta\KutaVedha.cs" />
+    <Compile Include="Components\Kuta\KutaVihanga.cs" />
+    <Compile Include="Components\Dasa\Rasi\LagnaKendradiRasiDasa.cs" />
+    <Compile Include="Elements\Longitude.cs" />
+    <Compile Include="Elements\Calculation\LongitudeConverter.cs" />
+    <Compile Include="Components\Dasa\Rasi\MandookaDasa.cs" />
+    <Compile Include="Elements\Hora\Mhd.cs" />
+    <Compile Include="Elements\Hora\MhoraArrayConverter.cs" />
+    <Compile Include="Elements\Hora\MhoraVerifier.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dasa\Dasa3Parts.cs">
+    <Compile Include="Components\Dasa\Dasa3Parts.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dasa\DasaControl.cs">
+    <Compile Include="Components\Dasa\DasaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Dasa\Dasas.cs">
+    <Compile Include="Components\Dasa\Dasas.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Varga\DivisionalChart.cs">
+    <Compile Include="Components\Varga\DivisionalChart.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Util\EnumDescConverter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Calculation\FindYogas.cs">
+    <Compile Include="Elements\Calculation\FindYogas.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Settings\MhoraSerializableOptions.cs">
+    <Compile Include="Database\Settings\MhoraSerializableOptions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Components\GrahaStrengthsControl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Jhora\JhoraBasicsTab.cs">
+    <Compile Include="Components\Jhora\JhoraBasicsTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Jhora\JhoraMainTab.cs">
+    <Compile Include="Components\Jhora\JhoraMainTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Components\KeyInfoControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Kuta\KutaMatchingControl.cs">
+    <Compile Include="Components\Kuta\KutaMatchingControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Kuta\Kutas.cs">
+    <Compile Include="Components\Kuta\Kutas.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Components\LongStringEditor.cs">
@@ -395,66 +395,66 @@
     <Compile Include="Components\MhoraSplitContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Calculation\Moment.cs" />
-    <Compile Include="Calculation\MomentConverter.cs" />
-    <Compile Include="Dasa\Graha\MoolaDasa.cs" />
-    <Compile Include="Dasa\Graha\NaisargikaGrahaDasa.cs" />
-    <Compile Include="Dasa\Graha\NaisargikaGrahaDasaSP.cs" />
-    <Compile Include="Dasa\Rasi\NaisargikaRasiDasa.cs" />
-    <Compile Include="Tables\Nakshatra\Nakshatra.cs" />
-    <Compile Include="Tables\Nakshatra\Nakshatra28.cs" />
-    <Compile Include="Dasa\Nakshatra\NakshatraDasa.cs" />
-    <Compile Include="Dasa\Nakshatra\NakshatraPraveshDasa.cs" />
-    <Compile Include="Dasa\Rasi\NarayanaDasa.cs" />
-    <Compile Include="Dasa\Rasi\NarayanaSamaDasa.cs" />
+    <Compile Include="Elements\Calculation\Moment.cs" />
+    <Compile Include="Elements\Calculation\MomentConverter.cs" />
+    <Compile Include="Components\Dasa\Graha\MoolaDasa.cs" />
+    <Compile Include="Components\Dasa\Graha\NaisargikaGrahaDasa.cs" />
+    <Compile Include="Components\Dasa\Graha\NaisargikaGrahaDasaSP.cs" />
+    <Compile Include="Components\Dasa\Rasi\NaisargikaRasiDasa.cs" />
+    <Compile Include="Elements\Nakshatra.cs" />
+    <Compile Include="Elements\Nakshatra28.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\NakshatraDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\NakshatraPraveshDasa.cs" />
+    <Compile Include="Components\Dasa\Rasi\NarayanaDasa.cs" />
+    <Compile Include="Components\Dasa\Rasi\NarayanaSamaDasa.cs" />
     <Compile Include="Components\NavamsaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Dasa\Rasi\NavamsaDasa.cs" />
-    <Compile Include="Dasa\Rasi\NirayaanaShoolaDasa.cs" />
-    <Compile Include="Calculation\OrderedGrahas.cs" />
-    <Compile Include="Calculation\OrderedGrahasConverter.cs" />
-    <Compile Include="Calculation\OrderedZodiacHouses.cs" />
-    <Compile Include="Calculation\OrderedZodiacHousesConverter.cs" />
-    <Compile Include="Panchanga\PanchangaControl.cs">
+    <Compile Include="Components\Dasa\Rasi\NavamsaDasa.cs" />
+    <Compile Include="Components\Dasa\Rasi\NirayaanaShoolaDasa.cs" />
+    <Compile Include="Elements\Calculation\OrderedGrahas.cs" />
+    <Compile Include="Elements\Calculation\OrderedGrahasConverter.cs" />
+    <Compile Include="Elements\Calculation\OrderedZodiacHouses.cs" />
+    <Compile Include="Elements\Calculation\OrderedZodiacHousesConverter.cs" />
+    <Compile Include="Components\Panchanga\PanchangaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Panchanga\PanchangaGlobalMoments.cs" />
-    <Compile Include="Panchanga\PanchangaLocalMoments.cs" />
-    <Compile Include="Panchanga\PanchangaMomentInfo.cs" />
-    <Compile Include="Panchanga\PanchangaPrintDocument.cs">
+    <Compile Include="Components\Panchanga\PanchangaGlobalMoments.cs" />
+    <Compile Include="Components\Panchanga\PanchangaLocalMoments.cs" />
+    <Compile Include="Components\Panchanga\PanchangaMomentInfo.cs" />
+    <Compile Include="Components\Panchanga\PanchangaPrintDocument.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Dasa\Nakshatra\PanchottariDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\PanchottariDasa.cs" />
     <Compile Include="Components\Property\PGDisplayName.cs" />
-    <Compile Include="Delegates\PGNotVisible.cs" />
+    <Compile Include="Components\Delegates\PGNotVisible.cs" />
     <Compile Include="Components\Printing.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Components\Property\PropertyOrderAttribute.cs" />
     <Compile Include="Components\Property\PropertyOrderPair.cs" />
-    <Compile Include="Settings\RasiDasaUserOptions.cs" />
+    <Compile Include="Database\Settings\RasiDasaUserOptions.cs" />
     <Compile Include="Components\RasiStrengthsControl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Delegates\Recalculate.cs" />
+    <Compile Include="Components\Delegates\Recalculate.cs" />
     <Compile Include="Components\Sarvatobhadra81Control.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Delegates\SetOptionsDelegate.cs" />
-    <Compile Include="Dasa\Nakshatra\ShatabdikaDasa.cs" />
-    <Compile Include="Dasa\Nakshatra\ShatTrimshaSamaDasa.cs" />
-    <Compile Include="Dasa\Nakshatra\ShodashottariDasa.cs" />
-    <Compile Include="Dasa\Rasi\ShoolaDasa.cs" />
-    <Compile Include="Varga\SingleDivisionConverter.cs" />
+    <Compile Include="Components\Delegates\SetOptionsDelegate.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\ShatabdikaDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\ShatTrimshaSamaDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\ShodashottariDasa.cs" />
+    <Compile Include="Components\Dasa\Rasi\ShoolaDasa.cs" />
+    <Compile Include="Components\Varga\SingleDivisionConverter.cs" />
     <Compile Include="Chart\SouthIndianChart.cs" />
     <Compile Include="Components\SplashScreen\SplashScreen.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Components\SplashScreen\SplashScreenStyles.cs" />
-    <Compile Include="Dasa\Rasi\SudarshanaChakraDasa.cs" />
-    <Compile Include="Dasa\Rasi\SuDasa.cs" />
-    <Compile Include="Calculation\SunMoonYoga.cs" />
+    <Compile Include="Components\Dasa\Rasi\SudarshanaChakraDasa.cs" />
+    <Compile Include="Components\Dasa\Rasi\SuDasa.cs" />
+    <Compile Include="Elements\Calculation\SunMoonYoga.cs" />
     <Compile Include="SwissEph\sweph.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -462,36 +462,36 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SwissEph\SwephException.cs" />
-    <Compile Include="Dasa\Yearly\TajakaDasa.cs" />
-    <Compile Include="Dasa\Yearly\TattwaDasa.cs" />
-    <Compile Include="Calculation\Tithi.cs" />
-    <Compile Include="Dasa\Nakshatra\TithiAshtottariDasa.cs" />
-    <Compile Include="Dasa\Yearly\TithiPraveshDasa.cs" />
+    <Compile Include="Components\Dasa\Yearly\TajakaDasa.cs" />
+    <Compile Include="Components\Dasa\Yearly\TattwaDasa.cs" />
+    <Compile Include="Elements\Tithi.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\TithiAshtottariDasa.cs" />
+    <Compile Include="Components\Dasa\Yearly\TithiPraveshDasa.cs" />
     <Compile Include="Util\ToDate.cs" />
-    <Compile Include="Transit\TransitItem.cs" />
-    <Compile Include="Transit\TransitSearch.cs">
+    <Compile Include="Components\Transit\TransitItem.cs" />
+    <Compile Include="Components\Transit\TransitSearch.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Transit\TransitSearchOptions.cs" />
-    <Compile Include="Dasa\Rasi\TrikonaDasa.cs" />
-    <Compile Include="Hora\UIStringTypeEditor.cs" />
-    <Compile Include="Hora\UserEvent.cs" />
+    <Compile Include="Components\Transit\TransitSearchOptions.cs" />
+    <Compile Include="Components\Dasa\Rasi\TrikonaDasa.cs" />
+    <Compile Include="Elements\Hora\UIStringTypeEditor.cs" />
+    <Compile Include="Elements\Hora\UserEvent.cs" />
     <Compile Include="Components\VaraChakra.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Varga\VargaRectificationForm.cs">
+    <Compile Include="Components\Varga\VargaRectificationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dasa\Nakshatra\VimsottariDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\VimsottariDasa.cs" />
     <Compile Include="Components\Property\XmlYogaNode.cs" />
     <Compile Include="Components\YogaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Dasa\Yearly\YogaPraveshDasa.cs" />
-    <Compile Include="Calculation\YogasParseException.cs" />
-    <Compile Include="Dasa\Nakshatra\YogaVimsottariDasa.cs" />
-    <Compile Include="Dasa\Nakshatra\YoginiDasa.cs" />
-    <Compile Include="Calculation\ZodiacHouse.cs" />
+    <Compile Include="Components\Dasa\Yearly\YogaPraveshDasa.cs" />
+    <Compile Include="Elements\Calculation\YogasParseException.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\YogaVimsottariDasa.cs" />
+    <Compile Include="Components\Dasa\Nakshatra\YoginiDasa.cs" />
+    <Compile Include="Elements\ZodiacHouse.cs" />
     <Content Include="Resources\COPY.BMP" />
     <Content Include="Resources\DISP.BMP" />
     <Content Include="Resources\DOB.BMP" />
@@ -519,13 +519,13 @@
     <EmbeddedResource Include="Components\BirthDetailsDialog.resx">
       <DependentUpon>BirthDetailsDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ProgressBar.resx">
+    <EmbeddedResource Include="Components\Controls\ProgressBar.resx">
       <DependentUpon>ProgressBar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ProgressFm.resx">
+    <EmbeddedResource Include="Components\Controls\ProgressFm.resx">
       <DependentUpon>ProgressFm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Varga\AshtakavargaControl.resx">
+    <EmbeddedResource Include="Components\Varga\AshtakavargaControl.resx">
       <DependentUpon>AshtakavargaControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\BalasControl.resx">
@@ -538,28 +538,28 @@
     <EmbeddedResource Include="Components\ChooseHoroscopeControl.resx">
       <DependentUpon>ChooseHoroscopeControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dasa\Dasa3Parts.resx">
+    <EmbeddedResource Include="Components\Dasa\Dasa3Parts.resx">
       <DependentUpon>Dasa3Parts.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dasa\DasaControl.resx">
+    <EmbeddedResource Include="Components\Dasa\DasaControl.resx">
       <DependentUpon>DasaControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Varga\DivisionalChart.resx">
+    <EmbeddedResource Include="Components\Varga\DivisionalChart.resx">
       <DependentUpon>DivisionalChart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\GrahaStrengthsControl.resx">
       <DependentUpon>GrahaStrengthsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Jhora\JhoraBasicsTab.resx">
+    <EmbeddedResource Include="Components\Jhora\JhoraBasicsTab.resx">
       <DependentUpon>JhoraBasicsTab.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Jhora\JhoraMainTab.resx">
+    <EmbeddedResource Include="Components\Jhora\JhoraMainTab.resx">
       <DependentUpon>JhoraMainTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\KeyInfoControl.resx">
       <DependentUpon>KeyInfoControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Kuta\KutaMatchingControl.resx">
+    <EmbeddedResource Include="Components\Kuta\KutaMatchingControl.resx">
       <DependentUpon>KutaMatchingControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Localization.resx" />
@@ -590,10 +590,10 @@
     <EmbeddedResource Include="Components\NavamsaControl.resx">
       <DependentUpon>NavamsaControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Panchanga\PanchangaControl.resx">
+    <EmbeddedResource Include="Components\Panchanga\PanchangaControl.resx">
       <DependentUpon>PanchangaControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Panchanga\PanchangaPrintDocument.resx">
+    <EmbeddedResource Include="Components\Panchanga\PanchangaPrintDocument.resx">
       <DependentUpon>PanchangaPrintDocument.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\Printing.resx">
@@ -605,13 +605,13 @@
     <EmbeddedResource Include="Components\Sarvatobhadra81Control.resx">
       <DependentUpon>Sarvatobhadra81Control.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Transit\TransitSearch.resx">
+    <EmbeddedResource Include="Components\Transit\TransitSearch.resx">
       <DependentUpon>TransitSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\VaraChakra.resx">
       <DependentUpon>VaraChakra.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Varga\VargaRectificationForm.resx">
+    <EmbeddedResource Include="Components\Varga\VargaRectificationForm.resx">
       <DependentUpon>VargaRectificationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\YogaControl.resx">
@@ -654,9 +654,7 @@
     <None Include="packages.config" />
     <None Include="Properties\app.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dasa\Other\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="Lib\LoggingModule\src\LoggingModule\LoggingModule.csproj">
       <Project>{981bcd48-5ebf-42e8-93e9-7601f71282e1}</Project>

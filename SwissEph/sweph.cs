@@ -19,8 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using Mhora.Calculation;
-using Mhora.Hora;
+using Mhora.Elements;
+using Mhora.Elements.Calculation;
+using Mhora.Elements.Hora;
 
 namespace Mhora.SwissEph;
 
@@ -118,19 +119,19 @@ public class sweph
 		mCurrentLockHolder = null;
 	}
 
-	public static int BodyNameToSweph(Tables.Body.Name b)
+	public static int BodyNameToSweph(Elements.Body.Name b)
 	{
 		switch (b)
 		{
-			case Tables.Body.Name.Sun:     return SE_SUN;
-			case Tables.Body.Name.Moon:    return SE_MOON;
-			case Tables.Body.Name.Mars:    return SE_MARS;
-			case Tables.Body.Name.Mercury: return SE_MERCURY;
-			case Tables.Body.Name.Jupiter: return SE_JUPITER;
-			case Tables.Body.Name.Venus:   return SE_VENUS;
-			case Tables.Body.Name.Saturn:  return SE_SATURN;
-			case Tables.Body.Name.Lagna:   return SE_BIT_NO_REFRACTION;
-			default:                       throw new Exception();
+			case Elements.Body.Name.Sun:     return SE_SUN;
+			case Elements.Body.Name.Moon:    return SE_MOON;
+			case Elements.Body.Name.Mars:    return SE_MARS;
+			case Elements.Body.Name.Mercury: return SE_MERCURY;
+			case Elements.Body.Name.Jupiter: return SE_JUPITER;
+			case Elements.Body.Name.Venus:   return SE_VENUS;
+			case Elements.Body.Name.Saturn:  return SE_SATURN;
+			case Elements.Body.Name.Lagna:   return SE_BIT_NO_REFRACTION;
+			default:                         throw new Exception();
 		}
 	}
 

@@ -20,7 +20,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Mhora.Calculation;
+using Mhora.Elements.Calculation;
 
 namespace Mhora.Components;
 
@@ -118,15 +118,15 @@ public class BalasControl : MhoraControl
 
 	public void Repopulate()
 	{
-		Tables.Body.Name[] grahas =
+		Elements.Body.Name[] grahas =
 		{
-			Tables.Body.Name.Sun,
-			Tables.Body.Name.Moon,
-			Tables.Body.Name.Mars,
-			Tables.Body.Name.Mercury,
-			Tables.Body.Name.Jupiter,
-			Tables.Body.Name.Venus,
-			Tables.Body.Name.Saturn
+			Elements.Body.Name.Sun,
+			Elements.Body.Name.Moon,
+			Elements.Body.Name.Mars,
+			Elements.Body.Name.Mercury,
+			Elements.Body.Name.Jupiter,
+			Elements.Body.Name.Venus,
+			Elements.Body.Name.Saturn
 		};
 		mList.Clear();
 		var sb = new ShadBalas(h);

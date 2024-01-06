@@ -20,9 +20,9 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Mhora.Calculation;
-using Mhora.Settings;
-using Mhora.Varga;
+using Mhora.Components.Varga;
+using Mhora.Database.Settings;
+using Mhora.Elements.Calculation;
 
 namespace Mhora.Components;
 

@@ -21,11 +21,15 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using Mhora.Calculation;
-using Mhora.Hora;
-using Mhora.Jhora;
-using Mhora.Settings;
-using Mhora.Varga;
+using Mhora.Components.Dasa;
+using Mhora.Components.Dasa.Nakshatra;
+using Mhora.Components.Jhora;
+using Mhora.Components.Varga;
+using Mhora.Database.Settings;
+using Mhora.Elements;
+using Mhora.Elements.Calculation;
+using Mhora.Elements.Hora;
+using Mhora.Tables;
 
 namespace Mhora.Components;
 

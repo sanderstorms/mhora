@@ -21,8 +21,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using Mhora.Calculation;
-using Mhora.Settings;
+using Mhora.Database.Settings;
+using Mhora.Elements.Calculation;
 
 namespace Mhora.Components;
 
@@ -117,17 +117,17 @@ public class VaraChakra : MhoraControl
 
 	private void DrawChakra(Graphics g)
 	{
-		Tables.Body.Name[] bodies =
+		Elements.Body.Name[] bodies =
 		{
-			Tables.Body.Name.Sun,
-			Tables.Body.Name.Moon,
-			Tables.Body.Name.Mars,
-			Tables.Body.Name.Mercury,
-			Tables.Body.Name.Jupiter,
-			Tables.Body.Name.Venus,
-			Tables.Body.Name.Saturn,
-			Tables.Body.Name.Rahu,
-			Tables.Body.Name.Ketu
+			Elements.Body.Name.Sun,
+			Elements.Body.Name.Moon,
+			Elements.Body.Name.Mars,
+			Elements.Body.Name.Mercury,
+			Elements.Body.Name.Jupiter,
+			Elements.Body.Name.Venus,
+			Elements.Body.Name.Saturn,
+			Elements.Body.Name.Rahu,
+			Elements.Body.Name.Ketu
 		};
 
 		g.Clear(MhoraGlobalOptions.Instance.ChakraBackgroundColor);
@@ -147,8 +147,8 @@ public class VaraChakra : MhoraControl
 			ResetChakra(g, i * (360.0 / 9.0) + 360.0 / (9.0 * 2.0));
 			g.TranslateTransform(135, 0);
 			g.RotateTransform((float) 90.0);
-			var sz = g.MeasureString(Tables.Body.toString(bodies[i]), f);
-			g.DrawString(Tables.Body.toString(bodies[i]), f, b_black, -sz.Width / 2, 0);
+			var sz = g.MeasureString(Elements.Body.toString(bodies[i]), f);
+			g.DrawString(Elements.Body.toString(bodies[i]), f, b_black, -sz.Width / 2, 0);
 		}
 
 		if (h.isDayBirth())

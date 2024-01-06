@@ -20,15 +20,20 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
-using Mhora.Body;
-using Mhora.Calculation;
-using Mhora.Kuta;
-using Mhora.Panchanga;
-using Mhora.Settings;
+using Mhora.Components.Dasa;
+using Mhora.Components.Dasa.Graha;
+using Mhora.Components.Dasa.Nakshatra;
+using Mhora.Components.Dasa.Rasi;
+using Mhora.Components.Dasa.Yearly;
+using Mhora.Components.Kuta;
+using Mhora.Components.Panchanga;
+using Mhora.Components.Transit;
+using Mhora.Components.Varga;
+using Mhora.Database.Settings;
+using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
-using Mhora.Varga;
 
 namespace Mhora.Components;
 
@@ -243,8 +248,8 @@ public class MhoraControlContainer : UserControl
                 sweph.obtainLock(h);
                 var ut_start = td_pravesh.AddYears(0).toUniversalTime();
                 var ut_end   = td_pravesh.AddYears(1).toUniversalTime();
-                var sp_start = Basics.CalculateSingleBodyPosition(ut_start, sweph.BodyNameToSweph(Tables.Body.Name.Sun), Tables.Body.Name.Sun, Tables.Body.Type.Graha, h);
-                var sp_end   = Basics.CalculateSingleBodyPosition(ut_end, sweph.BodyNameToSweph(Tables.Body.Name.Sun), Tables.Body.Name.Sun, Tables.Body.Type.Graha, h);
+                var sp_start = Basics.CalculateSingleBodyPosition(ut_start, sweph.BodyNameToSweph(Elements.Body.Name.Sun), Elements.Body.Name.Sun, Elements.Body.Type.Graha, h);
+                var sp_end   = Basics.CalculateSingleBodyPosition(ut_end, sweph.BodyNameToSweph(Elements.Body.Name.Sun), Elements.Body.Name.Sun, Elements.Body.Type.Graha, h);
                 var lDiff    = sp_end.longitude.sub(sp_start.longitude);
                 var diff     = lDiff.value;
                 if (diff < 120.0)

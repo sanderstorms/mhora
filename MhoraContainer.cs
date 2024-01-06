@@ -24,15 +24,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Genghis.Windows.Forms;
-using Mhora.Calculation;
 using Mhora.Components;
+using Mhora.Components.Jhora;
 using Mhora.Components.SplashScreen;
-using Mhora.Hora;
-using Mhora.Jhora;
-using Mhora.Settings;
+using Mhora.Components.Varga;
+using Mhora.Database.Settings;
+using Mhora.Elements;
+using Mhora.Elements.Calculation;
+using Mhora.Elements.Hora;
 using Mhora.SwissEph;
+using Mhora.Tables;
 using Mhora.Util;
-using Mhora.Varga;
 
 namespace Mhora;
 
@@ -778,7 +780,7 @@ public class MhoraContainer : Form
 	{
 		var info = new Jhd(fileName).toHoraInfo();
 		var h    = new Horoscope(info, new HoroscopeOptions());
-		if (h.getPosition(Tables.Body.Name.Ketu).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value == h.getPosition(Tables.Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value)
+		if (h.getPosition(Elements.Body.Name.Ketu).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value == h.getPosition(Elements.Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value)
 		{
 			return true;
 		}
