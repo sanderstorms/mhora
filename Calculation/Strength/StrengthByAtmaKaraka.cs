@@ -24,47 +24,47 @@ namespace Mhora.Calculation.Strength;
 // Stronger graha is AK
 public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByAtmaKaraka(Horoscope h, Division dtype) : base(h, dtype, true)
-    {
-    }
+	public StrengthByAtmaKaraka(Horoscope h, Division dtype) : base(h, dtype, true)
+	{
+	}
 
-    public bool stronger(Body.Body.Name m, Body.Body.Name n)
-    {
-        var ak = findAtmaKaraka();
-        if (m == ak)
-        {
-            return true;
-        }
+	public bool stronger(Tables.Body.Name m, Tables.Body.Name n)
+	{
+		var ak = findAtmaKaraka();
+		if (m == ak)
+		{
+			return true;
+		}
 
-        if (n == ak)
-        {
-            return false;
-        }
+		if (n == ak)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        var ala = findGrahasInHouse(za);
-        var alb = findGrahasInHouse(zb);
-        var ak  = findAtmaKaraka();
-        foreach (Body.Body.Name ba in ala)
-        {
-            if (ba == ak)
-            {
-                return true;
-            }
-        }
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		var ala = findGrahasInHouse(za);
+		var alb = findGrahasInHouse(zb);
+		var ak  = findAtmaKaraka();
+		foreach (Tables.Body.Name ba in ala)
+		{
+			if (ba == ak)
+			{
+				return true;
+			}
+		}
 
-        foreach (Body.Body.Name bb in alb)
-        {
-            if (bb == ak)
-            {
-                return false;
-            }
-        }
+		foreach (Tables.Body.Name bb in alb)
+		{
+			if (bb == ak)
+			{
+				return false;
+			}
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 }

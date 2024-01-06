@@ -23,17 +23,17 @@ namespace Mhora.Components.Property;
 [AttributeUsage(AttributeTargets.Property)]
 public class PropertyOrderAttribute : Attribute
 {
-    //
-    // Simple attribute to allow the order of a property to be specified
-    //
+	//
+	// Simple attribute to allow the order of a property to be specified
+	//
 
-    public PropertyOrderAttribute(int order)
-    {
-        Order = order;
-    }
+	public PropertyOrderAttribute(int order)
+	{
+		Order = order;
+	}
 
-    public int Order
-    {
-        get;
-    }
+	public int Order
+	{
+		get;
+	}
 }

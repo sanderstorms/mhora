@@ -9,98 +9,98 @@ namespace Mhora.Database.World;
 [SQLiteTable(Name = "cities")]
 public class City : SQLiteBaseObject, IComparable
 {
-    public City(SQLiteDatabase database) : base(database)
-    {
-    }
-
-    public override string ToString()
-    {
-        return $"{Name} ({State.Name}";
-    }
-
-    public int CompareTo(object obj)
-    {
-        if (obj is string str)
-        {
-            return (string.Compare(ToString(), str, StringComparison.Ordinal));
-        }
-
-        if (obj is City city)
-        {
-            return (CompareTo(obj.ToString()));
-        }
-
-        return (0);
-    }
+	public City(SQLiteDatabase database) : base(database)
+	{
+	}
 
 
-    [SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]
-    public int Id { get; set; }
+	[SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]
+	public int Id { get; set; }
 
-    [SQLiteColumn(Name = "name")]
-    public string Name { get; set; }
+	[SQLiteColumn(Name = "name")]
+	public string Name { get; set; }
 
-    [SQLiteColumn(Name = "state_id")] //Foreign key: States.id
-    public int StateId { get; set; }
+	[SQLiteColumn(Name = "state_id")] //Foreign key: States.id
+	public int StateId { get; set; }
 
-    [SQLiteColumn(Name = "state_code")]
-    public string StateCode { get; set; }
+	[SQLiteColumn(Name = "state_code")]
+	public string StateCode { get; set; }
 
-    [SQLiteColumn(Name = "country_id")] //Foreign key: Countries.id
-    public int CountryId { get; set; }
+	[SQLiteColumn(Name = "country_id")] //Foreign key: Countries.id
+	public int CountryId { get; set; }
 
-    [SQLiteColumn(Name = "country_code")]
-    public string CountryCode { get; set; }
+	[SQLiteColumn(Name = "country_code")]
+	public string CountryCode { get; set; }
 
-    [SQLiteColumn(Name = "latitude")]
-    public double Latitude { get; set; }
+	[SQLiteColumn(Name = "latitude")]
+	public double Latitude { get; set; }
 
-    [SQLiteColumn(Name = "longitude")]
-    public double Longitude { get; set; }
+	[SQLiteColumn(Name = "longitude")]
+	public double Longitude { get; set; }
 
-    [SQLiteColumn(Name = "created_at")]
-    public DateTime CreatedAt { get; set; }
+	[SQLiteColumn(Name = "created_at")]
+	public DateTime CreatedAt { get; set; }
 
-    [SQLiteColumn(Name = "updated_at")]
-    public DateTime UpdatedAt { get; set; }
+	[SQLiteColumn(Name = "updated_at")]
+	public DateTime UpdatedAt { get; set; }
 
-    [SQLiteColumn(Name = "flag")]
-    public int Flag { get; set; }
+	[SQLiteColumn(Name = "flag")]
+	public int Flag { get; set; }
 
-    [SQLiteColumn(Name = "wikiDataId")]
-    public string WikiDataId { get; set; }
+	[SQLiteColumn(Name = "wikiDataId")]
+	public string WikiDataId { get; set; }
 
-    [SQLiteColumn(Ignore = true)]
-    public State State
-    {
-        get
-        {
-            var query  = Query.From<State>().Where(state => state.Id == StateId).SelectAll();
-            var states = Database?.Load<State>(query.ToString()).ToList();
-            if (states?.Count > 0)
-            {
-                return states[0];
-            }
+	[SQLiteColumn(Ignore = true)]
+	public State State
+	{
+		get
+		{
+			var query  = Query.From<State>().Where(state => state.Id == StateId).SelectAll();
+			var states = Database?.Load<State>(query.ToString()).ToList();
+			if (states?.Count > 0)
+			{
+				return states[0];
+			}
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    [SQLiteColumn(Ignore = true)]
-    public Country Country
-    {
-        get
-        {
-            var query     = Query.From<Country>().Where(country => country.Id == CountryId).SelectAll();
-            var countries = Database?.Load<Country>(query.ToString()).ToList();
-            if (countries?.Count > 0)
-            {
-                return countries[0];
-            }
+	[SQLiteColumn(Ignore = true)]
+	public Country Country
+	{
+		get
+		{
+			var query     = Query.From<Country>().Where(country => country.Id == CountryId).SelectAll();
+			var countries = Database?.Load<Country>(query.ToString()).ToList();
+			if (countries?.Count > 0)
+			{
+				return countries[0];
+			}
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
+
+	public int CompareTo(object obj)
+	{
+		if (obj is string str)
+		{
+			return string.Compare(ToString(), str, StringComparison.Ordinal);
+		}
+
+		if (obj is City city)
+		{
+			return CompareTo(obj.ToString());
+		}
+
+		return 0;
+	}
+
+	public override string ToString()
+	{
+		return $"{Name} ({State.Name}";
+	}
 }
 //CREATE TABLE `cities` (
 //    `id` integer NOT NULL PRIMARY KEY AUTOINCREMENT

@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Body;
+using Mhora.Tables;
 using Mhora.Varga;
 
 namespace Mhora.Calculation.Strength;
@@ -29,7 +30,7 @@ public class StrengthByExaltation : BaseStrength, IStrengthRasi, IStrengthGraha
     {
     }
 
-    public bool stronger(Body.Body.Name m, Body.Body.Name n)
+    public bool stronger(Tables.Body.Name m, Tables.Body.Name n)
     {
         var valm = value(m);
         var valn = value(n);
@@ -70,7 +71,7 @@ public class StrengthByExaltation : BaseStrength, IStrengthRasi, IStrengthGraha
         var ret = 0;
         foreach (DivisionPosition dp in std_div_pos)
         {
-            if (dp.type != BodyType.Name.Graha)
+            if (dp.type != Tables.Body.Type.Graha)
             {
                 continue;
             }
@@ -93,7 +94,7 @@ public class StrengthByExaltation : BaseStrength, IStrengthRasi, IStrengthGraha
         return ret;
     }
 
-    public int value(Body.Body.Name b)
+    public int value(Tables.Body.Name b)
     {
         if (h.getPosition(b).toDivisionPosition(dtype).isExaltedPhalita())
         {

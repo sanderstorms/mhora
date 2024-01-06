@@ -25,15 +25,15 @@ namespace Mhora.SwissEph;
 /// </summary>
 public class SwephException : Exception
 {
-    public string status;
+	public string status;
 
-    public SwephException()
-    {
-        status = null;
-    }
+	public SwephException()
+	{
+		status = null;
+	}
 
-    public SwephException(string message)
-    {
-        status = message;
-    }
+	public SwephException(string message)
+	{
+		status = message;
+	}
 }

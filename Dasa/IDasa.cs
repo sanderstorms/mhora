@@ -28,11 +28,11 @@ namespace Mhora;
 /// </summary>
 public interface IDasa : IUpdateable
 {
-    double    paramAyus();
-    ArrayList Dasa(int                   cycle);
-    ArrayList AntarDasa(DasaEntry        pdi);
-    string    EntryDescription(DasaEntry de, Moment start, Moment end);
-    string    Description();
-    void      DivisionChanged(Division d);
-    void      recalculateOptions();
+	double    paramAyus();
+	ArrayList Dasa(int                   cycle);
+	ArrayList AntarDasa(DasaEntry        pdi);
+	string    EntryDescription(DasaEntry de, Moment start, Moment end);
+	string    Description();
+	void      DivisionChanged(Division d);
+	void      recalculateOptions();
 }

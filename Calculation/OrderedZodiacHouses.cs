@@ -25,29 +25,29 @@ namespace Mhora.Calculation;
 [TypeConverter(typeof(OrderedZodiacHousesConverter))]
 public class OrderedZodiacHouses : ICloneable
 {
-    public ArrayList houses;
+	public ArrayList houses;
 
-    public OrderedZodiacHouses()
-    {
-        houses = new ArrayList();
-    }
+	public OrderedZodiacHouses()
+	{
+		houses = new ArrayList();
+	}
 
-    public object Clone()
-    {
-        var oz = new OrderedZodiacHouses();
-        oz.houses = (ArrayList) houses.Clone();
-        return oz;
-    }
+	public object Clone()
+	{
+		var oz = new OrderedZodiacHouses();
+		oz.houses = (ArrayList) houses.Clone();
+		return oz;
+	}
 
-    public override string ToString()
-    {
-        var s     = string.Empty;
-        var names = (ZodiacHouse.Name[]) houses.ToArray(typeof(ZodiacHouse.Name));
-        foreach (var zn in names)
-        {
-            s += zn + " ";
-        }
+	public override string ToString()
+	{
+		var s     = string.Empty;
+		var names = (ZodiacHouse.Name[]) houses.ToArray(typeof(ZodiacHouse.Name));
+		foreach (var zn in names)
+		{
+			s += zn + " ";
+		}
 
-        return s;
-    }
+		return s;
+	}
 }

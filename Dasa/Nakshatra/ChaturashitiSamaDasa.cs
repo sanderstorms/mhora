@@ -19,109 +19,110 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System.Collections;
 using System.Diagnostics;
 using Mhora.Calculation;
+using Mhora.Tables.Nakshatra;
 
 namespace Mhora;
 
 public class ChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa
 {
-    private readonly Horoscope h;
+	private readonly Horoscope h;
 
-    public ChaturashitiSamaDasa(Horoscope _h)
-    {
-        common = this;
-        h      = _h;
-    }
+	public ChaturashitiSamaDasa(Horoscope _h)
+	{
+		common = this;
+		h      = _h;
+	}
 
-    public override object GetOptions()
-    {
-        return new object();
-    }
+	public override object GetOptions()
+	{
+		return new object();
+	}
 
-    public override object SetOptions(object a)
-    {
-        return new object();
-    }
+	public override object SetOptions(object a)
+	{
+		return new object();
+	}
 
-    public ArrayList Dasa(int cycle)
-    {
-        return _Dasa(h.getPosition(Body.Body.Name.Moon).longitude, 1, cycle);
-    }
+	public ArrayList Dasa(int cycle)
+	{
+		return _Dasa(h.getPosition(Tables.Body.Name.Moon).longitude, 1, cycle);
+	}
 
-    public ArrayList AntarDasa(DasaEntry di)
-    {
-        return _AntarDasa(di);
-    }
+	public ArrayList AntarDasa(DasaEntry di)
+	{
+		return _AntarDasa(di);
+	}
 
-    public string Description()
-    {
-        return "Chaturashiti-Sama Dasa";
-    }
+	public string Description()
+	{
+		return "Chaturashiti-Sama Dasa";
+	}
 
-    public double paramAyus()
-    {
-        return 84.0;
-    }
+	public double paramAyus()
+	{
+		return 84.0;
+	}
 
-    public int numberOfDasaItems()
-    {
-        return 7;
-    }
+	public int numberOfDasaItems()
+	{
+		return 7;
+	}
 
-    public DasaEntry nextDasaLord(DasaEntry di)
-    {
-        return new DasaEntry(nextDasaLordHelper(di.graha), 0, 0, di.level, string.Empty);
-    }
+	public DasaEntry nextDasaLord(DasaEntry di)
+	{
+		return new DasaEntry(nextDasaLordHelper(di.graha), 0, 0, di.level, string.Empty);
+	}
 
-    public double lengthOfDasa(Body.Body.Name plt)
-    {
-        switch (plt)
-        {
-            case Body.Body.Name.Sun:     return 12;
-            case Body.Body.Name.Moon:    return 12;
-            case Body.Body.Name.Mars:    return 12;
-            case Body.Body.Name.Mercury: return 12;
-            case Body.Body.Name.Jupiter: return 12;
-            case Body.Body.Name.Venus:   return 12;
-            case Body.Body.Name.Saturn:  return 12;
-        }
+	public double lengthOfDasa(Tables.Body.Name plt)
+	{
+		switch (plt)
+		{
+			case Tables.Body.Name.Sun:     return 12;
+			case Tables.Body.Name.Moon:    return 12;
+			case Tables.Body.Name.Mars:    return 12;
+			case Tables.Body.Name.Mercury: return 12;
+			case Tables.Body.Name.Jupiter: return 12;
+			case Tables.Body.Name.Venus:   return 12;
+			case Tables.Body.Name.Saturn:  return 12;
+		}
 
-        Trace.Assert(false, "ChaturashitiSama Dasa::lengthOfDasa");
-        return 0;
-    }
+		Trace.Assert(false, "ChaturashitiSama Dasa::lengthOfDasa");
+		return 0;
+	}
 
-    public Body.Body.Name lordOfNakshatra(Nakshatra n)
-    {
-        var lords = new Body.Body.Name[7]
-        {
-            Body.Body.Name.Sun,
-            Body.Body.Name.Moon,
-            Body.Body.Name.Mars,
-            Body.Body.Name.Mercury,
-            Body.Body.Name.Jupiter,
-            Body.Body.Name.Venus,
-            Body.Body.Name.Saturn
-        };
-        var nak_val  = (int) n.value;
-        var sva_val  = (int) Nakshatra.Name.Swati;
-        var diff_val = Basics.normalize_inc((int) Nakshatra.Name.Aswini, (int) Nakshatra.Name.Revati, nak_val - sva_val);
-        var diff_off = diff_val % 7;
-        return lords[diff_off];
-    }
+	public Tables.Body.Name lordOfNakshatra(Nakshatra n)
+	{
+		var lords = new Tables.Body.Name[7]
+		{
+			Tables.Body.Name.Sun,
+			Tables.Body.Name.Moon,
+			Tables.Body.Name.Mars,
+			Tables.Body.Name.Mercury,
+			Tables.Body.Name.Jupiter,
+			Tables.Body.Name.Venus,
+			Tables.Body.Name.Saturn
+		};
+		var nak_val  = (int) n.value;
+		var sva_val  = (int) Nakshatra.Name.Swati;
+		var diff_val = Basics.normalize_inc((int) Nakshatra.Name.Aswini, (int) Nakshatra.Name.Revati, nak_val - sva_val);
+		var diff_off = diff_val % 7;
+		return lords[diff_off];
+	}
 
-    private Body.Body.Name nextDasaLordHelper(Body.Body.Name b)
-    {
-        switch (b)
-        {
-            case Body.Body.Name.Sun:     return Body.Body.Name.Moon;
-            case Body.Body.Name.Moon:    return Body.Body.Name.Mars;
-            case Body.Body.Name.Mars:    return Body.Body.Name.Mercury;
-            case Body.Body.Name.Mercury: return Body.Body.Name.Jupiter;
-            case Body.Body.Name.Jupiter: return Body.Body.Name.Venus;
-            case Body.Body.Name.Venus:   return Body.Body.Name.Saturn;
-            case Body.Body.Name.Saturn:  return Body.Body.Name.Sun;
-        }
+	private Tables.Body.Name nextDasaLordHelper(Tables.Body.Name b)
+	{
+		switch (b)
+		{
+			case Tables.Body.Name.Sun:     return Tables.Body.Name.Moon;
+			case Tables.Body.Name.Moon:    return Tables.Body.Name.Mars;
+			case Tables.Body.Name.Mars:    return Tables.Body.Name.Mercury;
+			case Tables.Body.Name.Mercury: return Tables.Body.Name.Jupiter;
+			case Tables.Body.Name.Jupiter: return Tables.Body.Name.Venus;
+			case Tables.Body.Name.Venus:   return Tables.Body.Name.Saturn;
+			case Tables.Body.Name.Saturn:  return Tables.Body.Name.Sun;
+		}
 
-        Trace.Assert(false, "Chaturashiti Sama Dasa::nextDasaLord");
-        return Body.Body.Name.Lagna;
-    }
+		Trace.Assert(false, "Chaturashiti Sama Dasa::nextDasaLord");
+		return Tables.Body.Name.Lagna;
+	}
 }

@@ -57,7 +57,7 @@ public class NakshatraPraveshDasa : Dasa, IDasa
         for (var i = 0; i < 60; i++)
         {
             var start = cycle_start + i;
-            var di    = new DasaEntry(Body.Body.Name.Other, start, 1.0, 1, "Nakshatra Pravesh Year");
+            var di    = new DasaEntry(Tables.Body.Name.Other, start, 1.0, 1, "Nakshatra Pravesh Year");
             al.Add(di);
         }
 
@@ -92,7 +92,7 @@ public class NakshatraPraveshDasa : Dasa, IDasa
                 //mhora.Log.Debug("AD length is {0}", length);
                 for (var i = 0; i < 15; i++)
                 {
-                    var di = new DasaEntry(Body.Body.Name.Other, start, length, level, desc[level - 2]);
+                    var di = new DasaEntry(Tables.Body.Name.Other, start, length, level, desc[level - 2]);
                     al.Add(di);
                     start += length;
                 }
@@ -104,7 +104,7 @@ public class NakshatraPraveshDasa : Dasa, IDasa
                 //mhora.Log.Debug("PD length is {0}", length);
                 for (var i = 0; i < 27; i++)
                 {
-                    var di = new DasaEntry(Body.Body.Name.Other, start, length, level, desc[level - 2]);
+                    var di = new DasaEntry(Tables.Body.Name.Other, start, length, level, desc[level - 2]);
                     //mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
                     al.Add(di);
                     start += length;
@@ -121,14 +121,14 @@ public class NakshatraPraveshDasa : Dasa, IDasa
     {
         if (pdi.level == 2)
         {
-            var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Body.Name.Sun));
+            var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Tables.Body.Name.Sun));
             var zh = l.toZodiacHouse();
             return zh.ToString();
         }
 
         if (pdi.level == 3)
         {
-            var l = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Body.Name.Moon));
+            var l = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Tables.Body.Name.Moon));
             var n = l.toNakshatra();
             return n.toShortString();
         }

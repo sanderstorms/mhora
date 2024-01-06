@@ -17,6 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 
+using Mhora.Tables.Nakshatra;
+
 namespace Mhora;
 
 /// <summary>
@@ -24,8 +26,8 @@ namespace Mhora;
 /// </summary>
 public interface INakshatraDasa : IDasa
 {
-    int            numberOfDasaItems();              // Number of dasas for 1 cycle
-    DasaEntry      nextDasaLord(DasaEntry      di);  // Order of Dasas
-    double         lengthOfDasa(Body.Body.Name plt); // Length of a maha dasa
-    Body.Body.Name lordOfNakshatra(Nakshatra   n);   // Dasa lord of given nakshatra
+	int              numberOfDasaItems();                // Number of dasas for 1 cycle
+	DasaEntry        nextDasaLord(DasaEntry        di);  // Order of Dasas
+	double           lengthOfDasa(Tables.Body.Name plt); // Length of a maha dasa
+	Tables.Body.Name lordOfNakshatra(Nakshatra     n);   // Dasa lord of given nakshatra
 }

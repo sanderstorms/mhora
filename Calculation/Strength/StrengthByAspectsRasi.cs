@@ -24,60 +24,60 @@ namespace Mhora.Calculation.Strength;
 // Stronger graha is in such a rasi
 public class StrengthByAspectsRasi : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByAspectsRasi(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
-    {
-    }
+	public StrengthByAspectsRasi(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
+	{
+	}
 
-    public bool stronger(Body.Body.Name m, Body.Body.Name n)
-    {
-        var zm = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
-        var zn = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
-        return stronger(zm, zn);
-    }
+	public bool stronger(Tables.Body.Name m, Tables.Body.Name n)
+	{
+		var zm = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
+		var zn = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
+		return stronger(zm, zn);
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        var zj = h.getPosition(Body.Body.Name.Jupiter).toDivisionPosition(dtype).zodiac_house;
-        var zm = h.getPosition(Body.Body.Name.Mercury).toDivisionPosition(dtype).zodiac_house;
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		var zj = h.getPosition(Tables.Body.Name.Jupiter).toDivisionPosition(dtype).zodiac_house;
+		var zm = h.getPosition(Tables.Body.Name.Mercury).toDivisionPosition(dtype).zodiac_house;
 
-        var a = value(zj, zm, za);
-        var b = value(zj, zm, zb);
-        if (a > b)
-        {
-            return true;
-        }
+		var a = value(zj, zm, za);
+		var b = value(zj, zm, zb);
+		if (a > b)
+		{
+			return true;
+		}
 
-        if (a < b)
-        {
-            return false;
-        }
+		if (a < b)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    protected int value(ZodiacHouse zj, ZodiacHouse zm, ZodiacHouse.Name zx)
-    {
-        var ret = 0;
-        var zh  = new ZodiacHouse(zx);
+	protected int value(ZodiacHouse zj, ZodiacHouse zm, ZodiacHouse.Name zx)
+	{
+		var ret = 0;
+		var zh  = new ZodiacHouse(zx);
 
-        var bl = GetStrengthLord(zx);
-        var zl = h.getPosition(bl).toDivisionPosition(dtype).zodiac_house;
+		var bl = GetStrengthLord(zx);
+		var zl = h.getPosition(bl).toDivisionPosition(dtype).zodiac_house;
 
-        if (zj.RasiDristi(zh) || zj.value == zh.value)
-        {
-            ret++;
-        }
+		if (zj.RasiDristi(zh) || zj.value == zh.value)
+		{
+			ret++;
+		}
 
-        if (zm.RasiDristi(zh) || zm.value == zh.value)
-        {
-            ret++;
-        }
+		if (zm.RasiDristi(zh) || zm.value == zh.value)
+		{
+			ret++;
+		}
 
-        if (zl.RasiDristi(zh) || zl.value == zh.value)
-        {
-            ret++;
-        }
+		if (zl.RasiDristi(zh) || zl.value == zh.value)
+		{
+			ret++;
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 }

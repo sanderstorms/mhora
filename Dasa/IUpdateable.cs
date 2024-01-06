@@ -24,6 +24,6 @@ namespace Mhora;
 /// </summary>
 public interface IUpdateable
 {
-    object GetOptions();
-    object SetOptions(object a);
+	object GetOptions();
+	object SetOptions(object a);
 }

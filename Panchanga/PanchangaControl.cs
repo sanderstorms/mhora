@@ -27,7 +27,10 @@ using Mhora.Components;
 using Mhora.Hora;
 using Mhora.Settings;
 using Mhora.SwissEph;
+using Mhora.Tables;
+using Mhora.Tables.Nakshatra;
 using Mhora.Varga;
+using Tithi = Mhora.Calculation.Tithi;
 
 namespace Mhora.Panchanga;
 
@@ -426,7 +429,7 @@ public class PanchangaControl : MhoraControl
         {
             li = new ListViewItem();
             sweph.obtainLock(h);
-            var bp_lagna_sr = Basics.CalculateSingleBodyPosition(ut_sr, sweph.BodyNameToSweph(Body.Body.Name.Lagna), Body.Body.Name.Lagna, BodyType.Name.Lagna, h);
+            var bp_lagna_sr = Basics.CalculateSingleBodyPosition(ut_sr, sweph.BodyNameToSweph(Tables.Body.Name.Lagna), Tables.Body.Name.Lagna, Tables.Body.Type.Lagna, h);
             var dp_lagna_sr = bp_lagna_sr.toDivisionPosition(new Division(Basics.DivisionType.Rasi));
             local.lagna_zh = dp_lagna_sr.zodiac_house.value;
 
@@ -434,7 +437,7 @@ public class PanchangaControl : MhoraControl
             var ut_transit    = ut_sr;
             for (var i = 1; i <= 12; i++)
             {
-                var r = new Retrogression(h, Body.Body.Name.Lagna);
+                var r = new Retrogression(h, Tables.Body.Name.Lagna);
                 ut_transit = r.GetLagnaTransitForward(ut_transit, bp_lagna_base.add(i * 30.0));
 
                 var pmi = new PanchangaMomentInfo(ut_transit, (int) bp_lagna_sr.longitude.toZodiacHouse().add(i + 1).value);
@@ -521,7 +524,7 @@ public class PanchangaControl : MhoraControl
         if (opts.CalcNakCusps)
         {
             var bDiscard = true;
-            var t        = new Transit(h, Body.Body.Name.Moon);
+            var t        = new Transit(h, Tables.Body.Name.Moon);
             sweph.obtainLock(h);
             var nak_start = t.GenericLongitude(ut_sr, ref bDiscard).toNakshatra();
             var nak_end   = t.GenericLongitude(ut_sr + 1.0, ref bDiscard).toNakshatra();
@@ -602,7 +605,7 @@ public class PanchangaControl : MhoraControl
             if (local.tithi_index_start == local.tithi_index_end && local.tithi_index_start >= 0)
             {
                 var pmi = (PanchangaMomentInfo) globals.tithis_ut[local.tithi_index_start];
-                var t   = new Tithi((Tithi.Name) pmi.info);
+                var t   = new Tithi((Tables.Tithi.Value) pmi.info);
                 mList.Items.Add(string.Format("{0} - full.", t.value));
             }
             else
@@ -615,7 +618,7 @@ public class PanchangaControl : MhoraControl
                     }
 
                     var pmi = (PanchangaMomentInfo) globals.tithis_ut[i];
-                    var t   = new Tithi((Tithi.Name) pmi.info).addReverse(2);
+                    var t   = new Tithi((Tables.Tithi.Value) pmi.info).addReverse(2);
                     s_tithi += string.Format("{0} until {1}", t.value, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 
                     if (opts.OneEntryPerLine)

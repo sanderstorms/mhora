@@ -25,6 +25,7 @@ using Mhora.Calculation;
 using Mhora.Components;
 using Mhora.Settings;
 using Mhora.SwissEph;
+using Mhora.Tables;
 using Mhora.Util;
 using Mhora.Varga;
 
@@ -1027,7 +1028,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
             di.Selected = true;
         }
 
-        //mhora.Log.Debug ("MouseMove: {0} {1}", e.Y, li != null ? li.Index : -1);
+        //mhora.Log.Debug ("MouseMove: {0} {1}", e.Y, li != null ? li.Value : -1);
         //if (li != null)
         //	li.Selected = true;
     }
@@ -1069,7 +1070,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
         }
 
         var li = dasaItemList.GetItemAt(e.X, e.Y);
-        //mhora.Log.Debug ("MouseMove Click: {0} {1}", e.Y, li != null ? li.Index : -1);
+        //mhora.Log.Debug ("MouseMove Click: {0} {1}", e.Y, li != null ? li.Value : -1);
         if (li != null)
         {
             li.Selected = true;
@@ -1262,8 +1263,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
         sweph.obtainLock(h);
         var ut_start = td_pravesh.AddYears(0).toUniversalTime();
         var ut_end   = td_pravesh.AddYears(1).toUniversalTime();
-        var sp_start = Basics.CalculateSingleBodyPosition(ut_start, sweph.BodyNameToSweph(Body.Body.Name.Sun), Body.Body.Name.Sun, BodyType.Name.Graha, h);
-        var sp_end   = Basics.CalculateSingleBodyPosition(ut_end, sweph.BodyNameToSweph(Body.Body.Name.Sun), Body.Body.Name.Sun, BodyType.Name.Graha, h);
+        var sp_start = Basics.CalculateSingleBodyPosition(ut_start, sweph.BodyNameToSweph(Tables.Body.Name.Sun), Tables.Body.Name.Sun, Tables.Body.Type.Graha, h);
+        var sp_end   = Basics.CalculateSingleBodyPosition(ut_end, sweph.BodyNameToSweph(Tables.Body.Name.Sun), Tables.Body.Name.Sun, Tables.Body.Type.Graha, h);
         var lDiff    = sp_end.longitude.sub(sp_start.longitude);
         var diff     = lDiff.value;
         if (diff < 120.0)

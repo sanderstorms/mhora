@@ -26,6 +26,7 @@ using Mhora.Kuta;
 using Mhora.Panchanga;
 using Mhora.Settings;
 using Mhora.SwissEph;
+using Mhora.Tables;
 using Mhora.Util;
 using Mhora.Varga;
 
@@ -242,8 +243,8 @@ public class MhoraControlContainer : UserControl
                 sweph.obtainLock(h);
                 var ut_start = td_pravesh.AddYears(0).toUniversalTime();
                 var ut_end   = td_pravesh.AddYears(1).toUniversalTime();
-                var sp_start = Basics.CalculateSingleBodyPosition(ut_start, sweph.BodyNameToSweph(Body.Body.Name.Sun), Body.Body.Name.Sun, BodyType.Name.Graha, h);
-                var sp_end   = Basics.CalculateSingleBodyPosition(ut_end, sweph.BodyNameToSweph(Body.Body.Name.Sun), Body.Body.Name.Sun, BodyType.Name.Graha, h);
+                var sp_start = Basics.CalculateSingleBodyPosition(ut_start, sweph.BodyNameToSweph(Tables.Body.Name.Sun), Tables.Body.Name.Sun, Tables.Body.Type.Graha, h);
+                var sp_end   = Basics.CalculateSingleBodyPosition(ut_end, sweph.BodyNameToSweph(Tables.Body.Name.Sun), Tables.Body.Name.Sun, Tables.Body.Type.Graha, h);
                 var lDiff    = sp_end.longitude.sub(sp_start.longitude);
                 var diff     = lDiff.value;
                 if (diff < 120.0)

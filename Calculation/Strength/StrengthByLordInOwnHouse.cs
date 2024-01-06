@@ -24,59 +24,59 @@ namespace Mhora.Calculation.Strength;
 // Stronger graha is in its own house
 public class StrengthByLordInOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByLordInOwnHouse(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
-    {
-    }
+	public StrengthByLordInOwnHouse(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
+	{
+	}
 
-    public bool stronger(Body.Body.Name m, Body.Body.Name n)
-    {
-        var zm = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
-        var zn = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
-        return stronger(zm, zn);
-    }
+	public bool stronger(Tables.Body.Name m, Tables.Body.Name n)
+	{
+		var zm = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
+		var zn = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
+		return stronger(zm, zn);
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        var a = value(za);
-        var b = value(zb);
-        if (a > b)
-        {
-            return true;
-        }
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		var a = value(za);
+		var b = value(zb);
+		if (a > b)
+		{
+			return true;
+		}
 
-        if (a < b)
-        {
-            return false;
-        }
+		if (a < b)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    protected int value(ZodiacHouse.Name _zh)
-    {
-        var ret = 0;
+	protected int value(ZodiacHouse.Name _zh)
+	{
+		var ret = 0;
 
-        var zh = new ZodiacHouse(_zh);
-        var bl = GetStrengthLord(zh);
-        var pl = h.getPosition(bl).toDivisionPosition(dtype);
-        var pj = h.getPosition(Body.Body.Name.Jupiter).toDivisionPosition(dtype);
-        var pm = h.getPosition(Body.Body.Name.Mercury).toDivisionPosition(dtype);
+		var zh = new ZodiacHouse(_zh);
+		var bl = GetStrengthLord(zh);
+		var pl = h.getPosition(bl).toDivisionPosition(dtype);
+		var pj = h.getPosition(Tables.Body.Name.Jupiter).toDivisionPosition(dtype);
+		var pm = h.getPosition(Tables.Body.Name.Mercury).toDivisionPosition(dtype);
 
-        if (pl.GrahaDristi(zh))
-        {
-            ret++;
-        }
+		if (pl.GrahaDristi(zh))
+		{
+			ret++;
+		}
 
-        if (pj.GrahaDristi(zh))
-        {
-            ret++;
-        }
+		if (pj.GrahaDristi(zh))
+		{
+			ret++;
+		}
 
-        if (pm.GrahaDristi(zh))
-        {
-            ret++;
-        }
+		if (pm.GrahaDristi(zh))
+		{
+			ret++;
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 }

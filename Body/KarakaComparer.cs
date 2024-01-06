@@ -45,7 +45,7 @@ public class KarakaComparer : IComparable
     public double getOffset()
     {
         var off = GetPosition.longitude.toZodiacHouseOffset();
-        if (GetPosition.name == Body.Name.Rahu)
+        if (GetPosition.name == Tables.Body.Name.Rahu)
         {
             off = 30.0 - off;
         }

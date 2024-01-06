@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 using Mhora.Calculation;
+using Mhora.Tables;
 using Mhora.Varga;
 
 namespace Mhora.Body;
@@ -32,14 +33,14 @@ namespace Mhora.Body;
 /// </summary>
 public class Position : ICloneable
 {
-    private static bool          mbNadiamsaCKNCalculated;
-    private static double[]      mNadiamsaCusps;
-    public         Horoscope     h;
-    public         Body.Name     name;
-    public         string        otherString;
-    public         BodyType.Name type;
+    private static bool             mbNadiamsaCKNCalculated;
+    private static double[]         mNadiamsaCusps;
+    public         Horoscope        h;
+    public         Tables.Body.Name name;
+    public         string           otherString;
+    public         Tables.Body.Type type;
 
-    public Position(Horoscope _h, Body.Name aname, BodyType.Name atype, Longitude lon, double lat, double dist, double splon, double splat, double spdist)
+    public Position(Horoscope _h, Tables.Body.Name aname, Tables.Body.Type atype, Longitude lon, double lat, double dist, double splon, double splat, double spdist)
     {
         longitude       = lon;
         latitude        = lat;
@@ -114,7 +115,7 @@ public class Position : ICloneable
         dp.cusp_higher =  dp.cusp_lower + cusp_length;
         dp.part        =  part;
 
-        //if (dp.type == BodyType.Name.Graha || dp.type == BodyType.Name.Lagna)
+        //if (dp.type == BodyType.Type.Graha || dp.type == BodyType.Type.Lagna)
         //mhora.Log.Debug ("D: {0} {1} {2} {3} {4} {5}", 
         //	n, dp.name, cusp_length,
         //	dp.cusp_lower, m_lon.value, dp.cusp_higher);
@@ -179,7 +180,7 @@ public class Position : ICloneable
     {
         Debug.Assert(cusps.Length == 13);
 
-        var zlagna = h.getPosition(Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
+        var zlagna = h.getPosition(Tables.Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
         for (var i = 0; i < 12; i++)
         {
             if (longitude.sub(cusps[i]).value < cusps[i + 1].sub(cusps[i]).value)
@@ -196,7 +197,7 @@ public class Position : ICloneable
 
     private DivisionPosition toDivisionPositionBhavaEqual()
     {
-        var offset = h.getPosition(Body.Name.Lagna).longitude.toZodiacHouseOffset();
+        var offset = h.getPosition(Tables.Body.Name.Lagna).longitude.toZodiacHouseOffset();
         var cusps  = new Longitude[13];
         for (var i = 0; i < 12; i++)
         {
@@ -209,7 +210,7 @@ public class Position : ICloneable
     private DivisionPosition toDivisionPositionBhavaPada()
     {
         var cusps       = new Longitude[13];
-        var offset      = h.getPosition(Body.Name.Lagna).longitude.toZodiacHouseOffset();
+        var offset      = h.getPosition(Tables.Body.Name.Lagna).longitude.toZodiacHouseOffset();
         var padasOffset = (int) Math.Floor(offset / (360.0 / 108.0));
         var startOffset = padasOffset * (360.0 / 108.0);
 

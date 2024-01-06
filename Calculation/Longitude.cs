@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using Mhora.Tables.Nakshatra;
 
 namespace Mhora.Calculation;
 
@@ -113,7 +114,7 @@ public class Longitude
     public Tithi toTithi()
     {
         var tIndex = (int) (Math.Floor(value / (360.0 / 30.0)) + 1);
-        var t      = new Tithi((Tithi.Name) tIndex);
+        var t      = new Tithi((Tables.Tithi.Value) tIndex);
         return t;
     }
 

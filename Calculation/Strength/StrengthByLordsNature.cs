@@ -24,51 +24,51 @@ namespace Mhora.Calculation.Strength;
 // Stronger graha's dispositor in such a rasi
 public class StrengthByLordsNature : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByLordsNature(Horoscope h, Division dtype) : base(h, dtype, true)
-    {
-    }
+	public StrengthByLordsNature(Horoscope h, Division dtype) : base(h, dtype, true)
+	{
+	}
 
-    public bool stronger(Body.Body.Name m, Body.Body.Name n)
-    {
-        var za = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
-        var zb = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
-        return stronger(za, zb);
-    }
+	public bool stronger(Tables.Body.Name m, Tables.Body.Name n)
+	{
+		var za = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
+		var zb = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
+		return stronger(za, zb);
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        int[] vals =
-        {
-            3,
-            1,
-            2
-        }; // dual, move, fix
-        var a = naturalValueForRasi(za);
-        var b = naturalValueForRasi(zb);
-        if (a > b)
-        {
-            return true;
-        }
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		int[] vals =
+		{
+			3,
+			1,
+			2
+		}; // dual, move, fix
+		var a = naturalValueForRasi(za);
+		var b = naturalValueForRasi(zb);
+		if (a > b)
+		{
+			return true;
+		}
 
-        if (a < b)
-        {
-            return false;
-        }
+		if (a < b)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    public int naturalValueForRasi(ZodiacHouse.Name zha)
-    {
-        var bl  = h.LordOfZodiacHouse(zha, dtype);
-        var zhl = h.getPosition(bl).toDivisionPosition(dtype).zodiac_house.value;
+	public int naturalValueForRasi(ZodiacHouse.Name zha)
+	{
+		var bl  = h.LordOfZodiacHouse(zha, dtype);
+		var zhl = h.getPosition(bl).toDivisionPosition(dtype).zodiac_house.value;
 
-        int[] vals =
-        {
-            3,
-            1,
-            2
-        }; // dual, move, fix
-        return vals[(int) zhl % 3];
-    }
+		int[] vals =
+		{
+			3,
+			1,
+			2
+		}; // dual, move, fix
+		return vals[(int) zhl % 3];
+	}
 }

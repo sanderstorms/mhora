@@ -31,47 +31,47 @@ namespace Mhora;
 /// </summary>
 public class DasaItem : ListViewItem
 {
-    public DasaEntry entry;
-    public string    EventDesc;
+	public DasaEntry entry;
+	public string    EventDesc;
 
-    public DasaItem(DasaEntry _entry)
-    {
-        entry = _entry;
-    }
+	public DasaItem(DasaEntry _entry)
+	{
+		entry = _entry;
+	}
 
-    public DasaItem(Body.Body.Name _graha, double _startUT, double _dasaLength, int _level, string _shortDesc)
-    {
-        Construct(new DasaEntry(_graha, _startUT, _dasaLength, _level, _shortDesc));
-    }
+	public DasaItem(Tables.Body.Name _graha, double _startUT, double _dasaLength, int _level, string _shortDesc)
+	{
+		Construct(new DasaEntry(_graha, _startUT, _dasaLength, _level, _shortDesc));
+	}
 
-    public DasaItem(ZodiacHouse.Name _zodiacHouse, double _startUT, double _dasaLength, int _level, string _shortDesc)
-    {
-        Construct(new DasaEntry(_zodiacHouse, _startUT, _dasaLength, _level, _shortDesc));
-    }
+	public DasaItem(ZodiacHouse.Name _zodiacHouse, double _startUT, double _dasaLength, int _level, string _shortDesc)
+	{
+		Construct(new DasaEntry(_zodiacHouse, _startUT, _dasaLength, _level, _shortDesc));
+	}
 
-    public void populateListViewItemMembers(ToDate td, IDasa id)
-    {
-        UseItemStyleForSubItems = false;
+	public void populateListViewItemMembers(ToDate td, IDasa id)
+	{
+		UseItemStyleForSubItems = false;
 
-        //this.Text = entry.shortDesc;
-        Font      = MhoraGlobalOptions.Instance.GeneralFont;
-        ForeColor = MhoraGlobalOptions.Instance.DasaPeriodColor;
-        var m          = td.AddYears(entry.startUT);
-        var m2         = td.AddYears(entry.startUT + entry.dasaLength);
-        var sDateRange = m + " - " + m2;
-        for (var i = 1; i < entry.level; i++)
-        {
-            sDateRange = " " + sDateRange;
-        }
+		//this.Text = entry.shortDesc;
+		Font      = MhoraGlobalOptions.Instance.GeneralFont;
+		ForeColor = MhoraGlobalOptions.Instance.DasaPeriodColor;
+		var m          = td.AddYears(entry.startUT);
+		var m2         = td.AddYears(entry.startUT + entry.dasaLength);
+		var sDateRange = m + " - " + m2;
+		for (var i = 1; i < entry.level; i++)
+		{
+			sDateRange = " " + sDateRange;
+		}
 
-        SubItems.Add(sDateRange);
-        Text                  = entry.shortDesc + id.EntryDescription(entry, m, m2);
-        SubItems[1].Font      = MhoraGlobalOptions.Instance.FixedWidthFont;
-        SubItems[1].ForeColor = MhoraGlobalOptions.Instance.DasaDateColor;
-    }
+		SubItems.Add(sDateRange);
+		Text                  = entry.shortDesc + id.EntryDescription(entry, m, m2);
+		SubItems[1].Font      = MhoraGlobalOptions.Instance.FixedWidthFont;
+		SubItems[1].ForeColor = MhoraGlobalOptions.Instance.DasaDateColor;
+	}
 
-    private void Construct(DasaEntry _entry)
-    {
-        entry = _entry;
-    }
+	private void Construct(DasaEntry _entry)
+	{
+		entry = _entry;
+	}
 }

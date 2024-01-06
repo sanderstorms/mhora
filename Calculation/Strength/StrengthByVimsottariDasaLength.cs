@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using Mhora.Body;
+using Mhora.Tables;
 using Mhora.Varga;
 
 namespace Mhora.Calculation.Strength;
@@ -28,7 +29,7 @@ public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStre
     {
     }
 
-    public bool stronger(Body.Body.Name m, Body.Body.Name n)
+    public bool stronger(Tables.Body.Name m, Tables.Body.Name n)
     {
         var a = VimsottariDasa.LengthOfDasa(m);
         var b = VimsottariDasa.LengthOfDasa(n);
@@ -67,7 +68,7 @@ public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStre
         double length = 0;
         foreach (Position bp in h.positionList)
         {
-            if (bp.type == BodyType.Name.Graha)
+            if (bp.type == Tables.Body.Type.Graha)
             {
                 length = Math.Max(length, VimsottariDasa.LengthOfDasa(bp.name));
             }

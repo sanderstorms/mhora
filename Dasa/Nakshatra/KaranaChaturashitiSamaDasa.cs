@@ -18,77 +18,78 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using Mhora.Calculation;
+using Mhora.Tables.Nakshatra;
 
 namespace Mhora;
 
 // Wrapper around ChaturashitiSamaDasa
 public class KaranaChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa, INakshatraKaranaDasa
 {
-    private readonly ChaturashitiSamaDasa cd;
-    private readonly Horoscope            h;
+	private readonly ChaturashitiSamaDasa cd;
+	private readonly Horoscope            h;
 
-    public KaranaChaturashitiSamaDasa(Horoscope _h)
-    {
-        common       = this;
-        karanaCommon = this;
-        h            = _h;
-        cd           = new ChaturashitiSamaDasa(h);
-    }
+	public KaranaChaturashitiSamaDasa(Horoscope _h)
+	{
+		common       = this;
+		karanaCommon = this;
+		h            = _h;
+		cd           = new ChaturashitiSamaDasa(h);
+	}
 
-    public override object GetOptions()
-    {
-        return new object();
-    }
+	public override object GetOptions()
+	{
+		return new object();
+	}
 
-    public override object SetOptions(object a)
-    {
-        return new object();
-    }
+	public override object SetOptions(object a)
+	{
+		return new object();
+	}
 
-    public ArrayList Dasa(int cycle)
-    {
-        var mMoon = h.getPosition(Body.Body.Name.Moon).longitude;
-        var mSun  = h.getPosition(Body.Body.Name.Sun).longitude;
-        return _KaranaDasa(mMoon.sub(mSun), 1, cycle);
-    }
+	public ArrayList Dasa(int cycle)
+	{
+		var mMoon = h.getPosition(Tables.Body.Name.Moon).longitude;
+		var mSun  = h.getPosition(Tables.Body.Name.Sun).longitude;
+		return _KaranaDasa(mMoon.sub(mSun), 1, cycle);
+	}
 
-    public ArrayList AntarDasa(DasaEntry di)
-    {
-        return _AntarDasa(di);
-    }
+	public ArrayList AntarDasa(DasaEntry di)
+	{
+		return _AntarDasa(di);
+	}
 
-    public string Description()
-    {
-        return "Karana Chaturashiti-Sama Dasa";
-    }
+	public string Description()
+	{
+		return "Karana Chaturashiti-Sama Dasa";
+	}
 
-    public double paramAyus()
-    {
-        return cd.paramAyus();
-    }
+	public double paramAyus()
+	{
+		return cd.paramAyus();
+	}
 
-    public int numberOfDasaItems()
-    {
-        return cd.numberOfDasaItems();
-    }
+	public int numberOfDasaItems()
+	{
+		return cd.numberOfDasaItems();
+	}
 
-    public DasaEntry nextDasaLord(DasaEntry di)
-    {
-        return cd.nextDasaLord(di);
-    }
+	public DasaEntry nextDasaLord(DasaEntry di)
+	{
+		return cd.nextDasaLord(di);
+	}
 
-    public double lengthOfDasa(Body.Body.Name plt)
-    {
-        return cd.lengthOfDasa(plt);
-    }
+	public double lengthOfDasa(Tables.Body.Name plt)
+	{
+		return cd.lengthOfDasa(plt);
+	}
 
-    public Body.Body.Name lordOfNakshatra(Nakshatra n)
-    {
-        return cd.lordOfNakshatra(n);
-    }
+	public Tables.Body.Name lordOfNakshatra(Nakshatra n)
+	{
+		return cd.lordOfNakshatra(n);
+	}
 
-    public Body.Body.Name lordOfKarana(Longitude l)
-    {
-        return l.toKarana().getLord();
-    }
+	public Tables.Body.Name lordOfKarana(Longitude l)
+	{
+		return l.toKarana().getLord();
+	}
 }

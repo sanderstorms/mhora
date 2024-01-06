@@ -24,54 +24,54 @@ namespace Mhora.Calculation.Strength;
 // Stronger graha is in such a rasi
 public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByNarayanaDasaLength(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
-    {
-    }
+	public StrengthByNarayanaDasaLength(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
+	{
+	}
 
-    public bool stronger(Body.Body.Name m, Body.Body.Name n)
-    {
-        var a = value(m);
-        var b = value(n);
-        if (a > b)
-        {
-            return true;
-        }
+	public bool stronger(Tables.Body.Name m, Tables.Body.Name n)
+	{
+		var a = value(m);
+		var b = value(n);
+		if (a > b)
+		{
+			return true;
+		}
 
-        if (a < b)
-        {
-            return false;
-        }
+		if (a < b)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        var a = value(za);
-        var b = value(zb);
-        if (a > b)
-        {
-            return true;
-        }
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		var a = value(za);
+		var b = value(zb);
+		if (a > b)
+		{
+			return true;
+		}
 
-        if (a < b)
-        {
-            return false;
-        }
+		if (a < b)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    protected int value(ZodiacHouse.Name _zh)
-    {
-        var bl = GetStrengthLord(_zh);
-        var pl = h.getPosition(bl).toDivisionPosition(dtype);
-        return Dasa.NarayanaDasaLength(new ZodiacHouse(_zh), pl);
-    }
+	protected int value(ZodiacHouse.Name _zh)
+	{
+		var bl = GetStrengthLord(_zh);
+		var pl = h.getPosition(bl).toDivisionPosition(dtype);
+		return Dasa.NarayanaDasaLength(new ZodiacHouse(_zh), pl);
+	}
 
-    protected int value(Body.Body.Name bm)
-    {
-        var zm = h.getPosition(bm).toDivisionPosition(dtype).zodiac_house.value;
-        return value(zm);
-    }
+	protected int value(Tables.Body.Name bm)
+	{
+		var zm = h.getPosition(bm).toDivisionPosition(dtype).zodiac_house.value;
+		return value(zm);
+	}
 }

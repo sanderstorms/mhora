@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using Mhora.Calculation;
 using Mhora.Delegates;
+using Mhora.Tables.Nakshatra;
 
 namespace Mhora;
 
@@ -27,117 +28,115 @@ namespace Mhora;
 // based on the yoga
 public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaDasa
 {
-    private readonly Horoscope      h;
-    private readonly VimsottariDasa vd;
-    private          UserOptions    options;
+	private readonly Horoscope      h;
+	private readonly VimsottariDasa vd;
+	private          UserOptions    options;
 
-    public YogaVimsottariDasa(Horoscope _h)
-    {
-        options    = new UserOptions();
-        common     = this;
-        yogaCommon = this;
-        h          = _h;
-        vd         = new VimsottariDasa(h);
-    }
+	public YogaVimsottariDasa(Horoscope _h)
+	{
+		options    = new UserOptions();
+		common     = this;
+		yogaCommon = this;
+		h          = _h;
+		vd         = new VimsottariDasa(h);
+	}
 
-    public override object GetOptions()
-    {
-        return options.Clone();
-    }
+	public override object GetOptions()
+	{
+		return options.Clone();
+	}
 
-    public override object SetOptions(object a)
-    {
-        options = (UserOptions) options.SetOptions(a);
-        if (RecalculateEvent != null)
-        {
-            RecalculateEvent();
-        }
+	public override object SetOptions(object a)
+	{
+		options = (UserOptions) options.SetOptions(a);
+		if (RecalculateEvent != null)
+		{
+			RecalculateEvent();
+		}
 
-        return options.Clone();
-    }
+		return options.Clone();
+	}
 
-    public ArrayList Dasa(int cycle)
-    {
-        var t = new Transit(h);
-        var l = t.LongitudeOfSunMoonYoga(h.baseUT);
-        return _YogaDasa(l, 1, cycle);
-    }
+	public ArrayList Dasa(int cycle)
+	{
+		var t = new Transit(h);
+		var l = t.LongitudeOfSunMoonYoga(h.baseUT);
+		return _YogaDasa(l, 1, cycle);
+	}
 
-    public ArrayList AntarDasa(DasaEntry di)
-    {
-        return _AntarDasa(di);
-    }
+	public ArrayList AntarDasa(DasaEntry di)
+	{
+		return _AntarDasa(di);
+	}
 
-    public string Description()
-    {
-        return "Yoga Vimsottari Dasa";
-    }
+	public string Description()
+	{
+		return "Yoga Vimsottari Dasa";
+	}
 
-    public double paramAyus()
-    {
-        return vd.paramAyus();
-    }
+	public double paramAyus()
+	{
+		return vd.paramAyus();
+	}
 
-    public int numberOfDasaItems()
-    {
-        return vd.numberOfDasaItems();
-    }
+	public int numberOfDasaItems()
+	{
+		return vd.numberOfDasaItems();
+	}
 
-    public DasaEntry nextDasaLord(DasaEntry di)
-    {
-        return vd.nextDasaLord(di);
-    }
+	public DasaEntry nextDasaLord(DasaEntry di)
+	{
+		return vd.nextDasaLord(di);
+	}
 
-    public double lengthOfDasa(Body.Body.Name plt)
-    {
-        return vd.lengthOfDasa(plt);
-    }
+	public double lengthOfDasa(Tables.Body.Name plt)
+	{
+		return vd.lengthOfDasa(plt);
+	}
 
-    public Body.Body.Name lordOfNakshatra(Nakshatra n)
-    {
-        throw new Exception();
-        return Body.Body.Name.Lagna;
-    }
+	public Tables.Body.Name lordOfNakshatra(Nakshatra n)
+	{
+		throw new Exception();
+		return Tables.Body.Name.Lagna;
+	}
 
-    public Body.Body.Name lordOfYoga(Longitude l)
-    {
-        return l.toSunMoonYoga().getLord();
-    }
+	public Tables.Body.Name lordOfYoga(Longitude l)
+	{
+		return l.toSunMoonYoga().getLord();
+	}
 
-    public class UserOptions : ICloneable
-    {
-        public bool bExpungeTravelled = true;
+	public class UserOptions : ICloneable
+	{
+		public bool bExpungeTravelled = true;
 
-        public UserOptions()
-        {
-            bExpungeTravelled = true;
-        }
+		public UserOptions()
+		{
+			bExpungeTravelled = true;
+		}
 
-        [PGNotVisible]
-        public bool UseYogaRemainder
-        {
-            get =>
-                bExpungeTravelled;
-            set =>
-                bExpungeTravelled = value;
-        }
+		[PGNotVisible]
+		public bool UseYogaRemainder
+		{
+			get => bExpungeTravelled;
+			set => bExpungeTravelled = value;
+		}
 
-        public object Clone()
-        {
-            var options = new UserOptions();
-            options.bExpungeTravelled = bExpungeTravelled;
-            return options;
-        }
+		public object Clone()
+		{
+			var options = new UserOptions();
+			options.bExpungeTravelled = bExpungeTravelled;
+			return options;
+		}
 
-        public object SetOptions(object b)
-        {
-            if (b is UserOptions)
-            {
-                var uo = (UserOptions) b;
-                bExpungeTravelled = uo.bExpungeTravelled;
-            }
+		public object SetOptions(object b)
+		{
+			if (b is UserOptions)
+			{
+				var uo = (UserOptions) b;
+				bExpungeTravelled = uo.bExpungeTravelled;
+			}
 
-            return Clone();
-        }
-    }
+			return Clone();
+		}
+	}
 }

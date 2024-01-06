@@ -27,133 +27,131 @@ namespace Mhora;
 
 public class TransitSearchOptions : ICloneable
 {
-    public enum EForward
-    {
-        Before,
-        After
-    }
+	public enum EForward
+	{
+		Before,
+		After
+	}
 
-    public TransitSearchOptions()
-    {
-        var dt = DateTime.Now;
-        StartDate    = new Moment(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
-        SearchBody   = Body.Body.Name.Sun;
-        TransitPoint = new Longitude(0.0);
-        Forward      = true;
-        Division     = new Division(Basics.DivisionType.Rasi);
-    }
+	public TransitSearchOptions()
+	{
+		var dt = DateTime.Now;
+		StartDate    = new Moment(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
+		SearchBody   = Tables.Body.Name.Sun;
+		TransitPoint = new Longitude(0.0);
+		Forward      = true;
+		Division     = new Division(Basics.DivisionType.Rasi);
+	}
 
 
-    [PGNotVisible]
-    public Division Division
-    {
-        get;
-        set;
-    }
+	[PGNotVisible]
+	public Division Division
+	{
+		get;
+		set;
+	}
 
-    [Category("Transit Search")]
-    [PropertyOrder(1)]
-    [PGDisplayName("In Varga")]
-    public Basics.DivisionType UIDivision
-    {
-        get =>
-            Division.MultipleDivisions[0].Varga;
-        set =>
-            Division = new Division(value);
-    }
+	[Category("Transit Search")]
+	[PropertyOrder(1)]
+	[PGDisplayName("In Varga")]
+	public Basics.DivisionType UIDivision
+	{
+		get => Division.MultipleDivisions[0].Varga;
+		set => Division = new Division(value);
+	}
 
-    [Category("Transit Search")]
-    [PropertyOrder(2)]
-    [PGDisplayName("Search")]
-    public EForward UIForward
-    {
-        get
-        {
-            if (Forward)
-            {
-                return EForward.After;
-            }
+	[Category("Transit Search")]
+	[PropertyOrder(2)]
+	[PGDisplayName("Search")]
+	public EForward UIForward
+	{
+		get
+		{
+			if (Forward)
+			{
+				return EForward.After;
+			}
 
-            return EForward.Before;
-        }
-        set
-        {
-            if (value == EForward.After)
-            {
-                Forward = true;
-            }
-            else
-            {
-                Forward = false;
-            }
-        }
-    }
+			return EForward.Before;
+		}
+		set
+		{
+			if (value == EForward.After)
+			{
+				Forward = true;
+			}
+			else
+			{
+				Forward = false;
+			}
+		}
+	}
 
-    [PGNotVisible]
-    public bool Forward
-    {
-        get;
-        set;
-    }
+	[PGNotVisible]
+	public bool Forward
+	{
+		get;
+		set;
+	}
 
-    [Category("Transit Search")]
-    [PropertyOrder(3)]
-    [PGDisplayName("Date")]
-    public Moment StartDate
-    {
-        get;
-        set;
-    }
+	[Category("Transit Search")]
+	[PropertyOrder(3)]
+	[PGDisplayName("Date")]
+	public Moment StartDate
+	{
+		get;
+		set;
+	}
 
-    [Category("Transit Search")]
-    [PropertyOrder(4)]
-    [PGDisplayName("When Body")]
-    public Body.Body.Name SearchBody
-    {
-        get;
-        set;
-    }
+	[Category("Transit Search")]
+	[PropertyOrder(4)]
+	[PGDisplayName("When Body")]
+	public Tables.Body.Name SearchBody
+	{
+		get;
+		set;
+	}
 
-    [Category("Transit Search")]
-    [PropertyOrder(5)]
-    [PGDisplayName("Transits")]
-    public Longitude TransitPoint
-    {
-        get;
-        set;
-    }
+	[Category("Transit Search")]
+	[PropertyOrder(5)]
+	[PGDisplayName("Transits")]
+	public Longitude TransitPoint
+	{
+		get;
+		set;
+	}
 
-    [Category("Transit Search")]
-    [PropertyOrder(6)]
-    [PGDisplayName("Apply Locally")]
-    public bool Apply
-    {
-        get;
-        set;
-    }
+	[Category("Transit Search")]
+	[PropertyOrder(6)]
+	[PGDisplayName("Apply Locally")]
+	public bool Apply
+	{
+		get;
+		set;
+	}
 
 #region ICloneable Members
 
-    public object Clone()
-    {
-        // TODO:  Add TransitSearchOptions.Clone implementation
-        var ret = new TransitSearchOptions();
-        ret.StartDate    = (Moment) StartDate.Clone();
-        ret.Forward      = Forward;
-        ret.SearchBody   = SearchBody;
-        ret.TransitPoint = TransitPoint;
-        return ret;
-    }
+	public object Clone()
+	{
+		// TODO:  Add TransitSearchOptions.Clone implementation
+		var ret = new TransitSearchOptions();
+		ret.StartDate    = (Moment) StartDate.Clone();
+		ret.Forward      = Forward;
+		ret.SearchBody   = SearchBody;
+		ret.TransitPoint = TransitPoint;
+		return ret;
+	}
 
-    public object CopyFrom(object o)
-    {
-        var nopt = (TransitSearchOptions) o;
-        StartDate    = (Moment) nopt.StartDate.Clone();
-        Forward      = nopt.Forward;
-        SearchBody   = nopt.SearchBody;
-        TransitPoint = nopt.TransitPoint;
-        return Clone();
-    }
+	public object CopyFrom(object o)
+	{
+		var nopt = (TransitSearchOptions) o;
+		StartDate    = (Moment) nopt.StartDate.Clone();
+		Forward      = nopt.Forward;
+		SearchBody   = nopt.SearchBody;
+		TransitPoint = nopt.TransitPoint;
+		return Clone();
+	}
 
 #endregion
 }

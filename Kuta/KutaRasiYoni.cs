@@ -22,30 +22,30 @@ namespace Mhora.Kuta;
 
 public class KutaRasiYoni
 {
-    public enum EType
-    {
-        IPakshi,
-        IReptile,
-        IPasu,
-        INara
-    }
+	public enum EType
+	{
+		IPakshi,
+		IReptile,
+		IPasu,
+		INara
+	}
 
-    public static EType getType(ZodiacHouse z)
-    {
-        switch (z.value)
-        {
-            case ZodiacHouse.Name.Cap:
-            case ZodiacHouse.Name.Pis:
-                return EType.IPakshi;
-            case ZodiacHouse.Name.Can:
-            case ZodiacHouse.Name.Sco:
-                return EType.IReptile;
-            case ZodiacHouse.Name.Ari:
-            case ZodiacHouse.Name.Tau:
-            case ZodiacHouse.Name.Leo:
-                return EType.IPasu;
-        }
+	public static EType getType(ZodiacHouse z)
+	{
+		switch (z.value)
+		{
+			case ZodiacHouse.Name.Cap:
+			case ZodiacHouse.Name.Pis:
+				return EType.IPakshi;
+			case ZodiacHouse.Name.Can:
+			case ZodiacHouse.Name.Sco:
+				return EType.IReptile;
+			case ZodiacHouse.Name.Ari:
+			case ZodiacHouse.Name.Tau:
+			case ZodiacHouse.Name.Leo:
+				return EType.IPasu;
+		}
 
-        return EType.INara;
-    }
+		return EType.INara;
+	}
 }

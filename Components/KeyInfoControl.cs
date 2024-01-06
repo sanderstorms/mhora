@@ -181,17 +181,6 @@ public class KeyInfoControl : MhoraControl
 
     private void Repopulate()
     {
-        string[] weekdays =
-        {
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
-        };
-
         mList.Items.Clear();
 
         ListViewItem li;
@@ -237,7 +226,7 @@ public class KeyInfoControl : MhoraControl
             mList.Items.Add(li);
         }
         {
-            var ltithi = h.getPosition(Body.Body.Name.Moon).longitude.sub(h.getPosition(Body.Body.Name.Sun).longitude);
+            var ltithi = h.getPosition(Tables.Body.Name.Moon).longitude.sub(h.getPosition(Tables.Body.Name.Sun).longitude);
             var offset = 360.0 / 30.0 - ltithi.toTithiOffset();
             var ti     = ltithi.toTithi();
             var tiLord = ti.getLord();
@@ -247,7 +236,7 @@ public class KeyInfoControl : MhoraControl
             mList.Items.Add(li);
         }
         {
-            var lmoon     = h.getPosition(Body.Body.Name.Moon).longitude;
+            var lmoon     = h.getPosition(Tables.Body.Name.Moon).longitude;
             var nmoon     = lmoon.toNakshatra();
             var nmoonLord = VimsottariDasa.LordOfNakshatra(nmoon);
             var offset    = 360.0 / 27.0 - lmoon.toNakshatraOffset();
@@ -259,7 +248,7 @@ public class KeyInfoControl : MhoraControl
         }
         {
             li = new ListViewItem("Karana");
-            var lkarana = h.getPosition(Body.Body.Name.Moon).longitude.sub(h.getPosition(Body.Body.Name.Sun).longitude);
+            var lkarana = h.getPosition(Tables.Body.Name.Moon).longitude.sub(h.getPosition(Tables.Body.Name.Sun).longitude);
             var koffset = 360.0 / 60.0 - lkarana.toKaranaOffset();
             var k       = lkarana.toKarana();
             var kLord   = k.getLord();
@@ -269,7 +258,7 @@ public class KeyInfoControl : MhoraControl
         }
         {
             li = new ListViewItem("Yoga");
-            var smLon  = h.getPosition(Body.Body.Name.Sun).longitude.add(h.getPosition(Body.Body.Name.Moon).longitude);
+            var smLon  = h.getPosition(Tables.Body.Name.Sun).longitude.add(h.getPosition(Tables.Body.Name.Moon).longitude);
             var offset = 360.0 / 27.0 - smLon.toSunMoonYogaOffset();
             var smYoga = smLon.toSunMoonYoga();
             var smLord = smYoga.getLord();
@@ -315,7 +304,7 @@ public class KeyInfoControl : MhoraControl
                 vgOff = 9;
             }
 
-            var b = (Body.Body.Name) ((int) Body.Body.Name.Sun + vgOff - 1);
+            var b = (Tables.Body.Name) ((int) Tables.Body.Name.Sun + vgOff - 1);
             li = new ListViewItem("Vighatika Graha");
             var fmt = string.Format("{0}", b);
             li.SubItems.Add(fmt);

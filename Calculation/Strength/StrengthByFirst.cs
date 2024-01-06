@@ -24,17 +24,17 @@ namespace Mhora.Calculation.Strength;
 // Stronger graha is the first one
 public class StrengthByFirst : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByFirst(Horoscope h, Division dtype) : base(h, dtype, true)
-    {
-    }
+	public StrengthByFirst(Horoscope h, Division dtype) : base(h, dtype, true)
+	{
+	}
 
-    public bool stronger(Body.Body.Name m, Body.Body.Name n)
-    {
-        return true;
-    }
+	public bool stronger(Tables.Body.Name m, Tables.Body.Name n)
+	{
+		return true;
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        return true;
-    }
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		return true;
+	}
 }

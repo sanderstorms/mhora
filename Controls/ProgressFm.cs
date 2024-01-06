@@ -4,19 +4,19 @@ namespace Mhora.Controls;
 
 public partial class ProgressFm : Form
 {
-    public ProgressFm()
-    {
-        InitializeComponent();
-    }
+	public ProgressFm()
+	{
+		InitializeComponent();
+	}
 
-    public int Count
-    {
-        get => ProgressBar.Value;
-        set => ProgressBar.Value = value;
-    }
+	public int Count
+	{
+		get => ProgressBar.Value;
+		set => ProgressBar.Value = value;
+	}
 
-    public void Step()
-    {
-        ProgressBar.Step();
-    }
+	public void Step()
+	{
+		ProgressBar.Step();
+	}
 }

@@ -24,6 +24,7 @@ using Mhora.Calculation;
 using Mhora.Hora;
 using Mhora.Settings;
 using Mhora.SwissEph;
+using Mhora.Tables.Nakshatra;
 using Mhora.Varga;
 
 namespace Mhora.Panchanga;
@@ -293,9 +294,9 @@ public class PanchangaPrintDocument : PrintDocument
                 for (var j = 0; j < numTithis; j++)
                 {
                     var pmi    = (PanchangaMomentInfo) globals.tithis_ut[local.tithi_index_start + 1 + j];
-                    var t      = new Tithi((Tithi.Name) pmi.info);
+                    var t      = new Tithi((Tables.Tithi.Value) pmi.info);
                     var mTithi = new Moment(pmi.ut, h);
-                    g.DrawString(t.ToUnqualifiedString(), f, b, tithi_name_offset, j                                 * f.Height);
+                    g.DrawString(Tables.Tithi.ToUnqualifiedString(t.value), f, b, tithi_name_offset, j                                 * f.Height);
                     g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, tithi_time_offset, j * f.Height);
                 }
             }

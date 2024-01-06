@@ -26,89 +26,89 @@ namespace Mhora.Hora;
 
 internal class HMSInfoConverter : ExpandableObjectConverter
 {
-    public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
-    {
-        if (t == typeof(string))
-        {
-            return true;
-        }
+	public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
+	{
+		if (t == typeof(string))
+		{
+			return true;
+		}
 
-        return base.CanConvertFrom(context, t);
-    }
+		return base.CanConvertFrom(context, t);
+	}
 
-    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
-    {
-        Trace.Assert(value is string, "HMSInfoConverter::ConvertFrom 1");
-        var s = (string) value;
+	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
+	{
+		Trace.Assert(value is string, "HMSInfoConverter::ConvertFrom 1");
+		var s = (string) value;
 
-        int hour = 1, min = 1, sec = 1;
+		int hour = 1, min = 1, sec = 1;
 
-        var dir  = HMSInfo.dir_type.NS;
-        var _arr = s.Split('.', ' ', ':');
-        var arr  = new ArrayList(_arr);
+		var dir  = HMSInfo.dir_type.NS;
+		var _arr = s.Split('.', ' ', ':');
+		var arr  = new ArrayList(_arr);
 
-        if (arr.Count >= 2)
-        {
-            if ((string) arr[arr.Count - 1] == string.Empty)
-            {
-                arr[arr.Count - 1] = "0";
-            }
+		if (arr.Count >= 2)
+		{
+			if ((string) arr[arr.Count - 1] == string.Empty)
+			{
+				arr[arr.Count - 1] = "0";
+			}
 
-            while (arr.Count < 4)
-            {
-                arr.Add("0");
-            }
+			while (arr.Count < 4)
+			{
+				arr.Add("0");
+			}
 
-            hour = int.Parse((string) arr[0]);
-            var sdir = (string) arr[1];
-            if (sdir == "W" || sdir == "w" || sdir == "S" || sdir == "s")
-            {
-                hour *= -1;
-            }
+			hour = int.Parse((string) arr[0]);
+			var sdir = (string) arr[1];
+			if (sdir == "W" || sdir == "w" || sdir == "S" || sdir == "s")
+			{
+				hour *= -1;
+			}
 
-            if (sdir == "W" || sdir == "w" || sdir == "E" || sdir == "e")
-            {
-                dir = HMSInfo.dir_type.EW;
-            }
-            else
-            {
-                dir = HMSInfo.dir_type.NS;
-            }
+			if (sdir == "W" || sdir == "w" || sdir == "E" || sdir == "e")
+			{
+				dir = HMSInfo.dir_type.EW;
+			}
+			else
+			{
+				dir = HMSInfo.dir_type.NS;
+			}
 
-            if (int.TryParse((string) arr[2], out min) == false)
-            {
-                //todo: warning
-            }
+			if (int.TryParse((string) arr[2], out min) == false)
+			{
+				//todo: warning
+			}
 
-            if (int.TryParse((string) arr[3], out sec) == false)
-            {
-                //todo: warning
-            }
-        }
+			if (int.TryParse((string) arr[3], out sec) == false)
+			{
+				//todo: warning
+			}
+		}
 
-        if (hour < -180 || hour > 180)
-        {
-            hour = 29;
-        }
+		if (hour < -180 || hour > 180)
+		{
+			hour = 29;
+		}
 
-        if (min < 0 || min > 60)
-        {
-            min = 20;
-        }
+		if (min < 0 || min > 60)
+		{
+			min = 20;
+		}
 
-        if (sec < 0 || sec > 60)
-        {
-            sec = 30;
-        }
+		if (sec < 0 || sec > 60)
+		{
+			sec = 30;
+		}
 
-        var hi = new HMSInfo(hour, min, sec, dir);
-        return hi;
-    }
+		var hi = new HMSInfo(hour, min, sec, dir);
+		return hi;
+	}
 
-    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
-    {
-        Trace.Assert(destType == typeof(string) && value is HMSInfo, "HMSInfo::ConvertTo 1");
-        var hi = (HMSInfo) value;
-        return hi.ToString();
-    }
+	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
+	{
+		Trace.Assert(destType == typeof(string) && value is HMSInfo, "HMSInfo::ConvertTo 1");
+		var hi = (HMSInfo) value;
+		return hi.ToString();
+	}
 }

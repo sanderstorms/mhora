@@ -9,84 +9,84 @@ namespace Mhora.Database.World;
 [SQLiteTable(Name = "states")]
 public class State : SQLiteBaseObject, IComparable
 {
-    public State(SQLiteDatabase database) : base(database)
-    {
-    }
+	public State(SQLiteDatabase database) : base(database)
+	{
+	}
 
-    public override string ToString()
-    {
-        return Name;
-    }
+	[SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]
+	public int Id { get; set; }
 
-    public int CompareTo(object obj)
-    {
-        if (obj is string str)
-        {
-            return (string.Compare(ToString(), str, StringComparison.Ordinal));
-        }
+	[SQLiteColumn(Name = "name")]
+	public string Name { get; set; }
 
-        if (obj is State state)
-        {
-            return (CompareTo(obj.ToString()));
-        }
+	[SQLiteColumn(Name = "country_id")]
+	public int CountryId { get; set; }
 
-        return (0);
-    }
+	[SQLiteColumn(Name = "country_code")]
+	public string CountryCode { get; set; }
 
-    [SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]
-    public int Id { get; set; }
+	[SQLiteColumn(Name = "fips_code")]
+	public string FipsCode { get; set; }
 
-    [SQLiteColumn(Name = "name")]
-    public string Name { get; set; }
+	[SQLiteColumn(Name = "iso2")]
+	public string Iso2 { get; set; }
 
-    [SQLiteColumn(Name = "country_id")]
-    public int CountryId { get; set; }
+	[SQLiteColumn(Name = "type")]
+	public string Type { get; set; }
 
-    [SQLiteColumn(Name = "country_code")]
-    public string CountryCode { get; set; }
+	[SQLiteColumn(Name = "latitude")]
+	public double Latitude { get; set; }
 
-    [SQLiteColumn(Name = "fips_code")]
-    public string FipsCode { get; set; }
+	[SQLiteColumn(Name = "longitude")]
+	public double Longitude { get; set; }
 
-    [SQLiteColumn(Name = "iso2")]
-    public string Iso2 { get; set; }
+	[SQLiteColumn(Name = "created_at")]
+	public DateTime CreatedAt { get; set; }
 
-    [SQLiteColumn(Name = "type")]
-    public string Type { get; set; }
+	[SQLiteColumn(Name = "updated_at")]
+	public DateTime UpdatedAt { get; set; }
 
-    [SQLiteColumn(Name = "latitude")]
-    public double Latitude { get; set; }
+	[SQLiteColumn(Name = "flag")]
+	public int Flag { get; set; }
 
-    [SQLiteColumn(Name = "longitude")]
-    public double Longitude { get; set; }
+	[SQLiteColumn(Name = "wikiDataId")]
+	public string WikiDataId { get; set; }
 
-    [SQLiteColumn(Name = "created_at")]
-    public DateTime CreatedAt { get; set; }
+	[SQLiteColumn(Ignore = true)]
+	public Country Country
+	{
+		get
+		{
+			var query     = Query.From<Country>().Where(country => country.Id == CountryId).SelectAll();
+			var countries = Database?.Load<Country>(query.ToString()).ToList();
+			if (countries?.Count > 0)
+			{
+				return countries[0];
+			}
 
-    [SQLiteColumn(Name = "updated_at")]
-    public DateTime UpdatedAt { get; set; }
+			return null;
+		}
+	}
 
-    [SQLiteColumn(Name = "flag")]
-    public int Flag { get; set; }
+	public int CompareTo(object obj)
+	{
+		if (obj is string str)
+		{
+			return string.Compare(ToString(), str, StringComparison.Ordinal);
+		}
 
-    [SQLiteColumn(Name = "wikiDataId")]
-    public string WikiDataId { get; set; }
+		if (obj is State state)
+		{
+			return CompareTo(obj.ToString());
+		}
 
-    [SQLiteColumn(Ignore = true)]
-    public Country Country
-    {
-        get
-        {
-            var query     = Query.From<Country>().Where(country => country.Id == CountryId).SelectAll();
-            var countries = Database?.Load<Country>(query.ToString()).ToList();
-            if (countries?.Count > 0)
-            {
-                return countries[0];
-            }
+		return 0;
+	}
 
-            return null;
-        }
-    }
+	public override string ToString()
+	{
+		return Name;
+	}
 }
 //CREATE TABLE `states` (
 //    `id` integer NOT NULL PRIMARY KEY AUTOINCREMENT

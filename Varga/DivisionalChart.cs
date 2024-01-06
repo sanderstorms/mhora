@@ -31,6 +31,7 @@ using Mhora.Chart;
 using Mhora.Components;
 using Mhora.Components.Property;
 using Mhora.Settings;
+using Mhora.Tables;
 using mhora.Util;
 using Mhora.Util;
 using mhora.Varga;
@@ -880,7 +881,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
                 var dp = dpList[item];
                 if (PrintMode == false)
                 {
-	                if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
+	                if ((dp.type == Tables.Body.Type.Graha) || (dp.type == Tables.Body.Type.Lagna))
 	                {
 		                if (dc.SeparateGrahaHandling)
 		                {
@@ -904,14 +905,14 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
         if (large)
         {
 			f = fBase;
-            if ((dp.type == BodyType.Name.Graha) || (dp.type == BodyType.Name.Lagna))
+            if ((dp.type == Tables.Body.Type.Graha) || (dp.type == Tables.Body.Type.Lagna))
             {
 	            var bp = h.getPosition(dp.name);
-				if (dp.name == Body.Body.Name.Lagna)
+				if (dp.name == Tables.Body.Name.Lagna)
 	            {
 		            f = new Font(fBase.Name, fBase.Size, FontStyle.Bold);
 	            }
-                else if (bp.speed_longitude < 0.0 && bp.name != Body.Body.Name.Rahu && bp.name != Body.Body.Name.Ketu)
+                else if (bp.speed_longitude < 0.0 && bp.name != Tables.Body.Name.Rahu && bp.name != Tables.Body.Name.Ketu)
 	            {
 		            f = new Font(fBase.Name, fBase.Size, FontStyle.Underline);
 	            }
@@ -932,7 +933,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		else
         {
             var fs = FontStyle.Regular;
-            if (dp.type == BodyType.Name.BhavaArudhaSecondary)
+            if (dp.type == Tables.Body.Type.BhavaArudhaSecondary)
             {
                 fs = FontStyle.Italic;
             }
@@ -942,26 +943,26 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
             p = dc.GetSmallItemOffset(dp.zodiac_house, Size.Round(strSize), item);
         }
 
-        if (dp.type == BodyType.Name.GrahaArudha)
+        if (dp.type == Tables.Body.Type.GrahaArudha)
         {
             f = new Font(fBase.Name, fBase.SizeInPoints - 1);
         }
 
         switch (dp.type)
         {
-            case BodyType.Name.Graha:
-            case BodyType.Name.GrahaArudha:
+            case Tables.Body.Type.Graha:
+            case Tables.Body.Type.GrahaArudha:
                 b = new SolidBrush(MhoraGlobalOptions.Instance.VargaGrahaColor);
                 break;
-            case BodyType.Name.SpecialLagna:
+            case Tables.Body.Type.SpecialLagna:
                 b = new SolidBrush(MhoraGlobalOptions.Instance.VargaSpecialLagnaColor);
                 break;
-            case BodyType.Name.BhavaArudha:
-            case BodyType.Name.Varnada:
-            case BodyType.Name.BhavaArudhaSecondary:
+            case Tables.Body.Type.BhavaArudha:
+            case Tables.Body.Type.Varnada:
+            case Tables.Body.Type.BhavaArudhaSecondary:
                 b = new SolidBrush(MhoraGlobalOptions.Instance.VargaSecondaryColor);
                 break;
-            case BodyType.Name.Lagna:
+            case Tables.Body.Type.Lagna:
                 b = new SolidBrush(MhoraGlobalOptions.Instance.VargaLagnaColor);
                 break;
         }
@@ -1021,17 +1022,17 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
         var max = 0;
         if (options.ViewStyle == UserOptions.EViewStyle.CharaKarakas7)
         {
-            max = (int) Body.Body.Name.Saturn;
+            max = (int) Tables.Body.Name.Saturn;
         }
         else
         {
-            max = (int) Body.Body.Name.Rahu;
+            max = (int) Tables.Body.Name.Rahu;
         }
 
         // determine karakas
-        for (var i = (int) Body.Body.Name.Sun; i <= max; i++)
+        for (var i = (int) Tables.Body.Name.Sun; i <= max; i++)
         {
-            var b   = (Body.Body.Name) i;
+            var b   = (Tables.Body.Name) i;
             var bp  = h.getPosition(b);
             var bkc = new KarakaComparer(bp);
             al.Add(bkc);
@@ -1063,14 +1064,14 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			items.Add(dp);
 		}
 
-		var dp2 = (DivisionPosition) div_pos[(int) Body.Body.Name.Lagna];
+		var dp2 = (DivisionPosition) div_pos[(int) Tables.Body.Name.Lagna];
         items.Add(dp2);
         DrawItems(g, true);
     }
 
     private void PaintDualGrahaArudhasView(Graphics g)
     {
-        var dpo = h.getPosition(Body.Body.Name.Lagna).toDivisionPosition(options.Varga);
+        var dpo = h.getPosition(Tables.Body.Name.Lagna).toDivisionPosition(options.Varga);
         items.Add(dpo);
  
         foreach (DivisionPosition dp in graha_arudha_pos)
@@ -1112,34 +1113,34 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
     private void PaintNormalView(Graphics g)
     {
-		var bItems = new Body.Body.Name[10]
+		var bItems = new Tables.Body.Name[10]
         {
-            Body.Body.Name.Lagna,
-            Body.Body.Name.Sun,
-            Body.Body.Name.Moon,
-            Body.Body.Name.Mars,
-            Body.Body.Name.Mercury,
-            Body.Body.Name.Jupiter,
-            Body.Body.Name.Venus,
-            Body.Body.Name.Saturn,
-            Body.Body.Name.Rahu,
-            Body.Body.Name.Ketu
+            Tables.Body.Name.Lagna,
+            Tables.Body.Name.Sun,
+            Tables.Body.Name.Moon,
+            Tables.Body.Name.Mars,
+            Tables.Body.Name.Mercury,
+            Tables.Body.Name.Jupiter,
+            Tables.Body.Name.Venus,
+            Tables.Body.Name.Saturn,
+            Tables.Body.Name.Rahu,
+            Tables.Body.Name.Ketu
         };
 
 #if DDD
-			foreach (ZodiacHouse.Name _zh in ZodiacHouse.AllNames)
+			foreach (ZodiacHouse.Type _zh in ZodiacHouse.AllNames)
 			{
 				ZodiacHouse zh = new ZodiacHouse(_zh);
 				for (int i = 1; i<9; i++)
 				{
-					DivisionPosition dp = new DivisionPosition(Body.Name.Jupiter,
-						BodyType.Name.Graha, zh, 0.0, 0.0);
+					DivisionPosition dp = new DivisionPosition(Body.Type.Jupiter,
+						BodyType.Type.Graha, zh, 0.0, 0.0);
 					AddItem (g, zh, i, dp, true);
 				}
 				for (int i = 1; i<=6; i++)
 				{
-					DivisionPosition dp = new DivisionPosition(Body.Name.A11, 
-											BodyType.Name.BhavaArudha, zh, 0.0, 0.0);
+					DivisionPosition dp = new DivisionPosition(Body.Type.A11, 
+											BodyType.Type.BhavaArudha, zh, 0.0, 0.0);
 					AddItem (g, zh, i, dp, false);
 				}
 
@@ -1152,12 +1153,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	    }
         foreach (DivisionPosition dp in div_pos)
         {
-            if (options.ViewStyle == UserOptions.EViewStyle.Panchanga && dp.type != BodyType.Name.Graha)
+            if (options.ViewStyle == UserOptions.EViewStyle.Panchanga && dp.type != Tables.Body.Type.Graha)
             {
                 continue;
             }
 
-            if (dp.type != BodyType.Name.Graha && dp.type != BodyType.Name.Lagna)
+            if (dp.type != Tables.Body.Type.Graha && dp.type != Tables.Body.Type.Lagna)
             {
                 continue;
             }
@@ -1174,7 +1175,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
         foreach (DivisionPosition dp in div_pos)
         {
-            if (dp.type != BodyType.Name.SpecialLagna)
+            if (dp.type != Tables.Body.Type.SpecialLagna)
             {
                 continue;
             }
@@ -1306,13 +1307,13 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 
         /*
-        ZodiacHouse zh = new ZodiacHouse(ZodiacHouse.Name.Sco);
+        ZodiacHouse zh = new ZodiacHouse(ZodiacHouse.Type.Sco);
         for (int i=1; i<9; i++)
             AddItem(g, zh, i, new D, true);
 
         for (int i=1; i<=12; i++)
         {
-            ZodiacHouse zh = new ZodiacHouse((ZodiacHouse.Name)i);
+            ZodiacHouse zh = new ZodiacHouse((ZodiacHouse.Type)i);
             AddItem (g, zh, 9, zh.value.ToString());
         }
         */
@@ -1326,7 +1327,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
     private void SetChartStyle(UserOptions.EChartStyle cs)
     {
-	    var dpo   = h.getPosition(Body.Body.Name.Lagna).toDivisionPosition(options.Varga);
+	    var dpo   = h.getPosition(Tables.Body.Name.Lagna).toDivisionPosition(options.Varga);
 	    var lagna = dpo.zodiac_house;
 
 		switch (cs)

@@ -28,82 +28,74 @@ namespace Mhora.Hora;
 [Serializable]
 public class UserEvent : MhoraSerializableOptions, ICloneable, ISerializable
 {
-    private string mEventDesc;
+	private string mEventDesc;
 
-    private string mEventName;
-    private Moment mEventTime;
-    private bool   mWorkWithEvent;
+	private string mEventName;
+	private Moment mEventTime;
+	private bool   mWorkWithEvent;
 
-    protected UserEvent(SerializationInfo info, StreamingContext context) : this()
-    {
-        Constructor(GetType(), info, context);
-    }
+	protected UserEvent(SerializationInfo info, StreamingContext context) : this()
+	{
+		Constructor(GetType(), info, context);
+	}
 
-    public UserEvent()
-    {
-        EventName     = "Some Event";
-        EventTime     = new Moment();
-        WorkWithEvent = true;
-    }
+	public UserEvent()
+	{
+		EventName     = "Some Event";
+		EventTime     = new Moment();
+		WorkWithEvent = true;
+	}
 
-    public string EventName
-    {
-        get =>
-            mEventName;
-        set =>
-            mEventName = value;
-    }
+	public string EventName
+	{
+		get => mEventName;
+		set => mEventName = value;
+	}
 
-    [Editor(typeof(UIStringTypeEditor), typeof(UITypeEditor))]
-    public string EventDesc
-    {
-        get =>
-            mEventDesc;
-        set =>
-            mEventDesc = value;
-    }
+	[Editor(typeof(UIStringTypeEditor), typeof(UITypeEditor))]
+	public string EventDesc
+	{
+		get => mEventDesc;
+		set => mEventDesc = value;
+	}
 
-    public Moment EventTime
-    {
-        get =>
-            mEventTime;
-        set =>
-            mEventTime = value;
-    }
+	public Moment EventTime
+	{
+		get => mEventTime;
+		set => mEventTime = value;
+	}
 
-    public bool WorkWithEvent
-    {
-        get =>
-            mWorkWithEvent;
-        set =>
-            mWorkWithEvent = value;
-    }
+	public bool WorkWithEvent
+	{
+		get => mWorkWithEvent;
+		set => mWorkWithEvent = value;
+	}
 
-    public object Clone()
-    {
-        var ue = new UserEvent();
-        ue.EventName     = EventName;
-        ue.EventTime     = EventTime;
-        ue.WorkWithEvent = WorkWithEvent;
-        ue.EventDesc     = EventDesc;
-        return ue;
-    }
+	public object Clone()
+	{
+		var ue = new UserEvent();
+		ue.EventName     = EventName;
+		ue.EventTime     = EventTime;
+		ue.WorkWithEvent = WorkWithEvent;
+		ue.EventDesc     = EventDesc;
+		return ue;
+	}
 
-    void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        GetObjectData(GetType(), info, context);
-    }
+	void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+	{
+		GetObjectData(GetType(), info, context);
+	}
 
-    public override string ToString()
-    {
-        var ret = string.Empty;
+	public override string ToString()
+	{
+		var ret = string.Empty;
 
-        if (WorkWithEvent)
-        {
-            ret += "* ";
-        }
+		if (WorkWithEvent)
+		{
+			ret += "* ";
+		}
 
-        ret += EventName + ": " + EventTime;
-        return ret;
-    }
+		ret += EventName + ": " + EventTime;
+		return ret;
+	}
 }

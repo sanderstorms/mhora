@@ -22,50 +22,50 @@ namespace Mhora.Ghata;
 
 public class GhatakaLagnaSame
 {
-    public static bool checkLagna(ZodiacHouse janma, ZodiacHouse same)
-    {
-        var ja = janma.value;
-        var gh = ZodiacHouse.Name.Ari;
-        switch (ja)
-        {
-            case ZodiacHouse.Name.Ari:
-                gh = ZodiacHouse.Name.Ari;
-                break;
-            case ZodiacHouse.Name.Tau:
-                gh = ZodiacHouse.Name.Tau;
-                break;
-            case ZodiacHouse.Name.Gem:
-                gh = ZodiacHouse.Name.Can;
-                break;
-            case ZodiacHouse.Name.Can:
-                gh = ZodiacHouse.Name.Lib;
-                break;
-            case ZodiacHouse.Name.Leo:
-                gh = ZodiacHouse.Name.Cap;
-                break;
-            case ZodiacHouse.Name.Vir:
-                gh = ZodiacHouse.Name.Pis;
-                break;
-            case ZodiacHouse.Name.Lib:
-                gh = ZodiacHouse.Name.Vir;
-                break;
-            case ZodiacHouse.Name.Sco:
-                gh = ZodiacHouse.Name.Sco;
-                break;
-            case ZodiacHouse.Name.Sag:
-                gh = ZodiacHouse.Name.Sag;
-                break;
-            case ZodiacHouse.Name.Cap:
-                gh = ZodiacHouse.Name.Aqu;
-                break;
-            case ZodiacHouse.Name.Aqu:
-                gh = ZodiacHouse.Name.Gem;
-                break;
-            case ZodiacHouse.Name.Pis:
-                gh = ZodiacHouse.Name.Leo;
-                break;
-        }
+	public static bool checkLagna(ZodiacHouse janma, ZodiacHouse same)
+	{
+		var ja = janma.value;
+		var gh = ZodiacHouse.Name.Ari;
+		switch (ja)
+		{
+			case ZodiacHouse.Name.Ari:
+				gh = ZodiacHouse.Name.Ari;
+				break;
+			case ZodiacHouse.Name.Tau:
+				gh = ZodiacHouse.Name.Tau;
+				break;
+			case ZodiacHouse.Name.Gem:
+				gh = ZodiacHouse.Name.Can;
+				break;
+			case ZodiacHouse.Name.Can:
+				gh = ZodiacHouse.Name.Lib;
+				break;
+			case ZodiacHouse.Name.Leo:
+				gh = ZodiacHouse.Name.Cap;
+				break;
+			case ZodiacHouse.Name.Vir:
+				gh = ZodiacHouse.Name.Pis;
+				break;
+			case ZodiacHouse.Name.Lib:
+				gh = ZodiacHouse.Name.Vir;
+				break;
+			case ZodiacHouse.Name.Sco:
+				gh = ZodiacHouse.Name.Sco;
+				break;
+			case ZodiacHouse.Name.Sag:
+				gh = ZodiacHouse.Name.Sag;
+				break;
+			case ZodiacHouse.Name.Cap:
+				gh = ZodiacHouse.Name.Aqu;
+				break;
+			case ZodiacHouse.Name.Aqu:
+				gh = ZodiacHouse.Name.Gem;
+				break;
+			case ZodiacHouse.Name.Pis:
+				gh = ZodiacHouse.Name.Leo;
+				break;
+		}
 
-        return same.value == gh;
-    }
+		return same.value == gh;
+	}
 }

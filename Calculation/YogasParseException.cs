@@ -22,15 +22,15 @@ namespace Mhora.Calculation;
 
 public class YogasParseException : Exception
 {
-    public string status;
+	public string status;
 
-    public YogasParseException()
-    {
-        status = null;
-    }
+	public YogasParseException()
+	{
+		status = null;
+	}
 
-    public YogasParseException(string message)
-    {
-        status = message;
-    }
+	public YogasParseException(string message)
+	{
+		status = message;
+	}
 }

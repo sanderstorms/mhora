@@ -25,30 +25,30 @@ namespace Mhora.Varga;
 
 internal class SingleDivisionConverter : ExpandableObjectConverter
 {
-    public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
-    {
-        if (t == typeof(string))
-        {
-            return true;
-        }
+	public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
+	{
+		if (t == typeof(string))
+		{
+			return true;
+		}
 
-        return base.CanConvertFrom(context, t);
-    }
+		return base.CanConvertFrom(context, t);
+	}
 
-    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
-    {
-        return new Division.SingleDivision(Basics.DivisionType.Rasi);
-    }
+	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
+	{
+		return new Division.SingleDivision(Basics.DivisionType.Rasi);
+	}
 
-    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
-    {
-        //Trace.Assert (destType == typeof(string) && value is Division, "DivisionConverter::ConvertTo 1");
-        var dSingle = value as Division.SingleDivision;
-        if (dSingle == null)
-        {
-            return "Single Varga";
-        }
+	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
+	{
+		//Trace.Assert (destType == typeof(string) && value is Division, "DivisionConverter::ConvertTo 1");
+		var dSingle = value as Division.SingleDivision;
+		if (dSingle == null)
+		{
+			return "Single Varga";
+		}
 
-        return dSingle.ToString();
-    }
+		return dSingle.ToString();
+	}
 }

@@ -346,7 +346,7 @@
             this.labName.Name = "labName";
             this.labName.Size = new System.Drawing.Size(53, 20);
             this.labName.TabIndex = 0;
-            this.labName.Text = "Name";
+            this.labName.Text = "Type";
             // 
             // tabEvents
             // 

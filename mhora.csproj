@@ -238,13 +238,18 @@
     <Compile Include="Application.cs" />
     <Compile Include="Settings\ApplyOptions.cs" />
     <Compile Include="Settings\MhoraGlobalOptions.cs" />
+    <Compile Include="Tables\Hora.cs" />
+    <Compile Include="Tables\Karaka.cs" />
+    <Compile Include="Tables\Sarvatobhadra.cs" />
+    <Compile Include="Tables\Tara.cs" />
+    <Compile Include="Tables\Tithi.cs" />
     <Compile Include="Tables\Varga.cs" />
     <Compile Include="Util\Dll.cs" />
     <Compile Include="Util\EnumHelper.cs" />
     <Compile Include="Util\LocationConverter.cs" />
     <Compile Include="Util\SevenZip.cs" />
     <Compile Include="Util\StringExtension.cs" />
-    <Compile Include="Varga\Ashtakavarga.cs">
+    <Compile Include="Tables\Ashtakavarga.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Varga\AshtakavargaControl.cs">
@@ -266,10 +271,9 @@
     <Compile Include="Calculation\Basics.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Body\Body.cs" />
+    <Compile Include="Tables\Body.cs" />
     <Compile Include="Body\KarakaComparer.cs" />
     <Compile Include="Body\Position.cs" />
-    <Compile Include="Body\BodyType.cs" />
     <Compile Include="Dasa\Rasi\CharaDasa.cs" />
     <Compile Include="Dasa\Nakshatra\ChaturashitiSamaDasa.cs" />
     <Compile Include="Components\ChooseHoroscopeControl.cs">
@@ -407,8 +411,8 @@
     <Compile Include="Dasa\Graha\NaisargikaGrahaDasa.cs" />
     <Compile Include="Dasa\Graha\NaisargikaGrahaDasaSP.cs" />
     <Compile Include="Dasa\Rasi\NaisargikaRasiDasa.cs" />
-    <Compile Include="Nakshatra\Nakshatra.cs" />
-    <Compile Include="Nakshatra\Nakshatra28.cs" />
+    <Compile Include="Tables\Nakshatra\Nakshatra.cs" />
+    <Compile Include="Tables\Nakshatra\Nakshatra28.cs" />
     <Compile Include="Dasa\Nakshatra\NakshatraDasa.cs" />
     <Compile Include="Dasa\Nakshatra\NakshatraPraveshDasa.cs" />
     <Compile Include="Dasa\Rasi\NarayanaDasa.cs" />

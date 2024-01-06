@@ -9,70 +9,70 @@ namespace Mhora.Database.World;
 [SQLiteTable(Name = "regions")]
 public class Region : SQLiteBaseObject, IComparable
 {
-    public Region(SQLiteDatabase database) : base(database)
-    {
-    }
+	private Dictionary<string, string> _translations;
 
-    public override string ToString()
-    {
-        return Name;
-    }
+	public Region(SQLiteDatabase database) : base(database)
+	{
+	}
 
-    public int CompareTo(object obj)
-    {
-        if (obj is string str)
-        {
-            return (string.Compare(ToString(), str, StringComparison.Ordinal));
-        }
+	[SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]
+	public int Id { get; set; }
 
-        if (obj is Region region)
-        {
-            return (CompareTo(obj.ToString()));
-        }
+	[SQLiteColumn(Name = "name")]
+	public string Name { get; set; }
 
-        return (0);
-    }
+	[SQLiteColumn(Name = "translations")]
+	public string TranslationsJson { get; set; }
 
-    private Dictionary<string, string> _translations;
+	[SQLiteColumn(Name = "created_at")]
+	public DateTime CreatedAt { get; set; }
 
-    [SQLiteColumn(Name = "id", IsPrimaryKey = true, AutoIncrements = true)]
-    public int Id { get; set; }
+	[SQLiteColumn(Name = "updated_at")]
+	public DateTime UpdatedAt { get; set; }
 
-    [SQLiteColumn(Name = "name")]
-    public string Name { get; set; }
+	[SQLiteColumn(Name = "flag")]
+	public int Flag { get; set; }
 
-    [SQLiteColumn(Name = "translations")]
-    public string TranslationsJson { get; set; }
+	[SQLiteColumn(Name = "wikiDataId")]
+	public string WikiDataId { get; set; }
 
-    [SQLiteColumn(Name = "created_at")]
-    public DateTime CreatedAt { get; set; }
+	[SQLiteColumn(Ignore = true)]
+	public Dictionary<string, string> Translations
+	{
+		get
+		{
+			try
+			{
+				_translations ??= JsonConvert.DeserializeObject<Dictionary<string, string>>(TranslationsJson);
+			}
+			catch (Exception e)
+			{
+				_translations = new Dictionary<string, string>();
+			}
 
-    [SQLiteColumn(Name = "updated_at")]
-    public DateTime UpdatedAt { get; set; }
+			return _translations;
+		}
+	}
 
-    [SQLiteColumn(Name = "flag")]
-    public int Flag { get; set; }
+	public int CompareTo(object obj)
+	{
+		if (obj is string str)
+		{
+			return string.Compare(ToString(), str, StringComparison.Ordinal);
+		}
 
-    [SQLiteColumn(Name = "wikiDataId")]
-    public string WikiDataId { get; set; }
+		if (obj is Region region)
+		{
+			return CompareTo(obj.ToString());
+		}
 
-    [SQLiteColumn(Ignore = true)]
-    public Dictionary<string, string> Translations
-    {
-        get
-        {
-            try
-            {
-                _translations ??= JsonConvert.DeserializeObject<Dictionary<string, string>>(TranslationsJson);
-            }
-            catch (Exception e)
-            {
-                _translations = new Dictionary<string, string>();
-            }
+		return 0;
+	}
 
-            return _translations;
-        }
-    }
+	public override string ToString()
+	{
+		return Name;
+	}
 }
 
 //CREATE TABLE `regions` (

@@ -24,66 +24,66 @@ namespace Mhora.Calculation.Strength;
 // Stronger graha has traversed larger longitude in its house
 public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByLongitude(Horoscope h, Division dtype) : base(h, dtype, true)
-    {
-    }
+	public StrengthByLongitude(Horoscope h, Division dtype) : base(h, dtype, true)
+	{
+	}
 
-    public bool stronger(Body.Body.Name m, Body.Body.Name n)
-    {
-        var lonm = karakaLongitude(m);
-        var lonn = karakaLongitude(n);
-        if (lonm > lonn)
-        {
-            return true;
-        }
+	public bool stronger(Tables.Body.Name m, Tables.Body.Name n)
+	{
+		var lonm = karakaLongitude(m);
+		var lonn = karakaLongitude(n);
+		if (lonm > lonn)
+		{
+			return true;
+		}
 
-        if (lonn > lonm)
-        {
-            return false;
-        }
+		if (lonn > lonm)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        Body.Body.Name[] karakaBodies =
-        {
-            Body.Body.Name.Sun,
-            Body.Body.Name.Moon,
-            Body.Body.Name.Mars,
-            Body.Body.Name.Mercury,
-            Body.Body.Name.Jupiter,
-            Body.Body.Name.Venus,
-            Body.Body.Name.Saturn,
-            Body.Body.Name.Rahu
-        };
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		Tables.Body.Name[] karakaBodies =
+		{
+			Tables.Body.Name.Sun,
+			Tables.Body.Name.Moon,
+			Tables.Body.Name.Mars,
+			Tables.Body.Name.Mercury,
+			Tables.Body.Name.Jupiter,
+			Tables.Body.Name.Venus,
+			Tables.Body.Name.Saturn,
+			Tables.Body.Name.Rahu
+		};
 
-        double lona = 0.0, lonb = 0.0;
-        foreach (var bn in karakaBodies)
-        {
-            var div    = h.getPosition(bn).toDivisionPosition(new Division(Basics.DivisionType.Rasi));
-            var offset = karakaLongitude(bn);
-            if (div.zodiac_house.value == za && offset > lona)
-            {
-                lona = offset;
-            }
-            else if (div.zodiac_house.value == zb && offset > lonb)
-            {
-                lonb = offset;
-            }
-        }
+		double lona = 0.0, lonb = 0.0;
+		foreach (var bn in karakaBodies)
+		{
+			var div    = h.getPosition(bn).toDivisionPosition(new Division(Basics.DivisionType.Rasi));
+			var offset = karakaLongitude(bn);
+			if (div.zodiac_house.value == za && offset > lona)
+			{
+				lona = offset;
+			}
+			else if (div.zodiac_house.value == zb && offset > lonb)
+			{
+				lonb = offset;
+			}
+		}
 
-        if (lona > lonb)
-        {
-            return true;
-        }
+		if (lona > lonb)
+		{
+			return true;
+		}
 
-        if (lonb > lona)
-        {
-            return false;
-        }
+		if (lonb > lona)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 }

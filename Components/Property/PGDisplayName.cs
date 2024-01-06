@@ -22,10 +22,10 @@ namespace Mhora.Components.Property;
 
 public class PGDisplayName : Attribute
 {
-    public string DisplayName;
+	public string DisplayName;
 
-    public PGDisplayName(string _display)
-    {
-        DisplayName = _display;
-    }
+	public PGDisplayName(string _display)
+	{
+		DisplayName = _display;
+	}
 }

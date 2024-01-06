@@ -25,145 +25,145 @@ namespace Mhora;
 
 public class MandookaDasa : Dasa, IDasa
 {
-    private readonly Horoscope           h;
-    private readonly RasiDasaUserOptions options;
+	private readonly Horoscope           h;
+	private readonly RasiDasaUserOptions options;
 
-    public MandookaDasa(Horoscope _h)
-    {
-        h       = _h;
-        options = new RasiDasaUserOptions(h, FindStronger.RulesNavamsaDasaRasi(h));
-    }
+	public MandookaDasa(Horoscope _h)
+	{
+		h       = _h;
+		options = new RasiDasaUserOptions(h, FindStronger.RulesNavamsaDasaRasi(h));
+	}
 
-    public double paramAyus()
-    {
-        return 96;
-    }
+	public double paramAyus()
+	{
+		return 96;
+	}
 
-    public void recalculateOptions()
-    {
-        options.recalculate();
-    }
+	public void recalculateOptions()
+	{
+		options.recalculate();
+	}
 
-    public ArrayList Dasa(int cycle)
-    {
-        int[] sequence =
-        {
-            1,
-            3,
-            5,
-            7,
-            9,
-            11,
-            2,
-            4,
-            6,
-            8,
-            10,
-            12
-        };
-        var al      = new ArrayList(12);
-        var zh_seed = options.getSeed();
+	public ArrayList Dasa(int cycle)
+	{
+		int[] sequence =
+		{
+			1,
+			3,
+			5,
+			7,
+			9,
+			11,
+			2,
+			4,
+			6,
+			8,
+			10,
+			12
+		};
+		var al      = new ArrayList(12);
+		var zh_seed = options.getSeed();
 
-        if (zh_seed.isOdd())
-        {
-            zh_seed = zh_seed.add(3);
-        }
-        else
-        {
-            zh_seed = zh_seed.addReverse(3);
-        }
+		if (zh_seed.isOdd())
+		{
+			zh_seed = zh_seed.add(3);
+		}
+		else
+		{
+			zh_seed = zh_seed.addReverse(3);
+		}
 
-        var bDirZodiacal = true;
-        if (!zh_seed.isOdd())
-        {
-            //zh_seed = zh_seed.AdarsaSign();
-            bDirZodiacal = false;
-        }
+		var bDirZodiacal = true;
+		if (!zh_seed.isOdd())
+		{
+			//zh_seed = zh_seed.AdarsaSign();
+			bDirZodiacal = false;
+		}
 
-        var dasa_length_sum = 0.0;
-        for (var i = 0; i < 12; i++)
-        {
-            ZodiacHouse zh_dasa = null;
-            if (bDirZodiacal)
-            {
-                zh_dasa = zh_seed.add(sequence[i]);
-            }
-            else
-            {
-                zh_dasa = zh_seed.addReverse(sequence[i]);
-            }
+		var dasa_length_sum = 0.0;
+		for (var i = 0; i < 12; i++)
+		{
+			ZodiacHouse zh_dasa = null;
+			if (bDirZodiacal)
+			{
+				zh_dasa = zh_seed.add(sequence[i]);
+			}
+			else
+			{
+				zh_dasa = zh_seed.addReverse(sequence[i]);
+			}
 
-            double dasa_length = DasaLength(zh_dasa);
-            var    di          = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
-            al.Add(di);
-            dasa_length_sum += dasa_length;
-        }
+			double dasa_length = DasaLength(zh_dasa);
+			var    di          = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			al.Add(di);
+			dasa_length_sum += dasa_length;
+		}
 
-        var cycle_length = cycle * paramAyus();
-        foreach (DasaEntry di in al)
-        {
-            di.startUT += cycle_length;
-        }
+		var cycle_length = cycle * paramAyus();
+		foreach (DasaEntry di in al)
+		{
+			di.startUT += cycle_length;
+		}
 
-        return al;
-    }
+		return al;
+	}
 
-    public ArrayList AntarDasa(DasaEntry pdi)
-    {
-        var al = new ArrayList(12);
+	public ArrayList AntarDasa(DasaEntry pdi)
+	{
+		var al = new ArrayList(12);
 
-        var zh_first    = new ZodiacHouse(pdi.zodiacHouse);
-        var zh_stronger = zh_first.add(1);
-        if (!zh_stronger.isOdd())
-        {
-            zh_stronger = zh_stronger.AdarsaSign();
-        }
+		var zh_first    = new ZodiacHouse(pdi.zodiacHouse);
+		var zh_stronger = zh_first.add(1);
+		if (!zh_stronger.isOdd())
+		{
+			zh_stronger = zh_stronger.AdarsaSign();
+		}
 
-        var dasa_start = pdi.startUT;
+		var dasa_start = pdi.startUT;
 
-        for (var i = 1; i <= 12; i++)
-        {
-            var zh_dasa = zh_stronger.add(i);
-            var di      = new DasaEntry(zh_dasa.value, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.value);
-            al.Add(di);
-            dasa_start += pdi.dasaLength / 12.0;
-        }
+		for (var i = 1; i <= 12; i++)
+		{
+			var zh_dasa = zh_stronger.add(i);
+			var di      = new DasaEntry(zh_dasa.value, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.value);
+			al.Add(di);
+			dasa_start += pdi.dasaLength / 12.0;
+		}
 
-        return al;
-    }
+		return al;
+	}
 
-    public string Description()
-    {
-        return "Mandooka Dasa (seeded from) " + Basics.numPartsInDivisionString(options.Division);
-    }
+	public string Description()
+	{
+		return "Mandooka Dasa (seeded from) " + Basics.numPartsInDivisionString(options.Division);
+	}
 
-    public object GetOptions()
-    {
-        return options.Clone();
-    }
+	public object GetOptions()
+	{
+		return options.Clone();
+	}
 
-    public object SetOptions(object a)
-    {
-        var uo = (RasiDasaUserOptions) a;
-        options.CopyFrom(uo);
-        RecalculateEvent();
-        return options.Clone();
-    }
+	public object SetOptions(object a)
+	{
+		var uo = (RasiDasaUserOptions) a;
+		options.CopyFrom(uo);
+		RecalculateEvent();
+		return options.Clone();
+	}
 
-    public new void DivisionChanged(Division div)
-    {
-        var newOpts = (RasiDasaUserOptions) options.Clone();
-        newOpts.Division = (Division) div.Clone();
-        SetOptions(newOpts);
-    }
+	public new void DivisionChanged(Division div)
+	{
+		var newOpts = (RasiDasaUserOptions) options.Clone();
+		newOpts.Division = (Division) div.Clone();
+		SetOptions(newOpts);
+	}
 
-    public int DasaLength(ZodiacHouse zh)
-    {
-        switch ((int) zh.value % 3)
-        {
-            case 1:  return 7;
-            case 2:  return 8;
-            default: return 9;
-        }
-    }
+	public int DasaLength(ZodiacHouse zh)
+	{
+		switch ((int) zh.value % 3)
+		{
+			case 1:  return 7;
+			case 2:  return 8;
+			default: return 9;
+		}
+	}
 }

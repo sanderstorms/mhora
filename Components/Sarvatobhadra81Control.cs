@@ -24,6 +24,8 @@ using System.Windows.Forms;
 using Mhora.Body;
 using Mhora.Calculation;
 using Mhora.Settings;
+using Mhora.Tables;
+using Mhora.Tables.Nakshatra;
 
 namespace Mhora.Components;
 
@@ -187,7 +189,7 @@ public class Sarvatobhadra81Control : MhoraControl
 
         foreach (Position bp in h.positionList)
         {
-            if (bp.type != BodyType.Name.Graha && bp.type != BodyType.Name.Lagna)
+            if (bp.type != Tables.Body.Type.Graha && bp.type != Tables.Body.Type.Lagna)
             {
                 continue;
             }
@@ -197,7 +199,7 @@ public class Sarvatobhadra81Control : MhoraControl
             var pxBase = GetCellInRectangle(9, 26, (int) n.value);
             var pxOff  = GetItemOffset(items[(int) n.value]);
             var px     = new Point(pxBase.X + pxOff.X, pxBase.Y + pxOff.Y);
-            var s      = Body.Body.toShortString(bp.name);
+            var s      = Tables.Body.toShortString(bp.name);
             g.DrawString(s, f, Brushes.Maroon, px.X, px.Y);
         }
     }
@@ -286,229 +288,6 @@ public class Sarvatobhadra81Control : MhoraControl
             DrawTithiItem(g, 5, 6, 4, "3,8,13");
             DrawTithiItem(g, 6, 5, 4, "2,7,12");
         }
-        string[][] strs =
-        {
-            new[]
-            {
-                "a",
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                "aa"
-            },
-            new[]
-            {
-                string.Empty,
-                "u",
-                "a",
-                "va",
-                "ka",
-                "ha",
-                "da",
-                "uu",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "la",
-                "lu",
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                "lu",
-                "ma",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "cha",
-                string.Empty,
-                "o",
-                string.Empty,
-                "au",
-                string.Empty,
-                "Ta",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "da",
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                "pa",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "sa",
-                string.Empty,
-                "ah",
-                string.Empty,
-                "an",
-                string.Empty,
-                "ra",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "ga",
-                "ai",
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                "e",
-                "ta",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "r^ii",
-                "kha",
-                "ja",
-                "ba",
-                "ya",
-                "na",
-                "r^i",
-                string.Empty
-            },
-            new[]
-            {
-                "ii",
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                "i"
-            }
-        };
-
-        string[][] strs_san =
-        {
-            new[]
-            {
-                "A",
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                "Aa"
-            },
-            new[]
-            {
-                string.Empty,
-                "%",
-                "A",
-                "v",
-                "k",
-                "h",
-                "d",
-                "^",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "l",
-                "l&",
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                "l&",
-                "m",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "c",
-                string.Empty,
-                "Aae",
-                string.Empty,
-                "AaE",
-                string.Empty,
-                "q",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "d",
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                "p",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "s",
-                string.Empty,
-                "A>",
-                string.Empty,
-                "A<",
-                string.Empty,
-                "r",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "g",
-                "@e",
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                "@",
-                "t",
-                string.Empty
-            },
-            new[]
-            {
-                string.Empty,
-                "\\",
-                "o",
-                "j",
-                "b",
-                "y",
-                "n",
-                "\\",
-                string.Empty
-            },
-            new[]
-            {
-                "$",
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                string.Empty,
-                "#"
-            }
-        };
 
         for (var i = 0; i < 9; i++)
         {
@@ -517,7 +296,7 @@ public class Sarvatobhadra81Control : MhoraControl
                 var pxBase = GetCell(j + 1, i + 1);
                 var pxOff  = GetItemOffsetCenter();
                 var px     = new Point(pxBase.X + pxOff.X, pxBase.Y + pxOff.Y);
-                var s      = strs_san[i][j];
+                var s      = Tables.Sarvatobhadra.strs_san[i][j];
                 var sz     = g.MeasureString(s, f);
                 g.DrawString(s, f_sanskrit, Brushes.CadetBlue, px.X - sz.Width / 2, px.Y - sz.Height * (float) 1.5);
             }

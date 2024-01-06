@@ -26,70 +26,70 @@ namespace Mhora.Calculation;
 
 internal class OrderedGrahasConverter : ExpandableObjectConverter
 {
-    public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
-    {
-        if (t == typeof(string))
-        {
-            return true;
-        }
+	public override bool CanConvertFrom(ITypeDescriptorContext context, Type t)
+	{
+		if (t == typeof(string))
+		{
+			return true;
+		}
 
-        return base.CanConvertFrom(context, t);
-    }
+		return base.CanConvertFrom(context, t);
+	}
 
-    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
-    {
-        Trace.Assert(value is string, "OrderedGrahasConverter::ConvertFrom 1");
-        var s = (string) value;
+	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
+	{
+		Trace.Assert(value is string, "OrderedGrahasConverter::ConvertFrom 1");
+		var s = (string) value;
 
-        var oz  = new OrderedGrahas();
-        var al  = new ArrayList();
-        var arr = s.Split('.', ' ', ':', ',');
-        foreach (var szh_mixed in arr)
-        {
-            var szh = szh_mixed.ToLower();
-            switch (szh)
-            {
-                case "as":
-                    al.Add(Body.Body.Name.Lagna);
-                    break;
-                case "su":
-                    al.Add(Body.Body.Name.Sun);
-                    break;
-                case "mo":
-                    al.Add(Body.Body.Name.Moon);
-                    break;
-                case "ma":
-                    al.Add(Body.Body.Name.Mars);
-                    break;
-                case "me":
-                    al.Add(Body.Body.Name.Mercury);
-                    break;
-                case "ju":
-                    al.Add(Body.Body.Name.Jupiter);
-                    break;
-                case "ve":
-                    al.Add(Body.Body.Name.Venus);
-                    break;
-                case "sa":
-                    al.Add(Body.Body.Name.Saturn);
-                    break;
-                case "ra":
-                    al.Add(Body.Body.Name.Rahu);
-                    break;
-                case "ke":
-                    al.Add(Body.Body.Name.Ketu);
-                    break;
-            }
-        }
+		var oz  = new OrderedGrahas();
+		var al  = new ArrayList();
+		var arr = s.Split('.', ' ', ':', ',');
+		foreach (var szh_mixed in arr)
+		{
+			var szh = szh_mixed.ToLower();
+			switch (szh)
+			{
+				case "as":
+					al.Add(Tables.Body.Name.Lagna);
+					break;
+				case "su":
+					al.Add(Tables.Body.Name.Sun);
+					break;
+				case "mo":
+					al.Add(Tables.Body.Name.Moon);
+					break;
+				case "ma":
+					al.Add(Tables.Body.Name.Mars);
+					break;
+				case "me":
+					al.Add(Tables.Body.Name.Mercury);
+					break;
+				case "ju":
+					al.Add(Tables.Body.Name.Jupiter);
+					break;
+				case "ve":
+					al.Add(Tables.Body.Name.Venus);
+					break;
+				case "sa":
+					al.Add(Tables.Body.Name.Saturn);
+					break;
+				case "ra":
+					al.Add(Tables.Body.Name.Rahu);
+					break;
+				case "ke":
+					al.Add(Tables.Body.Name.Ketu);
+					break;
+			}
+		}
 
-        oz.grahas = (ArrayList) al.Clone();
-        return oz;
-    }
+		oz.grahas = (ArrayList) al.Clone();
+		return oz;
+	}
 
-    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
-    {
-        Trace.Assert(destType == typeof(string) && value is OrderedGrahas, "OrderedGrahas::ConvertTo 1");
-        var oz = (OrderedGrahas) value;
-        return oz.ToString();
-    }
+	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
+	{
+		Trace.Assert(destType == typeof(string) && value is OrderedGrahas, "OrderedGrahas::ConvertTo 1");
+		var oz = (OrderedGrahas) value;
+		return oz.ToString();
+	}
 }

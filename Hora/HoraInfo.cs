@@ -33,150 +33,138 @@ namespace Mhora.Hora;
 [Serializable]
 public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 {
-    public enum EFileType
-    {
-        JagannathaHora,
-        MudgalaHora
-    }
+	public enum EFileType
+	{
+		JagannathaHora,
+		MudgalaHora
+	}
 
-    public enum Name
-    {
-        Birth,
-        Progression,
-        TithiPravesh,
-        Transit,
-        Dasa
-    }
+	public enum Name
+	{
+		Birth,
+		Progression,
+		TithiPravesh,
+		Transit,
+		Dasa
+	}
 
-    private const string CAT_TOB = "1: Birth Info";
+	private const string CAT_TOB = "1: Birth Info";
 
-    private const string CAT_EVT = "2: Events";
+	private const string CAT_EVT = "2: Events";
 
-    //public double lon, lat, alt, tz;
-    public double          alt;
-    public double          defaultYearCompression;
-    public double          defaultYearLength;
-    public ToDate.DateType defaultYearType = ToDate.DateType.FixedYear;
+	//public double lon, lat, alt, tz;
+	public double          alt;
+	public double          defaultYearCompression;
+	public double          defaultYearLength;
+	public ToDate.DateType defaultYearType = ToDate.DateType.FixedYear;
 
-    private UserEvent[] events;
-    public  EFileType   FileType;
+	private UserEvent[] events;
+	public  EFileType   FileType;
 
-    public HMSInfo lon, lat, tz;
+	public HMSInfo lon, lat, tz;
 
-    public string name;
-    public Moment tob;
-    public Name   type;
+	public string name;
+	public Moment tob;
+	public Name   type;
 
-    protected HoraInfo(SerializationInfo info, StreamingContext context) : this()
-    {
-        Constructor(GetType(), info, context);
-    }
+	protected HoraInfo(SerializationInfo info, StreamingContext context) : this()
+	{
+		Constructor(GetType(), info, context);
+	}
 
-    public HoraInfo(Moment atob, HMSInfo alat, HMSInfo alon, HMSInfo atz)
-    {
-        tob      = atob;
-        lon      = alon;
-        lat      = alat;
-        tz       = atz;
-        alt      = 0.0;
-        type     = Name.Birth;
-        FileType = EFileType.MudgalaHora;
-        events   = new UserEvent[0];
-    }
+	public HoraInfo(Moment atob, HMSInfo alat, HMSInfo alon, HMSInfo atz)
+	{
+		tob      = atob;
+		lon      = alon;
+		lat      = alat;
+		tz       = atz;
+		alt      = 0.0;
+		type     = Name.Birth;
+		FileType = EFileType.MudgalaHora;
+		events   = new UserEvent[0];
+	}
 
-    public HoraInfo()
-    {
-        var t = DateTime.Now;
-        tob      = new Moment(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
-        lon      = (HMSInfo) MhoraGlobalOptions.Instance.Longitude.Clone();
-        lat      = (HMSInfo) MhoraGlobalOptions.Instance.Latitude.Clone();
-        tz       = (HMSInfo) MhoraGlobalOptions.Instance.TimeZone.Clone();
-        alt      = 0.0;
-        type     = Name.Birth;
-        FileType = EFileType.MudgalaHora;
-        events   = new UserEvent[0];
-    }
+	public HoraInfo()
+	{
+		var t = DateTime.Now;
+		tob      = new Moment(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
+		lon      = (HMSInfo) MhoraGlobalOptions.Instance.Longitude.Clone();
+		lat      = (HMSInfo) MhoraGlobalOptions.Instance.Latitude.Clone();
+		tz       = (HMSInfo) MhoraGlobalOptions.Instance.TimeZone.Clone();
+		alt      = 0.0;
+		type     = Name.Birth;
+		FileType = EFileType.MudgalaHora;
+		events   = new UserEvent[0];
+	}
 
-    [Category(CAT_TOB)]
-    [PropertyOrder(1)]
-    [PGDisplayName("Time of Birth")]
-    [Description("Date of Birth. Format is 'dd Mmm yyyy hh:mm:ss'\n Example 23 Mar 1979 23:11:00")]
-    public Moment DateOfBirth
-    {
-        get =>
-            tob;
-        set =>
-            tob = value;
-    }
+	[Category(CAT_TOB)]
+	[PropertyOrder(1)]
+	[PGDisplayName("Time of Birth")]
+	[Description("Date of Birth. Format is 'dd Mmm yyyy hh:mm:ss'\n Example 23 Mar 1979 23:11:00")]
+	public Moment DateOfBirth
+	{
+		get => tob;
+		set => tob = value;
+	}
 
-    [Category(CAT_TOB)]
-    [PropertyOrder(2)]
-    [Description("Latitude. Format is 'hh D mm:ss mm:ss'\n Example 23 N 24:00")]
-    public HMSInfo Latitude
-    {
-        get =>
-            lat;
-        set =>
-            lat = value;
-    }
+	[Category(CAT_TOB)]
+	[PropertyOrder(2)]
+	[Description("Latitude. Format is 'hh D mm:ss mm:ss'\n Example 23 N 24:00")]
+	public HMSInfo Latitude
+	{
+		get => lat;
+		set => lat = value;
+	}
 
-    [Category(CAT_TOB)]
-    [PropertyOrder(3)]
-    [Description("Longitude. Format is 'hh D mm:ss mm:ss'\n Example 23 E 24:00")]
-    public HMSInfo Longitude
-    {
-        get =>
-            lon;
-        set =>
-            lon = value;
-    }
+	[Category(CAT_TOB)]
+	[PropertyOrder(3)]
+	[Description("Longitude. Format is 'hh D mm:ss mm:ss'\n Example 23 E 24:00")]
+	public HMSInfo Longitude
+	{
+		get => lon;
+		set => lon = value;
+	}
 
-    [Category(CAT_TOB)]
-    [PropertyOrder(4)]
-    [PGDisplayName("Time zone")]
-    [Description("Time Zone. Format is 'hh D mm:ss mm:ss'\n Example 3 E 00:00")]
-    public HMSInfo TimeZone
-    {
-        get =>
-            tz;
-        set =>
-            tz = value;
-    }
+	[Category(CAT_TOB)]
+	[PropertyOrder(4)]
+	[PGDisplayName("Time zone")]
+	[Description("Time Zone. Format is 'hh D mm:ss mm:ss'\n Example 3 E 00:00")]
+	public HMSInfo TimeZone
+	{
+		get => tz;
+		set => tz = value;
+	}
 
-    [Category(CAT_TOB)]
-    [PropertyOrder(5)]
-    public double Altitude
-    {
-        get =>
-            alt;
-        set =>
-            alt = value;
-    }
+	[Category(CAT_TOB)]
+	[PropertyOrder(5)]
+	public double Altitude
+	{
+		get => alt;
+		set => alt = value;
+	}
 
-    [Category(CAT_EVT)]
-    [PropertyOrder(1)]
-    [Description("Events")]
-    public UserEvent[] Events
-    {
-        get =>
-            events;
-        set =>
-            events = value;
-    }
+	[Category(CAT_EVT)]
+	[PropertyOrder(1)]
+	[Description("Events")]
+	public UserEvent[] Events
+	{
+		get => events;
+		set => events = value;
+	}
 
-    public object Clone()
-    {
-        var hi = new HoraInfo((Moment) tob.Clone(), (HMSInfo) lat.Clone(), (HMSInfo) lon.Clone(), (HMSInfo) tz.Clone());
-        hi.events                 = events;
-        hi.name                   = name;
-        hi.defaultYearCompression = defaultYearCompression;
-        hi.defaultYearLength      = defaultYearLength;
-        hi.defaultYearType        = defaultYearType;
-        return hi;
-    }
+	public object Clone()
+	{
+		var hi = new HoraInfo((Moment) tob.Clone(), (HMSInfo) lat.Clone(), (HMSInfo) lon.Clone(), (HMSInfo) tz.Clone());
+		hi.events                 = events;
+		hi.name                   = name;
+		hi.defaultYearCompression = defaultYearCompression;
+		hi.defaultYearLength      = defaultYearLength;
+		hi.defaultYearType        = defaultYearType;
+		return hi;
+	}
 
-    void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        GetObjectData(GetType(), info, context);
-    }
+	void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+	{
+		GetObjectData(GetType(), info, context);
+	}
 }

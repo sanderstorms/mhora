@@ -24,48 +24,48 @@ namespace Mhora.Calculation.Strength;
 // Stronger graha in such a rasi
 public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByRasisNature(Horoscope h, Division dtype) : base(h, dtype, true)
-    {
-    }
+	public StrengthByRasisNature(Horoscope h, Division dtype) : base(h, dtype, true)
+	{
+	}
 
-    public bool stronger(Body.Body.Name m, Body.Body.Name n)
-    {
-        var za = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
-        var zb = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
-        return stronger(za, zb);
-    }
+	public bool stronger(Tables.Body.Name m, Tables.Body.Name n)
+	{
+		var za = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
+		var zb = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
+		return stronger(za, zb);
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        int[] vals =
-        {
-            3,
-            1,
-            2
-        }; // dual, move, fix
-        var a = naturalValueForRasi(za);
-        var b = naturalValueForRasi(zb);
-        if (a > b)
-        {
-            return true;
-        }
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		int[] vals =
+		{
+			3,
+			1,
+			2
+		}; // dual, move, fix
+		var a = naturalValueForRasi(za);
+		var b = naturalValueForRasi(zb);
+		if (a > b)
+		{
+			return true;
+		}
 
-        if (a < b)
-        {
-            return false;
-        }
+		if (a < b)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    public int naturalValueForRasi(ZodiacHouse.Name zha)
-    {
-        int[] vals =
-        {
-            3,
-            1,
-            2
-        }; // dual, move, fix
-        return vals[(int) zha % 3];
-    }
+	public int naturalValueForRasi(ZodiacHouse.Name zha)
+	{
+		int[] vals =
+		{
+			3,
+			1,
+			2
+		}; // dual, move, fix
+		return vals[(int) zha % 3];
+	}
 }

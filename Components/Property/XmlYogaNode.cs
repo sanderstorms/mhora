@@ -20,21 +20,21 @@ namespace Mhora.Components.Property;
 
 public class XmlYogaNode
 {
-    public enum Pos
-    {
-        SourceRef,
-        SourceText,
-        SourceItxText,
-        MhoraRule,
-        Result,
-        Other
-    }
+	public enum Pos
+	{
+		SourceRef,
+		SourceText,
+		SourceItxText,
+		MhoraRule,
+		Result,
+		Other
+	}
 
-    public string mhoraRule;     // rule in mhora format
-    public string result;        // results
-    public string sourceItxText; // source rule (eng / sans)
-    public string sourceRef;     // source reference (text:verse)
-    public string sourceText;    // source rule (english)
-    public string yogaCat;       // yoga category
-    public string yogaName;      // short desc of yoga (1-2 words)
+	public string mhoraRule;     // rule in mhora format
+	public string result;        // results
+	public string sourceItxText; // source rule (eng / sans)
+	public string sourceRef;     // source reference (text:verse)
+	public string sourceText;    // source rule (english)
+	public string yogaCat;       // yoga category
+	public string yogaName;      // short desc of yoga (1-2 words)
 }

@@ -22,94 +22,94 @@ namespace Mhora.Calculation;
 
 internal class CuspTransitSearch
 {
-    private readonly Horoscope h;
+	private readonly Horoscope h;
 
-    public CuspTransitSearch(Horoscope _h)
-    {
-        h = _h;
-    }
+	public CuspTransitSearch(Horoscope _h)
+	{
+		h = _h;
+	}
 
-    private double DirectSpeed(Body.Body.Name b)
-    {
-        switch (b)
-        {
-            case Body.Body.Name.Sun:   return 365.2425;
-            case Body.Body.Name.Moon:  return 28.0;
-            case Body.Body.Name.Lagna: return 1.0;
-        }
+	private double DirectSpeed(Tables.Body.Name b)
+	{
+		switch (b)
+		{
+			case Tables.Body.Name.Sun:   return 365.2425;
+			case Tables.Body.Name.Moon:  return 28.0;
+			case Tables.Body.Name.Lagna: return 1.0;
+		}
 
-        return 0.0;
-    }
+		return 0.0;
+	}
 
-    public double TransitSearchDirect(Body.Body.Name SearchBody, Moment StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
-    {
-        var bDiscard = true;
+	public double TransitSearchDirect(Tables.Body.Name SearchBody, Moment StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
+	{
+		var bDiscard = true;
 
-        sweph.obtainLock(h);
-        var t        = new Transit(h, SearchBody);
-        var ut_base  = StartDate.toUniversalTime() - h.info.TimeZone.toDouble() / 24.0;
-        var lon_curr = t.GenericLongitude(ut_base, ref bDiscard);
-        sweph.releaseLock(h);
+		sweph.obtainLock(h);
+		var t        = new Transit(h, SearchBody);
+		var ut_base  = StartDate.toUniversalTime() - h.info.TimeZone.toDouble() / 24.0;
+		var lon_curr = t.GenericLongitude(ut_base, ref bDiscard);
+		sweph.releaseLock(h);
 
-        double diff = 0;
-        diff = TransitPoint.sub(lon_curr).value;
+		double diff = 0;
+		diff = TransitPoint.sub(lon_curr).value;
 
-        if (false == Forward)
-        {
-            diff -= 360.0;
-        }
+		if (false == Forward)
+		{
+			diff -= 360.0;
+		}
 
-        var ut_diff_approx = diff / 360.0 * DirectSpeed(SearchBody);
-        sweph.obtainLock(h);
-        double found_ut = 0;
+		var ut_diff_approx = diff / 360.0 * DirectSpeed(SearchBody);
+		sweph.obtainLock(h);
+		double found_ut = 0;
 
-        if (SearchBody == Body.Body.Name.Lagna)
-        {
-            found_ut = t.LinearSearchBinary(ut_base + ut_diff_approx - 3.0 / 24.0, ut_base + ut_diff_approx + 3.0 / 24.0, TransitPoint, t.GenericLongitude);
-        }
-        else
-        {
-            found_ut = t.LinearSearch(ut_base + ut_diff_approx, TransitPoint, t.GenericLongitude);
-        }
+		if (SearchBody == Tables.Body.Name.Lagna)
+		{
+			found_ut = t.LinearSearchBinary(ut_base + ut_diff_approx - 3.0 / 24.0, ut_base + ut_diff_approx + 3.0 / 24.0, TransitPoint, t.GenericLongitude);
+		}
+		else
+		{
+			found_ut = t.LinearSearch(ut_base + ut_diff_approx, TransitPoint, t.GenericLongitude);
+		}
 
-        FoundLon.value = t.GenericLongitude(found_ut, ref bForward).value;
-        bForward       = true;
-        sweph.releaseLock(h);
-        return found_ut;
-    }
+		FoundLon.value = t.GenericLongitude(found_ut, ref bForward).value;
+		bForward       = true;
+		sweph.releaseLock(h);
+		return found_ut;
+	}
 
 
-    public double TransitSearch(Body.Body.Name SearchBody, Moment StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
-    {
-        if (SearchBody == Body.Body.Name.Sun || SearchBody == Body.Body.Name.Moon)
-        {
-            return TransitSearchDirect(SearchBody, StartDate, Forward, TransitPoint, FoundLon, ref bForward);
-        }
+	public double TransitSearch(Tables.Body.Name SearchBody, Moment StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
+	{
+		if (SearchBody == Tables.Body.Name.Sun || SearchBody == Tables.Body.Name.Moon)
+		{
+			return TransitSearchDirect(SearchBody, StartDate, Forward, TransitPoint, FoundLon, ref bForward);
+		}
 
-        if (((int) SearchBody <= (int) Body.Body.Name.Moon || (int) SearchBody > (int) Body.Body.Name.Saturn) && SearchBody != Body.Body.Name.Lagna)
-        {
-            return StartDate.toUniversalTime();
-        }
+		if (((int) SearchBody <= (int) Tables.Body.Name.Moon || (int) SearchBody > (int) Tables.Body.Name.Saturn) && SearchBody != Tables.Body.Name.Lagna)
+		{
+			return StartDate.toUniversalTime();
+		}
 
-        sweph.obtainLock(h);
+		sweph.obtainLock(h);
 
-        var r = new Retrogression(h, SearchBody);
+		var r = new Retrogression(h, SearchBody);
 
-        var julday_ut = StartDate.toUniversalTime() - h.info.tz.toDouble() / 24.0;
-        var found_ut  = julday_ut;
+		var julday_ut = StartDate.toUniversalTime() - h.info.tz.toDouble() / 24.0;
+		var found_ut  = julday_ut;
 
-        if (Forward)
-        {
-            found_ut = r.GetTransitForward(julday_ut, TransitPoint);
-        }
-        else
-        {
-            found_ut = r.GetTransitBackward(julday_ut, TransitPoint);
-        }
+		if (Forward)
+		{
+			found_ut = r.GetTransitForward(julday_ut, TransitPoint);
+		}
+		else
+		{
+			found_ut = r.GetTransitBackward(julday_ut, TransitPoint);
+		}
 
-        FoundLon.value = r.GetLon(found_ut, ref bForward).value;
+		FoundLon.value = r.GetLon(found_ut, ref bForward).value;
 
-        sweph.releaseLock(h);
-        return found_ut;
-    }
+		sweph.releaseLock(h);
+		return found_ut;
+	}
 }

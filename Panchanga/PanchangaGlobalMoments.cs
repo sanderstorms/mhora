@@ -22,8 +22,8 @@ namespace Mhora.Panchanga;
 
 public class PanchangaGlobalMoments
 {
-    public ArrayList karanas_ut    = new();
-    public ArrayList nakshatras_ut = new();
-    public ArrayList smyogas_ut    = new();
-    public ArrayList tithis_ut     = new();
+	public ArrayList karanas_ut    = new();
+	public ArrayList nakshatras_ut = new();
+	public ArrayList smyogas_ut    = new();
+	public ArrayList tithis_ut     = new();
 }

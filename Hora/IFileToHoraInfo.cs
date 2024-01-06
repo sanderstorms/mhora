@@ -24,6 +24,6 @@ namespace Mhora.Hora;
 /// </summary>
 public interface IFileToHoraInfo
 {
-    HoraInfo toHoraInfo();
-    void     ToFile(HoraInfo hi);
+	HoraInfo toHoraInfo();
+	void     ToFile(HoraInfo hi);
 }

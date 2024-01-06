@@ -25,72 +25,70 @@ namespace Mhora;
 
 public class TattwaDasa : Dasa, IDasa
 {
-    private readonly Horoscope h;
+	private readonly Horoscope h;
 
-    public TattwaDasa(Horoscope _h)
-    {
-        h = _h;
-    }
+	public TattwaDasa(Horoscope _h)
+	{
+		h = _h;
+	}
 
-    public double paramAyus()
-    {
-        return 1.0 / 24.0 / 60.0;
-    }
+	public double paramAyus()
+	{
+		return 1.0 / 24.0 / 60.0;
+	}
 
-    public void recalculateOptions()
-    {
-    }
+	public void recalculateOptions()
+	{
+	}
 
-    public ArrayList Dasa(int cycle)
-    {
-        var al = new ArrayList();
+	public ArrayList Dasa(int cycle)
+	{
+		var al = new ArrayList();
 
-        var day_length = h.next_sunrise + 24.0 - h.sunrise;
-        var day_sr     = Math.Floor(h.baseUT)  + h.sunrise / 24.0;
+		var day_length = h.next_sunrise + 24.0 - h.sunrise;
+		var day_sr     = Math.Floor(h.baseUT)  + h.sunrise / 24.0;
 
-        return al;
-    }
+		return al;
+	}
 
-    public ArrayList AntarDasa(DasaEntry pdi)
-    {
-        return new ArrayList();
-    }
+	public ArrayList AntarDasa(DasaEntry pdi)
+	{
+		return new ArrayList();
+	}
 
-    public string Description()
-    {
-        return "Tattwa Dasa";
-    }
+	public string Description()
+	{
+		return "Tattwa Dasa";
+	}
 
-    public object GetOptions()
-    {
-        return new object();
-    }
+	public object GetOptions()
+	{
+		return new object();
+	}
 
-    public object SetOptions(object o)
-    {
-        return o;
-    }
+	public object SetOptions(object o)
+	{
+		return o;
+	}
 
-    public class UserOptions
-    {
-        public enum Tattwa
-        {
-            Bhoomi,
-            Jala,
-            Agni,
-            Vayu,
-            Akasha
-        }
+	public class UserOptions
+	{
+		public enum Tattwa
+		{
+			Bhoomi,
+			Jala,
+			Agni,
+			Vayu,
+			Akasha
+		}
 
-        public Tattwa _startTattwa;
+		public Tattwa _startTattwa;
 
-        [PGDisplayName("Seed Tattwa")]
-        public Tattwa StartTattwa
-        {
-            get =>
-                _startTattwa;
-            set =>
-                _startTattwa = value;
-        }
-    }
+		[PGDisplayName("Seed Tattwa")]
+		public Tattwa StartTattwa
+		{
+			get => _startTattwa;
+			set => _startTattwa = value;
+		}
+	}
 }

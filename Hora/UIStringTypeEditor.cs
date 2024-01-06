@@ -26,25 +26,25 @@ namespace Mhora.Hora;
 
 public class UIStringTypeEditor : UITypeEditor
 {
-    private IWindowsFormsEditorService edSvc;
+	private IWindowsFormsEditorService edSvc;
 
-    public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
-    {
-        edSvc = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
-        var stringInit = string.Empty;
-        if (value is string)
-        {
-            stringInit = (string) value;
-        }
+	public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+	{
+		edSvc = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
+		var stringInit = string.Empty;
+		if (value is string)
+		{
+			stringInit = (string) value;
+		}
 
-        var le = new LongStringEditor(stringInit);
-        le.TitleText = "Event Description";
-        edSvc.ShowDialog(le);
-        return le.EditorText;
-    }
+		var le = new LongStringEditor(stringInit);
+		le.TitleText = "Event Description";
+		edSvc.ShowDialog(le);
+		return le.EditorText;
+	}
 
-    public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
-    {
-        return UITypeEditorEditStyle.Modal;
-    }
+	public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+	{
+		return UITypeEditorEditStyle.Modal;
+	}
 }

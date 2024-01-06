@@ -24,29 +24,29 @@ namespace Mhora.Calculation.Strength;
 // Stronger graha is in such a rasi
 public class StrengthByConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByConjunction(Horoscope h, Division dtype) : base(h, dtype, true)
-    {
-    }
+	public StrengthByConjunction(Horoscope h, Division dtype) : base(h, dtype, true)
+	{
+	}
 
-    public bool stronger(Body.Body.Name m, Body.Body.Name n)
-    {
-        return stronger(h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value, h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value);
-    }
+	public bool stronger(Tables.Body.Name m, Tables.Body.Name n)
+	{
+		return stronger(h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value, h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value);
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        var numa = numGrahasInZodiacHouse(za);
-        var numb = numGrahasInZodiacHouse(zb);
-        if (numa > numb)
-        {
-            return true;
-        }
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		var numa = numGrahasInZodiacHouse(za);
+		var numb = numGrahasInZodiacHouse(zb);
+		if (numa > numb)
+		{
+			return true;
+		}
 
-        if (numb > numa)
-        {
-            return false;
-        }
+		if (numb > numa)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 }

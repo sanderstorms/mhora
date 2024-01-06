@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using Mhora.Body;
+using Mhora.Tables;
 using Mhora.Varga;
 
 namespace Mhora.Calculation.Strength;
@@ -38,7 +39,7 @@ public abstract class BaseStrength
         std_div_pos     = h.CalculateDivisionPositions(dtype);
     }
 
-    protected Body.Body.Name GetStrengthLord(ZodiacHouse.Name zh)
+    protected Tables.Body.Name GetStrengthLord(ZodiacHouse.Name zh)
     {
         if (bUseSimpleLords)
         {
@@ -48,7 +49,7 @@ public abstract class BaseStrength
         return h.LordOfZodiacHouse(new ZodiacHouse(zh), dtype);
     }
 
-    protected Body.Body.Name GetStrengthLord(ZodiacHouse zh)
+    protected Tables.Body.Name GetStrengthLord(ZodiacHouse zh)
     {
         return GetStrengthLord(zh.value);
     }
@@ -58,7 +59,7 @@ public abstract class BaseStrength
         var num = 0;
         foreach (DivisionPosition dp in std_div_pos)
         {
-            if (dp.type != BodyType.Name.Graha)
+            if (dp.type != Tables.Body.Type.Graha)
             {
                 continue;
             }
@@ -72,10 +73,10 @@ public abstract class BaseStrength
         return num;
     }
 
-    protected double karakaLongitude(Body.Body.Name b)
+    protected double karakaLongitude(Tables.Body.Name b)
     {
         var lon = h.getPosition(b).longitude.toZodiacHouseOffset();
-        if (b == Body.Body.Name.Rahu || b == Body.Body.Name.Ketu)
+        if (b == Tables.Body.Name.Rahu || b == Tables.Body.Name.Ketu)
         {
             lon = 30.0 - lon;
         }
@@ -83,21 +84,21 @@ public abstract class BaseStrength
         return lon;
     }
 
-    protected Body.Body.Name findAtmaKaraka()
+    protected Tables.Body.Name findAtmaKaraka()
     {
-        Body.Body.Name[] karakaBodies =
+        Tables.Body.Name[] karakaBodies =
         {
-            Body.Body.Name.Sun,
-            Body.Body.Name.Moon,
-            Body.Body.Name.Mars,
-            Body.Body.Name.Mercury,
-            Body.Body.Name.Jupiter,
-            Body.Body.Name.Venus,
-            Body.Body.Name.Saturn,
-            Body.Body.Name.Rahu
+            Tables.Body.Name.Sun,
+            Tables.Body.Name.Moon,
+            Tables.Body.Name.Mars,
+            Tables.Body.Name.Mercury,
+            Tables.Body.Name.Jupiter,
+            Tables.Body.Name.Venus,
+            Tables.Body.Name.Saturn,
+            Tables.Body.Name.Rahu
         };
         var lon = 0.0;
-        var ret = Body.Body.Name.Sun;
+        var ret = Tables.Body.Name.Sun;
         foreach (var bn in karakaBodies)
         {
             var offset = karakaLongitude(bn);
@@ -117,7 +118,7 @@ public abstract class BaseStrength
         var ret = new ArrayList();
         foreach (DivisionPosition dp in std_div_pos)
         {
-            if (dp.type == BodyType.Name.Graha && dp.zodiac_house.value == zh)
+            if (dp.type == Tables.Body.Type.Graha && dp.zodiac_house.value == zh)
             {
                 ret.Add(dp.name);
             }

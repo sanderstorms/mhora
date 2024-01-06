@@ -21,14 +21,30 @@ using System.Diagnostics;
 using Mhora.Calculation;
 using Mhora.Util;
 
-namespace Mhora.Body;
+namespace Mhora.Tables;
 
 /// <summary>
 ///     A compile-time list of every body we will use in this program
 /// </summary>
 public class Body
 {
-    [TypeConverter(typeof(EnumDescConverter))]
+	public enum Type
+	{
+		Lagna,
+		Graha,
+		NonLunarNode,
+		SpecialLagna,
+		ChandraLagna,
+		BhavaArudha,
+		BhavaArudhaSecondary,
+		GrahaArudha,
+		Varnada,
+		Upagraha,
+		Sahama,
+		Other
+	}
+
+	[TypeConverter(typeof(EnumDescConverter))]
     public enum Name
     {
         // Do NOT CHANGE ORDER WITHOUT CHANING NARAYANA DASA ETC

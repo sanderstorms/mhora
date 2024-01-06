@@ -57,24 +57,24 @@ namespace Mhora.Components.SplashScreen;
 [Flags]
 public enum SplashScreenStyles
 {
-    None = 0,
+	None = 0,
 
-    /// <summary>
-    ///     Normally the splash is automatically set to be center of screen and without a title bar
-    ///     overriding whatever styles normally apply.
-    ///     Set this to avoid those styles being applied.
-    /// </summary>
-    DontSetFormStyles = 1,
+	/// <summary>
+	///     Normally the splash is automatically set to be center of screen and without a title bar
+	///     overriding whatever styles normally apply.
+	///     Set this to avoid those styles being applied.
+	/// </summary>
+	DontSetFormStyles = 1,
 
-    /// <summary>
-    ///     Makes the created splash screen top most - not recommended as it can be irritating for users.
-    ///     See Form.TopMost for more details.
-    /// </summary>
-    TopMost = 2,
+	/// <summary>
+	///     Makes the created splash screen top most - not recommended as it can be irritating for users.
+	///     See Form.TopMost for more details.
+	/// </summary>
+	TopMost = 2,
 
-    /// <summary>
-    ///     Normally the splash is created with a FixedSingle border style.
-    ///     Set this to avoid that style being applied.
-    /// </summary>
-    DontSetBorderStyle = 4
+	/// <summary>
+	///     Normally the splash is created with a FixedSingle border style.
+	///     Set this to avoid that style being applied.
+	/// </summary>
+	DontSetBorderStyle = 4
 }

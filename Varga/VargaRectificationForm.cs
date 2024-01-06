@@ -26,6 +26,7 @@ using Mhora.Calculation;
 using Mhora.Components;
 using Mhora.Settings;
 using Mhora.SwissEph;
+using Mhora.Tables;
 
 namespace Mhora.Varga;
 
@@ -42,11 +43,11 @@ public class VargaRectificationForm : Form
     private readonly CuspTransitSearch cs;
     private readonly Division          dtypeRasi = new(Basics.DivisionType.Rasi);
 
-    private readonly Horoscope      h;
-    private readonly int            half_tick_height = 3;
-    private readonly Body.Body.Name mBody            = Body.Body.Name.Lagna;
-    private readonly Moment         mOriginal;
-    private readonly int            unit_height = 30;
+    private readonly Horoscope        h;
+    private readonly int              half_tick_height = 3;
+    private readonly Tables.Body.Name mBody            = Tables.Body.Name.Lagna;
+    private readonly Moment           mOriginal;
+    private readonly int              unit_height = 30;
 
     private readonly int                  vname_width = 50;
     private          Bitmap               bmpBuffer;
@@ -158,7 +159,7 @@ public class VargaRectificationForm : Form
             var ut_curr = ut_lower - 1.0 / (24.0 * 60.0);
 
             sweph.obtainLock(h);
-            var bp = Basics.CalculateSingleBodyPosition(ut_curr, sweph.BodyNameToSweph(mBody), mBody, BodyType.Name.Graha, h);
+            var bp = Basics.CalculateSingleBodyPosition(ut_curr, sweph.BodyNameToSweph(mBody), mBody, Tables.Body.Type.Graha, h);
             sweph.releaseLock(h);
             //BodyPosition bp = (BodyPosition)h.getPosition(mBody).Clone();
             //DivisionPosition dp = bp.toDivisionPosition(this.dtypeRasi);

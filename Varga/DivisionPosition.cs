@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Body;
 using Mhora.Calculation;
+using Mhora.Tables;
 
 namespace Mhora.Varga;
 
@@ -27,18 +28,18 @@ namespace Mhora.Varga;
 /// </summary>
 public class DivisionPosition
 {
-    public  double         cusp_higher;
-    public  double         cusp_lower;
-    public  Body.Body.Name name;
-    private string         _description;
-    public  int            part;
-    public  int            ruler_index;
-    public  BodyType.Name  type;
-    public  ZodiacHouse    zodiac_house;
-    private Longitude      _longitude;
-    private bool           _hasLongitude;
+    public  double           cusp_higher;
+    public  double           cusp_lower;
+    public  Tables.Body.Name name;
+    private string           _description;
+    public  int              part;
+    public  int              ruler_index;
+    public  Tables.Body.Type type;
+    public  ZodiacHouse      zodiac_house;
+    private Longitude        _longitude;
+    private bool             _hasLongitude;
 
-    public DivisionPosition(Body.Body.Name _name, BodyType.Name _type, ZodiacHouse _zodiac_house, double _cusp_lower, double _cusp_higher, int _part)
+    public DivisionPosition(Tables.Body.Name _name, Tables.Body.Type _type, ZodiacHouse _zodiac_house, double _cusp_lower, double _cusp_higher, int _part)
     {
         name         = _name;
         type         = _type;
@@ -59,7 +60,7 @@ public class DivisionPosition
 			    return (_description);
 			}
 
-		    return (Body.Body.toShortString(name));
+		    return (Tables.Body.toShortString(name));
 	    }
 	    set => _description = value;
     }
@@ -70,7 +71,7 @@ public class DivisionPosition
 	    set
 	    {
 		    _longitude    = value;
-		    if ((type == BodyType.Name.Graha) || (type == BodyType.Name.Lagna))
+		    if ((type == Tables.Body.Type.Graha) || (type == Tables.Body.Type.Lagna))
 		    {
 			    _hasLongitude = true;
 			}
@@ -88,63 +89,63 @@ public class DivisionPosition
     {
         switch (name)
         {
-            case Body.Body.Name.Sun:
+            case Tables.Body.Name.Sun:
                 if (zodiac_house.value == ZodiacHouse.Name.Leo)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Moon:
+            case Tables.Body.Name.Moon:
                 if (zodiac_house.value == ZodiacHouse.Name.Tau)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Mars:
+            case Tables.Body.Name.Mars:
                 if (zodiac_house.value == ZodiacHouse.Name.Ari)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Mercury:
+            case Tables.Body.Name.Mercury:
                 if (zodiac_house.value == ZodiacHouse.Name.Vir)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Jupiter:
+            case Tables.Body.Name.Jupiter:
                 if (zodiac_house.value == ZodiacHouse.Name.Sag)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Venus:
+            case Tables.Body.Name.Venus:
                 if (zodiac_house.value == ZodiacHouse.Name.Lib)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Saturn:
+            case Tables.Body.Name.Saturn:
                 if (zodiac_house.value == ZodiacHouse.Name.Aqu)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Rahu:
+            case Tables.Body.Name.Rahu:
                 if (zodiac_house.value == ZodiacHouse.Name.Vir)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Ketu:
+            case Tables.Body.Name.Ketu:
                 if (zodiac_house.value == ZodiacHouse.Name.Pis)
                 {
                     return true;
@@ -161,63 +162,63 @@ public class DivisionPosition
         var zh = zodiac_house.value;
         switch (name)
         {
-            case Body.Body.Name.Sun:
+            case Tables.Body.Name.Sun:
                 if (zh == ZodiacHouse.Name.Leo)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Moon:
+            case Tables.Body.Name.Moon:
                 if (zh == ZodiacHouse.Name.Tau)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Mars:
+            case Tables.Body.Name.Mars:
                 if (zh == ZodiacHouse.Name.Ari || zh == ZodiacHouse.Name.Sco)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Mercury:
+            case Tables.Body.Name.Mercury:
                 if (zh == ZodiacHouse.Name.Gem || zh == ZodiacHouse.Name.Vir)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Jupiter:
+            case Tables.Body.Name.Jupiter:
                 if (zh == ZodiacHouse.Name.Sag || zh == ZodiacHouse.Name.Pis)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Venus:
+            case Tables.Body.Name.Venus:
                 if (zh == ZodiacHouse.Name.Tau || zh == ZodiacHouse.Name.Lib)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Saturn:
+            case Tables.Body.Name.Saturn:
                 if (zh == ZodiacHouse.Name.Cap || zh == ZodiacHouse.Name.Aqu)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Rahu:
+            case Tables.Body.Name.Rahu:
                 if (zh == ZodiacHouse.Name.Aqu)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Ketu:
+            case Tables.Body.Name.Ketu:
                 if (zh == ZodiacHouse.Name.Sco)
                 {
                     return true;
@@ -233,63 +234,63 @@ public class DivisionPosition
     {
         switch (name)
         {
-            case Body.Body.Name.Sun:
+            case Tables.Body.Name.Sun:
                 if (zodiac_house.value == ZodiacHouse.Name.Ari)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Moon:
+            case Tables.Body.Name.Moon:
                 if (zodiac_house.value == ZodiacHouse.Name.Tau)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Mars:
+            case Tables.Body.Name.Mars:
                 if (zodiac_house.value == ZodiacHouse.Name.Cap)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Mercury:
+            case Tables.Body.Name.Mercury:
                 if (zodiac_house.value == ZodiacHouse.Name.Vir)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Jupiter:
+            case Tables.Body.Name.Jupiter:
                 if (zodiac_house.value == ZodiacHouse.Name.Can)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Venus:
+            case Tables.Body.Name.Venus:
                 if (zodiac_house.value == ZodiacHouse.Name.Pis)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Saturn:
+            case Tables.Body.Name.Saturn:
                 if (zodiac_house.value == ZodiacHouse.Name.Lib)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Rahu:
+            case Tables.Body.Name.Rahu:
                 if (zodiac_house.value == ZodiacHouse.Name.Gem)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Ketu:
+            case Tables.Body.Name.Ketu:
                 if (zodiac_house.value == ZodiacHouse.Name.Sag)
                 {
                     return true;
@@ -305,63 +306,63 @@ public class DivisionPosition
     {
         switch (name)
         {
-            case Body.Body.Name.Sun:
+            case Tables.Body.Name.Sun:
                 if (zodiac_house.value == ZodiacHouse.Name.Lib)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Moon:
+            case Tables.Body.Name.Moon:
                 if (zodiac_house.value == ZodiacHouse.Name.Sco)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Mars:
+            case Tables.Body.Name.Mars:
                 if (zodiac_house.value == ZodiacHouse.Name.Can)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Mercury:
+            case Tables.Body.Name.Mercury:
                 if (zodiac_house.value == ZodiacHouse.Name.Pis)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Jupiter:
+            case Tables.Body.Name.Jupiter:
                 if (zodiac_house.value == ZodiacHouse.Name.Cap)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Venus:
+            case Tables.Body.Name.Venus:
                 if (zodiac_house.value == ZodiacHouse.Name.Vir)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Saturn:
+            case Tables.Body.Name.Saturn:
                 if (zodiac_house.value == ZodiacHouse.Name.Ari)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Rahu:
+            case Tables.Body.Name.Rahu:
                 if (zodiac_house.value == ZodiacHouse.Name.Sag)
                 {
                     return true;
                 }
 
                 break;
-            case Body.Body.Name.Ketu:
+            case Tables.Body.Name.Ketu:
                 if (zodiac_house.value == ZodiacHouse.Name.Gem)
                 {
                     return true;
@@ -381,22 +382,22 @@ public class DivisionPosition
             return true;
         }
 
-        if (name == Body.Body.Name.Jupiter && (num == 5 || num == 9))
+        if (name == Tables.Body.Name.Jupiter && (num == 5 || num == 9))
         {
             return true;
         }
 
-        if (name == Body.Body.Name.Rahu && (num == 5 || num == 9 || num == 2))
+        if (name == Tables.Body.Name.Rahu && (num == 5 || num == 9 || num == 2))
         {
             return true;
         }
 
-        if (name == Body.Body.Name.Mars && (num == 4 || num == 8))
+        if (name == Tables.Body.Name.Mars && (num == 4 || num == 8))
         {
             return true;
         }
 
-        if (name == Body.Body.Name.Saturn && (num == 3 || num == 10))
+        if (name == Tables.Body.Name.Saturn && (num == 3 || num == 10))
         {
             return true;
         }

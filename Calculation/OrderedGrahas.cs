@@ -25,28 +25,28 @@ namespace Mhora.Calculation;
 [TypeConverter(typeof(OrderedGrahasConverter))]
 public class OrderedGrahas : ICloneable
 {
-    public ArrayList grahas;
+	public ArrayList grahas;
 
-    public OrderedGrahas()
-    {
-        grahas = new ArrayList();
-    }
+	public OrderedGrahas()
+	{
+		grahas = new ArrayList();
+	}
 
-    public object Clone()
-    {
-        var oz = new OrderedGrahas();
-        oz.grahas = (ArrayList) grahas.Clone();
-        return oz;
-    }
+	public object Clone()
+	{
+		var oz = new OrderedGrahas();
+		oz.grahas = (ArrayList) grahas.Clone();
+		return oz;
+	}
 
-    public override string ToString()
-    {
-        var s = string.Empty;
-        foreach (Body.Body.Name bn in grahas)
-        {
-            s += Body.Body.toShortString(bn) + " ";
-        }
+	public override string ToString()
+	{
+		var s = string.Empty;
+		foreach (Tables.Body.Name bn in grahas)
+		{
+			s += Tables.Body.toShortString(bn) + " ";
+		}
 
-        return s;
-    }
+		return s;
+	}
 }

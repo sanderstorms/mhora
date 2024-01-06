@@ -22,13 +22,13 @@ namespace Mhora;
 
 public class NarayanaSamaDasa : NarayanaDasa, IDasa
 {
-    public NarayanaSamaDasa(Horoscope _h) : base(_h)
-    {
-        bSama = true;
-    }
+	public NarayanaSamaDasa(Horoscope _h) : base(_h)
+	{
+		bSama = true;
+	}
 
-    public new string Description()
-    {
-        return "Narayana Sama Dasa for " + options.Division + " seeded from " + options.SeedRasi;
-    }
+	public new string Description()
+	{
+		return "Narayana Sama Dasa for " + options.Division + " seeded from " + options.SeedRasi;
+	}
 }

@@ -25,132 +25,132 @@ namespace Mhora;
 
 public class NaisargikaRasiDasa : Dasa, IDasa
 {
-    private readonly Horoscope   h;
-    private readonly UserOptions options;
+	private readonly Horoscope   h;
+	private readonly UserOptions options;
 
-    public NaisargikaRasiDasa(Horoscope _h)
-    {
-        h       = _h;
-        options = new UserOptions();
-    }
+	public NaisargikaRasiDasa(Horoscope _h)
+	{
+		h       = _h;
+		options = new UserOptions();
+	}
 
-    public void recalculateOptions()
-    {
-    }
+	public void recalculateOptions()
+	{
+	}
 
-    public double paramAyus()
-    {
-        switch (options.ParamAyus)
-        {
-            case UserOptions.ParamAyusType.Long:   return 120.0;
-            case UserOptions.ParamAyusType.Middle: return 108.0;
-            default:                               return 96.0;
-        }
-    }
+	public double paramAyus()
+	{
+		switch (options.ParamAyus)
+		{
+			case UserOptions.ParamAyusType.Long:   return 120.0;
+			case UserOptions.ParamAyusType.Middle: return 108.0;
+			default:                               return 96.0;
+		}
+	}
 
-    public ArrayList Dasa(int cycle)
-    {
-        int[] order =
-        {
-            4,
-            2,
-            8,
-            10,
-            12,
-            6,
-            5,
-            11,
-            1,
-            7,
-            9,
-            3
-        };
-        int[] short_length =
-        {
-            9,
-            7,
-            8
-        };
-        var al = new ArrayList(9);
+	public ArrayList Dasa(int cycle)
+	{
+		int[] order =
+		{
+			4,
+			2,
+			8,
+			10,
+			12,
+			6,
+			5,
+			11,
+			1,
+			7,
+			9,
+			3
+		};
+		int[] short_length =
+		{
+			9,
+			7,
+			8
+		};
+		var al = new ArrayList(9);
 
-        var    cycle_start = paramAyus() * cycle;
-        var    curr        = 0.0;
-        double dasa_length;
-        var    zlagna = h.getPosition(Body.Body.Name.Lagna).longitude.toZodiacHouse();
-        for (var i = 0; i < 12; i++)
-        {
-            var zh = zlagna.add(order[i]);
-            switch (options.ParamAyus)
-            {
-                case UserOptions.ParamAyusType.Long:
-                    dasa_length = 10.0;
-                    break;
-                case UserOptions.ParamAyusType.Middle:
-                    dasa_length = 9.0;
-                    break;
-                default:
-                    var mod = (int) zh.value % 3;
-                    dasa_length = short_length[mod];
-                    break;
-            }
+		var    cycle_start = paramAyus() * cycle;
+		var    curr        = 0.0;
+		double dasa_length;
+		var    zlagna = h.getPosition(Tables.Body.Name.Lagna).longitude.toZodiacHouse();
+		for (var i = 0; i < 12; i++)
+		{
+			var zh = zlagna.add(order[i]);
+			switch (options.ParamAyus)
+			{
+				case UserOptions.ParamAyusType.Long:
+					dasa_length = 10.0;
+					break;
+				case UserOptions.ParamAyusType.Middle:
+					dasa_length = 9.0;
+					break;
+				default:
+					var mod = (int) zh.value % 3;
+					dasa_length = short_length[mod];
+					break;
+			}
 
-            al.Add(new DasaEntry(zh.value, cycle_start + curr, dasa_length, 1, zh.value.ToString()));
-            curr += dasa_length;
-        }
+			al.Add(new DasaEntry(zh.value, cycle_start + curr, dasa_length, 1, zh.value.ToString()));
+			curr += dasa_length;
+		}
 
-        return al;
-    }
+		return al;
+	}
 
-    public ArrayList AntarDasa(DasaEntry pdi)
-    {
-        return new ArrayList();
-    }
+	public ArrayList AntarDasa(DasaEntry pdi)
+	{
+		return new ArrayList();
+	}
 
-    public string Description()
-    {
-        return "Naisargika Rasi Dasa";
-    }
+	public string Description()
+	{
+		return "Naisargika Rasi Dasa";
+	}
 
-    public object GetOptions()
-    {
-        return options.Clone();
-    }
+	public object GetOptions()
+	{
+		return options.Clone();
+	}
 
-    public object SetOptions(object a)
-    {
-        var uo = (UserOptions) a;
-        options.ParamAyus = uo.ParamAyus;
-        RecalculateEvent();
-        return options.Clone();
-    }
+	public object SetOptions(object a)
+	{
+		var uo = (UserOptions) a;
+		options.ParamAyus = uo.ParamAyus;
+		RecalculateEvent();
+		return options.Clone();
+	}
 
-    public class UserOptions : ICloneable
-    {
-        [PGDisplayName("Life Expectancy")]
-        public enum ParamAyusType
-        {
-            Short,
-            Middle,
-            Long
-        }
+	public class UserOptions : ICloneable
+	{
+		[PGDisplayName("Life Expectancy")]
+		public enum ParamAyusType
+		{
+			Short,
+			Middle,
+			Long
+		}
 
-        public UserOptions()
-        {
-            ParamAyus = ParamAyusType.Middle;
-        }
+		public UserOptions()
+		{
+			ParamAyus = ParamAyusType.Middle;
+		}
 
-        [PGDisplayName("Total Param Ayus")]
-        public ParamAyusType ParamAyus
-        {
-            get;
-            set;
-        }
+		[PGDisplayName("Total Param Ayus")]
+		public ParamAyusType ParamAyus
+		{
+			get;
+			set;
+		}
 
-        public object Clone()
-        {
-            var uo = new UserOptions();
-            uo.ParamAyus = ParamAyus;
-            return uo;
-        }
-    }
+		public object Clone()
+		{
+			var uo = new UserOptions();
+			uo.ParamAyus = ParamAyus;
+			return uo;
+		}
+	}
 }
