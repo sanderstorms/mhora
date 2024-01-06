@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using Mhora.Elements;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Components.Dasa.Graha;
@@ -45,17 +46,17 @@ public class NaisargikaGrahaDasaSP : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al = new ArrayList(36);
-		Elements.Body.Name[] order =
+		Body.Name[] order =
 		{
-			Elements.Body.Name.Moon,
-			Elements.Body.Name.Mercury,
-			Elements.Body.Name.Mars,
-			Elements.Body.Name.Venus,
-			Elements.Body.Name.Jupiter,
-			Elements.Body.Name.Sun,
-			Elements.Body.Name.Ketu,
-			Elements.Body.Name.Rahu,
-			Elements.Body.Name.Saturn
+			Body.Name.Moon,
+			Body.Name.Mercury,
+			Body.Name.Mars,
+			Body.Name.Venus,
+			Body.Name.Jupiter,
+			Body.Name.Sun,
+			Body.Name.Ketu,
+			Body.Name.Rahu,
+			Body.Name.Saturn
 		};
 
 		var cycle_start = paramAyus() * cycle;

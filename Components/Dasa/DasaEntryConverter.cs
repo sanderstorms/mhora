@@ -41,7 +41,7 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 		Trace.Assert(value is string, "DasaEntryConverter::ConvertFrom 1");
 		var s = (string) value;
 
-		var de  = new DasaEntry(Elements.Body.Name.Lagna, 0.0, 0.0, 1, "None");
+		var de  = new DasaEntry(Body.Name.Lagna, 0.0, 0.0, 1, "None");
 		var arr = s.Split(',');
 		if (arr.Length >= 1)
 		{
@@ -65,7 +65,7 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 
 		if (arr.Length >= 5)
 		{
-			de.graha = (Elements.Body.Name) int.Parse(arr[4]);
+			de.graha = (Body.Name) int.Parse(arr[4]);
 		}
 
 		if (arr.Length >= 6)

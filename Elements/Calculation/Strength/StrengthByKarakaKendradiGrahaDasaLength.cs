@@ -25,62 +25,62 @@ namespace Mhora.Elements.Calculation.Strength;
 // Stronger rasi has a graha with longer length placed therein
 public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByKarakaKendradiGrahaDasaLength(Horoscope h, Division dtype) : base(h, dtype, false)
-    {
-    }
+	public StrengthByKarakaKendradiGrahaDasaLength(Horoscope h, Division dtype) : base(h, dtype, false)
+	{
+	}
 
-    public bool stronger(Elements.Body.Name m, Elements.Body.Name n)
-    {
-        var a = value(m);
-        var b = value(n);
-        if (a > b)
-        {
-            return true;
-        }
+	public bool stronger(Body.Name m, Body.Name n)
+	{
+		var a = value(m);
+		var b = value(n);
+		if (a > b)
+		{
+			return true;
+		}
 
-        if (a < b)
-        {
-            return false;
-        }
+		if (a < b)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        var a = value(za);
-        var b = value(zb);
-        if (a > b)
-        {
-            return true;
-        }
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		var a = value(za);
+		var b = value(zb);
+		if (a > b)
+		{
+			return true;
+		}
 
-        if (a < b)
-        {
-            return false;
-        }
+		if (a < b)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    protected double value(ZodiacHouse.Name zh)
-    {
-        double length = 0;
-        foreach (Position bp in h.positionList)
-        {
-            if (bp.type == Elements.Body.Type.Graha)
-            {
-                var dp = bp.toDivisionPosition(dtype);
-                length = Math.Max(length, KarakaKendradiGrahaDasa.LengthOfDasa(h, dtype, bp.name, dp));
-            }
-        }
+	protected double value(ZodiacHouse.Name zh)
+	{
+		double length = 0;
+		foreach (Position bp in h.positionList)
+		{
+			if (bp.type == Body.Type.Graha)
+			{
+				var dp = bp.toDivisionPosition(dtype);
+				length = Math.Max(length, KarakaKendradiGrahaDasa.LengthOfDasa(h, dtype, bp.name, dp));
+			}
+		}
 
-        return length;
-    }
+		return length;
+	}
 
-    protected double value(Elements.Body.Name b)
-    {
-        var dp = h.getPosition(b).toDivisionPosition(dtype);
-        return KarakaKendradiGrahaDasa.LengthOfDasa(h, dtype, b, dp);
-    }
+	protected double value(Body.Name b)
+	{
+		var dp = h.getPosition(b).toDivisionPosition(dtype);
+		return KarakaKendradiGrahaDasa.LengthOfDasa(h, dtype, b, dp);
+	}
 }

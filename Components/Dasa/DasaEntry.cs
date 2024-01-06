@@ -24,14 +24,14 @@ namespace Mhora.Components.Dasa;
 [TypeConverter(typeof(DasaEntryConverter))]
 public class DasaEntry
 {
-	public double             dasaLength; // 1 year = 360 days = 360 degrees is used internally!!!!
-	public Elements.Body.Name graha;
-	public int                level;
-	public string             shortDesc;
-	public double             startUT;
-	public ZodiacHouse.Name   zodiacHouse;
+	public double           dasaLength; // 1 year = 360 days = 360 degrees is used internally!!!!
+	public Body.Name        graha;
+	public int              level;
+	public string           shortDesc;
+	public double           startUT;
+	public ZodiacHouse.Name zodiacHouse;
 
-	public DasaEntry(Elements.Body.Name _graha, double _startUT, double _dasaLength, int _level, string _shortDesc)
+	public DasaEntry(Body.Name _graha, double _startUT, double _dasaLength, int _level, string _shortDesc)
 	{
 		graha = _graha;
 		Construct(_startUT, _dasaLength, _level, _shortDesc);
@@ -48,7 +48,7 @@ public class DasaEntry
 		startUT     = dasaLength = 0.0;
 		level       = 1;
 		shortDesc   = "Jup";
-		graha       = Elements.Body.Name.Jupiter;
+		graha       = Body.Name.Jupiter;
 		zodiacHouse = ZodiacHouse.Name.Ari;
 	}
 
@@ -76,7 +76,7 @@ public class DasaEntry
 		set => dasaLength = value;
 	}
 
-	public Elements.Body.Name Graha
+	public Body.Name Graha
 	{
 		get => graha;
 		set => graha = value;

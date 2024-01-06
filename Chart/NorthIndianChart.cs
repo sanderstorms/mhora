@@ -328,7 +328,7 @@ public class NorthIndianChart : IDrawChart
 
 			new Point(0, yw / 2 - 20),
 			new Point(xw    / 2 - 10, yw / 2 + 5),
-			new Point(0, yw - 20),
+			new Point(0, yw     - 20),
 
 			new Point(5, yw  - 8),
 			new Point(xw / 2 - 5, yw / 2 - 15),

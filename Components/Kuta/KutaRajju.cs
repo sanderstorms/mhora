@@ -55,26 +55,22 @@ public class KutaRajju
 			case Nakshatra.Name.Hasta:
 			case Nakshatra.Name.Swati:
 			case Nakshatra.Name.Sravana:
-			case Nakshatra.Name.Satabisha:
-				return EType.IKantha;
+			case Nakshatra.Name.Satabisha: return EType.IKantha;
 			case Nakshatra.Name.Bharani:
 			case Nakshatra.Name.Pushya:
 			case Nakshatra.Name.PoorvaPhalguni:
 			case Nakshatra.Name.Anuradha:
 			case Nakshatra.Name.PoorvaShada:
-			case Nakshatra.Name.UttaraBhadra:
-				return EType.IKati;
+			case Nakshatra.Name.UttaraBhadra: return EType.IKati;
 			case Nakshatra.Name.Aswini:
 			case Nakshatra.Name.Aslesha:
 			case Nakshatra.Name.Makha:
 			case Nakshatra.Name.Jyestha:
 			case Nakshatra.Name.Moola:
-			case Nakshatra.Name.Revati:
-				return EType.IPada;
+			case Nakshatra.Name.Revati: return EType.IPada;
 			case Nakshatra.Name.Mrigarirsa:
 			case Nakshatra.Name.Dhanishta:
-			case Nakshatra.Name.Chittra:
-				return EType.ISiro;
+			case Nakshatra.Name.Chittra: return EType.ISiro;
 		}
 
 		return EType.IKukshi;

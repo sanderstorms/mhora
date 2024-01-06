@@ -72,7 +72,7 @@ public class SuDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al      = new ArrayList();
-		var bp_sl   = h.getPosition(Elements.Body.Name.SreeLagna);
+		var bp_sl   = h.getPosition(Body.Name.SreeLagna);
 		var zh_seed = bp_sl.toDivisionPosition(options.Division).zodiac_house;
 		zh_seed.value = options.findStrongerRasi(options.SeventhStrengths, zh_seed.value, zh_seed.add(7).value);
 
@@ -162,7 +162,7 @@ public class SuDasa : Dasa, IDasa
 		return options.Clone();
 	}
 
-	private Elements.Body.Name GetLord(ZodiacHouse zh)
+	private Body.Name GetLord(ZodiacHouse zh)
 	{
 		switch (zh.value)
 		{

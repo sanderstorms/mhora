@@ -46,7 +46,7 @@ public abstract class NakshatraDasa : Dasa
 		for (var i = 0; i < numItems; i++)
 		{
 			var dlength = common.lengthOfDasa(curr.graha) / common.paramAyus() * pdi.dasaLength;
-			var desc    = pdi.shortDesc + " " + Elements.Body.toShortString(curr.graha);
+			var desc    = pdi.shortDesc + " " + Body.toShortString(curr.graha);
 			var di      = new DasaEntry(curr.graha, curr.startUT, dlength, curr.level, desc);
 			ditems.Add(di);
 			curr         = common.nextDasaLord(di);

@@ -74,8 +74,7 @@ public class KutaGana
 			case Nakshatra.Name.Swati:
 			case Nakshatra.Name.Anuradha:
 			case Nakshatra.Name.Sravana:
-			case Nakshatra.Name.Revati:
-				return EType.IDeva;
+			case Nakshatra.Name.Revati: return EType.IDeva;
 			case Nakshatra.Name.Bharani:
 			case Nakshatra.Name.Rohini:
 			case Nakshatra.Name.Aridra:
@@ -84,8 +83,7 @@ public class KutaGana
 			case Nakshatra.Name.PoorvaShada:
 			case Nakshatra.Name.UttaraShada:
 			case Nakshatra.Name.PoorvaBhadra:
-			case Nakshatra.Name.UttaraBhadra:
-				return EType.INara;
+			case Nakshatra.Name.UttaraBhadra: return EType.INara;
 		}
 
 		return EType.IRakshasa;

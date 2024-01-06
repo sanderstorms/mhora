@@ -63,8 +63,7 @@ public class KutaNadi
 			case Nakshatra.Name.Jyestha:
 			case Nakshatra.Name.Moola:
 			case Nakshatra.Name.Satabisha:
-			case Nakshatra.Name.PoorvaBhadra:
-				return EType.IVata;
+			case Nakshatra.Name.PoorvaBhadra: return EType.IVata;
 			case Nakshatra.Name.Bharani:
 			case Nakshatra.Name.Mrigarirsa:
 			case Nakshatra.Name.Pushya:
@@ -73,8 +72,7 @@ public class KutaNadi
 			case Nakshatra.Name.Anuradha:
 			case Nakshatra.Name.PoorvaShada:
 			case Nakshatra.Name.Dhanishta:
-			case Nakshatra.Name.UttaraBhadra:
-				return EType.IPitta;
+			case Nakshatra.Name.UttaraBhadra: return EType.IPitta;
 		}
 
 		return EType.ISleshma;

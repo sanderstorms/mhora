@@ -56,10 +56,10 @@ public class MoolaDasa : Dasa, IDasa
 		var cycle_start = paramAyus() * cycle;
 		var curr        = 0.0;
 		var al          = new ArrayList(24);
-		foreach (Elements.Body.Name b in options.GrahaStrengths.grahas)
+		foreach (Body.Name b in options.GrahaStrengths.grahas)
 		{
 			var dasaLength = lengthOfDasa(b);
-			al.Add(new DasaEntry(b, cycle_start + curr, dasaLength, 1, Elements.Body.toShortString(b)));
+			al.Add(new DasaEntry(b, cycle_start + curr, dasaLength, 1, Body.toShortString(b)));
 			curr += dasaLength;
 		}
 
@@ -68,7 +68,7 @@ public class MoolaDasa : Dasa, IDasa
 		{
 			var de         = (DasaEntry) al[i];
 			var dasaLength = de.dasaLength - vd.lengthOfDasa(de.graha);
-			al.Add(new DasaEntry(de.graha, cycle_start + curr, dasaLength, 1, Elements.Body.toShortString(de.graha)));
+			al.Add(new DasaEntry(de.graha, cycle_start + curr, dasaLength, 1, Body.toShortString(de.graha)));
 			curr += dasaLength;
 		}
 
@@ -82,7 +82,7 @@ public class MoolaDasa : Dasa, IDasa
 
 		var bOrder = new ArrayList();
 		var bFound = false;
-		foreach (Elements.Body.Name b in options.GrahaStrengths.grahas)
+		foreach (Body.Name b in options.GrahaStrengths.grahas)
 		{
 			if (b != pdi.graha && bFound == false)
 			{
@@ -93,7 +93,7 @@ public class MoolaDasa : Dasa, IDasa
 			bOrder.Add(b);
 		}
 
-		foreach (Elements.Body.Name b in options.GrahaStrengths.grahas)
+		foreach (Body.Name b in options.GrahaStrengths.grahas)
 		{
 			if (b == pdi.graha)
 			{
@@ -104,10 +104,10 @@ public class MoolaDasa : Dasa, IDasa
 		}
 
 
-		foreach (Elements.Body.Name b in bOrder)
+		foreach (Body.Name b in bOrder)
 		{
 			var dasaLength = vd.lengthOfDasa(b) / vd.paramAyus() * pdi.dasaLength;
-			al.Add(new DasaEntry(b, curr, dasaLength, pdi.level + 1, pdi.shortDesc + " " + Elements.Body.toShortString(b)));
+			al.Add(new DasaEntry(b, curr, dasaLength, pdi.level + 1, pdi.shortDesc + " " + Body.toShortString(b)));
 			curr += dasaLength;
 		}
 
@@ -133,7 +133,7 @@ public class MoolaDasa : Dasa, IDasa
 		return options.Clone();
 	}
 
-	public double lengthOfDasa(Elements.Body.Name plt)
+	public double lengthOfDasa(Body.Name plt)
 	{
 		double length = 0;
 
@@ -142,12 +142,12 @@ public class MoolaDasa : Dasa, IDasa
 		var dp_plt = h.getPosition(plt).toDivisionPosition(new Division(Basics.DivisionType.Rasi));
 		var zh_plt = dp_plt.zodiac_house;
 		var zh_mt  = Basics.getMoolaTrikonaRasi(plt);
-		if (plt == Elements.Body.Name.Rahu)
+		if (plt == Body.Name.Rahu)
 		{
 			zh_mt.value = ZodiacHouse.Name.Aqu;
 		}
 
-		if (plt == Elements.Body.Name.Ketu)
+		if (plt == Body.Name.Ketu)
 		{
 			zh_mt.value = ZodiacHouse.Name.Sco;
 		}
@@ -184,23 +184,23 @@ public class MoolaDasa : Dasa, IDasa
 
 	public class UserOptions : ICloneable
 	{
-		private readonly Horoscope          h;
-		public           Division           dtype = new(Basics.DivisionType.Rasi);
-		protected        Elements.Body.Name mSeedBody;
-		private          ArrayList          std_div_pos;
+		private readonly Horoscope h;
+		public           Division  dtype = new(Basics.DivisionType.Rasi);
+		protected        Body.Name mSeedBody;
+		private          ArrayList std_div_pos;
 
 		public UserOptions(Horoscope _h)
 		{
 			h           = _h;
 			std_div_pos = h.CalculateDivisionPositions(dtype);
-			mSeedBody   = Elements.Body.Name.Lagna;
+			mSeedBody   = Body.Name.Lagna;
 			CalculateRasiStrengths();
 			CalculateGrahaStrengths();
 		}
 
 		[Category("Strengths1 Seed")]
 		[PGDisplayName("Seed Body")]
-		public Elements.Body.Name SeedBody
+		public Body.Name SeedBody
 		{
 			get => mSeedBody;
 			set => mSeedBody = value;
@@ -304,8 +304,8 @@ public class MoolaDasa : Dasa, IDasa
 			zRet[1] = fs.getOrderedHouses(zh_p);
 			zRet[2] = fs.getOrderedHouses(zh_a);
 
-			var zh_sat = h.getPosition(Elements.Body.Name.Saturn).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value;
-			var zh_ket = h.getPosition(Elements.Body.Name.Ketu).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value;
+			var zh_sat = h.getPosition(Body.Name.Saturn).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value;
+			var zh_ket = h.getPosition(Body.Name.Ketu).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value;
 
 			var bIsForward = zh.isOdd();
 			if (zh_sat != zh_ket && zh_sat == zh.value)
@@ -321,7 +321,7 @@ public class MoolaDasa : Dasa, IDasa
 				var rule = new ArrayList();
 				rule.Add(FindStronger.EGrahaStrength.Longitude);
 				var fs2 = new FindStronger(h, new Division(Basics.DivisionType.Rasi), rule);
-				bIsForward = fs2.CmpGraha(Elements.Body.Name.Saturn, Elements.Body.Name.Ketu, false);
+				bIsForward = fs2.CmpGraha(Body.Name.Saturn, Body.Name.Ketu, false);
 			}
 
 
@@ -349,10 +349,10 @@ public class MoolaDasa : Dasa, IDasa
 				foreach (ZodiacHouse.Name zn in oz.houses)
 				{
 					var temp     = fs_temp.findGrahasInHouse(zn);
-					var temp_arr = new Elements.Body.Name[temp.Count];
+					var temp_arr = new Body.Name[temp.Count];
 					for (var i = 0; i < temp.Count; i++)
 					{
-						temp_arr[i] = (Elements.Body.Name) temp[i];
+						temp_arr[i] = (Body.Name) temp[i];
 					}
 
 					var sorted = fs.getOrderedGrahas(temp_arr);

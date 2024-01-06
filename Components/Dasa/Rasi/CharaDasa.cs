@@ -127,7 +127,7 @@ public class CharaDasa : Dasa, IDasa
 
 	public DivisionPosition getLordsPosition(ZodiacHouse zh)
 	{
-		Elements.Body.Name b;
+		Body.Name b;
 		if (zh.value == ZodiacHouse.Name.Sco)
 		{
 			b = options.ColordSco;

@@ -22,74 +22,74 @@ namespace Mhora.Elements.Calculation.Strength;
 // Stronger planet is in moola trikona rasi
 public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByMoolaTrikona(Horoscope h, Division dtype) : base(h, dtype, true)
-    {
-    }
+	public StrengthByMoolaTrikona(Horoscope h, Division dtype) : base(h, dtype, true)
+	{
+	}
 
-    public bool stronger(Elements.Body.Name m, Elements.Body.Name n)
-    {
-        var valm = value(m);
-        var valn = value(n);
+	public bool stronger(Body.Name m, Body.Name n)
+	{
+		var valm = value(m);
+		var valn = value(n);
 
-        if (valm > valn)
-        {
-            return true;
-        }
+		if (valm > valn)
+		{
+			return true;
+		}
 
-        if (valn > valm)
-        {
-            return false;
-        }
+		if (valn > valm)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        var vala = value(za);
-        var valb = value(zb);
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		var vala = value(za);
+		var valb = value(zb);
 
-        if (vala > valb)
-        {
-            return true;
-        }
+		if (vala > valb)
+		{
+			return true;
+		}
 
-        if (valb > vala)
-        {
-            return false;
-        }
+		if (valb > vala)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    public int value(ZodiacHouse.Name zn)
-    {
-        var ret = 0;
-        foreach (DivisionPosition dp in std_div_pos)
-        {
-            if (dp.type != Elements.Body.Type.Graha)
-            {
-                continue;
-            }
+	public int value(ZodiacHouse.Name zn)
+	{
+		var ret = 0;
+		foreach (DivisionPosition dp in std_div_pos)
+		{
+			if (dp.type != Body.Type.Graha)
+			{
+				continue;
+			}
 
-            if (dp.zodiac_house.value != zn)
-            {
-                continue;
-            }
+			if (dp.zodiac_house.value != zn)
+			{
+				continue;
+			}
 
-            ret += value(dp.name);
-        }
+			ret += value(dp.name);
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    public int value(Elements.Body.Name b)
-    {
-        if (h.getPosition(b).toDivisionPosition(dtype).isInMoolaTrikona())
-        {
-            return 1;
-        }
+	public int value(Body.Name b)
+	{
+		if (h.getPosition(b).toDivisionPosition(dtype).isInMoolaTrikona())
+		{
+			return 1;
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 }

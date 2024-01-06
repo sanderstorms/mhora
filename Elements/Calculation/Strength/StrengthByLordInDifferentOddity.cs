@@ -26,7 +26,7 @@ public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStr
 	{
 	}
 
-	public bool stronger(Elements.Body.Name ba, Elements.Body.Name bb)
+	public bool stronger(Body.Name ba, Body.Name bb)
 	{
 		var za = h.getPosition(ba).toDivisionPosition(dtype).zodiac_house.value;
 		var zb = h.getPosition(bb).toDivisionPosition(dtype).zodiac_house.value;

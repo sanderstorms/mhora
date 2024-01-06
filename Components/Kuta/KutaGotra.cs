@@ -55,38 +55,31 @@ public class KutaGotra
 		{
 			case Nakshatra.Name.Aswini:
 			case Nakshatra.Name.Pushya:
-			case Nakshatra.Name.Swati:
-				return EType.IMarichi;
+			case Nakshatra.Name.Swati: return EType.IMarichi;
 			case Nakshatra.Name.Bharani:
 			case Nakshatra.Name.Aslesha:
 			case Nakshatra.Name.Vishaka:
-			case Nakshatra.Name.Sravana:
-				return EType.IVasishtha;
+			case Nakshatra.Name.Sravana: return EType.IVasishtha;
 			case Nakshatra.Name.Krittika:
 			case Nakshatra.Name.Makha:
 			case Nakshatra.Name.Anuradha:
-			case Nakshatra.Name.Dhanishta:
-				return EType.IAngirasa;
+			case Nakshatra.Name.Dhanishta: return EType.IAngirasa;
 			case Nakshatra.Name.Rohini:
 			case Nakshatra.Name.PoorvaPhalguni:
 			case Nakshatra.Name.Jyestha:
-			case Nakshatra.Name.Satabisha:
-				return EType.IAtri;
+			case Nakshatra.Name.Satabisha: return EType.IAtri;
 			case Nakshatra.Name.Mrigarirsa:
 			case Nakshatra.Name.UttaraPhalguni:
 			case Nakshatra.Name.Moola:
-			case Nakshatra.Name.PoorvaBhadra:
-				return EType.IPulastya;
+			case Nakshatra.Name.PoorvaBhadra: return EType.IPulastya;
 			case Nakshatra.Name.Aridra:
 			case Nakshatra.Name.Hasta:
 			case Nakshatra.Name.PoorvaShada:
-			case Nakshatra.Name.UttaraBhadra:
-				return EType.IPulaha;
+			case Nakshatra.Name.UttaraBhadra: return EType.IPulaha;
 			case Nakshatra.Name.Punarvasu:
 			case Nakshatra.Name.Chittra:
 			case Nakshatra.Name.UttaraShada:
-			case Nakshatra.Name.Revati:
-				return EType.IKretu;
+			case Nakshatra.Name.Revati: return EType.IKretu;
 		}
 
 		Debug.Assert(false, "KutaGotra::getType");

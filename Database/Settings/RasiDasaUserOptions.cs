@@ -30,8 +30,8 @@ namespace Mhora.Database.Settings;
 public class RasiDasaUserOptions : ICloneable
 {
 	protected Horoscope             h;
-	protected Elements.Body.Name    mCoLordAqu;
-	protected Elements.Body.Name    mCoLordSco;
+	protected Body.Name             mCoLordAqu;
+	protected Body.Name             mCoLordSco;
 	protected Division              mDtype;
 	protected OrderedZodiacHouses   mKetuExceptions;
 	protected ArrayList             mRules;
@@ -89,7 +89,7 @@ public class RasiDasaUserOptions : ICloneable
 
 	[PropertyOrder(101)]
 	[PGDisplayName("Lord of Aquarius")]
-	public Elements.Body.Name ColordAqu
+	public Body.Name ColordAqu
 	{
 		get => mCoLordAqu;
 		set => mCoLordAqu = value;
@@ -97,7 +97,7 @@ public class RasiDasaUserOptions : ICloneable
 
 	[PropertyOrder(102)]
 	[PGDisplayName("Lord of Scorpio")]
-	public Elements.Body.Name ColordSco
+	public Body.Name ColordSco
 	{
 		get => mCoLordSco;
 		set => mCoLordSco = value;
@@ -207,15 +207,15 @@ public class RasiDasaUserOptions : ICloneable
 
 	public void calculateSeed()
 	{
-		mSeed      = h.getPosition(Elements.Body.Name.Lagna).toDivisionPosition(Division).zodiac_house.value;
+		mSeed      = h.getPosition(Body.Name.Lagna).toDivisionPosition(Division).zodiac_house.value;
 		mSeedHouse = 1;
 	}
 
 	public void calculateCoLords()
 	{
 		var fs = new FindStronger(h, mDtype, FindStronger.RulesStrongerCoLord(h));
-		mCoLordAqu = fs.StrongerGraha(Elements.Body.Name.Saturn, Elements.Body.Name.Rahu, true);
-		mCoLordSco = fs.StrongerGraha(Elements.Body.Name.Mars, Elements.Body.Name.Ketu, true);
+		mCoLordAqu = fs.StrongerGraha(Body.Name.Saturn, Body.Name.Rahu, true);
+		mCoLordSco = fs.StrongerGraha(Body.Name.Mars, Body.Name.Ketu, true);
 	}
 
 	public void calculateExceptions()
@@ -223,8 +223,8 @@ public class RasiDasaUserOptions : ICloneable
 		KetuExceptions.houses.Clear();
 		SaturnExceptions.houses.Clear();
 
-		var zhKetu = h.getPosition(Elements.Body.Name.Ketu).toDivisionPosition(Division).zodiac_house.value;
-		var zhSat  = h.getPosition(Elements.Body.Name.Saturn).toDivisionPosition(Division).zodiac_house.value;
+		var zhKetu = h.getPosition(Body.Name.Ketu).toDivisionPosition(Division).zodiac_house.value;
+		var zhSat  = h.getPosition(Body.Name.Saturn).toDivisionPosition(Division).zodiac_house.value;
 
 		if (zhKetu != zhSat)
 		{
@@ -236,8 +236,8 @@ public class RasiDasaUserOptions : ICloneable
 			var rule = new ArrayList();
 			rule.Add(FindStronger.EGrahaStrength.Longitude);
 			var fs = new FindStronger(h, Division, rule);
-			var b  = fs.StrongerGraha(Elements.Body.Name.Saturn, Elements.Body.Name.Ketu, false);
-			if (b == Elements.Body.Name.Ketu)
+			var b  = fs.StrongerGraha(Body.Name.Saturn, Body.Name.Ketu, false);
+			if (b == Body.Name.Ketu)
 			{
 				mKetuExceptions.houses.Add(zhKetu);
 			}

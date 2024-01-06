@@ -26,7 +26,7 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 	{
 	}
 
-	public bool stronger(Elements.Body.Name m, Elements.Body.Name n)
+	public bool stronger(Body.Name m, Body.Name n)
 	{
 		var a = value(m);
 		var b = value(n);
@@ -65,8 +65,8 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		var val = 0;
 		var bl  = GetStrengthLord(_zh);
 		var dl  = h.getPosition(bl).toDivisionPosition(dtype);
-		var dj  = h.getPosition(Elements.Body.Name.Jupiter).toDivisionPosition(dtype);
-		var dm  = h.getPosition(Elements.Body.Name.Mercury).toDivisionPosition(dtype);
+		var dj  = h.getPosition(Body.Name.Jupiter).toDivisionPosition(dtype);
+		var dm  = h.getPosition(Body.Name.Mercury).toDivisionPosition(dtype);
 
 		var zh = new ZodiacHouse(_zh);
 		if (dl.GrahaDristi(zh) || dl.zodiac_house.value == _zh)
@@ -87,7 +87,7 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		return val;
 	}
 
-	protected int value(Elements.Body.Name bm)
+	protected int value(Body.Name bm)
 	{
 		return value(h.getPosition(bm).toDivisionPosition(dtype).zodiac_house.value);
 	}

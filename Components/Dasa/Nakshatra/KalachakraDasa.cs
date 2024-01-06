@@ -62,7 +62,7 @@ public class KalachakraDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var dRasi = new Division(Basics.DivisionType.Rasi);
-		var mLon  = h.getPosition(Elements.Body.Name.Moon).extrapolateLongitude(dRasi);
+		var mLon  = h.getPosition(Body.Name.Moon).extrapolateLongitude(dRasi);
 
 		var           offset  = 0;
 		ZodiacHouse[] zhOrder = null;
@@ -126,19 +126,16 @@ public class KalachakraDasa : Dasa, IDasa
 			case Elements.Nakshatra.Name.Swati:
 			case Elements.Nakshatra.Name.Moola:
 			case Elements.Nakshatra.Name.UttaraShada:
-			case Elements.Nakshatra.Name.PoorvaBhadra:
-				return GroupType.Savya;
+			case Elements.Nakshatra.Name.PoorvaBhadra: return GroupType.Savya;
 			case Elements.Nakshatra.Name.Bharani:
 			case Elements.Nakshatra.Name.Pushya:
 			case Elements.Nakshatra.Name.Chittra:
 			case Elements.Nakshatra.Name.PoorvaShada:
-			case Elements.Nakshatra.Name.Revati:
-				return GroupType.SavyaMirrored;
+			case Elements.Nakshatra.Name.Revati: return GroupType.SavyaMirrored;
 			case Elements.Nakshatra.Name.Rohini:
 			case Elements.Nakshatra.Name.Makha:
 			case Elements.Nakshatra.Name.Vishaka:
-			case Elements.Nakshatra.Name.Sravana:
-				return GroupType.Apasavya;
+			case Elements.Nakshatra.Name.Sravana: return GroupType.Apasavya;
 			default: return GroupType.ApasavyaMirrored;
 		}
 
@@ -188,22 +185,17 @@ public class KalachakraDasa : Dasa, IDasa
 		switch (zh.value)
 		{
 			case ZodiacHouse.Name.Ari:
-			case ZodiacHouse.Name.Sco:
-				return 7;
+			case ZodiacHouse.Name.Sco: return 7;
 			case ZodiacHouse.Name.Tau:
-			case ZodiacHouse.Name.Lib:
-				return 16;
+			case ZodiacHouse.Name.Lib: return 16;
 			case ZodiacHouse.Name.Gem:
-			case ZodiacHouse.Name.Vir:
-				return 9;
+			case ZodiacHouse.Name.Vir: return 9;
 			case ZodiacHouse.Name.Can: return 21;
 			case ZodiacHouse.Name.Leo: return 5;
 			case ZodiacHouse.Name.Sag:
-			case ZodiacHouse.Name.Pis:
-				return 10;
+			case ZodiacHouse.Name.Pis: return 10;
 			case ZodiacHouse.Name.Cap:
-			case ZodiacHouse.Name.Aqu:
-				return 4;
+			case ZodiacHouse.Name.Aqu: return 4;
 			default: throw new Exception("KalachakraDasa::DasaLength");
 		}
 	}

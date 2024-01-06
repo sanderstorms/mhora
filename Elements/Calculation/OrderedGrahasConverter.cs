@@ -50,34 +50,34 @@ internal class OrderedGrahasConverter : ExpandableObjectConverter
 			switch (szh)
 			{
 				case "as":
-					al.Add(Elements.Body.Name.Lagna);
+					al.Add(Body.Name.Lagna);
 					break;
 				case "su":
-					al.Add(Elements.Body.Name.Sun);
+					al.Add(Body.Name.Sun);
 					break;
 				case "mo":
-					al.Add(Elements.Body.Name.Moon);
+					al.Add(Body.Name.Moon);
 					break;
 				case "ma":
-					al.Add(Elements.Body.Name.Mars);
+					al.Add(Body.Name.Mars);
 					break;
 				case "me":
-					al.Add(Elements.Body.Name.Mercury);
+					al.Add(Body.Name.Mercury);
 					break;
 				case "ju":
-					al.Add(Elements.Body.Name.Jupiter);
+					al.Add(Body.Name.Jupiter);
 					break;
 				case "ve":
-					al.Add(Elements.Body.Name.Venus);
+					al.Add(Body.Name.Venus);
 					break;
 				case "sa":
-					al.Add(Elements.Body.Name.Saturn);
+					al.Add(Body.Name.Saturn);
 					break;
 				case "ra":
-					al.Add(Elements.Body.Name.Rahu);
+					al.Add(Body.Name.Rahu);
 					break;
 				case "ke":
-					al.Add(Elements.Body.Name.Ketu);
+					al.Add(Body.Name.Ketu);
 					break;
 			}
 		}

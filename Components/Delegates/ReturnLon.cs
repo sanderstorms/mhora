@@ -16,40 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using System;
-using System.Diagnostics;
+using Mhora.Elements;
 
-namespace Mhora.Elements;
+namespace Mhora.Components.Delegates;
 
-public class KarakaComparer : IComparable
-{
-	public KarakaComparer(Position _bp)
-	{
-		GetPosition = _bp;
-	}
-
-	public Position GetPosition
-	{
-		get;
-		set;
-	}
-
-	public int CompareTo(object obj)
-	{
-		Debug.Assert(obj is KarakaComparer);
-		var offa = getOffset();
-		var offb = ((KarakaComparer) obj).getOffset();
-		return offb.CompareTo(offa);
-	}
-
-	public double getOffset()
-	{
-		var off = GetPosition.longitude.toZodiacHouseOffset();
-		if (GetPosition.name == Body.Name.Rahu)
-		{
-			off = 30.0 - off;
-		}
-
-		return off;
-	}
-}
+public delegate Longitude ReturnLon(double ut, ref bool dirForward);

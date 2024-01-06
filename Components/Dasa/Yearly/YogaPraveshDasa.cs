@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
@@ -58,7 +59,7 @@ public class YogaPraveshDasa : Dasa, IDasa
 		for (var i = 0; i < 60; i++)
 		{
 			var start = cycle_start + i;
-			var di    = new DasaEntry(Elements.Body.Name.Other, start, 1.0, 1, "Yoga Pravesh Year");
+			var di    = new DasaEntry(Body.Name.Other, start, 1.0, 1, "Yoga Pravesh Year");
 			al.Add(di);
 		}
 
@@ -93,7 +94,7 @@ public class YogaPraveshDasa : Dasa, IDasa
 				//mhora.Log.Debug("AD length is {0}", length);
 				for (var i = 0; i < 15; i++)
 				{
-					var di = new DasaEntry(Elements.Body.Name.Other, start, length, level, desc[level - 2]);
+					var di = new DasaEntry(Body.Name.Other, start, length, level, desc[level - 2]);
 					al.Add(di);
 					start += length;
 				}
@@ -105,7 +106,7 @@ public class YogaPraveshDasa : Dasa, IDasa
 				//mhora.Log.Debug("PD length is {0}", length);
 				for (var i = 0; i < 27; i++)
 				{
-					var di = new DasaEntry(Elements.Body.Name.Other, start, length, level, desc[level - 2]);
+					var di = new DasaEntry(Body.Name.Other, start, length, level, desc[level - 2]);
 					//mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
 					al.Add(di);
 					start += length;
@@ -122,15 +123,15 @@ public class YogaPraveshDasa : Dasa, IDasa
 	{
 		if (pdi.level == 2)
 		{
-			var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Elements.Body.Name.Sun));
+			var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Sun));
 			var zh = l.toZodiacHouse();
 			return zh.ToString();
 		}
 
 		if (pdi.level == 3)
 		{
-			var lSun  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Elements.Body.Name.Sun));
-			var lMoon = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Elements.Body.Name.Moon));
+			var lSun  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Sun));
+			var lMoon = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Moon));
 			var l     = lMoon.add(lSun);
 
 			// this seems wrong. Why should we need to go to the next yoga here?

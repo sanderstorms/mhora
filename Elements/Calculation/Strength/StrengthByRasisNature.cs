@@ -26,7 +26,7 @@ public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool stronger(Elements.Body.Name m, Elements.Body.Name n)
+	public bool stronger(Body.Name m, Body.Name n)
 	{
 		var za = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
 		var zb = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;

@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections;
 using Mhora.Components.Property;
+using Mhora.Elements;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Components.Dasa.Rasi;
@@ -76,7 +77,7 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 		var    cycle_start = paramAyus() * cycle;
 		var    curr        = 0.0;
 		double dasa_length;
-		var    zlagna = h.getPosition(Elements.Body.Name.Lagna).longitude.toZodiacHouse();
+		var    zlagna = h.getPosition(Body.Name.Lagna).longitude.toZodiacHouse();
 		for (var i = 0; i < 12; i++)
 		{
 			var zh = zlagna.add(order[i]);

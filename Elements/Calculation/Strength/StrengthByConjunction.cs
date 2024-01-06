@@ -26,7 +26,7 @@ public class StrengthByConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool stronger(Elements.Body.Name m, Elements.Body.Name n)
+	public bool stronger(Body.Name m, Body.Name n)
 	{
 		return stronger(h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value, h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value);
 	}

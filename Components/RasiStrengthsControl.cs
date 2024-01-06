@@ -23,7 +23,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
-using Mhora.Components.Varga;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;

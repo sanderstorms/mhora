@@ -61,8 +61,8 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 
 	public ArrayList Dasa(int cycle)
 	{
-		var mpos = h.getPosition(Elements.Body.Name.Moon).longitude;
-		var spos = h.getPosition(Elements.Body.Name.Sun).longitude;
+		var mpos = h.getPosition(Body.Name.Moon).longitude;
+		var spos = h.getPosition(Body.Name.Sun).longitude;
 
 		var tithi = mpos.sub(spos);
 		if (options.UseTithiRemainder == false)
@@ -104,18 +104,18 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		return ad.nextDasaLord(di);
 	}
 
-	public double lengthOfDasa(Elements.Body.Name plt)
+	public double lengthOfDasa(Body.Name plt)
 	{
 		return ad.lengthOfDasa(plt);
 	}
 
-	public Elements.Body.Name lordOfNakshatra(Elements.Nakshatra n)
+	public Body.Name lordOfNakshatra(Elements.Nakshatra n)
 	{
 		Debug.Assert(false, "TithiAshtottari::lordOfNakshatra");
-		return Elements.Body.Name.Sun;
+		return Body.Name.Sun;
 	}
 
-	public Elements.Body.Name lordOfTithi(Longitude l)
+	public Body.Name lordOfTithi(Longitude l)
 	{
 		return l.toTithi().getLord();
 	}

@@ -60,7 +60,7 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 	{
 		var al    = new ArrayList(12);
 		var start = cycle * paramAyus();
-		var lzh   = h.getPosition(Elements.Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
+		var lzh   = h.getPosition(Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
 		for (var i = 1; i <= 12; i++)
 		{
 			var czh = lzh.add(i);

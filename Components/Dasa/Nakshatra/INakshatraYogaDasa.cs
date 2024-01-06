@@ -22,6 +22,6 @@ namespace Mhora.Components.Dasa.Nakshatra;
 
 public interface INakshatraYogaDasa : IDasa
 {
-	Elements.Body.Name lordOfYoga(Longitude l);
-	double             lengthOfDasa(Elements.Body.Name plt);
+	Body.Name lordOfYoga(Longitude   l);
+	double    lengthOfDasa(Body.Name plt);
 }

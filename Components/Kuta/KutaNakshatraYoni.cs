@@ -64,8 +64,7 @@ public class KutaNakshatraYoni
 			case Nakshatra.Name.Jyestha:
 			case Nakshatra.Name.PoorvaShada:
 			case Nakshatra.Name.PoorvaBhadra:
-			case Nakshatra.Name.UttaraShada:
-				return ESex.IMale;
+			case Nakshatra.Name.UttaraShada: return ESex.IMale;
 		}
 
 		return ESex.IFemale;
@@ -76,44 +75,31 @@ public class KutaNakshatraYoni
 		switch (n.value)
 		{
 			case Nakshatra.Name.Aswini:
-			case Nakshatra.Name.Satabisha:
-				return EType.IHorse;
+			case Nakshatra.Name.Satabisha: return EType.IHorse;
 			case Nakshatra.Name.Bharani:
-			case Nakshatra.Name.Revati:
-				return EType.IElephant;
+			case Nakshatra.Name.Revati: return EType.IElephant;
 			case Nakshatra.Name.Pushya:
-			case Nakshatra.Name.Krittika:
-				return EType.ISheep;
+			case Nakshatra.Name.Krittika: return EType.ISheep;
 			case Nakshatra.Name.Rohini:
-			case Nakshatra.Name.Mrigarirsa:
-				return EType.ISerpent;
+			case Nakshatra.Name.Mrigarirsa: return EType.ISerpent;
 			case Nakshatra.Name.Moola:
-			case Nakshatra.Name.Aridra:
-				return EType.IDog;
+			case Nakshatra.Name.Aridra: return EType.IDog;
 			case Nakshatra.Name.Aslesha:
-			case Nakshatra.Name.Punarvasu:
-				return EType.ICat;
+			case Nakshatra.Name.Punarvasu: return EType.ICat;
 			case Nakshatra.Name.Makha:
-			case Nakshatra.Name.PoorvaPhalguni:
-				return EType.IRat;
+			case Nakshatra.Name.PoorvaPhalguni: return EType.IRat;
 			case Nakshatra.Name.UttaraPhalguni:
-			case Nakshatra.Name.UttaraBhadra:
-				return EType.ICow;
+			case Nakshatra.Name.UttaraBhadra: return EType.ICow;
 			case Nakshatra.Name.Swati:
-			case Nakshatra.Name.Hasta:
-				return EType.IBuffalo;
+			case Nakshatra.Name.Hasta: return EType.IBuffalo;
 			case Nakshatra.Name.Vishaka:
-			case Nakshatra.Name.Chittra:
-				return EType.ITiger;
+			case Nakshatra.Name.Chittra: return EType.ITiger;
 			case Nakshatra.Name.Jyestha:
-			case Nakshatra.Name.Anuradha:
-				return EType.IHare;
+			case Nakshatra.Name.Anuradha: return EType.IHare;
 			case Nakshatra.Name.PoorvaShada:
-			case Nakshatra.Name.Sravana:
-				return EType.IMonkey;
+			case Nakshatra.Name.Sravana: return EType.IMonkey;
 			case Nakshatra.Name.PoorvaBhadra:
-			case Nakshatra.Name.Dhanishta:
-				return EType.ILion;
+			case Nakshatra.Name.Dhanishta: return EType.ILion;
 			case Nakshatra.Name.UttaraShada: return EType.IMongoose;
 		}
 

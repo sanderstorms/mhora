@@ -82,19 +82,19 @@ public class SunMoonYoga
 		return new SunMoonYoga((Name) snum);
 	}
 
-	public Elements.Body.Name getLord()
+	public Body.Name getLord()
 	{
 		switch ((int) value % 9)
 		{
-			case 1:  return Elements.Body.Name.Saturn;
-			case 2:  return Elements.Body.Name.Mercury;
-			case 3:  return Elements.Body.Name.Ketu;
-			case 4:  return Elements.Body.Name.Venus;
-			case 5:  return Elements.Body.Name.Sun;
-			case 6:  return Elements.Body.Name.Moon;
-			case 7:  return Elements.Body.Name.Mars;
-			case 8:  return Elements.Body.Name.Rahu;
-			default: return Elements.Body.Name.Jupiter;
+			case 1:  return Body.Name.Saturn;
+			case 2:  return Body.Name.Mercury;
+			case 3:  return Body.Name.Ketu;
+			case 4:  return Body.Name.Venus;
+			case 5:  return Body.Name.Sun;
+			case 6:  return Body.Name.Moon;
+			case 7:  return Body.Name.Mars;
+			case 8:  return Body.Name.Rahu;
+			default: return Body.Name.Jupiter;
 		}
 	}
 

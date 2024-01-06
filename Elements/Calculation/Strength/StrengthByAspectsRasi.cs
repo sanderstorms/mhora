@@ -26,7 +26,7 @@ public class StrengthByAspectsRasi : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool stronger(Elements.Body.Name m, Elements.Body.Name n)
+	public bool stronger(Body.Name m, Body.Name n)
 	{
 		var zm = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
 		var zn = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
@@ -35,8 +35,8 @@ public class StrengthByAspectsRasi : BaseStrength, IStrengthRasi, IStrengthGraha
 
 	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
 	{
-		var zj = h.getPosition(Elements.Body.Name.Jupiter).toDivisionPosition(dtype).zodiac_house;
-		var zm = h.getPosition(Elements.Body.Name.Mercury).toDivisionPosition(dtype).zodiac_house;
+		var zj = h.getPosition(Body.Name.Jupiter).toDivisionPosition(dtype).zodiac_house;
+		var zm = h.getPosition(Body.Name.Mercury).toDivisionPosition(dtype).zodiac_house;
 
 		var a = value(zj, zm, za);
 		var b = value(zj, zm, zb);

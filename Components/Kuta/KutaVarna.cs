@@ -23,72 +23,72 @@ namespace Mhora.Components.Kuta;
 
 public class KutaVarna
 {
-    public enum EType
-    {
-        IBrahmana,
-        IKshatriya,
-        IVaishya,
-        ISudra,
-        IAnuloma,
-        IPratiloma
-    }
+	public enum EType
+	{
+		IBrahmana,
+		IKshatriya,
+		IVaishya,
+		ISudra,
+		IAnuloma,
+		IPratiloma
+	}
 
-    public static int getMaxScore()
-    {
-        return 2;
-    }
+	public static int getMaxScore()
+	{
+		return 2;
+	}
 
-    public static int getScore(Nakshatra m, Nakshatra f)
-    {
-        var em = getType(m);
-        var ef = getType(f);
-        if (em == ef)
-        {
-            return 2;
-        }
+	public static int getScore(Nakshatra m, Nakshatra f)
+	{
+		var em = getType(m);
+		var ef = getType(f);
+		if (em == ef)
+		{
+			return 2;
+		}
 
-        if (em == EType.IBrahmana && (ef == EType.IKshatriya || ef == EType.IVaishya || ef == EType.ISudra))
-        {
-            return 1;
-        }
+		if (em == EType.IBrahmana && (ef == EType.IKshatriya || ef == EType.IVaishya || ef == EType.ISudra))
+		{
+			return 1;
+		}
 
-        if (em == EType.IKshatriya && (ef == EType.IVaishya || ef == EType.ISudra))
-        {
-            return 1;
-        }
+		if (em == EType.IKshatriya && (ef == EType.IVaishya || ef == EType.ISudra))
+		{
+			return 1;
+		}
 
-        if (em == EType.IVaishya && ef == EType.ISudra)
-        {
-            return 1;
-        }
+		if (em == EType.IVaishya && ef == EType.ISudra)
+		{
+			return 1;
+		}
 
-        if (em == EType.IAnuloma && ef != EType.IPratiloma)
-        {
-            return 1;
-        }
+		if (em == EType.IAnuloma && ef != EType.IPratiloma)
+		{
+			return 1;
+		}
 
-        if (ef == EType.IAnuloma && em != EType.IAnuloma)
-        {
-            return 1;
-        }
+		if (ef == EType.IAnuloma && em != EType.IAnuloma)
+		{
+			return 1;
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 
-    public static EType getType(Nakshatra n)
-    {
-        switch ((int) n.value % 6)
-        {
-            case 1: return EType.IBrahmana;
-            case 2: return EType.IKshatriya;
-            case 3: return EType.IVaishya;
-            case 4: return EType.ISudra;
-            case 5: return EType.IAnuloma;
-            case 0: return EType.IPratiloma;
-            case 6: return EType.IPratiloma;
-        }
+	public static EType getType(Nakshatra n)
+	{
+		switch ((int) n.value % 6)
+		{
+			case 1: return EType.IBrahmana;
+			case 2: return EType.IKshatriya;
+			case 3: return EType.IVaishya;
+			case 4: return EType.ISudra;
+			case 5: return EType.IAnuloma;
+			case 0: return EType.IPratiloma;
+			case 6: return EType.IPratiloma;
+		}
 
-        Debug.Assert(false, "KutaVarna::getType");
-        return EType.IAnuloma;
-    }
+		Debug.Assert(false, "KutaVarna::getType");
+		return EType.IAnuloma;
+	}
 }

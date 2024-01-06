@@ -235,7 +235,7 @@ public class NarayanaDasa : Dasa, IDasa
 		SetOptions(newOpts);
 	}
 
-	private Elements.Body.Name GetLord(ZodiacHouse zh)
+	private Body.Name GetLord(ZodiacHouse zh)
 	{
 		switch (zh.value)
 		{

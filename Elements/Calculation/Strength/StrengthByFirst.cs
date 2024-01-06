@@ -26,7 +26,7 @@ public class StrengthByFirst : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool stronger(Elements.Body.Name m, Elements.Body.Name n)
+	public bool stronger(Body.Name m, Body.Name n)
 	{
 		return true;
 	}

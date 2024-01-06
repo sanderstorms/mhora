@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using System.Diagnostics;
+using Mhora.Elements;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Components.Dasa.Nakshatra;
@@ -44,7 +45,7 @@ public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		return _Dasa(h.getPosition(Elements.Body.Name.Moon).longitude, 1, cycle);
+		return _Dasa(h.getPosition(Body.Name.Moon).longitude, 1, cycle);
 	}
 
 	public ArrayList AntarDasa(DasaEntry di)
@@ -72,76 +73,76 @@ public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 		return new DasaEntry(nextDasaLordHelper(di.graha), 0, 0, di.level, string.Empty);
 	}
 
-	public double lengthOfDasa(Elements.Body.Name plt)
+	public double lengthOfDasa(Body.Name plt)
 	{
 		switch (plt)
 		{
-			case Elements.Body.Name.Sun:     return 6;
-			case Elements.Body.Name.Moon:    return 15;
-			case Elements.Body.Name.Mars:    return 8;
-			case Elements.Body.Name.Mercury: return 17;
-			case Elements.Body.Name.Saturn:  return 10;
-			case Elements.Body.Name.Jupiter: return 19;
-			case Elements.Body.Name.Rahu:    return 12;
-			case Elements.Body.Name.Venus:   return 21;
+			case Body.Name.Sun:     return 6;
+			case Body.Name.Moon:    return 15;
+			case Body.Name.Mars:    return 8;
+			case Body.Name.Mercury: return 17;
+			case Body.Name.Saturn:  return 10;
+			case Body.Name.Jupiter: return 19;
+			case Body.Name.Rahu:    return 12;
+			case Body.Name.Venus:   return 21;
 		}
 
 		Trace.Assert(false, "Ashtottari::lengthOfDasa");
 		return 0;
 	}
 
-	public Elements.Body.Name lordOfNakshatra(Elements.Nakshatra n)
+	public Body.Name lordOfNakshatra(Elements.Nakshatra n)
 	{
 		switch (n.value)
 		{
-			case Elements.Nakshatra.Name.Aswini:         return Elements.Body.Name.Rahu;
-			case Elements.Nakshatra.Name.Bharani:        return Elements.Body.Name.Rahu;
-			case Elements.Nakshatra.Name.Krittika:       return Elements.Body.Name.Venus;
-			case Elements.Nakshatra.Name.Rohini:         return Elements.Body.Name.Venus;
-			case Elements.Nakshatra.Name.Mrigarirsa:     return Elements.Body.Name.Venus;
-			case Elements.Nakshatra.Name.Aridra:         return Elements.Body.Name.Sun;
-			case Elements.Nakshatra.Name.Punarvasu:      return Elements.Body.Name.Sun;
-			case Elements.Nakshatra.Name.Pushya:         return Elements.Body.Name.Sun;
-			case Elements.Nakshatra.Name.Aslesha:        return Elements.Body.Name.Sun;
-			case Elements.Nakshatra.Name.Makha:          return Elements.Body.Name.Moon;
-			case Elements.Nakshatra.Name.PoorvaPhalguni: return Elements.Body.Name.Moon;
-			case Elements.Nakshatra.Name.UttaraPhalguni: return Elements.Body.Name.Moon;
-			case Elements.Nakshatra.Name.Hasta:          return Elements.Body.Name.Mars;
-			case Elements.Nakshatra.Name.Chittra:        return Elements.Body.Name.Mars;
-			case Elements.Nakshatra.Name.Swati:          return Elements.Body.Name.Mars;
-			case Elements.Nakshatra.Name.Vishaka:        return Elements.Body.Name.Mars;
-			case Elements.Nakshatra.Name.Anuradha:       return Elements.Body.Name.Mercury;
-			case Elements.Nakshatra.Name.Jyestha:        return Elements.Body.Name.Mercury;
-			case Elements.Nakshatra.Name.Moola:          return Elements.Body.Name.Mercury;
-			case Elements.Nakshatra.Name.PoorvaShada:    return Elements.Body.Name.Saturn;
-			case Elements.Nakshatra.Name.UttaraShada:    return Elements.Body.Name.Saturn;
-			case Elements.Nakshatra.Name.Sravana:        return Elements.Body.Name.Saturn;
-			case Elements.Nakshatra.Name.Dhanishta:      return Elements.Body.Name.Jupiter;
-			case Elements.Nakshatra.Name.Satabisha:      return Elements.Body.Name.Jupiter;
-			case Elements.Nakshatra.Name.PoorvaBhadra:   return Elements.Body.Name.Jupiter;
-			case Elements.Nakshatra.Name.UttaraBhadra:   return Elements.Body.Name.Rahu;
-			case Elements.Nakshatra.Name.Revati:         return Elements.Body.Name.Rahu;
+			case Elements.Nakshatra.Name.Aswini:         return Body.Name.Rahu;
+			case Elements.Nakshatra.Name.Bharani:        return Body.Name.Rahu;
+			case Elements.Nakshatra.Name.Krittika:       return Body.Name.Venus;
+			case Elements.Nakshatra.Name.Rohini:         return Body.Name.Venus;
+			case Elements.Nakshatra.Name.Mrigarirsa:     return Body.Name.Venus;
+			case Elements.Nakshatra.Name.Aridra:         return Body.Name.Sun;
+			case Elements.Nakshatra.Name.Punarvasu:      return Body.Name.Sun;
+			case Elements.Nakshatra.Name.Pushya:         return Body.Name.Sun;
+			case Elements.Nakshatra.Name.Aslesha:        return Body.Name.Sun;
+			case Elements.Nakshatra.Name.Makha:          return Body.Name.Moon;
+			case Elements.Nakshatra.Name.PoorvaPhalguni: return Body.Name.Moon;
+			case Elements.Nakshatra.Name.UttaraPhalguni: return Body.Name.Moon;
+			case Elements.Nakshatra.Name.Hasta:          return Body.Name.Mars;
+			case Elements.Nakshatra.Name.Chittra:        return Body.Name.Mars;
+			case Elements.Nakshatra.Name.Swati:          return Body.Name.Mars;
+			case Elements.Nakshatra.Name.Vishaka:        return Body.Name.Mars;
+			case Elements.Nakshatra.Name.Anuradha:       return Body.Name.Mercury;
+			case Elements.Nakshatra.Name.Jyestha:        return Body.Name.Mercury;
+			case Elements.Nakshatra.Name.Moola:          return Body.Name.Mercury;
+			case Elements.Nakshatra.Name.PoorvaShada:    return Body.Name.Saturn;
+			case Elements.Nakshatra.Name.UttaraShada:    return Body.Name.Saturn;
+			case Elements.Nakshatra.Name.Sravana:        return Body.Name.Saturn;
+			case Elements.Nakshatra.Name.Dhanishta:      return Body.Name.Jupiter;
+			case Elements.Nakshatra.Name.Satabisha:      return Body.Name.Jupiter;
+			case Elements.Nakshatra.Name.PoorvaBhadra:   return Body.Name.Jupiter;
+			case Elements.Nakshatra.Name.UttaraBhadra:   return Body.Name.Rahu;
+			case Elements.Nakshatra.Name.Revati:         return Body.Name.Rahu;
 		}
 
 		Trace.Assert(false, "AshtottariDasa::LordOfNakshatra");
-		return Elements.Body.Name.Lagna;
+		return Body.Name.Lagna;
 	}
 
-	private Elements.Body.Name nextDasaLordHelper(Elements.Body.Name b)
+	private Body.Name nextDasaLordHelper(Body.Name b)
 	{
 		switch (b)
 		{
-			case Elements.Body.Name.Sun:     return Elements.Body.Name.Moon;
-			case Elements.Body.Name.Moon:    return Elements.Body.Name.Mars;
-			case Elements.Body.Name.Mars:    return Elements.Body.Name.Mercury;
-			case Elements.Body.Name.Mercury: return Elements.Body.Name.Saturn;
-			case Elements.Body.Name.Saturn:  return Elements.Body.Name.Jupiter;
-			case Elements.Body.Name.Jupiter: return Elements.Body.Name.Rahu;
-			case Elements.Body.Name.Rahu:    return Elements.Body.Name.Venus;
-			case Elements.Body.Name.Venus:   return Elements.Body.Name.Sun;
+			case Body.Name.Sun:     return Body.Name.Moon;
+			case Body.Name.Moon:    return Body.Name.Mars;
+			case Body.Name.Mars:    return Body.Name.Mercury;
+			case Body.Name.Mercury: return Body.Name.Saturn;
+			case Body.Name.Saturn:  return Body.Name.Jupiter;
+			case Body.Name.Jupiter: return Body.Name.Rahu;
+			case Body.Name.Rahu:    return Body.Name.Venus;
+			case Body.Name.Venus:   return Body.Name.Sun;
 		}
 
 		Trace.Assert(false, "AshtottariDasa::nextDasaLord");
-		return Elements.Body.Name.Lagna;
+		return Body.Name.Lagna;
 	}
 }

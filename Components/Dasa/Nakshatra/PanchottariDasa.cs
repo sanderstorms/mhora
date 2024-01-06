@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using System.Diagnostics;
+using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
 
@@ -45,7 +46,7 @@ public class PanchottariDasa : NakshatraDasa, INakshatraDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		return _Dasa(h.getPosition(Elements.Body.Name.Moon).longitude, 1, cycle);
+		return _Dasa(h.getPosition(Body.Name.Moon).longitude, 1, cycle);
 	}
 
 	public ArrayList AntarDasa(DasaEntry di)
@@ -73,34 +74,34 @@ public class PanchottariDasa : NakshatraDasa, INakshatraDasa
 		return new DasaEntry(nextDasaLordHelper(di.graha), 0, 0, di.level, string.Empty);
 	}
 
-	public double lengthOfDasa(Elements.Body.Name plt)
+	public double lengthOfDasa(Body.Name plt)
 	{
 		switch (plt)
 		{
-			case Elements.Body.Name.Sun:     return 12;
-			case Elements.Body.Name.Mercury: return 13;
-			case Elements.Body.Name.Saturn:  return 14;
-			case Elements.Body.Name.Mars:    return 15;
-			case Elements.Body.Name.Venus:   return 16;
-			case Elements.Body.Name.Moon:    return 17;
-			case Elements.Body.Name.Jupiter: return 18;
+			case Body.Name.Sun:     return 12;
+			case Body.Name.Mercury: return 13;
+			case Body.Name.Saturn:  return 14;
+			case Body.Name.Mars:    return 15;
+			case Body.Name.Venus:   return 16;
+			case Body.Name.Moon:    return 17;
+			case Body.Name.Jupiter: return 18;
 		}
 
 		Trace.Assert(false, "Panchottari::lengthOfDasa");
 		return 0;
 	}
 
-	public Elements.Body.Name lordOfNakshatra(Elements.Nakshatra n)
+	public Body.Name lordOfNakshatra(Elements.Nakshatra n)
 	{
-		var lords = new Elements.Body.Name[7]
+		var lords = new Body.Name[7]
 		{
-			Elements.Body.Name.Sun,
-			Elements.Body.Name.Mercury,
-			Elements.Body.Name.Saturn,
-			Elements.Body.Name.Mars,
-			Elements.Body.Name.Venus,
-			Elements.Body.Name.Moon,
-			Elements.Body.Name.Jupiter
+			Body.Name.Sun,
+			Body.Name.Mercury,
+			Body.Name.Saturn,
+			Body.Name.Mars,
+			Body.Name.Venus,
+			Body.Name.Moon,
+			Body.Name.Jupiter
 		};
 		var nak_val  = (int) n.value;
 		var anu_val  = (int) Elements.Nakshatra.Name.Anuradha;
@@ -109,20 +110,20 @@ public class PanchottariDasa : NakshatraDasa, INakshatraDasa
 		return lords[diff_off];
 	}
 
-	private Elements.Body.Name nextDasaLordHelper(Elements.Body.Name b)
+	private Body.Name nextDasaLordHelper(Body.Name b)
 	{
 		switch (b)
 		{
-			case Elements.Body.Name.Sun:     return Elements.Body.Name.Mercury;
-			case Elements.Body.Name.Mercury: return Elements.Body.Name.Saturn;
-			case Elements.Body.Name.Saturn:  return Elements.Body.Name.Mars;
-			case Elements.Body.Name.Mars:    return Elements.Body.Name.Venus;
-			case Elements.Body.Name.Venus:   return Elements.Body.Name.Moon;
-			case Elements.Body.Name.Moon:    return Elements.Body.Name.Jupiter;
-			case Elements.Body.Name.Jupiter: return Elements.Body.Name.Sun;
+			case Body.Name.Sun:     return Body.Name.Mercury;
+			case Body.Name.Mercury: return Body.Name.Saturn;
+			case Body.Name.Saturn:  return Body.Name.Mars;
+			case Body.Name.Mars:    return Body.Name.Venus;
+			case Body.Name.Venus:   return Body.Name.Moon;
+			case Body.Name.Moon:    return Body.Name.Jupiter;
+			case Body.Name.Jupiter: return Body.Name.Sun;
 		}
 
 		Trace.Assert(false, "DwadashottariDasa::nextDasaLord");
-		return Elements.Body.Name.Lagna;
+		return Body.Name.Lagna;
 	}
 }

@@ -28,7 +28,7 @@ public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool stronger(Elements.Body.Name m, Elements.Body.Name n)
+	public bool stronger(Body.Name m, Body.Name n)
 	{
 		var lonm = karakaLongitude(m);
 		var lonn = karakaLongitude(n);
@@ -47,16 +47,16 @@ public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 
 	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
 	{
-		Elements.Body.Name[] karakaBodies =
+		Body.Name[] karakaBodies =
 		{
-			Elements.Body.Name.Sun,
-			Elements.Body.Name.Moon,
-			Elements.Body.Name.Mars,
-			Elements.Body.Name.Mercury,
-			Elements.Body.Name.Jupiter,
-			Elements.Body.Name.Venus,
-			Elements.Body.Name.Saturn,
-			Elements.Body.Name.Rahu
+			Body.Name.Sun,
+			Body.Name.Moon,
+			Body.Name.Mars,
+			Body.Name.Mercury,
+			Body.Name.Jupiter,
+			Body.Name.Venus,
+			Body.Name.Saturn,
+			Body.Name.Rahu
 		};
 
 		double lona = 0.0, lonb = 0.0;

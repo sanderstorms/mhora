@@ -48,8 +48,8 @@ public class KaranaChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa, INaksha
 
 	public ArrayList Dasa(int cycle)
 	{
-		var mMoon = h.getPosition(Elements.Body.Name.Moon).longitude;
-		var mSun  = h.getPosition(Elements.Body.Name.Sun).longitude;
+		var mMoon = h.getPosition(Body.Name.Moon).longitude;
+		var mSun  = h.getPosition(Body.Name.Sun).longitude;
 		return _KaranaDasa(mMoon.sub(mSun), 1, cycle);
 	}
 
@@ -78,17 +78,17 @@ public class KaranaChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa, INaksha
 		return cd.nextDasaLord(di);
 	}
 
-	public double lengthOfDasa(Elements.Body.Name plt)
+	public double lengthOfDasa(Body.Name plt)
 	{
 		return cd.lengthOfDasa(plt);
 	}
 
-	public Elements.Body.Name lordOfNakshatra(Elements.Nakshatra n)
+	public Body.Name lordOfNakshatra(Elements.Nakshatra n)
 	{
 		return cd.lordOfNakshatra(n);
 	}
 
-	public Elements.Body.Name lordOfKarana(Longitude l)
+	public Body.Name lordOfKarana(Longitude l)
 	{
 		return l.toKarana().getLord();
 	}

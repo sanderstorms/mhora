@@ -23,55 +23,55 @@ namespace Mhora.Elements.Calculation.Strength;
 
 public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-    public StrengthByVimsottariDasaLength(Horoscope h, Division dtype) : base(h, dtype, false)
-    {
-    }
+	public StrengthByVimsottariDasaLength(Horoscope h, Division dtype) : base(h, dtype, false)
+	{
+	}
 
-    public bool stronger(Elements.Body.Name m, Elements.Body.Name n)
-    {
-        var a = VimsottariDasa.LengthOfDasa(m);
-        var b = VimsottariDasa.LengthOfDasa(n);
-        if (a > b)
-        {
-            return true;
-        }
+	public bool stronger(Body.Name m, Body.Name n)
+	{
+		var a = VimsottariDasa.LengthOfDasa(m);
+		var b = VimsottariDasa.LengthOfDasa(n);
+		if (a > b)
+		{
+			return true;
+		}
 
-        if (a < b)
-        {
-            return false;
-        }
+		if (a < b)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
-    {
-        var a = value(za);
-        var b = value(zb);
-        if (a > b)
-        {
-            return true;
-        }
+	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	{
+		var a = value(za);
+		var b = value(zb);
+		if (a > b)
+		{
+			return true;
+		}
 
-        if (a < b)
-        {
-            return false;
-        }
+		if (a < b)
+		{
+			return false;
+		}
 
-        throw new EqualStrength();
-    }
+		throw new EqualStrength();
+	}
 
-    protected double value(ZodiacHouse.Name zh)
-    {
-        double length = 0;
-        foreach (Position bp in h.positionList)
-        {
-            if (bp.type == Elements.Body.Type.Graha)
-            {
-                length = Math.Max(length, VimsottariDasa.LengthOfDasa(bp.name));
-            }
-        }
+	protected double value(ZodiacHouse.Name zh)
+	{
+		double length = 0;
+		foreach (Position bp in h.positionList)
+		{
+			if (bp.type == Body.Type.Graha)
+			{
+				length = Math.Max(length, VimsottariDasa.LengthOfDasa(bp.name));
+			}
+		}
 
-        return length;
-    }
+		return length;
+	}
 }

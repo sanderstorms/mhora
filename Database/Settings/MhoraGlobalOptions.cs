@@ -27,6 +27,7 @@ using System.Xml.Serialization;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Components.Varga;
+using Mhora.Elements;
 using Mhora.Elements.Hora;
 
 namespace Mhora.Database.Settings;
@@ -622,21 +623,21 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 		addToFontSizes(-1);
 	}
 
-	public Color getBinduColor(Elements.Body.Name b)
+	public Color getBinduColor(Body.Name b)
 	{
 		switch (b)
 		{
-			case Elements.Body.Name.Lagna:   return mcBodyLagna;
-			case Elements.Body.Name.Sun:     return mcBodySun;
-			case Elements.Body.Name.Moon:    return mcBodyMoon;
-			case Elements.Body.Name.Mars:    return mcBodyMars;
-			case Elements.Body.Name.Mercury: return mcBodyMercury;
-			case Elements.Body.Name.Jupiter: return mcBodyJupiter;
-			case Elements.Body.Name.Venus:   return mcBodyVenus;
-			case Elements.Body.Name.Saturn:  return mcBodySaturn;
-			case Elements.Body.Name.Rahu:    return mcBodyRahu;
-			case Elements.Body.Name.Ketu:    return mcBodyKetu;
-			default:                         return mcBodyOther;
+			case Body.Name.Lagna:   return mcBodyLagna;
+			case Body.Name.Sun:     return mcBodySun;
+			case Body.Name.Moon:    return mcBodyMoon;
+			case Body.Name.Mars:    return mcBodyMars;
+			case Body.Name.Mercury: return mcBodyMercury;
+			case Body.Name.Jupiter: return mcBodyJupiter;
+			case Body.Name.Venus:   return mcBodyVenus;
+			case Body.Name.Saturn:  return mcBodySaturn;
+			case Body.Name.Rahu:    return mcBodyRahu;
+			case Body.Name.Ketu:    return mcBodyKetu;
+			default:                return mcBodyOther;
 		}
 	}
 

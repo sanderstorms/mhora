@@ -28,7 +28,7 @@ public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStreng
 	{
 	}
 
-	public bool stronger(Elements.Body.Name m, Elements.Body.Name n)
+	public bool stronger(Body.Name m, Body.Name n)
 	{
 		var a = value(m);
 		var b = value(n);
@@ -69,7 +69,7 @@ public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStreng
 		return Dasa.NarayanaDasaLength(new ZodiacHouse(_zh), pl);
 	}
 
-	protected int value(Elements.Body.Name bm)
+	protected int value(Body.Name bm)
 	{
 		var zm = h.getPosition(bm).toDivisionPosition(dtype).zodiac_house.value;
 		return value(zm);

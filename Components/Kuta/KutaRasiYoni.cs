@@ -35,15 +35,12 @@ public class KutaRasiYoni
 		switch (z.value)
 		{
 			case ZodiacHouse.Name.Cap:
-			case ZodiacHouse.Name.Pis:
-				return EType.IPakshi;
+			case ZodiacHouse.Name.Pis: return EType.IPakshi;
 			case ZodiacHouse.Name.Can:
-			case ZodiacHouse.Name.Sco:
-				return EType.IReptile;
+			case ZodiacHouse.Name.Sco: return EType.IReptile;
 			case ZodiacHouse.Name.Ari:
 			case ZodiacHouse.Name.Tau:
-			case ZodiacHouse.Name.Leo:
-				return EType.IPasu;
+			case ZodiacHouse.Name.Leo: return EType.IPasu;
 		}
 
 		return EType.INara;

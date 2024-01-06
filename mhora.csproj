@@ -237,9 +237,12 @@
     <Compile Include="Tables\Tara.cs" />
     <Compile Include="Tables\Tithi.cs" />
     <Compile Include="Tables\Varga.cs" />
+    <Compile Include="Elements\CuspTransitSearch.cs" />
     <Compile Include="Util\Dll.cs" />
     <Compile Include="Util\EnumHelper.cs" />
-    <Compile Include="Util\LocationConverter.cs" />
+    <Compile Include="Elements\LocationConverter.cs" />
+    <Compile Include="Elements\NonLinearTransit.cs" />
+    <Compile Include="Elements\Retrogression.cs" />
     <Compile Include="Util\SevenZip.cs" />
     <Compile Include="Util\StringExtension.cs" />
     <Compile Include="Elements\Ashtakavarga.cs">
@@ -458,7 +461,7 @@
     <Compile Include="SwissEph\sweph.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Util\ReturnLon.cs">
+    <Compile Include="Components\Delegates\ReturnLon.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SwissEph\SwephException.cs" />
@@ -492,6 +495,7 @@
     <Compile Include="Components\Dasa\Nakshatra\YogaVimsottariDasa.cs" />
     <Compile Include="Components\Dasa\Nakshatra\YoginiDasa.cs" />
     <Compile Include="Elements\ZodiacHouse.cs" />
+    <Compile Include="Elements\Transit.cs" />
     <Content Include="Resources\COPY.BMP" />
     <Content Include="Resources\DISP.BMP" />
     <Content Include="Resources\DOB.BMP" />

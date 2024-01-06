@@ -21,5 +21,5 @@ namespace Mhora.Elements.Calculation.Strength;
 
 public interface IStrengthGraha
 {
-	bool stronger(Elements.Body.Name m, Elements.Body.Name n);
+	bool stronger(Body.Name m, Body.Name n);
 }

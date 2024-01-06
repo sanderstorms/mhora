@@ -119,19 +119,19 @@ public class sweph
 		mCurrentLockHolder = null;
 	}
 
-	public static int BodyNameToSweph(Elements.Body.Name b)
+	public static int BodyNameToSweph(Body.Name b)
 	{
 		switch (b)
 		{
-			case Elements.Body.Name.Sun:     return SE_SUN;
-			case Elements.Body.Name.Moon:    return SE_MOON;
-			case Elements.Body.Name.Mars:    return SE_MARS;
-			case Elements.Body.Name.Mercury: return SE_MERCURY;
-			case Elements.Body.Name.Jupiter: return SE_JUPITER;
-			case Elements.Body.Name.Venus:   return SE_VENUS;
-			case Elements.Body.Name.Saturn:  return SE_SATURN;
-			case Elements.Body.Name.Lagna:   return SE_BIT_NO_REFRACTION;
-			default:                         throw new Exception();
+			case Body.Name.Sun:     return SE_SUN;
+			case Body.Name.Moon:    return SE_MOON;
+			case Body.Name.Mars:    return SE_MARS;
+			case Body.Name.Mercury: return SE_MERCURY;
+			case Body.Name.Jupiter: return SE_JUPITER;
+			case Body.Name.Venus:   return SE_VENUS;
+			case Body.Name.Saturn:  return SE_SATURN;
+			case Body.Name.Lagna:   return SE_BIT_NO_REFRACTION;
+			default:                throw new Exception();
 		}
 	}
 

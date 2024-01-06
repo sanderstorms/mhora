@@ -40,9 +40,9 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 		horoscope = h;
 
 		var fs_graha = new FindStronger(h, new Division(Basics.DivisionType.BhavaPada), FindStronger.RulesVimsottariGraha(h));
-		var stronger = fs_graha.StrongerGraha(Elements.Body.Name.Moon, Elements.Body.Name.Lagna, false);
+		var stronger = fs_graha.StrongerGraha(Body.Name.Moon, Body.Name.Lagna, false);
 
-		if (stronger == Elements.Body.Name.Lagna)
+		if (stronger == Body.Name.Lagna)
 		{
 			options.SeedBody = UserOptions.StartBodyType.Lagna;
 		}
@@ -113,12 +113,12 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 		return new DasaEntry(nextDasaLordHelper(di.graha), 0, 0, di.level, string.Empty);
 	}
 
-	public double lengthOfDasa(Elements.Body.Name plt)
+	public double lengthOfDasa(Body.Name plt)
 	{
 		return LengthOfDasa(plt);
 	}
 
-	public Elements.Body.Name lordOfNakshatra(Elements.Nakshatra n)
+	public Body.Name lordOfNakshatra(Elements.Nakshatra n)
 	{
 		return LordOfNakshatra(n);
 	}
@@ -136,57 +136,57 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 		OnChanged();
 	}
 
-	private Elements.Body.Name nextDasaLordHelper(Elements.Body.Name b)
+	private Body.Name nextDasaLordHelper(Body.Name b)
 	{
 		switch (b)
 		{
-			case Elements.Body.Name.Sun:     return Elements.Body.Name.Moon;
-			case Elements.Body.Name.Moon:    return Elements.Body.Name.Mars;
-			case Elements.Body.Name.Mars:    return Elements.Body.Name.Rahu;
-			case Elements.Body.Name.Rahu:    return Elements.Body.Name.Jupiter;
-			case Elements.Body.Name.Jupiter: return Elements.Body.Name.Saturn;
-			case Elements.Body.Name.Saturn:  return Elements.Body.Name.Mercury;
-			case Elements.Body.Name.Mercury: return Elements.Body.Name.Ketu;
-			case Elements.Body.Name.Ketu:    return Elements.Body.Name.Venus;
-			case Elements.Body.Name.Venus:   return Elements.Body.Name.Sun;
+			case Body.Name.Sun:     return Body.Name.Moon;
+			case Body.Name.Moon:    return Body.Name.Mars;
+			case Body.Name.Mars:    return Body.Name.Rahu;
+			case Body.Name.Rahu:    return Body.Name.Jupiter;
+			case Body.Name.Jupiter: return Body.Name.Saturn;
+			case Body.Name.Saturn:  return Body.Name.Mercury;
+			case Body.Name.Mercury: return Body.Name.Ketu;
+			case Body.Name.Ketu:    return Body.Name.Venus;
+			case Body.Name.Venus:   return Body.Name.Sun;
 		}
 
 		Trace.Assert(false, "VimsottariDasa::nextDasaLord");
-		return Elements.Body.Name.Lagna;
+		return Body.Name.Lagna;
 	}
 
-	public static double LengthOfDasa(Elements.Body.Name plt)
+	public static double LengthOfDasa(Body.Name plt)
 	{
 		switch (plt)
 		{
-			case Elements.Body.Name.Sun:     return 6;
-			case Elements.Body.Name.Moon:    return 10;
-			case Elements.Body.Name.Mars:    return 7;
-			case Elements.Body.Name.Rahu:    return 18;
-			case Elements.Body.Name.Jupiter: return 16;
-			case Elements.Body.Name.Saturn:  return 19;
-			case Elements.Body.Name.Mercury: return 17;
-			case Elements.Body.Name.Ketu:    return 7;
-			case Elements.Body.Name.Venus:   return 20;
+			case Body.Name.Sun:     return 6;
+			case Body.Name.Moon:    return 10;
+			case Body.Name.Mars:    return 7;
+			case Body.Name.Rahu:    return 18;
+			case Body.Name.Jupiter: return 16;
+			case Body.Name.Saturn:  return 19;
+			case Body.Name.Mercury: return 17;
+			case Body.Name.Ketu:    return 7;
+			case Body.Name.Venus:   return 20;
 		}
 
 		Trace.Assert(false, "Vimsottari::lengthOfDasa");
 		return 0;
 	}
 
-	public static Elements.Body.Name LordOfNakshatra(Elements.Nakshatra n)
+	public static Body.Name LordOfNakshatra(Elements.Nakshatra n)
 	{
-		var lords = new Elements.Body.Name[9]
+		var lords = new Body.Name[9]
 		{
-			Elements.Body.Name.Mercury,
-			Elements.Body.Name.Ketu,
-			Elements.Body.Name.Venus,
-			Elements.Body.Name.Sun,
-			Elements.Body.Name.Moon,
-			Elements.Body.Name.Mars,
-			Elements.Body.Name.Rahu,
-			Elements.Body.Name.Jupiter,
-			Elements.Body.Name.Saturn
+			Body.Name.Mercury,
+			Body.Name.Ketu,
+			Body.Name.Venus,
+			Body.Name.Sun,
+			Body.Name.Moon,
+			Body.Name.Mars,
+			Body.Name.Rahu,
+			Body.Name.Jupiter,
+			Body.Name.Saturn
 		};
 		var nak_val = (int) n.value % 9;
 		return lords[nak_val];
@@ -222,10 +222,10 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 			Gulika
 		}
 
-		public Division           div = new(Basics.DivisionType.Rasi);
-		public int                nakshatra_offset;
-		public Elements.Body.Name start_graha;
-		public StartBodyType      user_start_graha;
+		public Division      div = new(Basics.DivisionType.Rasi);
+		public int           nakshatra_offset;
+		public Body.Name     start_graha;
+		public StartBodyType user_start_graha;
 
 
 		[PGDisplayName("Varga")]
@@ -245,35 +245,35 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 				switch (value)
 				{
 					case StartBodyType.Lagna:
-						start_graha      = Elements.Body.Name.Lagna;
+						start_graha      = Body.Name.Lagna;
 						nakshatra_offset = 1;
 						break;
 					case StartBodyType.Jupiter:
-						start_graha      = Elements.Body.Name.Jupiter;
+						start_graha      = Body.Name.Jupiter;
 						nakshatra_offset = 1;
 						break;
 					case StartBodyType.Moon:
-						start_graha      = Elements.Body.Name.Moon;
+						start_graha      = Body.Name.Moon;
 						nakshatra_offset = 1;
 						break;
 					case StartBodyType.Utpanna:
-						start_graha      = Elements.Body.Name.Moon;
+						start_graha      = Body.Name.Moon;
 						nakshatra_offset = 5;
 						break;
 					case StartBodyType.Kshema:
-						start_graha      = Elements.Body.Name.Moon;
+						start_graha      = Body.Name.Moon;
 						nakshatra_offset = 4;
 						break;
 					case StartBodyType.Aadhaana:
-						start_graha      = Elements.Body.Name.Moon;
+						start_graha      = Body.Name.Moon;
 						nakshatra_offset = 8;
 						break;
 					case StartBodyType.Maandi:
-						start_graha      = Elements.Body.Name.Maandi;
+						start_graha      = Body.Name.Maandi;
 						nakshatra_offset = 1;
 						break;
 					case StartBodyType.Gulika:
-						start_graha      = Elements.Body.Name.Gulika;
+						start_graha      = Body.Name.Gulika;
 						nakshatra_offset = 1;
 						break;
 				}

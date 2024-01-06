@@ -24,130 +24,117 @@ namespace Mhora.Elements;
 
 public class Tithi
 {
+	public Tithi(Tables.Tithi.Value _mValue)
+	{
+		value = (Tables.Tithi.Value) Basics.normalize_inc(1, 30, (int) _mValue);
+	}
+
+	public Tables.Tithi.Value value
+	{
+		get;
+		set;
+	}
 
 
-    public Tithi(Tables.Tithi.Value _mValue)
-    {
-        value = (Tables.Tithi.Value) Basics.normalize_inc(1, 30, (int) _mValue);
-    }
+	public override string ToString()
+	{
+		return EnumDescConverter.GetEnumDescription(value);
+	}
 
-    public Tables.Tithi.Value value
-    {
-        get;
-        set;
-    }
+	public Tithi add(int i)
+	{
+		var tnum = Basics.normalize_inc(1, 30, (int) value + i - 1);
+		return new Tithi((Tables.Tithi.Value) tnum);
+	}
 
+	public Tithi addReverse(int i)
+	{
+		var tnum = Basics.normalize_inc(1, 30, (int) value - i + 1);
+		return new Tithi((Tables.Tithi.Value) tnum);
+	}
 
-    public override string ToString()
-    {
-        return EnumDescConverter.GetEnumDescription(value);
-    }
+	public Body.Name getLord()
+	{
+		// 1 based index starting with prathama
+		var t = (int) value;
 
-    public Tithi add(int i)
-    {
-        var tnum = Basics.normalize_inc(1, 30, (int) value + i - 1);
-        return new Tithi((Tables.Tithi.Value) tnum);
-    }
+		//mhora.Log.Debug ("Looking for lord of tithi {0}", t);
+		// check for new moon and full moon 
+		if (t == 30)
+		{
+			return Body.Name.Rahu;
+		}
 
-    public Tithi addReverse(int i)
-    {
-        var tnum = Basics.normalize_inc(1, 30, (int) value - i + 1);
-        return new Tithi((Tables.Tithi.Value) tnum);
-    }
+		if (t == 15)
+		{
+			return Body.Name.Saturn;
+		}
 
-    public Elements.Body.Name getLord()
-    {
-        // 1 based index starting with prathama
-        var t = (int) value;
+		// coalesce pakshas
+		if (t >= 16)
+		{
+			t -= 15;
+		}
 
-        //mhora.Log.Debug ("Looking for lord of tithi {0}", t);
-        // check for new moon and full moon 
-        if (t == 30)
-        {
-            return Elements.Body.Name.Rahu;
-        }
+		switch (t)
+		{
+			case 1:
+			case 9: return Body.Name.Sun;
+			case 2:
+			case 10: return Body.Name.Moon;
+			case 3:
+			case 11: return Body.Name.Mars;
+			case 4:
+			case 12: return Body.Name.Mercury;
+			case 5:
+			case 13: return Body.Name.Jupiter;
+			case 6:
+			case 14: return Body.Name.Venus;
+			case 7: return Body.Name.Saturn;
+			case 8: return Body.Name.Rahu;
+		}
 
-        if (t == 15)
-        {
-            return Elements.Body.Name.Saturn;
-        }
+		Debug.Assert(false, "Tithi::getLord");
+		return Body.Name.Sun;
+	}
 
-        // coalesce pakshas
-        if (t >= 16)
-        {
-            t -= 15;
-        }
+	public Tables.Tithi.NandaType toNandaType()
+	{
+		// 1 based index starting with prathama
+		var t = (int) value;
 
-        switch (t)
-        {
-            case 1:
-            case 9:
-                return Elements.Body.Name.Sun;
-            case 2:
-            case 10:
-                return Elements.Body.Name.Moon;
-            case 3:
-            case 11:
-                return Elements.Body.Name.Mars;
-            case 4:
-            case 12:
-                return Elements.Body.Name.Mercury;
-            case 5:
-            case 13:
-                return Elements.Body.Name.Jupiter;
-            case 6:
-            case 14:
-                return Elements.Body.Name.Venus;
-            case 7: return Elements.Body.Name.Saturn;
-            case 8: return Elements.Body.Name.Rahu;
-        }
+		// check for new moon and full moon 
 
-        Debug.Assert(false, "Tithi::getLord");
-        return Elements.Body.Name.Sun;
-    }
+		if (t == 30 || t == 15)
+		{
+			return Tables.Tithi.NandaType.Purna;
+		}
 
-    public Tables.Tithi.NandaType toNandaType()
-    {
-        // 1 based index starting with prathama
-        var t = (int) value;
+		// coalesce pakshas
+		if (t >= 16)
+		{
+			t -= 15;
+		}
 
-        // check for new moon and full moon 
+		switch (t)
+		{
+			case 1:
+			case 6:
+			case 11: return Tables.Tithi.NandaType.Nanda;
+			case 2:
+			case 7:
+			case 12: return Tables.Tithi.NandaType.Bhadra;
+			case 3:
+			case 8:
+			case 13: return Tables.Tithi.NandaType.Jaya;
+			case 4:
+			case 9:
+			case 14: return Tables.Tithi.NandaType.Rikta;
+			case 5:
+			case 10: return Tables.Tithi.NandaType.Purna;
+		}
 
-        if (t == 30 || t == 15)
-        {
-            return Tables.Tithi.NandaType.Purna;
-        }
-
-        // coalesce pakshas
-        if (t >= 16)
-        {
-            t -= 15;
-        }
-
-        switch (t)
-        {
-            case 1:
-            case 6:
-            case 11:
-                return Tables.Tithi.NandaType.Nanda;
-            case 2:
-            case 7:
-            case 12:
-                return Tables.Tithi.NandaType.Bhadra;
-            case 3:
-            case 8:
-            case 13:
-                return Tables.Tithi.NandaType.Jaya;
-            case 4:
-            case 9:
-            case 14:
-                return Tables.Tithi.NandaType.Rikta;
-            case 5:
-            case 10:
-                return Tables.Tithi.NandaType.Purna;
-        }
-
-        Debug.Assert(false, "Tithi::toNandaType");
-        return Tables.Tithi.NandaType.Nanda;
-    }
+		Debug.Assert(false, "Tithi::toNandaType");
+		return Tables.Tithi.NandaType.Nanda;
+	}
 }

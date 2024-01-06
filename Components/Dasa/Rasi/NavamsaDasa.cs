@@ -48,7 +48,7 @@ public class NavamsaDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al      = new ArrayList(12);
-		var zh_seed = h.getPosition(Elements.Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
+		var zh_seed = h.getPosition(Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
 
 		if (!zh_seed.isOdd())
 		{

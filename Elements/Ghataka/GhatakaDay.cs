@@ -22,50 +22,50 @@ namespace Mhora.Elements.Ghataka;
 
 public class GhatakaDay
 {
-    public static bool checkDay(ZodiacHouse janmaRasi, Basics.Weekday wd)
-    {
-        var ja = janmaRasi.value;
-        var gh = Basics.Weekday.Sunday;
-        switch (ja)
-        {
-            case ZodiacHouse.Name.Ari:
-                gh = Basics.Weekday.Sunday;
-                break;
-            case ZodiacHouse.Name.Tau:
-                gh = Basics.Weekday.Saturday;
-                break;
-            case ZodiacHouse.Name.Gem:
-                gh = Basics.Weekday.Monday;
-                break;
-            case ZodiacHouse.Name.Can:
-                gh = Basics.Weekday.Wednesday;
-                break;
-            case ZodiacHouse.Name.Leo:
-                gh = Basics.Weekday.Saturday;
-                break;
-            case ZodiacHouse.Name.Vir:
-                gh = Basics.Weekday.Saturday;
-                break;
-            case ZodiacHouse.Name.Lib:
-                gh = Basics.Weekday.Thursday;
-                break;
-            case ZodiacHouse.Name.Sco:
-                gh = Basics.Weekday.Friday;
-                break;
-            case ZodiacHouse.Name.Sag:
-                gh = Basics.Weekday.Friday;
-                break;
-            case ZodiacHouse.Name.Cap:
-                gh = Basics.Weekday.Tuesday;
-                break;
-            case ZodiacHouse.Name.Aqu:
-                gh = Basics.Weekday.Thursday;
-                break;
-            case ZodiacHouse.Name.Pis:
-                gh = Basics.Weekday.Friday;
-                break;
-        }
+	public static bool checkDay(ZodiacHouse janmaRasi, Basics.Weekday wd)
+	{
+		var ja = janmaRasi.value;
+		var gh = Basics.Weekday.Sunday;
+		switch (ja)
+		{
+			case ZodiacHouse.Name.Ari:
+				gh = Basics.Weekday.Sunday;
+				break;
+			case ZodiacHouse.Name.Tau:
+				gh = Basics.Weekday.Saturday;
+				break;
+			case ZodiacHouse.Name.Gem:
+				gh = Basics.Weekday.Monday;
+				break;
+			case ZodiacHouse.Name.Can:
+				gh = Basics.Weekday.Wednesday;
+				break;
+			case ZodiacHouse.Name.Leo:
+				gh = Basics.Weekday.Saturday;
+				break;
+			case ZodiacHouse.Name.Vir:
+				gh = Basics.Weekday.Saturday;
+				break;
+			case ZodiacHouse.Name.Lib:
+				gh = Basics.Weekday.Thursday;
+				break;
+			case ZodiacHouse.Name.Sco:
+				gh = Basics.Weekday.Friday;
+				break;
+			case ZodiacHouse.Name.Sag:
+				gh = Basics.Weekday.Friday;
+				break;
+			case ZodiacHouse.Name.Cap:
+				gh = Basics.Weekday.Tuesday;
+				break;
+			case ZodiacHouse.Name.Aqu:
+				gh = Basics.Weekday.Thursday;
+				break;
+			case ZodiacHouse.Name.Pis:
+				gh = Basics.Weekday.Friday;
+				break;
+		}
 
-        return wd == gh;
-    }
+		return wd == gh;
+	}
 }

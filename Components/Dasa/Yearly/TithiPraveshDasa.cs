@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
@@ -25,122 +26,122 @@ namespace Mhora.Components.Dasa.Yearly;
 
 public class TithiPraveshDasa : Dasa, IDasa
 {
-    private Horoscope h;
+	private Horoscope h;
 
-    public TithiPraveshDasa(Horoscope _h)
-    {
-        h = _h;
-    }
+	public TithiPraveshDasa(Horoscope _h)
+	{
+		h = _h;
+	}
 
-    public object GetOptions()
-    {
-        return new object();
-    }
+	public object GetOptions()
+	{
+		return new object();
+	}
 
-    public object SetOptions(object a)
-    {
-        return new object();
-    }
+	public object SetOptions(object a)
+	{
+		return new object();
+	}
 
-    public void recalculateOptions()
-    {
-    }
+	public void recalculateOptions()
+	{
+	}
 
-    public double paramAyus()
-    {
-        return 60.0;
-    }
+	public double paramAyus()
+	{
+		return 60.0;
+	}
 
-    public ArrayList Dasa(int cycle)
-    {
-        var al          = new ArrayList(60);
-        var cycle_start = cycle * paramAyus();
-        for (var i = 0; i < 60; i++)
-        {
-            var start = cycle_start + i;
-            var di    = new DasaEntry(Elements.Body.Name.Other, start, 1.0, 1, "Tithi Pravesh Year");
-            al.Add(di);
-        }
+	public ArrayList Dasa(int cycle)
+	{
+		var al          = new ArrayList(60);
+		var cycle_start = cycle * paramAyus();
+		for (var i = 0; i < 60; i++)
+		{
+			var start = cycle_start + i;
+			var di    = new DasaEntry(Body.Name.Other, start, 1.0, 1, "Tithi Pravesh Year");
+			al.Add(di);
+		}
 
-        return al;
-    }
+		return al;
+	}
 
-    public new string EntryDescription(DasaEntry pdi, Moment start, Moment end)
-    {
-        if (pdi.level == 2)
-        {
-            var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Elements.Body.Name.Sun));
-            var zh = l.toZodiacHouse();
-            return zh.ToString();
-        }
+	public new string EntryDescription(DasaEntry pdi, Moment start, Moment end)
+	{
+		if (pdi.level == 2)
+		{
+			var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Sun));
+			var zh = l.toZodiacHouse();
+			return zh.ToString();
+		}
 
-        if (pdi.level == 3)
-        {
-            var lSun  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Elements.Body.Name.Sun));
-            var lMoon = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Elements.Body.Name.Moon));
-            var l     = lMoon.sub(lSun);
-            var t     = l.toTithi();
-            return t.ToString();
-        }
+		if (pdi.level == 3)
+		{
+			var lSun  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Sun));
+			var lMoon = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Moon));
+			var l     = lMoon.sub(lSun);
+			var t     = l.toTithi();
+			return t.ToString();
+		}
 
-        return string.Empty;
-    }
+		return string.Empty;
+	}
 
-    public ArrayList AntarDasa(DasaEntry pdi)
-    {
-        string[] desc =
-        {
-            "  Month: ",
-            "    Tithi: "
-        };
-        if (pdi.level == 3)
-        {
-            return new ArrayList();
-        }
+	public ArrayList AntarDasa(DasaEntry pdi)
+	{
+		string[] desc =
+		{
+			"  Month: ",
+			"    Tithi: "
+		};
+		if (pdi.level == 3)
+		{
+			return new ArrayList();
+		}
 
-        ArrayList al;
-        double    start = 0.0, length = 0.0;
-        var       level = 0;
+		ArrayList al;
+		double    start = 0.0, length = 0.0;
+		var       level = 0;
 
-        al    = null;
-        start = pdi.startUT;
-        level = pdi.level + 1;
+		al    = null;
+		start = pdi.startUT;
+		level = pdi.level + 1;
 
-        switch (pdi.level)
-        {
-            case 1:
-                al     = new ArrayList(13);
-                length = pdi.dasaLength / 13.0;
-                //mhora.Log.Debug("AD length is {0}", length);
-                for (var i = 0; i < 13; i++)
-                {
-                    var di = new DasaEntry(Elements.Body.Name.Other, start, length, level, desc[level - 2]);
-                    al.Add(di);
-                    start += length;
-                }
+		switch (pdi.level)
+		{
+			case 1:
+				al     = new ArrayList(13);
+				length = pdi.dasaLength / 13.0;
+				//mhora.Log.Debug("AD length is {0}", length);
+				for (var i = 0; i < 13; i++)
+				{
+					var di = new DasaEntry(Body.Name.Other, start, length, level, desc[level - 2]);
+					al.Add(di);
+					start += length;
+				}
 
-                return al;
-            case 2:
-                al     = new ArrayList(30);
-                length = pdi.dasaLength / 30.0;
-                //mhora.Log.Debug("PD length is {0}", length);
-                for (var i = 0; i < 30; i++)
-                {
-                    var di = new DasaEntry(Elements.Body.Name.Other, start, length, level, desc[level - 2]);
-                    //mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
-                    al.Add(di);
-                    start += length;
-                }
+				return al;
+			case 2:
+				al     = new ArrayList(30);
+				length = pdi.dasaLength / 30.0;
+				//mhora.Log.Debug("PD length is {0}", length);
+				for (var i = 0; i < 30; i++)
+				{
+					var di = new DasaEntry(Body.Name.Other, start, length, level, desc[level - 2]);
+					//mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
+					al.Add(di);
+					start += length;
+				}
 
-                return al;
-        }
+				return al;
+		}
 
-        return new ArrayList();
-        ;
-    }
+		return new ArrayList();
+		;
+	}
 
-    public string Description()
-    {
-        return "Tithi Pravesh Chart Dasa";
-    }
+	public string Description()
+	{
+		return "Tithi Pravesh Chart Dasa";
+	}
 }

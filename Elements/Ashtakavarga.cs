@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using System.Diagnostics;
-using Mhora.Components.Varga;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Elements;
@@ -37,7 +36,7 @@ public class Ashtakavarga
 	private readonly Division  dtype;
 	private readonly Horoscope h;
 
-	private Elements.Body.Name[] avBodies;
+	private Body.Name[] avBodies;
 
 	public Ashtakavarga(Horoscope _h, Division _dtype)
 	{
@@ -45,14 +44,14 @@ public class Ashtakavarga
 		dtype = _dtype;
 		avBodies = new[]
 		{
-			Elements.Body.Name.Sun,
-			Elements.Body.Name.Moon,
-			Elements.Body.Name.Mars,
-			Elements.Body.Name.Mercury,
-			Elements.Body.Name.Jupiter,
-			Elements.Body.Name.Venus,
-			Elements.Body.Name.Saturn,
-			Elements.Body.Name.Lagna
+			Body.Name.Sun,
+			Body.Name.Moon,
+			Body.Name.Mars,
+			Body.Name.Mercury,
+			Body.Name.Jupiter,
+			Body.Name.Venus,
+			Body.Name.Saturn,
+			Body.Name.Lagna
 		};
 	}
 
@@ -63,27 +62,27 @@ public class Ashtakavarga
 			case EKakshya.EKStandard:
 				avBodies = new[]
 				{
-					Elements.Body.Name.Sun,
-					Elements.Body.Name.Moon,
-					Elements.Body.Name.Mars,
-					Elements.Body.Name.Mercury,
-					Elements.Body.Name.Jupiter,
-					Elements.Body.Name.Venus,
-					Elements.Body.Name.Saturn,
-					Elements.Body.Name.Lagna
+					Body.Name.Sun,
+					Body.Name.Moon,
+					Body.Name.Mars,
+					Body.Name.Mercury,
+					Body.Name.Jupiter,
+					Body.Name.Venus,
+					Body.Name.Saturn,
+					Body.Name.Lagna
 				};
 				break;
 			case EKakshya.EKRegular:
 				avBodies = new[]
 				{
-					Elements.Body.Name.Saturn,
-					Elements.Body.Name.Jupiter,
-					Elements.Body.Name.Mars,
-					Elements.Body.Name.Sun,
-					Elements.Body.Name.Venus,
-					Elements.Body.Name.Mercury,
-					Elements.Body.Name.Moon,
-					Elements.Body.Name.Lagna
+					Body.Name.Saturn,
+					Body.Name.Jupiter,
+					Body.Name.Mars,
+					Body.Name.Sun,
+					Body.Name.Venus,
+					Body.Name.Mercury,
+					Body.Name.Moon,
+					Body.Name.Lagna
 				};
 				break;
 		}
@@ -731,30 +730,30 @@ public class Ashtakavarga
 		return bindus;
 	}
 
-	public int BodyToInt(Elements.Body.Name b)
+	public int BodyToInt(Body.Name b)
 	{
 		switch (b)
 		{
-			case Elements.Body.Name.Sun:     return 0;
-			case Elements.Body.Name.Moon:    return 1;
-			case Elements.Body.Name.Mars:    return 2;
-			case Elements.Body.Name.Mercury: return 3;
-			case Elements.Body.Name.Jupiter: return 4;
-			case Elements.Body.Name.Venus:   return 5;
-			case Elements.Body.Name.Saturn:  return 6;
-			case Elements.Body.Name.Lagna:   return 7;
+			case Body.Name.Sun:     return 0;
+			case Body.Name.Moon:    return 1;
+			case Body.Name.Mars:    return 2;
+			case Body.Name.Mercury: return 3;
+			case Body.Name.Jupiter: return 4;
+			case Body.Name.Venus:   return 5;
+			case Body.Name.Saturn:  return 6;
+			case Body.Name.Lagna:   return 7;
 			default:
 				Trace.Assert(false, "Ashtakavarga:BodyToInt");
 				return 0;
 		}
 	}
 
-	public Elements.Body.Name[] getBodies()
+	public Body.Name[] getBodies()
 	{
 		return avBodies;
 	}
 
-	public int[] getPav(Elements.Body.Name m)
+	public int[] getPav(Body.Name m)
 	{
 		var ret = new int[12]
 		{
@@ -800,7 +799,7 @@ public class Ashtakavarga
 			0
 		};
 
-		var zl = h.getPosition(Elements.Body.Name.Lagna).toDivisionPosition(dtype).zodiac_house;
+		var zl = h.getPosition(Body.Name.Lagna).toDivisionPosition(dtype).zodiac_house;
 
 		foreach (var b in getBodies())
 		{
@@ -841,7 +840,7 @@ public class Ashtakavarga
 		foreach (var b in getBodies())
 		{
 			// Lagna's bindus are not included in SAV
-			if (b == Elements.Body.Name.Lagna)
+			if (b == Body.Name.Lagna)
 			{
 				continue;
 			}
@@ -857,7 +856,7 @@ public class Ashtakavarga
 		return sav;
 	}
 
-	public ZodiacHouse.Name[] getBindus(Elements.Body.Name m, Elements.Body.Name n)
+	public ZodiacHouse.Name[] getBindus(Body.Name m, Body.Name n)
 	{
 		var allBindus = new int[8][][];
 		allBindus[0] = BindusSun();

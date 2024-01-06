@@ -38,7 +38,7 @@ public class TransitSearchOptions : ICloneable
 	{
 		var dt = DateTime.Now;
 		StartDate    = new Moment(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
-		SearchBody   = Elements.Body.Name.Sun;
+		SearchBody   = Body.Name.Sun;
 		TransitPoint = new Longitude(0.0);
 		Forward      = true;
 		Division     = new Division(Basics.DivisionType.Rasi);
@@ -107,7 +107,7 @@ public class TransitSearchOptions : ICloneable
 	[Category("Transit Search")]
 	[PropertyOrder(4)]
 	[PGDisplayName("When Body")]
-	public Elements.Body.Name SearchBody
+	public Body.Name SearchBody
 	{
 		get;
 		set;

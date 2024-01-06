@@ -132,22 +132,18 @@ public class ZodiacHouse : ICloneable
 			case Name.Ari:
 			case Name.Tau:
 			case Name.Gem:
-			case Name.Can:
-				return false;
+			case Name.Can: return false;
 
 			case Name.Leo:
 			case Name.Vir:
 			case Name.Lib:
-			case Name.Sco:
-				return true;
+			case Name.Sco: return true;
 
 			case Name.Sag:
-			case Name.Cap:
-				return false;
+			case Name.Cap: return false;
 
 			case Name.Aqu:
-			case Name.Pis:
-				return true;
+			case Name.Pis: return true;
 
 			default:
 				Trace.Assert(false, "isDaySign internal error");
@@ -164,16 +160,14 @@ public class ZodiacHouse : ICloneable
 			case Name.Leo:
 			case Name.Lib:
 			case Name.Sag:
-			case Name.Aqu:
-				return true;
+			case Name.Aqu: return true;
 
 			case Name.Tau:
 			case Name.Can:
 			case Name.Vir:
 			case Name.Sco:
 			case Name.Cap:
-			case Name.Pis:
-				return false;
+			case Name.Pis: return false;
 
 			default:
 				Trace.Assert(false, "isOdd internal error");
@@ -245,15 +239,13 @@ public class ZodiacHouse : ICloneable
 			case Name.Tau:
 			case Name.Can:
 			case Name.Sag:
-			case Name.Cap:
-				return RiseType.RisesWithFoot;
+			case Name.Cap: return RiseType.RisesWithFoot;
 			case Name.Gem:
 			case Name.Leo:
 			case Name.Vir:
 			case Name.Lib:
 			case Name.Sco:
-			case Name.Aqu:
-				return RiseType.RisesWithHead;
+			case Name.Aqu: return RiseType.RisesWithHead;
 			default: return RiseType.RisesWithBoth;
 		}
 	}

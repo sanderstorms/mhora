@@ -59,7 +59,7 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 
 	public ArrayList Dasa(int cycle)
 	{
-		var t = new Mhora.Transit(h);
+		var t = new Elements.Transit(h);
 		var l = t.LongitudeOfSunMoonYoga(h.baseUT);
 		return _YogaDasa(l, 1, cycle);
 	}
@@ -89,18 +89,18 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 		return vd.nextDasaLord(di);
 	}
 
-	public double lengthOfDasa(Elements.Body.Name plt)
+	public double lengthOfDasa(Body.Name plt)
 	{
 		return vd.lengthOfDasa(plt);
 	}
 
-	public Elements.Body.Name lordOfNakshatra(Elements.Nakshatra n)
+	public Body.Name lordOfNakshatra(Elements.Nakshatra n)
 	{
 		throw new Exception();
-		return Elements.Body.Name.Lagna;
+		return Body.Name.Lagna;
 	}
 
-	public Elements.Body.Name lordOfYoga(Longitude l)
+	public Body.Name lordOfYoga(Longitude l)
 	{
 		return l.toSunMoonYoga().getLord();
 	}

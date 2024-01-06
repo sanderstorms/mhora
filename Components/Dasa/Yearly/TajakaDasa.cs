@@ -17,87 +17,88 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using Mhora.Elements;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Components.Dasa.Yearly;
 
 public class TajakaDasa : Dasa, IDasa
 {
-    private Horoscope h;
+	private Horoscope h;
 
-    public TajakaDasa(Horoscope _h)
-    {
-        h = _h;
-    }
+	public TajakaDasa(Horoscope _h)
+	{
+		h = _h;
+	}
 
-    public object GetOptions()
-    {
-        return new object();
-    }
+	public object GetOptions()
+	{
+		return new object();
+	}
 
-    public object SetOptions(object a)
-    {
-        return new object();
-    }
+	public object SetOptions(object a)
+	{
+		return new object();
+	}
 
-    public void recalculateOptions()
-    {
-    }
+	public void recalculateOptions()
+	{
+	}
 
-    public double paramAyus()
-    {
-        return 60.0;
-    }
+	public double paramAyus()
+	{
+		return 60.0;
+	}
 
-    public ArrayList Dasa(int cycle)
-    {
-        var al          = new ArrayList(60);
-        var cycle_start = cycle * paramAyus();
-        for (var i = 0; i < 60; i++)
-        {
-            var start = cycle_start + i;
-            var di    = new DasaEntry(Elements.Body.Name.Other, start, 1.0, 1, "Tajaka Year");
-            al.Add(di);
-        }
+	public ArrayList Dasa(int cycle)
+	{
+		var al          = new ArrayList(60);
+		var cycle_start = cycle * paramAyus();
+		for (var i = 0; i < 60; i++)
+		{
+			var start = cycle_start + i;
+			var di    = new DasaEntry(Body.Name.Other, start, 1.0, 1, "Tajaka Year");
+			al.Add(di);
+		}
 
-        return al;
-    }
+		return al;
+	}
 
-    public ArrayList AntarDasa(DasaEntry pdi)
-    {
-        string[] desc =
-        {
-            "  Tajaka Month",
-            "    Tajaka 60 hour",
-            "      Tajaka 5 hour",
-            "        Tajaka 25 minute",
-            "          Tajaka 2 minute"
-        };
-        if (pdi.level == 6)
-        {
-            return new ArrayList();
-        }
+	public ArrayList AntarDasa(DasaEntry pdi)
+	{
+		string[] desc =
+		{
+			"  Tajaka Month",
+			"    Tajaka 60 hour",
+			"      Tajaka 5 hour",
+			"        Tajaka 25 minute",
+			"          Tajaka 2 minute"
+		};
+		if (pdi.level == 6)
+		{
+			return new ArrayList();
+		}
 
-        ArrayList al;
-        double    start = 0.0, length = 0.0;
-        var       level = 0;
+		ArrayList al;
+		double    start = 0.0, length = 0.0;
+		var       level = 0;
 
-        al     = new ArrayList(12);
-        start  = pdi.startUT;
-        level  = pdi.level + 1;
-        length = pdi.dasaLength / 12.0;
-        for (var i = 0; i < 12; i++)
-        {
-            var di = new DasaEntry(Elements.Body.Name.Other, start, length, level, desc[level - 2]);
-            al.Add(di);
-            start += length;
-        }
+		al     = new ArrayList(12);
+		start  = pdi.startUT;
+		level  = pdi.level + 1;
+		length = pdi.dasaLength / 12.0;
+		for (var i = 0; i < 12; i++)
+		{
+			var di = new DasaEntry(Body.Name.Other, start, length, level, desc[level - 2]);
+			al.Add(di);
+			start += length;
+		}
 
-        return al;
-    }
+		return al;
+	}
 
-    public string Description()
-    {
-        return "Tajaka Chart Dasa";
-    }
+	public string Description()
+	{
+		return "Tajaka Chart Dasa";
+	}
 }

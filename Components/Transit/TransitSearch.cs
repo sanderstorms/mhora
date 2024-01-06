@@ -27,6 +27,8 @@ using Mhora.Elements.Hora;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
+using CuspTransitSearch = Mhora.Elements.CuspTransitSearch;
+using Retrogression = Mhora.Elements.Retrogression;
 
 namespace Mhora.Components.Transit;
 
@@ -463,13 +465,13 @@ public class TransitSearch : MhoraControl
 		}
 	}
 
-	private double DirectSpeed(Elements.Body.Name b)
+	private double DirectSpeed(Body.Name b)
 	{
 		switch (b)
 		{
-			case Elements.Body.Name.Sun:   return 365.2425;
-			case Elements.Body.Name.Moon:  return 28.0;
-			case Elements.Body.Name.Lagna: return 1.0;
+			case Body.Name.Sun:   return 365.2425;
+			case Body.Name.Moon:  return 28.0;
+			case Body.Name.Lagna: return 1.0;
 		}
 
 		return 0.0;
@@ -477,7 +479,7 @@ public class TransitSearch : MhoraControl
 
 	private void DirectProgression()
 	{
-		if (opts.SearchBody != Elements.Body.Name.Sun && opts.SearchBody != Elements.Body.Name.Moon) // &&
+		if (opts.SearchBody != Body.Name.Sun && opts.SearchBody != Body.Name.Moon) // &&
 			//opts.SearchBody != Body.Type.Lagna)
 		{
 			return;
@@ -501,7 +503,7 @@ public class TransitSearch : MhoraControl
 		var start_lon = r.GetLon(h.baseUT);
 		//mhora.Log.Debug ("Real start lon is {0}", start_lon);
 		var curr_julday = h.baseUT;
-		var t           = new Mhora.Transit(h, opts.SearchBody);
+		var t           = new Elements.Transit(h, opts.SearchBody);
 		while (totalProgression >= 360.0)
 		{
 			curr_julday      =  t.LinearSearch(curr_julday + DirectSpeed(opts.SearchBody), start_lon, t.GenericLongitude);
@@ -540,7 +542,7 @@ public class TransitSearch : MhoraControl
 		//mhora.Log.Debug ("Expected ut_diff is {0}", ut_diff);
 		var bDummy = true;
 		sweph.obtainLock(h);
-		var t         = new Mhora.Transit(h);
+		var t         = new Elements.Transit(h);
 		var lon_start = t.LongitudeOfSun(h.baseUT, ref bDummy);
 		var lon_prog  = t.LongitudeOfSun(julday_ut, ref bDummy);
 
@@ -551,7 +553,7 @@ public class TransitSearch : MhoraControl
 		sweph.releaseLock(h);
 
 
-		if (Mhora.Transit.CircLonLessThan(lon_expected, lon_prog))
+		if (Elements.Transit.CircLonLessThan(lon_expected, lon_prog))
 		{
 			dExpectedLon += lon_prog.sub(lon_expected).value;
 		}
@@ -572,7 +574,7 @@ public class TransitSearch : MhoraControl
 
 	private void bProgression_Click(object sender, EventArgs e)
 	{
-		if ((int) opts.SearchBody <= (int) Elements.Body.Name.Moon || (int) opts.SearchBody > (int) Elements.Body.Name.Saturn)
+		if ((int) opts.SearchBody <= (int) Body.Name.Moon || (int) opts.SearchBody > (int) Body.Name.Saturn)
 		{
 			DirectProgression();
 			return;
@@ -669,7 +671,7 @@ public class TransitSearch : MhoraControl
 
 	private void bRetroCusp_Click(object sender, EventArgs e)
 	{
-		if ((int) opts.SearchBody <= (int) Elements.Body.Name.Moon || (int) opts.SearchBody > (int) Elements.Body.Name.Saturn)
+		if ((int) opts.SearchBody <= (int) Body.Name.Moon || (int) opts.SearchBody > (int) Body.Name.Saturn)
 		{
 			return;
 		}
@@ -716,7 +718,7 @@ public class TransitSearch : MhoraControl
 		// add entry to our list
 		var          fmt = hTransit.info.DateOfBirth.ToString();
 		ListViewItem li  = new TransitItem(hTransit);
-		li.Text = Elements.Body.toString(opts.SearchBody);
+		li.Text = Body.toString(opts.SearchBody);
 		if (becomesDirect)
 		{
 			li.Text += " goes direct at " + found_lon;
@@ -775,7 +777,7 @@ public class TransitSearch : MhoraControl
 		// add entry to our list
 		var          fmt = hTransit.info.DateOfBirth.ToString();
 		ListViewItem li  = new TransitItem(hTransit);
-		li.Text = Elements.Body.toString(opts.SearchBody);
+		li.Text = Body.toString(opts.SearchBody);
 		if (bForward == false)
 		{
 			li.Text += " (R)";
@@ -906,7 +908,7 @@ public class TransitSearch : MhoraControl
 
 	private void bSolarNewYear_Click(object sender, EventArgs e)
 	{
-		opts.SearchBody         = Elements.Body.Name.Sun;
+		opts.SearchBody         = Body.Name.Sun;
 		opts.TransitPoint.value = 0;
 		updateOptions();
 		bStartSearch_Click(sender, e);
@@ -947,7 +949,7 @@ public class TransitSearch : MhoraControl
 
 	private void bVargaChange_Click(object sender, EventArgs e)
 	{
-		if (opts.SearchBody == Elements.Body.Name.Sun || opts.SearchBody == Elements.Body.Name.Moon || opts.SearchBody == Elements.Body.Name.Lagna)
+		if (opts.SearchBody == Body.Name.Sun || opts.SearchBody == Body.Name.Moon || opts.SearchBody == Body.Name.Lagna)
 		{
 			if (opts.Forward)
 			{

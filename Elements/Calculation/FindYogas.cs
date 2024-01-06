@@ -69,7 +69,7 @@ public class FindYogas
 	{
 		h       = _h;
 		_dtype  = __dtype;
-		zhLagna = h.getPosition(Elements.Body.Name.Lagna).toDivisionPosition(_dtype).zodiac_house;
+		zhLagna = h.getPosition(Body.Name.Lagna).toDivisionPosition(_dtype).zodiac_house;
 	}
 
 	public static void Test(Horoscope h, Division dtype)
@@ -230,7 +230,7 @@ public class FindYogas
 
 		cats = trimWhitespace(cats);
 
-		Elements.Body.Name b1,   b2, b3;
+		Body.Name        b1,   b2, b3;
 		ZodiacHouse.Name zh1,  zh2;
 		int              hse1, hse2;
 
@@ -311,9 +311,9 @@ public class FindYogas
 				b1   = stringToBody(simpleVals[4]);
 				b2   = stringToBody(simpleVals[6]);
 				zh1  = h.getPosition(b1).toDivisionPosition(evalDiv).zodiac_house.add(hse1).value;
-				for (var i = (int) Elements.Body.Name.Sun; i <= (int) Elements.Body.Name.Lagna; i++)
+				for (var i = (int) Body.Name.Sun; i <= (int) Body.Name.Lagna; i++)
 				{
-					var bExc = (Elements.Body.Name) i;
+					var bExc = (Body.Name) i;
 					if (bExc != b2 && h.getPosition(bExc).toDivisionPosition(evalDiv).zodiac_house.value == zh1)
 					{
 						return true;
@@ -478,53 +478,43 @@ public class FindYogas
 	}
 
 
-	public Elements.Body.Name stringToBody(string s)
+	public Body.Name stringToBody(string s)
 	{
 		switch (s)
 		{
 			case "su":
-			case "sun":
-				return Elements.Body.Name.Sun;
+			case "sun": return Body.Name.Sun;
 			case "mo":
 			case "moo":
-			case "moon":
-				return Elements.Body.Name.Moon;
+			case "moon": return Body.Name.Moon;
 			case "ma":
 			case "mar":
-			case "mars":
-				return Elements.Body.Name.Mars;
+			case "mars": return Body.Name.Mars;
 			case "me":
 			case "mer":
-			case "mercury":
-				return Elements.Body.Name.Mercury;
+			case "mercury": return Body.Name.Mercury;
 			case "ju":
 			case "jup":
-			case "jupiter":
-				return Elements.Body.Name.Jupiter;
+			case "jupiter": return Body.Name.Jupiter;
 			case "ve":
 			case "ven":
-			case "venus":
-				return Elements.Body.Name.Venus;
+			case "venus": return Body.Name.Venus;
 			case "sa":
 			case "sat":
-			case "saturn":
-				return Elements.Body.Name.Saturn;
+			case "saturn": return Body.Name.Saturn;
 			case "ra":
 			case "rah":
-			case "rahu":
-				return Elements.Body.Name.Rahu;
+			case "rahu": return Body.Name.Rahu;
 			case "ke":
 			case "ket":
-			case "ketu":
-				return Elements.Body.Name.Ketu;
+			case "ketu": return Body.Name.Ketu;
 			case "la":
 			case "lag":
 			case "lagna":
-			case "asc":
-				return Elements.Body.Name.Lagna;
+			case "asc": return Body.Name.Lagna;
 			default:
 				MessageBox.Show("Unknown body: " + s + getRuleName());
-				return Elements.Body.Name.Other;
+				return Body.Name.Other;
 		}
 	}
 
@@ -651,9 +641,9 @@ public class FindYogas
 
 	public string replaceBasicNodeTermHelper(Division d, string cat, string val)
 	{
-		var                tempVal = 0;
-		ZodiacHouse.Name   zh;
-		Elements.Body.Name b;
+		var              tempVal = 0;
+		ZodiacHouse.Name zh;
+		Body.Name        b;
 		switch (cat)
 		{
 			case "rasi:":

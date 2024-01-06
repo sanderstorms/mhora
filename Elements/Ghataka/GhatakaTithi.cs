@@ -20,50 +20,50 @@ namespace Mhora.Elements.Ghataka;
 
 public class GhatakaTithi
 {
-    public static bool checkTithi(ZodiacHouse janmaRasi, Tithi t)
-    {
-        var ja = janmaRasi.value;
-        var gh = Tables.Tithi.NandaType.Nanda;
-        switch (ja)
-        {
-            case ZodiacHouse.Name.Ari:
-                gh = Tables.Tithi.NandaType.Nanda;
-                break;
-            case ZodiacHouse.Name.Tau:
-                gh = Tables.Tithi.NandaType.Purna;
-                break;
-            case ZodiacHouse.Name.Gem:
-                gh = Tables.Tithi.NandaType.Bhadra;
-                break;
-            case ZodiacHouse.Name.Can:
-                gh = Tables.Tithi.NandaType.Bhadra;
-                break;
-            case ZodiacHouse.Name.Leo:
-                gh = Tables.Tithi.NandaType.Jaya;
-                break;
-            case ZodiacHouse.Name.Vir:
-                gh = Tables.Tithi.NandaType.Purna;
-                break;
-            case ZodiacHouse.Name.Lib:
-                gh = Tables.Tithi.NandaType.Rikta;
-                break;
-            case ZodiacHouse.Name.Sco:
-                gh = Tables.Tithi.NandaType.Nanda;
-                break;
-            case ZodiacHouse.Name.Sag:
-                gh = Tables.Tithi.NandaType.Jaya;
-                break;
-            case ZodiacHouse.Name.Cap:
-                gh = Tables.Tithi.NandaType.Rikta;
-                break;
-            case ZodiacHouse.Name.Aqu:
-                gh = Tables.Tithi.NandaType.Jaya;
-                break;
-            case ZodiacHouse.Name.Pis:
-                gh = Tables.Tithi.NandaType.Purna;
-                break;
-        }
+	public static bool checkTithi(ZodiacHouse janmaRasi, Tithi t)
+	{
+		var ja = janmaRasi.value;
+		var gh = Tables.Tithi.NandaType.Nanda;
+		switch (ja)
+		{
+			case ZodiacHouse.Name.Ari:
+				gh = Tables.Tithi.NandaType.Nanda;
+				break;
+			case ZodiacHouse.Name.Tau:
+				gh = Tables.Tithi.NandaType.Purna;
+				break;
+			case ZodiacHouse.Name.Gem:
+				gh = Tables.Tithi.NandaType.Bhadra;
+				break;
+			case ZodiacHouse.Name.Can:
+				gh = Tables.Tithi.NandaType.Bhadra;
+				break;
+			case ZodiacHouse.Name.Leo:
+				gh = Tables.Tithi.NandaType.Jaya;
+				break;
+			case ZodiacHouse.Name.Vir:
+				gh = Tables.Tithi.NandaType.Purna;
+				break;
+			case ZodiacHouse.Name.Lib:
+				gh = Tables.Tithi.NandaType.Rikta;
+				break;
+			case ZodiacHouse.Name.Sco:
+				gh = Tables.Tithi.NandaType.Nanda;
+				break;
+			case ZodiacHouse.Name.Sag:
+				gh = Tables.Tithi.NandaType.Jaya;
+				break;
+			case ZodiacHouse.Name.Cap:
+				gh = Tables.Tithi.NandaType.Rikta;
+				break;
+			case ZodiacHouse.Name.Aqu:
+				gh = Tables.Tithi.NandaType.Jaya;
+				break;
+			case ZodiacHouse.Name.Pis:
+				gh = Tables.Tithi.NandaType.Purna;
+				break;
+		}
 
-        return t.toNandaType() == gh;
-    }
+		return t.toNandaType() == gh;
+	}
 }

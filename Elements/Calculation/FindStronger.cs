@@ -352,24 +352,24 @@ public class FindStronger
 	}
 
 
-	public Elements.Body.Name[] getOrderedGrahas()
+	public Body.Name[] getOrderedGrahas()
 	{
-		Elements.Body.Name[] grahas =
+		Body.Name[] grahas =
 		{
-			Elements.Body.Name.Sun,
-			Elements.Body.Name.Moon,
-			Elements.Body.Name.Mars,
-			Elements.Body.Name.Mercury,
-			Elements.Body.Name.Jupiter,
-			Elements.Body.Name.Venus,
-			Elements.Body.Name.Saturn,
-			Elements.Body.Name.Rahu,
-			Elements.Body.Name.Ketu
+			Body.Name.Sun,
+			Body.Name.Moon,
+			Body.Name.Mars,
+			Body.Name.Mercury,
+			Body.Name.Jupiter,
+			Body.Name.Venus,
+			Body.Name.Saturn,
+			Body.Name.Rahu,
+			Body.Name.Ketu
 		};
 		return getOrderedGrahas(grahas);
 	}
 
-	public Elements.Body.Name[] getOrderedGrahas(Elements.Body.Name[] grahas)
+	public Body.Name[] getOrderedGrahas(Body.Name[] grahas)
 	{
 		if (grahas.Length <= 1)
 		{
@@ -465,13 +465,13 @@ public class FindStronger
 		return StrongerRasi(za, zb, bSimpleLord, ref winner);
 	}
 
-	public Elements.Body.Name StrongerGraha(Elements.Body.Name m, Elements.Body.Name n, bool bSimpleLord)
+	public Body.Name StrongerGraha(Body.Name m, Body.Name n, bool bSimpleLord)
 	{
 		var winner = 0;
 		return StrongerGraha(m, n, bSimpleLord, ref winner);
 	}
 
-	public Elements.Body.Name StrongerGraha(Elements.Body.Name m, Elements.Body.Name n, bool bSimpleLord, ref int winner)
+	public Body.Name StrongerGraha(Body.Name m, Body.Name n, bool bSimpleLord, ref int winner)
 	{
 		if (CmpGraha(m, n, bSimpleLord, ref winner))
 		{
@@ -491,7 +491,7 @@ public class FindStronger
 		return za;
 	}
 
-	public Elements.Body.Name WeakerGraha(Elements.Body.Name m, Elements.Body.Name n, bool bSimpleLord)
+	public Body.Name WeakerGraha(Body.Name m, Body.Name n, bool bSimpleLord)
 	{
 		if (CmpGraha(m, n, bSimpleLord))
 		{
@@ -750,13 +750,13 @@ public class FindStronger
 		return true;
 	}
 
-	public bool CmpGraha(Elements.Body.Name m, Elements.Body.Name n, bool bSimpleLord)
+	public bool CmpGraha(Body.Name m, Body.Name n, bool bSimpleLord)
 	{
 		var winner = 0;
 		return CmpGraha(m, n, bSimpleLord, ref winner);
 	}
 
-	public bool CmpGraha(Elements.Body.Name m, Elements.Body.Name n, bool bSimpleLord, ref int winner)
+	public bool CmpGraha(Body.Name m, Body.Name n, bool bSimpleLord, ref int winner)
 	{
 		var bRet   = false;
 		var bFound = true;

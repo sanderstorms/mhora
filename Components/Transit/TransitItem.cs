@@ -23,15 +23,15 @@ namespace Mhora.Components.Transit;
 
 public class TransitItem : ListViewItem
 {
-    private readonly Horoscope h;
+	private readonly Horoscope h;
 
-    public TransitItem(Horoscope _h)
-    {
-        h = _h;
-    }
+	public TransitItem(Horoscope _h)
+	{
+		h = _h;
+	}
 
-    public Horoscope GetHoroscope()
-    {
-        return h;
-    }
+	public Horoscope GetHoroscope()
+	{
+		return h;
+	}
 }

@@ -22,7 +22,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Mhora.Components.Property;
-using Mhora.Components.Varga;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;

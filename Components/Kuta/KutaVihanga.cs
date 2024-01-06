@@ -80,34 +80,29 @@ public class KutaVihanga
 			case Nakshatra.Name.Bharani:
 			case Nakshatra.Name.Krittika:
 			case Nakshatra.Name.Rohini:
-			case Nakshatra.Name.Mrigarirsa:
-				return EType.IBharandhaka;
+			case Nakshatra.Name.Mrigarirsa: return EType.IBharandhaka;
 			case Nakshatra.Name.Aridra:
 			case Nakshatra.Name.Punarvasu:
 			case Nakshatra.Name.Pushya:
 			case Nakshatra.Name.Aslesha:
 			case Nakshatra.Name.Makha:
-			case Nakshatra.Name.PoorvaPhalguni:
-				return EType.IPingala;
+			case Nakshatra.Name.PoorvaPhalguni: return EType.IPingala;
 			case Nakshatra.Name.UttaraPhalguni:
 			case Nakshatra.Name.Hasta:
 			case Nakshatra.Name.Chittra:
 			case Nakshatra.Name.Swati:
 			case Nakshatra.Name.Vishaka:
-			case Nakshatra.Name.Anuradha:
-				return EType.ICrow;
+			case Nakshatra.Name.Anuradha: return EType.ICrow;
 			case Nakshatra.Name.Jyestha:
 			case Nakshatra.Name.Moola:
 			case Nakshatra.Name.PoorvaShada:
 			case Nakshatra.Name.UttaraShada:
-			case Nakshatra.Name.Sravana:
-				return EType.ICock;
+			case Nakshatra.Name.Sravana: return EType.ICock;
 			case Nakshatra.Name.Dhanishta:
 			case Nakshatra.Name.Satabisha:
 			case Nakshatra.Name.PoorvaBhadra:
 			case Nakshatra.Name.UttaraBhadra:
-			case Nakshatra.Name.Revati:
-				return EType.IPeacock;
+			case Nakshatra.Name.Revati: return EType.IPeacock;
 		}
 
 		Debug.Assert(false, "KutaVibhanga::getType");

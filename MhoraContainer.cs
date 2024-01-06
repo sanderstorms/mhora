@@ -19,7 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections;
 using System.ComponentModel;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,14 +26,12 @@ using Genghis.Windows.Forms;
 using Mhora.Components;
 using Mhora.Components.Jhora;
 using Mhora.Components.SplashScreen;
-using Mhora.Components.Varga;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Hora;
 using Mhora.SwissEph;
 using Mhora.Tables;
-using Mhora.Util;
 
 namespace Mhora;
 
@@ -780,7 +777,7 @@ public class MhoraContainer : Form
 	{
 		var info = new Jhd(fileName).toHoraInfo();
 		var h    = new Horoscope(info, new HoroscopeOptions());
-		if (h.getPosition(Elements.Body.Name.Ketu).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value == h.getPosition(Elements.Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value)
+		if (h.getPosition(Body.Name.Ketu).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value == h.getPosition(Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value)
 		{
 			return true;
 		}
