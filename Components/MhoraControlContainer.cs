@@ -25,7 +25,6 @@ using Mhora.Components.Dasa.Graha;
 using Mhora.Components.Dasa.Nakshatra;
 using Mhora.Components.Dasa.Rasi;
 using Mhora.Components.Dasa.Yearly;
-using Mhora.Components.Kuta;
 using Mhora.Components.Panchanga;
 using Mhora.Components.Transit;
 using Mhora.Components.Varga;

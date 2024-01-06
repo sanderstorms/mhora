@@ -16,4 +16,31 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-namespace Mhora.Components.Kuta;
+namespace Mhora.Elements.Kuta;
+
+public class KutaRasiYoni
+{
+	public enum EType
+	{
+		IPakshi,
+		IReptile,
+		IPasu,
+		INara
+	}
+
+	public static EType getType(ZodiacHouse z)
+	{
+		switch (z.value)
+		{
+			case ZodiacHouse.Name.Cap:
+			case ZodiacHouse.Name.Pis: return EType.IPakshi;
+			case ZodiacHouse.Name.Can:
+			case ZodiacHouse.Name.Sco: return EType.IReptile;
+			case ZodiacHouse.Name.Ari:
+			case ZodiacHouse.Name.Tau:
+			case ZodiacHouse.Name.Leo: return EType.IPasu;
+		}
+
+		return EType.INara;
+	}
+}

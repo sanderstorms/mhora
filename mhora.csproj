@@ -316,16 +316,16 @@
     <Compile Include="Elements\Karana.cs" />
     <Compile Include="Components\Dasa\Nakshatra\KaranaChaturashitiSamaDasa.cs" />
     <Compile Include="Components\Dasa\Yearly\KaranaPraveshDasa.cs" />
-    <Compile Include="Components\Kuta\KutaBhutaNakshatra.cs" />
-    <Compile Include="Components\Kuta\KutaGana.cs" />
-    <Compile Include="Components\Kuta\KutaGotra.cs" />
-    <Compile Include="Components\Kuta\KutaNadi.cs" />
-    <Compile Include="Components\Kuta\KutaNakshatraYoni.cs" />
-    <Compile Include="Components\Kuta\KutaRajju.cs" />
-    <Compile Include="Components\Kuta\KutaRasiYoni.cs" />
-    <Compile Include="Components\Kuta\KutaVarna.cs" />
-    <Compile Include="Components\Kuta\KutaVedha.cs" />
-    <Compile Include="Components\Kuta\KutaVihanga.cs" />
+    <Compile Include="Elements\Kuta\KutaBhutaNakshatra.cs" />
+    <Compile Include="Elements\Kuta\KutaGana.cs" />
+    <Compile Include="Elements\Kuta\KutaGotra.cs" />
+    <Compile Include="Elements\Kuta\KutaNadi.cs" />
+    <Compile Include="Elements\Kuta\KutaNakshatraYoni.cs" />
+    <Compile Include="Elements\Kuta\KutaRajju.cs" />
+    <Compile Include="Elements\Kuta\KutaRasiYoni.cs" />
+    <Compile Include="Elements\Kuta\KutaVarna.cs" />
+    <Compile Include="Elements\Kuta\KutaVedha.cs" />
+    <Compile Include="Elements\Kuta\KutaVihanga.cs" />
     <Compile Include="Components\Dasa\Rasi\LagnaKendradiRasiDasa.cs" />
     <Compile Include="Elements\Longitude.cs" />
     <Compile Include="Elements\Calculation\LongitudeConverter.cs" />
@@ -368,10 +368,10 @@
     <Compile Include="Components\KeyInfoControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\Kuta\KutaMatchingControl.cs">
+    <Compile Include="Components\KutaMatchingControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\Kuta\Kutas.cs">
+    <Compile Include="Elements\Kuta\Kutas.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Components\LongStringEditor.cs">
@@ -563,7 +563,7 @@
     <EmbeddedResource Include="Components\KeyInfoControl.resx">
       <DependentUpon>KeyInfoControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\Kuta\KutaMatchingControl.resx">
+    <EmbeddedResource Include="Components\KutaMatchingControl.resx">
       <DependentUpon>KutaMatchingControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Localization.resx" />

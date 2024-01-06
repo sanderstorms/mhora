@@ -17,22 +17,37 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Diagnostics;
-using Mhora.Elements;
 
-namespace Mhora.Components.Kuta;
+namespace Mhora.Elements.Kuta;
 
-/// <summary>
-///     Summary description for Kutas.
-/// </summary>
-public class KutaBhutaNakshatra
+public class KutaVedha
 {
 	public enum EType
 	{
-		IEarth,
-		IWater,
-		IFire,
-		IAir,
-		IEther
+		IAswJye,
+		IBhaAnu,
+		IKriVis,
+		IRohSwa,
+		IAriSra,
+		IPunUsh,
+		IPusPsh,
+		IAslMoo,
+		IMakRev,
+		IPphUbh,
+		IUphPbh,
+		IHasSat,
+		IMriDha,
+		IChi
+	}
+
+	public static int getScore(Nakshatra m, Nakshatra n)
+	{
+		if (getType(m) == getType(n))
+		{
+			return 0;
+		}
+
+		return 1;
 	}
 
 	public static int getMaxScore()
@@ -40,62 +55,40 @@ public class KutaBhutaNakshatra
 		return 1;
 	}
 
-	public static int getScore(Nakshatra m, Nakshatra n)
-	{
-		var a = getType(m);
-		var b = getType(n);
-		if (a == b)
-		{
-			return 1;
-		}
-
-		if ((a == EType.IFire && b == EType.IAir) || (a == EType.IAir && b == EType.IFire))
-		{
-			return 1;
-		}
-
-		if (a == EType.IEarth || b == EType.IEarth)
-		{
-			return 1;
-		}
-
-		return 0;
-	}
-
 	public static EType getType(Nakshatra n)
 	{
 		switch (n.value)
 		{
 			case Nakshatra.Name.Aswini:
+			case Nakshatra.Name.Jyestha: return EType.IAswJye;
 			case Nakshatra.Name.Bharani:
+			case Nakshatra.Name.Anuradha: return EType.IBhaAnu;
 			case Nakshatra.Name.Krittika:
+			case Nakshatra.Name.Vishaka: return EType.IKriVis;
 			case Nakshatra.Name.Rohini:
-			case Nakshatra.Name.Mrigarirsa: return EType.IEarth;
+			case Nakshatra.Name.Swati: return EType.IRohSwa;
 			case Nakshatra.Name.Aridra:
+			case Nakshatra.Name.Sravana: return EType.IAriSra;
 			case Nakshatra.Name.Punarvasu:
+			case Nakshatra.Name.UttaraShada: return EType.IPunUsh;
 			case Nakshatra.Name.Pushya:
+			case Nakshatra.Name.PoorvaShada: return EType.IPusPsh;
 			case Nakshatra.Name.Aslesha:
+			case Nakshatra.Name.Moola: return EType.IAslMoo;
 			case Nakshatra.Name.Makha:
-			case Nakshatra.Name.PoorvaPhalguni: return EType.IWater;
+			case Nakshatra.Name.Revati: return EType.IMakRev;
+			case Nakshatra.Name.PoorvaPhalguni:
+			case Nakshatra.Name.UttaraBhadra: return EType.IPphUbh;
 			case Nakshatra.Name.UttaraPhalguni:
+			case Nakshatra.Name.PoorvaBhadra: return EType.IUphPbh;
 			case Nakshatra.Name.Hasta:
-			case Nakshatra.Name.Chittra:
-			case Nakshatra.Name.Swati:
-			case Nakshatra.Name.Vishaka: return EType.IFire;
-			case Nakshatra.Name.Anuradha:
-			case Nakshatra.Name.Jyestha:
-			case Nakshatra.Name.Moola:
-			case Nakshatra.Name.PoorvaShada:
-			case Nakshatra.Name.UttaraShada:
-			case Nakshatra.Name.Sravana: return EType.IAir;
-			case Nakshatra.Name.Dhanishta:
-			case Nakshatra.Name.Satabisha:
-			case Nakshatra.Name.PoorvaBhadra:
-			case Nakshatra.Name.UttaraBhadra:
-			case Nakshatra.Name.Revati: return EType.IEther;
+			case Nakshatra.Name.Satabisha: return EType.IHasSat;
+			case Nakshatra.Name.Mrigarirsa:
+			case Nakshatra.Name.Dhanishta: return EType.IMriDha;
+			case Nakshatra.Name.Chittra: return EType.IChi;
 		}
 
-		Debug.Assert(false, "KutaBhutaNakshatra::getType");
-		return EType.IAir;
+		Debug.Assert(false, "KutaVedha::getType");
+		return EType.IAriSra;
 	}
 }

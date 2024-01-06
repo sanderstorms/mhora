@@ -16,76 +16,61 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using Mhora.Elements;
+namespace Mhora.Elements.Kuta;
 
-namespace Mhora.Components.Kuta;
-
-public class KutaGana
+public class KutaRajju
 {
 	public enum EType
 	{
-		IDeva,
-		INara,
-		IRakshasa
+		IKantha,
+		IKati,
+		IPada,
+		ISiro,
+		IKukshi
 	}
 
-	public static int getScore(Nakshatra m, Nakshatra f)
+	public static int getScore(Nakshatra m, Nakshatra n)
 	{
-		var em = getType(m);
-		var ef = getType(f);
-
-		if (em == ef)
+		if (getType(m) != getType(n))
 		{
-			return 5;
+			return 1;
 		}
 
-		if (em == EType.IDeva && ef == EType.INara)
-		{
-			return 4;
-		}
-
-		if (em == EType.IRakshasa && ef == EType.INara)
-		{
-			return 3;
-		}
-
-		if (em == EType.INara && ef == EType.IDeva)
-		{
-			return 2;
-		}
-
-		return 1;
+		return 0;
 	}
 
 	public static int getMaxScore()
 	{
-		return 5;
+		return 1;
 	}
 
 	public static EType getType(Nakshatra n)
 	{
 		switch (n.value)
 		{
-			case Nakshatra.Name.Aswini:
-			case Nakshatra.Name.Mrigarirsa:
-			case Nakshatra.Name.Punarvasu:
-			case Nakshatra.Name.Pushya:
-			case Nakshatra.Name.Hasta:
-			case Nakshatra.Name.Swati:
-			case Nakshatra.Name.Anuradha:
-			case Nakshatra.Name.Sravana:
-			case Nakshatra.Name.Revati: return EType.IDeva;
-			case Nakshatra.Name.Bharani:
 			case Nakshatra.Name.Rohini:
 			case Nakshatra.Name.Aridra:
+			case Nakshatra.Name.Hasta:
+			case Nakshatra.Name.Swati:
+			case Nakshatra.Name.Sravana:
+			case Nakshatra.Name.Satabisha: return EType.IKantha;
+			case Nakshatra.Name.Bharani:
+			case Nakshatra.Name.Pushya:
 			case Nakshatra.Name.PoorvaPhalguni:
-			case Nakshatra.Name.UttaraPhalguni:
+			case Nakshatra.Name.Anuradha:
 			case Nakshatra.Name.PoorvaShada:
-			case Nakshatra.Name.UttaraShada:
-			case Nakshatra.Name.PoorvaBhadra:
-			case Nakshatra.Name.UttaraBhadra: return EType.INara;
+			case Nakshatra.Name.UttaraBhadra: return EType.IKati;
+			case Nakshatra.Name.Aswini:
+			case Nakshatra.Name.Aslesha:
+			case Nakshatra.Name.Makha:
+			case Nakshatra.Name.Jyestha:
+			case Nakshatra.Name.Moola:
+			case Nakshatra.Name.Revati: return EType.IPada;
+			case Nakshatra.Name.Mrigarirsa:
+			case Nakshatra.Name.Dhanishta:
+			case Nakshatra.Name.Chittra: return EType.ISiro;
 		}
 
-		return EType.IRakshasa;
+		return EType.IKukshi;
 	}
 }

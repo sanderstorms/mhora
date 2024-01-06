@@ -23,9 +23,10 @@ using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Ghataka;
+using Mhora.Elements.Kuta;
 using Mhora.Tables;
 
-namespace Mhora.Components.Kuta;
+namespace Mhora.Components;
 
 public class KutaMatchingControl : MhoraControl
 {
