@@ -1,6 +1,20 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mhora", "mhora.csproj", "{C88D761E-10B2-4E19-A330-E17B71AD8449}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mhora", "Mhora.csproj", "{C88D761E-10B2-4E19-A330-E17B71AD8449}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SujaySarma.Data.Files.TokenLimitedFiles", "Lib\SujaySarma.Data.Files.TokenLimitedFiles\SujaySarma.Data.Files.TokenLimitedFiles.csproj", "{C2965B29-71FD-4C7C-9CC8-09205DD3D6B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggingModule", "Lib\LoggingModule\src\LoggingModule\LoggingModule.csproj", "{981BCD48-5EBF-42E8-93E9-7601F71282E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimePicker", "Lib\TimePicker\TimePicker.csproj", "{DC913FB0-ED16-4B1B-BB35-73E99E3FD853}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlNado", "Lib\SQLNado\SqlNado\SqlNado.csproj", "{646B3044-B868-4612-9832-57F292873CE9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Newtonsoft.Json", "Lib\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj", "{2915F8FB-B739-4B02-A7C9-A86B48B0A96F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLinq", "Lib\SQLinq\SQLinq\SQLinq.csproj", "{95AF6DBE-D796-469B-97D1-0C23D664D384}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,12 +22,39 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C88D761E-10B2-4E19-A330-E17B71AD8449}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{C88D761E-10B2-4E19-A330-E17B71AD8449}.Debug|Any CPU.Build.0 = Debug|x86
-		{C88D761E-10B2-4E19-A330-E17B71AD8449}.Release|Any CPU.ActiveCfg = Release|x86
-		{C88D761E-10B2-4E19-A330-E17B71AD8449}.Release|Any CPU.Build.0 = Release|x86
+		{C88D761E-10B2-4E19-A330-E17B71AD8449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C88D761E-10B2-4E19-A330-E17B71AD8449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C88D761E-10B2-4E19-A330-E17B71AD8449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C88D761E-10B2-4E19-A330-E17B71AD8449}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2965B29-71FD-4C7C-9CC8-09205DD3D6B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2965B29-71FD-4C7C-9CC8-09205DD3D6B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2965B29-71FD-4C7C-9CC8-09205DD3D6B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2965B29-71FD-4C7C-9CC8-09205DD3D6B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{981BCD48-5EBF-42E8-93E9-7601F71282E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{981BCD48-5EBF-42E8-93E9-7601F71282E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{981BCD48-5EBF-42E8-93E9-7601F71282E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{981BCD48-5EBF-42E8-93E9-7601F71282E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC913FB0-ED16-4B1B-BB35-73E99E3FD853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC913FB0-ED16-4B1B-BB35-73E99E3FD853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC913FB0-ED16-4B1B-BB35-73E99E3FD853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC913FB0-ED16-4B1B-BB35-73E99E3FD853}.Release|Any CPU.Build.0 = Release|Any CPU
+		{646B3044-B868-4612-9832-57F292873CE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{646B3044-B868-4612-9832-57F292873CE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{646B3044-B868-4612-9832-57F292873CE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{646B3044-B868-4612-9832-57F292873CE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2915F8FB-B739-4B02-A7C9-A86B48B0A96F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2915F8FB-B739-4B02-A7C9-A86B48B0A96F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2915F8FB-B739-4B02-A7C9-A86B48B0A96F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2915F8FB-B739-4B02-A7C9-A86B48B0A96F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95AF6DBE-D796-469B-97D1-0C23D664D384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95AF6DBE-D796-469B-97D1-0C23D664D384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95AF6DBE-D796-469B-97D1-0C23D664D384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95AF6DBE-D796-469B-97D1-0C23D664D384}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F763046-9C6B-48E1-AD2A-C021DB29D3B0}
 	EndGlobalSection
 EndGlobal

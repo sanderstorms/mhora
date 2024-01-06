@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -17,14 +18,14 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>mhora</RootNamespace>
+    <RootNamespace>Mhora</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>mhora.MhoraContainer</StartupObject>
+    <StartupObject>Mhora.Application</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <OldToolsVersion>0.0</OldToolsVersion>
+    <OldToolsVersion>3.5</OldToolsVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -40,6 +41,10 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -63,6 +68,8 @@
     <WarningLevel>4</WarningLevel>
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -86,6 +93,8 @@
     <WarningLevel>4</WarningLevel>
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,10 +103,12 @@
     <BaseAddress>285212672</BaseAddress>
     <FileAlignment>4096</FileAlignment>
     <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -109,14 +120,40 @@
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <FileAlignment>4096</FileAlignment>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <Optimize>true</Optimize>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
@@ -129,263 +166,459 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <COMReference Include="IWshRuntimeLibrary">
-      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutMhora.cs">
+    <Compile Include="Util\Base64Decoder.cs" />
+    <Compile Include="Elements\Calculation\CuspTransitSearch.cs" />
+    <Compile Include="Elements\Calculation\FindStronger.cs" />
+    <Compile Include="Elements\Calculation\Retrogression.cs" />
+    <Compile Include="Elements\Calculation\Strength\BaseStrength.cs" />
+    <Compile Include="Elements\Calculation\Strength\EqualStrength.cs" />
+    <Compile Include="Elements\Calculation\Strength\IStrengthGraha.cs" />
+    <Compile Include="Elements\Calculation\Strength\IStrengthRasi.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByAspectsGraha.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByAspectsRasi.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByAtmaKaraka.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByConjunction.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByExaltation.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByFirst.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByKarakaKendradiGrahaDasaLength.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByKendraConjunction.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLongitude.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLordInDifferentOddity.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLordInOwnHouse.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLordIsAtmaKaraka.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLordsLongitude.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByLordsNature.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByMoolaTrikona.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByNarayanaDasaLength.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByOwnHouse.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByRasisNature.cs" />
+    <Compile Include="Elements\Calculation\Strength\StrengthByVimsottariDasaLength.cs" />
+    <Compile Include="Elements\Calculation\Transit.cs" />
+    <Compile Include="Chart\NorthIndianChart.cs" />
+    <Compile Include="Components\AboutMhora.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutSjc.cs">
+    <Compile Include="Components\AboutSjc.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ashtakavarga.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AshtakavargaControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Balas.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BalasControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BasicCalculationsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Basics.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ChooseHoroscopeControl.cs">
+    <Compile Include="Components\BirthDetailsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Crypto.cs">
-      <SubType>Code</SubType>
+    <Compile Include="Components\BirthDetailsDialog.Designer.cs">
+      <DependentUpon>BirthDetailsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dasa3Parts.cs">
+    <Compile Include="Components\Controls\ProgressBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\Controls\ProgressBar.Designer.cs">
+      <DependentUpon>ProgressBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\ProgressFm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DasaControl.cs">
+    <Compile Include="Components\Controls\ProgressFm.Designer.cs">
+      <DependentUpon>ProgressFm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Reflection.cs" />
+    <Compile Include="Database\World\TimeZone.cs" />
+    <Compile Include="Database\World\City.cs" />
+    <Compile Include="Database\World\Country.cs" />
+    <Compile Include="Database\World\Region.cs" />
+    <Compile Include="Database\World\State.cs" />
+    <Compile Include="Database\World\SubRegion.cs" />
+    <Compile Include="Application.cs" />
+    <Compile Include="Database\Settings\ApplyOptions.cs" />
+    <Compile Include="Database\Settings\MhoraGlobalOptions.cs" />
+    <Compile Include="Tables\Hora.cs" />
+    <Compile Include="Tables\Karaka.cs" />
+    <Compile Include="Tables\Sarvatobhadra.cs" />
+    <Compile Include="Tables\Tara.cs" />
+    <Compile Include="Tables\Tithi.cs" />
+    <Compile Include="Tables\Varga.cs" />
+    <Compile Include="Elements\CuspTransitSearch.cs" />
+    <Compile Include="Util\Dll.cs" />
+    <Compile Include="Util\EnumHelper.cs" />
+    <Compile Include="Elements\LocationConverter.cs" />
+    <Compile Include="Elements\NonLinearTransit.cs" />
+    <Compile Include="Elements\Retrogression.cs" />
+    <Compile Include="Util\SevenZip.cs" />
+    <Compile Include="Util\StringExtension.cs" />
+    <Compile Include="Elements\Ashtakavarga.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Components\Varga\AshtakavargaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Dasas.cs">
+    <Compile Include="Elements\Dasas\Nakshatra\AshtottariDasa.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DivisionalChart.cs">
+    <Compile Include="Elements\Calculation\Balas.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Components\BalasControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="EnumDescConverter.cs">
+    <Compile Include="Components\BasicCalculationsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tables\Basics.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FindYogas.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GlobalOptions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GrahaStrengthsControl.cs">
+    <Compile Include="Elements\Body.cs" />
+    <Compile Include="Elements\KarakaComparer.cs" />
+    <Compile Include="Elements\Position.cs" />
+    <Compile Include="Elements\Dasas\Rasi\CharaDasa.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\ChaturashitiSamaDasa.cs" />
+    <Compile Include="Components\ChooseHoroscopeControl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="JhoraBasicsTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="JhoraMainTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="KeyInfoControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="KutaMatchingControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Kutas.cs">
+    <Compile Include="Elements\Dasas\Dasa.cs" />
+    <Compile Include="Elements\Dasas\DasaEntry.cs" />
+    <Compile Include="Components\Converter\DasaEntryConverter.cs" />
+    <Compile Include="Components\Dasa\DasaItem.cs" />
+    <Compile Include="Components\Delegates\DelegateComputeFinished.cs" />
+    <Compile Include="Components\Varga\ChartItems.cs" />
+    <Compile Include="Elements\Division.cs" />
+    <Compile Include="Components\Converter\DivisionConverter.cs" />
+    <Compile Include="Elements\DivisionPosition.cs" />
+    <Compile Include="Elements\Dasas\Rasi\DrigDasa.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\DwadashottariDasa.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\DwisaptatiSamaDasa.cs" />
+    <Compile Include="Chart\EastIndianChart.cs" />
+    <Compile Include="Components\Delegates\EvtChanged.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaDay.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaLagnaOpp.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaLagnaSame.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaMoon.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaStar.cs" />
+    <Compile Include="Elements\Ghataka\GhatakaTithi.cs" />
+    <Compile Include="Components\Property\GlobalizedPropertiesWrapper.cs" />
+    <Compile Include="Components\Property\GlobalizedPropertyDescriptor.cs" />
+    <Compile Include="Elements\Hora\HMSInfo.cs" />
+    <Compile Include="Components\Converter\HMSInfoConverter.cs" />
+    <Compile Include="Elements\Hora\HoraInfo.cs" />
+    <Compile Include="Elements\Calculation\Horoscope.cs" />
+    <Compile Include="Database\Settings\HoroscopeOptions.cs" />
+    <Compile Include="Elements\Dasas\IDasa.cs" />
+    <Compile Include="Chart\IDrawChart.cs" />
+    <Compile Include="Elements\Hora\IFileToHoraInfo.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\INakshatraDasa.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\INakshatraKaranaDasa.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\INakshatraTithiDasa.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\INakshatraYogaDasa.cs" />
+    <Compile Include="Components\Dasa\IUpdateable.cs" />
+    <Compile Include="Components\Jhora\Jhd.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\KalachakraDasa.cs" />
+    <Compile Include="Elements\Dasas\Graha\KarakaKendradiGrahaDasa.cs" />
+    <Compile Include="Elements\Karana.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\KaranaChaturashitiSamaDasa.cs" />
+    <Compile Include="Elements\Dasas\Yearly\KaranaPraveshDasa.cs" />
+    <Compile Include="Elements\Kuta\KutaBhutaNakshatra.cs" />
+    <Compile Include="Elements\Kuta\KutaGana.cs" />
+    <Compile Include="Elements\Kuta\KutaGotra.cs" />
+    <Compile Include="Elements\Kuta\KutaNadi.cs" />
+    <Compile Include="Elements\Kuta\KutaNakshatraYoni.cs" />
+    <Compile Include="Elements\Kuta\KutaRajju.cs" />
+    <Compile Include="Elements\Kuta\KutaRasiYoni.cs" />
+    <Compile Include="Elements\Kuta\KutaVarna.cs" />
+    <Compile Include="Elements\Kuta\KutaVedha.cs" />
+    <Compile Include="Elements\Kuta\KutaVihanga.cs" />
+    <Compile Include="Elements\Dasas\Rasi\LagnaKendradiRasiDasa.cs" />
+    <Compile Include="Elements\Longitude.cs" />
+    <Compile Include="Components\Converter\LongitudeConverter.cs" />
+    <Compile Include="Elements\Dasas\Rasi\MandookaDasa.cs" />
+    <Compile Include="Elements\Hora\Mhd.cs" />
+    <Compile Include="Elements\Hora\MhoraArrayConverter.cs" />
+    <Compile Include="Elements\Hora\MhoraVerifier.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Link.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LongStringEditor.cs">
+    <Compile Include="Components\Dasa\Dasa3Parts.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MhoraChild.cs">
+    <Compile Include="Components\Dasa\DasaControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\Varga\DivisionalChart.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Util\EnumDescConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Elements\Calculation\FindYogas.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Database\Settings\MhoraSerializableOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Components\GrahaStrengthsControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Jhora\JhoraBasicsTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\Jhora\JhoraMainTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\KeyInfoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\KutaMatchingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Elements\Kuta\Kutas.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Components\LongStringEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\MhoraChild.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MhoraContainer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MhoraControl.cs">
+    <Compile Include="Components\MhoraControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MhoraControlContainer.cs">
+    <Compile Include="Components\MhoraControlContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MhoraOptions.cs">
+    <Compile Include="Components\MhoraOptions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MhoraSplash.cs">
+    <Compile Include="Components\MhoraSplash.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MhoraSplitContainer.cs">
+    <Compile Include="Components\MhoraSplitContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="NavamsaControl.cs">
+    <Compile Include="Elements\Calculation\Moment.cs" />
+    <Compile Include="Components\Converter\MomentConverter.cs" />
+    <Compile Include="Elements\Dasas\Graha\MoolaDasa.cs" />
+    <Compile Include="Elements\Dasas\Graha\NaisargikaGrahaDasa.cs" />
+    <Compile Include="Elements\Dasas\Graha\NaisargikaGrahaDasaSP.cs" />
+    <Compile Include="Elements\Dasas\Rasi\NaisargikaRasiDasa.cs" />
+    <Compile Include="Elements\Nakshatra.cs" />
+    <Compile Include="Elements\Nakshatra28.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\NakshatraDasa.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\NakshatraPraveshDasa.cs" />
+    <Compile Include="Elements\Dasas\Rasi\NarayanaDasa.cs" />
+    <Compile Include="Elements\Dasas\Rasi\NarayanaSamaDasa.cs" />
+    <Compile Include="Components\NavamsaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PanchangaControl.cs">
+    <Compile Include="Elements\Dasas\Rasi\NavamsaDasa.cs" />
+    <Compile Include="Elements\Dasas\Rasi\NirayaanaShoolaDasa.cs" />
+    <Compile Include="Elements\Calculation\OrderedGrahas.cs" />
+    <Compile Include="Components\Converter\OrderedGrahasConverter.cs" />
+    <Compile Include="Elements\Calculation\OrderedZodiacHouses.cs" />
+    <Compile Include="Components\Converter\OrderedZodiacHousesConverter.cs" />
+    <Compile Include="Components\Panchanga\PanchangaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PanchangaPrintDocument.cs">
+    <Compile Include="Components\Panchanga\PanchangaGlobalMoments.cs" />
+    <Compile Include="Components\Panchanga\PanchangaLocalMoments.cs" />
+    <Compile Include="Components\Panchanga\PanchangaMomentInfo.cs" />
+    <Compile Include="Components\Panchanga\PanchangaPrintDocument.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Printing.cs">
+    <Compile Include="Elements\Dasas\Nakshatra\PanchottariDasa.cs" />
+    <Compile Include="Components\Property\PGDisplayName.cs" />
+    <Compile Include="Components\Delegates\PGNotVisible.cs" />
+    <Compile Include="Components\Printing.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ProgressDialog.cs">
+    <Compile Include="Components\Property\PropertyOrderAttribute.cs" />
+    <Compile Include="Components\Property\PropertyOrderPair.cs" />
+    <Compile Include="Database\Settings\RasiDasaUserOptions.cs" />
+    <Compile Include="Components\RasiStrengthsControl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RasiStrengthsControl.cs">
+    <Compile Include="Components\Delegates\Recalculate.cs" />
+    <Compile Include="Components\Sarvatobhadra81Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\Delegates\SetOptionsDelegate.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\ShatabdikaDasa.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\ShatTrimshaSamaDasa.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\ShodashottariDasa.cs" />
+    <Compile Include="Elements\Dasas\Rasi\ShoolaDasa.cs" />
+    <Compile Include="Components\Converter\SingleDivisionConverter.cs" />
+    <Compile Include="Chart\SouthIndianChart.cs" />
+    <Compile Include="Components\SplashScreen\SplashScreen.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Components\SplashScreen\SplashScreenStyles.cs" />
+    <Compile Include="Elements\Dasas\Rasi\SudarshanaChakraDasa.cs" />
+    <Compile Include="Elements\Dasas\Rasi\SuDasa.cs" />
+    <Compile Include="Elements\Calculation\SunMoonYoga.cs" />
+    <Compile Include="SwissEph\sweph.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Components\Delegates\ReturnLon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SwissEph\SwephException.cs" />
+    <Compile Include="Elements\Dasas\Yearly\TajakaDasa.cs" />
+    <Compile Include="Elements\Dasas\Yearly\TattwaDasa.cs" />
+    <Compile Include="Elements\Tithi.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\TithiAshtottariDasa.cs" />
+    <Compile Include="Elements\Dasas\Yearly\TithiPraveshDasa.cs" />
+    <Compile Include="Util\ToDate.cs" />
+    <Compile Include="Components\Transit\TransitItem.cs" />
+    <Compile Include="Components\Transit\TransitSearch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\Transit\TransitSearchOptions.cs" />
+    <Compile Include="Elements\Dasas\Rasi\TrikonaDasa.cs" />
+    <Compile Include="Elements\Hora\UIStringTypeEditor.cs" />
+    <Compile Include="Elements\Hora\UserEvent.cs" />
+    <Compile Include="Components\VaraChakra.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\Varga\VargaRectificationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Sarvatobhadra81Control.cs">
+    <Compile Include="Elements\Dasas\Nakshatra\VimsottariDasa.cs" />
+    <Compile Include="Components\Property\XmlYogaNode.cs" />
+    <Compile Include="Components\YogaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SplashScreen.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Strengths.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="sweph.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Transits.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TransitSearch.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="VaraChakra.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="VargaRectificationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="YogaControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <EmbeddedResource Include="AboutMhora.resx">
+    <Compile Include="Elements\Dasas\Yearly\YogaPraveshDasa.cs" />
+    <Compile Include="Elements\Calculation\YogasParseException.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\YogaVimsottariDasa.cs" />
+    <Compile Include="Elements\Dasas\Nakshatra\YoginiDasa.cs" />
+    <Compile Include="Elements\ZodiacHouse.cs" />
+    <Compile Include="Elements\Transit.cs" />
+    <Content Include="Resources\COPY.BMP" />
+    <Content Include="Resources\DISP.BMP" />
+    <Content Include="Resources\DOB.BMP" />
+    <Content Include="Resources\HELP.BMP" />
+    <Content Include="Resources\manapully.jpg" />
+    <Content Include="Resources\NEW.BMP" />
+    <Content Include="Resources\OPEN.BMP" />
+    <Content Include="Resources\PREVIEW.BMP" />
+    <Content Include="Resources\PRINT.BMP" />
+    <Content Include="Resources\SAVE.BMP" />
+    <Content Include="Resources\sjc.bmp" />
+    <Content Include="Resources\sjcbanner.gif" />
+    <Content Include="swedll32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="swedll64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Components\AboutMhora.resx">
       <DependentUpon>AboutMhora.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AboutSjc.resx">
+    <EmbeddedResource Include="Components\AboutSjc.resx">
       <DependentUpon>AboutSjc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AshtakavargaControl.resx">
+    <EmbeddedResource Include="Components\BirthDetailsDialog.resx">
+      <DependentUpon>BirthDetailsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Controls\ProgressBar.resx">
+      <DependentUpon>ProgressBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Controls\ProgressFm.resx">
+      <DependentUpon>ProgressFm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Varga\AshtakavargaControl.resx">
       <DependentUpon>AshtakavargaControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BalasControl.resx">
+    <EmbeddedResource Include="Components\BalasControl.resx">
       <DependentUpon>BalasControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BasicCalculationsControl.resx">
+    <EmbeddedResource Include="Components\BasicCalculationsControl.resx">
       <DependentUpon>BasicCalculationsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChooseHoroscopeControl.resx">
+    <EmbeddedResource Include="Components\ChooseHoroscopeControl.resx">
       <DependentUpon>ChooseHoroscopeControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dasa3Parts.resx">
+    <EmbeddedResource Include="Components\Dasa\Dasa3Parts.resx">
       <DependentUpon>Dasa3Parts.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DasaControl.resx">
+    <EmbeddedResource Include="Components\Dasa\DasaControl.resx">
       <DependentUpon>DasaControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DivisionalChart.resx">
+    <EmbeddedResource Include="Components\Varga\DivisionalChart.resx">
       <DependentUpon>DivisionalChart.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GrahaStrengthsControl.resx">
+    <EmbeddedResource Include="Components\GrahaStrengthsControl.resx">
       <DependentUpon>GrahaStrengthsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="JhoraBasicsTab.resx">
+    <EmbeddedResource Include="Components\Jhora\JhoraBasicsTab.resx">
       <DependentUpon>JhoraBasicsTab.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="JhoraMainTab.resx">
+    <EmbeddedResource Include="Components\Jhora\JhoraMainTab.resx">
       <DependentUpon>JhoraMainTab.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KeyInfoControl.resx">
+    <EmbeddedResource Include="Components\KeyInfoControl.resx">
       <DependentUpon>KeyInfoControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KutaMatchingControl.resx">
+    <EmbeddedResource Include="Components\KutaMatchingControl.resx">
       <DependentUpon>KutaMatchingControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization.resx" />
-    <EmbeddedResource Include="LongStringEditor.resx">
+    <EmbeddedResource Include="Properties\Localization.resx" />
+    <EmbeddedResource Include="Components\LongStringEditor.resx">
       <DependentUpon>LongStringEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MhoraChild.resx">
+    <EmbeddedResource Include="Components\MhoraChild.resx">
       <DependentUpon>MhoraChild.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MhoraContainer.resx">
       <DependentUpon>MhoraContainer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MhoraControl.resx">
+    <EmbeddedResource Include="Components\MhoraControl.resx">
       <DependentUpon>MhoraControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MhoraControlContainer.resx">
+    <EmbeddedResource Include="Components\MhoraControlContainer.resx">
       <DependentUpon>MhoraControlContainer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MhoraOptions.resx">
+    <EmbeddedResource Include="Components\MhoraOptions.resx">
       <DependentUpon>MhoraOptions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MhoraSplash.resx">
+    <EmbeddedResource Include="Components\MhoraSplash.resx">
       <DependentUpon>MhoraSplash.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MhoraSplitContainer.resx">
+    <EmbeddedResource Include="Components\MhoraSplitContainer.resx">
       <DependentUpon>MhoraSplitContainer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NavamsaControl.resx">
+    <EmbeddedResource Include="Components\NavamsaControl.resx">
       <DependentUpon>NavamsaControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PanchangaControl.resx">
+    <EmbeddedResource Include="Components\Panchanga\PanchangaControl.resx">
       <DependentUpon>PanchangaControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PanchangaPrintDocument.resx">
+    <EmbeddedResource Include="Components\Panchanga\PanchangaPrintDocument.resx">
       <DependentUpon>PanchangaPrintDocument.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Printing.resx">
+    <EmbeddedResource Include="Components\Printing.resx">
       <DependentUpon>Printing.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProgressDialog.resx">
-      <DependentUpon>ProgressDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RasiStrengthsControl.resx">
+    <EmbeddedResource Include="Components\RasiStrengthsControl.resx">
       <DependentUpon>RasiStrengthsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Sarvatobhadra81Control.resx">
+    <EmbeddedResource Include="Components\Sarvatobhadra81Control.resx">
       <DependentUpon>Sarvatobhadra81Control.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TransitSearch.resx">
+    <EmbeddedResource Include="Components\Transit\TransitSearch.resx">
       <DependentUpon>TransitSearch.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VaraChakra.resx">
+    <EmbeddedResource Include="Components\VaraChakra.resx">
       <DependentUpon>VaraChakra.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VargaRectificationForm.resx">
+    <EmbeddedResource Include="Components\Varga\VargaRectificationForm.resx">
       <DependentUpon>VargaRectificationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="YogaControl.resx">
+    <EmbeddedResource Include="Components\YogaControl.resx">
       <DependentUpon>YogaControl.cs</DependentUpon>
     </EmbeddedResource>
     <Content Include="App.ico" />
-    <Content Include="mhora.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -413,6 +646,41 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Database\TimeZones.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\app.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="Lib\LoggingModule\src\LoggingModule\LoggingModule.csproj">
+      <Project>{981bcd48-5ebf-42e8-93e9-7601f71282e1}</Project>
+      <Name>LoggingModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="Lib\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{2915f8fb-b739-4b02-a7c9-a86b48b0a96f}</Project>
+      <Name>Newtonsoft.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="Lib\SQLinq\SQLinq\SQLinq.csproj">
+      <Project>{95af6dbe-d796-469b-97d1-0c23d664d384}</Project>
+      <Name>SQLinq</Name>
+    </ProjectReference>
+    <ProjectReference Include="Lib\SQLNado\SqlNado\SqlNado.csproj">
+      <Project>{646b3044-b868-4612-9832-57f292873ce9}</Project>
+      <Name>SqlNado</Name>
+    </ProjectReference>
+    <ProjectReference Include="Lib\SujaySarma.Data.Files.TokenLimitedFiles\SujaySarma.Data.Files.TokenLimitedFiles.csproj">
+      <Project>{c2965b29-71fd-4c7c-9cc8-09205dd3d6b1}</Project>
+      <Name>SujaySarma.Data.Files.TokenLimitedFiles</Name>
+    </ProjectReference>
+    <ProjectReference Include="Lib\TimePicker\TimePicker.csproj">
+      <Project>{dc913fb0-ed16-4b1b-bb35-73e99e3fd853}</Project>
+      <Name>TimePicker</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

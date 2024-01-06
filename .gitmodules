@@ -1,0 +1,19 @@
+[submodule "Lib/SujaySarma.Data.Files.TokenLimitedFiles"]
+	path = Lib/SujaySarma.Data.Files.TokenLimitedFiles
+	url = ../SujaySarma.Data.Files.TokenLimitedFiles
+[submodule "Lib/LoggingModule"]
+	path = Lib/LoggingModule
+	url = ../LoggingModule.git
+[submodule "Lib/TimePicker"]
+	path = Lib/TimePicker
+	url = ../TimePicker.git
+	branch = develop
+[submodule "Lib/SQLNado"]
+	path = Lib/SQLNado
+	url = ../SQLNado.git
+[submodule "Lib/Newtonsoft.Json"]
+	path = Lib/Newtonsoft.Json
+	url = ../../JamesNK/Newtonsoft.Json.git
+[submodule "Lib/SQLinq"]
+	path = Lib/SQLinq
+	url = ../SQLinq.git
