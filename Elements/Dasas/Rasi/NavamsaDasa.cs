@@ -48,9 +48,9 @@ public class NavamsaDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al      = new ArrayList(12);
-		var zh_seed = h.getPosition(Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
+		var zh_seed = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house;
 
-		if (!zh_seed.isOdd())
+		if (!zh_seed.IsOdd())
 		{
 			zh_seed = zh_seed.AdarsaSign();
 		}
@@ -59,8 +59,8 @@ public class NavamsaDasa : Dasa, IDasa
 		var dasa_length     = 9.0;
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh_dasa = zh_seed.add(i);
-			var di      = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var zh_dasa = zh_seed.Add(i);
+			var di      = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
 			al.Add(di);
 			dasa_length_sum += dasa_length;
 		}
@@ -79,8 +79,8 @@ public class NavamsaDasa : Dasa, IDasa
 		var al = new ArrayList(12);
 
 		var zh_first    = new ZodiacHouse(pdi.zodiacHouse);
-		var zh_stronger = zh_first.add(1);
-		if (!zh_stronger.isOdd())
+		var zh_stronger = zh_first.Add(1);
+		if (!zh_stronger.IsOdd())
 		{
 			zh_stronger = zh_stronger.AdarsaSign();
 		}
@@ -89,8 +89,8 @@ public class NavamsaDasa : Dasa, IDasa
 
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh_dasa = zh_stronger.add(i);
-			var di      = new DasaEntry(zh_dasa.value, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.value);
+			var zh_dasa = zh_stronger.Add(i);
+			var di      = new DasaEntry(zh_dasa.Sign, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.Sign);
 			al.Add(di);
 			dasa_start += pdi.dasaLength / 12.0;
 		}

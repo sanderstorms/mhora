@@ -28,6 +28,6 @@ public interface INakshatraDasa : IDasa
 {
 	int       numberOfDasaItems();                     // Number of dasas for 1 cycle
 	DasaEntry nextDasaLord(DasaEntry             di);  // Order of Dasas
-	double    lengthOfDasa(Body.Name             plt); // Length of a maha dasa
-	Body.Name lordOfNakshatra(Elements.Nakshatra n);   // Dasa lord of given nakshatra
+	double    lengthOfDasa(Body.BodyType             plt); // Length of a maha dasa
+	Body.BodyType lordOfNakshatra(Nakshatras.Nakshatra n);   // Dasa lord of given nakshatra
 }

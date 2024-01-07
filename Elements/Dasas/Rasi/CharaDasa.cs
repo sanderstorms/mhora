@@ -49,9 +49,9 @@ public class CharaDasa : Dasa, IDasa
 	{
 		var al      = new ArrayList(12);
 		var zh_seed = options.getSeed();
-		zh_seed.value = options.findStrongerRasi(options.SeventhStrengths, zh_seed.value, zh_seed.add(7).value);
+		zh_seed.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_seed.Sign, zh_seed.Add(7).Sign);
 
-		var bIsZodiacal = zh_seed.add(9).isOddFooted();
+		var bIsZodiacal = zh_seed.Add(9).IsOddFooted();
 
 		var dasa_length_sum = 0.0;
 		for (var i = 1; i <= 12; i++)
@@ -59,17 +59,17 @@ public class CharaDasa : Dasa, IDasa
 			ZodiacHouse zh_dasa = null;
 			if (bIsZodiacal)
 			{
-				zh_dasa = zh_seed.add(i);
+				zh_dasa = zh_seed.Add(i);
 			}
 			else
 			{
-				zh_dasa = zh_seed.addReverse(i);
+				zh_dasa = zh_seed.AddReverse(i);
 			}
 
 			double dasa_length = NarayanaDasaLength(zh_dasa, getLordsPosition(zh_dasa));
 
 
-			var di = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var di = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
 			al.Add(di);
 			dasa_length_sum += dasa_length;
 		}
@@ -127,18 +127,18 @@ public class CharaDasa : Dasa, IDasa
 
 	public DivisionPosition getLordsPosition(ZodiacHouse zh)
 	{
-		Body.Name b;
-		if (zh.value == ZodiacHouse.Name.Sco)
+		Body.BodyType b;
+		if (zh.Sign == ZodiacHouse.Rasi.Sco)
 		{
 			b = options.ColordSco;
 		}
-		else if (zh.value == ZodiacHouse.Name.Aqu)
+		else if (zh.Sign == ZodiacHouse.Rasi.Aqu)
 		{
 			b = options.ColordAqu;
 		}
 		else
 		{
-			b = Basics.SimpleLordOfZodiacHouse(zh.value);
+			b = zh.Sign.SimpleLordOfZodiacHouse();
 		}
 
 		return h.getPosition(b).toDivisionPosition(options.Division);

@@ -69,7 +69,7 @@ public class FindYogas
 	{
 		h       = _h;
 		_dtype  = __dtype;
-		zhLagna = h.getPosition(Body.Name.Lagna).toDivisionPosition(_dtype).zodiac_house;
+		zhLagna = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(_dtype).zodiac_house;
 	}
 
 	public static void Test(Horoscope h, Division dtype)
@@ -230,8 +230,8 @@ public class FindYogas
 
 		cats = trimWhitespace(cats);
 
-		Body.Name        b1,   b2, b3;
-		ZodiacHouse.Name zh1,  zh2;
+		Body.BodyType        b1,   b2, b3;
+		ZodiacHouse.Rasi zh1,  zh2;
 		int              hse1, hse2;
 
 		var evalDiv = n.dtype;
@@ -241,7 +241,7 @@ public class FindYogas
 			case "gr: in house:":
 				b1  = stringToBody(simpleVals[0]);
 				zh1 = stringToRasi(simpleVals[2]);
-				if (h.getPosition(b1).toDivisionPosition(evalDiv).zodiac_house.value == zh1)
+				if (h.getPosition(b1).toDivisionPosition(evalDiv).zodiac_house.Sign == zh1)
 				{
 					return true;
 				}
@@ -276,7 +276,7 @@ public class FindYogas
 			case "gr: with gr:":
 				b1 = stringToBody(simpleVals[0]);
 				b2 = stringToBody(simpleVals[2]);
-				if (h.getPosition(b1).toDivisionPosition(evalDiv).zodiac_house.value == h.getPosition(b2).toDivisionPosition(evalDiv).zodiac_house.value)
+				if (h.getPosition(b1).toDivisionPosition(evalDiv).zodiac_house.Sign == h.getPosition(b2).toDivisionPosition(evalDiv).zodiac_house.Sign)
 				{
 					return true;
 				}
@@ -295,7 +295,7 @@ public class FindYogas
 				b1   = stringToBody(simpleVals[0]);
 				hse1 = stringToHouse(simpleVals[2]);
 				zh1  = stringToRasi(simpleVals[4]);
-				if (h.getPosition(b1).toDivisionPosition(evalDiv).zodiac_house.value == new ZodiacHouse(zh1).add(hse1).value)
+				if (h.getPosition(b1).toDivisionPosition(evalDiv).zodiac_house.Sign == new ZodiacHouse(zh1).Add(hse1).Sign)
 				{
 					return true;
 				}
@@ -305,16 +305,16 @@ public class FindYogas
 				b1   = stringToBody(simpleVals[0]);
 				hse1 = stringToHouse(simpleVals[2]);
 				b2   = stringToBody(simpleVals[4]);
-				return h.getPosition(b1).toDivisionPosition(evalDiv).zodiac_house.value == h.getPosition(b2).toDivisionPosition(evalDiv).zodiac_house.add(hse1).value;
+				return h.getPosition(b1).toDivisionPosition(evalDiv).zodiac_house.Sign == h.getPosition(b2).toDivisionPosition(evalDiv).zodiac_house.Add(hse1).Sign;
 			case "graha in house: from gr: except gr:":
 				hse1 = stringToHouse(simpleVals[2]);
 				b1   = stringToBody(simpleVals[4]);
 				b2   = stringToBody(simpleVals[6]);
-				zh1  = h.getPosition(b1).toDivisionPosition(evalDiv).zodiac_house.add(hse1).value;
-				for (var i = (int) Body.Name.Sun; i <= (int) Body.Name.Lagna; i++)
+				zh1  = h.getPosition(b1).toDivisionPosition(evalDiv).zodiac_house.Add(hse1).Sign;
+				for (var i = (int) Body.BodyType.Sun; i <= (int) Body.BodyType.Lagna; i++)
 				{
-					var bExc = (Body.Name) i;
-					if (bExc != b2 && h.getPosition(bExc).toDivisionPosition(evalDiv).zodiac_house.value == zh1)
+					var bExc = (Body.BodyType) i;
+					if (bExc != b2 && h.getPosition(bExc).toDivisionPosition(evalDiv).zodiac_house.Sign == zh1)
 					{
 						return true;
 					}
@@ -325,7 +325,7 @@ public class FindYogas
 				zh1  = stringToRasi(simpleVals[0]);
 				hse1 = stringToHouse(simpleVals[2]);
 				zh2  = stringToRasi(simpleVals[4]);
-				if (new ZodiacHouse(zh1).add(hse1).value == zh2)
+				if (new ZodiacHouse(zh1).Add(hse1).Sign == zh2)
 				{
 					return true;
 				}
@@ -478,43 +478,43 @@ public class FindYogas
 	}
 
 
-	public Body.Name stringToBody(string s)
+	public Body.BodyType stringToBody(string s)
 	{
 		switch (s)
 		{
 			case "su":
-			case "sun": return Body.Name.Sun;
+			case "sun": return Body.BodyType.Sun;
 			case "mo":
 			case "moo":
-			case "moon": return Body.Name.Moon;
+			case "moon": return Body.BodyType.Moon;
 			case "ma":
 			case "mar":
-			case "mars": return Body.Name.Mars;
+			case "mars": return Body.BodyType.Mars;
 			case "me":
 			case "mer":
-			case "mercury": return Body.Name.Mercury;
+			case "mercury": return Body.BodyType.Mercury;
 			case "ju":
 			case "jup":
-			case "jupiter": return Body.Name.Jupiter;
+			case "jupiter": return Body.BodyType.Jupiter;
 			case "ve":
 			case "ven":
-			case "venus": return Body.Name.Venus;
+			case "venus": return Body.BodyType.Venus;
 			case "sa":
 			case "sat":
-			case "saturn": return Body.Name.Saturn;
+			case "saturn": return Body.BodyType.Saturn;
 			case "ra":
 			case "rah":
-			case "rahu": return Body.Name.Rahu;
+			case "rahu": return Body.BodyType.Rahu;
 			case "ke":
 			case "ket":
-			case "ketu": return Body.Name.Ketu;
+			case "ketu": return Body.BodyType.Ketu;
 			case "la":
 			case "lag":
 			case "lagna":
-			case "asc": return Body.Name.Lagna;
+			case "asc": return Body.BodyType.Lagna;
 			default:
 				MessageBox.Show("Unknown body: " + s + getRuleName());
-				return Body.Name.Other;
+				return Body.BodyType.Other;
 		}
 	}
 
@@ -523,47 +523,47 @@ public class FindYogas
 		// trim trailing @
 		s = s.Substring(0, s.Length - 1);
 
-		Basics.DivisionType _dtype;
+		Vargas.DivisionType _dtype;
 		switch (s)
 		{
 			case "rasi":
 			case "d-1":
 			case "d1":
-				_dtype = Basics.DivisionType.Rasi;
+				_dtype = Vargas.DivisionType.Rasi;
 				break;
 			case "navamsa":
 			case "d-9":
 			case "d9":
-				_dtype = Basics.DivisionType.Navamsa;
+				_dtype = Vargas.DivisionType.Navamsa;
 				break;
 			default:
 				MessageBox.Show("Unknown division: " + s + getRuleName());
-				_dtype = Basics.DivisionType.Rasi;
+				_dtype = Vargas.DivisionType.Rasi;
 				break;
 		}
 
 		return new Division(_dtype);
 	}
 
-	public ZodiacHouse.Name stringToRasi(string s)
+	public ZodiacHouse.Rasi stringToRasi(string s)
 	{
 		switch (s)
 		{
-			case "ari": return ZodiacHouse.Name.Ari;
-			case "tau": return ZodiacHouse.Name.Tau;
-			case "gem": return ZodiacHouse.Name.Gem;
-			case "can": return ZodiacHouse.Name.Can;
-			case "leo": return ZodiacHouse.Name.Leo;
-			case "vir": return ZodiacHouse.Name.Vir;
-			case "lib": return ZodiacHouse.Name.Lib;
-			case "sco": return ZodiacHouse.Name.Sco;
-			case "sag": return ZodiacHouse.Name.Sag;
-			case "cap": return ZodiacHouse.Name.Cap;
-			case "aqu": return ZodiacHouse.Name.Aqu;
-			case "pis": return ZodiacHouse.Name.Pis;
+			case "ari": return ZodiacHouse.Rasi.Ari;
+			case "tau": return ZodiacHouse.Rasi.Tau;
+			case "gem": return ZodiacHouse.Rasi.Gem;
+			case "can": return ZodiacHouse.Rasi.Can;
+			case "leo": return ZodiacHouse.Rasi.Leo;
+			case "vir": return ZodiacHouse.Rasi.Vir;
+			case "lib": return ZodiacHouse.Rasi.Lib;
+			case "sco": return ZodiacHouse.Rasi.Sco;
+			case "sag": return ZodiacHouse.Rasi.Sag;
+			case "cap": return ZodiacHouse.Rasi.Cap;
+			case "aqu": return ZodiacHouse.Rasi.Aqu;
+			case "pis": return ZodiacHouse.Rasi.Pis;
 			default:
 				MessageBox.Show("Unknown rasi: " + s + getRuleName());
-				return ZodiacHouse.Name.Ari;
+				return ZodiacHouse.Rasi.Ari;
 		}
 	}
 
@@ -642,8 +642,8 @@ public class FindYogas
 	public string replaceBasicNodeTermHelper(Division d, string cat, string val)
 	{
 		var              tempVal = 0;
-		ZodiacHouse.Name zh;
-		Body.Name        b;
+		ZodiacHouse.Rasi zh;
+		Body.BodyType        b;
 		switch (cat)
 		{
 			case "rasi:":
@@ -652,7 +652,7 @@ public class FindYogas
 				tempVal = stringToHouse(val);
 				if (tempVal > 0)
 				{
-					return zhLagna.add(tempVal).ToString().ToLower();
+					return zhLagna.Add(tempVal).ToString().ToLower();
 				}
 
 				switch (val)
@@ -671,12 +671,12 @@ public class FindYogas
 				break;
 			case "rasiof:":
 				b = stringToBody(val);
-				return h.getPosition(b).toDivisionPosition(d).zodiac_house.value.ToString().ToLower();
+				return h.getPosition(b).toDivisionPosition(d).zodiac_house.Sign.ToString().ToLower();
 			case "lordof:":
 				tempVal = stringToHouse(val);
 				if (tempVal > 0)
 				{
-					return h.LordOfZodiacHouse(zhLagna.add(tempVal), d).ToString().ToLower();
+					return h.LordOfZodiacHouse(zhLagna.Add(tempVal), d).ToString().ToLower();
 				}
 
 				zh = stringToRasi(val);
@@ -685,11 +685,11 @@ public class FindYogas
 				tempVal = stringToHouse(val);
 				if (tempVal > 0)
 				{
-					return h.LordOfZodiacHouse(zhLagna.add(tempVal), d).ToString().ToLower();
+					return h.LordOfZodiacHouse(zhLagna.Add(tempVal), d).ToString().ToLower();
 				}
 
 				zh = stringToRasi(val);
-				return Basics.SimpleLordOfZodiacHouse(zh).ToString().ToLower();
+				return zh.SimpleLordOfZodiacHouse().ToString().ToLower();
 			case "dispof:":
 				b = stringToBody(val);
 				return h.LordOfZodiacHouse(h.getPosition(b).toDivisionPosition(d).zodiac_house, d).ToString().ToLower();

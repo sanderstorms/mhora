@@ -25,6 +25,7 @@ using Mhora.Elements.Calculation;
 using Mhora.Elements.Ghataka;
 using Mhora.Elements.Kuta;
 using Mhora.Tables;
+using mhora.Util;
 
 namespace Mhora.Components;
 
@@ -267,12 +268,12 @@ public class KutaMatchingControl : MhoraControl
 
 	public void OnRecalculate(object o)
 	{
-		var dtype = new Division(Basics.DivisionType.Rasi);
+		var dtype = new Division(Vargas.DivisionType.Rasi);
 
-		var l1 = h.getPosition(Body.Name.Lagna);
-		var l2 = h2.getPosition(Body.Name.Lagna);
-		var m1 = h.getPosition(Body.Name.Moon);
-		var m2 = h2.getPosition(Body.Name.Moon);
+		var l1 = h.getPosition(Body.BodyType.Lagna);
+		var l2 = h2.getPosition(Body.BodyType.Lagna);
+		var m1 = h.getPosition(Body.BodyType.Moon);
+		var m2 = h2.getPosition(Body.BodyType.Moon);
 		var z1 = m1.toDivisionPosition(dtype).zodiac_house;
 		var z2 = m2.toDivisionPosition(dtype).zodiac_house;
 		var n1 = m1.longitude.toNakshatra();
@@ -358,8 +359,8 @@ public class KutaMatchingControl : MhoraControl
 		}
 		{
 			var li        = new ListViewItem("Ghataka (Moon)");
-			var ja        = h.getPosition(Body.Name.Moon).toDivisionPosition(dtype).zodiac_house;
-			var ch        = h2.getPosition(Body.Name.Moon).toDivisionPosition(dtype).zodiac_house;
+			var ja        = h.getPosition(Body.BodyType.Moon).toDivisionPosition(dtype).zodiac_house;
+			var ch        = h2.getPosition(Body.BodyType.Moon).toDivisionPosition(dtype).zodiac_house;
 			var isGhataka = GhatakaMoon.checkGhataka(ja, ch);
 			li.SubItems.Add(ja.ToString());
 			li.SubItems.Add(ch.ToString());
@@ -367,9 +368,9 @@ public class KutaMatchingControl : MhoraControl
 			lView.Items.Add(li);
 		}
 		{
-			var li        = new ListViewItem("Ghataka (Tithi)");
-			var ja        = h.getPosition(Body.Name.Moon).toDivisionPosition(dtype).zodiac_house;
-			var ltithi    = h2.getPosition(Body.Name.Moon).longitude.sub(h2.getPosition(Body.Name.Sun).longitude);
+			var li        = new ListViewItem("Ghataka (Tithis)");
+			var ja        = h.getPosition(Body.BodyType.Moon).toDivisionPosition(dtype).zodiac_house;
+			var ltithi    = h2.getPosition(Body.BodyType.Moon).longitude.sub(h2.getPosition(Body.BodyType.Sun).longitude);
 			var t         = ltithi.toTithi();
 			var isGhataka = GhatakaTithi.checkTithi(ja, t);
 			li.SubItems.Add(ja.ToString());
@@ -379,7 +380,7 @@ public class KutaMatchingControl : MhoraControl
 		}
 		{
 			var li        = new ListViewItem("Ghataka (Day)");
-			var ja        = h.getPosition(Body.Name.Moon).toDivisionPosition(dtype).zodiac_house;
+			var ja        = h.getPosition(Body.BodyType.Moon).toDivisionPosition(dtype).zodiac_house;
 			var wd        = h2.wday;
 			var isGhataka = GhatakaDay.checkDay(ja, wd);
 			li.SubItems.Add(ja.ToString());
@@ -389,18 +390,18 @@ public class KutaMatchingControl : MhoraControl
 		}
 		{
 			var li        = new ListViewItem("Ghataka (Star)");
-			var ja        = h.getPosition(Body.Name.Moon).toDivisionPosition(dtype).zodiac_house;
-			var na        = h2.getPosition(Body.Name.Moon).longitude.toNakshatra();
+			var ja        = h.getPosition(Body.BodyType.Moon).toDivisionPosition(dtype).zodiac_house;
+			var na        = h2.getPosition(Body.BodyType.Moon).longitude.toNakshatra();
 			var isGhataka = GhatakaStar.checkStar(ja, na);
 			li.SubItems.Add(ja.ToString());
-			li.SubItems.Add(na.ToString());
+			li.SubItems.Add(na.Name());
 			li.SubItems.Add(getGhatakaString(isGhataka));
 			lView.Items.Add(li);
 		}
 		{
 			var li        = new ListViewItem("Ghataka Lagna(S)");
-			var ja        = h.getPosition(Body.Name.Moon).toDivisionPosition(dtype).zodiac_house;
-			var sa        = h2.getPosition(Body.Name.Lagna).toDivisionPosition(dtype).zodiac_house;
+			var ja        = h.getPosition(Body.BodyType.Moon).toDivisionPosition(dtype).zodiac_house;
+			var sa        = h2.getPosition(Body.BodyType.Lagna).toDivisionPosition(dtype).zodiac_house;
 			var isGhataka = GhatakaLagnaSame.checkLagna(ja, sa);
 			li.SubItems.Add(ja.ToString());
 			li.SubItems.Add(sa.ToString());
@@ -409,8 +410,8 @@ public class KutaMatchingControl : MhoraControl
 		}
 		{
 			var li        = new ListViewItem("Ghataka Lagna(O)");
-			var ja        = h.getPosition(Body.Name.Moon).toDivisionPosition(dtype).zodiac_house;
-			var op        = h2.getPosition(Body.Name.Lagna).toDivisionPosition(dtype).zodiac_house;
+			var ja        = h.getPosition(Body.BodyType.Moon).toDivisionPosition(dtype).zodiac_house;
+			var op        = h2.getPosition(Body.BodyType.Lagna).toDivisionPosition(dtype).zodiac_house;
 			var isGhataka = GhatakaLagnaOpp.checkLagna(ja, op);
 			li.SubItems.Add(ja.ToString());
 			li.SubItems.Add(op.ToString());

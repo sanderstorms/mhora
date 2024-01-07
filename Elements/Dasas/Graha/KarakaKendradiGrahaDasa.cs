@@ -56,10 +56,10 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 		var cycle_start = paramAyus() * cycle;
 		var curr        = 0.0;
 		var al          = new ArrayList(24);
-		foreach (Body.Name b in options.GrahaStrengths.grahas)
+		foreach (Body.BodyType b in options.GrahaStrengths.grahas)
 		{
 			var dasaLength = lengthOfDasa(b);
-			al.Add(new DasaEntry(b, cycle_start + curr, dasaLength, 1, Body.toShortString(b)));
+			al.Add(new DasaEntry(b, cycle_start + curr, dasaLength, 1, b.ToShortString()));
 			curr += dasaLength;
 		}
 
@@ -73,7 +73,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 				dasaLength *= -1;
 			}
 
-			al.Add(new DasaEntry(de.graha, cycle_start + curr, dasaLength, 1, Body.toShortString(de.graha)));
+			al.Add(new DasaEntry(de.graha, cycle_start + curr, dasaLength, 1, de.graha.ToShortString()));
 			curr += dasaLength;
 		}
 
@@ -87,7 +87,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 		var bOrder = new ArrayList();
 		var bFound = false;
-		foreach (Body.Name b in options.GrahaStrengths.grahas)
+		foreach (Body.BodyType b in options.GrahaStrengths.grahas)
 		{
 			if (b != pdi.graha && bFound == false)
 			{
@@ -98,7 +98,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 			bOrder.Add(b);
 		}
 
-		foreach (Body.Name b in options.GrahaStrengths.grahas)
+		foreach (Body.BodyType b in options.GrahaStrengths.grahas)
 		{
 			if (b == pdi.graha)
 			{
@@ -110,9 +110,9 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 
 		var dasaLength = pdi.dasaLength / 9.0;
-		foreach (Body.Name b in bOrder)
+		foreach (Body.BodyType b in bOrder)
 		{
-			al.Add(new DasaEntry(b, curr, dasaLength, pdi.level + 1, pdi.shortDesc + " " + Body.toShortString(b)));
+			al.Add(new DasaEntry(b, curr, dasaLength, pdi.level + 1, pdi.shortDesc + " " + b.ToShortString()));
 			curr += dasaLength;
 		}
 
@@ -121,7 +121,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return string.Format("Karaka Kendradi Graha Dasa seeded from {0}", options.SeedBody);
+		return string.Format("Karakas Kendradi Graha Dasa seeded from {0}", options.SeedBody);
 	}
 
 	public object GetOptions()
@@ -138,33 +138,33 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 		return options.Clone();
 	}
 
-	public double lengthOfDasa(Body.Name plt)
+	public double lengthOfDasa(Body.BodyType plt)
 	{
-		var dp_plt = h.getPosition(plt).toDivisionPosition(new Division(Basics.DivisionType.Rasi));
+		var dp_plt = h.getPosition(plt).toDivisionPosition(new Division(Vargas.DivisionType.Rasi));
 		return LengthOfDasa(h, options.dtype, plt, dp_plt);
 	}
 
-	public static double LengthOfDasa(Horoscope h, Division dtype, Body.Name plt, DivisionPosition dp_plt)
+	public static double LengthOfDasa(Horoscope h, Division dtype, Body.BodyType plt, DivisionPosition dp_plt)
 	{
 		double length = 0;
 
 		// Count to moola trikona - 1.
 		// Use Aqu / Sco as MT houses for Rahu / Ketu
-		//DivisionPosition dp_plt = h.getPosition(plt).toDivisionPosition(new Division(Basics.DivisionType.Rasi));
+		//DivisionPosition dp_plt = h.getPosition(plt).toDivisionPosition(new Division(Vargas.DivisionType.Rasi));
 		var zh_plt = dp_plt.zodiac_house;
-		var zh_mt  = Basics.getMoolaTrikonaRasi(plt);
+		var zh_mt  = plt.GetMoolaTrikonaRasi();
 
-		if (plt == Body.Name.Rahu)
+		if (plt == Body.BodyType.Rahu)
 		{
-			zh_mt.value = ZodiacHouse.Name.Aqu;
+			zh_mt.Sign = ZodiacHouse.Rasi.Aqu;
 		}
 
-		if (plt == Body.Name.Ketu)
+		if (plt == Body.BodyType.Ketu)
 		{
-			zh_mt.value = ZodiacHouse.Name.Sco;
+			zh_mt.Sign = ZodiacHouse.Rasi.Sco;
 		}
 
-		var diff = zh_plt.numHousesBetween(zh_mt);
+		var diff = zh_plt.NumHousesBetween(zh_mt);
 		length = diff - 1;
 
 		// exaltation / debilitation correction
@@ -202,8 +202,8 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 	public class UserOptions : ICloneable
 	{
 		private readonly Horoscope h;
-		public           Division  dtype = new(Basics.DivisionType.Rasi);
-		protected        Body.Name mSeedBody;
+		public           Division  dtype = new(Vargas.DivisionType.Rasi);
+		protected        Body.BodyType mSeedBody;
 		private          ArrayList std_div_pos;
 
 		public UserOptions(Horoscope _h)
@@ -215,7 +215,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 		[Category("Strengths1 Seed")]
 		[PGDisplayName("Seed Body")]
-		public Body.Name SeedBody
+		public Body.BodyType SeedBody
 		{
 			get => mSeedBody;
 			set => mSeedBody = value;
@@ -279,7 +279,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 				for (var j = 0; j < newOpts.RasiStrengths[i].houses.Count; j++)
 				{
-					if ((ZodiacHouse.Name) newOpts.RasiStrengths[i].houses[j] != (ZodiacHouse.Name) RasiStrengths[i].houses[j])
+					if ((ZodiacHouse.Rasi) newOpts.RasiStrengths[i].houses[j] != (ZodiacHouse.Rasi) RasiStrengths[i].houses[j])
 					{
 						newOpts.CalculateGrahaStrengths();
 						return;
@@ -291,9 +291,9 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 		public void CalculateSeedBody()
 		{
 			var al_k = new ArrayList();
-			for (var i = (int) Body.Name.Sun; i <= (int) Body.Name.Rahu; i++)
+			for (var i = (int) Body.BodyType.Sun; i <= (int) Body.BodyType.Rahu; i++)
 			{
-				var b   = (Body.Name) i;
+				var b   = (Body.BodyType) i;
 				var bp  = h.getPosition(b);
 				var bkc = new KarakaComparer(bp);
 				al_k.Add(bkc);
@@ -308,28 +308,28 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 		public void CalculateRasiStrengths()
 		{
 			var zRet = new OrderedZodiacHouses[3];
-			var zh   = h.getPosition(SeedBody).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
+			var zh   = h.getPosition(SeedBody).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house;
 
-			var zh_k = new ZodiacHouse.Name[4]
+			var zh_k = new ZodiacHouse.Rasi[4]
 			{
-				zh.add(1).value,
-				zh.add(4).value,
-				zh.add(7).value,
-				zh.add(10).value
+				zh.Add(1).Sign,
+				zh.Add(4).Sign,
+				zh.Add(7).Sign,
+				zh.Add(10).Sign
 			};
-			var zh_p = new ZodiacHouse.Name[4]
+			var zh_p = new ZodiacHouse.Rasi[4]
 			{
-				zh.add(2).value,
-				zh.add(5).value,
-				zh.add(8).value,
-				zh.add(11).value
+				zh.Add(2).Sign,
+				zh.Add(5).Sign,
+				zh.Add(8).Sign,
+				zh.Add(11).Sign
 			};
-			var zh_a = new ZodiacHouse.Name[4]
+			var zh_a = new ZodiacHouse.Rasi[4]
 			{
-				zh.add(3).value,
-				zh.add(6).value,
-				zh.add(9).value,
-				zh.add(12).value
+				zh.Add(3).Sign,
+				zh.Add(6).Sign,
+				zh.Add(9).Sign,
+				zh.Add(12).Sign
 			};
 
 			var fs = new FindStronger(h, dtype, FindStronger.RulesKarakaKendradiGrahaDasaRasi(h));
@@ -337,24 +337,24 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 			zRet[1] = fs.getOrderedHouses(zh_p);
 			zRet[2] = fs.getOrderedHouses(zh_a);
 
-			var zh_sat = h.getPosition(Body.Name.Saturn).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value;
-			var zh_ket = h.getPosition(Body.Name.Ketu).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value;
+			var zh_sat = h.getPosition(Body.BodyType.Saturn).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house.Sign;
+			var zh_ket = h.getPosition(Body.BodyType.Ketu).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house.Sign;
 
-			var bIsForward = zh.isOdd();
-			if (zh_sat != zh_ket && zh_sat == zh.value)
+			var bIsForward = zh.IsOdd();
+			if (zh_sat != zh_ket && zh_sat == zh.Sign)
 			{
 				bIsForward = true;
 			}
-			else if (zh_sat != zh_ket && zh_ket == zh.value)
+			else if (zh_sat != zh_ket && zh_ket == zh.Sign)
 			{
 				bIsForward = false;
 			}
-			else if (zh_sat == zh_ket && zh_sat == zh.value)
+			else if (zh_sat == zh_ket && zh_sat == zh.Sign)
 			{
 				var rule = new ArrayList();
 				rule.Add(FindStronger.EGrahaStrength.Longitude);
-				var fs2 = new FindStronger(h, new Division(Basics.DivisionType.Rasi), rule);
-				bIsForward = fs2.CmpGraha(Body.Name.Saturn, Body.Name.Ketu, false);
+				var fs2 = new FindStronger(h, new Division(Vargas.DivisionType.Rasi), rule);
+				bIsForward = fs2.CmpGraha(Body.BodyType.Saturn, Body.BodyType.Ketu, false);
 			}
 
 
@@ -379,13 +379,13 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 			GrahaStrengths = new OrderedGrahas();
 			foreach (var oz in RasiStrengths)
 			{
-				foreach (ZodiacHouse.Name zn in oz.houses)
+				foreach (ZodiacHouse.Rasi zn in oz.houses)
 				{
 					var temp     = fs_temp.findGrahasInHouse(zn);
-					var temp_arr = new Body.Name[temp.Count];
+					var temp_arr = new Body.BodyType[temp.Count];
 					for (var i = 0; i < temp.Count; i++)
 					{
-						temp_arr[i] = (Body.Name) temp[i];
+						temp_arr[i] = (Body.BodyType) temp[i];
 					}
 
 					var sorted = fs.getOrderedGrahas(temp_arr);

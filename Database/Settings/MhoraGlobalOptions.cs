@@ -63,7 +63,7 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 	private bool bVargaShowSAVRasi;
 	private bool bVargaShowSAVVarga;
 
-	// Varga charts
+	// Vargas charts
 	private bool bVargaSquare;
 
 	// Form Widths
@@ -623,20 +623,20 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 		addToFontSizes(-1);
 	}
 
-	public Color getBinduColor(Body.Name b)
+	public Color getBinduColor(Body.BodyType b)
 	{
 		switch (b)
 		{
-			case Body.Name.Lagna:   return mcBodyLagna;
-			case Body.Name.Sun:     return mcBodySun;
-			case Body.Name.Moon:    return mcBodyMoon;
-			case Body.Name.Mars:    return mcBodyMars;
-			case Body.Name.Mercury: return mcBodyMercury;
-			case Body.Name.Jupiter: return mcBodyJupiter;
-			case Body.Name.Venus:   return mcBodyVenus;
-			case Body.Name.Saturn:  return mcBodySaturn;
-			case Body.Name.Rahu:    return mcBodyRahu;
-			case Body.Name.Ketu:    return mcBodyKetu;
+			case Body.BodyType.Lagna:   return mcBodyLagna;
+			case Body.BodyType.Sun:     return mcBodySun;
+			case Body.BodyType.Moon:    return mcBodyMoon;
+			case Body.BodyType.Mars:    return mcBodyMars;
+			case Body.BodyType.Mercury: return mcBodyMercury;
+			case Body.BodyType.Jupiter: return mcBodyJupiter;
+			case Body.BodyType.Venus:   return mcBodyVenus;
+			case Body.BodyType.Saturn:  return mcBodySaturn;
+			case Body.BodyType.Rahu:    return mcBodyRahu;
+			case Body.BodyType.Ketu:    return mcBodyKetu;
 			default:                return mcBodyOther;
 		}
 	}

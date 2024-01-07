@@ -67,12 +67,12 @@ public class TrikonaDasa : Dasa, IDasa
 		var zh_seed = options.getSeed();
 		if (options.TrikonaStrengths.houses.Count >= 1)
 		{
-			zh_seed.value = (ZodiacHouse.Name) options.TrikonaStrengths.houses[0];
+			zh_seed.Sign = (ZodiacHouse.Rasi) options.TrikonaStrengths.houses[0];
 		}
 
-		zh_seed.value = options.findStrongerRasi(options.SeventhStrengths, zh_seed.value, zh_seed.add(7).value);
+		zh_seed.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_seed.Sign, zh_seed.Add(7).Sign);
 
-		var bIsZodiacal = zh_seed.isOdd();
+		var bIsZodiacal = zh_seed.IsOdd();
 
 		var dasa_length_sum = 0.0;
 		for (var i = 0; i < 12; i++)
@@ -80,17 +80,17 @@ public class TrikonaDasa : Dasa, IDasa
 			ZodiacHouse zh_dasa = null;
 			if (bIsZodiacal)
 			{
-				zh_dasa = zh_seed.add(order[i]);
+				zh_dasa = zh_seed.Add(order[i]);
 			}
 			else
 			{
-				zh_dasa = zh_seed.addReverse(order[i]);
+				zh_dasa = zh_seed.AddReverse(order[i]);
 			}
 
 			double dasa_length = NarayanaDasaLength(zh_dasa, getLordsPosition(zh_dasa));
 
 
-			var di = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var di = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
 			al.Add(di);
 			dasa_length_sum += dasa_length;
 		}
@@ -148,18 +148,18 @@ public class TrikonaDasa : Dasa, IDasa
 
 	public DivisionPosition getLordsPosition(ZodiacHouse zh)
 	{
-		Body.Name b;
-		if (zh.value == ZodiacHouse.Name.Sco)
+		Body.BodyType b;
+		if (zh.Sign == ZodiacHouse.Rasi.Sco)
 		{
 			b = options.ColordSco;
 		}
-		else if (zh.value == ZodiacHouse.Name.Aqu)
+		else if (zh.Sign == ZodiacHouse.Rasi.Aqu)
 		{
 			b = options.ColordAqu;
 		}
 		else
 		{
-			b = Basics.SimpleLordOfZodiacHouse(zh.value);
+			b = zh.Sign.SimpleLordOfZodiacHouse();
 		}
 
 		return h.getPosition(b).toDivisionPosition(options.Division);
@@ -183,11 +183,11 @@ public class TrikonaDasa : Dasa, IDasa
 		private void calculateTrikonaStrengths()
 		{
 			var zh = getSeed();
-			var zh_t = new ZodiacHouse.Name[3]
+			var zh_t = new ZodiacHouse.Rasi[3]
 			{
-				zh.add(1).value,
-				zh.add(5).value,
-				zh.add(9).value
+				zh.Add(1).Sign,
+				zh.Add(5).Sign,
+				zh.Add(9).Sign
 			};
 			var fs = new FindStronger(h, Division, mRules);
 			mTrikonaStrengths = fs.getOrderedHouses(zh_t);

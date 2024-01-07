@@ -26,7 +26,7 @@ public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool stronger(Body.BodyType m, Body.BodyType n)
 	{
 		var ak = findAtmaKaraka();
 		if (m == ak)
@@ -42,12 +42,12 @@ public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		var ala = findGrahasInHouse(za);
 		var alb = findGrahasInHouse(zb);
 		var ak  = findAtmaKaraka();
-		foreach (Body.Name ba in ala)
+		foreach (Body.BodyType ba in ala)
 		{
 			if (ba == ak)
 			{
@@ -55,7 +55,7 @@ public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 			}
 		}
 
-		foreach (Body.Name bb in alb)
+		foreach (Body.BodyType bb in alb)
 		{
 			if (bb == ak)
 			{

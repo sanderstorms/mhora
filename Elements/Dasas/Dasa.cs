@@ -33,13 +33,13 @@ public abstract class Dasa
 	{
 		var length = 0;
 
-		if (zh.isOddFooted())
+		if (zh.IsOddFooted())
 		{
-			length = zh.numHousesBetween(dp.zodiac_house);
+			length = zh.NumHousesBetween(dp.zodiac_house);
 		}
 		else
 		{
-			length = zh.numHousesBetweenReverse(dp.zodiac_house);
+			length = zh.NumHousesBetweenReverse(dp.zodiac_house);
 		}
 
 		if (dp.isExaltedPhalita())

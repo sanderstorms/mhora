@@ -63,30 +63,30 @@ public class EastIndianChart : IDrawChart
 
 	public Point GetBodyPosition(Longitude l)
 	{
-		var zh      = l.toZodiacHouse().value;
+		var zh      = l.toZodiacHouse().Sign;
 		var dOffset = l.toZodiacHouseOffset();
 		var iOff    = (int) (dOffset / 30.0 * (xw / 3));
 		var pBase   = GetZhouseOffset(l.toZodiacHouse());
 		switch (zh)
 		{
-			case ZodiacHouse.Name.Pis:
-			case ZodiacHouse.Name.Ari:
-			case ZodiacHouse.Name.Tau:
+			case ZodiacHouse.Rasi.Pis:
+			case ZodiacHouse.Rasi.Ari:
+			case ZodiacHouse.Rasi.Tau:
 				pBase.X -= iOff;
 				break;
-			case ZodiacHouse.Name.Gem:
-			case ZodiacHouse.Name.Can:
-			case ZodiacHouse.Name.Leo:
+			case ZodiacHouse.Rasi.Gem:
+			case ZodiacHouse.Rasi.Can:
+			case ZodiacHouse.Rasi.Leo:
 				pBase.Y += iOff;
 				break;
-			case ZodiacHouse.Name.Vir:
-			case ZodiacHouse.Name.Lib:
-			case ZodiacHouse.Name.Sco:
+			case ZodiacHouse.Rasi.Vir:
+			case ZodiacHouse.Rasi.Lib:
+			case ZodiacHouse.Rasi.Sco:
 				pBase.X += iOff;
 				break;
-			case ZodiacHouse.Name.Sag:
-			case ZodiacHouse.Name.Cap:
-			case ZodiacHouse.Name.Aqu:
+			case ZodiacHouse.Rasi.Sag:
+			case ZodiacHouse.Rasi.Cap:
+			case ZodiacHouse.Rasi.Aqu:
 				pBase.Y -= iOff;
 				break;
 		}
@@ -96,12 +96,12 @@ public class EastIndianChart : IDrawChart
 
 	public Point GetSingleItemOffset(ZodiacHouse zh, Size itemSize)
 	{
-		switch (zh.value)
+		switch (zh.Sign)
 		{
-			case ZodiacHouse.Name.Ari: return new Point(90, 0);
-			case ZodiacHouse.Name.Can: return new Point(5, 90);
-			case ZodiacHouse.Name.Lib: return new Point(90, 185);
-			case ZodiacHouse.Name.Cap: return new Point(180, 90);
+			case ZodiacHouse.Rasi.Ari: return new Point(90, 0);
+			case ZodiacHouse.Rasi.Can: return new Point(5, 90);
+			case ZodiacHouse.Rasi.Lib: return new Point(90, 185);
+			case ZodiacHouse.Rasi.Cap: return new Point(180, 90);
 			default:
 				var pret = GetSingleGemOffset();
 				return FromGemOffset(zh, pret);
@@ -119,56 +119,56 @@ public class EastIndianChart : IDrawChart
 		var wi = xw / 3 / 5;
 		//int yi = (xw/3)/6;
 		Point pret;
-		switch (zh.value)
+		switch (zh.Sign)
 		{
-			case ZodiacHouse.Name.Gem: return GetSmallGemOffset(n);
-			case ZodiacHouse.Name.Tau:
+			case ZodiacHouse.Rasi.Gem: return GetSmallGemOffset(n);
+			case ZodiacHouse.Rasi.Tau:
 				pret   = GetSmallGemOffset(n);
 				pret.Y = 0;
 				pret.X = xw / 3 - pret.X - wi;
 				return pret;
-			case ZodiacHouse.Name.Pis:
+			case ZodiacHouse.Rasi.Pis:
 				pret   =  GetSmallGemOffset(n);
 				pret.Y =  0;
 				pret.X += xw * 2 / 3;
 				return pret;
-			case ZodiacHouse.Name.Aqu:
+			case ZodiacHouse.Rasi.Aqu:
 				pret   = GetSmallGemOffset(n);
 				pret.X = xw / 3 - pret.X + xw * 2 / 3 - wi;
 				return pret;
-			case ZodiacHouse.Name.Vir:
+			case ZodiacHouse.Rasi.Vir:
 				pret   =  GetSmallGemOffset(n);
 				pret.X =  xw / 3 - pret.X - wi;
 				pret.Y += yw * 2 / 3;
 				return pret;
-			case ZodiacHouse.Name.Sco:
+			case ZodiacHouse.Rasi.Sco:
 				pret   =  GetSmallGemOffset(n);
 				pret.X += xw * 2 / 3;
 				pret.Y += yw * 2 / 3;
 				return pret;
-			case ZodiacHouse.Name.Sag:
+			case ZodiacHouse.Rasi.Sag:
 				pret   = GetSmallGemOffset(n);
 				pret.Y = yw * 2 / 3;
 				pret.X = xw / 3 - pret.X + xw * 2 / 3 - wi;
 				return pret;
-			case ZodiacHouse.Name.Leo:
+			case ZodiacHouse.Rasi.Leo:
 				pret   = GetSmallGemOffset(n);
 				pret.Y = yw * 2 / 3;
 				return pret;
-			case ZodiacHouse.Name.Ari:
+			case ZodiacHouse.Rasi.Ari:
 				pret   =  GetSmallGemOffset(n);
 				pret.X += xw / 3;
 				return pret;
-			case ZodiacHouse.Name.Can:
+			case ZodiacHouse.Rasi.Can:
 				pret   =  GetSmallGemOffset(n);
 				pret.Y += yw / 3;
 				return pret;
-			case ZodiacHouse.Name.Lib:
+			case ZodiacHouse.Rasi.Lib:
 				pret   =  GetSmallGemOffset(n);
 				pret.X += xw     / 3;
 				pret.Y += yw * 2 / 3;
 				return pret;
-			case ZodiacHouse.Name.Cap:
+			case ZodiacHouse.Rasi.Cap:
 				pret   =  GetSmallGemOffset(n);
 				pret.X += xw * 2 / 3;
 				pret.Y += yw     / 3;
@@ -181,20 +181,20 @@ public class EastIndianChart : IDrawChart
 	public Point GetZhouseOffset(ZodiacHouse zh)
 	{
 		var iOff = xw / 3;
-		switch (zh.value)
+		switch (zh.Sign)
 		{
-			case ZodiacHouse.Name.Ari: return new Point(iOff * 2, 0);
-			case ZodiacHouse.Name.Tau: return new Point(iOff, 0);
-			case ZodiacHouse.Name.Gem: return new Point(0, 0);
-			case ZodiacHouse.Name.Can: return new Point(0, iOff);
-			case ZodiacHouse.Name.Leo: return new Point(0, iOff    * 2);
-			case ZodiacHouse.Name.Vir: return new Point(0, iOff    * 3);
-			case ZodiacHouse.Name.Lib: return new Point(iOff, iOff * 3);
-			case ZodiacHouse.Name.Sco: return new Point(iOff       * 2, iOff * 3);
-			case ZodiacHouse.Name.Sag: return new Point(iOff       * 3, iOff * 3);
-			case ZodiacHouse.Name.Cap: return new Point(iOff       * 3, iOff * 2);
-			case ZodiacHouse.Name.Aqu: return new Point(iOff       * 3, iOff);
-			case ZodiacHouse.Name.Pis: return new Point(iOff       * 3, 0);
+			case ZodiacHouse.Rasi.Ari: return new Point(iOff * 2, 0);
+			case ZodiacHouse.Rasi.Tau: return new Point(iOff, 0);
+			case ZodiacHouse.Rasi.Gem: return new Point(0, 0);
+			case ZodiacHouse.Rasi.Can: return new Point(0, iOff);
+			case ZodiacHouse.Rasi.Leo: return new Point(0, iOff    * 2);
+			case ZodiacHouse.Rasi.Vir: return new Point(0, iOff    * 3);
+			case ZodiacHouse.Rasi.Lib: return new Point(iOff, iOff * 3);
+			case ZodiacHouse.Rasi.Sco: return new Point(iOff       * 2, iOff * 3);
+			case ZodiacHouse.Rasi.Sag: return new Point(iOff       * 3, iOff * 3);
+			case ZodiacHouse.Rasi.Cap: return new Point(iOff       * 3, iOff * 2);
+			case ZodiacHouse.Rasi.Aqu: return new Point(iOff       * 3, iOff);
+			case ZodiacHouse.Rasi.Pis: return new Point(iOff       * 3, 0);
 		}
 
 		return new Point(0, 0);
@@ -244,46 +244,46 @@ public class EastIndianChart : IDrawChart
 	{
 		var wi = xw / 3 / 4;
 		var yi = yw / 3 / 6;
-		switch (zh.value)
+		switch (zh.Sign)
 		{
-			case ZodiacHouse.Name.Gem: return pret;
-			case ZodiacHouse.Name.Aqu:
+			case ZodiacHouse.Rasi.Gem: return pret;
+			case ZodiacHouse.Rasi.Aqu:
 				pret.X = xw - pret.X - wi;
 				return pret;
-			case ZodiacHouse.Name.Leo:
+			case ZodiacHouse.Rasi.Leo:
 				pret.Y = yw - pret.Y - yi;
 				return pret;
-			case ZodiacHouse.Name.Sag:
+			case ZodiacHouse.Rasi.Sag:
 				pret.X = xw - pret.X - wi;
 				pret.Y = yw - pret.Y - yi;
 				return pret;
-			case ZodiacHouse.Name.Pis:
+			case ZodiacHouse.Rasi.Pis:
 				pret.X += xw * 2 / 3;
 				pret.Y =  yw / 3 - pret.Y - yi;
 				return pret;
-			case ZodiacHouse.Name.Tau:
+			case ZodiacHouse.Rasi.Tau:
 				pret.X = xw / 3 - pret.X - wi;
 				pret.Y = yw / 3 - pret.Y - yi;
 				return pret;
-			case ZodiacHouse.Name.Vir:
+			case ZodiacHouse.Rasi.Vir:
 				pret.X =  xw / 3 - pret.X - wi;
 				pret.Y += yw * 2 / 3;
 				return pret;
-			case ZodiacHouse.Name.Sco:
+			case ZodiacHouse.Rasi.Sco:
 				pret.X += xw * 2 / 3;
 				pret.Y += yw * 2 / 3;
 				return pret;
-			case ZodiacHouse.Name.Ari:
+			case ZodiacHouse.Rasi.Ari:
 				pret.X += xw / 3;
 				return pret;
-			case ZodiacHouse.Name.Can:
+			case ZodiacHouse.Rasi.Can:
 				pret.Y += yw / 3;
 				return pret;
-			case ZodiacHouse.Name.Lib:
+			case ZodiacHouse.Rasi.Lib:
 				pret.X += xw     / 3;
 				pret.Y += yw * 2 / 3;
 				return pret;
-			case ZodiacHouse.Name.Cap:
+			case ZodiacHouse.Rasi.Cap:
 				pret.X += xw * 2 / 3;
 				pret.Y += yw     / 3;
 				return pret;

@@ -46,17 +46,17 @@ public class NaisargikaGrahaDasaSP : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al = new ArrayList(36);
-		Body.Name[] order =
+		Body.BodyType[] order =
 		{
-			Body.Name.Moon,
-			Body.Name.Mercury,
-			Body.Name.Mars,
-			Body.Name.Venus,
-			Body.Name.Jupiter,
-			Body.Name.Sun,
-			Body.Name.Ketu,
-			Body.Name.Rahu,
-			Body.Name.Saturn
+			Body.BodyType.Moon,
+			Body.BodyType.Mercury,
+			Body.BodyType.Mars,
+			Body.BodyType.Venus,
+			Body.BodyType.Jupiter,
+			Body.BodyType.Sun,
+			Body.BodyType.Ketu,
+			Body.BodyType.Rahu,
+			Body.BodyType.Saturn
 		};
 
 		var cycle_start = paramAyus() * cycle;

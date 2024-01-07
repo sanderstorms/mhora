@@ -113,19 +113,19 @@ public class NarayanaDasa : Dasa, IDasa
 		}
 
 		var zh_seed = options.getSeed();
-		zh_seed.value = options.findStrongerRasi(options.SeventhStrengths, zh_seed.value, zh_seed.add(7).value);
+		zh_seed.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_seed.Sign, zh_seed.Add(7).Sign);
 
-		if (zh_seed.add(9).isOddFooted())
+		if (zh_seed.Add(9).IsOddFooted())
 		{
 			backward = false;
 		}
 
-		if (options.saturnExceptionApplies(zh_seed.value))
+		if (options.saturnExceptionApplies(zh_seed.Sign))
 		{
 			order    = order_moveable;
 			backward = false;
 		}
-		else if (options.ketuExceptionApplies(zh_seed.value))
+		else if (options.ketuExceptionApplies(zh_seed.Sign))
 		{
 			backward = !backward;
 		}
@@ -136,11 +136,11 @@ public class NarayanaDasa : Dasa, IDasa
 			ZodiacHouse zh_dasa;
 			if (backward)
 			{
-				zh_dasa = zh_seed.addReverse(order[i]);
+				zh_dasa = zh_seed.AddReverse(order[i]);
 			}
 			else
 			{
-				zh_dasa = zh_seed.add(order[i]);
+				zh_dasa = zh_seed.Add(order[i]);
 			}
 
 			var dasa_lord = GetLord(zh_dasa);
@@ -148,7 +148,7 @@ public class NarayanaDasa : Dasa, IDasa
 			var    dlord_dpos  = h.CalculateDivisionPosition(h.getPosition(dasa_lord), options.Division);
 			double dasa_length = DasaLength(zh_dasa, dlord_dpos);
 
-			var di = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var di = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
 			al.Add(di);
 			dasa_length_sum += dasa_length;
 		}
@@ -178,14 +178,14 @@ public class NarayanaDasa : Dasa, IDasa
 		var al = new ArrayList(12);
 
 		var zh_first    = new ZodiacHouse(pdi.zodiacHouse);
-		var zh_stronger = zh_first.add(1);
-		zh_stronger.value = options.findStrongerRasi(options.SeventhStrengths, zh_stronger.value, zh_stronger.add(7).value);
+		var zh_stronger = zh_first.Add(1);
+		zh_stronger.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_stronger.Sign, zh_stronger.Add(7).Sign);
 
 		var b        = GetLord(zh_stronger);
 		var dp       = h.CalculateDivisionPosition(h.getPosition(b), options.Division);
 		var first    = dp.zodiac_house;
 		var backward = false;
-		if ((int) first.value % 2 == 0)
+		if ((int) first.Sign % 2 == 0)
 		{
 			backward = true;
 		}
@@ -196,14 +196,14 @@ public class NarayanaDasa : Dasa, IDasa
 			ZodiacHouse zh_dasa;
 			if (!backward)
 			{
-				zh_dasa = first.add(i);
+				zh_dasa = first.Add(i);
 			}
 			else
 			{
-				zh_dasa = first.addReverse(i);
+				zh_dasa = first.AddReverse(i);
 			}
 
-			var di = new DasaEntry(zh_dasa.value, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.value);
+			var di = new DasaEntry(zh_dasa.Sign, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.Sign);
 			al.Add(di);
 			dasa_start += pdi.dasaLength / 12.0;
 		}
@@ -235,13 +235,13 @@ public class NarayanaDasa : Dasa, IDasa
 		SetOptions(newOpts);
 	}
 
-	private Body.Name GetLord(ZodiacHouse zh)
+	private Body.BodyType GetLord(ZodiacHouse zh)
 	{
-		switch (zh.value)
+		switch (zh.Sign)
 		{
-			case ZodiacHouse.Name.Aqu: return options.ColordAqu;
-			case ZodiacHouse.Name.Sco: return options.ColordSco;
-			default:                   return Basics.SimpleLordOfZodiacHouse(zh.value);
+			case ZodiacHouse.Rasi.Aqu: return options.ColordAqu;
+			case ZodiacHouse.Rasi.Sco: return options.ColordSco;
+			default:                   return zh.Sign.SimpleLordOfZodiacHouse();
 		}
 	}
 

@@ -350,7 +350,7 @@ namespace Mhora
 		{
 			var info = new Jhd(fileName).toHoraInfo();
 			var h = new Horoscope(info, new HoroscopeOptions());
-			if (h.getPosition(Body.Name.Ketu).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value == h.getPosition(Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house.value)
+			if (h.getPosition(Body.BodyType.Ketu).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house.Sign == h.getPosition(Body.BodyType.Lagna).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house.Sign)
 			{
 				return true;
 			}

@@ -77,10 +77,10 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 		var    cycle_start = paramAyus() * cycle;
 		var    curr        = 0.0;
 		double dasa_length;
-		var    zlagna = h.getPosition(Body.Name.Lagna).longitude.toZodiacHouse();
+		var    zlagna = h.getPosition(Body.BodyType.Lagna).longitude.toZodiacHouse();
 		for (var i = 0; i < 12; i++)
 		{
-			var zh = zlagna.add(order[i]);
+			var zh = zlagna.Add(order[i]);
 			switch (options.ParamAyus)
 			{
 				case UserOptions.ParamAyusType.Long:
@@ -90,12 +90,12 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 					dasa_length = 9.0;
 					break;
 				default:
-					var mod = (int) zh.value % 3;
+					var mod = (int) zh.Sign % 3;
 					dasa_length = short_length[mod];
 					break;
 			}
 
-			al.Add(new DasaEntry(zh.value, cycle_start + curr, dasa_length, 1, zh.value.ToString()));
+			al.Add(new DasaEntry(zh.Sign, cycle_start + curr, dasa_length, 1, zh.Sign.ToString()));
 			curr += dasa_length;
 		}
 

@@ -26,12 +26,12 @@ public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengt
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool stronger(Body.BodyType m, Body.BodyType n)
 	{
-		return stronger(h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value, h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value);
+		return stronger(h.getPosition(m).toDivisionPosition(dtype).zodiac_house.Sign, h.getPosition(n).toDivisionPosition(dtype).zodiac_house.Sign);
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		var numa = value(za);
 		var numb = value(zb);
@@ -48,7 +48,7 @@ public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengt
 		throw new EqualStrength();
 	}
 
-	public int value(ZodiacHouse.Name _zh)
+	public int value(ZodiacHouse.Rasi _zh)
 	{
 		var kendras = new int[4]
 		{
@@ -61,7 +61,7 @@ public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengt
 		var zh        = new ZodiacHouse(_zh);
 		foreach (var i in kendras)
 		{
-			numGrahas += numGrahasInZodiacHouse(zh.add(i).value);
+			numGrahas += numGrahasInZodiacHouse(zh.Add(i).Sign);
 		}
 
 		return numGrahas;

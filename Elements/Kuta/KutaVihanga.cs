@@ -38,7 +38,7 @@ public class KutaVihanga
 		IPeacock
 	}
 
-	public static EDominator getDominator(Nakshatra m, Nakshatra n)
+	public static EDominator getDominator(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
 	{
 		var em = getType(m);
 		var en = getType(n);
@@ -71,37 +71,37 @@ public class KutaVihanga
 		return EDominator.IEqual;
 	}
 
-	public static EType getType(Nakshatra n)
+	public static EType getType(Nakshatras.Nakshatra n)
 	{
-		switch (n.value)
+		switch (n)
 		{
-			case Nakshatra.Name.Aswini:
-			case Nakshatra.Name.Bharani:
-			case Nakshatra.Name.Krittika:
-			case Nakshatra.Name.Rohini:
-			case Nakshatra.Name.Mrigarirsa: return EType.IBharandhaka;
-			case Nakshatra.Name.Aridra:
-			case Nakshatra.Name.Punarvasu:
-			case Nakshatra.Name.Pushya:
-			case Nakshatra.Name.Aslesha:
-			case Nakshatra.Name.Makha:
-			case Nakshatra.Name.PoorvaPhalguni: return EType.IPingala;
-			case Nakshatra.Name.UttaraPhalguni:
-			case Nakshatra.Name.Hasta:
-			case Nakshatra.Name.Chittra:
-			case Nakshatra.Name.Swati:
-			case Nakshatra.Name.Vishaka:
-			case Nakshatra.Name.Anuradha: return EType.ICrow;
-			case Nakshatra.Name.Jyestha:
-			case Nakshatra.Name.Moola:
-			case Nakshatra.Name.PoorvaShada:
-			case Nakshatra.Name.UttaraShada:
-			case Nakshatra.Name.Sravana: return EType.ICock;
-			case Nakshatra.Name.Dhanishta:
-			case Nakshatra.Name.Satabisha:
-			case Nakshatra.Name.PoorvaBhadra:
-			case Nakshatra.Name.UttaraBhadra:
-			case Nakshatra.Name.Revati: return EType.IPeacock;
+			case Nakshatras.Nakshatra.Aswini:
+			case Nakshatras.Nakshatra.Bharani:
+			case Nakshatras.Nakshatra.Krittika:
+			case Nakshatras.Nakshatra.Rohini:
+			case Nakshatras.Nakshatra.Mrigarirsa: return EType.IBharandhaka;
+			case Nakshatras.Nakshatra.Aridra:
+			case Nakshatras.Nakshatra.Punarvasu:
+			case Nakshatras.Nakshatra.Pushya:
+			case Nakshatras.Nakshatra.Aslesha:
+			case Nakshatras.Nakshatra.Makha:
+			case Nakshatras.Nakshatra.PoorvaPhalguni: return EType.IPingala;
+			case Nakshatras.Nakshatra.UttaraPhalguni:
+			case Nakshatras.Nakshatra.Hasta:
+			case Nakshatras.Nakshatra.Chittra:
+			case Nakshatras.Nakshatra.Swati:
+			case Nakshatras.Nakshatra.Vishaka:
+			case Nakshatras.Nakshatra.Anuradha: return EType.ICrow;
+			case Nakshatras.Nakshatra.Jyestha:
+			case Nakshatras.Nakshatra.Moola:
+			case Nakshatras.Nakshatra.PoorvaShada:
+			case Nakshatras.Nakshatra.UttaraShada:
+			case Nakshatras.Nakshatra.Sravana: return EType.ICock;
+			case Nakshatras.Nakshatra.Dhanishta:
+			case Nakshatras.Nakshatra.Satabisha:
+			case Nakshatras.Nakshatra.PoorvaBhadra:
+			case Nakshatras.Nakshatra.UttaraBhadra:
+			case Nakshatras.Nakshatra.Revati: return EType.IPeacock;
 		}
 
 		Debug.Assert(false, "KutaVibhanga::getType");

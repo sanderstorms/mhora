@@ -29,7 +29,7 @@ public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStreng
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool stronger(Body.BodyType m, Body.BodyType n)
 	{
 		var a = value(m);
 		var b = value(n);
@@ -46,7 +46,7 @@ public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStreng
 		throw new EqualStrength();
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		var a = value(za);
 		var b = value(zb);
@@ -63,16 +63,16 @@ public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStreng
 		throw new EqualStrength();
 	}
 
-	protected int value(ZodiacHouse.Name _zh)
+	protected int value(ZodiacHouse.Rasi _zh)
 	{
 		var bl = GetStrengthLord(_zh);
 		var pl = h.getPosition(bl).toDivisionPosition(dtype);
 		return Dasa.NarayanaDasaLength(new ZodiacHouse(_zh), pl);
 	}
 
-	protected int value(Body.Name bm)
+	protected int value(Body.BodyType bm)
 	{
-		var zm = h.getPosition(bm).toDivisionPosition(dtype).zodiac_house.value;
+		var zm = h.getPosition(bm).toDivisionPosition(dtype).zodiac_house.Sign;
 		return value(zm);
 	}
 }

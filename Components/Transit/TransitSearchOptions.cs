@@ -38,10 +38,10 @@ public class TransitSearchOptions : ICloneable
 	{
 		var dt = DateTime.Now;
 		StartDate    = new Moment(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
-		SearchBody   = Body.Name.Sun;
+		SearchBody   = Body.BodyType.Sun;
 		TransitPoint = new Longitude(0.0);
 		Forward      = true;
-		Division     = new Division(Basics.DivisionType.Rasi);
+		Division     = new Division(Vargas.DivisionType.Rasi);
 	}
 
 
@@ -54,8 +54,8 @@ public class TransitSearchOptions : ICloneable
 
 	[Category("Transit Search")]
 	[PropertyOrder(1)]
-	[PGDisplayName("In Varga")]
-	public Basics.DivisionType UIDivision
+	[PGDisplayName("In Vargas")]
+	public Vargas.DivisionType UIDivision
 	{
 		get => Division.MultipleDivisions[0].Varga;
 		set => Division = new Division(value);
@@ -107,7 +107,7 @@ public class TransitSearchOptions : ICloneable
 	[Category("Transit Search")]
 	[PropertyOrder(4)]
 	[PGDisplayName("When Body")]
-	public Body.Name SearchBody
+	public Body.BodyType SearchBody
 	{
 		get;
 		set;

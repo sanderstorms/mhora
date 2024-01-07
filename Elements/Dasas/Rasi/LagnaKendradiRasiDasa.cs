@@ -27,7 +27,7 @@ namespace Mhora.Elements.Dasas.Rasi;
 public class LagnaKendradiRasiDasa : Dasa, IDasa
 {
 	private readonly Horoscope           h;
-	private readonly Division            m_dtype = new(Basics.DivisionType.Rasi);
+	private readonly Division            m_dtype = new(Vargas.DivisionType.Rasi);
 	private readonly RasiDasaUserOptions options;
 
 	public LagnaKendradiRasiDasa(Horoscope _h)
@@ -68,25 +68,25 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 		double dasa_length_sum = 0;
 
 		var zh_start = options.getSeed();
-		zh_start.value = options.findStrongerRasi(options.SeventhStrengths, zh_start.value, zh_start.add(7).value);
+		zh_start.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_start.Sign, zh_start.Add(7).Sign);
 
 		var bIsZodiacal = isZodiacal();
 		for (var i = 0; i < 12; i++)
 		{
-			var zh = zh_start.add(1);
+			var zh = zh_start.Add(1);
 			if (bIsZodiacal)
 			{
-				zh = zh.add(order[i]);
+				zh = zh.Add(order[i]);
 			}
 			else
 			{
-				zh = zh.addReverse(order[i]);
+				zh = zh.AddReverse(order[i]);
 			}
 
 			var    lord        = h.LordOfZodiacHouse(zh, m_dtype);
 			var    dp_lord     = h.getPosition(lord).toDivisionPosition(m_dtype);
 			double dasa_length = NarayanaDasaLength(zh, dp_lord);
-			var    de          = new DasaEntry(zh.value, dasa_length_sum, dasa_length, 1, zh.value.ToString());
+			var    de          = new DasaEntry(zh.Sign, dasa_length_sum, dasa_length, 1, zh.Sign.ToString());
 			al.Add(de);
 			dasa_length_sum += dasa_length;
 		}
@@ -137,15 +137,15 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 	private bool isZodiacal()
 	{
 		var zh_start = options.getSeed();
-		zh_start.value = options.findStrongerRasi(options.SeventhStrengths, zh_start.value, zh_start.add(7).value);
+		zh_start.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_start.Sign, zh_start.Add(7).Sign);
 
-		var forward = zh_start.isOdd();
-		if (options.saturnExceptionApplies(zh_start.value))
+		var forward = zh_start.IsOdd();
+		if (options.saturnExceptionApplies(zh_start.Sign))
 		{
 			return forward;
 		}
 
-		if (options.ketuExceptionApplies(zh_start.value))
+		if (options.ketuExceptionApplies(zh_start.Sign))
 		{
 			forward = !forward;
 		}

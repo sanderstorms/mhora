@@ -492,14 +492,14 @@ public class MhoraControl : UserControl
 		mNakDasaMenu.MenuItems.Add("Kalachakra Dasa", ViewKalachakraDasa);
 		mNakDasaMenu.MenuItems.Add("Yogini Dasa", ViewYoginiDasa);
 		mNakDasaMenu.MenuItems.Add("-");
-		mNakDasaMenu.MenuItems.Add("Tithi Ashtottari Dasa", ViewTithiAshtottariDasa);
+		mNakDasaMenu.MenuItems.Add("Tithis Ashtottari Dasa", ViewTithiAshtottariDasa);
 		mNakDasaMenu.MenuItems.Add("Yoga Vimsottari Dasa", ViewYogaVimsottariDasa);
 		mNakDasaMenu.MenuItems.Add("Karana Chaturashiti Sama Dasa", ViewKaranaChaturashitiSamaDasa);
 
 		var mGrahaDasaMenu = new MenuItem("Graha Dasa");
 		mGrahaDasaMenu.MenuItems.Add("Naisargika Dasa", ViewNaisargikaGrahaDasa);
 		mGrahaDasaMenu.MenuItems.Add("Moola Dasa", ViewMoolaDasa);
-		mGrahaDasaMenu.MenuItems.Add("Karaka Kendradi Dasa", ViewKarakaKendradiGrahaDasa);
+		mGrahaDasaMenu.MenuItems.Add("Karakas Kendradi Dasa", ViewKarakaKendradiGrahaDasa);
 
 		var mRasiDasaMenu = new MenuItem("Rasi Dasa");
 		mRasiDasaMenu.MenuItems.Add("Naisargika Dasa", ViewNaisargikaRasiDasa);
@@ -521,10 +521,10 @@ public class MhoraControl : UserControl
 		mRelatedChartMenu.MenuItems.Add("Sudarshana Chakra Dasa (Solar Year)", ViewSudarshanaChakraDasaCompressed);
 		mRelatedChartMenu.MenuItems.Add("Mudda Dasa (Solar Year)", ViewMuddaDasa);
 		mRelatedChartMenu.MenuItems.Add("-");
-		mRelatedChartMenu.MenuItems.Add("Tithi Pravesh Chart", ViewTithiPraveshDasa);
-		mRelatedChartMenu.MenuItems.Add("Tithi Pravesh Ashtottari Dasa (Tithi Year)", ViewTithiPraveshAshtottariDasaTithi);
-		mRelatedChartMenu.MenuItems.Add("Tithi Pravesh Ashtottari Dasa (Solar Year)", ViewTithiPraveshAshtottariDasaSolar);
-		mRelatedChartMenu.MenuItems.Add("Tithi Pravesh Ashtottari Dasa (Fixed Year)", ViewTithiPraveshAshtottariDasaFixed);
+		mRelatedChartMenu.MenuItems.Add("Tithis Pravesh Chart", ViewTithiPraveshDasa);
+		mRelatedChartMenu.MenuItems.Add("Tithis Pravesh Ashtottari Dasa (Tithis Year)", ViewTithiPraveshAshtottariDasaTithi);
+		mRelatedChartMenu.MenuItems.Add("Tithis Pravesh Ashtottari Dasa (Solar Year)", ViewTithiPraveshAshtottariDasaSolar);
+		mRelatedChartMenu.MenuItems.Add("Tithis Pravesh Ashtottari Dasa (Fixed Year)", ViewTithiPraveshAshtottariDasaFixed);
 		mRelatedChartMenu.MenuItems.Add("-");
 		mRelatedChartMenu.MenuItems.Add("Yoga Pravesh Chart", ViewYogaPraveshDasa);
 		mRelatedChartMenu.MenuItems.Add("Yoga Pravesh Vimsottari Dasa (Yoga Year)", ViewYogaPraveshVimsottariDasaYoga);

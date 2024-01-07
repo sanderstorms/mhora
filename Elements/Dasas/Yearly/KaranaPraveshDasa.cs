@@ -59,7 +59,7 @@ public class KaranaPraveshDasa : Dasa, IDasa
 		for (var i = 0; i < 60; i++)
 		{
 			var start = cycle_start + i;
-			var di    = new DasaEntry(Body.Name.Other, start, 1.0, 1, "Karana Pravesh Year");
+			var di    = new DasaEntry(Body.BodyType.Other, start, 1.0, 1, "Karana Pravesh Year");
 			al.Add(di);
 		}
 
@@ -70,15 +70,15 @@ public class KaranaPraveshDasa : Dasa, IDasa
 	{
 		if (pdi.level == 2)
 		{
-			var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Sun));
+			var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Sun));
 			var zh = l.toZodiacHouse();
 			return zh.ToString();
 		}
 
 		if (pdi.level == 3)
 		{
-			var lSun  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Sun));
-			var lMoon = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Moon));
+			var lSun  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Sun));
+			var lMoon = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Moon));
 			var l     = lMoon.sub(lSun);
 			var k     = l.toKarana();
 			return k.ToString();
@@ -92,7 +92,7 @@ public class KaranaPraveshDasa : Dasa, IDasa
 		string[] desc =
 		{
 			"  Month: ",
-			"    Tithi: "
+			"    Tithis: "
 		};
 		if (pdi.level == 3)
 		{
@@ -115,7 +115,7 @@ public class KaranaPraveshDasa : Dasa, IDasa
 				//mhora.Log.Debug("AD length is {0}", length);
 				for (var i = 0; i < 13; i++)
 				{
-					var di = new DasaEntry(Body.Name.Other, start, length, level, desc[level - 2]);
+					var di = new DasaEntry(Body.BodyType.Other, start, length, level, desc[level - 2]);
 					al.Add(di);
 					start += length;
 				}
@@ -127,7 +127,7 @@ public class KaranaPraveshDasa : Dasa, IDasa
 				//mhora.Log.Debug("PD length is {0}", length);
 				for (var i = 0; i < 60; i++)
 				{
-					var di = new DasaEntry(Body.Name.Other, start, length, level, desc[level - 2]);
+					var di = new DasaEntry(Body.BodyType.Other, start, length, level, desc[level - 2]);
 					//mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
 					al.Add(di);
 					start += length;

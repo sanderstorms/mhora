@@ -26,12 +26,12 @@ public class StrengthByFirst : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool stronger(Body.BodyType m, Body.BodyType n)
 	{
 		return true;
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		return true;
 	}

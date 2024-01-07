@@ -7,10 +7,10 @@ namespace Mhora.Elements;
 
 public class Retrogression
 {
-	private readonly Body.Name b;
+	private readonly Body.BodyType b;
 	private readonly Horoscope h;
 
-	public Retrogression(Horoscope _h, Body.Name _b)
+	public Retrogression(Horoscope _h, Body.BodyType _b)
 	{
 		//Debug.Assert((int)_b >= (int)Body.Type.Moon &&
 		//	(int)_b <= (int)Body.Type.Saturn, 
@@ -23,15 +23,15 @@ public class Retrogression
 	{
 		switch (b)
 		{
-			case Body.Name.Mars:
+			case Body.BodyType.Mars:
 				start.value = 211;
 				end.value   = 232;
 				break;
-			case Body.Name.Jupiter:
+			case Body.BodyType.Jupiter:
 				start.value = 240;
 				end.value   = 248;
 				break;
-			case Body.Name.Saturn:
+			case Body.BodyType.Saturn:
 				start.value = 248;
 				end.value   = 253;
 				break;
@@ -79,7 +79,7 @@ public class Retrogression
 
 	public double GetTransitBackward(double ut, Longitude lonToFind)
 	{
-		if (b == Body.Name.Lagna)
+		if (b == Body.BodyType.Lagna)
 		{
 			return GetLagnaTransitBackward(ut, lonToFind);
 		}
@@ -194,7 +194,7 @@ public class Retrogression
 
 	public double GetTransitForward(double ut, Longitude lonToFind)
 	{
-		if (b == Body.Name.Lagna)
+		if (b == Body.BodyType.Lagna)
 		{
 			return GetLagnaTransitForward(ut, lonToFind);
 		}
@@ -251,7 +251,7 @@ public class Retrogression
 
 	public Longitude GetLon(double ut, ref bool bForward)
 	{
-		if (b == Body.Name.Lagna)
+		if (b == Body.BodyType.Lagna)
 		{
 			return new Longitude(sweph.Lagna(ut));
 		}

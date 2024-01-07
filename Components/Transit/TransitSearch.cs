@@ -313,7 +313,7 @@ public class TransitSearch : MhoraControl
 		this.groupBox1.Size     = new System.Drawing.Size(120, 96);
 		this.groupBox1.TabIndex = 12;
 		this.groupBox1.TabStop  = false;
-		this.groupBox1.Text     = "Change Varga";
+		this.groupBox1.Text     = "Change Vargas";
 		// 
 		// bTransitPrevVarga
 		// 
@@ -465,13 +465,13 @@ public class TransitSearch : MhoraControl
 		}
 	}
 
-	private double DirectSpeed(Body.Name b)
+	private double DirectSpeed(Body.BodyType b)
 	{
 		switch (b)
 		{
-			case Body.Name.Sun:   return 365.2425;
-			case Body.Name.Moon:  return 28.0;
-			case Body.Name.Lagna: return 1.0;
+			case Body.BodyType.Sun:   return 365.2425;
+			case Body.BodyType.Moon:  return 28.0;
+			case Body.BodyType.Lagna: return 1.0;
 		}
 
 		return 0.0;
@@ -479,7 +479,7 @@ public class TransitSearch : MhoraControl
 
 	private void DirectProgression()
 	{
-		if (opts.SearchBody != Body.Name.Sun && opts.SearchBody != Body.Name.Moon) // &&
+		if (opts.SearchBody != Body.BodyType.Sun && opts.SearchBody != Body.BodyType.Moon) // &&
 			//opts.SearchBody != Body.Type.Lagna)
 		{
 			return;
@@ -566,7 +566,7 @@ public class TransitSearch : MhoraControl
 
 		//mhora.Log.Debug ("Sun progress {0} degrees in elapsed time", dExpectedLon);
 
-		var ret = dExpectedLon / 360.0 * (30.0 / Basics.numPartsInDivision(opts.Division));
+		var ret = dExpectedLon / 360.0 * (30.0 / opts.Division.NumPartsInDivision());
 		//(dp.cusp_higher - dp.cusp_lower);
 		//mhora.Log.Debug ("Progressing by {0} degrees", ret);
 		return ret;
@@ -574,7 +574,7 @@ public class TransitSearch : MhoraControl
 
 	private void bProgression_Click(object sender, EventArgs e)
 	{
-		if ((int) opts.SearchBody <= (int) Body.Name.Moon || (int) opts.SearchBody > (int) Body.Name.Saturn)
+		if ((int) opts.SearchBody <= (int) Body.BodyType.Moon || (int) opts.SearchBody > (int) Body.BodyType.Saturn)
 		{
 			DirectProgression();
 			return;
@@ -671,7 +671,7 @@ public class TransitSearch : MhoraControl
 
 	private void bRetroCusp_Click(object sender, EventArgs e)
 	{
-		if ((int) opts.SearchBody <= (int) Body.Name.Moon || (int) opts.SearchBody > (int) Body.Name.Saturn)
+		if ((int) opts.SearchBody <= (int) Body.BodyType.Moon || (int) opts.SearchBody > (int) Body.BodyType.Saturn)
 		{
 			return;
 		}
@@ -718,7 +718,7 @@ public class TransitSearch : MhoraControl
 		// add entry to our list
 		var          fmt = hTransit.info.DateOfBirth.ToString();
 		ListViewItem li  = new TransitItem(hTransit);
-		li.Text = Body.toString(opts.SearchBody);
+		li.Text = opts.SearchBody.Name();
 		if (becomesDirect)
 		{
 			li.Text += " goes direct at " + found_lon;
@@ -764,10 +764,9 @@ public class TransitSearch : MhoraControl
 
 	private double StartSearch(bool bUpdateDate)
 	{
-		var cs        = new CuspTransitSearch(h);
 		var found_lon = opts.TransitPoint.add(0);
 		var bForward  = true;
-		var found_ut  = cs.TransitSearch(opts.SearchBody, opts.StartDate, opts.Forward, opts.TransitPoint, found_lon, ref bForward);
+		var found_ut  = h.TransitSearch(opts.SearchBody, opts.StartDate, opts.Forward, opts.TransitPoint, found_lon, ref bForward);
 
 
 		var m2       = new Moment(0, 0, 0, 0);
@@ -777,7 +776,7 @@ public class TransitSearch : MhoraControl
 		// add entry to our list
 		var          fmt = hTransit.info.DateOfBirth.ToString();
 		ListViewItem li  = new TransitItem(hTransit);
-		li.Text = Body.toString(opts.SearchBody);
+		li.Text = opts.SearchBody.Name();
 		if (bForward == false)
 		{
 			li.Text += " (R)";
@@ -908,7 +907,7 @@ public class TransitSearch : MhoraControl
 
 	private void bSolarNewYear_Click(object sender, EventArgs e)
 	{
-		opts.SearchBody         = Body.Name.Sun;
+		opts.SearchBody         = Body.BodyType.Sun;
 		opts.TransitPoint.value = 0;
 		updateOptions();
 		bStartSearch_Click(sender, e);
@@ -949,7 +948,7 @@ public class TransitSearch : MhoraControl
 
 	private void bVargaChange_Click(object sender, EventArgs e)
 	{
-		if (opts.SearchBody == Body.Name.Sun || opts.SearchBody == Body.Name.Moon || opts.SearchBody == Body.Name.Lagna)
+		if (opts.SearchBody == Body.BodyType.Sun || opts.SearchBody == Body.BodyType.Moon || opts.SearchBody == Body.BodyType.Lagna)
 		{
 			if (opts.Forward)
 			{

@@ -247,7 +247,7 @@ public class StrengthOptions : MhoraSerializableOptions, ISerializable, ICloneab
 		set => mNarayanaDasaRasi = value;
 	}
 
-	[Category("Karaka Kendradi Graha Dasa")]
+	[Category("Karakas Kendradi Graha Dasa")]
 	[PGDisplayName("Rasi Strengths")]
 	public FindStronger.ERasiStrength[] KarakaKendradiGrahaDasaRasi
 	{
@@ -255,7 +255,7 @@ public class StrengthOptions : MhoraSerializableOptions, ISerializable, ICloneab
 		set => mKarakaKendradiGrahaDasaRasi = value;
 	}
 
-	[Category("Karaka Kendradi Graha Dasa")]
+	[Category("Karakas Kendradi Graha Dasa")]
 	[PGDisplayName("Graha Strengths")]
 	public FindStronger.EGrahaStrength[] KarakaKendradiGrahaDasaGraha
 	{
@@ -264,7 +264,7 @@ public class StrengthOptions : MhoraSerializableOptions, ISerializable, ICloneab
 	}
 
 	[PGNotVisible]
-	[Category("Karaka Kendradi Graha Dasa")]
+	[Category("Karakas Kendradi Graha Dasa")]
 	[PGDisplayName("CoLord Strengths")]
 	[TypeConverter(typeof(MhoraArrayConverter))]
 	public FindStronger.EGrahaStrength[] KarakaKendradiGrahaDasaColord

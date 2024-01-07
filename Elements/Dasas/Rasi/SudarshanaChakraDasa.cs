@@ -60,11 +60,11 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 	{
 		var al    = new ArrayList(12);
 		var start = cycle * paramAyus();
-		var lzh   = h.getPosition(Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
+		var lzh   = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house;
 		for (var i = 1; i <= 12; i++)
 		{
-			var czh = lzh.add(i);
-			al.Add(new DasaEntry(czh.value, start, 1, 1, czh.value.ToString()));
+			var czh = lzh.Add(i);
+			al.Add(new DasaEntry(czh.Sign, start, 1, 1, czh.Sign.ToString()));
 			start += 1;
 		}
 
@@ -79,8 +79,8 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 		var zh     = new ZodiacHouse(de.zodiacHouse);
 		for (var i = 1; i <= 12; i++)
 		{
-			var czh = zh.add(i);
-			al.Add(new DasaEntry(czh.value, start, length, de.level + 1, de.shortDesc + " " + czh.value));
+			var czh = zh.Add(i);
+			al.Add(new DasaEntry(czh.Sign, start, length, de.level + 1, de.shortDesc + " " + czh.Sign));
 			start += length;
 		}
 

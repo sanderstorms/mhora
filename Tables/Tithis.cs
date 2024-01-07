@@ -3,7 +3,7 @@ using Mhora.Util;
 
 namespace Mhora.Tables;
 
-public static class Tithi
+public static class Tithis
 {
 	public enum NandaType
 	{
@@ -15,7 +15,7 @@ public static class Tithi
 	}
 
 	[TypeConverter(typeof(EnumDescConverter))]
-	public enum Value
+	public enum Tithi
 	{
 		[Description("Shukla Pratipada")]
 		ShuklaPratipada = 1,
@@ -108,7 +108,7 @@ public static class Tithi
 		Amavasya
 	}
 
-	public static readonly string[] specialNames =
+	public static readonly string[] SpecialNames =
 	{
 		string.Empty,
 		"Janma",
@@ -143,40 +143,40 @@ public static class Tithi
 		"Chaturdashi"
 	};
 
-	public static string ToUnqualifiedString(this Value value)
+	public static string ToUnqualifiedString(this Tithi tithi)
 	{
-		switch (value)
+		switch (tithi)
 		{
-			case Value.KrishnaPratipada:
-			case Value.ShuklaPratipada: return "Prathama";
-			case Value.KrishnaDvitiya:
-			case Value.ShuklaDvitiya: return "Dvitiya";
-			case Value.KrishnaTritiya:
-			case Value.ShuklaTritiya: return "Tritiya";
-			case Value.KrishnaChaturti:
-			case Value.ShuklaChaturti: return "Chaturthi";
-			case Value.KrishnaPanchami:
-			case Value.ShuklaPanchami: return "Panchami";
-			case Value.KrishnaShashti:
-			case Value.ShuklaShashti: return "Shashti";
-			case Value.KrishnaSaptami:
-			case Value.ShuklaSaptami: return "Saptami";
-			case Value.KrishnaAshtami:
-			case Value.ShuklaAshtami: return "Ashtami";
-			case Value.KrishnaNavami:
-			case Value.ShuklaNavami: return "Navami";
-			case Value.KrishnaDasami:
-			case Value.ShuklaDasami: return "Dashami";
-			case Value.KrishnaEkadasi:
-			case Value.ShuklaEkadasi: return "Ekadashi";
-			case Value.KrishnaDvadasi:
-			case Value.ShuklaDvadasi: return "Dwadashi";
-			case Value.KrishnaTrayodasi:
-			case Value.ShuklaTrayodasi: return "Trayodashi";
-			case Value.KrishnaChaturdasi:
-			case Value.ShuklaChaturdasi: return "Chaturdashi";
-			case Value.Paurnami: return "Poornima";
-			case Value.Amavasya: return "Amavasya";
+			case Tithi.KrishnaPratipada:
+			case Tithi.ShuklaPratipada: return "Prathama";
+			case Tithi.KrishnaDvitiya:
+			case Tithi.ShuklaDvitiya: return "Dvitiya";
+			case Tithi.KrishnaTritiya:
+			case Tithi.ShuklaTritiya: return "Tritiya";
+			case Tithi.KrishnaChaturti:
+			case Tithi.ShuklaChaturti: return "Chaturthi";
+			case Tithi.KrishnaPanchami:
+			case Tithi.ShuklaPanchami: return "Panchami";
+			case Tithi.KrishnaShashti:
+			case Tithi.ShuklaShashti: return "Shashti";
+			case Tithi.KrishnaSaptami:
+			case Tithi.ShuklaSaptami: return "Saptami";
+			case Tithi.KrishnaAshtami:
+			case Tithi.ShuklaAshtami: return "Ashtami";
+			case Tithi.KrishnaNavami:
+			case Tithi.ShuklaNavami: return "Navami";
+			case Tithi.KrishnaDasami:
+			case Tithi.ShuklaDasami: return "Dashami";
+			case Tithi.KrishnaEkadasi:
+			case Tithi.ShuklaEkadasi: return "Ekadashi";
+			case Tithi.KrishnaDvadasi:
+			case Tithi.ShuklaDvadasi: return "Dwadashi";
+			case Tithi.KrishnaTrayodasi:
+			case Tithi.ShuklaTrayodasi: return "Trayodashi";
+			case Tithi.KrishnaChaturdasi:
+			case Tithi.ShuklaChaturdasi: return "Chaturdashi";
+			case Tithi.Paurnami: return "Poornima";
+			case Tithi.Amavasya: return "Amavasya";
 		}
 
 		return string.Empty;

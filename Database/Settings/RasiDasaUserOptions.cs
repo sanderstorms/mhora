@@ -30,13 +30,13 @@ namespace Mhora.Database.Settings;
 public class RasiDasaUserOptions : ICloneable
 {
 	protected Horoscope             h;
-	protected Body.Name             mCoLordAqu;
-	protected Body.Name             mCoLordSco;
+	protected Body.BodyType             mCoLordAqu;
+	protected Body.BodyType             mCoLordSco;
 	protected Division              mDtype;
 	protected OrderedZodiacHouses   mKetuExceptions;
 	protected ArrayList             mRules;
 	protected OrderedZodiacHouses   mSaturnExceptions;
-	protected ZodiacHouse.Name      mSeed;
+	protected ZodiacHouse.Rasi      mSeed;
 	protected int                   mSeedHouse;
 	protected OrderedZodiacHouses[] mSeventhStrengths;
 
@@ -47,7 +47,7 @@ public class RasiDasaUserOptions : ICloneable
 		mSeventhStrengths = new OrderedZodiacHouses[6];
 		mSaturnExceptions = new OrderedZodiacHouses();
 		mKetuExceptions   = new OrderedZodiacHouses();
-		mDtype            = new Division(Basics.DivisionType.Rasi);
+		mDtype            = new Division(Vargas.DivisionType.Rasi);
 
 		calculateCoLords();
 		calculateExceptions();
@@ -63,7 +63,7 @@ public class RasiDasaUserOptions : ICloneable
 	}
 
 	[PGDisplayName("Division")]
-	public Basics.DivisionType UIVarga
+	public Vargas.DivisionType UIVarga
 	{
 		get => mDtype.MultipleDivisions[0].Varga;
 		set => mDtype = new Division(value);
@@ -72,7 +72,7 @@ public class RasiDasaUserOptions : ICloneable
 	[PropertyOrder(99)]
 	[PGDisplayName("Seed Rasi")]
 	[Description("The rasi from which the dasa should be seeded.")]
-	public ZodiacHouse.Name SeedRasi
+	public ZodiacHouse.Rasi SeedRasi
 	{
 		get => mSeed;
 		set => mSeed = value;
@@ -89,7 +89,7 @@ public class RasiDasaUserOptions : ICloneable
 
 	[PropertyOrder(101)]
 	[PGDisplayName("Lord of Aquarius")]
-	public Body.Name ColordAqu
+	public Body.BodyType ColordAqu
 	{
 		get => mCoLordAqu;
 		set => mCoLordAqu = value;
@@ -97,7 +97,7 @@ public class RasiDasaUserOptions : ICloneable
 
 	[PropertyOrder(102)]
 	[PGDisplayName("Lord of Scorpio")]
-	public Body.Name ColordSco
+	public Body.BodyType ColordSco
 	{
 		get => mCoLordSco;
 		set => mCoLordSco = value;
@@ -202,20 +202,20 @@ public class RasiDasaUserOptions : ICloneable
 
 	public ZodiacHouse getSeed()
 	{
-		return new ZodiacHouse(mSeed).add(SeedHouse);
+		return new ZodiacHouse(mSeed).Add(SeedHouse);
 	}
 
 	public void calculateSeed()
 	{
-		mSeed      = h.getPosition(Body.Name.Lagna).toDivisionPosition(Division).zodiac_house.value;
+		mSeed      = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(Division).zodiac_house.Sign;
 		mSeedHouse = 1;
 	}
 
 	public void calculateCoLords()
 	{
 		var fs = new FindStronger(h, mDtype, FindStronger.RulesStrongerCoLord(h));
-		mCoLordAqu = fs.StrongerGraha(Body.Name.Saturn, Body.Name.Rahu, true);
-		mCoLordSco = fs.StrongerGraha(Body.Name.Mars, Body.Name.Ketu, true);
+		mCoLordAqu = fs.StrongerGraha(Body.BodyType.Saturn, Body.BodyType.Rahu, true);
+		mCoLordSco = fs.StrongerGraha(Body.BodyType.Mars, Body.BodyType.Ketu, true);
 	}
 
 	public void calculateExceptions()
@@ -223,8 +223,8 @@ public class RasiDasaUserOptions : ICloneable
 		KetuExceptions.houses.Clear();
 		SaturnExceptions.houses.Clear();
 
-		var zhKetu = h.getPosition(Body.Name.Ketu).toDivisionPosition(Division).zodiac_house.value;
-		var zhSat  = h.getPosition(Body.Name.Saturn).toDivisionPosition(Division).zodiac_house.value;
+		var zhKetu = h.getPosition(Body.BodyType.Ketu).toDivisionPosition(Division).zodiac_house.Sign;
+		var zhSat  = h.getPosition(Body.BodyType.Saturn).toDivisionPosition(Division).zodiac_house.Sign;
 
 		if (zhKetu != zhSat)
 		{
@@ -236,8 +236,8 @@ public class RasiDasaUserOptions : ICloneable
 			var rule = new ArrayList();
 			rule.Add(FindStronger.EGrahaStrength.Longitude);
 			var fs = new FindStronger(h, Division, rule);
-			var b  = fs.StrongerGraha(Body.Name.Saturn, Body.Name.Ketu, false);
-			if (b == Body.Name.Ketu)
+			var b  = fs.StrongerGraha(Body.BodyType.Saturn, Body.BodyType.Ketu, false);
+			if (b == Body.BodyType.Ketu)
 			{
 				mKetuExceptions.houses.Add(zhKetu);
 			}
@@ -248,18 +248,18 @@ public class RasiDasaUserOptions : ICloneable
 		}
 	}
 
-	public ZodiacHouse.Name findStrongerRasi(OrderedZodiacHouses[] mList, ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public ZodiacHouse.Rasi findStrongerRasi(OrderedZodiacHouses[] mList, ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		for (var i = 0; i < mList.Length; i++)
 		{
 			for (var j = 0; j < mList[i].houses.Count; j++)
 			{
-				if ((ZodiacHouse.Name) mList[i].houses[j] == za)
+				if ((ZodiacHouse.Rasi) mList[i].houses[j] == za)
 				{
 					return za;
 				}
 
-				if ((ZodiacHouse.Name) mList[i].houses[j] == zb)
+				if ((ZodiacHouse.Rasi) mList[i].houses[j] == zb)
 				{
 					return zb;
 				}
@@ -269,11 +269,11 @@ public class RasiDasaUserOptions : ICloneable
 		return za;
 	}
 
-	public bool ketuExceptionApplies(ZodiacHouse.Name zh)
+	public bool ketuExceptionApplies(ZodiacHouse.Rasi zh)
 	{
 		for (var i = 0; i < mKetuExceptions.houses.Count; i++)
 		{
-			if ((ZodiacHouse.Name) mKetuExceptions.houses[i] == zh)
+			if ((ZodiacHouse.Rasi) mKetuExceptions.houses[i] == zh)
 			{
 				return true;
 			}
@@ -282,11 +282,11 @@ public class RasiDasaUserOptions : ICloneable
 		return false;
 	}
 
-	public bool saturnExceptionApplies(ZodiacHouse.Name zh)
+	public bool saturnExceptionApplies(ZodiacHouse.Rasi zh)
 	{
 		for (var i = 0; i < mSaturnExceptions.houses.Count; i++)
 		{
-			if ((ZodiacHouse.Name) mSaturnExceptions.houses[i] == zh)
+			if ((ZodiacHouse.Rasi) mSaturnExceptions.houses[i] == zh)
 			{
 				return true;
 			}
@@ -298,21 +298,21 @@ public class RasiDasaUserOptions : ICloneable
 	public void calculateSeventhStrengths()
 	{
 		var fs   = new FindStronger(h, mDtype, mRules);
-		var zAri = new ZodiacHouse(ZodiacHouse.Name.Ari);
+		var zAri = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
 		for (var i = 0; i < 6; i++)
 		{
 			mSeventhStrengths[i] = new OrderedZodiacHouses();
-			var za = zAri.add(i + 1);
-			var zb = za.add(7);
-			if (fs.CmpRasi(za.value, zb.value, false))
+			var za = zAri.Add(i + 1);
+			var zb = za.Add(7);
+			if (fs.CmpRasi(za.Sign, zb.Sign, false))
 			{
-				mSeventhStrengths[i].houses.Add(za.value);
-				mSeventhStrengths[i].houses.Add(zb.value);
+				mSeventhStrengths[i].houses.Add(za.Sign);
+				mSeventhStrengths[i].houses.Add(zb.Sign);
 			}
 			else
 			{
-				mSeventhStrengths[i].houses.Add(zb.value);
-				mSeventhStrengths[i].houses.Add(za.value);
+				mSeventhStrengths[i].houses.Add(zb.Sign);
+				mSeventhStrengths[i].houses.Add(za.Sign);
 			}
 		}
 	}

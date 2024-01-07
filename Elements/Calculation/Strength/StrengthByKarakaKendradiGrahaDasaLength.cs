@@ -29,7 +29,7 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool stronger(Body.BodyType m, Body.BodyType n)
 	{
 		var a = value(m);
 		var b = value(n);
@@ -46,7 +46,7 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 		throw new EqualStrength();
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		var a = value(za);
 		var b = value(zb);
@@ -63,7 +63,7 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 		throw new EqualStrength();
 	}
 
-	protected double value(ZodiacHouse.Name zh)
+	protected double value(ZodiacHouse.Rasi zh)
 	{
 		double length = 0;
 		foreach (Position bp in h.positionList)
@@ -78,7 +78,7 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 		return length;
 	}
 
-	protected double value(Body.Name b)
+	protected double value(Body.BodyType b)
 	{
 		var dp = h.getPosition(b).toDivisionPosition(dtype);
 		return KarakaKendradiGrahaDasa.LengthOfDasa(h, dtype, b, dp);

@@ -174,6 +174,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tables\Muhurtas.cs" />
     <Compile Include="Util\Base64Decoder.cs" />
     <Compile Include="Elements\Calculation\CuspTransitSearch.cs" />
     <Compile Include="Elements\Calculation\FindStronger.cs" />
@@ -238,11 +239,10 @@
     <Compile Include="Database\Settings\ApplyOptions.cs" />
     <Compile Include="Database\Settings\MhoraGlobalOptions.cs" />
     <Compile Include="Tables\Hora.cs" />
-    <Compile Include="Tables\Karaka.cs" />
     <Compile Include="Tables\Sarvatobhadra.cs" />
-    <Compile Include="Tables\Tara.cs" />
-    <Compile Include="Tables\Tithi.cs" />
-    <Compile Include="Tables\Varga.cs" />
+    <Compile Include="Tables\Taras.cs" />
+    <Compile Include="Tables\Tithis.cs" />
+    <Compile Include="Tables\Vargas.cs" />
     <Compile Include="Elements\CuspTransitSearch.cs" />
     <Compile Include="Util\Dll.cs" />
     <Compile Include="Util\EnumHelper.cs" />
@@ -319,7 +319,7 @@
     <Compile Include="Components\Jhora\Jhd.cs" />
     <Compile Include="Elements\Dasas\Nakshatra\KalachakraDasa.cs" />
     <Compile Include="Elements\Dasas\Graha\KarakaKendradiGrahaDasa.cs" />
-    <Compile Include="Elements\Karana.cs" />
+    <Compile Include="Elements\Karanas.cs" />
     <Compile Include="Elements\Dasas\Nakshatra\KaranaChaturashitiSamaDasa.cs" />
     <Compile Include="Elements\Dasas\Yearly\KaranaPraveshDasa.cs" />
     <Compile Include="Elements\Kuta\KutaBhutaNakshatra.cs" />
@@ -404,8 +404,7 @@
     <Compile Include="Elements\Dasas\Graha\NaisargikaGrahaDasa.cs" />
     <Compile Include="Elements\Dasas\Graha\NaisargikaGrahaDasaSP.cs" />
     <Compile Include="Elements\Dasas\Rasi\NaisargikaRasiDasa.cs" />
-    <Compile Include="Elements\Nakshatra.cs" />
-    <Compile Include="Elements\Nakshatra28.cs" />
+    <Compile Include="Elements\Nakshatras.cs" />
     <Compile Include="Elements\Dasas\Nakshatra\NakshatraDasa.cs" />
     <Compile Include="Elements\Dasas\Nakshatra\NakshatraPraveshDasa.cs" />
     <Compile Include="Elements\Dasas\Rasi\NarayanaDasa.cs" />

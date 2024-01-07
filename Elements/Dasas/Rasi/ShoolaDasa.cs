@@ -48,14 +48,14 @@ public class ShoolaDasa : Dasa, IDasa
 	{
 		var al      = new ArrayList(12);
 		var zh_seed = options.getSeed();
-		zh_seed.value = options.findStrongerRasi(options.SeventhStrengths, zh_seed.value, zh_seed.add(7).value);
+		zh_seed.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_seed.Sign, zh_seed.Add(7).Sign);
 
 		var dasa_length_sum = 0.0;
 		var dasa_length     = 9.0;
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh_dasa = zh_seed.add(i);
-			var di      = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var zh_dasa = zh_seed.Add(i);
+			var di      = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
 			al.Add(di);
 			dasa_length_sum += dasa_length;
 		}
@@ -74,15 +74,15 @@ public class ShoolaDasa : Dasa, IDasa
 		var al = new ArrayList(12);
 
 		var zh_first    = new ZodiacHouse(pdi.zodiacHouse);
-		var zh_stronger = zh_first.add(1);
-		zh_stronger.value = options.findStrongerRasi(options.SeventhStrengths, zh_first.value, zh_first.add(7).value);
+		var zh_stronger = zh_first.Add(1);
+		zh_stronger.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_first.Sign, zh_first.Add(7).Sign);
 
 		var dasa_start = pdi.startUT;
 
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh_dasa = zh_stronger.add(i);
-			var di      = new DasaEntry(zh_dasa.value, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.value);
+			var zh_dasa = zh_stronger.Add(i);
+			var di      = new DasaEntry(zh_dasa.Sign, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.Sign);
 			al.Add(di);
 			dasa_start += pdi.dasaLength / 12.0;
 		}

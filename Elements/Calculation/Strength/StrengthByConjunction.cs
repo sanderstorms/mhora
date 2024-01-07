@@ -26,12 +26,12 @@ public class StrengthByConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool stronger(Body.BodyType m, Body.BodyType n)
 	{
-		return stronger(h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value, h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value);
+		return stronger(h.getPosition(m).toDivisionPosition(dtype).zodiac_house.Sign, h.getPosition(n).toDivisionPosition(dtype).zodiac_house.Sign);
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		var numa = numGrahasInZodiacHouse(za);
 		var numb = numGrahasInZodiacHouse(zb);

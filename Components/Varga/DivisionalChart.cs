@@ -756,7 +756,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			this.mRegularKendraChaturthamsa,
 			this.mRegularNakshatramsaBased
 		});
-		this.menuItem11.Text = "Custom Varga Variations";
+		this.menuItem11.Text = "Custom Vargas Variations";
 		// 
 		// mRegularParivritti
 		// 
@@ -865,7 +865,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void DrawItems(Graphics g, bool large)
 	{
-		var signs = Enum.GetValues(typeof(ZodiacHouse.Name)).OfType<ZodiacHouse.Name>();
+		var signs = Enum.GetValues(typeof(ZodiacHouse.Rasi)).OfType<ZodiacHouse.Rasi>();
 		foreach (var sign in signs)
 		{
 			var graha  = 1;
@@ -905,11 +905,11 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			if (dp.type == Body.Type.Graha || dp.type == Body.Type.Lagna)
 			{
 				var bp = h.getPosition(dp.name);
-				if (dp.name == Body.Name.Lagna)
+				if (dp.name == Body.BodyType.Lagna)
 				{
 					f = new Font(fBase.Name, fBase.Size, FontStyle.Bold);
 				}
-				else if (bp.speed_longitude < 0.0 && bp.name != Body.Name.Rahu && bp.name != Body.Name.Ketu)
+				else if (bp.speed_longitude < 0.0 && bp.name != Body.BodyType.Rahu && bp.name != Body.BodyType.Ketu)
 				{
 					f = new Font(fBase.Name, fBase.Size, FontStyle.Underline);
 				}
@@ -1021,17 +1021,17 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		var max = 0;
 		if (options.ViewStyle == UserOptions.EViewStyle.CharaKarakas7)
 		{
-			max = (int) Body.Name.Saturn;
+			max = (int) Body.BodyType.Saturn;
 		}
 		else
 		{
-			max = (int) Body.Name.Rahu;
+			max = (int) Body.BodyType.Rahu;
 		}
 
 		// determine karakas
-		for (var i = (int) Body.Name.Sun; i <= max; i++)
+		for (var i = (int) Body.BodyType.Sun; i <= max; i++)
 		{
-			var b   = (Body.Name) i;
+			var b   = (Body.BodyType) i;
 			var bp  = h.getPosition(b);
 			var bkc = new KarakaComparer(bp);
 			al.Add(bkc);
@@ -1064,14 +1064,14 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			items.Add(dp);
 		}
 
-		var dp2 = (DivisionPosition) div_pos[(int) Body.Name.Lagna];
+		var dp2 = (DivisionPosition) div_pos[(int) Body.BodyType.Lagna];
 		items.Add(dp2);
 		DrawItems(g, true);
 	}
 
 	private void PaintDualGrahaArudhasView(Graphics g)
 	{
-		var dpo = h.getPosition(Body.Name.Lagna).toDivisionPosition(options.Varga);
+		var dpo = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(options.Varga);
 		items.Add(dpo);
 
 		foreach (DivisionPosition dp in graha_arudha_pos)
@@ -1099,14 +1099,14 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			return;
 		}
 
-		var   zh = new ZodiacHouse(ZodiacHouse.Name.Ari);
+		var   zh = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
 		Brush b  = new SolidBrush(MhoraGlobalOptions.Instance.VargaSAVColor);
 		var   f  = MhoraGlobalOptions.Instance.GeneralFont;
 		for (var i = 1; i <= 12; i++)
 		{
 			var str  = sav_bindus[i - 1].ToString();
 			var size = g.MeasureString(str, f);
-			var zhi  = zh.add(i);
+			var zhi  = zh.Add(i);
 			var p    = dc.GetSingleItemOffset(zhi, Size.Round(size));
 			g.DrawString(str, f, b, p.X, p.Y);
 		}
@@ -1114,18 +1114,18 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void PaintNormalView(Graphics g)
 	{
-		var bItems = new Body.Name[10]
+		var bItems = new Body.BodyType[10]
 		{
-			Body.Name.Lagna,
-			Body.Name.Sun,
-			Body.Name.Moon,
-			Body.Name.Mars,
-			Body.Name.Mercury,
-			Body.Name.Jupiter,
-			Body.Name.Venus,
-			Body.Name.Saturn,
-			Body.Name.Rahu,
-			Body.Name.Ketu
+			Body.BodyType.Lagna,
+			Body.BodyType.Sun,
+			Body.BodyType.Moon,
+			Body.BodyType.Mars,
+			Body.BodyType.Mercury,
+			Body.BodyType.Jupiter,
+			Body.BodyType.Venus,
+			Body.BodyType.Saturn,
+			Body.BodyType.Rahu,
+			Body.BodyType.Ketu
 		};
 
 #if DDD
@@ -1285,12 +1285,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 		PaintObjects(g);
 
-		var s_dtype = Basics.numPartsInDivisionString(options.Varga);
-		//string.Format("D-{0}", Basics.numPartsInDivision(options.Varga));
+		var s_dtype = options.Varga.NumPartsInDivisionString();
+		//string.Format("D-{0}", Basics.NumPartsInDivision(options.Vargas));
 		var hint = g.MeasureString(s_dtype, f);
 		g.DrawString(s_dtype, f, Brushes.Black, xw * 2 / 4 - hint.Width / 2, yw * 2 / 4 - hint.Height / 2);
 
-		s_dtype = Basics.variationNameOfDivision(options.Varga);
+		s_dtype = options.Varga.VariationNameOfDivision();
 		hint    = g.MeasureString(s_dtype, f);
 		g.DrawString(s_dtype, f, Brushes.Black, xw * 2 / 4 - hint.Width / 2, yw * 2 / 4 - f.Height - hint.Height / 2);
 
@@ -1330,7 +1330,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void SetChartStyle(UserOptions.EChartStyle cs)
 	{
-		var dpo   = h.getPosition(Body.Name.Lagna).toDivisionPosition(options.Varga);
+		var dpo   = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(options.Varga);
 		var lagna = dpo.zodiac_house;
 
 		switch (cs)
@@ -1376,7 +1376,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		}
 		else if (MhoraGlobalOptions.Instance.VargaShowSAVRasi)
 		{
-			sav_bindus = new Ashtakavarga(h, new Division(Basics.DivisionType.Rasi)).getSav();
+			sav_bindus = new Ashtakavarga(h, new Division(Vargas.DivisionType.Rasi)).getSav();
 		}
 	}
 
@@ -1450,245 +1450,245 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mRasi_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Rasi);
+		options.Varga = new Division(Vargas.DivisionType.Rasi);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mNavamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Navamsa);
+		options.Varga = new Division(Vargas.DivisionType.Navamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mBhava_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.BhavaPada);
+		options.Varga = new Division(Vargas.DivisionType.BhavaPada);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mBhavaEqual_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.BhavaEqual);
+		options.Varga = new Division(Vargas.DivisionType.BhavaEqual);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mBhavaSripati_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.BhavaSripati);
+		options.Varga = new Division(Vargas.DivisionType.BhavaSripati);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mBhavaKoch_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.BhavaKoch);
+		options.Varga = new Division(Vargas.DivisionType.BhavaKoch);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mBhavaPlacidus_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.BhavaPlacidus);
+		options.Varga = new Division(Vargas.DivisionType.BhavaPlacidus);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void menuBhavaAlcabitus_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.BhavaAlcabitus);
+		options.Varga = new Division(Vargas.DivisionType.BhavaAlcabitus);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void menuBhavaCampanus_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.BhavaCampanus);
+		options.Varga = new Division(Vargas.DivisionType.BhavaCampanus);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void menuBhavaRegiomontanus_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.BhavaRegiomontanus);
+		options.Varga = new Division(Vargas.DivisionType.BhavaRegiomontanus);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void menuBhavaAxial_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.BhavaAxial);
+		options.Varga = new Division(Vargas.DivisionType.BhavaAxial);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mDrekkanaParasara_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.DrekkanaParasara);
+		options.Varga = new Division(Vargas.DivisionType.DrekkanaParasara);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mChaturamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Chaturthamsa);
+		options.Varga = new Division(Vargas.DivisionType.Chaturthamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mPanchamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Panchamsa);
+		options.Varga = new Division(Vargas.DivisionType.Panchamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mShashtamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Shashthamsa);
+		options.Varga = new Division(Vargas.DivisionType.Shashthamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mSaptamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Saptamsa);
+		options.Varga = new Division(Vargas.DivisionType.Saptamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mAshtamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Ashtamsa);
+		options.Varga = new Division(Vargas.DivisionType.Ashtamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mAshtamsaRaman_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.AshtamsaRaman);
+		options.Varga = new Division(Vargas.DivisionType.AshtamsaRaman);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mDasamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Dasamsa);
+		options.Varga = new Division(Vargas.DivisionType.Dasamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mDwadasamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Dwadasamsa);
+		options.Varga = new Division(Vargas.DivisionType.Dwadasamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mShodasamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Shodasamsa);
+		options.Varga = new Division(Vargas.DivisionType.Shodasamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mVimsamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Vimsamsa);
+		options.Varga = new Division(Vargas.DivisionType.Vimsamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mChaturvimsamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Chaturvimsamsa);
+		options.Varga = new Division(Vargas.DivisionType.Chaturvimsamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mNakshatramsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Nakshatramsa);
+		options.Varga = new Division(Vargas.DivisionType.Nakshatramsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mTrimsamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Trimsamsa);
+		options.Varga = new Division(Vargas.DivisionType.Trimsamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mKhavedamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Khavedamsa);
+		options.Varga = new Division(Vargas.DivisionType.Khavedamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mDrekkanaJagannath_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.DrekkanaJagannath);
+		options.Varga = new Division(Vargas.DivisionType.DrekkanaJagannath);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mDrekkanaSomnath_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.DrekkanaSomnath);
+		options.Varga = new Division(Vargas.DivisionType.DrekkanaSomnath);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mDrekkanaParivrittitraya_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.DrekkanaParivrittitraya);
+		options.Varga = new Division(Vargas.DivisionType.DrekkanaParivrittitraya);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mHoraKashinath_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.HoraKashinath);
+		options.Varga = new Division(Vargas.DivisionType.HoraKashinath);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mHoraParivritti_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.HoraParivrittiDwaya);
+		options.Varga = new Division(Vargas.DivisionType.HoraParivrittiDwaya);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mHoraParasara_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.HoraParasara);
+		options.Varga = new Division(Vargas.DivisionType.HoraParasara);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mHoraJagannath_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.HoraJagannath);
+		options.Varga = new Division(Vargas.DivisionType.HoraJagannath);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mTrimsamsaParivritti_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.TrimsamsaParivritti);
+		options.Varga = new Division(Vargas.DivisionType.TrimsamsaParivritti);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mTrimsamsaSimple_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.TrimsamsaSimple);
+		options.Varga = new Division(Vargas.DivisionType.TrimsamsaSimple);
 		OnRecalculate(h);
 		Invalidate();
 	}
@@ -1711,7 +1711,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			Trace.Assert(lOffset.value <= lRange.value, "Extrapolation internal error: Slice smaller than range. Weird.");
 
 			var newOffset = lOffset.value / lRange.value      * 30.0;
-			var newBase   = ((int) dp.zodiac_house.value - 1) * 30.0;
+			var newBase   = ((int) dp.zodiac_house.Sign - 1) * 30.0;
 			bp.longitude = new Longitude(newOffset + newBase);
 		}
 
@@ -1720,70 +1720,70 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mAkshavedamsa_Click_1(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Akshavedamsa);
+		options.Varga = new Division(Vargas.DivisionType.Akshavedamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mShashtyamsa_Click_1(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Shashtyamsa);
+		options.Varga = new Division(Vargas.DivisionType.Shashtyamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mRudramsaRath_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Rudramsa);
+		options.Varga = new Division(Vargas.DivisionType.Rudramsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mRudramsaRaman_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.RudramsaRaman);
+		options.Varga = new Division(Vargas.DivisionType.RudramsaRaman);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mNadiamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Nadiamsa);
+		options.Varga = new Division(Vargas.DivisionType.Nadiamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mNadiamsaCKN_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.NadiamsaCKN);
+		options.Varga = new Division(Vargas.DivisionType.NadiamsaCKN);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mNavamsaDwadasamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.NavamsaDwadasamsa);
+		options.Varga = new Division(Vargas.DivisionType.NavamsaDwadasamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mDwadasamsaDwadasamsa_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.DwadasamsaDwadasamsa);
+		options.Varga = new Division(Vargas.DivisionType.DwadasamsaDwadasamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void menuItem7_Click(object sender, EventArgs e)
 	{
-		options.Varga = new Division(Basics.DivisionType.Ashtottaramsa);
+		options.Varga = new Division(Vargas.DivisionType.Ashtottaramsa);
 		OnRecalculate(h);
 		Invalidate();
 	}
 
 	private void mRegularParivritti_Click(object sender, EventArgs e)
 	{
-		var single = new Division.SingleDivision(Basics.DivisionType.GenericParivritti, Basics.numPartsInDivision(options.Varga));
+		var single = new Division.SingleDivision(Vargas.DivisionType.GenericParivritti, options.Varga.NumPartsInDivision());
 		options.Varga = new Division(single);
 
 		OnRecalculate(h);
@@ -1792,7 +1792,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mRegularFromHouse_Click(object sender, EventArgs e)
 	{
-		var single = new Division.SingleDivision(Basics.DivisionType.GenericDwadasamsa, Basics.numPartsInDivision(options.Varga));
+		var single = new Division.SingleDivision(Vargas.DivisionType.GenericDwadasamsa, options.Varga.NumPartsInDivision());
 		options.Varga = new Division(single);
 
 		OnRecalculate(h);
@@ -1802,7 +1802,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mRegularTrikona_Click(object sender, EventArgs e)
 	{
-		var single = new Division.SingleDivision(Basics.DivisionType.GenericDrekkana, Basics.numPartsInDivision(options.Varga));
+		var single = new Division.SingleDivision(Vargas.DivisionType.GenericDrekkana, options.Varga.NumPartsInDivision());
 		options.Varga = new Division(single);
 		OnRecalculate(h);
 		Invalidate();
@@ -1866,7 +1866,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mRegularKendraChaturthamsa_Click(object sender, EventArgs e)
 	{
-		var single = new Division.SingleDivision(Basics.DivisionType.GenericChaturthamsa, Basics.numPartsInDivision(options.Varga));
+		var single = new Division.SingleDivision(Vargas.DivisionType.GenericChaturthamsa, options.Varga.NumPartsInDivision());
 		options.Varga = new Division(single);
 		OnRecalculate(h);
 		Invalidate();
@@ -1874,7 +1874,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mRegularSaptamsaBased_Click(object sender, EventArgs e)
 	{
-		var single = new Division.SingleDivision(Basics.DivisionType.GenericSaptamsa, Basics.numPartsInDivision(options.Varga));
+		var single = new Division.SingleDivision(Vargas.DivisionType.GenericSaptamsa, options.Varga.NumPartsInDivision());
 		options.Varga = new Division(single);
 		OnRecalculate(h);
 		Invalidate();
@@ -1882,7 +1882,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mRegularDasamsaBased_Click(object sender, EventArgs e)
 	{
-		var single = new Division.SingleDivision(Basics.DivisionType.GenericDasamsa, Basics.numPartsInDivision(options.Varga));
+		var single = new Division.SingleDivision(Vargas.DivisionType.GenericDasamsa, options.Varga.NumPartsInDivision());
 		options.Varga = new Division(single);
 		OnRecalculate(h);
 		Invalidate();
@@ -1890,7 +1890,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mRegularShashthamsaBased_Click(object sender, EventArgs e)
 	{
-		var single = new Division.SingleDivision(Basics.DivisionType.GenericShashthamsa, Basics.numPartsInDivision(options.Varga));
+		var single = new Division.SingleDivision(Vargas.DivisionType.GenericShashthamsa, options.Varga.NumPartsInDivision());
 		options.Varga = new Division(single);
 		OnRecalculate(h);
 		Invalidate();
@@ -1898,7 +1898,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mRegularShodasamsaBased_Click(object sender, EventArgs e)
 	{
-		var single = new Division.SingleDivision(Basics.DivisionType.GenericShodasamsa, Basics.numPartsInDivision(options.Varga));
+		var single = new Division.SingleDivision(Vargas.DivisionType.GenericShodasamsa, options.Varga.NumPartsInDivision());
 		options.Varga = new Division(single);
 		OnRecalculate(h);
 		Invalidate();
@@ -1906,7 +1906,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mRegularVimsamsaBased_Click(object sender, EventArgs e)
 	{
-		var single = new Division.SingleDivision(Basics.DivisionType.GenericVimsamsa, Basics.numPartsInDivision(options.Varga));
+		var single = new Division.SingleDivision(Vargas.DivisionType.GenericVimsamsa, options.Varga.NumPartsInDivision());
 		options.Varga = new Division(single);
 		OnRecalculate(h);
 		Invalidate();
@@ -1914,7 +1914,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mRegularNakshatramsaBased_Click(object sender, EventArgs e)
 	{
-		var single = new Division.SingleDivision(Basics.DivisionType.GenericNakshatramsa, Basics.numPartsInDivision(options.Varga));
+		var single = new Division.SingleDivision(Vargas.DivisionType.GenericNakshatramsa, options.Varga.NumPartsInDivision());
 		options.Varga = new Division(single);
 		OnRecalculate(h);
 		Invalidate();
@@ -1922,7 +1922,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void menuItem12_Click(object sender, EventArgs e)
 	{
-		var single = new Division.SingleDivision(Basics.DivisionType.GenericChaturvimsamsa, Basics.numPartsInDivision(options.Varga));
+		var single = new Division.SingleDivision(Vargas.DivisionType.GenericChaturvimsamsa, options.Varga.NumPartsInDivision());
 		options.Varga = new Division(single);
 		OnRecalculate(h);
 		Invalidate();
@@ -1931,7 +1931,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	private void DivisionalChart_MouseLeave(object sender, EventArgs e)
 	{
 		//if (e
-		//Division.CopyToClipboard(this.options.Varga);
+		//Division.CopyToClipboard(this.options.Vargas);
 		//this.DoDragDrop(this, DragDropEffects.Copy);
 	}
 
@@ -1981,16 +1981,16 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 		public UserOptions()
 		{
-			Varga      = new Division(Basics.DivisionType.Rasi);
+			Varga      = new Division(Vargas.DivisionType.Rasi);
 			ViewStyle  = EViewStyle.Normal;
 			ChartStyle = MhoraGlobalOptions.Instance.VargaStyle;
-			Varga      = new Division(Basics.DivisionType.Rasi);
-			innerVarga = new Division(Basics.DivisionType.Rasi);
+			Varga      = new Division(Vargas.DivisionType.Rasi);
+			innerVarga = new Division(Vargas.DivisionType.Rasi);
 			ShowInner  = false;
 		}
 
 		[Category("Options")]
-		[PGDisplayName("Varga")]
+		[PGDisplayName("Vargas")]
 		public Division Varga
 		{
 			get;

@@ -26,6 +26,7 @@ using Mhora.Elements.Dasas.Nakshatra;
 using Mhora.Elements.Hora;
 using Mhora.SwissEph;
 using Mhora.Tables;
+using mhora.Util;
 
 namespace Mhora.Components;
 
@@ -229,39 +230,39 @@ public class KeyInfoControl : MhoraControl
 			mList.Items.Add(li);
 		}
 		{
-			var ltithi = h.getPosition(Body.Name.Moon).longitude.sub(h.getPosition(Body.Name.Sun).longitude);
+			var ltithi = h.getPosition(Body.BodyType.Moon).longitude.sub(h.getPosition(Body.BodyType.Sun).longitude);
 			var offset = 360.0 / 30.0 - ltithi.toTithiOffset();
 			var ti     = ltithi.toTithi();
 			var tiLord = ti.getLord();
-			li = new ListViewItem("Tithi");
+			li = new ListViewItem("Tithis");
 			var fmt = string.Format("{0} ({1}) {2:N}% left", ti, tiLord, offset / 12.0 * 100);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			var lmoon     = h.getPosition(Body.Name.Moon).longitude;
+			var lmoon     = h.getPosition(Body.BodyType.Moon).longitude;
 			var nmoon     = lmoon.toNakshatra();
 			var nmoonLord = VimsottariDasa.LordOfNakshatra(nmoon);
 			var offset    = 360.0 / 27.0 - lmoon.toNakshatraOffset();
 			var pada      = lmoon.toNakshatraPada();
-			var fmt       = string.Format("{0} {1} ({2}) {3:N}% left", nmoon.value, pada, nmoonLord, offset / (360.0 / 27.0) * 100);
+			var fmt       = string.Format("{0} {1} ({2}) {3:N}% left", nmoon.Name(), pada, nmoonLord, offset / (360.0 / 27.0) * 100);
 			li = new ListViewItem("Nakshatra");
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
 			li = new ListViewItem("Karana");
-			var lkarana = h.getPosition(Body.Name.Moon).longitude.sub(h.getPosition(Body.Name.Sun).longitude);
+			var lkarana = h.getPosition(Body.BodyType.Moon).longitude.sub(h.getPosition(Body.BodyType.Sun).longitude);
 			var koffset = 360.0 / 60.0 - lkarana.toKaranaOffset();
 			var k       = lkarana.toKarana();
 			var kLord   = k.getLord();
-			var fmt     = string.Format("{0} ({1}) {2:N}% left", k.value, kLord, koffset / 6.0 * 100);
+			var fmt     = string.Format("{0} ({1}) {2:N}% left", k, kLord, koffset / 6.0 * 100);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
 			li = new ListViewItem("Yoga");
-			var smLon  = h.getPosition(Body.Name.Sun).longitude.add(h.getPosition(Body.Name.Moon).longitude);
+			var smLon  = h.getPosition(Body.BodyType.Sun).longitude.add(h.getPosition(Body.BodyType.Moon).longitude);
 			var offset = 360.0 / 27.0 - smLon.toSunMoonYogaOffset();
 			var smYoga = smLon.toSunMoonYoga();
 			var smLord = smYoga.getLord();
@@ -286,8 +287,8 @@ public class KeyInfoControl : MhoraControl
 		{
 			li = new ListViewItem("Muhurta");
 			var mIndex = (int) (Math.Floor(h.hoursAfterSunrise() / h.lengthOfDay() * 30.0) + 1);
-			var m      = (Basics.Muhurta) mIndex;
-			var fmt    = string.Format("{0} ({1})", m, Basics.NakLordOfMuhurta(m));
+			var m      = (Muhurtas.Muhurta) mIndex;
+			var fmt    = string.Format("{0} ({1})", m, Muhurtas.NakLordOfMuhurta(m));
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
@@ -307,7 +308,7 @@ public class KeyInfoControl : MhoraControl
 				vgOff = 9;
 			}
 
-			var b = (Body.Name) ((int) Body.Name.Sun + vgOff - 1);
+			var b = (Body.BodyType) ((int) Body.BodyType.Sun + vgOff - 1);
 			li = new ListViewItem("Vighatika Graha");
 			var fmt = string.Format("{0}", b);
 			li.SubItems.Add(fmt);

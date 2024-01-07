@@ -48,11 +48,11 @@ public class DrigDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al_order = new ArrayList(12);
-		var zh_seed  = options.getSeed().add(9);
+		var zh_seed  = options.getSeed().Add(9);
 
 		for (var i = 1; i <= 4; i++)
 		{
-			DasaHelper(zh_seed.add(i), al_order);
+			DasaHelper(zh_seed.Add(i), al_order);
 		}
 
 		var al = new ArrayList(12);
@@ -62,9 +62,9 @@ public class DrigDasa : Dasa, IDasa
 		for (var i = 0; i < 12; i++)
 		{
 			var zh_dasa = (ZodiacHouse) al_order[i];
-			var dp      = h.CalculateDivisionPosition(h.getPosition(GetLord(zh_dasa)), new Division(Basics.DivisionType.Rasi));
+			var dp      = h.CalculateDivisionPosition(h.getPosition(GetLord(zh_dasa)), new Division(Vargas.DivisionType.Rasi));
 			dasa_length = NarayanaDasaLength(zh_dasa, dp);
-			var di = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var di = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
 			al.Add(di);
 			dasa_length_sum += dasa_length;
 		}
@@ -104,13 +104,13 @@ public class DrigDasa : Dasa, IDasa
 		SetOptions(newOpts);
 	}
 
-	private Body.Name GetLord(ZodiacHouse zh)
+	private Body.BodyType GetLord(ZodiacHouse zh)
 	{
-		switch (zh.value)
+		switch (zh.Sign)
 		{
-			case ZodiacHouse.Name.Aqu: return options.ColordAqu;
-			case ZodiacHouse.Name.Sco: return options.ColordSco;
-			default:                   return Basics.SimpleLordOfZodiacHouse(zh.value);
+			case ZodiacHouse.Rasi.Aqu: return options.ColordAqu;
+			case ZodiacHouse.Rasi.Sco: return options.ColordSco;
+			default:                   return zh.Sign.SimpleLordOfZodiacHouse();
 		}
 	}
 
@@ -135,13 +135,13 @@ public class DrigDasa : Dasa, IDasa
 			10
 		};
 		var backward = false;
-		if (!zh.isOddFooted())
+		if (!zh.IsOddFooted())
 		{
 			backward = true;
 		}
 
 		int[] order;
-		switch ((int) zh.value % 3)
+		switch ((int) zh.Sign % 3)
 		{
 			case 1:
 				order = order_moveable;
@@ -154,19 +154,19 @@ public class DrigDasa : Dasa, IDasa
 				break;
 		}
 
-		al.Add(zh.add(1));
+		al.Add(zh.Add(1));
 		if (!backward)
 		{
 			for (var i = 0; i < 3; i++)
 			{
-				al.Add(zh.add(order[i]));
+				al.Add(zh.Add(order[i]));
 			}
 		}
 		else
 		{
 			for (var i = 2; i >= 0; i--)
 			{
-				al.Add(zh.add(order[i]));
+				al.Add(zh.Add(order[i]));
 			}
 		}
 	}

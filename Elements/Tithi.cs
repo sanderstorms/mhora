@@ -24,12 +24,12 @@ namespace Mhora.Elements;
 
 public class Tithi
 {
-	public Tithi(Tables.Tithi.Value _mValue)
+	public Tithi(Tables.Tithis.Tithi mTithi)
 	{
-		value = (Tables.Tithi.Value) Basics.normalize_inc(1, 30, (int) _mValue);
+		Value = (Tables.Tithis.Tithi) Basics.normalize_inc(1, 30, (int) mTithi);
 	}
 
-	public Tables.Tithi.Value value
+	public Tithis.Tithi Value
 	{
 		get;
 		set;
@@ -38,36 +38,36 @@ public class Tithi
 
 	public override string ToString()
 	{
-		return EnumDescConverter.GetEnumDescription(value);
+		return EnumDescConverter.GetEnumDescription(Value);
 	}
 
 	public Tithi add(int i)
 	{
-		var tnum = Basics.normalize_inc(1, 30, (int) value + i - 1);
-		return new Tithi((Tables.Tithi.Value) tnum);
+		var tnum = Basics.normalize_inc(1, 30, (int) Value + i - 1);
+		return new Tithi((Tables.Tithis.Tithi) tnum);
 	}
 
 	public Tithi addReverse(int i)
 	{
-		var tnum = Basics.normalize_inc(1, 30, (int) value - i + 1);
-		return new Tithi((Tables.Tithi.Value) tnum);
+		var tnum = Basics.normalize_inc(1, 30, (int) Value - i + 1);
+		return new Tithi((Tables.Tithis.Tithi) tnum);
 	}
 
-	public Body.Name getLord()
+	public Body.BodyType getLord()
 	{
 		// 1 based index starting with prathama
-		var t = (int) value;
+		var t = (int) Value;
 
 		//mhora.Log.Debug ("Looking for lord of tithi {0}", t);
 		// check for new moon and full moon 
 		if (t == 30)
 		{
-			return Body.Name.Rahu;
+			return Body.BodyType.Rahu;
 		}
 
 		if (t == 15)
 		{
-			return Body.Name.Saturn;
+			return Body.BodyType.Saturn;
 		}
 
 		// coalesce pakshas
@@ -79,35 +79,35 @@ public class Tithi
 		switch (t)
 		{
 			case 1:
-			case 9: return Body.Name.Sun;
+			case 9: return Body.BodyType.Sun;
 			case 2:
-			case 10: return Body.Name.Moon;
+			case 10: return Body.BodyType.Moon;
 			case 3:
-			case 11: return Body.Name.Mars;
+			case 11: return Body.BodyType.Mars;
 			case 4:
-			case 12: return Body.Name.Mercury;
+			case 12: return Body.BodyType.Mercury;
 			case 5:
-			case 13: return Body.Name.Jupiter;
+			case 13: return Body.BodyType.Jupiter;
 			case 6:
-			case 14: return Body.Name.Venus;
-			case 7: return Body.Name.Saturn;
-			case 8: return Body.Name.Rahu;
+			case 14: return Body.BodyType.Venus;
+			case 7: return Body.BodyType.Saturn;
+			case 8: return Body.BodyType.Rahu;
 		}
 
-		Debug.Assert(false, "Tithi::getLord");
-		return Body.Name.Sun;
+		Debug.Assert(false, "Tithis::getLord");
+		return Body.BodyType.Sun;
 	}
 
-	public Tables.Tithi.NandaType toNandaType()
+	public Tables.Tithis.NandaType toNandaType()
 	{
 		// 1 based index starting with prathama
-		var t = (int) value;
+		var t = (int) Value;
 
 		// check for new moon and full moon 
 
 		if (t == 30 || t == 15)
 		{
-			return Tables.Tithi.NandaType.Purna;
+			return Tables.Tithis.NandaType.Purna;
 		}
 
 		// coalesce pakshas
@@ -120,21 +120,21 @@ public class Tithi
 		{
 			case 1:
 			case 6:
-			case 11: return Tables.Tithi.NandaType.Nanda;
+			case 11: return Tables.Tithis.NandaType.Nanda;
 			case 2:
 			case 7:
-			case 12: return Tables.Tithi.NandaType.Bhadra;
+			case 12: return Tables.Tithis.NandaType.Bhadra;
 			case 3:
 			case 8:
-			case 13: return Tables.Tithi.NandaType.Jaya;
+			case 13: return Tables.Tithis.NandaType.Jaya;
 			case 4:
 			case 9:
-			case 14: return Tables.Tithi.NandaType.Rikta;
+			case 14: return Tables.Tithis.NandaType.Rikta;
 			case 5:
-			case 10: return Tables.Tithi.NandaType.Purna;
+			case 10: return Tables.Tithis.NandaType.Purna;
 		}
 
-		Debug.Assert(false, "Tithi::toNandaType");
-		return Tables.Tithi.NandaType.Nanda;
+		Debug.Assert(false, "Tithis::toNandaType");
+		return Tables.Tithis.NandaType.Nanda;
 	}
 }

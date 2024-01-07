@@ -25,6 +25,7 @@ using Mhora.Database.Settings;
 using Mhora.Elements.Hora;
 using Mhora.SwissEph;
 using Mhora.Tables;
+using mhora.Util;
 
 namespace Mhora.Elements.Calculation;
 
@@ -54,46 +55,46 @@ public class Horoscope : ICloneable
 	public double baseUT;
 
 
-	public Body.Name[] horaOrder =
+	public Body.BodyType[] horaOrder =
 	{
-		Body.Name.Sun,
-		Body.Name.Venus,
-		Body.Name.Mercury,
-		Body.Name.Moon,
-		Body.Name.Saturn,
-		Body.Name.Jupiter,
-		Body.Name.Mars
+		Body.BodyType.Sun,
+		Body.BodyType.Venus,
+		Body.BodyType.Mercury,
+		Body.BodyType.Moon,
+		Body.BodyType.Saturn,
+		Body.BodyType.Jupiter,
+		Body.BodyType.Mars
 	};
 
 	public HoraInfo info;
 
-	public Body.Name[] kalaOrder =
+	public Body.BodyType[] kalaOrder =
 	{
-		Body.Name.Sun,
-		Body.Name.Mars,
-		Body.Name.Jupiter,
-		Body.Name.Mercury,
-		Body.Name.Venus,
-		Body.Name.Saturn,
-		Body.Name.Moon,
-		Body.Name.Rahu
+		Body.BodyType.Sun,
+		Body.BodyType.Mars,
+		Body.BodyType.Jupiter,
+		Body.BodyType.Mercury,
+		Body.BodyType.Venus,
+		Body.BodyType.Saturn,
+		Body.BodyType.Moon,
+		Body.BodyType.Rahu
 	};
 
-	public double           lmt_offset;
-	public double           lmt_sunrise;
-	public double           lmt_sunset;
-	public Basics.Weekday   lmt_wday;
-	public double           next_sunrise;
-	public double           next_sunset;
-	public HoroscopeOptions options;
-	public ArrayList        positionList;
-	public StrengthOptions  strength_options;
-	public double           sunrise;
-	public double           sunset;
-	public Longitude[]      swephHouseCusps;
-	public int              swephHouseSystem;
+	public double              lmt_offset;
+	public double              lmt_sunrise;
+	public double              lmt_sunset;
+	public Tables.Hora.Weekday lmt_wday;
+	public double              next_sunrise;
+	public double              next_sunset;
+	public HoroscopeOptions    options;
+	public ArrayList           positionList;
+	public StrengthOptions     strength_options;
+	public double              sunrise;
+	public double              sunset;
+	public Longitude[]         swephHouseCusps;
+	public int                 swephHouseSystem;
 
-	public Basics.Weekday wday;
+	public Tables.Hora.Weekday wday;
 
 	public Horoscope(HoraInfo _info, HoroscopeOptions _options)
 	{
@@ -117,20 +118,20 @@ public class Horoscope : ICloneable
 
 	public event EvtChanged Changed;
 
-	public Body.Name LordOfZodiacHouse(ZodiacHouse zh, Division dtype)
+	public Body.BodyType LordOfZodiacHouse(ZodiacHouse zh, Division dtype)
 	{
-		return LordOfZodiacHouse(zh.value, dtype);
+		return LordOfZodiacHouse(zh.Sign, dtype);
 	}
 
-	public Body.Name LordOfZodiacHouse(ZodiacHouse.Name zh, Division dtype)
+	public Body.BodyType LordOfZodiacHouse(ZodiacHouse.Rasi zh, Division dtype)
 	{
 		var fs_colord = new FindStronger(this, dtype, FindStronger.RulesStrongerCoLord(this));
 
 		switch (zh)
 		{
-			case ZodiacHouse.Name.Aqu: return fs_colord.StrongerGraha(Body.Name.Rahu, Body.Name.Saturn, true);
-			case ZodiacHouse.Name.Sco: return fs_colord.StrongerGraha(Body.Name.Ketu, Body.Name.Mars, true);
-			default:                   return Basics.SimpleLordOfZodiacHouse(zh);
+			case ZodiacHouse.Rasi.Aqu: return fs_colord.StrongerGraha(Body.BodyType.Rahu, Body.BodyType.Saturn, true);
+			case ZodiacHouse.Rasi.Sco: return fs_colord.StrongerGraha(Body.BodyType.Ketu, Body.BodyType.Mars, true);
+			default:                   return zh.SimpleLordOfZodiacHouse();
 		}
 	}
 
@@ -175,22 +176,22 @@ public class Horoscope : ICloneable
 		return al;
 	}
 
-	private DivisionPosition CalculateGrahaArudhaDivisionPosition(Body.Name bn, ZodiacHouse zh, Division dtype)
+	private DivisionPosition CalculateGrahaArudhaDivisionPosition(Body.BodyType bn, ZodiacHouse zh, Division dtype)
 	{
 		var dp    = getPosition(bn).toDivisionPosition(dtype);
-		var dpl   = getPosition(Body.Name.Lagna).toDivisionPosition(dtype);
-		var rel   = dp.zodiac_house.numHousesBetween(zh);
-		var hse   = dpl.zodiac_house.numHousesBetween(zh);
-		var zhsum = zh.add(rel);
-		var rel2  = dp.zodiac_house.numHousesBetween(zhsum);
+		var dpl   = getPosition(Body.BodyType.Lagna).toDivisionPosition(dtype);
+		var rel   = dp.zodiac_house.NumHousesBetween(zh);
+		var hse   = dpl.zodiac_house.NumHousesBetween(zh);
+		var zhsum = zh.Add(rel);
+		var rel2  = dp.zodiac_house.NumHousesBetween(zhsum);
 		if (rel2 == 1 || rel2 == 7)
 		{
-			zhsum = zhsum.add(10);
+			zhsum = zhsum.Add(10);
 		}
 
-		var dp2 = new DivisionPosition(Body.Name.Other, Body.Type.GrahaArudha, zhsum, 0, 0, 0);
+		var dp2 = new DivisionPosition(Body.BodyType.Other, Body.Type.GrahaArudha, zhsum, 0, 0, 0);
 		//dp2.Longitude   = zhsum.DivisionalLongitude(dp.Longitude, dpl.part);
-		dp2.Description = string.Format("{0}{1}", Body.toShortString(bn), hse);
+		dp2.Description = string.Format("{0}{1}", bn.ToShortString(), hse);
 		return dp2;
 	}
 
@@ -200,80 +201,80 @@ public class Horoscope : ICloneable
 		{
 			new object[]
 			{
-				ZodiacHouse.Name.Ari,
-				Body.Name.Mars
+				ZodiacHouse.Rasi.Ari,
+				Body.BodyType.Mars
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Tau,
-				Body.Name.Venus
+				ZodiacHouse.Rasi.Tau,
+				Body.BodyType.Venus
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Gem,
-				Body.Name.Mercury
+				ZodiacHouse.Rasi.Gem,
+				Body.BodyType.Mercury
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Can,
-				Body.Name.Moon
+				ZodiacHouse.Rasi.Can,
+				Body.BodyType.Moon
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Leo,
-				Body.Name.Sun
+				ZodiacHouse.Rasi.Leo,
+				Body.BodyType.Sun
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Vir,
-				Body.Name.Mercury
+				ZodiacHouse.Rasi.Vir,
+				Body.BodyType.Mercury
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Lib,
-				Body.Name.Venus
+				ZodiacHouse.Rasi.Lib,
+				Body.BodyType.Venus
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Sco,
-				Body.Name.Mars
+				ZodiacHouse.Rasi.Sco,
+				Body.BodyType.Mars
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Sag,
-				Body.Name.Jupiter
+				ZodiacHouse.Rasi.Sag,
+				Body.BodyType.Jupiter
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Cap,
-				Body.Name.Saturn
+				ZodiacHouse.Rasi.Cap,
+				Body.BodyType.Saturn
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Aqu,
-				Body.Name.Saturn
+				ZodiacHouse.Rasi.Aqu,
+				Body.BodyType.Saturn
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Pis,
-				Body.Name.Jupiter
+				ZodiacHouse.Rasi.Pis,
+				Body.BodyType.Jupiter
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Sco,
-				Body.Name.Ketu
+				ZodiacHouse.Rasi.Sco,
+				Body.BodyType.Ketu
 			},
 			new object[]
 			{
-				ZodiacHouse.Name.Aqu,
-				Body.Name.Rahu
+				ZodiacHouse.Rasi.Aqu,
+				Body.BodyType.Rahu
 			}
 		};
 		var al = new ArrayList(14);
 
 		for (var i = 0; i < parameters.Length; i++)
 		{
-			al.Add(CalculateGrahaArudhaDivisionPosition((Body.Name) parameters[i][1], new ZodiacHouse((ZodiacHouse.Name) parameters[i][0]), dtype));
+			al.Add(CalculateGrahaArudhaDivisionPosition((Body.BodyType) parameters[i][1], new ZodiacHouse((ZodiacHouse.Rasi) parameters[i][0]), dtype));
 		}
 
 		return al;
@@ -282,37 +283,37 @@ public class Horoscope : ICloneable
 	public ArrayList CalculateVarnadaDivisionPositions(Division dtype)
 	{
 		var al     = new ArrayList(12);
-		var _zh_l  = getPosition(Body.Name.Lagna).toDivisionPosition(dtype).zodiac_house;
-		var _zh_hl = getPosition(Body.Name.HoraLagna).toDivisionPosition(dtype).zodiac_house;
+		var _zh_l  = getPosition(Body.BodyType.Lagna).toDivisionPosition(dtype).zodiac_house;
+		var _zh_hl = getPosition(Body.BodyType.HoraLagna).toDivisionPosition(dtype).zodiac_house;
 
-		var zh_ari = new ZodiacHouse(ZodiacHouse.Name.Ari);
-		var zh_pis = new ZodiacHouse(ZodiacHouse.Name.Pis);
+		var zh_ari = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
+		var zh_pis = new ZodiacHouse(ZodiacHouse.Rasi.Pis);
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh_l  = _zh_l.add(i);
-			var zh_hl = _zh_hl.add(i);
+			var zh_l  = _zh_l.Add(i);
+			var zh_hl = _zh_hl.Add(i);
 
 			int i_l = 0, i_hl = 0;
-			if (zh_l.isOdd())
+			if (zh_l.IsOdd())
 			{
-				i_l = zh_ari.numHousesBetween(zh_l);
+				i_l = zh_ari.NumHousesBetween(zh_l);
 			}
 			else
 			{
-				i_l = zh_pis.numHousesBetweenReverse(zh_l);
+				i_l = zh_pis.NumHousesBetweenReverse(zh_l);
 			}
 
-			if (zh_hl.isOdd())
+			if (zh_hl.IsOdd())
 			{
-				i_hl = zh_ari.numHousesBetween(zh_hl);
+				i_hl = zh_ari.NumHousesBetween(zh_hl);
 			}
 			else
 			{
-				i_hl = zh_pis.numHousesBetweenReverse(zh_hl);
+				i_hl = zh_pis.NumHousesBetweenReverse(zh_hl);
 			}
 
 			var sum = 0;
-			if (zh_l.isOdd() == zh_hl.isOdd())
+			if (zh_l.IsOdd() == zh_hl.IsOdd())
 			{
 				sum = i_l + i_hl;
 			}
@@ -322,16 +323,16 @@ public class Horoscope : ICloneable
 			}
 
 			ZodiacHouse zh_v = null;
-			if (zh_l.isOdd())
+			if (zh_l.IsOdd())
 			{
-				zh_v = zh_ari.add(sum);
+				zh_v = zh_ari.Add(sum);
 			}
 			else
 			{
-				zh_v = zh_pis.addReverse(sum);
+				zh_v = zh_pis.AddReverse(sum);
 			}
 
-			var div_pos = new DivisionPosition(Body.Name.Other, Body.Type.Varnada, zh_v, 0, 0, 0);
+			var div_pos = new DivisionPosition(Body.BodyType.Other, Body.Type.Varnada, zh_v, 0, 0, 0);
 
 			div_pos.Description = varnada_strs[i - 1];
 			al.Add(div_pos);
@@ -340,16 +341,16 @@ public class Horoscope : ICloneable
 		return al;
 	}
 
-	private DivisionPosition CalculateArudhaDivisionPosition(ZodiacHouse zh, Body.Name bn, Body.Name aname, Division d, Body.Type btype)
+	private DivisionPosition CalculateArudhaDivisionPosition(ZodiacHouse zh, Body.BodyType bn, Body.BodyType aname, Division d, Body.Type btype)
 	{
 		var bp    = getPosition(bn);
 		var zhb   = CalculateDivisionPosition(bp, d).zodiac_house;
-		var rel   = zh.numHousesBetween(zhb);
-		var zhsum = zhb.add(rel);
-		var rel2  = zh.numHousesBetween(zhsum);
+		var rel   = zh.NumHousesBetween(zhb);
+		var zhsum = zhb.Add(rel);
+		var rel2  = zh.NumHousesBetween(zhsum);
 		if (rel2 == 1 || rel2 == 7)
 		{
-			zhsum = zhsum.add(10);
+			zhsum = zhsum.Add(10);
 		}
 
 		var dp = new DivisionPosition(aname, btype, zhsum, 0, 0, 0);
@@ -360,21 +361,21 @@ public class Horoscope : ICloneable
 
 	public ArrayList CalculateArudhaDivisionPositions(Division d)
 	{
-		Body.Name[] bnlist =
+		Body.BodyType[] bnlist =
 		{
-			Body.Name.Other,
-			Body.Name.AL,
-			Body.Name.A2,
-			Body.Name.A3,
-			Body.Name.A4,
-			Body.Name.A5,
-			Body.Name.A6,
-			Body.Name.A7,
-			Body.Name.A8,
-			Body.Name.A9,
-			Body.Name.A10,
-			Body.Name.A11,
-			Body.Name.UL
+			Body.BodyType.Other,
+			Body.BodyType.AL,
+			Body.BodyType.A2,
+			Body.BodyType.A3,
+			Body.BodyType.A4,
+			Body.BodyType.A5,
+			Body.BodyType.A6,
+			Body.BodyType.A7,
+			Body.BodyType.A8,
+			Body.BodyType.A9,
+			Body.BodyType.A10,
+			Body.BodyType.A11,
+			Body.BodyType.UL
 		};
 
 		var              fs_colord       = new FindStronger(this, d, FindStronger.RulesStrongerCoLord(this));
@@ -382,27 +383,27 @@ public class Horoscope : ICloneable
 		DivisionPosition first, second;
 		for (var j = 1; j <= 12; j++)
 		{
-			var       zlagna                 = CalculateDivisionPosition(getPosition(Body.Name.Lagna), d).zodiac_house;
-			var       zh                     = zlagna.add(j);
-			Body.Name bn_stronger, bn_weaker = Body.Name.Other;
-			bn_stronger = Basics.SimpleLordOfZodiacHouse(zh.value);
-			if (zh.value == ZodiacHouse.Name.Aqu)
+			var       zlagna                 = CalculateDivisionPosition(getPosition(Body.BodyType.Lagna), d).zodiac_house;
+			var       zh                     = zlagna.Add(j);
+			Body.BodyType bn_stronger, bn_weaker = Body.BodyType.Other;
+			bn_stronger = zh.Sign.SimpleLordOfZodiacHouse();
+			if (zh.Sign == ZodiacHouse.Rasi.Aqu)
 			{
-				bn_stronger = fs_colord.StrongerGraha(Body.Name.Rahu, Body.Name.Saturn, true);
-				bn_weaker   = fs_colord.WeakerGraha(Body.Name.Rahu, Body.Name.Saturn, true);
+				bn_stronger = fs_colord.StrongerGraha(Body.BodyType.Rahu, Body.BodyType.Saturn, true);
+				bn_weaker   = fs_colord.WeakerGraha(Body.BodyType.Rahu, Body.BodyType.Saturn, true);
 			}
-			else if (zh.value == ZodiacHouse.Name.Sco)
+			else if (zh.Sign == ZodiacHouse.Rasi.Sco)
 			{
-				bn_stronger = fs_colord.StrongerGraha(Body.Name.Ketu, Body.Name.Mars, true);
-				bn_weaker   = fs_colord.WeakerGraha(Body.Name.Ketu, Body.Name.Mars, true);
+				bn_stronger = fs_colord.StrongerGraha(Body.BodyType.Ketu, Body.BodyType.Mars, true);
+				bn_weaker   = fs_colord.WeakerGraha(Body.BodyType.Ketu, Body.BodyType.Mars, true);
 			}
 
 			first = CalculateArudhaDivisionPosition(zh, bn_stronger, bnlist[j], d, Body.Type.BhavaArudha);
 			arudha_div_list.Add(first);
-			if (zh.value == ZodiacHouse.Name.Aqu || zh.value == ZodiacHouse.Name.Sco)
+			if (zh.Sign == ZodiacHouse.Rasi.Aqu || zh.Sign == ZodiacHouse.Rasi.Sco)
 			{
 				second = CalculateArudhaDivisionPosition(zh, bn_weaker, bnlist[j], d, Body.Type.BhavaArudhaSecondary);
-				if (first.zodiac_house.value != second.zodiac_house.value)
+				if (first.zodiac_house.Sign != second.zodiac_house.Sign)
 				{
 					arudha_div_list.Add(second);
 				}
@@ -657,13 +658,13 @@ public class Horoscope : ICloneable
 		return ret;
 	}
 
-	public Body.Name calculateKala()
+	public Body.BodyType calculateKala()
 	{
 		var iBase = 0;
 		return calculateKala(ref iBase);
 	}
 
-	public Body.Name calculateKala(ref int iBase)
+	public Body.BodyType calculateKala(ref int iBase)
 	{
 		int[] offsets_day =
 		{
@@ -675,13 +676,13 @@ public class Horoscope : ICloneable
 			4,
 			5
 		};
-		var b          = Basics.weekdayRuler(wday);
+		var b          = Tables.Hora.weekdayRuler(wday);
 		var bday_birth = isDayBirth();
 
 		var cusps = getKalaCuspsUt();
 		if (options.KalaType == HoroscopeOptions.EHoraType.Lmt)
 		{
-			b          = Basics.weekdayRuler(lmt_wday);
+			b          = Tables.Hora.weekdayRuler(lmt_wday);
 			bday_birth = info.tob.time > lmt_sunset || info.tob.time < lmt_sunrise;
 		}
 
@@ -726,13 +727,13 @@ public class Horoscope : ICloneable
 		return kalaOrder[i];
 	}
 
-	public Body.Name calculateHora()
+	public Body.BodyType calculateHora()
 	{
 		var iBody = 0;
 		return calculateHora(baseUT, ref iBody);
 	}
 
-	public Body.Name calculateHora(double _baseUT, ref int baseBody)
+	public Body.BodyType calculateHora(double _baseUT, ref int baseBody)
 	{
 		int[] offsets =
 		{
@@ -744,11 +745,11 @@ public class Horoscope : ICloneable
 			1,
 			4
 		};
-		var b     = Basics.weekdayRuler(wday);
+		var b     = Tables.Hora.weekdayRuler(wday);
 		var cusps = getHoraCuspsUt();
 		if (options.HoraType == HoroscopeOptions.EHoraType.Lmt)
 		{
-			b = Basics.weekdayRuler(lmt_wday);
+			b = Tables.Hora.weekdayRuler(lmt_wday);
 		}
 
 		var i = offsets[(int) b];
@@ -778,27 +779,27 @@ public class Horoscope : ICloneable
 		return horaOrder[i];
 	}
 
-	private Body.Name calculateUpagrahasStart()
+	private Body.BodyType calculateUpagrahasStart()
 	{
 		if (isDayBirth())
 		{
-			return Basics.weekdayRuler(wday);
+			return Tables.Hora.weekdayRuler(wday);
 		}
 
 		switch (wday)
 		{
 			default:
-			case Basics.Weekday.Sunday: return Body.Name.Jupiter;
-			case Basics.Weekday.Monday:    return Body.Name.Venus;
-			case Basics.Weekday.Tuesday:   return Body.Name.Saturn;
-			case Basics.Weekday.Wednesday: return Body.Name.Sun;
-			case Basics.Weekday.Thursday:  return Body.Name.Moon;
-			case Basics.Weekday.Friday:    return Body.Name.Mars;
-			case Basics.Weekday.Saturday:  return Body.Name.Mercury;
+			case Tables.Hora.Weekday.Sunday: return Body.BodyType.Jupiter;
+			case Tables.Hora.Weekday.Monday:    return Body.BodyType.Venus;
+			case Tables.Hora.Weekday.Tuesday:   return Body.BodyType.Saturn;
+			case Tables.Hora.Weekday.Wednesday: return Body.BodyType.Sun;
+			case Tables.Hora.Weekday.Thursday:  return Body.BodyType.Moon;
+			case Tables.Hora.Weekday.Friday:    return Body.BodyType.Mars;
+			case Tables.Hora.Weekday.Saturday:  return Body.BodyType.Mercury;
 		}
 	}
 
-	private void calculateUpagrahasSingle(Body.Name b, double tjd)
+	private void calculateUpagrahasSingle(Body.BodyType b, double tjd)
 	{
 		var lon = new Longitude(0);
 		lon.value = sweph.Lagna(tjd);
@@ -806,26 +807,26 @@ public class Horoscope : ICloneable
 		positionList.Add(bp);
 	}
 
-	private void calculateMaandiHelper(Body.Name b, HoroscopeOptions.EMaandiType mty, double[] jds, double dOffset, int[] bodyOffsets)
+	private void calculateMaandiHelper(Body.BodyType b, HoroscopeOptions.EMaandiType mty, double[] jds, double dOffset, int[] bodyOffsets)
 	{
 		switch (mty)
 		{
 			case HoroscopeOptions.EMaandiType.SaturnBegin:
-				calculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.Name.Saturn]]);
+				calculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.BodyType.Saturn]]);
 				break;
 			case HoroscopeOptions.EMaandiType.SaturnMid:
-				calculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.Name.Saturn]] + dOffset);
+				calculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.BodyType.Saturn]] + dOffset);
 				break;
 			case HoroscopeOptions.EMaandiType.SaturnEnd:
 			case HoroscopeOptions.EMaandiType.LordlessBegin:
-				var _off1 = bodyOffsets[(int) Body.Name.Saturn]                      + 1;
-				calculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.Name.Saturn]] + dOffset * 2.0);
+				var _off1 = bodyOffsets[(int) Body.BodyType.Saturn]                      + 1;
+				calculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.BodyType.Saturn]] + dOffset * 2.0);
 				break;
 			case HoroscopeOptions.EMaandiType.LordlessMid:
-				calculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.Name.Saturn]] + dOffset * 3.0);
+				calculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.BodyType.Saturn]] + dOffset * 3.0);
 				break;
 			case HoroscopeOptions.EMaandiType.LordlessEnd:
-				calculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.Name.Saturn]] + dOffset * 4.0);
+				calculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.BodyType.Saturn]] + dOffset * 4.0);
 				break;
 		}
 	}
@@ -885,30 +886,30 @@ public class Horoscope : ICloneable
 		}
 
 		sweph.obtainLock(this);
-		calculateUpagrahasSingle(Body.Name.Kala, jds[bodyOffsets[(int) Body.Name.Sun]]);
-		calculateUpagrahasSingle(Body.Name.Mrityu, jds[bodyOffsets[(int) Body.Name.Mars]]);
-		calculateUpagrahasSingle(Body.Name.ArthaPraharaka, jds[bodyOffsets[(int) Body.Name.Mercury]]);
-		calculateUpagrahasSingle(Body.Name.YamaGhantaka, jds[bodyOffsets[(int) Body.Name.Jupiter]]);
+		calculateUpagrahasSingle(Body.BodyType.Kala, jds[bodyOffsets[(int) Body.BodyType.Sun]]);
+		calculateUpagrahasSingle(Body.BodyType.Mrityu, jds[bodyOffsets[(int) Body.BodyType.Mars]]);
+		calculateUpagrahasSingle(Body.BodyType.ArthaPraharaka, jds[bodyOffsets[(int) Body.BodyType.Mercury]]);
+		calculateUpagrahasSingle(Body.BodyType.YamaGhantaka, jds[bodyOffsets[(int) Body.BodyType.Jupiter]]);
 
 
-		calculateMaandiHelper(Body.Name.Maandi, options.MaandiType, jds, dOffset, bodyOffsets);
-		calculateMaandiHelper(Body.Name.Gulika, options.GulikaType, jds, dOffset, bodyOffsets);
+		calculateMaandiHelper(Body.BodyType.Maandi, options.MaandiType, jds, dOffset, bodyOffsets);
+		calculateMaandiHelper(Body.BodyType.Gulika, options.GulikaType, jds, dOffset, bodyOffsets);
 		sweph.releaseLock(this);
 	}
 
 	private void calculateSunsUpagrahas()
 	{
-		var slon = getPosition(Body.Name.Sun).longitude;
+		var slon = getPosition(Body.BodyType.Sun).longitude;
 
-		var bpDhuma = new Position(this, Body.Name.Dhuma, Body.Type.Upagraha, slon.add(133.0 + 20.0 / 60.0), 0, 0, 0, 0, 0);
+		var bpDhuma = new Position(this, Body.BodyType.Dhuma, Body.Type.Upagraha, slon.add(133.0 + 20.0 / 60.0), 0, 0, 0, 0, 0);
 
-		var bpVyatipata = new Position(this, Body.Name.Vyatipata, Body.Type.Upagraha, new Longitude(360.0).sub(bpDhuma.longitude), 0, 0, 0, 0, 0);
+		var bpVyatipata = new Position(this, Body.BodyType.Vyatipata, Body.Type.Upagraha, new Longitude(360.0).sub(bpDhuma.longitude), 0, 0, 0, 0, 0);
 
-		var bpParivesha = new Position(this, Body.Name.Parivesha, Body.Type.Upagraha, bpVyatipata.longitude.add(180), 0, 0, 0, 0, 0);
+		var bpParivesha = new Position(this, Body.BodyType.Parivesha, Body.Type.Upagraha, bpVyatipata.longitude.add(180), 0, 0, 0, 0, 0);
 
-		var bpIndrachapa = new Position(this, Body.Name.Indrachapa, Body.Type.Upagraha, new Longitude(360.0).sub(bpParivesha.longitude), 0, 0, 0, 0, 0);
+		var bpIndrachapa = new Position(this, Body.BodyType.Indrachapa, Body.Type.Upagraha, new Longitude(360.0).sub(bpParivesha.longitude), 0, 0, 0, 0, 0);
 
-		var bpUpaketu = new Position(this, Body.Name.Upaketu, Body.Type.Upagraha, slon.sub(30), 0, 0, 0, 0, 0);
+		var bpUpaketu = new Position(this, Body.BodyType.Upaketu, Body.Type.Upagraha, slon.sub(30), 0, 0, 0, 0, 0);
 
 		positionList.Add(bpDhuma);
 		positionList.Add(bpVyatipata);
@@ -926,7 +927,7 @@ public class Horoscope : ICloneable
 			jd -= 1;
 		}
 
-		wday = (Basics.Weekday) sweph.DayOfWeek(jd);
+		wday = (Tables.Hora.Weekday) sweph.DayOfWeek(jd);
 
 		jd = sweph.JulDay(m.year, m.month, m.day, 12.0);
 		if (info.tob.time < lmt_sunrise)
@@ -934,20 +935,20 @@ public class Horoscope : ICloneable
 			jd -= 1;
 		}
 
-		lmt_wday = (Basics.Weekday) sweph.DayOfWeek(jd);
+		lmt_wday = (Tables.Hora.Weekday) sweph.DayOfWeek(jd);
 	}
 
 	private void addChandraLagna(string desc, Longitude lon)
 	{
-		var bp = new Position(this, Body.Name.Other, Body.Type.ChandraLagna, lon, 0, 0, 0, 0, 0);
+		var bp = new Position(this, Body.BodyType.Other, Body.Type.ChandraLagna, lon, 0, 0, 0, 0, 0);
 		bp.otherString = desc;
 		positionList.Add(bp);
 	}
 
 	private void calculateChandraLagnas()
 	{
-		var bp_moon  = getPosition(Body.Name.Moon);
-		var lon_base = new Longitude(bp_moon.extrapolateLongitude(new Division(Basics.DivisionType.Navamsa)).toZodiacHouseBase());
+		var bp_moon  = getPosition(Body.BodyType.Moon);
+		var lon_base = new Longitude(bp_moon.extrapolateLongitude(new Division(Vargas.DivisionType.Navamsa)).toZodiacHouseBase());
 		lon_base = lon_base.add(bp_moon.longitude.toZodiacHouseOffset());
 
 		//mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
@@ -973,17 +974,17 @@ public class Horoscope : ICloneable
 
 	private void calculateSL()
 	{
-		var mpos  = getPosition(Body.Name.Moon).longitude;
-		var lpos  = getPosition(Body.Name.Lagna).longitude;
+		var mpos  = getPosition(Body.BodyType.Moon).longitude;
+		var lpos  = getPosition(Body.BodyType.Lagna).longitude;
 		var sldeg = mpos.toNakshatraOffset() / (360.0 / 27.0) * 360.0;
 		var slLon = lpos.add(sldeg);
-		var bp    = new Position(this, Body.Name.SreeLagna, Body.Type.SpecialLagna, slLon, 0, 0, 0, 0, 0);
+		var bp    = new Position(this, Body.BodyType.SreeLagna, Body.Type.SpecialLagna, slLon, 0, 0, 0, 0, 0);
 		positionList.Add(bp);
 	}
 
 	private void calculatePranapada()
 	{
-		var spos   = getPosition(Body.Name.Sun).longitude;
+		var spos   = getPosition(Body.BodyType.Sun).longitude;
 		var offset = info.tob.time - sunrise;
 		if (offset < 0)
 		{
@@ -992,7 +993,7 @@ public class Horoscope : ICloneable
 
 		offset *= 60.0 * 60.0 / 6.0;
 		Longitude ppos = null;
-		switch ((int) spos.toZodiacHouse().value % 3)
+		switch ((int) spos.toZodiacHouse().Sign % 3)
 		{
 			case 1:
 				ppos = spos.add(offset);
@@ -1006,22 +1007,22 @@ public class Horoscope : ICloneable
 				break;
 		}
 
-		var bp = new Position(this, Body.Name.Pranapada, Body.Type.SpecialLagna, ppos, 0, 0, 0, 0, 0);
+		var bp = new Position(this, Body.BodyType.Pranapada, Body.Type.SpecialLagna, ppos, 0, 0, 0, 0, 0);
 		positionList.Add(bp);
 	}
 
 	private void addOtherPoints()
 	{
-		var lag_pos     = getPosition(Body.Name.Lagna).longitude;
-		var sun_pos     = getPosition(Body.Name.Sun).longitude;
-		var moon_pos    = getPosition(Body.Name.Moon).longitude;
-		var mars_pos    = getPosition(Body.Name.Mars).longitude;
-		var jup_pos     = getPosition(Body.Name.Jupiter).longitude;
-		var ven_pos     = getPosition(Body.Name.Venus).longitude;
-		var sat_pos     = getPosition(Body.Name.Saturn).longitude;
-		var rah_pos     = getPosition(Body.Name.Rahu).longitude;
-		var mandi_pos   = getPosition(Body.Name.Maandi).longitude;
-		var gulika_pos  = getPosition(Body.Name.Gulika).longitude;
+		var lag_pos     = getPosition(Body.BodyType.Lagna).longitude;
+		var sun_pos     = getPosition(Body.BodyType.Sun).longitude;
+		var moon_pos    = getPosition(Body.BodyType.Moon).longitude;
+		var mars_pos    = getPosition(Body.BodyType.Mars).longitude;
+		var jup_pos     = getPosition(Body.BodyType.Jupiter).longitude;
+		var ven_pos     = getPosition(Body.BodyType.Venus).longitude;
+		var sat_pos     = getPosition(Body.BodyType.Saturn).longitude;
+		var rah_pos     = getPosition(Body.BodyType.Rahu).longitude;
+		var mandi_pos   = getPosition(Body.BodyType.Maandi).longitude;
+		var gulika_pos  = getPosition(Body.BodyType.Gulika).longitude;
 		var muhurta_pos = new Longitude(hoursAfterSunrise() / (next_sunrise + 24.0 - sunrise) * 360.0);
 
 		// add simple midpoints
@@ -1031,10 +1032,10 @@ public class Horoscope : ICloneable
 		addOtherPosition("Ra-Ke m.p", rah_pos.add(90));
 		addOtherPosition("Ke-Ra m.p", rah_pos.add(270));
 
-		var l1pos  = getPosition(LordOfZodiacHouse(lag_pos.toZodiacHouse(), new Division(Basics.DivisionType.Rasi))).longitude;
-		var l6pos  = getPosition(LordOfZodiacHouse(lag_pos.toZodiacHouse().add(6), new Division(Basics.DivisionType.Rasi))).longitude;
-		var l8pos  = getPosition(LordOfZodiacHouse(lag_pos.toZodiacHouse().add(6), new Division(Basics.DivisionType.Rasi))).longitude;
-		var l12pos = getPosition(LordOfZodiacHouse(lag_pos.toZodiacHouse().add(6), new Division(Basics.DivisionType.Rasi))).longitude;
+		var l1pos  = getPosition(LordOfZodiacHouse(lag_pos.toZodiacHouse(), new Division(Vargas.DivisionType.Rasi))).longitude;
+		var l6pos  = getPosition(LordOfZodiacHouse(lag_pos.toZodiacHouse().Add(6), new Division(Vargas.DivisionType.Rasi))).longitude;
+		var l8pos  = getPosition(LordOfZodiacHouse(lag_pos.toZodiacHouse().Add(6), new Division(Vargas.DivisionType.Rasi))).longitude;
+		var l12pos = getPosition(LordOfZodiacHouse(lag_pos.toZodiacHouse().Add(6), new Division(Vargas.DivisionType.Rasi))).longitude;
 
 		var mrit_sat_pos   = new Longitude(mandi_pos.value * 8.0 + sat_pos.value   * 8.0);
 		var mrit_jup2_pos  = new Longitude(sat_pos.value   * 9.0 + mandi_pos.value * 18.0 + jup_pos.value  * 18.0);
@@ -1043,21 +1044,21 @@ public class Horoscope : ICloneable
 
 		if (isDayBirth())
 		{
-			addOtherPosition("Niryana: Su-Sa sum", sun_pos.add(sat_pos), Body.Name.MrityuPoint);
+			addOtherPosition("Niryana: Su-Sa sum", sun_pos.add(sat_pos), Body.BodyType.MrityuPoint);
 		}
 		else
 		{
-			addOtherPosition("Niryana: Mo-Ra sum", moon_pos.add(rah_pos), Body.Name.MrityuPoint);
+			addOtherPosition("Niryana: Mo-Ra sum", moon_pos.add(rah_pos), Body.BodyType.MrityuPoint);
 		}
 
-		addOtherPosition("Mrityu Sun: La-Mn sum", lag_pos.add(mandi_pos), Body.Name.MrityuPoint);
-		addOtherPosition("Mrityu Moon: Mo-Mn sum", moon_pos.add(mandi_pos), Body.Name.MrityuPoint);
-		addOtherPosition("Mrityu Lagna: La-Mo-Mn sum", lag_pos.add(moon_pos).add(mandi_pos), Body.Name.MrityuPoint);
-		addOtherPosition("Mrityu Sat: Mn8-Sa8", mrit_sat_pos, Body.Name.MrityuPoint);
-		addOtherPosition("6-8-12 sum", l6pos.add(l8pos).add(l12pos), Body.Name.MrityuPoint);
-		addOtherPosition("Mrityu Jup: Sa9-Mn18-Ju18", mrit_jup2_pos, Body.Name.MrityuPoint);
-		addOtherPosition("Mrityu Sun: Sa9-Mn18-Su18", mrit_sun2_pos, Body.Name.MrityuPoint);
-		addOtherPosition("Mrityu Moon: Sa9-Mn18-Mo18", mrit_moon2_pos, Body.Name.MrityuPoint);
+		addOtherPosition("Mrityu Sun: La-Mn sum", lag_pos.add(mandi_pos), Body.BodyType.MrityuPoint);
+		addOtherPosition("Mrityu Moon: Mo-Mn sum", moon_pos.add(mandi_pos), Body.BodyType.MrityuPoint);
+		addOtherPosition("Mrityu Lagna: La-Mo-Mn sum", lag_pos.add(moon_pos).add(mandi_pos), Body.BodyType.MrityuPoint);
+		addOtherPosition("Mrityu Sat: Mn8-Sa8", mrit_sat_pos, Body.BodyType.MrityuPoint);
+		addOtherPosition("6-8-12 sum", l6pos.add(l8pos).add(l12pos), Body.BodyType.MrityuPoint);
+		addOtherPosition("Mrityu Jup: Sa9-Mn18-Ju18", mrit_jup2_pos, Body.BodyType.MrityuPoint);
+		addOtherPosition("Mrityu Sun: Sa9-Mn18-Su18", mrit_sun2_pos, Body.BodyType.MrityuPoint);
+		addOtherPosition("Mrityu Moon: Sa9-Mn18-Mo18", mrit_moon2_pos, Body.BodyType.MrityuPoint);
 
 		addOtherPosition("Su-Mo sum", sun_pos.add(moon_pos));
 		addOtherPosition("Ju-Mo-Ma sum", jup_pos.add(moon_pos).add(mars_pos));
@@ -1181,7 +1182,7 @@ public class Horoscope : ICloneable
 		return false;
 	}
 
-	public void addOtherPosition(string desc, Longitude lon, Body.Name name)
+	public void addOtherPosition(string desc, Longitude lon, Body.BodyType name)
 	{
 		var bp = new Position(this, name, Body.Type.Other, lon, 0, 0, 0, 0, 0);
 		bp.otherString = desc;
@@ -1190,7 +1191,7 @@ public class Horoscope : ICloneable
 
 	public void addOtherPosition(string desc, Longitude lon)
 	{
-		addOtherPosition(desc, lon, Body.Name.Other);
+		addOtherPosition(desc, lon, Body.BodyType.Other);
 	}
 
 	public void addSpecialLagnaPositions()
@@ -1216,11 +1217,11 @@ public class Horoscope : ICloneable
 
 	public void getPrashnaMargaPositions()
 	{
-		var sunLon    = getPosition(Body.Name.Sun).longitude;
-		var moonLon   = getPosition(Body.Name.Moon).longitude;
-		var lagnaLon  = getPosition(Body.Name.Lagna).longitude;
-		var gulikaLon = getPosition(Body.Name.Gulika).longitude;
-		var rahuLon   = getPosition(Body.Name.Rahu).longitude;
+		var sunLon    = getPosition(Body.BodyType.Sun).longitude;
+		var moonLon   = getPosition(Body.BodyType.Moon).longitude;
+		var lagnaLon  = getPosition(Body.BodyType.Lagna).longitude;
+		var gulikaLon = getPosition(Body.BodyType.Gulika).longitude;
+		var rahuLon   = getPosition(Body.BodyType.Rahu).longitude;
 
 		var trisLon    = lagnaLon.add(moonLon).add(gulikaLon);
 		var chatusLon  = trisLon.add(sunLon);
@@ -1237,20 +1238,20 @@ public class Horoscope : ICloneable
 		addOtherPosition("Mrityu Sphuta", mrityuLon);
 	}
 
-	public Position getPosition(Body.Name b)
+	public Position getPosition(Body.BodyType b)
 	{
-		var index = Body.toInt(b);
+		var index = b.Index();
 		var t     = positionList[index].GetType();
 		var s     = t.ToString();
 		Trace.Assert(index >= 0 && index < positionList.Count, "Horoscope::getPosition 1");
 		Trace.Assert(positionList[index].GetType() == typeof(Position), "Horoscope::getPosition 2");
-		var bp = (Position) positionList[Body.toInt(b)];
+		var bp = (Position) positionList[b.Index()];
 		if (bp.name == b)
 		{
 			return bp;
 		}
 
-		for (var i = (int) Body.Name.Lagna + 1; i < positionList.Count; i++)
+		for (var i = (int) Body.BodyType.Lagna + 1; i < positionList.Count; i++)
 		{
 			if (b == ((Position) positionList[i]).name)
 			{
@@ -1262,7 +1263,7 @@ public class Horoscope : ICloneable
 		return (Position) positionList[0];
 	}
 
-	private Position sahamaHelper(string sahama, Body.Name b, Body.Name a, Body.Name c)
+	private Position sahamaHelper(string sahama, Body.BodyType b, Body.BodyType a, Body.BodyType c)
 	{
 		Longitude lonA, lonB, lonC;
 		lonA = getPosition(a).longitude;
@@ -1271,7 +1272,7 @@ public class Horoscope : ICloneable
 		return sahamaHelper(sahama, lonB, lonA, lonC);
 	}
 
-	private Position sahamaHelper(string sahama, Body.Name b, Body.Name a, Longitude lonC)
+	private Position sahamaHelper(string sahama, Body.BodyType b, Body.BodyType a, Longitude lonC)
 	{
 		Longitude lonA, lonB;
 		lonA = getPosition(a).longitude;
@@ -1279,7 +1280,7 @@ public class Horoscope : ICloneable
 		return sahamaHelper(sahama, lonB, lonA, lonC);
 	}
 
-	private Position sahamaHelper(string sahama, Longitude lonB, Body.Name a, Body.Name c)
+	private Position sahamaHelper(string sahama, Longitude lonB, Body.BodyType a, Body.BodyType c)
 	{
 		Longitude lonA, lonC;
 		lonA = getPosition(a).longitude;
@@ -1299,7 +1300,7 @@ public class Horoscope : ICloneable
 			lonR = lonR.add(new Longitude(30.0));
 		}
 
-		var bp = new Position(this, Body.Name.Other, Body.Type.Sahama, lonR, 0.0, 0.0, 0.0, 0.0, 0.0);
+		var bp = new Position(this, Body.BodyType.Other, Body.Type.Sahama, lonR, 0.0, 0.0, 0.0, 0.0, 0.0);
 		bp.otherString = sahama;
 		return bp;
 	}
@@ -1323,12 +1324,12 @@ public class Horoscope : ICloneable
 			lonR = lonR.add(new Longitude(30.0));
 		}
 
-		var bp = new Position(this, Body.Name.Other, Body.Type.Sahama, lonR, 0.0, 0.0, 0.0, 0.0, 0.0);
+		var bp = new Position(this, Body.BodyType.Other, Body.Type.Sahama, lonR, 0.0, 0.0, 0.0, 0.0, 0.0);
 		bp.otherString = sahama;
 		return bp;
 	}
 
-	private Position sahamaDNHelper(string sahama, Body.Name b, Longitude lonA, Body.Name c)
+	private Position sahamaDNHelper(string sahama, Body.BodyType b, Longitude lonA, Body.BodyType c)
 	{
 		Longitude lonB, lonC;
 		lonB = getPosition(b).longitude;
@@ -1336,7 +1337,7 @@ public class Horoscope : ICloneable
 		return sahamaDNHelper(sahama, lonB, lonA, lonC);
 	}
 
-	private Position sahamaDNHelper(string sahama, Longitude lonB, Body.Name a, Body.Name c)
+	private Position sahamaDNHelper(string sahama, Longitude lonB, Body.BodyType a, Body.BodyType c)
 	{
 		Longitude lonA, lonC;
 		lonA = getPosition(a).longitude;
@@ -1344,14 +1345,14 @@ public class Horoscope : ICloneable
 		return sahamaDNHelper(sahama, lonB, lonA, lonC);
 	}
 
-	private Position sahamaDNHelper(string sahama, Longitude lonB, Longitude lonA, Body.Name c)
+	private Position sahamaDNHelper(string sahama, Longitude lonB, Longitude lonA, Body.BodyType c)
 	{
 		Longitude lonC;
 		lonC = getPosition(c).longitude;
 		return sahamaDNHelper(sahama, lonB, lonA, lonC);
 	}
 
-	private Position sahamaDNHelper(string sahama, Body.Name b, Body.Name a, Body.Name c)
+	private Position sahamaDNHelper(string sahama, Body.BodyType b, Body.BodyType a, Body.BodyType c)
 	{
 		Longitude lonA, lonB, lonC;
 		lonA = getPosition(a).longitude;
@@ -1360,7 +1361,7 @@ public class Horoscope : ICloneable
 		return sahamaDNHelper(sahama, lonB, lonA, lonC);
 	}
 
-	private Position sahamaHelperNormalize(Position b, Body.Name lower, Body.Name higher)
+	private Position sahamaHelperNormalize(Position b, Body.BodyType lower, Body.BodyType higher)
 	{
 		var lonA = getPosition(lower).longitude;
 		var lonB = getPosition(higher).longitude;
@@ -1377,70 +1378,70 @@ public class Horoscope : ICloneable
 	{
 		var bDay      = isDayBirth();
 		var al        = new ArrayList();
-		var lon_lagna = getPosition(Body.Name.Lagna).longitude;
+		var lon_lagna = getPosition(Body.BodyType.Lagna).longitude;
 		var lon_base  = new Longitude(lon_lagna.toZodiacHouseBase());
 		var zh_lagna  = lon_lagna.toZodiacHouse();
-		var zh_moon   = getPosition(Body.Name.Moon).longitude.toZodiacHouse();
-		var zh_sun    = getPosition(Body.Name.Sun).longitude.toZodiacHouse();
+		var zh_moon   = getPosition(Body.BodyType.Moon).longitude.toZodiacHouse();
+		var zh_sun    = getPosition(Body.BodyType.Sun).longitude.toZodiacHouse();
 
 
 		// Fixed positions. Relied on by other sahams
-		al.Add(sahamaDNHelper("Punya", Body.Name.Moon, Body.Name.Sun, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Vidya", Body.Name.Sun, Body.Name.Moon, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Sastra", Body.Name.Jupiter, Body.Name.Saturn, Body.Name.Mercury));
+		al.Add(sahamaDNHelper("Punya", Body.BodyType.Moon, Body.BodyType.Sun, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Vidya", Body.BodyType.Sun, Body.BodyType.Moon, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Sastra", Body.BodyType.Jupiter, Body.BodyType.Saturn, Body.BodyType.Mercury));
 
 		// Variable positions.
-		al.Add(sahamaDNHelper("Yasas", Body.Name.Jupiter, ((Position) al[0]).longitude, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Mitra", Body.Name.Jupiter, ((Position) al[0]).longitude, Body.Name.Venus));
-		al.Add(sahamaDNHelper("Mahatmya", ((Position) al[0]).longitude, Body.Name.Mars, Body.Name.Lagna));
+		al.Add(sahamaDNHelper("Yasas", Body.BodyType.Jupiter, ((Position) al[0]).longitude, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Mitra", Body.BodyType.Jupiter, ((Position) al[0]).longitude, Body.BodyType.Venus));
+		al.Add(sahamaDNHelper("Mahatmya", ((Position) al[0]).longitude, Body.BodyType.Mars, Body.BodyType.Lagna));
 
-		var bLagnaLord = LordOfZodiacHouse(zh_lagna, new Division(Basics.DivisionType.Rasi));
-		if (bLagnaLord != Body.Name.Mars)
+		var bLagnaLord = LordOfZodiacHouse(zh_lagna, new Division(Vargas.DivisionType.Rasi));
+		if (bLagnaLord != Body.BodyType.Mars)
 		{
-			al.Add(sahamaDNHelper("Samartha", Body.Name.Mars, bLagnaLord, Body.Name.Lagna));
+			al.Add(sahamaDNHelper("Samartha", Body.BodyType.Mars, bLagnaLord, Body.BodyType.Lagna));
 		}
 		else
 		{
-			al.Add(sahamaDNHelper("Samartha", Body.Name.Jupiter, Body.Name.Mars, Body.Name.Lagna));
+			al.Add(sahamaDNHelper("Samartha", Body.BodyType.Jupiter, Body.BodyType.Mars, Body.BodyType.Lagna));
 		}
 
-		al.Add(sahamaHelper("Bhratri", Body.Name.Jupiter, Body.Name.Saturn, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Gaurava", Body.Name.Jupiter, Body.Name.Moon, Body.Name.Sun));
-		al.Add(sahamaDNHelper("Pitri", Body.Name.Saturn, Body.Name.Sun, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Rajya", Body.Name.Saturn, Body.Name.Sun, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Matri", Body.Name.Moon, Body.Name.Venus, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Putra", Body.Name.Jupiter, Body.Name.Moon, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Jeeva", Body.Name.Saturn, Body.Name.Jupiter, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Karma", Body.Name.Mars, Body.Name.Mercury, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Roga", Body.Name.Lagna, Body.Name.Moon, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Kali", Body.Name.Jupiter, Body.Name.Mars, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Bandhu", Body.Name.Mercury, Body.Name.Moon, Body.Name.Lagna));
-		al.Add(sahamaHelper("Mrityu", lon_base.add(8.0   * 30.0), Body.Name.Moon, Body.Name.Lagna));
-		al.Add(sahamaHelper("Paradesa", lon_base.add(9.0 * 30.0), LordOfZodiacHouse(zh_lagna.add(9), new Division(Basics.DivisionType.Rasi)), Body.Name.Lagna));
-		al.Add(sahamaHelper("Artha", lon_base.add(2.0    * 30.0), LordOfZodiacHouse(zh_lagna.add(2), new Division(Basics.DivisionType.Rasi)), Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Paradara", Body.Name.Venus, Body.Name.Sun, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Vanik", Body.Name.Moon, Body.Name.Mercury, Body.Name.Lagna));
+		al.Add(sahamaHelper("Bhratri", Body.BodyType.Jupiter, Body.BodyType.Saturn, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Gaurava", Body.BodyType.Jupiter, Body.BodyType.Moon, Body.BodyType.Sun));
+		al.Add(sahamaDNHelper("Pitri", Body.BodyType.Saturn, Body.BodyType.Sun, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Rajya", Body.BodyType.Saturn, Body.BodyType.Sun, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Matri", Body.BodyType.Moon, Body.BodyType.Venus, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Putra", Body.BodyType.Jupiter, Body.BodyType.Moon, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Jeeva", Body.BodyType.Saturn, Body.BodyType.Jupiter, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Karma", Body.BodyType.Mars, Body.BodyType.Mercury, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Roga", Body.BodyType.Lagna, Body.BodyType.Moon, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Kali", Body.BodyType.Jupiter, Body.BodyType.Mars, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Bandhu", Body.BodyType.Mercury, Body.BodyType.Moon, Body.BodyType.Lagna));
+		al.Add(sahamaHelper("Mrityu", lon_base.add(8.0   * 30.0), Body.BodyType.Moon, Body.BodyType.Lagna));
+		al.Add(sahamaHelper("Paradesa", lon_base.add(9.0 * 30.0), LordOfZodiacHouse(zh_lagna.Add(9), new Division(Vargas.DivisionType.Rasi)), Body.BodyType.Lagna));
+		al.Add(sahamaHelper("Artha", lon_base.add(2.0    * 30.0), LordOfZodiacHouse(zh_lagna.Add(2), new Division(Vargas.DivisionType.Rasi)), Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Paradara", Body.BodyType.Venus, Body.BodyType.Sun, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Vanik", Body.BodyType.Moon, Body.BodyType.Mercury, Body.BodyType.Lagna));
 
 		if (bDay)
 		{
-			al.Add(sahamaHelper("Karyasiddhi", Body.Name.Saturn, Body.Name.Sun, LordOfZodiacHouse(zh_sun, new Division(Basics.DivisionType.Rasi))));
+			al.Add(sahamaHelper("Karyasiddhi", Body.BodyType.Saturn, Body.BodyType.Sun, LordOfZodiacHouse(zh_sun, new Division(Vargas.DivisionType.Rasi))));
 		}
 		else
 		{
-			al.Add(sahamaHelper("Karyasiddhi", Body.Name.Saturn, Body.Name.Moon, LordOfZodiacHouse(zh_moon, new Division(Basics.DivisionType.Rasi))));
+			al.Add(sahamaHelper("Karyasiddhi", Body.BodyType.Saturn, Body.BodyType.Moon, LordOfZodiacHouse(zh_moon, new Division(Vargas.DivisionType.Rasi))));
 		}
 
-		al.Add(sahamaDNHelper("Vivaha", Body.Name.Venus, Body.Name.Saturn, Body.Name.Lagna));
-		al.Add(sahamaHelper("Santapa", Body.Name.Saturn, Body.Name.Moon, lon_base.add(6.0 * 30.0)));
-		al.Add(sahamaDNHelper("Sraddha", Body.Name.Venus, Body.Name.Mars, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Preeti", ((Position) al[2]).longitude, ((Position) al[0]).longitude, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Jadya", Body.Name.Mars, Body.Name.Saturn, Body.Name.Mercury));
-		al.Add(sahamaHelper("Vyapara", Body.Name.Mars, Body.Name.Saturn, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Satru", Body.Name.Mars, Body.Name.Saturn, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Jalapatana", new Longitude(105), Body.Name.Saturn, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Bandhana", ((Position) al[0]).longitude, Body.Name.Saturn, Body.Name.Lagna));
-		al.Add(sahamaDNHelper("Apamrityu", lon_base.add(8.0 * 30.0), Body.Name.Mars, Body.Name.Lagna));
-		al.Add(sahamaHelper("Labha", lon_base.add(11.0      * 30.0), LordOfZodiacHouse(zh_lagna.add(11), new Division(Basics.DivisionType.Rasi)), Body.Name.Lagna));
+		al.Add(sahamaDNHelper("Vivaha", Body.BodyType.Venus, Body.BodyType.Saturn, Body.BodyType.Lagna));
+		al.Add(sahamaHelper("Santapa", Body.BodyType.Saturn, Body.BodyType.Moon, lon_base.add(6.0 * 30.0)));
+		al.Add(sahamaDNHelper("Sraddha", Body.BodyType.Venus, Body.BodyType.Mars, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Preeti", ((Position) al[2]).longitude, ((Position) al[0]).longitude, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Jadya", Body.BodyType.Mars, Body.BodyType.Saturn, Body.BodyType.Mercury));
+		al.Add(sahamaHelper("Vyapara", Body.BodyType.Mars, Body.BodyType.Saturn, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Satru", Body.BodyType.Mars, Body.BodyType.Saturn, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Jalapatana", new Longitude(105), Body.BodyType.Saturn, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Bandhana", ((Position) al[0]).longitude, Body.BodyType.Saturn, Body.BodyType.Lagna));
+		al.Add(sahamaDNHelper("Apamrityu", lon_base.add(8.0 * 30.0), Body.BodyType.Mars, Body.BodyType.Lagna));
+		al.Add(sahamaHelper("Labha", lon_base.add(11.0      * 30.0), LordOfZodiacHouse(zh_lagna.Add(11), new Division(Vargas.DivisionType.Rasi)), Body.BodyType.Lagna));
 
 		positionList.AddRange(al);
 		return al;

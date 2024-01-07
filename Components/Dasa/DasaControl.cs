@@ -487,7 +487,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		// mTithiYears
 		// 
 		this.mTithiYears.Index =  1;
-		this.mTithiYears.Text  =  "&Tithi Years (360 tithis)";
+		this.mTithiYears.Text  =  "&Tithis Years (360 tithis)";
 		this.mTithiYears.Click += new System.EventHandler(this.mTithiYears_Click);
 		// 
 		// mFixedYears360
@@ -545,7 +545,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		// mCompressLunar
 		// 
 		this.mCompressLunar.Index =  11;
-		this.mCompressLunar.Text  =  "Compress to Tithi Year";
+		this.mCompressLunar.Text  =  "Compress to Tithis Year";
 		this.mCompressLunar.Click += new System.EventHandler(this.mCompressLunar_Click);
 		// 
 		// mCompressYoga
@@ -557,19 +557,19 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		// mCompressTithiPraveshaTithi
 		// 
 		this.mCompressTithiPraveshaTithi.Index =  13;
-		this.mCompressTithiPraveshaTithi.Text  =  "Compress to Tithi Pravesha Year (Tithi)";
+		this.mCompressTithiPraveshaTithi.Text  =  "Compress to Tithis Pravesha Year (Tithis)";
 		this.mCompressTithiPraveshaTithi.Click += new System.EventHandler(this.mCompressTithiPraveshaTithi_Click);
 		// 
 		// mCompressTithiPraveshaSolar
 		// 
 		this.mCompressTithiPraveshaSolar.Index =  14;
-		this.mCompressTithiPraveshaSolar.Text  =  "Compress to Tithi Pravesha Year (Solar)";
+		this.mCompressTithiPraveshaSolar.Text  =  "Compress to Tithis Pravesha Year (Solar)";
 		this.mCompressTithiPraveshaSolar.Click += new System.EventHandler(this.mCompressTithiPraveshaSolar_Click);
 		// 
 		// mCompressedTithiPraveshaFixed
 		// 
 		this.mCompressedTithiPraveshaFixed.Index =  15;
-		this.mCompressedTithiPraveshaFixed.Text  =  "Compress to Tithi Pravesha Year (Fixed)";
+		this.mCompressedTithiPraveshaFixed.Text  =  "Compress to Tithis Pravesha Year (Fixed)";
 		this.mCompressedTithiPraveshaFixed.Click += new System.EventHandler(this.mCompressedTithiPraveshaFixed_Click);
 		// 
 		// mCompressedYogaPraveshaYoga
@@ -1261,8 +1261,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		sweph.obtainLock(h);
 		var ut_start = td_pravesh.AddYears(0).toUniversalTime();
 		var ut_end   = td_pravesh.AddYears(1).toUniversalTime();
-		var sp_start = Basics.CalculateSingleBodyPosition(ut_start, sweph.BodyNameToSweph(Body.Name.Sun), Body.Name.Sun, Body.Type.Graha, h);
-		var sp_end   = Basics.CalculateSingleBodyPosition(ut_end, sweph.BodyNameToSweph(Body.Name.Sun), Body.Name.Sun, Body.Type.Graha, h);
+		var sp_start = Basics.CalculateSingleBodyPosition(ut_start, sweph.BodyNameToSweph(Body.BodyType.Sun), Body.BodyType.Sun, Body.Type.Graha, h);
+		var sp_end   = Basics.CalculateSingleBodyPosition(ut_end, sweph.BodyNameToSweph(Body.BodyType.Sun), Body.BodyType.Sun, Body.Type.Graha, h);
 		var lDiff    = sp_end.longitude.sub(sp_start.longitude);
 		var diff     = lDiff.value;
 		if (diff < 120.0)

@@ -43,7 +43,7 @@ public class FindStronger
 		[Description("Graha has higher longitude offset")]
 		Longitude,
 
-		[Description("Graha is Atma Karaka")]
+		[Description("Graha is Atma Karakas")]
 		AtmaKaraka,
 
 		[Description("Graha is in a rasi with stronger nature")]
@@ -79,7 +79,7 @@ public class FindStronger
 		[Description("Graha's dispositor is in a rasi with different oddify")]
 		LordInDifferentOddity,
 
-		[Description("Graha has a larger Karaka Kendradi Graha Dasa length")]
+		[Description("Graha has a larger Karakas Kendradi Graha Dasa length")]
 		KarakaKendradiGrahaDasaLength,
 
 		[Description("Graha has a larger Vimsottari Dasa length")]
@@ -102,10 +102,10 @@ public class FindStronger
 		[Description("Rasi has a graha with higher longitude offset")]
 		Longitude,
 
-		[Description("Rasi contains Atma Karaka")]
+		[Description("Rasi contains Atma Karakas")]
 		AtmaKaraka,
 
-		[Description("Rasi's lord is Atma Karaka")]
+		[Description("Rasi's lord is Atma Karakas")]
 		LordIsAtmaKaraka,
 
 		[Description("Rasi is stronger by nature")]
@@ -253,30 +253,30 @@ public class FindStronger
 		return new ArrayList(GetStrengthOptions(h).Colord);
 	}
 
-	public OrderedZodiacHouses[] ResultsZodiacKendras(ZodiacHouse.Name _zh)
+	public OrderedZodiacHouses[] ResultsZodiacKendras(ZodiacHouse.Rasi _zh)
 	{
 		var zRet = new OrderedZodiacHouses[3];
 		var zh   = new ZodiacHouse(_zh);
-		var zh1 = new ZodiacHouse.Name[4]
+		var zh1 = new ZodiacHouse.Rasi[4]
 		{
-			zh.add(1).value,
-			zh.add(4).value,
-			zh.add(7).value,
-			zh.add(10).value
+			zh.Add(1).Sign,
+			zh.Add(4).Sign,
+			zh.Add(7).Sign,
+			zh.Add(10).Sign
 		};
-		var zh2 = new ZodiacHouse.Name[4]
+		var zh2 = new ZodiacHouse.Rasi[4]
 		{
-			zh.add(2).value,
-			zh.add(5).value,
-			zh.add(8).value,
-			zh.add(11).value
+			zh.Add(2).Sign,
+			zh.Add(5).Sign,
+			zh.Add(8).Sign,
+			zh.Add(11).Sign
 		};
-		var zh3 = new ZodiacHouse.Name[4]
+		var zh3 = new ZodiacHouse.Rasi[4]
 		{
-			zh.add(3).value,
-			zh.add(6).value,
-			zh.add(9).value,
-			zh.add(12).value
+			zh.Add(3).Sign,
+			zh.Add(6).Sign,
+			zh.Add(9).Sign,
+			zh.Add(12).Sign
 		};
 		zRet[0] = getOrderedHouses(zh1);
 		zRet[1] = getOrderedHouses(zh2);
@@ -284,30 +284,30 @@ public class FindStronger
 		return zRet;
 	}
 
-	public ZodiacHouse.Name[] ResultsKendraRasis(ZodiacHouse.Name _zh)
+	public ZodiacHouse.Rasi[] ResultsKendraRasis(ZodiacHouse.Rasi _zh)
 	{
-		var zRet = new ZodiacHouse.Name[12];
+		var zRet = new ZodiacHouse.Rasi[12];
 		var zh   = new ZodiacHouse(_zh);
-		var zh1 = new ZodiacHouse.Name[4]
+		var zh1 = new ZodiacHouse.Rasi[4]
 		{
-			zh.add(1).value,
-			zh.add(4).value,
-			zh.add(7).value,
-			zh.add(10).value
+			zh.Add(1).Sign,
+			zh.Add(4).Sign,
+			zh.Add(7).Sign,
+			zh.Add(10).Sign
 		};
-		var zh2 = new ZodiacHouse.Name[4]
+		var zh2 = new ZodiacHouse.Rasi[4]
 		{
-			zh.add(2).value,
-			zh.add(5).value,
-			zh.add(8).value,
-			zh.add(11).value
+			zh.Add(2).Sign,
+			zh.Add(5).Sign,
+			zh.Add(8).Sign,
+			zh.Add(11).Sign
 		};
-		var zh3 = new ZodiacHouse.Name[4]
+		var zh3 = new ZodiacHouse.Rasi[4]
 		{
-			zh.add(3).value,
-			zh.add(6).value,
-			zh.add(9).value,
-			zh.add(12).value
+			zh.Add(3).Sign,
+			zh.Add(6).Sign,
+			zh.Add(9).Sign,
+			zh.Add(12).Sign
 		};
 		getOrderedRasis(zh1).CopyTo(zRet, 0);
 		getOrderedRasis(zh2).CopyTo(zRet, 4);
@@ -315,61 +315,61 @@ public class FindStronger
 		return zRet;
 	}
 
-	public ZodiacHouse.Name[] ResultsFirstSeventhRasis()
+	public ZodiacHouse.Rasi[] ResultsFirstSeventhRasis()
 	{
-		var zRet = new ZodiacHouse.Name[12];
+		var zRet = new ZodiacHouse.Rasi[12];
 		getOrderedRasis(new[]
 		{
-			ZodiacHouse.Name.Ari,
-			ZodiacHouse.Name.Lib
+			ZodiacHouse.Rasi.Ari,
+			ZodiacHouse.Rasi.Lib
 		}).CopyTo(zRet, 0);
 		getOrderedRasis(new[]
 		{
-			ZodiacHouse.Name.Tau,
-			ZodiacHouse.Name.Sco
+			ZodiacHouse.Rasi.Tau,
+			ZodiacHouse.Rasi.Sco
 		}).CopyTo(zRet, 2);
 		getOrderedRasis(new[]
 		{
-			ZodiacHouse.Name.Gem,
-			ZodiacHouse.Name.Sag
+			ZodiacHouse.Rasi.Gem,
+			ZodiacHouse.Rasi.Sag
 		}).CopyTo(zRet, 4);
 		getOrderedRasis(new[]
 		{
-			ZodiacHouse.Name.Can,
-			ZodiacHouse.Name.Cap
+			ZodiacHouse.Rasi.Can,
+			ZodiacHouse.Rasi.Cap
 		}).CopyTo(zRet, 6);
 		getOrderedRasis(new[]
 		{
-			ZodiacHouse.Name.Leo,
-			ZodiacHouse.Name.Aqu
+			ZodiacHouse.Rasi.Leo,
+			ZodiacHouse.Rasi.Aqu
 		}).CopyTo(zRet, 8);
 		getOrderedRasis(new[]
 		{
-			ZodiacHouse.Name.Vir,
-			ZodiacHouse.Name.Pis
+			ZodiacHouse.Rasi.Vir,
+			ZodiacHouse.Rasi.Pis
 		}).CopyTo(zRet, 10);
 		return zRet;
 	}
 
 
-	public Body.Name[] getOrderedGrahas()
+	public Body.BodyType[] getOrderedGrahas()
 	{
-		Body.Name[] grahas =
+		Body.BodyType[] grahas =
 		{
-			Body.Name.Sun,
-			Body.Name.Moon,
-			Body.Name.Mars,
-			Body.Name.Mercury,
-			Body.Name.Jupiter,
-			Body.Name.Venus,
-			Body.Name.Saturn,
-			Body.Name.Rahu,
-			Body.Name.Ketu
+			Body.BodyType.Sun,
+			Body.BodyType.Moon,
+			Body.BodyType.Mars,
+			Body.BodyType.Mercury,
+			Body.BodyType.Jupiter,
+			Body.BodyType.Venus,
+			Body.BodyType.Saturn,
+			Body.BodyType.Rahu,
+			Body.BodyType.Ketu
 		};
 		return getOrderedGrahas(grahas);
 	}
 
-	public Body.Name[] getOrderedGrahas(Body.Name[] grahas)
+	public Body.BodyType[] getOrderedGrahas(Body.BodyType[] grahas)
 	{
 		if (grahas.Length <= 1)
 		{
@@ -392,27 +392,27 @@ public class FindStronger
 		return grahas;
 	}
 
-	public ZodiacHouse.Name[] getOrderedRasis()
+	public ZodiacHouse.Rasi[] getOrderedRasis()
 	{
-		ZodiacHouse.Name[] rasis =
+		ZodiacHouse.Rasi[] rasis =
 		{
-			ZodiacHouse.Name.Ari,
-			ZodiacHouse.Name.Tau,
-			ZodiacHouse.Name.Gem,
-			ZodiacHouse.Name.Can,
-			ZodiacHouse.Name.Leo,
-			ZodiacHouse.Name.Vir,
-			ZodiacHouse.Name.Lib,
-			ZodiacHouse.Name.Sco,
-			ZodiacHouse.Name.Sag,
-			ZodiacHouse.Name.Cap,
-			ZodiacHouse.Name.Aqu,
-			ZodiacHouse.Name.Pis
+			ZodiacHouse.Rasi.Ari,
+			ZodiacHouse.Rasi.Tau,
+			ZodiacHouse.Rasi.Gem,
+			ZodiacHouse.Rasi.Can,
+			ZodiacHouse.Rasi.Leo,
+			ZodiacHouse.Rasi.Vir,
+			ZodiacHouse.Rasi.Lib,
+			ZodiacHouse.Rasi.Sco,
+			ZodiacHouse.Rasi.Sag,
+			ZodiacHouse.Rasi.Cap,
+			ZodiacHouse.Rasi.Aqu,
+			ZodiacHouse.Rasi.Pis
 		};
 		return getOrderedRasis(rasis);
 	}
 
-	public OrderedZodiacHouses getOrderedHouses(ZodiacHouse.Name[] rasis)
+	public OrderedZodiacHouses getOrderedHouses(ZodiacHouse.Rasi[] rasis)
 	{
 		var zh_ordered = getOrderedRasis(rasis);
 		var oz         = new OrderedZodiacHouses();
@@ -424,7 +424,7 @@ public class FindStronger
 		return oz;
 	}
 
-	public ZodiacHouse.Name[] getOrderedRasis(ZodiacHouse.Name[] rasis)
+	public ZodiacHouse.Rasi[] getOrderedRasis(ZodiacHouse.Rasi[] rasis)
 	{
 		if (rasis.Length < 2)
 		{
@@ -449,7 +449,7 @@ public class FindStronger
 		return rasis;
 	}
 
-	public ZodiacHouse.Name StrongerRasi(ZodiacHouse.Name za, ZodiacHouse.Name zb, bool bSimpleLord, ref int winner)
+	public ZodiacHouse.Rasi StrongerRasi(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb, bool bSimpleLord, ref int winner)
 	{
 		if (CmpRasi(za, zb, bSimpleLord, ref winner))
 		{
@@ -459,19 +459,19 @@ public class FindStronger
 		return zb;
 	}
 
-	public ZodiacHouse.Name StrongerRasi(ZodiacHouse.Name za, ZodiacHouse.Name zb, bool bSimpleLord)
+	public ZodiacHouse.Rasi StrongerRasi(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb, bool bSimpleLord)
 	{
 		var winner = 0;
 		return StrongerRasi(za, zb, bSimpleLord, ref winner);
 	}
 
-	public Body.Name StrongerGraha(Body.Name m, Body.Name n, bool bSimpleLord)
+	public Body.BodyType StrongerGraha(Body.BodyType m, Body.BodyType n, bool bSimpleLord)
 	{
 		var winner = 0;
 		return StrongerGraha(m, n, bSimpleLord, ref winner);
 	}
 
-	public Body.Name StrongerGraha(Body.Name m, Body.Name n, bool bSimpleLord, ref int winner)
+	public Body.BodyType StrongerGraha(Body.BodyType m, Body.BodyType n, bool bSimpleLord, ref int winner)
 	{
 		if (CmpGraha(m, n, bSimpleLord, ref winner))
 		{
@@ -481,7 +481,7 @@ public class FindStronger
 		return n;
 	}
 
-	public ZodiacHouse.Name WeakerRasi(ZodiacHouse.Name za, ZodiacHouse.Name zb, bool bSimpleLord)
+	public ZodiacHouse.Rasi WeakerRasi(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb, bool bSimpleLord)
 	{
 		if (CmpRasi(za, zb, bSimpleLord))
 		{
@@ -491,7 +491,7 @@ public class FindStronger
 		return za;
 	}
 
-	public Body.Name WeakerGraha(Body.Name m, Body.Name n, bool bSimpleLord)
+	public Body.BodyType WeakerGraha(Body.BodyType m, Body.BodyType n, bool bSimpleLord)
 	{
 		if (CmpGraha(m, n, bSimpleLord))
 		{
@@ -501,13 +501,13 @@ public class FindStronger
 		return m;
 	}
 
-	public bool CmpRasi(ZodiacHouse.Name za, ZodiacHouse.Name zb, bool bSimpleLord)
+	public bool CmpRasi(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb, bool bSimpleLord)
 	{
 		var winner = 0;
 		return CmpRasi(za, zb, bSimpleLord, ref winner);
 	}
 
-	public bool CmpRasi(ZodiacHouse.Name za, ZodiacHouse.Name zb, bool bSimpleLord, ref int winner)
+	public bool CmpRasi(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb, bool bSimpleLord, ref int winner)
 	{
 		var bRet   = false;
 		var bFound = true;
@@ -750,13 +750,13 @@ public class FindStronger
 		return true;
 	}
 
-	public bool CmpGraha(Body.Name m, Body.Name n, bool bSimpleLord)
+	public bool CmpGraha(Body.BodyType m, Body.BodyType n, bool bSimpleLord)
 	{
 		var winner = 0;
 		return CmpGraha(m, n, bSimpleLord, ref winner);
 	}
 
-	public bool CmpGraha(Body.Name m, Body.Name n, bool bSimpleLord, ref int winner)
+	public bool CmpGraha(Body.BodyType m, Body.BodyType n, bool bSimpleLord, ref int winner)
 	{
 		var bRet   = false;
 		var bFound = true;

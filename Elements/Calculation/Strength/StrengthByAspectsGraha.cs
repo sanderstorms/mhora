@@ -26,7 +26,7 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool stronger(Body.BodyType m, Body.BodyType n)
 	{
 		var a = value(m);
 		var b = value(n);
@@ -43,7 +43,7 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		throw new EqualStrength();
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		var a = value(za);
 		var b = value(zb);
@@ -60,26 +60,26 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		throw new EqualStrength();
 	}
 
-	protected int value(ZodiacHouse.Name _zh)
+	protected int value(ZodiacHouse.Rasi _zh)
 	{
 		var val = 0;
 		var bl  = GetStrengthLord(_zh);
 		var dl  = h.getPosition(bl).toDivisionPosition(dtype);
-		var dj  = h.getPosition(Body.Name.Jupiter).toDivisionPosition(dtype);
-		var dm  = h.getPosition(Body.Name.Mercury).toDivisionPosition(dtype);
+		var dj  = h.getPosition(Body.BodyType.Jupiter).toDivisionPosition(dtype);
+		var dm  = h.getPosition(Body.BodyType.Mercury).toDivisionPosition(dtype);
 
 		var zh = new ZodiacHouse(_zh);
-		if (dl.GrahaDristi(zh) || dl.zodiac_house.value == _zh)
+		if (dl.GrahaDristi(zh) || dl.zodiac_house.Sign == _zh)
 		{
 			val++;
 		}
 
-		if (dj.GrahaDristi(zh) || dj.zodiac_house.value == _zh)
+		if (dj.GrahaDristi(zh) || dj.zodiac_house.Sign == _zh)
 		{
 			val++;
 		}
 
-		if (dm.GrahaDristi(zh) || dm.zodiac_house.value == _zh)
+		if (dm.GrahaDristi(zh) || dm.zodiac_house.Sign == _zh)
 		{
 			val++;
 		}
@@ -87,8 +87,8 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		return val;
 	}
 
-	protected int value(Body.Name bm)
+	protected int value(Body.BodyType bm)
 	{
-		return value(h.getPosition(bm).toDivisionPosition(dtype).zodiac_house.value);
+		return value(h.getPosition(bm).toDivisionPosition(dtype).zodiac_house.Sign);
 	}
 }

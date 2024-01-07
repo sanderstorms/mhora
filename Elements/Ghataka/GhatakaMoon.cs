@@ -22,48 +22,48 @@ public class GhatakaMoon
 {
 	public static bool checkGhataka(ZodiacHouse janmaRasi, ZodiacHouse chandraRasi)
 	{
-		var ja = janmaRasi.value;
-		var ch = chandraRasi.value;
+		var ja = janmaRasi.Sign;
+		var ch = chandraRasi.Sign;
 
-		var gh = ZodiacHouse.Name.Ari;
+		var gh = ZodiacHouse.Rasi.Ari;
 
 		switch (ja)
 		{
-			case ZodiacHouse.Name.Ari:
-				gh = ZodiacHouse.Name.Ari;
+			case ZodiacHouse.Rasi.Ari:
+				gh = ZodiacHouse.Rasi.Ari;
 				break;
-			case ZodiacHouse.Name.Tau:
-				gh = ZodiacHouse.Name.Vir;
+			case ZodiacHouse.Rasi.Tau:
+				gh = ZodiacHouse.Rasi.Vir;
 				break;
-			case ZodiacHouse.Name.Gem:
-				gh = ZodiacHouse.Name.Aqu;
+			case ZodiacHouse.Rasi.Gem:
+				gh = ZodiacHouse.Rasi.Aqu;
 				break;
-			case ZodiacHouse.Name.Can:
-				gh = ZodiacHouse.Name.Leo;
+			case ZodiacHouse.Rasi.Can:
+				gh = ZodiacHouse.Rasi.Leo;
 				break;
-			case ZodiacHouse.Name.Leo:
-				gh = ZodiacHouse.Name.Cap;
+			case ZodiacHouse.Rasi.Leo:
+				gh = ZodiacHouse.Rasi.Cap;
 				break;
-			case ZodiacHouse.Name.Vir:
-				gh = ZodiacHouse.Name.Gem;
+			case ZodiacHouse.Rasi.Vir:
+				gh = ZodiacHouse.Rasi.Gem;
 				break;
-			case ZodiacHouse.Name.Lib:
-				gh = ZodiacHouse.Name.Sag;
+			case ZodiacHouse.Rasi.Lib:
+				gh = ZodiacHouse.Rasi.Sag;
 				break;
-			case ZodiacHouse.Name.Sco:
-				gh = ZodiacHouse.Name.Tau;
+			case ZodiacHouse.Rasi.Sco:
+				gh = ZodiacHouse.Rasi.Tau;
 				break;
-			case ZodiacHouse.Name.Sag:
-				gh = ZodiacHouse.Name.Pis;
+			case ZodiacHouse.Rasi.Sag:
+				gh = ZodiacHouse.Rasi.Pis;
 				break;
-			case ZodiacHouse.Name.Cap:
-				gh = ZodiacHouse.Name.Leo;
+			case ZodiacHouse.Rasi.Cap:
+				gh = ZodiacHouse.Rasi.Leo;
 				break;
-			case ZodiacHouse.Name.Aqu:
-				gh = ZodiacHouse.Name.Sag;
+			case ZodiacHouse.Rasi.Aqu:
+				gh = ZodiacHouse.Rasi.Sag;
 				break;
-			case ZodiacHouse.Name.Pis:
-				gh = ZodiacHouse.Name.Aqu;
+			case ZodiacHouse.Rasi.Pis:
+				gh = ZodiacHouse.Rasi.Aqu;
 				break;
 		}
 

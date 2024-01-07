@@ -72,11 +72,11 @@ public class SuDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al      = new ArrayList();
-		var bp_sl   = h.getPosition(Body.Name.SreeLagna);
+		var bp_sl   = h.getPosition(Body.BodyType.SreeLagna);
 		var zh_seed = bp_sl.toDivisionPosition(options.Division).zodiac_house;
-		zh_seed.value = options.findStrongerRasi(options.SeventhStrengths, zh_seed.value, zh_seed.add(7).value);
+		zh_seed.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_seed.Sign, zh_seed.Add(7).Sign);
 
-		var bIsForward = zh_seed.isOdd();
+		var bIsForward = zh_seed.IsOdd();
 
 		var dasa_length_sum = 0.0;
 		for (var i = 1; i <= 12; i++)
@@ -84,17 +84,17 @@ public class SuDasa : Dasa, IDasa
 			ZodiacHouse zh_dasa = null;
 			if (bIsForward)
 			{
-				zh_dasa = zh_seed.add(order[i]);
+				zh_dasa = zh_seed.Add(order[i]);
 			}
 			else
 			{
-				zh_dasa = zh_seed.addReverse(order[i]);
+				zh_dasa = zh_seed.AddReverse(order[i]);
 			}
 
 			var    bl          = GetLord(zh_dasa);
 			var    dp          = h.getPosition(bl).toDivisionPosition(options.Division);
 			double dasa_length = NarayanaDasaLength(zh_dasa, dp);
-			var    di          = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var    di          = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
 			al.Add(di);
 			dasa_length_sum += dasa_length;
 		}
@@ -134,9 +134,9 @@ public class SuDasa : Dasa, IDasa
 		for (var i = 1; i <= 12; i++)
 		{
 			ZodiacHouse zh_dasa = null;
-			zh_dasa = zh_seed.addReverse(order[i]);
+			zh_dasa = zh_seed.AddReverse(order[i]);
 
-			var di = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.value);
+			var di = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.Sign);
 			al.Add(di);
 			dasa_length_sum += dasa_length;
 		}
@@ -162,13 +162,13 @@ public class SuDasa : Dasa, IDasa
 		return options.Clone();
 	}
 
-	private Body.Name GetLord(ZodiacHouse zh)
+	private Body.BodyType GetLord(ZodiacHouse zh)
 	{
-		switch (zh.value)
+		switch (zh.Sign)
 		{
-			case ZodiacHouse.Name.Aqu: return options.ColordAqu;
-			case ZodiacHouse.Name.Sco: return options.ColordSco;
-			default:                   return Basics.SimpleLordOfZodiacHouse(zh.value);
+			case ZodiacHouse.Rasi.Aqu: return options.ColordAqu;
+			case ZodiacHouse.Rasi.Sco: return options.ColordSco;
+			default:                   return zh.Sign.SimpleLordOfZodiacHouse();
 		}
 	}
 }

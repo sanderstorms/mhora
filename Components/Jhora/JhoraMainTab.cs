@@ -197,7 +197,7 @@ public class JhoraMainTab : MhoraControl
 		this.tabVargas.Name     =  "tabVargas";
 		this.tabVargas.Size     =  new System.Drawing.Size(464, 227);
 		this.tabVargas.TabIndex =  2;
-		this.tabVargas.Text     =  "Varga";
+		this.tabVargas.Text     =  "Vargas";
 		this.tabVargas.Click    += new System.EventHandler(this.tabVargas_Click);
 		// 
 		// tabPanchanga

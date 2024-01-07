@@ -26,14 +26,14 @@ public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool stronger(Body.BodyType m, Body.BodyType n)
 	{
-		var za = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
-		var zb = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
+		var za = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.Sign;
+		var zb = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.Sign;
 		return stronger(za, zb);
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		int[] vals =
 		{
@@ -56,7 +56,7 @@ public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	public int naturalValueForRasi(ZodiacHouse.Name zha)
+	public int naturalValueForRasi(ZodiacHouse.Rasi zha)
 	{
 		int[] vals =
 		{

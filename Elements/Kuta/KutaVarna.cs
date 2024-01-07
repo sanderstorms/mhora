@@ -37,7 +37,7 @@ public class KutaVarna
 		return 2;
 	}
 
-	public static int getScore(Nakshatra m, Nakshatra f)
+	public static int getScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra f)
 	{
 		var em = getType(m);
 		var ef = getType(f);
@@ -74,9 +74,9 @@ public class KutaVarna
 		return 0;
 	}
 
-	public static EType getType(Nakshatra n)
+	public static EType getType(Nakshatras.Nakshatra n)
 	{
-		switch ((int) n.value % 6)
+		switch ((int) n % 6)
 		{
 			case 1: return EType.IBrahmana;
 			case 2: return EType.IKshatriya;

@@ -89,18 +89,18 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 		return vd.nextDasaLord(di);
 	}
 
-	public double lengthOfDasa(Body.Name plt)
+	public double lengthOfDasa(Body.BodyType plt)
 	{
 		return vd.lengthOfDasa(plt);
 	}
 
-	public Body.Name lordOfNakshatra(Elements.Nakshatra n)
+	public Body.BodyType lordOfNakshatra(Nakshatras.Nakshatra n)
 	{
 		throw new Exception();
-		return Body.Name.Lagna;
+		return Body.BodyType.Lagna;
 	}
 
-	public Body.Name lordOfYoga(Longitude l)
+	public Body.BodyType lordOfYoga(Longitude l)
 	{
 		return l.toSunMoonYoga().getLord();
 	}

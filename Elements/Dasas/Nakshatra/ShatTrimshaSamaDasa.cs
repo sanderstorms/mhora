@@ -46,7 +46,7 @@ public class ShatTrimshaSamaDasa : NakshatraDasa, INakshatraDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		return _Dasa(h.getPosition(Body.Name.Moon).longitude, 1, cycle);
+		return _Dasa(h.getPosition(Body.BodyType.Moon).longitude, 1, cycle);
 	}
 
 	public ArrayList AntarDasa(DasaEntry di)
@@ -74,59 +74,59 @@ public class ShatTrimshaSamaDasa : NakshatraDasa, INakshatraDasa
 		return new DasaEntry(nextDasaLordHelper(di.graha), 0, 0, di.level, string.Empty);
 	}
 
-	public double lengthOfDasa(Body.Name plt)
+	public double lengthOfDasa(Body.BodyType plt)
 	{
 		switch (plt)
 		{
-			case Body.Name.Moon:    return 1;
-			case Body.Name.Sun:     return 2;
-			case Body.Name.Jupiter: return 3;
-			case Body.Name.Mars:    return 4;
-			case Body.Name.Mercury: return 5;
-			case Body.Name.Saturn:  return 6;
-			case Body.Name.Venus:   return 7;
-			case Body.Name.Rahu:    return 8;
+			case Body.BodyType.Moon:    return 1;
+			case Body.BodyType.Sun:     return 2;
+			case Body.BodyType.Jupiter: return 3;
+			case Body.BodyType.Mars:    return 4;
+			case Body.BodyType.Mercury: return 5;
+			case Body.BodyType.Saturn:  return 6;
+			case Body.BodyType.Venus:   return 7;
+			case Body.BodyType.Rahu:    return 8;
 		}
 
 		Trace.Assert(false, "ShatTrimshaSamaDasa::lengthOfDasa");
 		return 0;
 	}
 
-	public Body.Name lordOfNakshatra(Elements.Nakshatra n)
+	public Body.BodyType lordOfNakshatra(Nakshatras.Nakshatra n)
 	{
-		var lords = new Body.Name[8]
+		var lords = new Body.BodyType[8]
 		{
-			Body.Name.Moon,
-			Body.Name.Sun,
-			Body.Name.Jupiter,
-			Body.Name.Mars,
-			Body.Name.Mercury,
-			Body.Name.Saturn,
-			Body.Name.Venus,
-			Body.Name.Rahu
+			Body.BodyType.Moon,
+			Body.BodyType.Sun,
+			Body.BodyType.Jupiter,
+			Body.BodyType.Mars,
+			Body.BodyType.Mercury,
+			Body.BodyType.Saturn,
+			Body.BodyType.Venus,
+			Body.BodyType.Rahu
 		};
-		var nak_val  = (int) n.value;
-		var shr_val  = (int) Elements.Nakshatra.Name.Sravana;
-		var diff_val = Basics.normalize_inc((int) Elements.Nakshatra.Name.Aswini, (int) Elements.Nakshatra.Name.Revati, nak_val - shr_val);
+		var nak_val  = (int) n;
+		var shr_val  = (int) Nakshatras.Nakshatra.Sravana;
+		var diff_val = Basics.normalize_inc((int) Nakshatras.Nakshatra.Aswini, (int) Nakshatras.Nakshatra.Revati, nak_val - shr_val);
 		var diff_off = diff_val % 8;
 		return lords[diff_off];
 	}
 
-	private Body.Name nextDasaLordHelper(Body.Name b)
+	private Body.BodyType nextDasaLordHelper(Body.BodyType b)
 	{
 		switch (b)
 		{
-			case Body.Name.Moon:    return Body.Name.Sun;
-			case Body.Name.Sun:     return Body.Name.Jupiter;
-			case Body.Name.Jupiter: return Body.Name.Mars;
-			case Body.Name.Mars:    return Body.Name.Mercury;
-			case Body.Name.Mercury: return Body.Name.Saturn;
-			case Body.Name.Saturn:  return Body.Name.Venus;
-			case Body.Name.Venus:   return Body.Name.Rahu;
-			case Body.Name.Rahu:    return Body.Name.Moon;
+			case Body.BodyType.Moon:    return Body.BodyType.Sun;
+			case Body.BodyType.Sun:     return Body.BodyType.Jupiter;
+			case Body.BodyType.Jupiter: return Body.BodyType.Mars;
+			case Body.BodyType.Mars:    return Body.BodyType.Mercury;
+			case Body.BodyType.Mercury: return Body.BodyType.Saturn;
+			case Body.BodyType.Saturn:  return Body.BodyType.Venus;
+			case Body.BodyType.Venus:   return Body.BodyType.Rahu;
+			case Body.BodyType.Rahu:    return Body.BodyType.Moon;
 		}
 
 		Trace.Assert(false, "ShatTrimshaSamaDasa::nextDasaLord");
-		return Body.Name.Lagna;
+		return Body.BodyType.Lagna;
 	}
 }

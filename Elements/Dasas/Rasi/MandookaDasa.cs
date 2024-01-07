@@ -65,17 +65,17 @@ public class MandookaDasa : Dasa, IDasa
 		var al      = new ArrayList(12);
 		var zh_seed = options.getSeed();
 
-		if (zh_seed.isOdd())
+		if (zh_seed.IsOdd())
 		{
-			zh_seed = zh_seed.add(3);
+			zh_seed = zh_seed.Add(3);
 		}
 		else
 		{
-			zh_seed = zh_seed.addReverse(3);
+			zh_seed = zh_seed.AddReverse(3);
 		}
 
 		var bDirZodiacal = true;
-		if (!zh_seed.isOdd())
+		if (!zh_seed.IsOdd())
 		{
 			//zh_seed = zh_seed.AdarsaSign();
 			bDirZodiacal = false;
@@ -87,15 +87,15 @@ public class MandookaDasa : Dasa, IDasa
 			ZodiacHouse zh_dasa = null;
 			if (bDirZodiacal)
 			{
-				zh_dasa = zh_seed.add(sequence[i]);
+				zh_dasa = zh_seed.Add(sequence[i]);
 			}
 			else
 			{
-				zh_dasa = zh_seed.addReverse(sequence[i]);
+				zh_dasa = zh_seed.AddReverse(sequence[i]);
 			}
 
 			double dasa_length = DasaLength(zh_dasa);
-			var    di          = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var    di          = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
 			al.Add(di);
 			dasa_length_sum += dasa_length;
 		}
@@ -114,8 +114,8 @@ public class MandookaDasa : Dasa, IDasa
 		var al = new ArrayList(12);
 
 		var zh_first    = new ZodiacHouse(pdi.zodiacHouse);
-		var zh_stronger = zh_first.add(1);
-		if (!zh_stronger.isOdd())
+		var zh_stronger = zh_first.Add(1);
+		if (!zh_stronger.IsOdd())
 		{
 			zh_stronger = zh_stronger.AdarsaSign();
 		}
@@ -124,8 +124,8 @@ public class MandookaDasa : Dasa, IDasa
 
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh_dasa = zh_stronger.add(i);
-			var di      = new DasaEntry(zh_dasa.value, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.value);
+			var zh_dasa = zh_stronger.Add(i);
+			var di      = new DasaEntry(zh_dasa.Sign, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.Sign);
 			al.Add(di);
 			dasa_start += pdi.dasaLength / 12.0;
 		}
@@ -135,7 +135,7 @@ public class MandookaDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return "Mandooka Dasa (seeded from) " + Basics.numPartsInDivisionString(options.Division);
+		return "Mandooka Dasa (seeded from) " + options.Division.NumPartsInDivisionString();
 	}
 
 	public object GetOptions()
@@ -160,7 +160,7 @@ public class MandookaDasa : Dasa, IDasa
 
 	public int DasaLength(ZodiacHouse zh)
 	{
-		switch ((int) zh.value % 3)
+		switch ((int) zh.Sign % 3)
 		{
 			case 1:  return 7;
 			case 2:  return 8;

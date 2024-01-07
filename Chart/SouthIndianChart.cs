@@ -59,32 +59,32 @@ public class SouthIndianChart : IDrawChart
 
 	public Point GetBodyPosition(Longitude l)
 	{
-		var zh      = l.toZodiacHouse().value;
+		var zh      = l.toZodiacHouse().Sign;
 		var dOffset = l.toZodiacHouseOffset();
 		var iOff    = (int) (dOffset / 30.0 * (xw / 4));
 		var pBase   = GetZhouseOffset(l.toZodiacHouse());
 		switch (zh)
 		{
-			case ZodiacHouse.Name.Ari:
-			case ZodiacHouse.Name.Tau:
-			case ZodiacHouse.Name.Gem:
+			case ZodiacHouse.Rasi.Ari:
+			case ZodiacHouse.Rasi.Tau:
+			case ZodiacHouse.Rasi.Gem:
 				pBase.X += iOff;
 				break;
-			case ZodiacHouse.Name.Can:
-			case ZodiacHouse.Name.Leo:
-			case ZodiacHouse.Name.Vir:
+			case ZodiacHouse.Rasi.Can:
+			case ZodiacHouse.Rasi.Leo:
+			case ZodiacHouse.Rasi.Vir:
 				pBase.X += xw / 4;
 				pBase.Y += iOff;
 				break;
-			case ZodiacHouse.Name.Lib:
-			case ZodiacHouse.Name.Sco:
-			case ZodiacHouse.Name.Sag:
+			case ZodiacHouse.Rasi.Lib:
+			case ZodiacHouse.Rasi.Sco:
+			case ZodiacHouse.Rasi.Sag:
 				pBase.X += xw / 4 - iOff;
 				pBase.Y += xw / 4;
 				break;
-			case ZodiacHouse.Name.Cap:
-			case ZodiacHouse.Name.Aqu:
-			case ZodiacHouse.Name.Pis:
+			case ZodiacHouse.Rasi.Cap:
+			case ZodiacHouse.Rasi.Aqu:
+			case ZodiacHouse.Rasi.Pis:
 				pBase.Y += xw / 4 - iOff;
 				break;
 		}
@@ -192,7 +192,7 @@ public class SouthIndianChart : IDrawChart
 
 	private Point GetZhouseOffset(ZodiacHouse zh)
 	{
-		switch ((int) zh.value)
+		switch ((int) zh.Sign)
 		{
 			case 1:  return new Point(xo + xw     / 4, yo + 0);
 			case 2:  return new Point(xo + xw * 2 / 4, yo + 0);

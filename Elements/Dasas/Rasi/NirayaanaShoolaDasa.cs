@@ -48,10 +48,10 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al      = new ArrayList();
-		var zh_seed = options.getSeed().add(2);
-		zh_seed.value = options.findStrongerRasi(options.SeventhStrengths, zh_seed.value, zh_seed.add(7).value);
+		var zh_seed = options.getSeed().Add(2);
+		zh_seed.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_seed.Sign, zh_seed.Add(7).Sign);
 
-		var bIsForward = zh_seed.isOdd();
+		var bIsForward = zh_seed.IsOdd();
 
 		var dasa_length_sum = 0.0;
 		for (var i = 1; i <= 12; i++)
@@ -59,15 +59,15 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 			ZodiacHouse zh_dasa = null;
 			if (bIsForward)
 			{
-				zh_dasa = zh_seed.add(i);
+				zh_dasa = zh_seed.Add(i);
 			}
 			else
 			{
-				zh_dasa = zh_seed.addReverse(i);
+				zh_dasa = zh_seed.AddReverse(i);
 			}
 
 			var dasa_length = getDasaLength(zh_dasa);
-			var di          = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var di          = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
 			al.Add(di);
 			dasa_length_sum += dasa_length;
 		}
@@ -115,7 +115,7 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 
 	public double getDasaLength(ZodiacHouse zh)
 	{
-		switch ((int) zh.value % 3)
+		switch ((int) zh.Sign % 3)
 		{
 			case 1:  return 7.0;
 			case 2:  return 8.0;

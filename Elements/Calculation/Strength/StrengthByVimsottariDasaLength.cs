@@ -27,7 +27,7 @@ public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStre
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool stronger(Body.BodyType m, Body.BodyType n)
 	{
 		var a = VimsottariDasa.LengthOfDasa(m);
 		var b = VimsottariDasa.LengthOfDasa(n);
@@ -44,7 +44,7 @@ public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStre
 		throw new EqualStrength();
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		var a = value(za);
 		var b = value(zb);
@@ -61,7 +61,7 @@ public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStre
 		throw new EqualStrength();
 	}
 
-	protected double value(ZodiacHouse.Name zh)
+	protected double value(ZodiacHouse.Rasi zh)
 	{
 		double length = 0;
 		foreach (Position bp in h.positionList)

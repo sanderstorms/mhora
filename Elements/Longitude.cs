@@ -115,20 +115,20 @@ public class Longitude
 	public Tithi toTithi()
 	{
 		var tIndex = (int) (Math.Floor(value / (360.0 / 30.0)) + 1);
-		var t      = new Tithi((Tables.Tithi.Value) tIndex);
+		var t      = new Tithi((Tables.Tithis.Tithi) tIndex);
 		return t;
 	}
 
-	public Karana toKarana()
+	public Karanas.Karana toKarana()
 	{
 		var kIndex = (int) (Math.Floor(value / (360.0 / 60.0)) + 1);
-		var k      = new Karana((Karana.Name) kIndex);
+		var k      = (Karanas.Karana) kIndex;
 		return k;
 	}
 
 	public double toKaranaBase()
 	{
-		var num  = (int) toKarana().value;
+		var num  = (int) toKarana();
 		var cusp = (num - 1) * (360.0 / 60.0);
 		return cusp;
 	}
@@ -140,7 +140,7 @@ public class Longitude
 
 	public double toTithiBase()
 	{
-		var num  = (int) toTithi().value;
+		var num  = (int) toTithi().Value;
 		var cusp = (num - 1) * (360.0 / 30.0);
 		return cusp;
 	}
@@ -150,32 +150,32 @@ public class Longitude
 		return value - toTithiBase();
 	}
 
-	public Nakshatra toNakshatra()
+	public Nakshatras.Nakshatra toNakshatra()
 	{
 		var snum = (int) (Math.Floor(value / (360.0 / 27.0)) + 1.0);
-		return new Nakshatra((Nakshatra.Name) snum);
+		return (Nakshatras.Nakshatra) snum;
 	}
 
 	public double toNakshatraBase()
 	{
-		var num  = (int) toNakshatra().value;
+		var num  = (int) toNakshatra();
 		var cusp = (num - 1) * (360.0 / 27.0);
 		return cusp;
 	}
 
-	public Nakshatra28 toNakshatra28()
+	public Nakshatras.Nakshatra28 toNakshatra28()
 	{
 		var snum = (int) (Math.Floor(value / (360.0 / 27.0)) + 1.0);
 
-		var ret = new Nakshatra28((Nakshatra28.Name) snum);
-		if (snum >= (int) Nakshatra28.Name.Abhijit)
+		var ret = (Nakshatras.Nakshatra28) snum;
+		if (snum >= (int) Nakshatras.Nakshatra28.Abhijit)
 		{
 			ret = ret.add(2);
 		}
 
 		if (value >= 270 + (6.0 + 40.0 / 60.0) && value <= 270 + (10.0 + 53.0 / 60.0 + 20.0 / 3600.0))
 		{
-			ret.value = Nakshatra28.Name.Abhijit;
+			ret = Nakshatras.Nakshatra28.Abhijit;
 		}
 
 		return ret;
@@ -184,19 +184,19 @@ public class Longitude
 	public ZodiacHouse toZodiacHouse()
 	{
 		var znum = (int) (Math.Floor(value / 30.0) + 1.0);
-		return new ZodiacHouse((ZodiacHouse.Name) znum);
+		return new ZodiacHouse((ZodiacHouse.Rasi) znum);
 	}
 
 	public double toZodiacHouseBase()
 	{
-		var znum = (int) toZodiacHouse().value;
+		var znum = (int) toZodiacHouse().Sign;
 		var cusp = (znum - 1) * 30.0;
 		return cusp;
 	}
 
 	public double toZodiacHouseOffset()
 	{
-		var znum = (int) toZodiacHouse().value;
+		var znum = (int) toZodiacHouse().Sign;
 		var cusp = (znum - 1) * 30.0;
 		var ret  = value - cusp;
 		Trace.Assert(ret >= 0.0 && ret <= 30.0);
@@ -213,7 +213,7 @@ public class Longitude
 
 	public double toNakshatraOffset()
 	{
-		var znum = (int) toNakshatra().value;
+		var znum = (int) toNakshatra();
 		var cusp = (znum - 1) * (360.0 / 27.0);
 		var ret  = value - cusp;
 		Trace.Assert(ret >= 0.0 && ret <= 360.0 / 27.0);
@@ -238,7 +238,7 @@ public class Longitude
 
 	public int toAbsoluteNakshatraPada()
 	{
-		var n = (int) toNakshatra().value;
+		var n = (int) toNakshatra();
 		var p = toNakshatraPada();
 		return (n - 1) * 4 + p;
 	}
@@ -263,7 +263,7 @@ public class Longitude
 	public override string ToString()
 	{
 		var lon     = this;
-		var rasi    = lon.toZodiacHouse().value.ToString();
+		var rasi    = lon.toZodiacHouse().Sign.ToString();
 		var offset  = lon.toZodiacHouseOffset();
 		var minutes = Math.Floor(offset);
 		offset = (offset - minutes) * 60.0;

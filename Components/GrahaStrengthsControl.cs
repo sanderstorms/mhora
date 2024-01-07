@@ -216,21 +216,21 @@ public class GrahaStrengthsControl : Form
 
 	private void InitializeComboBoxes()
 	{
-		for (var i = (int) Body.Name.Sun; i <= (int) Body.Name.Lagna; i++)
+		for (var i = (int) Body.BodyType.Sun; i <= (int) Body.BodyType.Lagna; i++)
 		{
-			var s = Body.toString((Body.Name) i);
+			var s = ((Body.BodyType) i).Name();
 			cbGraha1.Items.Add(s);
 			cbGraha2.Items.Add(s);
 		}
 
-		cbGraha1.SelectedIndex = (int) Body.Name.Mars;
-		cbGraha2.SelectedIndex = (int) Body.Name.Ketu;
+		cbGraha1.SelectedIndex = (int) Body.BodyType.Mars;
+		cbGraha2.SelectedIndex = (int) Body.BodyType.Ketu;
 
 		cbStrength.Items.Add("Co-Lord");
 		cbStrength.Items.Add("Naisargika Graha Dasa");
 		cbStrength.Items.Add("Vimsottari Dasa");
-		cbStrength.Items.Add("Karaka Kendradi Graha Dasa");
-		cbStrength.Items.Add("Karaka Kendradi Graha Dasa Co-Lord");
+		cbStrength.Items.Add("Karakas Kendradi Graha Dasa");
+		cbStrength.Items.Add("Karakas Kendradi Graha Dasa Co-Lord");
 		cbStrength.SelectedIndex = 0;
 
 		lVarga.Text = options.Division.ToString();
@@ -249,8 +249,8 @@ public class GrahaStrengthsControl : Form
 		mList.Columns.Add("Winner", -1, HorizontalAlignment.Left);
 
 		var winner = 0;
-		var b1     = (Body.Name) cbGraha1.SelectedIndex;
-		var b2     = (Body.Name) cbGraha2.SelectedIndex;
+		var b1     = (Body.BodyType) cbGraha1.SelectedIndex;
+		var b2     = (Body.BodyType) cbGraha2.SelectedIndex;
 
 		var bSimpleLord = false;
 		var al          = GetRules(ref bSimpleLord);
@@ -266,7 +266,7 @@ public class GrahaStrengthsControl : Form
 
 			if (winner == 0)
 			{
-				li.SubItems.Add(Body.toString(bw));
+				li.SubItems.Add(bw.Name());
 			}
 
 			mList.Items.Add(li);
@@ -291,9 +291,9 @@ public class GrahaStrengthsControl : Form
 	{
 		if (cbStrength.SelectedIndex == RVimsottariDasa)
 		{
-			options.Division       = new Division(Basics.DivisionType.BhavaPada);
-			cbGraha1.SelectedIndex = (int) Body.Name.Lagna;
-			cbGraha1.SelectedIndex = (int) Body.Name.Moon;
+			options.Division       = new Division(Vargas.DivisionType.BhavaPada);
+			cbGraha1.SelectedIndex = (int) Body.BodyType.Lagna;
+			cbGraha1.SelectedIndex = (int) Body.BodyType.Moon;
 		}
 
 		lVarga.Text = options.Division.ToString();
@@ -306,17 +306,17 @@ public class GrahaStrengthsControl : Form
 		{
 			switch (cbGraha1.SelectedIndex)
 			{
-				case (int) Body.Name.Mars:
-					cbGraha2.SelectedIndex = (int) Body.Name.Ketu;
+				case (int) Body.BodyType.Mars:
+					cbGraha2.SelectedIndex = (int) Body.BodyType.Ketu;
 					break;
-				case (int) Body.Name.Ketu:
-					cbGraha2.SelectedIndex = (int) Body.Name.Mars;
+				case (int) Body.BodyType.Ketu:
+					cbGraha2.SelectedIndex = (int) Body.BodyType.Mars;
 					break;
-				case (int) Body.Name.Saturn:
-					cbGraha2.SelectedIndex = (int) Body.Name.Rahu;
+				case (int) Body.BodyType.Saturn:
+					cbGraha2.SelectedIndex = (int) Body.BodyType.Rahu;
 					break;
-				case (int) Body.Name.Rahu:
-					cbGraha2.SelectedIndex = (int) Body.Name.Saturn;
+				case (int) Body.BodyType.Rahu:
+					cbGraha2.SelectedIndex = (int) Body.BodyType.Saturn;
 					break;
 			}
 		}
@@ -344,8 +344,8 @@ public class GrahaStrengthsControl : Form
 
 	private void populateColordLabel()
 	{
-		var lAqu = h.LordOfZodiacHouse(new ZodiacHouse(ZodiacHouse.Name.Aqu), options.Division);
-		var lSco = h.LordOfZodiacHouse(new ZodiacHouse(ZodiacHouse.Name.Sco), options.Division);
+		var lAqu = h.LordOfZodiacHouse(new ZodiacHouse(ZodiacHouse.Rasi.Aqu), options.Division);
+		var lSco = h.LordOfZodiacHouse(new ZodiacHouse(ZodiacHouse.Rasi.Sco), options.Division);
 		lColords.Text = string.Format("{0} and {1} are the stronger co-lords", lSco, lAqu);
 	}
 
@@ -362,7 +362,7 @@ public class GrahaStrengthsControl : Form
 	{
 		public UserOptions()
 		{
-			Division = new Division(Basics.DivisionType.Rasi);
+			Division = new Division(Vargas.DivisionType.Rasi);
 		}
 
 		[PGNotVisible]
@@ -372,8 +372,8 @@ public class GrahaStrengthsControl : Form
 			set;
 		}
 
-		[PGDisplayName("Varga")]
-		public Basics.DivisionType UIDivision
+		[PGDisplayName("Vargas")]
+		public Vargas.DivisionType UIDivision
 		{
 			get => Division.MultipleDivisions[0].Varga;
 			set => Division = new Division(value);

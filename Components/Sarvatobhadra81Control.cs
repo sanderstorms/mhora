@@ -194,11 +194,11 @@ public class Sarvatobhadra81Control : MhoraControl
 			}
 
 			var n = bp.longitude.toNakshatra28();
-			items[(int) n.value]++;
-			var pxBase = GetCellInRectangle(9, 26, (int) n.value);
-			var pxOff  = GetItemOffset(items[(int) n.value]);
+			items[(int) n]++;
+			var pxBase = GetCellInRectangle(9, 26, (int) n);
+			var pxOff  = GetItemOffset(items[(int) n]);
 			var px     = new Point(pxBase.X + pxOff.X, pxBase.Y + pxOff.Y);
-			var s      = Body.toShortString(bp.name);
+			var s      = bp.name.ToShortString();
 			g.DrawString(s, f, Brushes.Maroon, px.X, px.Y);
 		}
 	}
@@ -219,22 +219,22 @@ public class Sarvatobhadra81Control : MhoraControl
 		var f_sanskrit = new Font("Sanskrit 99", MhoraGlobalOptions.Instance.GeneralFont.SizeInPoints                                      + 5);
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh     = new ZodiacHouse(ZodiacHouse.Name.Ari).add(i);
+			var zh     = new ZodiacHouse(ZodiacHouse.Rasi.Ari).Add(i);
 			var pxBase = GetCellInRectangle(5, 11, i);
 			var pxOff  = GetItemOffsetCenter();
 			var px     = new Point(pxBase.X + pxOff.X, pxBase.Y + pxOff.Y);
-			var s      = zh.value.ToString();
+			var s      = zh.Sign.ToString();
 			var sz     = g.MeasureString(s, f);
 			g.DrawString(s, f, Brushes.Purple, px.X - sz.Width / 2, px.Y - sz.Height / 2);
 		}
 
 		for (var i = 1; i <= 28; i++)
 		{
-			var na     = new Nakshatra28(Nakshatra28.Name.Aswini).add(i);
+			var na     = Nakshatras.Nakshatra28.Aswini.add(i);
 			var pxBase = GetCellInRectangle(9, 26, i);
 			var pxOff  = GetItemOffsetCenter();
 			var px     = new Point(pxBase.X + pxOff.X, pxBase.Y);
-			var s      = na.value.ToString().Substring(0, 3);
+			var s      = na.ToString().Substring(0, 3);
 			var sz     = g.MeasureString(s, f);
 			g.DrawString(s, f, Brushes.DarkGreen, px.X - sz.Width / 2, px.Y);
 		}

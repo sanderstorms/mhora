@@ -5,14 +5,14 @@ namespace Mhora.Components.Varga;
 
 public class ChartItems
 {
-	private readonly Dictionary<ZodiacHouse.Name, List<DivisionPosition>> _items;
+	private readonly Dictionary<ZodiacHouse.Rasi, List<DivisionPosition>> _items;
 
 	public ChartItems()
 	{
-		_items = new Dictionary<ZodiacHouse.Name, List<DivisionPosition>>();
+		_items = new Dictionary<ZodiacHouse.Rasi, List<DivisionPosition>>();
 	}
 
-	public List<DivisionPosition> this[ZodiacHouse.Name sign]
+	public List<DivisionPosition> this[ZodiacHouse.Rasi sign]
 	{
 		get
 		{
@@ -33,7 +33,7 @@ public class ChartItems
 
 	public void Add(DivisionPosition dp)
 	{
-		if (_items.TryGetValue(dp.zodiac_house.value, out var dpList))
+		if (_items.TryGetValue(dp.zodiac_house.Sign, out var dpList))
 		{
 			dpList.Add(dp);
 		}
@@ -43,7 +43,7 @@ public class ChartItems
 			{
 				dp
 			};
-			_items.Add(dp.zodiac_house.value, dpList);
+			_items.Add(dp.zodiac_house.Sign, dpList);
 		}
 	}
 }

@@ -22,47 +22,47 @@ namespace Mhora.Elements.Ghataka;
 
 public class GhatakaDay
 {
-	public static bool checkDay(ZodiacHouse janmaRasi, Basics.Weekday wd)
+	public static bool checkDay(ZodiacHouse janmaRasi, Tables.Hora.Weekday wd)
 	{
-		var ja = janmaRasi.value;
-		var gh = Basics.Weekday.Sunday;
+		var ja = janmaRasi.Sign;
+		var gh = Tables.Hora.Weekday.Sunday;
 		switch (ja)
 		{
-			case ZodiacHouse.Name.Ari:
-				gh = Basics.Weekday.Sunday;
+			case ZodiacHouse.Rasi.Ari:
+				gh = Tables.Hora.Weekday.Sunday;
 				break;
-			case ZodiacHouse.Name.Tau:
-				gh = Basics.Weekday.Saturday;
+			case ZodiacHouse.Rasi.Tau:
+				gh = Tables.Hora.Weekday.Saturday;
 				break;
-			case ZodiacHouse.Name.Gem:
-				gh = Basics.Weekday.Monday;
+			case ZodiacHouse.Rasi.Gem:
+				gh = Tables.Hora.Weekday.Monday;
 				break;
-			case ZodiacHouse.Name.Can:
-				gh = Basics.Weekday.Wednesday;
+			case ZodiacHouse.Rasi.Can:
+				gh = Tables.Hora.Weekday.Wednesday;
 				break;
-			case ZodiacHouse.Name.Leo:
-				gh = Basics.Weekday.Saturday;
+			case ZodiacHouse.Rasi.Leo:
+				gh = Tables.Hora.Weekday.Saturday;
 				break;
-			case ZodiacHouse.Name.Vir:
-				gh = Basics.Weekday.Saturday;
+			case ZodiacHouse.Rasi.Vir:
+				gh = Tables.Hora.Weekday.Saturday;
 				break;
-			case ZodiacHouse.Name.Lib:
-				gh = Basics.Weekday.Thursday;
+			case ZodiacHouse.Rasi.Lib:
+				gh = Tables.Hora.Weekday.Thursday;
 				break;
-			case ZodiacHouse.Name.Sco:
-				gh = Basics.Weekday.Friday;
+			case ZodiacHouse.Rasi.Sco:
+				gh = Tables.Hora.Weekday.Friday;
 				break;
-			case ZodiacHouse.Name.Sag:
-				gh = Basics.Weekday.Friday;
+			case ZodiacHouse.Rasi.Sag:
+				gh = Tables.Hora.Weekday.Friday;
 				break;
-			case ZodiacHouse.Name.Cap:
-				gh = Basics.Weekday.Tuesday;
+			case ZodiacHouse.Rasi.Cap:
+				gh = Tables.Hora.Weekday.Tuesday;
 				break;
-			case ZodiacHouse.Name.Aqu:
-				gh = Basics.Weekday.Thursday;
+			case ZodiacHouse.Rasi.Aqu:
+				gh = Tables.Hora.Weekday.Thursday;
 				break;
-			case ZodiacHouse.Name.Pis:
-				gh = Basics.Weekday.Friday;
+			case ZodiacHouse.Rasi.Pis:
+				gh = Tables.Hora.Weekday.Friday;
 				break;
 		}
 

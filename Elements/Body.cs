@@ -25,10 +25,10 @@ namespace Mhora.Elements;
 /// <summary>
 ///     A compile-time list of every body we will use in this program
 /// </summary>
-public class Body
+public static class Body
 {
 	[TypeConverter(typeof(EnumDescConverter))]
-	public enum Name
+	public enum BodyType
 	{
 		// Do NOT CHANGE ORDER WITHOUT CHANING NARAYANA DASA ETC
 		// RELY ON EXPLICIT EQUAL CONVERSION FOR STRONGER CO_LORD ETC
@@ -105,37 +105,90 @@ public class Body
 		Other
 	}
 
-	public static int toInt(Name b)
+	public static readonly string[] karakas =
 	{
-		return (int) b;
-	}
+		"Atma",
+		"Amatya",
+		"Bhratri",
+		"Matri",
+		"Pitri",
+		"Putra",
+		"Jnaati",
+		"Dara"
+	};
 
-	public static Longitude exaltationDegree(Name b)
+	public static readonly string[] karakas_s =
+	{
+		"AK",
+		"AmK",
+		"BK",
+		"MK",
+		"PiK",
+		"PuK",
+		"JK",
+		"DK"
+	};
+
+	public static readonly string[] karakas7 =
+	{
+		"Atma",
+		"Amatya",
+		"Bhratri",
+		"Matri",
+		"Pitri",
+		"Jnaati",
+		"Dara"
+	};
+
+	public static readonly string[] karakas_s7 =
+	{
+		"AK",
+		"AmK",
+		"BK",
+		"MK",
+		"PiK",
+		"JK",
+		"DK"
+	};
+
+	public static readonly int[] latta_aspects =
+	{
+		12,
+		22,
+		3,
+		7,
+		6,
+		5,
+		8,
+		9
+	};
+
+	public static Longitude ExaltationDegree(this BodyType b)
 	{
 		var _b = (int) b;
-		Debug.Assert(_b >= (int) Name.Sun && _b <= (int) Name.Saturn);
+		Debug.Assert(_b >= (int) BodyType.Sun && _b <= (int) BodyType.Saturn);
 		double d = 0;
 		switch (b)
 		{
-			case Name.Sun:
+			case BodyType.Sun:
 				d = 10;
 				break;
-			case Name.Moon:
+			case BodyType.Moon:
 				d = 33;
 				break;
-			case Name.Mars:
+			case BodyType.Mars:
 				d = 298;
 				break;
-			case Name.Mercury:
+			case BodyType.Mercury:
 				d = 165;
 				break;
-			case Name.Jupiter:
+			case BodyType.Jupiter:
 				d = 95;
 				break;
-			case Name.Venus:
+			case BodyType.Venus:
 				d = 357;
 				break;
-			case Name.Saturn:
+			case BodyType.Saturn:
 				d = 200;
 				break;
 		}
@@ -143,62 +196,62 @@ public class Body
 		return new Longitude(d);
 	}
 
-	public static Longitude debilitationDegree(Name b)
+	public static Longitude DebilitationDegree(this BodyType b)
 	{
-		return exaltationDegree(b).add(180);
+		return ExaltationDegree(b).add(180);
 	}
 
-	public static string toString(Name b)
+	public static string Name(this BodyType b)
 	{
 		switch (b)
 		{
-			case Name.Lagna:   return "Lagna";
-			case Name.Sun:     return "Sun";
-			case Name.Moon:    return "Moon";
-			case Name.Mars:    return "Mars";
-			case Name.Mercury: return "Mercury";
-			case Name.Jupiter: return "Jupiter";
-			case Name.Venus:   return "Venus";
-			case Name.Saturn:  return "Saturn";
-			case Name.Rahu:    return "Rahu";
-			case Name.Ketu:    return "Ketu";
+			case BodyType.Lagna:   return "Lagna";
+			case BodyType.Sun:     return "Sun";
+			case BodyType.Moon:    return "Moon";
+			case BodyType.Mars:    return "Mars";
+			case BodyType.Mercury: return "Mercury";
+			case BodyType.Jupiter: return "Jupiter";
+			case BodyType.Venus:   return "Venus";
+			case BodyType.Saturn:  return "Saturn";
+			case BodyType.Rahu:    return "Rahu";
+			case BodyType.Ketu:    return "Ketu";
 		}
 
 		return string.Empty;
 	}
 
-	public static string toShortString(Name b)
+	public static string ToShortString(this BodyType b)
 	{
 		switch (b)
 		{
-			case Name.Lagna:        return "As";
-			case Name.Sun:          return "Su";
-			case Name.Moon:         return "Mo";
-			case Name.Mars:         return "Ma";
-			case Name.Mercury:      return "Me";
-			case Name.Jupiter:      return "Ju";
-			case Name.Venus:        return "Ve";
-			case Name.Saturn:       return "Sa";
-			case Name.Rahu:         return "Ra";
-			case Name.Ketu:         return "Ke";
-			case Name.AL:           return "AL";
-			case Name.A2:           return "A2";
-			case Name.A3:           return "A3";
-			case Name.A4:           return "A4";
-			case Name.A5:           return "A5";
-			case Name.A6:           return "A6";
-			case Name.A7:           return "A7";
-			case Name.A8:           return "A8";
-			case Name.A9:           return "A9";
-			case Name.A10:          return "A10";
-			case Name.A11:          return "A11";
-			case Name.UL:           return "UL";
-			case Name.GhatiLagna:   return "GL";
-			case Name.BhavaLagna:   return "BL";
-			case Name.HoraLagna:    return "HL";
-			case Name.VighatiLagna: return "ViL";
-			case Name.SreeLagna:    return "SL";
-			case Name.Pranapada:    return "PL";
+			case BodyType.Lagna:        return "As";
+			case BodyType.Sun:          return "Su";
+			case BodyType.Moon:         return "Mo";
+			case BodyType.Mars:         return "Ma";
+			case BodyType.Mercury:      return "Me";
+			case BodyType.Jupiter:      return "Ju";
+			case BodyType.Venus:        return "Ve";
+			case BodyType.Saturn:       return "Sa";
+			case BodyType.Rahu:         return "Ra";
+			case BodyType.Ketu:         return "Ke";
+			case BodyType.AL:           return "AL";
+			case BodyType.A2:           return "A2";
+			case BodyType.A3:           return "A3";
+			case BodyType.A4:           return "A4";
+			case BodyType.A5:           return "A5";
+			case BodyType.A6:           return "A6";
+			case BodyType.A7:           return "A7";
+			case BodyType.A8:           return "A8";
+			case BodyType.A9:           return "A9";
+			case BodyType.A10:          return "A10";
+			case BodyType.A11:          return "A11";
+			case BodyType.UL:           return "UL";
+			case BodyType.GhatiLagna:   return "GL";
+			case BodyType.BhavaLagna:   return "BL";
+			case BodyType.HoraLagna:    return "HL";
+			case BodyType.VighatiLagna: return "ViL";
+			case BodyType.SreeLagna:    return "SL";
+			case BodyType.Pranapada:    return "PL";
 		}
 
 		Trace.Assert(false, "Basics.Body.toShortString");

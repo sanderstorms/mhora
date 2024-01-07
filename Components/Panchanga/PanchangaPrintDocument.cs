@@ -27,7 +27,7 @@ using Mhora.Elements.Calculation;
 using Mhora.Elements.Hora;
 using Mhora.SwissEph;
 using Mhora.Tables;
-using Tithi = Mhora.Tables.Tithi;
+using mhora.Util;
 
 namespace Mhora.Components.Panchanga;
 
@@ -204,8 +204,8 @@ public class PanchangaPrintDocument : PrintDocument
 
 		for (var j = 1; j <= 12; j++)
 		{
-			var zh = new ZodiacHouse((ZodiacHouse.Name) j);
-			g.DrawString(zh.value.ToString(), f, b, day_offset + 100 + (int) zh.value * time_width, 0);
+			var zh = new ZodiacHouse((ZodiacHouse.Rasi) j);
+			g.DrawString(zh.Sign.ToString(), f, b, day_offset + 100 + (int) zh.Sign * time_width, 0);
 		}
 
 		g.TranslateTransform(0, f.Height);
@@ -221,16 +221,16 @@ public class PanchangaPrintDocument : PrintDocument
 			{
 				var pmi = (PanchangaMomentInfo) local.lagnas_ut[j];
 				//Moment m_lagna = new Moment(pmi.ut, h);
-				var zh = new ZodiacHouse((ZodiacHouse.Name) pmi.info);
-				zh = zh.add(12);
+				var zh = new ZodiacHouse((ZodiacHouse.Rasi) pmi.info);
+				zh = zh.Add(12);
 				var _f = f;
 
-				if (local.lagna_zh == zh.value)
+				if (local.lagna_zh == zh.Sign)
 				{
 					_f = f_u;
 				}
 
-				g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), _f, b, day_offset + 100 + (int) zh.value * time_width, 0);
+				g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), _f, b, day_offset + 100 + (int) zh.Sign * time_width, 0);
 			}
 
 			local_index = ++i;
@@ -261,7 +261,7 @@ public class PanchangaPrintDocument : PrintDocument
 		PrintTitle(g, 0, wday_offset                             + wday_width, "Date/Day");
 		PrintTitle(g, sunrise_offset, sunset_offset              + sunset_width, "Sunrise/set");
 		PrintTitle(g, nak_name_offset, nak_time_offset           + nak_time_width, "Nakshatra");
-		PrintTitle(g, tithi_name_offset, tithi_time_offset       + tithi_time_width, "Tithi");
+		PrintTitle(g, tithi_name_offset, tithi_time_offset       + tithi_time_width, "Tithis");
 		PrintTitle(g, karana_name_1_offset, karana_time_2_offset + karana_time_width, "Karana");
 		PrintTitle(g, sm_name_offset, sm_time_offset             + sm_time_width, "SM-Yoga");
 
@@ -277,7 +277,7 @@ public class PanchangaPrintDocument : PrintDocument
 			var m_sunset  = new Moment(0, 0, 0, local.sunset);
 
 			g.DrawString(m_sunrise.ToShortDateString(), f, b, day_offset, 0);
-			g.DrawString(Basics.weekdayToShortString(local.wday), f, b, wday_offset, 0);
+			g.DrawString(Hora.weekdayToShortString(local.wday), f, b, wday_offset, 0);
 
 			if (opts.ShowSunriset)
 			{
@@ -296,9 +296,9 @@ public class PanchangaPrintDocument : PrintDocument
 				for (var j = 0; j < numTithis; j++)
 				{
 					var pmi    = (PanchangaMomentInfo) globals.tithis_ut[local.tithi_index_start + 1 + j];
-					var t      = new Elements.Tithi((Tithi.Value) pmi.info);
+					var t      = new Elements.Tithi((Tithis.Tithi) pmi.info);
 					var mTithi = new Moment(pmi.ut, h);
-					g.DrawString(t.value.ToUnqualifiedString(), f, b, tithi_name_offset, j                           * f.Height);
+					g.DrawString(t.Value.ToUnqualifiedString(), f, b, tithi_name_offset, j                           * f.Height);
 					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, tithi_time_offset, j * f.Height);
 				}
 			}
@@ -309,7 +309,7 @@ public class PanchangaPrintDocument : PrintDocument
 				for (var j = 0; j < numKaranas; j++)
 				{
 					var pmi         = (PanchangaMomentInfo) globals.karanas_ut[local.karana_index_start + 1 + j];
-					var k           = new Karana((Karana.Name) pmi.info);
+					var k           = (Karanas.Karana) pmi.info;
 					var mKarana     = new Moment(pmi.ut, h);
 					var jRow        = (int) Math.Floor((decimal) j / 2);
 					var name_offset = karana_name_1_offset;
@@ -320,7 +320,7 @@ public class PanchangaPrintDocument : PrintDocument
 						time_offset = karana_time_2_offset;
 					}
 
-					g.DrawString(k.value.ToString(), f, b, name_offset, jRow                                      * f.Height);
+					g.DrawString(k.ToString(), f, b, name_offset, jRow                                      * f.Height);
 					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, time_offset, jRow * f.Height);
 				}
 			}
@@ -331,9 +331,9 @@ public class PanchangaPrintDocument : PrintDocument
 				for (var j = 0; j < numNaks; j++)
 				{
 					var pmi  = (PanchangaMomentInfo) globals.nakshatras_ut[local.nakshatra_index_start + 1 + j];
-					var n    = new Nakshatra((Nakshatra.Name) pmi.info);
+					var n    = (Nakshatras.Nakshatra) pmi.info;
 					var mNak = new Moment(pmi.ut, h);
-					g.DrawString(n.ToString(), f, b, nak_name_offset, j                                            * f.Height);
+					g.DrawString(n.Name(), f, b, nak_name_offset, j                                            * f.Height);
 					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, nak_time_offset, j * f.Height);
 				}
 			}

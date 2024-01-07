@@ -10,26 +10,26 @@ namespace Mhora.Elements;
 /// </summary>
 public class NonLinearTransit
 {
-	private readonly Body.Name b;
+	private readonly Body.BodyType b;
 	private readonly Horoscope h;
 
-	public NonLinearTransit(Horoscope _h, Body.Name _b)
+	public NonLinearTransit(Horoscope _h, Body.BodyType _b)
 	{
 		h = _h;
 		b = _b;
 	}
 
-	public int BodyNameToSweph(Body.Name b)
+	public int BodyNameToSweph(Body.BodyType b)
 	{
 		switch (b)
 		{
-			case Body.Name.Sun:     return sweph.SE_SUN;
-			case Body.Name.Moon:    return sweph.SE_MOON;
-			case Body.Name.Mars:    return sweph.SE_MARS;
-			case Body.Name.Mercury: return sweph.SE_MERCURY;
-			case Body.Name.Jupiter: return sweph.SE_JUPITER;
-			case Body.Name.Venus:   return sweph.SE_VENUS;
-			case Body.Name.Saturn:  return sweph.SE_SATURN;
+			case Body.BodyType.Sun:     return sweph.SE_SUN;
+			case Body.BodyType.Moon:    return sweph.SE_MOON;
+			case Body.BodyType.Mars:    return sweph.SE_MARS;
+			case Body.BodyType.Mercury: return sweph.SE_MERCURY;
+			case Body.BodyType.Jupiter: return sweph.SE_JUPITER;
+			case Body.BodyType.Venus:   return sweph.SE_VENUS;
+			case Body.BodyType.Saturn:  return sweph.SE_SATURN;
 			default:                throw new Exception();
 		}
 	}

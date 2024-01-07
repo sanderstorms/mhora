@@ -22,6 +22,6 @@ namespace Mhora.Elements.Dasas.Nakshatra;
 
 public interface INakshatraKaranaDasa : IDasa
 {
-	Body.Name lordOfKarana(Longitude l);
-	double    lengthOfDasa(Body.Name plt);
+	Body.BodyType lordOfKarana(Longitude l);
+	double    lengthOfDasa(Body.BodyType plt);
 }

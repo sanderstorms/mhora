@@ -26,19 +26,19 @@ namespace Mhora.Elements.Dasas;
 public class DasaEntry
 {
 	public double           dasaLength; // 1 year = 360 days = 360 degrees is used internally!!!!
-	public Body.Name        graha;
+	public Body.BodyType        graha;
 	public int              level;
 	public string           shortDesc;
 	public double           startUT;
-	public ZodiacHouse.Name zodiacHouse;
+	public ZodiacHouse.Rasi zodiacHouse;
 
-	public DasaEntry(Body.Name _graha, double _startUT, double _dasaLength, int _level, string _shortDesc)
+	public DasaEntry(Body.BodyType _graha, double _startUT, double _dasaLength, int _level, string _shortDesc)
 	{
 		graha = _graha;
 		Construct(_startUT, _dasaLength, _level, _shortDesc);
 	}
 
-	public DasaEntry(ZodiacHouse.Name _zodiacHouse, double _startUT, double _dasaLength, int _level, string _shortDesc)
+	public DasaEntry(ZodiacHouse.Rasi _zodiacHouse, double _startUT, double _dasaLength, int _level, string _shortDesc)
 	{
 		zodiacHouse = _zodiacHouse;
 		Construct(_startUT, _dasaLength, _level, _shortDesc);
@@ -49,8 +49,8 @@ public class DasaEntry
 		startUT     = dasaLength = 0.0;
 		level       = 1;
 		shortDesc   = "Jup";
-		graha       = Body.Name.Jupiter;
-		zodiacHouse = ZodiacHouse.Name.Ari;
+		graha       = Body.BodyType.Jupiter;
+		zodiacHouse = ZodiacHouse.Rasi.Ari;
 	}
 
 	public string DasaName
@@ -77,13 +77,13 @@ public class DasaEntry
 		set => dasaLength = value;
 	}
 
-	public Body.Name Graha
+	public Body.BodyType Graha
 	{
 		get => graha;
 		set => graha = value;
 	}
 
-	public ZodiacHouse.Name ZHouse
+	public ZodiacHouse.Rasi ZHouse
 	{
 		get => zodiacHouse;
 		set => zodiacHouse = value;

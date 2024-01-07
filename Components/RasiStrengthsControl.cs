@@ -204,9 +204,9 @@ public class RasiStrengthsControl : Form
 
 	private void InitializeComboBoxes()
 	{
-		for (var i = (int) ZodiacHouse.Name.Ari; i <= (int) ZodiacHouse.Name.Pis; i++)
+		for (var i = (int) ZodiacHouse.Rasi.Ari; i <= (int) ZodiacHouse.Rasi.Pis; i++)
 		{
-			var s = string.Format("{0}", ((ZodiacHouse.Name) i).ToString());
+			var s = string.Format("{0}", ((ZodiacHouse.Rasi) i).ToString());
 			cbRasi1.Items.Add(s);
 			cbRasi2.Items.Add(s);
 		}
@@ -217,7 +217,7 @@ public class RasiStrengthsControl : Form
 		cbStrength.Items.Add("Narayana Dasa");
 		cbStrength.Items.Add("Naisargika Dasa");
 		cbStrength.Items.Add("Moola Dasa");
-		cbStrength.Items.Add("Karaka Kendradi Graha Dasa");
+		cbStrength.Items.Add("Karakas Kendradi Graha Dasa");
 		cbStrength.Items.Add("Navamsa Dasa");
 		cbStrength.Items.Add("Jaimini's 1st Source of Strength");
 		cbStrength.Items.Add("Jaimini's 2nd Source of Strength");
@@ -248,8 +248,8 @@ public class RasiStrengthsControl : Form
 			cbRasi2.SelectedIndex = 0;
 		}
 
-		var z1 = (ZodiacHouse.Name) cbRasi1.SelectedIndex + 1;
-		var z2 = (ZodiacHouse.Name) cbRasi2.SelectedIndex + 1;
+		var z1 = (ZodiacHouse.Rasi) cbRasi1.SelectedIndex + 1;
+		var z2 = (ZodiacHouse.Rasi) cbRasi2.SelectedIndex + 1;
 
 		var al = GetRules();
 		for (var i = 0; i < al.Count; i++)
@@ -316,7 +316,7 @@ public class RasiStrengthsControl : Form
 	{
 		public UserOptions()
 		{
-			Division = new Division(Basics.DivisionType.Rasi);
+			Division = new Division(Vargas.DivisionType.Rasi);
 		}
 
 		[PGNotVisible]
@@ -326,8 +326,8 @@ public class RasiStrengthsControl : Form
 			set;
 		}
 
-		[PGDisplayName("Varga")]
-		public Basics.DivisionType UIDivision
+		[PGDisplayName("Vargas")]
+		public Vargas.DivisionType UIDivision
 		{
 			get => Division.MultipleDivisions[0].Varga;
 			set => Division = new Division(value);

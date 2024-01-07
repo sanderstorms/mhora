@@ -26,14 +26,14 @@ public class StrengthByLordInOwnHouse : BaseStrength, IStrengthRasi, IStrengthGr
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool stronger(Body.BodyType m, Body.BodyType n)
 	{
-		var zm = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
-		var zn = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
+		var zm = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.Sign;
+		var zn = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.Sign;
 		return stronger(zm, zn);
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		var a = value(za);
 		var b = value(zb);
@@ -50,15 +50,15 @@ public class StrengthByLordInOwnHouse : BaseStrength, IStrengthRasi, IStrengthGr
 		throw new EqualStrength();
 	}
 
-	protected int value(ZodiacHouse.Name _zh)
+	protected int value(ZodiacHouse.Rasi _zh)
 	{
 		var ret = 0;
 
 		var zh = new ZodiacHouse(_zh);
 		var bl = GetStrengthLord(zh);
 		var pl = h.getPosition(bl).toDivisionPosition(dtype);
-		var pj = h.getPosition(Body.Name.Jupiter).toDivisionPosition(dtype);
-		var pm = h.getPosition(Body.Name.Mercury).toDivisionPosition(dtype);
+		var pj = h.getPosition(Body.BodyType.Jupiter).toDivisionPosition(dtype);
+		var pm = h.getPosition(Body.BodyType.Mercury).toDivisionPosition(dtype);
 
 		if (pl.GrahaDristi(zh))
 		{

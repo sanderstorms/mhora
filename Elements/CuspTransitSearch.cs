@@ -3,28 +3,21 @@ using Mhora.SwissEph;
 
 namespace Mhora.Elements;
 
-internal class CuspTransitSearch
+public static class CuspTransitSearch
 {
-	private readonly Horoscope h;
-
-	public CuspTransitSearch(Horoscope _h)
-	{
-		h = _h;
-	}
-
-	private double DirectSpeed(Body.Name b)
+	private static double DirectSpeed(Body.BodyType b)
 	{
 		switch (b)
 		{
-			case Body.Name.Sun:   return 365.2425;
-			case Body.Name.Moon:  return 28.0;
-			case Body.Name.Lagna: return 1.0;
+			case Body.BodyType.Sun:   return 365.2425;
+			case Body.BodyType.Moon:  return 28.0;
+			case Body.BodyType.Lagna: return 1.0;
 		}
 
 		return 0.0;
 	}
 
-	public double TransitSearchDirect(Body.Name SearchBody, Moment StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
+	public static double TransitSearchDirect(this Horoscope h, Body.BodyType SearchBody, Moment StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
 	{
 		var bDiscard = true;
 
@@ -46,7 +39,7 @@ internal class CuspTransitSearch
 		sweph.obtainLock(h);
 		double found_ut = 0;
 
-		if (SearchBody == Body.Name.Lagna)
+		if (SearchBody == Body.BodyType.Lagna)
 		{
 			found_ut = t.LinearSearchBinary(ut_base + ut_diff_approx - 3.0 / 24.0, ut_base + ut_diff_approx + 3.0 / 24.0, TransitPoint, t.GenericLongitude);
 		}
@@ -62,14 +55,14 @@ internal class CuspTransitSearch
 	}
 
 
-	public double TransitSearch(Body.Name SearchBody, Moment StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
+	public static double TransitSearch(this Horoscope h, Body.BodyType SearchBody, Moment StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
 	{
-		if (SearchBody == Body.Name.Sun || SearchBody == Body.Name.Moon)
+		if (SearchBody == Body.BodyType.Sun || SearchBody == Body.BodyType.Moon)
 		{
-			return TransitSearchDirect(SearchBody, StartDate, Forward, TransitPoint, FoundLon, ref bForward);
+			return h.TransitSearchDirect(SearchBody, StartDate, Forward, TransitPoint, FoundLon, ref bForward);
 		}
 
-		if (((int) SearchBody <= (int) Body.Name.Moon || (int) SearchBody > (int) Body.Name.Saturn) && SearchBody != Body.Name.Lagna)
+		if (((int) SearchBody <= (int) Body.BodyType.Moon || (int) SearchBody > (int) Body.BodyType.Saturn) && SearchBody != Body.BodyType.Lagna)
 		{
 			return StartDate.toUniversalTime();
 		}

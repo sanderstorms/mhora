@@ -20,51 +20,51 @@ namespace Mhora.Elements.Ghataka;
 
 public class GhatakaStar
 {
-	public static bool checkStar(ZodiacHouse janmaRasi, Nakshatra nak)
+	public static bool checkStar(ZodiacHouse janmaRasi, Nakshatras.Nakshatra nak)
 	{
-		var ja = janmaRasi.value;
-		var gh = Nakshatra.Name.Aswini;
+		var ja = janmaRasi.Sign;
+		var gh = Nakshatras.Nakshatra.Aswini;
 		switch (ja)
 		{
-			case ZodiacHouse.Name.Ari:
-				gh = Nakshatra.Name.Makha;
+			case ZodiacHouse.Rasi.Ari:
+				gh = Nakshatras.Nakshatra.Makha;
 				break;
-			case ZodiacHouse.Name.Tau:
-				gh = Nakshatra.Name.Hasta;
+			case ZodiacHouse.Rasi.Tau:
+				gh = Nakshatras.Nakshatra.Hasta;
 				break;
-			case ZodiacHouse.Name.Gem:
-				gh = Nakshatra.Name.Swati;
+			case ZodiacHouse.Rasi.Gem:
+				gh = Nakshatras.Nakshatra.Swati;
 				break;
-			case ZodiacHouse.Name.Can:
-				gh = Nakshatra.Name.Anuradha;
+			case ZodiacHouse.Rasi.Can:
+				gh = Nakshatras.Nakshatra.Anuradha;
 				break;
-			case ZodiacHouse.Name.Leo:
-				gh = Nakshatra.Name.Moola;
+			case ZodiacHouse.Rasi.Leo:
+				gh = Nakshatras.Nakshatra.Moola;
 				break;
-			case ZodiacHouse.Name.Vir:
-				gh = Nakshatra.Name.Sravana;
+			case ZodiacHouse.Rasi.Vir:
+				gh = Nakshatras.Nakshatra.Sravana;
 				break;
-			case ZodiacHouse.Name.Lib:
-				gh = Nakshatra.Name.Satabisha;
+			case ZodiacHouse.Rasi.Lib:
+				gh = Nakshatras.Nakshatra.Satabisha;
 				break;
-			case ZodiacHouse.Name.Sco:
-				gh = Nakshatra.Name.Revati;
+			case ZodiacHouse.Rasi.Sco:
+				gh = Nakshatras.Nakshatra.Revati;
 				break;
 			// FIXME dveja nakshatra?????
-			case ZodiacHouse.Name.Sag:
-				gh = Nakshatra.Name.Revati;
+			case ZodiacHouse.Rasi.Sag:
+				gh = Nakshatras.Nakshatra.Revati;
 				break;
-			case ZodiacHouse.Name.Cap:
-				gh = Nakshatra.Name.Rohini;
+			case ZodiacHouse.Rasi.Cap:
+				gh = Nakshatras.Nakshatra.Rohini;
 				break;
-			case ZodiacHouse.Name.Aqu:
-				gh = Nakshatra.Name.Aridra;
+			case ZodiacHouse.Rasi.Aqu:
+				gh = Nakshatras.Nakshatra.Aridra;
 				break;
-			case ZodiacHouse.Name.Pis:
-				gh = Nakshatra.Name.Aslesha;
+			case ZodiacHouse.Rasi.Pis:
+				gh = Nakshatras.Nakshatra.Aslesha;
 				break;
 		}
 
-		return nak.value == gh;
+		return nak == gh;
 	}
 }

@@ -37,22 +37,22 @@ public abstract class BaseStrength
 		std_div_pos     = h.CalculateDivisionPositions(dtype);
 	}
 
-	protected Body.Name GetStrengthLord(ZodiacHouse.Name zh)
+	protected Body.BodyType GetStrengthLord(ZodiacHouse.Rasi zh)
 	{
 		if (bUseSimpleLords)
 		{
-			return Basics.SimpleLordOfZodiacHouse(zh);
+			return zh.SimpleLordOfZodiacHouse();
 		}
 
 		return h.LordOfZodiacHouse(new ZodiacHouse(zh), dtype);
 	}
 
-	protected Body.Name GetStrengthLord(ZodiacHouse zh)
+	protected Body.BodyType GetStrengthLord(ZodiacHouse zh)
 	{
-		return GetStrengthLord(zh.value);
+		return GetStrengthLord(zh.Sign);
 	}
 
-	protected int numGrahasInZodiacHouse(ZodiacHouse.Name zh)
+	protected int numGrahasInZodiacHouse(ZodiacHouse.Rasi zh)
 	{
 		var num = 0;
 		foreach (DivisionPosition dp in std_div_pos)
@@ -62,7 +62,7 @@ public abstract class BaseStrength
 				continue;
 			}
 
-			if (dp.zodiac_house.value == zh)
+			if (dp.zodiac_house.Sign == zh)
 			{
 				num = num + 1;
 			}
@@ -71,10 +71,10 @@ public abstract class BaseStrength
 		return num;
 	}
 
-	protected double karakaLongitude(Body.Name b)
+	protected double karakaLongitude(Body.BodyType b)
 	{
 		var lon = h.getPosition(b).longitude.toZodiacHouseOffset();
-		if (b == Body.Name.Rahu || b == Body.Name.Ketu)
+		if (b == Body.BodyType.Rahu || b == Body.BodyType.Ketu)
 		{
 			lon = 30.0 - lon;
 		}
@@ -82,21 +82,21 @@ public abstract class BaseStrength
 		return lon;
 	}
 
-	protected Body.Name findAtmaKaraka()
+	protected Body.BodyType findAtmaKaraka()
 	{
-		Body.Name[] karakaBodies =
+		Body.BodyType[] karakaBodies =
 		{
-			Body.Name.Sun,
-			Body.Name.Moon,
-			Body.Name.Mars,
-			Body.Name.Mercury,
-			Body.Name.Jupiter,
-			Body.Name.Venus,
-			Body.Name.Saturn,
-			Body.Name.Rahu
+			Body.BodyType.Sun,
+			Body.BodyType.Moon,
+			Body.BodyType.Mars,
+			Body.BodyType.Mercury,
+			Body.BodyType.Jupiter,
+			Body.BodyType.Venus,
+			Body.BodyType.Saturn,
+			Body.BodyType.Rahu
 		};
 		var lon = 0.0;
-		var ret = Body.Name.Sun;
+		var ret = Body.BodyType.Sun;
 		foreach (var bn in karakaBodies)
 		{
 			var offset = karakaLongitude(bn);
@@ -111,12 +111,12 @@ public abstract class BaseStrength
 		return ret;
 	}
 
-	public ArrayList findGrahasInHouse(ZodiacHouse.Name zh)
+	public ArrayList findGrahasInHouse(ZodiacHouse.Rasi zh)
 	{
 		var ret = new ArrayList();
 		foreach (DivisionPosition dp in std_div_pos)
 		{
-			if (dp.type == Body.Type.Graha && dp.zodiac_house.value == zh)
+			if (dp.type == Body.Type.Graha && dp.zodiac_house.Sign == zh)
 			{
 				ret.Add(dp.name);
 			}

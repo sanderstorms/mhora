@@ -46,7 +46,7 @@ public abstract class NakshatraDasa : Dasa
 		for (var i = 0; i < numItems; i++)
 		{
 			var dlength = common.lengthOfDasa(curr.graha) / common.paramAyus() * pdi.dasaLength;
-			var desc    = pdi.shortDesc + " " + Body.toShortString(curr.graha);
+			var desc    = pdi.shortDesc + " " + curr.graha.ToShortString();
 			var di      = new DasaEntry(curr.graha, curr.startUT, dlength, curr.level, desc);
 			ditems.Add(di);
 			curr         = common.nextDasaLord(di);
@@ -66,7 +66,7 @@ public abstract class NakshatraDasa : Dasa
 	protected ArrayList _Dasa(Longitude lon, int offset, int cycle)
 	{
 		var ditems         = new ArrayList(common.numberOfDasaItems());
-		var n              = lon.toNakshatra().add(offset);
+		var n              = lon.toNakshatra().Add(offset);
 		var g              = common.lordOfNakshatra(n);
 		var perc_traversed = lon.percentageOfNakshatra();
 		var start          = cycle * common.paramAyus() - perc_traversed / 100.0 * common.lengthOfDasa(g);

@@ -28,6 +28,7 @@ using Mhora.Elements.Dasas;
 using Mhora.Elements.Dasas.Nakshatra;
 using Mhora.Elements.Dasas.Rasi;
 using Mhora.Tables;
+using mhora.Util;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -73,9 +74,9 @@ public class MhoraPrintDocument : PrintDocument
 	protected override void OnBeginPrint(PrintEventArgs e)
 	{
 		alVargas = new ArrayList();
-		for (var i = (int) Basics.DivisionType.HoraParasara; i <= (int) Basics.DivisionType.DwadasamsaDwadasamsa; i++)
+		for (var i = (int) Vargas.DivisionType.HoraParasara; i <= (int) Vargas.DivisionType.DwadasamsaDwadasamsa; i++)
 		{
-			alVargas.Add(new Division((Basics.DivisionType) i));
+			alVargas.Add(new Division((Vargas.DivisionType) i));
 		}
 
 		numVargaPages = (int) Math.Ceiling(alVargas.Count / 6.0);
@@ -180,7 +181,7 @@ public class MhoraPrintDocument : PrintDocument
 		var s        = string.Empty;
 		var nak      = bp.longitude.toNakshatra();
 		var nak_pada = bp.longitude.toNakshatraPada();
-		s = string.Format("{0} {1}", nak.toShortString(), nak_pada);
+		s = string.Format("{0} {1}", nak.ToShortString(), nak_pada);
 		g.DrawString(s, f, b, (float) (width / 6 * 2.5), 0);
 
 		top += f.Height;
@@ -200,7 +201,7 @@ public class MhoraPrintDocument : PrintDocument
 		string s;
 		if (bGraha)
 		{
-			s = string.Format("{0} {1}", Body.toShortString(deAntar.graha), td.AddYears(deAntar.startUT).ToDateString());
+			s = string.Format("{0} {1}", deAntar.graha.ToShortString(), td.AddYears(deAntar.startUT).ToDateString());
 		}
 		else
 		{
@@ -328,7 +329,7 @@ public class MhoraPrintDocument : PrintDocument
 	private string GetVimAntarString(ToDate td, DasaEntry de)
 	{
 		var mStart = td.AddYears(de.startUT);
-		return string.Format("{0} {1}", Body.toShortString(de.graha), mStart.ToDateString());
+		return string.Format("{0} {1}", de.graha.ToShortString(), mStart.ToDateString());
 	}
 
 	private void PrintVimDasa(VimsottariDasa vd)
@@ -349,7 +350,7 @@ public class MhoraPrintDocument : PrintDocument
 			g.ResetTransform();
 			g.TranslateTransform(left, top);
 			var mStart = td.AddYears(de.StartUT);
-			g.DrawString(Body.toString(de.graha), f, b, 0, 0);
+			g.DrawString(de.graha.Name(), f, b, 0, 0);
 			//s = string.Format("{0} ", mStart.ToDateString());
 			//g.DrawString(s, f_fix, b, width / 6, 0);
 
@@ -393,7 +394,7 @@ public class MhoraPrintDocument : PrintDocument
 		top   = e.MarginBounds.Top;
 		width = e.MarginBounds.Width;
 
-		var dtype = new Division(Basics.DivisionType.Rasi);
+		var dtype = new Division(Vargas.DivisionType.Rasi);
 		var dc    = new DivisionalChart(h);
 		dc.PrintMode = true;
 
@@ -514,7 +515,7 @@ public class MhoraPrintDocument : PrintDocument
 		dc_rasi.PrintMode = true;
 
 		var dc_nav = new DivisionalChart(h);
-		dc_nav.options.Varga = new Division(Basics.DivisionType.Navamsa);
+		dc_nav.options.Varga = new Division(Vargas.DivisionType.Navamsa);
 		dc_nav.PrintMode     = true;
 		dc_nav.SetOptions(dc_nav.options);
 
@@ -529,21 +530,21 @@ public class MhoraPrintDocument : PrintDocument
 		// Birth Details
 		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.wday, h.info.tob, h.info.tz, h.info.lat, h.info.lon));
 
-		// Tithi
-		var ltithi = h.getPosition(Body.Name.Moon).longitude.sub(h.getPosition(Body.Name.Sun).longitude);
+		// Tithis
+		var ltithi = h.getPosition(Body.BodyType.Moon).longitude.sub(h.getPosition(Body.BodyType.Sun).longitude);
 		var offset = 360.0 / 30.0 - ltithi.toTithiOffset();
 		var ti     = ltithi.toTithi();
-		PrintString(string.Format("Tithi: {0} {1:N}% left", ti.value, offset / 12.0 * 100));
+		PrintString(string.Format("Tithis: {0} {1:N}% left", ti.Value, offset / 12.0 * 100));
 
 		// Nakshatra
-		var lmoon = h.getPosition(Body.Name.Moon).longitude;
+		var lmoon = h.getPosition(Body.BodyType.Moon).longitude;
 		var nmoon = lmoon.toNakshatra();
 		offset = 360.0 / 27.0 - lmoon.toNakshatraOffset();
 		var pada = lmoon.toNakshatraPada();
-		PrintString(string.Format("Nakshatra: {0} {1}  {2:N}% left", nmoon.value, pada, offset / (360.0 / 27.0) * 100));
+		PrintString(string.Format("Nakshatra: {0} {1}  {2:N}% left", nmoon.Name(), pada, offset / (360.0 / 27.0) * 100));
 
 		// Yoga, Hora
-		var smLon  = h.getPosition(Body.Name.Sun).longitude.add(h.getPosition(Body.Name.Moon).longitude);
+		var smLon  = h.getPosition(Body.BodyType.Sun).longitude.add(h.getPosition(Body.BodyType.Moon).longitude);
 		var smYoga = smLon.toSunMoonYoga();
 		var bHora  = h.calculateHora();
 		PrintString(string.Format("{0} Yoga, {1} Hora", smYoga.value, bHora));

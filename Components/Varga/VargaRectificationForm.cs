@@ -40,12 +40,11 @@ public class VargaRectificationForm : Form
 	/// </summary>
 	private readonly Container components = null;
 
-	private readonly CuspTransitSearch cs;
-	private readonly Division          dtypeRasi = new(Basics.DivisionType.Rasi);
+	private readonly Division          dtypeRasi = new(Vargas.DivisionType.Rasi);
 
 	private readonly Horoscope h;
 	private readonly int       half_tick_height = 3;
-	private readonly Body.Name mBody            = Body.Name.Lagna;
+	private readonly Body.BodyType mBody            = Body.BodyType.Lagna;
 	private readonly Moment    mOriginal;
 	private readonly int       unit_height = 30;
 
@@ -70,7 +69,7 @@ public class VargaRectificationForm : Form
 	private          UserOptions          opts;
 	private          double               ut_higher;
 	private          double               ut_lower;
-	private          ZodiacHouse.Name[][] zhCusps;
+	private          ZodiacHouse.Rasi[][] zhCusps;
 	private          int                  zoomHeight;
 	private          int                  zoomWidth;
 
@@ -89,7 +88,6 @@ public class VargaRectificationForm : Form
 		h         = _h;
 		dc        = _dc;
 		mOriginal = (Moment) h.info.tob.Clone();
-		cs        = new CuspTransitSearch(h);
 		PopulateOptionsInit(_dtype);
 		//this.PopulateOptions();
 		PopulateCache();
@@ -126,11 +124,11 @@ public class VargaRectificationForm : Form
 		var dp       = h.getPosition(mBody).toDivisionPosition(dtypeRasi);
 		var foundLon = new Longitude(0);
 		var bForward = true;
-		ut_lower  = cs.TransitSearch(mBody, h.info.tob, false, new Longitude(dp.cusp_lower), foundLon, ref bForward);
-		ut_higher = cs.TransitSearch(mBody, h.info.tob, true, new Longitude(dp.cusp_higher), foundLon, ref bForward);
+		ut_lower  = h.TransitSearch(mBody, h.info.tob, false, new Longitude(dp.cusp_lower), foundLon, ref bForward);
+		ut_higher = h.TransitSearch(mBody, h.info.tob, true, new Longitude(dp.cusp_higher), foundLon, ref bForward);
 
 
-		var ut_span = (ut_higher - ut_lower) / Basics.numPartsInDivision(dtype) * 5.0;
+		var ut_span = (ut_higher - ut_lower) / dtype.NumPartsInDivision() * 5.0;
 		var ut_curr = h.baseUT;
 		ut_lower  = ut_curr - ut_span / 2.0;
 		ut_higher = ut_curr + ut_span / 2.0;
@@ -148,7 +146,7 @@ public class VargaRectificationForm : Form
 	private void PopulateCache()
 	{
 		momentCusps = new double[opts.Divisions.Length][];
-		zhCusps     = new ZodiacHouse.Name[opts.Divisions.Length][];
+		zhCusps     = new ZodiacHouse.Rasi[opts.Divisions.Length][];
 		for (var i = 0; i < opts.Divisions.Length; i++)
 		{
 			var dtype = opts.Divisions[i];
@@ -180,7 +178,7 @@ public class VargaRectificationForm : Form
 
 				//mhora.Log.Debug ("    Starting search at {0}", this.utToMoment(ut_curr));
 
-				ut_curr = cs.TransitSearch(mBody, utToMoment(ut_curr), true, new Longitude(dp.cusp_higher), foundLon, ref bForward);
+				ut_curr = h.TransitSearch(mBody, utToMoment(ut_curr), true, new Longitude(dp.cusp_higher), foundLon, ref bForward);
 
 				bp.longitude = new Longitude(dp.cusp_higher + 0.1);
 				dp           = bp.toDivisionPosition(dtype);
@@ -190,7 +188,7 @@ public class VargaRectificationForm : Form
 					//	mhora.Log.Debug ("{0}: {1} at {2}",
 					//		dtype, foundLon, this.utToMoment(ut_curr));
 					al.Add(ut_curr);
-					zal.Add(dp.zodiac_house.value);
+					zal.Add(dp.zodiac_house.Sign);
 				}
 				else if (ut_curr > ut_higher)
 				{
@@ -203,7 +201,7 @@ public class VargaRectificationForm : Form
 			}
 
 			momentCusps[i] = (double[]) al.ToArray(typeof(double));
-			zhCusps[i]     = (ZodiacHouse.Name[]) zal.ToArray(typeof(ZodiacHouse.Name));
+			zhCusps[i]     = (ZodiacHouse.Rasi[]) zal.ToArray(typeof(ZodiacHouse.Rasi));
 		}
 
 
@@ -409,7 +407,7 @@ public class VargaRectificationForm : Form
 		{
 			var varga_y = (iVarga + 1) * unit_height;
 			g.DrawLine(p_black, vname_width, varga_y, vname_width + bar_width, varga_y);
-			s  = string.Format("D-{0}", Basics.numPartsInDivision(opts.Divisions[iVarga]));
+			s  = string.Format("D-{0}", opts.Divisions[iVarga].NumPartsInDivision());
 			sz = g.MeasureString(s, f_time);
 			g.DrawString(s, f_time, Brushes.Gray, 4, varga_y - sz.Height / 2);
 
@@ -419,7 +417,7 @@ public class VargaRectificationForm : Form
 			{
 				var ut_curr = momentCusps[iVarga][j];
 				var perc    = (ut_curr - ut_lower) / (ut_higher - ut_lower) * 100.0;
-				//mhora.Log.Debug ("Varga {0}, perc {1}", opts.Divisions[iVarga], perc);
+				//mhora.Log.Debug ("Vargas {0}, perc {1}", opts.Divisions[iVarga], perc);
 				x_offset = (float) ((ut_curr - ut_lower) / (ut_higher - ut_lower) * bar_width) + vname_width;
 
 				//(float)((ut_curr-ut_lower)/(ut_higher/ut_lower)*bar_width);
@@ -591,7 +589,7 @@ public class VargaRectificationForm : Form
 
 	private void menuShadvargas_Click(object sender, EventArgs e)
 	{
-		opts.Divisions = Basics.Shadvargas();
+		opts.Divisions = Vargas.Shadvargas();
 		PopulateCache();
 		bmpBuffer = null;
 		Invalidate();
@@ -599,7 +597,7 @@ public class VargaRectificationForm : Form
 
 	private void menuSaptavargas_Click(object sender, EventArgs e)
 	{
-		opts.Divisions = Basics.Saptavargas();
+		opts.Divisions = Vargas.Saptavargas();
 		PopulateCache();
 		bmpBuffer = null;
 		Invalidate();
@@ -607,7 +605,7 @@ public class VargaRectificationForm : Form
 
 	private void menuDasavargas_Click(object sender, EventArgs e)
 	{
-		opts.Divisions = Basics.Dasavargas();
+		opts.Divisions = Vargas.Dasavargas();
 		PopulateCache();
 		bmpBuffer = null;
 		Invalidate();
@@ -615,7 +613,7 @@ public class VargaRectificationForm : Form
 
 	private void menuShodasavargas_Click(object sender, EventArgs e)
 	{
-		opts.Divisions = Basics.Shodasavargas();
+		opts.Divisions = Vargas.Shodasavargas();
 		PopulateCache();
 		bmpBuffer = null;
 		Invalidate();
@@ -623,10 +621,10 @@ public class VargaRectificationForm : Form
 
 	private void menuNadiamsavargas_Click(object sender, EventArgs e)
 	{
-		var divs_shod = Basics.Shodasavargas();
+		var divs_shod = Vargas.Shodasavargas();
 		var divs      = new Division[divs_shod.Length + 1];
 		divs_shod.CopyTo(divs, 0);
-		divs[divs_shod.Length] = new Division(Basics.DivisionType.NadiamsaCKN);
+		divs[divs_shod.Length] = new Division(Vargas.DivisionType.NadiamsaCKN);
 		opts.Divisions         = divs;
 		PopulateCache();
 		bmpBuffer = null;
@@ -647,12 +645,12 @@ public class VargaRectificationForm : Form
 			StartTime = _start;
 			EndTime   = _end;
 
-			if (dtype.MultipleDivisions.Length == 1 && dtype.MultipleDivisions[0].Varga != Basics.DivisionType.Rasi && dtype.MultipleDivisions[0].Varga != Basics.DivisionType.Navamsa)
+			if (dtype.MultipleDivisions.Length == 1 && dtype.MultipleDivisions[0].Varga != Vargas.DivisionType.Rasi && dtype.MultipleDivisions[0].Varga != Vargas.DivisionType.Navamsa)
 			{
 				Divisions = new[]
 				{
-					new Division(Basics.DivisionType.Rasi),
-					new Division(Basics.DivisionType.Navamsa),
+					new Division(Vargas.DivisionType.Rasi),
+					new Division(Vargas.DivisionType.Navamsa),
 					dtype
 				};
 			}
@@ -660,9 +658,9 @@ public class VargaRectificationForm : Form
 			{
 				Divisions = new[]
 				{
-					new Division(Basics.DivisionType.Rasi),
-					new Division(Basics.DivisionType.Saptamsa),
-					new Division(Basics.DivisionType.Navamsa)
+					new Division(Vargas.DivisionType.Rasi),
+					new Division(Vargas.DivisionType.Saptamsa),
+					new Division(Vargas.DivisionType.Navamsa)
 				};
 			}
 		}
@@ -679,13 +677,13 @@ public class VargaRectificationForm : Form
 			set;
 		} =
 		{
-			new(Basics.DivisionType.Rasi),
-			new(Basics.DivisionType.DrekkanaParasara),
-			new(Basics.DivisionType.Navamsa),
-			new(Basics.DivisionType.Saptamsa),
-			new(Basics.DivisionType.Dasamsa),
-			new(Basics.DivisionType.Dwadasamsa),
-			new(Basics.DivisionType.Shodasamsa)
+			new(Vargas.DivisionType.Rasi),
+			new(Vargas.DivisionType.DrekkanaParasara),
+			new(Vargas.DivisionType.Navamsa),
+			new(Vargas.DivisionType.Saptamsa),
+			new(Vargas.DivisionType.Dasamsa),
+			new(Vargas.DivisionType.Dwadasamsa),
+			new(Vargas.DivisionType.Shodasamsa)
 		};
 
 		public Moment StartTime

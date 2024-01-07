@@ -32,7 +32,7 @@ public class KutaNadi
 		return 2;
 	}
 
-	public static int getScore(Nakshatra m, Nakshatra n)
+	public static int getScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
 	{
 		var ea = getType(m);
 		var eb = getType(n);
@@ -49,28 +49,28 @@ public class KutaNadi
 		return 0;
 	}
 
-	public static EType getType(Nakshatra n)
+	public static EType getType(Nakshatras.Nakshatra n)
 	{
-		switch (n.value)
+		switch (n)
 		{
-			case Nakshatra.Name.Aswini:
-			case Nakshatra.Name.Aridra:
-			case Nakshatra.Name.Punarvasu:
-			case Nakshatra.Name.UttaraPhalguni:
-			case Nakshatra.Name.Hasta:
-			case Nakshatra.Name.Jyestha:
-			case Nakshatra.Name.Moola:
-			case Nakshatra.Name.Satabisha:
-			case Nakshatra.Name.PoorvaBhadra: return EType.IVata;
-			case Nakshatra.Name.Bharani:
-			case Nakshatra.Name.Mrigarirsa:
-			case Nakshatra.Name.Pushya:
-			case Nakshatra.Name.PoorvaPhalguni:
-			case Nakshatra.Name.Chittra:
-			case Nakshatra.Name.Anuradha:
-			case Nakshatra.Name.PoorvaShada:
-			case Nakshatra.Name.Dhanishta:
-			case Nakshatra.Name.UttaraBhadra: return EType.IPitta;
+			case Nakshatras.Nakshatra.Aswini:
+			case Nakshatras.Nakshatra.Aridra:
+			case Nakshatras.Nakshatra.Punarvasu:
+			case Nakshatras.Nakshatra.UttaraPhalguni:
+			case Nakshatras.Nakshatra.Hasta:
+			case Nakshatras.Nakshatra.Jyestha:
+			case Nakshatras.Nakshatra.Moola:
+			case Nakshatras.Nakshatra.Satabisha:
+			case Nakshatras.Nakshatra.PoorvaBhadra: return EType.IVata;
+			case Nakshatras.Nakshatra.Bharani:
+			case Nakshatras.Nakshatra.Mrigarirsa:
+			case Nakshatras.Nakshatra.Pushya:
+			case Nakshatras.Nakshatra.PoorvaPhalguni:
+			case Nakshatras.Nakshatra.Chittra:
+			case Nakshatras.Nakshatra.Anuradha:
+			case Nakshatras.Nakshatra.PoorvaShada:
+			case Nakshatras.Nakshatra.Dhanishta:
+			case Nakshatras.Nakshatra.UttaraBhadra: return EType.IPitta;
 		}
 
 		return EType.ISleshma;
