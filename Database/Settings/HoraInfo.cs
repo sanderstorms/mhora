@@ -200,12 +200,15 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 				var       query  = Query.From<City>().Where(city => city.Name == _city).SelectAll();
 				var       cities = db.Load<City>(query.ToString()).ToList();
 
-				foreach (var city in cities)
+				if (cities?.Count > 0)
 				{
-					if (city.Country.Name.Equals(_country, StringComparison.OrdinalIgnoreCase))
+					foreach (var city in cities)
 					{
-						_worldCity = city;
-						break;
+						if (city.Country.Name.Equals(_country, StringComparison.OrdinalIgnoreCase))
+						{
+							_worldCity = city;
+							break;
+						}
 					}
 				}
 			}
