@@ -27,6 +27,7 @@ using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
+using mhora.Util;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -256,10 +257,11 @@ public class RasiStrengthsControl : Form
 		{
 			var rule = new ArrayList();
 			rule.Add(al[i]);
-			var fs = new FindStronger(h, options.Division, rule);
-			var zw = fs.StrongerRasi(z1, z2, false, ref winner);
-			var li = new ListViewItem();
-			li.Text = string.Format("{0}", EnumDescConverter.GetEnumDescription((Enum) al[i]));
+			var fs        = new FindStronger(h, options.Division, rule);
+			var zw        = fs.StrongerRasi(z1, z2, false, ref winner);
+			var li        = new ListViewItem();
+			var enumValue = (Enum) al[i];
+			li.Text = string.Format("{0}", enumValue.GetEnumDescription());
 
 			if (winner == 0)
 			{

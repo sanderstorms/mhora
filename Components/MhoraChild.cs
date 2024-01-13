@@ -30,6 +30,7 @@ using Mhora.Elements.Calculation;
 using Mhora.Elements.Dasas.Nakshatra;
 using Mhora.Elements.Hora;
 using Mhora.Tables;
+using Newtonsoft.Json;
 
 namespace Mhora.Components;
 
@@ -457,8 +458,7 @@ public class MhoraChild : Form
 			}
 			else
 			{
-				h.info.FileType = HoraInfo.EFileType.MudgalaHora;
-				new Mhd(ofd.FileName).ToFile(h.info);
+				h.info.Export (ofd.FileName);
 			}
 
 			mJhdFileName = ofd.FileName;

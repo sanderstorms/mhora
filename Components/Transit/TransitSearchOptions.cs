@@ -20,6 +20,7 @@ using System;
 using System.ComponentModel;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
+using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;

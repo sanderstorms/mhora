@@ -1300,12 +1300,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			hint = g.MeasureString(tob, f);
 			g.DrawString(tob, f, Brushes.Black, xw * 2 / 4 - hint.Width / 2, (float) (yw * 2 / 4 - hint.Height / 2 + f.Height * 1.5));
 
-			var latlon = h.info.lat + " " + h.info.lon;
+			var latlon = h.info.Latitude + " " + h.info.Longitude;
 			hint = g.MeasureString(latlon, f);
 			g.DrawString(latlon, f, Brushes.Black, xw * 2 / 4 - hint.Width / 2, (float) (yw * 2 / 4 - hint.Height / 2 + f.Height * 2.5));
 
-			hint = g.MeasureString(h.info.name, f);
-			g.DrawString(h.info.name, f, Brushes.Black, xw * 2 / 4 - hint.Width / 2, (float) (yw * 2 / 4 - hint.Height / 2 - f.Height * 1.5));
+			hint = g.MeasureString(h.info.Name, f);
+			g.DrawString(h.info.Name, f, Brushes.Black, xw * 2 / 4 - hint.Width / 2, (float) (yw * 2 / 4 - hint.Height / 2 - f.Height * 1.5));
 		}
 
 

@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
+using Mhora.Database.Settings;
 using Mhora.SwissEph;
 using Mhora.Tables;
 
@@ -36,7 +37,7 @@ public class Retrogression
 		b = _b;
 	}
 
-	public void getRetroSolarCusps(ref Longitude start, ref Longitude end)
+	public void GetRetroSolarCusps(ref Longitude start, ref Longitude end)
 	{
 		switch (b)
 		{
@@ -55,7 +56,7 @@ public class Retrogression
 		}
 	}
 
-	public double gotoNextRetroSolarCusp(double ut)
+	public double GotoNextRetroSolarCusp(double ut)
 	{
 		return ut;
 #if DND
@@ -380,7 +381,7 @@ public class Retrogression
 		// Body is currently direct
 		if (bp.speed_longitude >= 0)
 		{
-			start_ut = gotoNextRetroSolarCusp(start_ut);
+			start_ut = GotoNextRetroSolarCusp(start_ut);
 			var lower_ut  = start_ut;
 			var higher_ut = start_ut;
 			becomesDirect = false;
@@ -454,7 +455,7 @@ public class Retrogression
 		// Body is currently direct
 		if (bp.speed_longitude >= 0)
 		{
-			start_ut = gotoNextRetroSolarCusp(start_ut);
+			start_ut = GotoNextRetroSolarCusp(start_ut);
 			var lower_ut  = start_ut;
 			var higher_ut = start_ut;
 			becomesDirect = false;

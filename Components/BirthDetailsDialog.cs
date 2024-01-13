@@ -8,6 +8,7 @@ using Mhora.Database.World;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Hora;
+using Mhora.Util;
 using SQLinq;
 using SqlNado;
 using SqlNado.Query;
@@ -27,6 +28,20 @@ public partial class BirthDetailsDialog : Form
 	public BirthDetailsDialog()
 	{
 		InitializeComponent();
+	}
+
+	public BirthDetailsDialog(HoraInfo info) : this()
+	{
+		
+	}
+
+
+	public string ChartName
+	{
+		get
+		{
+			return (txtName.Text);
+		}
 	}
 
 	public Country Country
@@ -57,7 +72,11 @@ public partial class BirthDetailsDialog : Form
 
 			var dateTime = dateTimePicker.Value;
 			var moment   = new Moment(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second);
-			var info     = new HoraInfo(moment, MhoraGlobalOptions.Instance.Latitude, MhoraGlobalOptions.Instance.Longitude, MhoraGlobalOptions.Instance.TimeZone);
+			var info     = new HoraInfo(moment, MhoraGlobalOptions.Instance.Latitude, MhoraGlobalOptions.Instance.Longitude, MhoraGlobalOptions.Instance.TimeZone)
+			{
+				Country = Country.Name,
+				City    = City.Name,
+			};
 			return new Horoscope(info, new HoroscopeOptions());
 		}
 	}

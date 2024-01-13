@@ -79,14 +79,7 @@ namespace Mhora
 				Thread.Sleep(0);
 				ss.Close(null, 1000);
 			}
-
-			using (var birthDetails = new BirthDetailsDialog())
-			{
-				if (birthDetails.ShowDialog() == DialogResult.OK)
-				{
-					AddChild(birthDetails.Horoscope, "test");
-				}
-			}
+			openNewJhdFile();
 		}
 
 		private void menuItemNewView_Click(object sender, EventArgs e)
@@ -117,25 +110,12 @@ namespace Mhora
 
 		private void openNewJhdFile()
 		{
-			var tNow = DateTime.Now;
-			var mNow = new Moment(tNow.Year, tNow.Month, tNow.Day, tNow.Hour, tNow.Minute, tNow.Second);
-			var info = new HoraInfo(mNow, MhoraGlobalOptions.Instance.Latitude, MhoraGlobalOptions.Instance.Longitude, MhoraGlobalOptions.Instance.TimeZone);
-
-			childCount++;
-			var h = new Horoscope(info, (HoroscopeOptions)MhoraGlobalOptions.Instance.HOptions.Clone());
-			//new HoroscopeOptions());
-			var child = new MhoraChild(h);
-			child.Text = childCount + " - Prasna Chart";
-			child.MdiParent = this;
-			child.Name = child.Text;
-			//info.name = child.Text;
-			try
+			using (var birthDetails = new BirthDetailsDialog())
 			{
-				child.Show();
-			}
-			catch (OutOfMemoryException ex)
-			{
-				MessageBox.Show(ex.Message);
+				if (birthDetails.ShowDialog() == DialogResult.OK)
+				{
+					AddChild(birthDetails.Horoscope, birthDetails.ChartName);
+				}
 			}
 		}
 

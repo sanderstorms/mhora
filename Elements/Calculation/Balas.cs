@@ -28,15 +28,15 @@ namespace Mhora.Elements.Calculation;
 /// </summary>
 public static class ShadBalas
 {
-	private static void verifyGraha(this Horoscope h, Body.BodyType b)
+	private static void VerifyGraha(this Horoscope h, Body.BodyType b)
 	{
 		var _b = (int) b;
 		Debug.Assert(_b >= (int) Body.BodyType.Sun && _b <= (int) Body.BodyType.Saturn);
 	}
 
-	public static double ucchaBala(this Horoscope h, Body.BodyType b)
+	public static double UcchaBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 		var debLon = b.DebilitationDegree();
 		var posLon = h.getPosition(b).longitude;
 		var diff   = posLon.sub(debLon).value;
@@ -48,7 +48,7 @@ public static class ShadBalas
 		return diff / 180.0 * 60.0;
 	}
 
-	public static bool getsOjaBala(Body.BodyType b)
+	public static bool GetsOjaBala(this Body.BodyType b)
 	{
 		switch (b)
 		{
@@ -58,9 +58,9 @@ public static class ShadBalas
 		}
 	}
 
-	public static double ojaYugmaHelper(Body.BodyType b, ZodiacHouse zh)
+	public static double OjaYugmaHelper(this Body.BodyType b, ZodiacHouse zh)
 	{
-		if (getsOjaBala(b))
+		if (GetsOjaBala(b))
 		{
 			if (zh.IsOdd())
 			{
@@ -78,21 +78,21 @@ public static class ShadBalas
 		return 15.0;
 	}
 
-	public static double ojaYugmaRasyAmsaBala(this Horoscope h, Body.BodyType b)
+	public static double OjaYugmaRasyAmsaBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 		var    bp      = h.getPosition(b);
 		var    zh_rasi = bp.toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house;
 		var    zh_amsa = bp.toDivisionPosition(new Division(Vargas.DivisionType.Navamsa)).zodiac_house;
 		double s       = 0;
-		s += ojaYugmaHelper(b, zh_rasi);
-		s += ojaYugmaHelper(b, zh_amsa);
+		s += OjaYugmaHelper(b, zh_rasi);
+		s += OjaYugmaHelper(b, zh_amsa);
 		return s;
 	}
 
-	public static double kendraBala(this Horoscope h, Body.BodyType b)
+	public static double KendraBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 		var zh_b = h.getPosition(b).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house;
 		var zh_l = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house;
 		var diff = zh_l.NumHousesBetween(zh_b);
@@ -105,9 +105,9 @@ public static class ShadBalas
 		}
 	}
 
-	public static double drekkanaBala(this Horoscope h, Body.BodyType b)
+	public static double DrekkanaBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 		var part = h.getPosition(b).partOfZodiacHouse(3);
 		if (part == 1 && (b == Body.BodyType.Sun || b == Body.BodyType.Jupiter || b == Body.BodyType.Mars))
 		{
@@ -127,9 +127,9 @@ public static class ShadBalas
 		return 0;
 	}
 
-	public static double digBala(this Horoscope h, Body.BodyType b)
+	public static double DigBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 		int[] powerlessHouse =
 		{
 			4,
@@ -156,9 +156,9 @@ public static class ShadBalas
 		return diff / 180.0 * 60.0;
 	}
 
-	public static double nathonnathaBala(this Horoscope h, Body.BodyType b)
+	public static double NathonnathaBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 
 		if (b == Body.BodyType.Mercury)
 		{
@@ -192,9 +192,9 @@ public static class ShadBalas
 		return diff;
 	}
 
-	public static double pakshaBala(this Horoscope h, Body.BodyType b)
+	public static double PakshaBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 
 		var mlon = h.getPosition(Body.BodyType.Moon).longitude;
 		var slon = h.getPosition(Body.BodyType.Sun).longitude;
@@ -221,10 +221,10 @@ public static class ShadBalas
 		}
 	}
 
-	public static double tribhaagaBala(this Horoscope h, Body.BodyType b)
+	public static double TribhaagaBala(this Horoscope h, Body.BodyType b)
 	{
 		var ret = Body.BodyType.Jupiter;
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 		if (h.isDayBirth())
 		{
 			var length = (h.sunset - h.sunrise) / 3;
@@ -275,9 +275,9 @@ public static class ShadBalas
 		return 0;
 	}
 
-	public static double naisargikaBala(this Horoscope h, Body.BodyType b)
+	public static double NaisargikaBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 		switch (b)
 		{
 			case Body.BodyType.Sun:     return 60;
@@ -292,9 +292,9 @@ public static class ShadBalas
 		return 0;
 	}
 
-	public static void kalaHelper(this Horoscope h, ref Body.BodyType yearLord, ref Body.BodyType monthLord)
+	public static void KalaHelper(this Horoscope h, ref Body.BodyType yearLord, ref Body.BodyType monthLord)
 	{
-		var ut_arghana = sweph.JulDay(1827, 5, 2, -h.info.tz.toDouble() + 12.0 / 24.0);
+		var ut_arghana = sweph.JulDay(1827, 5, 2, -h.info.Timezone.toDouble() + 12.0 / 24.0);
 		var ut_noon    = h.baseUT - h.info.tob.time / 24.0 + 12.0 / 24.0;
 
 		var diff = ut_noon - ut_arghana;
@@ -322,15 +322,15 @@ public static class ShadBalas
 			diff -= 7.0;
 		}
 
-		yearLord  = Tables.Hora.weekdayRuler((Tables.Hora.Weekday) sweph.DayOfWeek(ut_noon - diff_year));
-		monthLord = Tables.Hora.weekdayRuler((Tables.Hora.Weekday) sweph.DayOfWeek(ut_noon - diff_month));
+		yearLord  = ((Tables.Hora.Weekday) sweph.DayOfWeek(ut_noon - diff_year)).WeekdayRuler();
+		monthLord = ((Tables.Hora.Weekday) sweph.DayOfWeek(ut_noon - diff_month)).WeekdayRuler();
 	}
 
-	public static double abdaBala(this Horoscope h, Body.BodyType b)
+	public static double AbdaBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 		Body.BodyType yearLord = Body.BodyType.Sun, monthLord = Body.BodyType.Sun;
-		h.kalaHelper(ref yearLord, ref monthLord);
+		h.KalaHelper(ref yearLord, ref monthLord);
 		if (yearLord == b)
 		{
 			return 15.0;
@@ -339,11 +339,11 @@ public static class ShadBalas
 		return 0.0;
 	}
 
-	public static double masaBala(this Horoscope h, Body.BodyType b)
+	public static double MasaBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 		Body.BodyType yearLord = Body.BodyType.Sun, monthLord = Body.BodyType.Sun;
-		h.kalaHelper(ref yearLord, ref monthLord);
+		h.KalaHelper(ref yearLord, ref monthLord);
 		if (monthLord == b)
 		{
 			return 30.0;
@@ -352,10 +352,10 @@ public static class ShadBalas
 		return 0.0;
 	}
 
-	public static double varaBala(this Horoscope h, Body.BodyType b)
+	public static double VaraBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
-		if (Tables.Hora.weekdayRuler(h.wday) == b)
+		h.VerifyGraha(b);
+		if (h.wday.WeekdayRuler() == b)
 		{
 			return 45.0;
 		}
@@ -363,9 +363,9 @@ public static class ShadBalas
 		return 0.0;
 	}
 
-	public static double horaBala(this Horoscope h, Body.BodyType b)
+	public static double HoraBala(this Horoscope h, Body.BodyType b)
 	{
-		h.verifyGraha(b);
+		h.VerifyGraha(b);
 		if (h.calculateHora() == b)
 		{
 			return 60.0;

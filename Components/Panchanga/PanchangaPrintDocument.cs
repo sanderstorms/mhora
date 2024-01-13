@@ -171,7 +171,7 @@ public class PanchangaPrintDocument : PrintDocument
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.tz.toDouble() / 24.0;
+		found_ut += h.info.Timezone.toDouble() / 24.0;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
 		var m = new Moment(year, month, day, hour);
 		return m;
@@ -277,7 +277,7 @@ public class PanchangaPrintDocument : PrintDocument
 			var m_sunset  = new Moment(0, 0, 0, local.sunset);
 
 			g.DrawString(m_sunrise.ToShortDateString(), f, b, day_offset, 0);
-			g.DrawString(Hora.weekdayToShortString(local.wday), f, b, wday_offset, 0);
+			g.DrawString(local.wday.weekdayToShortString(), f, b, wday_offset, 0);
 
 			if (opts.ShowSunriset)
 			{
@@ -296,9 +296,9 @@ public class PanchangaPrintDocument : PrintDocument
 				for (var j = 0; j < numTithis; j++)
 				{
 					var pmi    = (PanchangaMomentInfo) globals.tithis_ut[local.tithi_index_start + 1 + j];
-					var t      = new Elements.Tithi((Tithis.Tithi) pmi.info);
+					var t      = pmi.info.ToTithi();
 					var mTithi = new Moment(pmi.ut, h);
-					g.DrawString(t.Value.ToUnqualifiedString(), f, b, tithi_name_offset, j                           * f.Height);
+					g.DrawString(t.ToUnqualifiedString(), f, b, tithi_name_offset, j                           * f.Height);
 					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, tithi_time_offset, j * f.Height);
 				}
 			}
@@ -377,7 +377,7 @@ public class PanchangaPrintDocument : PrintDocument
 		float offsetX = margin_offset + sm_time_offset + sm_time_width;
 
 		var mCurr  = new Moment(((PanchangaLocalMoments) locals[iStart]).sunrise_ut, h);
-		var hiCurr = new HoraInfo(mCurr, h.info.lat, h.info.lon, h.info.tz);
+		var hiCurr = new HoraInfo(mCurr, h.info.Latitude, h.info.Longitude, h.info.Timezone);
 		var hCurr  = new Horoscope(hiCurr, h.options);
 		var dc     = new DivisionalChart(hCurr);
 		dc.PrintMode         = true;

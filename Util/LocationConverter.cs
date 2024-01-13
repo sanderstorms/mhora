@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mhora.Elements;
+namespace Mhora.Util;
 
 public static class LocationConverter
 {

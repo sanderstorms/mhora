@@ -30,7 +30,7 @@ public static class Hora
 		"Sunday"
 	};
 
-	public static Hora.Weekday bodyToWeekday(Body.BodyType b)
+	public static Hora.Weekday BodyToWeekday(this Body.BodyType b)
 	{
 		switch (b)
 		{
@@ -47,7 +47,7 @@ public static class Hora
 		throw new Exception();
 	}
 
-	public static Body.BodyType weekdayRuler(Hora.Weekday w)
+	public static Body.BodyType WeekdayRuler(this Weekday w)
 	{
 		switch (w)
 		{
@@ -64,7 +64,7 @@ public static class Hora
 		}
 	}
 
-	public static string weekdayToShortString(Hora.Weekday w)
+	public static string weekdayToShortString(this Weekday w)
 	{
 		switch (w)
 		{

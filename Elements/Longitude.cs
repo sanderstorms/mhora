@@ -22,6 +22,7 @@ using System.Diagnostics;
 using Mhora.Components.Converter;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
+using mhora.Util;
 
 namespace Mhora.Elements;
 
@@ -112,10 +113,10 @@ public class Longitude
 		return value - toSunMoonYogaBase();
 	}
 
-	public Tithi toTithi()
+	public Tithis.Tithi toTithi()
 	{
 		var tIndex = (int) (Math.Floor(value / (360.0 / 30.0)) + 1);
-		var t      = new Tithi((Tables.Tithis.Tithi) tIndex);
+		var t      = tIndex.ToTithi();
 		return t;
 	}
 
@@ -140,7 +141,7 @@ public class Longitude
 
 	public double toTithiBase()
 	{
-		var num  = (int) toTithi().Value;
+		var num  = toTithi().Index();
 		var cusp = (num - 1) * (360.0 / 30.0);
 		return cusp;
 	}

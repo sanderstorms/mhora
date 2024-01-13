@@ -16,6 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Database.Settings;
 using Mhora.SwissEph;
 
 namespace Mhora.Elements.Calculation;
@@ -47,7 +48,7 @@ internal class CuspTransitSearch
 
 		sweph.obtainLock(h);
 		var t        = new Transit(h, SearchBody);
-		var ut_base  = StartDate.toUniversalTime() - h.info.TimeZone.toDouble() / 24.0;
+		var ut_base  = StartDate.toUniversalTime() - h.info.Timezone.toDouble() / 24.0;
 		var lon_curr = t.GenericLongitude(ut_base, ref bDiscard);
 		sweph.releaseLock(h);
 
@@ -95,7 +96,7 @@ internal class CuspTransitSearch
 
 		var r = new Retrogression(h, SearchBody);
 
-		var julday_ut = StartDate.toUniversalTime() - h.info.tz.toDouble() / 24.0;
+		var julday_ut = StartDate.toUniversalTime() - h.info.Timezone.toDouble() / 24.0;
 		var found_ut  = julday_ut;
 
 		if (Forward)

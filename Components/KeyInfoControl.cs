@@ -194,19 +194,19 @@ public class KeyInfoControl : MhoraControl
 		mList.Items.Add(li);
 
 		li = new ListViewItem("Time Zone");
-		li.SubItems.Add(h.info.tz.ToString());
+		li.SubItems.Add(h.info.Timezone.ToString());
 		mList.Items.Add(li);
 
 		li = new ListViewItem("Latitude");
-		li.SubItems.Add(h.info.lat.ToString());
+		li.SubItems.Add(h.info.Latitude.ToString());
 		mList.Items.Add(li);
 
 		li = new ListViewItem("Longitude");
-		li.SubItems.Add(h.info.lon.ToString());
+		li.SubItems.Add(h.info.Longitude.ToString());
 		mList.Items.Add(li);
 
 		li = new ListViewItem("Altitude");
-		li.SubItems.Add(h.info.alt.ToString());
+		li.SubItems.Add(h.info.Altitude.ToString());
 		mList.Items.Add(li);
 
 		{
@@ -233,9 +233,9 @@ public class KeyInfoControl : MhoraControl
 			var ltithi = h.getPosition(Body.BodyType.Moon).longitude.sub(h.getPosition(Body.BodyType.Sun).longitude);
 			var offset = 360.0 / 30.0 - ltithi.toTithiOffset();
 			var ti     = ltithi.toTithi();
-			var tiLord = ti.getLord();
+			var tiLord = ti.GetLord();
 			li = new ListViewItem("Tithis");
-			var fmt = string.Format("{0} ({1}) {2:N}% left", ti, tiLord, offset / 12.0 * 100);
+			var fmt = string.Format("{0} ({1}) {2:N}% left", ti.GetEnumDescription(), tiLord, offset / 12.0 * 100);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
@@ -288,7 +288,7 @@ public class KeyInfoControl : MhoraControl
 			li = new ListViewItem("Muhurta");
 			var mIndex = (int) (Math.Floor(h.hoursAfterSunrise() / h.lengthOfDay() * 30.0) + 1);
 			var m      = (Muhurtas.Muhurta) mIndex;
-			var fmt    = string.Format("{0} ({1})", m, Muhurtas.NakLordOfMuhurta(m));
+			var fmt    = string.Format("{0} ({1})", m, m.NakLordOfMuhurta());
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}

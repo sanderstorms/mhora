@@ -528,13 +528,13 @@ public class MhoraPrintDocument : PrintDocument
 		top += width / 2 + pad_height;
 
 		// Birth Details
-		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.wday, h.info.tob, h.info.tz, h.info.lat, h.info.lon));
+		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.wday, h.info.tob, h.info.Timezone, h.info.Latitude, h.info.Longitude));
 
 		// Tithis
 		var ltithi = h.getPosition(Body.BodyType.Moon).longitude.sub(h.getPosition(Body.BodyType.Sun).longitude);
 		var offset = 360.0 / 30.0 - ltithi.toTithiOffset();
 		var ti     = ltithi.toTithi();
-		PrintString(string.Format("Tithis: {0} {1:N}% left", ti.Value, offset / 12.0 * 100));
+		PrintString(string.Format("Tithis: {0} {1:N}% left", ti.GetEnumDescription(), offset / 12.0 * 100));
 
 		// Nakshatra
 		var lmoon = h.getPosition(Body.BodyType.Moon).longitude;

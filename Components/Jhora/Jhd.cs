@@ -20,6 +20,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
+using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Hora;
 
@@ -36,14 +37,25 @@ public class Jhd : IFileToHoraInfo
 
 	public HoraInfo toHoraInfo()
 	{
-		var sr  = File.OpenText(fname);
-		var m   = readMomentLine(sr);
-		var tz  = readHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
-		var lon = readHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
-		var lat = readHmsLineInfo(sr, false, HMSInfo.dir_type.NS);
-		var hi  = new HoraInfo(m, lat, lon, tz);
-		hi.FileType = HoraInfo.EFileType.JagannathaHora;
-		//hi.name = File.fname;
+		var sr      = File.OpenText(fname);
+		var m       = readMomentLine(sr);
+		var tz      = readHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
+		var lon     = readHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
+		var lat     = readHmsLineInfo(sr, false, HMSInfo.dir_type.NS);
+		var alt     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
+		var est     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
+		var dst     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
+		var i1      = readIntLine(sr);
+		var i2      = readIntLine(sr);
+		var city    = sr.ReadLine();
+		var country = sr.ReadLine();
+		var hi      = new HoraInfo(m, lat, lon, tz)
+		{
+			City     = city,
+			Country  = country,
+			FileType = HoraInfo.EFileType.JagannathaHora
+		};
+		hi.Name = Path.GetFileNameWithoutExtension(fname);
 		return hi;
 	}
 
@@ -51,9 +63,9 @@ public class Jhd : IFileToHoraInfo
 	{
 		var sw = new StreamWriter(fname, false);
 		writeMomentLine(sw, h.tob);
-		writeHMSInfoLine(sw, h.tz);
-		writeHMSInfoLine(sw, h.lon);
-		writeHMSInfoLine(sw, h.lat);
+		writeHMSInfoLine(sw, h.Timezone);
+		writeHMSInfoLine(sw, h.Longitude);
+		writeHMSInfoLine(sw, h.Latitude);
 		sw.WriteLine("0.000000");
 		sw.Flush();
 		sw.Close();

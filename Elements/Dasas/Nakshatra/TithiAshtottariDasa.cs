@@ -117,7 +117,7 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 
 	public Body.BodyType lordOfTithi(Longitude l)
 	{
-		return l.toTithi().getLord();
+		return l.toTithi().GetLord();
 	}
 
 	public class UserOptions : ICloneable

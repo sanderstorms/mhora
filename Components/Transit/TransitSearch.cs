@@ -445,10 +445,10 @@ public class TransitSearch : MhoraControl
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.tz.toDouble() / 24.0;
+		found_ut += h.info.Timezone.toDouble() / 24.0;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
 		var m        = new Moment(year, month, day, hour);
-		var inf      = new HoraInfo(m, (HMSInfo) h.info.lat.Clone(), (HMSInfo) h.info.lon.Clone(), (HMSInfo) h.info.tz.Clone());
+		var inf      = new HoraInfo(m, (HMSInfo) h.info.Latitude.Clone(), (HMSInfo) h.info.Longitude.Clone(), (HMSInfo) h.info.Timezone.Clone());
 		var hTransit = new Horoscope(inf, (HoroscopeOptions) h.options.Clone());
 
 		sweph.RevJul(found_ut + 5.0, ref year, ref month, ref day, ref hour);
@@ -485,7 +485,7 @@ public class TransitSearch : MhoraControl
 			return;
 		}
 
-		var julday_ut = opts.StartDate.toUniversalTime() - h.info.tz.toDouble() / 24.0;
+		var julday_ut = opts.StartDate.toUniversalTime() - h.info.Timezone.toDouble() / 24.0;
 		//;.tob.time / 24.0;
 
 		if (julday_ut <= h.baseUT)
@@ -536,7 +536,7 @@ public class TransitSearch : MhoraControl
 
 	private double GetProgressionDegree()
 	{
-		var julday_ut = opts.StartDate.toUniversalTime() - h.info.tz.toDouble() / 24.0;
+		var julday_ut = opts.StartDate.toUniversalTime() - h.info.Timezone.toDouble() / 24.0;
 		var ut_diff   = julday_ut                        - h.baseUT;
 
 		//mhora.Log.Debug ("Expected ut_diff is {0}", ut_diff);
@@ -679,7 +679,7 @@ public class TransitSearch : MhoraControl
 		var becomesDirect = false;
 		sweph.obtainLock(h);
 		var r         = new Retrogression(h, opts.SearchBody);
-		var julday_ut = opts.StartDate.toUniversalTime() - h.info.tz.toDouble() / 24.0;
+		var julday_ut = opts.StartDate.toUniversalTime() - h.info.Timezone.toDouble() / 24.0;
 		var found_ut  = julday_ut;
 		if (opts.Forward)
 		{
@@ -698,10 +698,10 @@ public class TransitSearch : MhoraControl
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.tz.toDouble() / 24.0;
+		found_ut += h.info.Timezone.toDouble() / 24.0;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
 		var m        = new Moment(year, month, day, hour);
-		var inf      = new HoraInfo(m, (HMSInfo) h.info.lat.Clone(), (HMSInfo) h.info.lon.Clone(), (HMSInfo) h.info.tz.Clone());
+		var inf      = new HoraInfo(m, (HMSInfo) h.info.Latitude.Clone(), (HMSInfo) h.info.Longitude.Clone(), (HMSInfo) h.info.Timezone.Clone());
 		var hTransit = new Horoscope(inf, (HoroscopeOptions) h.options.Clone());
 
 		if (opts.Forward)
@@ -803,7 +803,7 @@ public class TransitSearch : MhoraControl
 
 	private void openTransitHelper(Horoscope hTransit)
 	{
-		hTransit.info.type = HoraInfo.Name.Transit;
+		hTransit.info.type = HoraInfo.ChartType.Transit;
 		var mcTransit = new MhoraChild(hTransit);
 		mcTransit.Name      = "Transit Chart";
 		mcTransit.Text      = "Transit Chart";
@@ -861,7 +861,7 @@ public class TransitSearch : MhoraControl
 
 		var ti       = (TransitItem) mlTransits.SelectedItems[0];
 		var hTransit = ti.GetHoroscope();
-		hTransit.info.type = HoraInfo.Name.Transit;
+		hTransit.info.type = HoraInfo.ChartType.Transit;
 
 		var prevEntry = mlTransits.SelectedItems[0].Index - 1;
 		if (prevEntry >= 0)
@@ -921,7 +921,7 @@ public class TransitSearch : MhoraControl
 		var dp = h2.getPosition(opts.SearchBody).toDivisionPosition(opts.Division);
 		opts.TransitPoint = new Longitude(dp.cusp_lower);
 
-		var found_ut = StartSearch(false) + h.info.tz.toDouble() / 24.0;
+		var found_ut = StartSearch(false) + h.info.Timezone.toDouble() / 24.0;
 		UpdateDateForNextSearch(found_ut);
 		updateOptions();
 	}
@@ -941,7 +941,7 @@ public class TransitSearch : MhoraControl
 		opts.TransitPoint = new Longitude(dp.cusp_higher);
 		opts.TransitPoint = opts.TransitPoint.add(1.0 / (60.0 * 60.0 * 60.0));
 
-		var found_ut = StartSearch(false) + h.info.tz.toDouble() / 24.0;
+		var found_ut = StartSearch(false) + h.info.Timezone.toDouble() / 24.0;
 		UpdateDateForNextSearch(found_ut);
 		updateOptions();
 	}
@@ -972,7 +972,7 @@ public class TransitSearch : MhoraControl
 		var bForward      = false;
 		sweph.obtainLock(h);
 		var r                   = new Retrogression(h, opts.SearchBody);
-		var julday_ut           = opts.StartDate.toUniversalTime() - h.info.tz.toDouble() / 24.0;
+		var julday_ut           = opts.StartDate.toUniversalTime() - h.info.Timezone.toDouble() / 24.0;
 		var found_ut            = julday_ut;
 		var bTransitForwardCusp = true;
 		while (true)

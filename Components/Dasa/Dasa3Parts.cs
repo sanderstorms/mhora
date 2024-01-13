@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Dasas;

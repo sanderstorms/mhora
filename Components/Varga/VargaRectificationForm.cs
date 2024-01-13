@@ -101,7 +101,7 @@ public class VargaRectificationForm : Form
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.tz.toDouble() / 24.0;
+		found_ut += h.info.Timezone.toDouble() / 24.0;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
 		var m = new Moment(year, month, day, hour);
 		return m;
@@ -110,7 +110,7 @@ public class VargaRectificationForm : Form
 	private double momentToUT(Moment m)
 	{
 		var local_ut = sweph.JulDay(m.year, m.month, m.day, m.time);
-		return local_ut - h.info.tz.toDouble() / 24.0;
+		return local_ut - h.info.Timezone.toDouble() / 24.0;
 	}
 
 	private void PopulateOptions()

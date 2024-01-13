@@ -21,10 +21,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using Mhora.Components.Converter;
-using Mhora.Database.Settings;
+using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 
-namespace Mhora.Elements.Calculation;
+namespace Mhora.Database.Settings;
 
 /// <summary>
 ///     Specified a Moment. This can be used for charts, dasa times etc
@@ -51,6 +51,11 @@ public class Moment : MhoraSerializableOptions, ICloneable, ISerializable
 		second = t.Second;
 	}
 
+	public static implicit operator DateTime(Moment m)
+	{
+		return new DateTime(m.year, m.month, m.day, m.hour, m.minute, m.second);
+	}
+
 	public Moment(int year, int month, int day, double time)
 	{
 		m_day   = day;
@@ -72,7 +77,7 @@ public class Moment : MhoraSerializableOptions, ICloneable, ISerializable
 	public Moment(double tjd_ut, Horoscope h)
 	{
 		double time = 0;
-		tjd_ut += h.info.tz.toDouble() / 24.0;
+		tjd_ut += h.info.Timezone.toDouble() / 24.0;
 		sweph.RevJul(tjd_ut, ref m_year, ref m_month, ref m_day, ref time);
 		doubleToHMS(time, ref m_hour, ref m_minute, ref m_second);
 	}
@@ -142,7 +147,7 @@ public class Moment : MhoraSerializableOptions, ICloneable, ISerializable
 	public double toUniversalTime(Horoscope h)
 	{
 		var local_ut = sweph.JulDay(year, month, day, time);
-		return local_ut - h.info.tz.toDouble() / 24.0;
+		return local_ut - h.info.Timezone.toDouble() / 24.0;
 	}
 
 	public static int FromStringMonth(string s)

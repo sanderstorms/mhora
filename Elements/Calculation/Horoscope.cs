@@ -52,7 +52,12 @@ public class Horoscope : ICloneable
 	};
 
 	public double ayanamsa;
-	public double baseUT;
+
+	public double baseUT
+	{
+		get;
+		private set;
+	}
 
 
 	public Body.BodyType[] horaOrder =
@@ -420,7 +425,7 @@ public class Horoscope : ICloneable
 		info.Altitude    = i.Altitude;
 		info.Latitude    = i.Latitude;
 		info.Longitude   = i.Longitude;
-		info.tz          = i.tz;
+		info.Timezone          = i.Timezone;
 		info.Events      = (UserEvent[]) i.Events.Clone();
 		OnChanged();
 		return info.Clone();
@@ -444,9 +449,9 @@ public class Horoscope : ICloneable
 	{
 		var geopos = new double[3]
 		{
-			_info.lon.toDouble(),
-			_info.lat.toDouble(),
-			_info.alt
+			_info.Longitude.toDouble(),
+			_info.Latitude.toDouble(),
+			_info.Altitude
 		};
 		var tret = new double[6]
 		{
@@ -514,9 +519,9 @@ public class Horoscope : ICloneable
 
 				var geopos = new double[3]
 				{
-					info.lon.toDouble(),
-					info.lat.toDouble(),
-					info.alt
+					info.Longitude.toDouble(),
+					info.Latitude.toDouble(),
+					info.Altitude
 				};
 				var tret = new double[6]
 				{
@@ -536,10 +541,10 @@ public class Horoscope : ICloneable
 
 				sr_ut = tret[0];
 				sweph.RevJul(tret[0], ref year, ref month, ref day, ref hour);
-				sr = hour + info.tz.toDouble();
+				sr = hour + info.Timezone.toDouble();
 				sweph.Set(tret[0], sweph.SE_SUN, srflag, geopos, 0.0, 0.0, tret);
 				sweph.RevJul(tret[0], ref year, ref month, ref day, ref hour);
-				ss = hour + info.tz.toDouble();
+				ss = hour + info.Timezone.toDouble();
 				sr = Basics.normalize_exc(0.0, 24.0, sr);
 				ss = Basics.normalize_exc(0.0, 24.0, ss);
 				break;
@@ -676,13 +681,13 @@ public class Horoscope : ICloneable
 			4,
 			5
 		};
-		var b          = Tables.Hora.weekdayRuler(wday);
+		var b          = wday.WeekdayRuler();
 		var bday_birth = isDayBirth();
 
 		var cusps = getKalaCuspsUt();
 		if (options.KalaType == HoroscopeOptions.EHoraType.Lmt)
 		{
-			b          = Tables.Hora.weekdayRuler(lmt_wday);
+			b          = lmt_wday.WeekdayRuler();
 			bday_birth = info.tob.time > lmt_sunset || info.tob.time < lmt_sunrise;
 		}
 
@@ -745,11 +750,11 @@ public class Horoscope : ICloneable
 			1,
 			4
 		};
-		var b     = Tables.Hora.weekdayRuler(wday);
+		var b     = wday.WeekdayRuler();
 		var cusps = getHoraCuspsUt();
 		if (options.HoraType == HoroscopeOptions.EHoraType.Lmt)
 		{
-			b = Tables.Hora.weekdayRuler(lmt_wday);
+			b = lmt_wday.WeekdayRuler();
 		}
 
 		var i = offsets[(int) b];
@@ -783,7 +788,7 @@ public class Horoscope : ICloneable
 	{
 		if (isDayBirth())
 		{
-			return Tables.Hora.weekdayRuler(wday);
+			return wday.WeekdayRuler();
 		}
 
 		switch (wday)
@@ -836,7 +841,7 @@ public class Horoscope : ICloneable
 		double dStart = 0, dEnd = 0;
 
 		var m         = info.tob;
-		dStart = dEnd = sweph.JulDay(m.year, m.month, m.day, -info.tz.toDouble());
+		dStart = dEnd = sweph.JulDay(m.year, m.month, m.day, -info.Timezone.toDouble());
 		var bStart    = calculateUpagrahasStart();
 
 		if (isDayBirth())
@@ -1075,7 +1080,7 @@ public class Horoscope : ICloneable
 		var ascmc  = new double[10];
 
 		sweph.obtainLock(this);
-		sweph.HousesEx(baseUT, sweph.SEFLG_SIDEREAL, info.lat.toDouble(), info.lon.toDouble(), swephHouseSystem, dCusps, ascmc);
+		sweph.HousesEx(baseUT, sweph.SEFLG_SIDEREAL, info.Latitude.toDouble(), info.Longitude.toDouble(), swephHouseSystem, dCusps, ascmc);
 		sweph.releaseLock(this);
 		for (var i = 0; i < 12; i++)
 		{
@@ -1101,8 +1106,7 @@ public class Horoscope : ICloneable
 		// The stuff here is largely order sensitive
 		// Try to add new definitions to the end
 
-		baseUT = sweph.JulDay(info.tob.year, info.tob.month, info.tob.day, info.tob.time - info.tz.toDouble());
-
+		baseUT = sweph.JulDay(info.tob.year, info.tob.month, info.tob.day, info.tob.time - info.Timezone.toDouble());
 
 		sweph.obtainLock(this);
 		sweph.SetPath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);

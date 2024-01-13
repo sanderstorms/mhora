@@ -20,9 +20,8 @@ using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using Mhora.Components.Converter;
-using Mhora.Database.Settings;
 
-namespace Mhora.Elements.Hora;
+namespace Mhora.Database.Settings;
 
 [Serializable]
 [TypeConverter(typeof(HMSInfoConverter))]

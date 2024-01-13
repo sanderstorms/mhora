@@ -48,7 +48,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
@@ -73,7 +73,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
@@ -174,6 +174,19 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SwissEph\AstroCatalogue.cs" />
+    <Compile Include="SwissEph\AzimuthCalcResult.cs" />
+    <Compile Include="SwissEph\AzimuthCalculator.cs" />
+    <Compile Include="SwissEph\BodyPosition.cs" />
+    <Compile Include="Util\CompilerService.cs" />
+    <Compile Include="SwissEph\GeoPosition.cs" />
+    <Compile Include="SwissEph\HorizontalCoordinates.cs" />
+    <Compile Include="SwissEph\JulDay.cs" />
+    <Compile Include="Util\Range.cs" />
+    <Compile Include="SwissEph\SunriseSunsetTimeCalcResult.cs" />
+    <Compile Include="SwissEph\SweApi.cs" />
+    <Compile Include="SwissEph\SwedllException.cs" />
+    <Compile Include="SwissEph\Sweodef.cs" />
     <Compile Include="Tables\Muhurtas.cs" />
     <Compile Include="Util\Base64Decoder.cs" />
     <Compile Include="Elements\Calculation\CuspTransitSearch.cs" />
@@ -241,12 +254,12 @@
     <Compile Include="Tables\Hora.cs" />
     <Compile Include="Tables\Sarvatobhadra.cs" />
     <Compile Include="Tables\Taras.cs" />
-    <Compile Include="Tables\Tithis.cs" />
+    <Compile Include="Elements\Tithis.cs" />
     <Compile Include="Tables\Vargas.cs" />
     <Compile Include="Elements\CuspTransitSearch.cs" />
     <Compile Include="Util\Dll.cs" />
     <Compile Include="Util\EnumHelper.cs" />
-    <Compile Include="Elements\LocationConverter.cs" />
+    <Compile Include="Util\LocationConverter.cs" />
     <Compile Include="Elements\NonLinearTransit.cs" />
     <Compile Include="Elements\Retrogression.cs" />
     <Compile Include="Util\SevenZip.cs" />
@@ -270,7 +283,7 @@
     <Compile Include="Components\BasicCalculationsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Tables\Basics.cs">
+    <Compile Include="Elements\Basics.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Elements\Body.cs" />
@@ -303,9 +316,9 @@
     <Compile Include="Elements\Ghataka\GhatakaTithi.cs" />
     <Compile Include="Components\Property\GlobalizedPropertiesWrapper.cs" />
     <Compile Include="Components\Property\GlobalizedPropertyDescriptor.cs" />
-    <Compile Include="Elements\Hora\HMSInfo.cs" />
+    <Compile Include="Database\Settings\HMSInfo.cs" />
     <Compile Include="Components\Converter\HMSInfoConverter.cs" />
-    <Compile Include="Elements\Hora\HoraInfo.cs" />
+    <Compile Include="Database\Settings\HoraInfo.cs" />
     <Compile Include="Elements\Calculation\Horoscope.cs" />
     <Compile Include="Database\Settings\HoroscopeOptions.cs" />
     <Compile Include="Elements\Dasas\IDasa.cs" />
@@ -374,9 +387,6 @@
     <Compile Include="Components\KutaMatchingControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Elements\Kuta\Kutas.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Components\LongStringEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -398,7 +408,7 @@
     <Compile Include="Components\MhoraSplitContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Elements\Calculation\Moment.cs" />
+    <Compile Include="Database\Settings\Moment.cs" />
     <Compile Include="Components\Converter\MomentConverter.cs" />
     <Compile Include="Elements\Dasas\Graha\MoolaDasa.cs" />
     <Compile Include="Elements\Dasas\Graha\NaisargikaGrahaDasa.cs" />
@@ -466,9 +476,10 @@
     <Compile Include="SwissEph\SwephException.cs" />
     <Compile Include="Elements\Dasas\Yearly\TajakaDasa.cs" />
     <Compile Include="Elements\Dasas\Yearly\TattwaDasa.cs" />
-    <Compile Include="Elements\Tithi.cs" />
     <Compile Include="Elements\Dasas\Nakshatra\TithiAshtottariDasa.cs" />
     <Compile Include="Elements\Dasas\Yearly\TithiPraveshDasa.cs" />
+    <Compile Include="Util\Sunriset.cs" />
+    <Compile Include="Util\TimeUtils.cs" />
     <Compile Include="Util\ToDate.cs" />
     <Compile Include="Components\Transit\TransitItem.cs" />
     <Compile Include="Components\Transit\TransitSearch.cs">
@@ -477,7 +488,7 @@
     <Compile Include="Components\Transit\TransitSearchOptions.cs" />
     <Compile Include="Elements\Dasas\Rasi\TrikonaDasa.cs" />
     <Compile Include="Elements\Hora\UIStringTypeEditor.cs" />
-    <Compile Include="Elements\Hora\UserEvent.cs" />
+    <Compile Include="Database\Settings\UserEvent.cs" />
     <Compile Include="Components\VaraChakra.cs">
       <SubType>UserControl</SubType>
     </Compile>

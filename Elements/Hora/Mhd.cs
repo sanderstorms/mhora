@@ -20,6 +20,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
+using Mhora.Database.Settings;
 
 namespace Mhora.Elements.Hora;
 

@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
+using mhora.Util;
 using Mhora.Util;
 
-namespace Mhora.Tables;
+namespace Mhora.Elements;
 
 public static class Tithis
 {
@@ -107,6 +108,108 @@ public static class Tithis
 		[Description("Amavasya")]
 		Amavasya
 	}
+
+	public static Tithi ToTithi(this int index)
+	{
+		return (Tithi) Basics.normalize_inc(1, 30, index);
+	}
+
+	public static NandaType ToNandaType(this Tithi tithi)
+	{
+		// 1 based index starting with prathama
+		var t = tithi.Index();
+
+		// check for new moon and full moon 
+
+		if (t == 30 || t == 15)
+		{
+			return NandaType.Purna;
+		}
+
+		// coalesce pakshas
+		if (t >= 16)
+		{
+			t -= 15;
+		}
+
+		switch (t)
+		{
+			case 1:
+			case 6:
+			case 11: return NandaType.Nanda;
+			case 2:
+			case 7:
+			case 12: return NandaType.Bhadra;
+			case 3:
+			case 8:
+			case 13: return NandaType.Jaya;
+			case 4:
+			case 9:
+			case 14: return NandaType.Rikta;
+			case 5:
+			case 10: return NandaType.Purna;
+		}
+
+		return NandaType.Nanda;
+	}
+
+	public static Body.BodyType GetLord(this Tithi tithi)
+	{
+		// 1 based index starting with prathama
+		var t = tithi.Index();
+
+		//mhora.Log.Debug ("Looking for lord of tithi {0}", t);
+		// check for new moon and full moon 
+		if (t == 30)
+		{
+			return Body.BodyType.Rahu;
+		}
+
+		if (t == 15)
+		{
+			return Body.BodyType.Saturn;
+		}
+
+		// coalesce pakshas
+		if (t >= 16)
+		{
+			t -= 15;
+		}
+
+		switch (t)
+		{
+			case 1:
+			case 9: return Body.BodyType.Sun;
+			case 2:
+			case 10: return Body.BodyType.Moon;
+			case 3:
+			case 11: return Body.BodyType.Mars;
+			case 4:
+			case 12: return Body.BodyType.Mercury;
+			case 5:
+			case 13: return Body.BodyType.Jupiter;
+			case 6:
+			case 14: return Body.BodyType.Venus;
+			case 7: return Body.BodyType.Saturn;
+			case 8: return Body.BodyType.Rahu;
+		}
+
+		return Body.BodyType.Sun;
+	}
+
+	public static Tithi Add(this Tithi tithi, int i)
+	{
+		var tnum = Basics.normalize_inc(1, 30, tithi.Index() + i - 1);
+		return (Tithi)tnum;
+	}
+
+	public static Tithi AddReverse(this Tithi tithi, int i)
+	{
+		var tnum = Basics.normalize_inc(1, 30, tithi.Index() - i + 1);
+		return (Tithi)tnum;
+	}
+
+
 
 	public static readonly string[] SpecialNames =
 	{

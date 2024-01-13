@@ -39,7 +39,7 @@ namespace Mhora.Tables
 			Maruta
 		}
 
-		public static Nakshatras.Nakshatra28 NakLordOfMuhurta(Muhurta m)
+		public static Nakshatras.Nakshatra28 NakLordOfMuhurta(this Muhurta m)
 		{
 			switch (m)
 			{

@@ -318,9 +318,9 @@ public class PanchangaControl : MhoraControl
 		var ut_start = Math.Floor(h.baseUT);
 		double[] geopos =
 		{
-			h.info.lon.toDouble(),
-			h.info.lat.toDouble(),
-			h.info.alt
+			h.info.Longitude.toDouble(),
+			h.info.Latitude.toDouble(),
+			h.info.Altitude
 		};
 
 		globals = new PanchangaGlobalMoments();
@@ -346,7 +346,7 @@ public class PanchangaControl : MhoraControl
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.tz.toDouble() / 24.0;
+		found_ut += h.info.Timezone.toDouble() / 24.0;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
 		var m = new Moment(year, month, day, hour);
 		return m;
@@ -357,7 +357,7 @@ public class PanchangaControl : MhoraControl
 		int    year = 0, month = 0, day = 0;
 		double time = 0;
 
-		ut += h.info.tz.toDouble() / 24.0;
+		ut += h.info.Timezone.toDouble() / 24.0;
 		sweph.RevJul(ut, ref year, ref month, ref day, ref time);
 		return timeToString(time);
 	}
@@ -397,7 +397,7 @@ public class PanchangaControl : MhoraControl
 		sweph.RevJul(ut_sr, ref year, ref month, ref day, ref hour);
 		var moment_sr = new Moment(year, month, day, hour);
 		var moment_ut = new Moment(ut, h);
-		var infoCurr  = new HoraInfo(moment_ut, h.info.lat, h.info.lon, h.info.tz);
+		var infoCurr  = new HoraInfo(moment_ut, h.info.Latitude, h.info.Longitude, h.info.Timezone);
 		var hCurr     = new Horoscope(infoCurr, h.options);
 
 		ListViewItem li = null;
@@ -413,10 +413,10 @@ public class PanchangaControl : MhoraControl
 		local.kalas_ut = hCurr.getKalaCuspsUt();
 		if (opts.CalcSpecialKalas)
 		{
-			var bStart = Hora.weekdayRuler(hCurr.wday);
+			var bStart = hCurr.wday.WeekdayRuler();
 			if (hCurr.options.KalaType == HoroscopeOptions.EHoraType.Lmt)
 			{
-				bStart = Hora.weekdayRuler(hCurr.lmt_wday);
+				bStart = hCurr.lmt_wday.WeekdayRuler();
 			}
 
 			local.rahu_kala_index   = rahu_kalas[(int) bStart];
@@ -453,17 +453,17 @@ public class PanchangaControl : MhoraControl
 			var tithi_start = t.LongitudeOfTithi(ut_sr).toTithi();
 			var tithi_end   = t.LongitudeOfTithi(ut_sr + 1.0).toTithi();
 
-			var tithi_curr = tithi_start.add(1);
+			var tithi_curr = tithi_start.Add(1);
 			local.tithi_index_start = globals.tithis_ut.Count - 1;
 			local.tithi_index_end   = globals.tithis_ut.Count - 1;
 
-			while (tithi_start.Value != tithi_end.Value && tithi_curr.Value != tithi_end.Value)
+			while (tithi_start != tithi_end && tithi_curr != tithi_end)
 			{
-				tithi_curr = tithi_curr.add(2);
-				var dLonToFind = ((double) (int) tithi_curr.Value - 1) * (360.0 / 30.0);
+				tithi_curr = tithi_curr.Add(2);
+				var dLonToFind = ((double) (int) tithi_curr - 1) * (360.0 / 30.0);
 				var ut_found   = t.LinearSearchBinary(ut_sr, ut_sr + 1.0, new Longitude(dLonToFind), t.LongitudeOfTithiDir);
 
-				globals.tithis_ut.Add(new PanchangaMomentInfo(ut_found, (int) tithi_curr.Value));
+				globals.tithis_ut.Add(new PanchangaMomentInfo(ut_found, (int) tithi_curr));
 				local.tithi_index_end++;
 			}
 
@@ -604,8 +604,8 @@ public class PanchangaControl : MhoraControl
 			if (local.tithi_index_start == local.tithi_index_end && local.tithi_index_start >= 0)
 			{
 				var pmi = (PanchangaMomentInfo) globals.tithis_ut[local.tithi_index_start];
-				var t   = new Elements.Tithi((Tithis.Tithi) pmi.info);
-				mList.Items.Add(string.Format("{0} - full.", t.Value));
+				var t   = pmi.info.ToTithi();
+				mList.Items.Add(string.Format("{0} - full.", t.GetEnumDescription()));
 			}
 			else
 			{
@@ -617,8 +617,8 @@ public class PanchangaControl : MhoraControl
 					}
 
 					var pmi = (PanchangaMomentInfo) globals.tithis_ut[i];
-					var t   = new Elements.Tithi((Tithis.Tithi) pmi.info).addReverse(2);
-					s_tithi += string.Format("{0} until {1}", t.Value, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
+					var t   = pmi.info.ToTithi().AddReverse(2);
+					s_tithi += string.Format("{0} until {1}", t.GetEnumDescription(), utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 
 					if (opts.OneEntryPerLine)
 					{
