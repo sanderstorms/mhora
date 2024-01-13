@@ -5,9 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Mhora.Database.Settings;
 using Mhora.Database.World;
-using Mhora.Elements;
-using Mhora.Elements.Calculation;
-using Mhora.Elements.Hora;
 using Mhora.Util;
 using SQLinq;
 using SqlNado;
@@ -18,21 +15,34 @@ namespace Mhora.Components;
 
 public partial class BirthDetailsDialog : Form
 {
+	private HoraInfo       _info;
 	private List<City>     _cities;
-	private List<Country>  _countries;
-	private SQLiteDatabase _db;
+
 	private bool           _manualEnter;
 	private List<State>    _states;
 	private TimeZone       _timeZone;
 
+	private static SQLiteDatabase _db = null;
+	private static List<Country>  _countries;
+
 	public BirthDetailsDialog()
 	{
 		InitializeComponent();
+		_db ??= new SQLiteDatabase("world.db");
+
+		if (_countries == null)
+		{
+			var countries = Query.From<Country>().SelectAll().ToString();
+			_countries = _db.Load<Country>(countries).ToList();
+			_countries.Sort();
+		}
+
+		comboBoxCountry.DataSource = _countries;
 	}
 
 	public BirthDetailsDialog(HoraInfo info) : this()
 	{
-		
+		Info = info;
 	}
 
 
@@ -62,22 +72,39 @@ public partial class BirthDetailsDialog : Form
 		private set;
 	}
 
-	public Horoscope Horoscope
+	public HoraInfo Info
 	{
 		get
 		{
+			MhoraGlobalOptions.Instance.City      = City.Name;
 			MhoraGlobalOptions.Instance.Latitude  = new HMSInfo(City.Latitude);
 			MhoraGlobalOptions.Instance.Longitude = new HMSInfo(City.Longitude);
 			MhoraGlobalOptions.Instance.TimeZone  = new HMSInfo(Country.Timezones[0].gmtOffset / 3600.0);
 
-			var dateTime = dateTimePicker.Value;
-			var moment   = new Moment(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second);
+			var date   = dateTimePicker.Value;
+			var time   = timePicker.Value;
+			var moment = new Moment(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
 			var info     = new HoraInfo(moment, MhoraGlobalOptions.Instance.Latitude, MhoraGlobalOptions.Instance.Longitude, MhoraGlobalOptions.Instance.TimeZone)
 			{
 				Country = Country.Name,
 				City    = City.Name,
 			};
-			return new Horoscope(info, new HoroscopeOptions());
+			return (info);
+		}
+		set
+		{
+			_info                = value;
+			dateTimePicker.Value = value.DateOfBirth;
+			timePicker.Value     = value.DateOfBirth;
+			var query  = Query.From<City>().Where(city => city.Name == value.City).SelectAll();
+			var cities = _db.Load<City>(query.ToString()).ToArray();
+			if (cities.Length > 0)
+			{
+				comboBoxCountry.SelectedItem = _countries.Find(country => country.Id == cities[0].Country.Id);
+				comboBoxState.SelectedItem   = _states.Find(state => state.Id        == cities[0].StateId);
+				comboBoxCity.SelectedItem    = _cities.Find(city => city.Id          == cities[0].Id);
+			}
+
 		}
 	}
 
@@ -131,20 +158,17 @@ public partial class BirthDetailsDialog : Form
 	protected override void OnLoad(EventArgs e)
 	{
 		base.OnLoad(e);
+
+		if (_info != null)
+		{
+			return;
+		}
 		timePicker.Value = DateTime.Now;
 
 		if (File.Exists("world.db"))
 		{
 			try
 			{
-				_db = new SQLiteDatabase("world.db");
-
-				var countries = Query.From<Country>().SelectAll().ToString();
-				_countries = _db.Load<Country>(countries).ToList();
-				_countries.Sort();
-
-				comboBoxCountry.DataSource = _countries;
-
 				var query  = Query.From<City>().Where(city => city.Name == "Maastricht").SelectAll();
 				var cities = _db.Load<City>(query.ToString()).ToArray();
 				if (cities.Length > 0)

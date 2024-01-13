@@ -394,8 +394,15 @@ public class MhoraChild : Form
 
 	public void menuShowDobOptions()
 	{
-		var f = new MhoraOptions(h.info.Clone(), h.UpdateHoraInfo);
-		f.ShowDialog();
+		using (var birthDetails = new BirthDetailsDialog(h.info))
+		{
+			if (birthDetails.ShowDialog() == DialogResult.OK)
+			{
+				Refresh();
+			}
+		}
+		//var f = new MhoraOptions(h.info.Clone(), h.UpdateHoraInfo);
+		//f.ShowDialog();
 	}
 
 	private void menuDobOptions_Click(object sender, EventArgs e)

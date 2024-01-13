@@ -217,6 +217,12 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 	[PGDisplayName("Yogas file name")]
 	public string YogasFileName => getExeDir() + "\\" + "yogas.mhr";
 
+	public string City
+	{
+		get;
+		set;
+	} = "Maastricht";
+
 	[PropertyOrder(1)]
 	[Category(CAT_LOCATION)]
 	public HMSInfo Latitude

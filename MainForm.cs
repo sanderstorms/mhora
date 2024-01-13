@@ -114,7 +114,8 @@ namespace Mhora
 			{
 				if (birthDetails.ShowDialog() == DialogResult.OK)
 				{
-					AddChild(birthDetails.Horoscope, birthDetails.ChartName);
+					var horoscope = new Horoscope(birthDetails.Info, new HoroscopeOptions());
+					AddChild(horoscope, birthDetails.ChartName);
 				}
 			}
 		}
