@@ -290,8 +290,8 @@ public static class sweph
 		var serr = new StringBuilder(256);
 		var geopos = new double[3]
 		{
-			hi.Longitude.toDouble(),
-			hi.Latitude.toDouble(),
+			hi.Longitude,
+			hi.Latitude,
 			hi.Altitude
 		};
 
@@ -414,7 +414,7 @@ public static class sweph
 		var hi    = mCurrentLockHolder.info;
 		var cusps = new double[13];
 		var ascmc = new double[10];
-		var ret   = HousesEx(tjd_ut, SEFLG_SIDEREAL, hi.Latitude.toDouble(), hi.Longitude.toDouble(), 'R', cusps, ascmc);
+		var ret   = HousesEx(tjd_ut, SEFLG_SIDEREAL, hi.Latitude, hi.Longitude, 'R', cusps, ascmc);
 		return ascmc[0];
 	}
 

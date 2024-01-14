@@ -23,10 +23,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Mhora.Components.Property;
 using Mhora.Database.World;
-using Mhora.Tables;
 using Mhora.Util;
 using Newtonsoft.Json;
-using SqlNado;
 using SqlNado.Query;
 
 namespace Mhora.Database.Settings;
@@ -58,13 +56,12 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 
 	private const string CAT_EVT = "2: Events";
 	private       double _altitude;
-	private       string _city;
-
-	private string  _country;
-	private HMSInfo _latitude;
-	private HMSInfo _longitude;
-	private string  _name;
-	private HMSInfo _timezone;
+	
+	private City   _city;
+	private string _country;
+	private Angle  _latitude;
+	private Angle  _longitude;
+	private string _name;
 
 	//public double lon, lat, alt, tz;
 	public double          defaultYearCompression;
@@ -82,12 +79,11 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		Constructor(GetType(), info, context);
 	}
 
-	public HoraInfo(Moment atob, HMSInfo alat, HMSInfo alon, HMSInfo atz)
+	public HoraInfo(Moment atob, Angle alat, Angle alon)
 	{
 		tob       = atob;
 		Longitude = alon;
 		Latitude  = alat;
-		Timezone  = atz;
 		Altitude  = 0.0;
 		type      = ChartType.Birth;
 		FileType  = EFileType.MudgalaHora;
@@ -98,9 +94,8 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 	{
 		var t = DateTime.Now;
 		tob       = new Moment(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
-		Longitude = (HMSInfo) MhoraGlobalOptions.Instance.Longitude.Clone();
-		Latitude  = (HMSInfo) MhoraGlobalOptions.Instance.Latitude.Clone();
-		Timezone  = (HMSInfo) MhoraGlobalOptions.Instance.TimeZone.Clone();
+		Longitude = MhoraGlobalOptions.Instance.Longitude;
+		Latitude  = MhoraGlobalOptions.Instance.Latitude;
 		Altitude  = 0.0;
 		type      = ChartType.Birth;
 		FileType  = EFileType.MudgalaHora;
@@ -120,7 +115,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 	[Category(CAT_TOB)]
 	[PropertyOrder(2)]
 	[Description("Latitude. Format is 'hh D mm:ss mm:ss'\n Example 23 N 24:00")]
-	public HMSInfo Latitude
+	public Angle Latitude
 	{
 		get => _latitude;
 		set => _latitude = value;
@@ -129,20 +124,10 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 	[Category(CAT_TOB)]
 	[PropertyOrder(3)]
 	[Description("Longitude. Format is 'hh D mm:ss mm:ss'\n Example 23 E 24:00")]
-	public HMSInfo Longitude
+	public Angle Longitude
 	{
 		get => _longitude;
 		set => _longitude = value;
-	}
-
-	[Category(CAT_TOB)]
-	[PropertyOrder(4)]
-	[PGDisplayName("Time zone")]
-	[Description("Time Zone. Format is 'hh D mm:ss mm:ss'\n Example 3 E 00:00")]
-	public HMSInfo Timezone
-	{
-		get => _timezone;
-		set => _timezone = value;
 	}
 
 	[Category(CAT_TOB)]
@@ -151,24 +136,6 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 	{
 		get => _altitude;
 		set => _altitude = value;
-	}
-
-	[Category(CAT_TOB)]
-	[PropertyOrder(6)]
-	[PGDisplayName("Country")]
-	public string Country
-	{
-		get => _country;
-		set => _country = value ?? string.Empty;
-	}
-
-	[Category(CAT_TOB)]
-	[PropertyOrder(7)]
-	[PGDisplayName("City")]
-	public string City
-	{
-		get => _city;
-		set => _city = value ?? string.Empty;
 	}
 
 	[Category(CAT_TOB)]
@@ -189,40 +156,48 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		set => events = value;
 	}
 
-	private City _worldCity;
-	public City WorldCity
+	[JsonProperty]
+	private int CityId
 	{
 		get
 		{
-			if (_worldCity == null)
+			return City.Id;
+		}
+		set
+		{
+			var query  = Query.From<City>().Where(city => city.Id == value).SelectAll();
+			var cities = Application.WorldDb.Load<City>(query.ToString()).ToList();
+			if (cities?.Count > 0)
 			{
-				using var db     = new SQLiteDatabase("world.db");
-				var       query  = Query.From<City>().Where(city => city.Name == _city).SelectAll();
-				var       cities = db.Load<City>(query.ToString()).ToList();
-
-				if (cities?.Count > 0)
-				{
-					foreach (var city in cities)
-					{
-						if (city.Country.Name.Equals(_country, StringComparison.OrdinalIgnoreCase))
-						{
-							_worldCity = city;
-							break;
-						}
-					}
-				}
+				_city = cities[0];
 			}
-
-			return (_worldCity);
 		}
 	}
 
+	[JsonIgnore]
+	public City City
+	{
+		get => _city;
+		set => _city = value;
+	}
+
+	[JsonIgnore]
+	public DateTime UtcTime => TimeZoneInfo.ConvertTimeToUtc(tob, City.Country.TimeZoneInfo);
+
+	[JsonIgnore]
+	public TimeSpan UtcOffset => City.Country.TimeZoneInfo.BaseUtcOffset;
+
+	[JsonIgnore]
+	public TimeSpan DstOffset => City.Country.TimeZoneInfo.GetUtcOffset(tob);
+
+	[JsonIgnore]
+	public TimeSpan TimeFromMidnight => new TimeSpan(0, tob.hour, tob.minute, tob.second);
+
 	public object Clone()
 	{
-		var hi = new HoraInfo((Moment) tob.Clone(), (HMSInfo) Latitude.Clone(), (HMSInfo) Longitude.Clone(), (HMSInfo) Timezone.Clone())
+		var hi = new HoraInfo((Moment) tob.Clone(), Latitude, Longitude)
 		{
-			City                   = City,
-			Country                = Country,
+			City			       = City,
 			Events                 = Events,
 			Name                   = Name,
 			defaultYearCompression = defaultYearCompression,

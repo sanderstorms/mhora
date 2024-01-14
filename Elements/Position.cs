@@ -21,6 +21,7 @@ using System.Collections;
 using System.Diagnostics;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
+using mhora.Util;
 
 namespace Mhora.Elements;
 
@@ -131,7 +132,7 @@ public class Position : ICloneable
 	/// <returns>The DivisionPosition the body falls into</returns>
 	private DivisionPosition toRegularDivisionPosition(int n)
 	{
-		var zhouse    = (int) longitude.toZodiacHouse().Sign;
+		var zhouse    = longitude.toZodiacHouse().Sign.Index();
 		var num_parts = (zhouse - 1) * n + partOfZodiacHouse(n);
 		var div_house = new ZodiacHouse(ZodiacHouse.Rasi.Ari).Add(num_parts);
 		var dp        = new DivisionPosition(name, type, div_house, 0, 0, 0);

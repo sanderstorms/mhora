@@ -528,7 +528,7 @@ public class MhoraPrintDocument : PrintDocument
 		top += width / 2 + pad_height;
 
 		// Birth Details
-		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.wday, h.info.tob, h.info.Timezone, h.info.Latitude, h.info.Longitude));
+		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.wday, h.info.tob, h.info.UtcOffset, h.info.Latitude, h.info.Longitude));
 
 		// Tithis
 		var ltithi = h.getPosition(Body.BodyType.Moon).longitude.sub(h.getPosition(Body.BodyType.Sun).longitude);

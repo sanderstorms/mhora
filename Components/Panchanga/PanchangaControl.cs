@@ -318,8 +318,8 @@ public class PanchangaControl : MhoraControl
 		var ut_start = Math.Floor(h.baseUT);
 		double[] geopos =
 		{
-			h.info.Longitude.toDouble(),
-			h.info.Latitude.toDouble(),
+			h.info.Longitude,
+			h.info.Latitude,
 			h.info.Altitude
 		};
 
@@ -346,7 +346,7 @@ public class PanchangaControl : MhoraControl
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.Timezone.toDouble() / 24.0;
+		found_ut += h.info.UtcOffset.TotalDays;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
 		var m = new Moment(year, month, day, hour);
 		return m;
@@ -357,7 +357,7 @@ public class PanchangaControl : MhoraControl
 		int    year = 0, month = 0, day = 0;
 		double time = 0;
 
-		ut += h.info.Timezone.toDouble() / 24.0;
+		ut += h.info.UtcOffset.TotalDays;
 		sweph.RevJul(ut, ref year, ref month, ref day, ref time);
 		return timeToString(time);
 	}
@@ -397,7 +397,7 @@ public class PanchangaControl : MhoraControl
 		sweph.RevJul(ut_sr, ref year, ref month, ref day, ref hour);
 		var moment_sr = new Moment(year, month, day, hour);
 		var moment_ut = new Moment(ut, h);
-		var infoCurr  = new HoraInfo(moment_ut, h.info.Latitude, h.info.Longitude, h.info.Timezone);
+		var infoCurr  = new HoraInfo(moment_ut, h.info.Latitude, h.info.Longitude);
 		var hCurr     = new Horoscope(infoCurr, h.options);
 
 		ListViewItem li = null;

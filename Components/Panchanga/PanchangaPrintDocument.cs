@@ -171,7 +171,7 @@ public class PanchangaPrintDocument : PrintDocument
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.Timezone.toDouble() / 24.0;
+		found_ut += h.info.UtcOffset.TotalDays;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
 		var m = new Moment(year, month, day, hour);
 		return m;
@@ -377,7 +377,7 @@ public class PanchangaPrintDocument : PrintDocument
 		float offsetX = margin_offset + sm_time_offset + sm_time_width;
 
 		var mCurr  = new Moment(((PanchangaLocalMoments) locals[iStart]).sunrise_ut, h);
-		var hiCurr = new HoraInfo(mCurr, h.info.Latitude, h.info.Longitude, h.info.Timezone);
+		var hiCurr = new HoraInfo(mCurr, h.info.Latitude, h.info.Longitude);
 		var hCurr  = new Horoscope(hiCurr, h.options);
 		var dc     = new DivisionalChart(hCurr);
 		dc.PrintMode         = true;

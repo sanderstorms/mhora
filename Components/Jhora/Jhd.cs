@@ -19,10 +19,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Mhora.Database.Settings;
+using Mhora.Database.World;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Hora;
+using SqlNado;
+using SqlNado.Query;
 
 namespace Mhora.Components.Jhora;
 
@@ -37,23 +41,40 @@ public class Jhd : IFileToHoraInfo
 
 	public HoraInfo toHoraInfo()
 	{
-		var sr      = File.OpenText(fname);
-		var m       = readMomentLine(sr);
-		var tz      = readHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
-		var lon     = readHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
-		var lat     = readHmsLineInfo(sr, false, HMSInfo.dir_type.NS);
-		var alt     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
-		var est     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
-		var dst     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
-		var i1      = readIntLine(sr);
-		var i2      = readIntLine(sr);
-		var city    = sr.ReadLine();
-		var country = sr.ReadLine();
-		var hi      = new HoraInfo(m, lat, lon, tz)
+		var  sr      = File.OpenText(fname);
+		var  m       = readMomentLine(sr);
+		var  tz      = readHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
+		var  lon     = readHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
+		var  lat     = readHmsLineInfo(sr, false, HMSInfo.dir_type.NS);
+		var  alt     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
+		var  est     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
+		var  dst     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
+		var  i1      = readIntLine(sr);
+		var  i2      = readIntLine(sr);
+		var  cityName = sr.ReadLine();
+		var  country = sr.ReadLine();
+		City worldCity = null;
+
+		var       query  = Query.From<City>().Where(city => city.Name.ToLower() == cityName.ToLower()).SelectAll();
+		var       cities = Application.WorldDb.Load<City>(query.ToString()).ToList();
+
+		if (cities?.Count > 0)
 		{
-			City     = city,
-			Country  = country,
-			FileType = HoraInfo.EFileType.JagannathaHora
+			worldCity = cities[0];
+			foreach (var city in cities)
+			{
+				if (city.Country.Name.Equals(country, StringComparison.OrdinalIgnoreCase))
+				{
+					worldCity = city;
+					break;
+				}
+			}
+		}
+
+		var hi = new HoraInfo(m, (double) lat, (double) lon)
+		{
+			City = worldCity,
+			FileType  = HoraInfo.EFileType.JagannathaHora
 		};
 		hi.Name = Path.GetFileNameWithoutExtension(fname);
 		return hi;
@@ -63,9 +84,9 @@ public class Jhd : IFileToHoraInfo
 	{
 		var sw = new StreamWriter(fname, false);
 		writeMomentLine(sw, h.tob);
-		writeHMSInfoLine(sw, h.Timezone);
-		writeHMSInfoLine(sw, h.Longitude);
-		writeHMSInfoLine(sw, h.Latitude);
+		writeHMSInfoLine(sw, h.City.Country.TimeZoneInfo.BaseUtcOffset.TotalHours);
+		writeHMSInfoLine(sw, (double) h.Longitude);
+		writeHMSInfoLine(sw, (double) h.Latitude);
 		sw.WriteLine("0.000000");
 		sw.Flush();
 		sw.Close();

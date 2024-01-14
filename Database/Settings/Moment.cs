@@ -77,7 +77,7 @@ public class Moment : MhoraSerializableOptions, ICloneable, ISerializable
 	public Moment(double tjd_ut, Horoscope h)
 	{
 		double time = 0;
-		tjd_ut += h.info.Timezone.toDouble() / 24.0;
+		tjd_ut += h.info.UtcOffset.TotalDays;
 		sweph.RevJul(tjd_ut, ref m_year, ref m_month, ref m_day, ref time);
 		doubleToHMS(time, ref m_hour, ref m_minute, ref m_second);
 	}
@@ -147,7 +147,7 @@ public class Moment : MhoraSerializableOptions, ICloneable, ISerializable
 	public double toUniversalTime(Horoscope h)
 	{
 		var local_ut = sweph.JulDay(year, month, day, time);
-		return local_ut - h.info.Timezone.toDouble() / 24.0;
+		return local_ut - h.info.UtcOffset.TotalDays;
 	}
 
 	public static int FromStringMonth(string s)

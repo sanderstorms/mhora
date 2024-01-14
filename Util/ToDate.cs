@@ -127,7 +127,7 @@ public class ToDate
 		l     =  l.add(new Longitude(tDays * (360.0 / numDays)));
 		jd_st =  jd + tDays; // * 25.0/30.0;
 		jd    =  t.LinearSearch(jd_st, l, returnLonFunc);
-		jd    += h.info.Timezone.toDouble() / 24.0;
+		jd    += h.info.UtcOffset.TotalDays;
 		jd    += offset;
 
 		sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
@@ -174,7 +174,7 @@ public class ToDate
 
 				l  =  new Longitude(lon       + spos);
 				jd =  t.LinearSearch(h.baseUT + years * 365.2425, l, t.LongitudeOfSun);
-				jd += h.info.Timezone.toDouble() / 24.0;
+				jd += h.info.UtcOffset.TotalDays;
 				jd += offset;
 				sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
 				Moment.doubleToHMS(dhour, ref hour, ref minute, ref second);
@@ -192,7 +192,7 @@ public class ToDate
 				t = new Transit(h);
 				return AddPraveshYears(years, t.LongitudeOfMoonDir, 13, 27);
 			case DateType.TithiYear:
-				jd -= h.info.Timezone.toDouble() / 24.0;
+				jd -= h.info.UtcOffset.TotalDays;
 				t  =  new Transit(h);
 				jd =  h.baseUT;
 				var tithi_base = new Longitude(mpos - spos);
@@ -207,13 +207,13 @@ public class ToDate
 				tithi_base = tithi_base.add(new Longitude(days * 12.0));
 				//mhora.Log.Debug ("Searching from {0} for {1}", t.LongitudeOfTithiDir(jd+days*28.0/30.0), tithi_base);
 				jd =  t.LinearSearch(jd + days * 28.0 / 30.0, tithi_base, t.LongitudeOfTithiDir);
-				jd += h.info.Timezone.toDouble() / 24.0;
+				jd += h.info.UtcOffset.TotalDays;
 				jd += offset;
 				sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
 				Moment.doubleToHMS(dhour, ref hour, ref minute, ref second);
 				return new Moment(year, month, day, hour, minute, second);
 			case DateType.YogaYear:
-				jd -= h.info.Timezone.toDouble() / 24.0;
+				jd -= h.info.UtcOffset.TotalDays;
 				t  =  new Transit(h);
 				jd =  h.baseUT;
 				var yoga_base = new Longitude(mpos + spos);
@@ -227,7 +227,7 @@ public class ToDate
 
 				yoga_base =  yoga_base.add(new Longitude(yogaDays * (360.0 / 27.0)));
 				jd        =  t.LinearSearch(jd + yogaDays * 28.0 / 30.0, yoga_base, t.LongitudeOfSunMoonYogaDir);
-				jd        += h.info.Timezone.toDouble() / 24.0;
+				jd        += h.info.UtcOffset.TotalDays;
 				jd        += offset;
 				sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
 				Moment.doubleToHMS(dhour, ref hour, ref minute, ref second);

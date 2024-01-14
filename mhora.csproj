@@ -178,6 +178,7 @@
     <Compile Include="SwissEph\AzimuthCalcResult.cs" />
     <Compile Include="SwissEph\AzimuthCalculator.cs" />
     <Compile Include="SwissEph\BodyPosition.cs" />
+    <Compile Include="Util\Angle.cs" />
     <Compile Include="Util\CompilerService.cs" />
     <Compile Include="SwissEph\GeoPosition.cs" />
     <Compile Include="SwissEph\HorizontalCoordinates.cs" />

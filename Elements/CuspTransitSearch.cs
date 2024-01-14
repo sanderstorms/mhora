@@ -24,7 +24,7 @@ public static class CuspTransitSearch
 
 		sweph.obtainLock(h);
 		var t        = new Transit(h, SearchBody);
-		var ut_base  = StartDate.toUniversalTime() - h.info.Timezone.toDouble() / 24.0;
+		var ut_base  = StartDate.toUniversalTime() - h.info.UtcOffset.TotalDays;
 		var lon_curr = t.GenericLongitude(ut_base, ref bDiscard);
 		sweph.releaseLock(h);
 
@@ -72,7 +72,7 @@ public static class CuspTransitSearch
 
 		var r = new Retrogression(h, SearchBody);
 
-		var julday_ut = StartDate.toUniversalTime() - h.info.Timezone.toDouble() / 24.0;
+		var julday_ut = StartDate.toUniversalTime() - h.info.UtcOffset.TotalDays;
 		var found_ut  = julday_ut;
 
 		if (Forward)

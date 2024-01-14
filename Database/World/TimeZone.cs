@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Mhora;
 using Newtonsoft.Json;
 
-namespace mhora.Database.World;
+namespace Mhora.Database.World;
 
 public class TimeZone
 {

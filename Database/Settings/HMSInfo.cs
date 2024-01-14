@@ -69,6 +69,16 @@ public class HMSInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		direction = dir_type.NS;
 	}
 
+	public static implicit operator HMSInfo(double hms)
+	{
+		return new HMSInfo(hms);
+	}
+
+	public static implicit operator double (HMSInfo hms)
+	{
+		return hms.toDouble();
+	}
+	
 	public dir_type dir
 	{
 		get => direction;

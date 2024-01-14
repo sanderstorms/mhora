@@ -425,7 +425,6 @@ public class Horoscope : ICloneable
 		info.Altitude    = i.Altitude;
 		info.Latitude    = i.Latitude;
 		info.Longitude   = i.Longitude;
-		info.Timezone          = i.Timezone;
 		info.Events      = (UserEvent[]) i.Events.Clone();
 		OnChanged();
 		return info.Clone();
@@ -449,8 +448,8 @@ public class Horoscope : ICloneable
 	{
 		var geopos = new double[3]
 		{
-			_info.Longitude.toDouble(),
-			_info.Latitude.toDouble(),
+			_info.Longitude,
+			_info.Latitude,
 			_info.Altitude
 		};
 		var tret = new double[6]
@@ -519,8 +518,8 @@ public class Horoscope : ICloneable
 
 				var geopos = new double[3]
 				{
-					info.Longitude.toDouble(),
-					info.Latitude.toDouble(),
+					info.Longitude,
+					info.Latitude,
 					info.Altitude
 				};
 				var tret = new double[6]
@@ -541,10 +540,10 @@ public class Horoscope : ICloneable
 
 				sr_ut = tret[0];
 				sweph.RevJul(tret[0], ref year, ref month, ref day, ref hour);
-				sr = hour + info.Timezone.toDouble();
+				sr = hour + info.UtcOffset.TotalHours;
 				sweph.Set(tret[0], sweph.SE_SUN, srflag, geopos, 0.0, 0.0, tret);
 				sweph.RevJul(tret[0], ref year, ref month, ref day, ref hour);
-				ss = hour + info.Timezone.toDouble();
+				ss = hour + info.UtcOffset.TotalHours;
 				sr = Basics.normalize_exc(0.0, 24.0, sr);
 				ss = Basics.normalize_exc(0.0, 24.0, ss);
 				break;
@@ -841,7 +840,7 @@ public class Horoscope : ICloneable
 		double dStart = 0, dEnd = 0;
 
 		var m         = info.tob;
-		dStart = dEnd = sweph.JulDay(m.year, m.month, m.day, -info.Timezone.toDouble());
+		dStart = dEnd = sweph.JulDay(m.year, m.month, m.day, -info.UtcOffset.TotalHours);
 		var bStart    = calculateUpagrahasStart();
 
 		if (isDayBirth())
@@ -1080,7 +1079,7 @@ public class Horoscope : ICloneable
 		var ascmc  = new double[10];
 
 		sweph.obtainLock(this);
-		sweph.HousesEx(baseUT, sweph.SEFLG_SIDEREAL, info.Latitude.toDouble(), info.Longitude.toDouble(), swephHouseSystem, dCusps, ascmc);
+		sweph.HousesEx(baseUT, sweph.SEFLG_SIDEREAL, info.Latitude, info.Longitude, swephHouseSystem, dCusps, ascmc);
 		sweph.releaseLock(this);
 		for (var i = 0; i < 12; i++)
 		{
@@ -1106,7 +1105,7 @@ public class Horoscope : ICloneable
 		// The stuff here is largely order sensitive
 		// Try to add new definitions to the end
 
-		baseUT = sweph.JulDay(info.tob.year, info.tob.month, info.tob.day, info.tob.time - info.Timezone.toDouble());
+		baseUT = sweph.JulDay(info.tob.year, info.tob.month, info.tob.day, info.tob.time - info.UtcOffset.TotalHours);
 
 		sweph.obtainLock(this);
 		sweph.SetPath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
@@ -1257,9 +1256,10 @@ public class Horoscope : ICloneable
 
 		for (var i = (int) Body.BodyType.Lagna + 1; i < positionList.Count; i++)
 		{
-			if (b == ((Position) positionList[i]).name)
+			var position = (Position) positionList[i];
+			if (b == position.name)
 			{
-				return (Position) positionList[i];
+				return position;
 			}
 		}
 

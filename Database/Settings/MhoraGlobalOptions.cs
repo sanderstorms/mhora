@@ -29,6 +29,7 @@ using Mhora.Components.Property;
 using Mhora.Components.Varga;
 using Mhora.Elements;
 using Mhora.Elements.Hora;
+using Mhora.Util;
 
 namespace Mhora.Database.Settings;
 
@@ -114,8 +115,8 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 	private Font mfVarga;
 	private int  miDasaShowEventsLevel;
 
-	private HMSInfo         mLat;
-	private HMSInfo         mLon;
+	private Angle           mLat;
+	private Angle           mLon;
 	private string          msNotesExtension;
 	private HMSInfo         mTz;
 	public  Size            RasiStrengthsFormSize = new(0, 0);
@@ -126,8 +127,8 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 	{
 		HOptions = new HoroscopeOptions();
 		SOptions = new StrengthOptions();
-		mLat     = new HMSInfo(47, 40, 27, HMSInfo.dir_type.NS);
-		mLon     = new HMSInfo(-122, 7, 13, HMSInfo.dir_type.EW);
+		mLat     = new Angle(47, 40, 27M);
+		mLon     = new Angle(-122, 7, 13M);
 		mTz      = new HMSInfo(-7, 0, 0, HMSInfo.dir_type.EW);
 
 		mfFixedWidth = new Font("Courier New", 10);
@@ -225,7 +226,7 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 
 	[PropertyOrder(1)]
 	[Category(CAT_LOCATION)]
-	public HMSInfo Latitude
+	public Angle Latitude
 	{
 		get => mLat;
 		set => mLat = value;
@@ -233,7 +234,7 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 
 	[PropertyOrder(2)]
 	[Category(CAT_LOCATION)]
-	public HMSInfo Longitude
+	public Angle Longitude
 	{
 		get => mLon;
 		set => mLon = value;

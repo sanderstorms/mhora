@@ -1330,13 +1330,13 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void SetChartStyle(UserOptions.EChartStyle cs)
 	{
-		var dpo   = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(options.Varga);
-		var lagna = dpo.zodiac_house;
+		var dp   = h.getPosition(Body.BodyType.Lagna);
+		var lagna = dp.toDivisionPosition(options.Varga);
 
 		switch (cs)
 		{
 			case UserOptions.EChartStyle.NorthIndian:
-				dc = new NorthIndianChart(lagna);
+				dc = new NorthIndianChart(lagna.zodiac_house);
 				return;
 			case UserOptions.EChartStyle.EastIndian:
 				dc = new EastIndianChart();

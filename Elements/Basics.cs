@@ -250,7 +250,7 @@ public static class Basics
 		var std_grahas = new ArrayList(20);
 
 		sweph.SetPath(ephe_path);
-		var julday_ut = sweph.JulDay(hi.tob.year, hi.tob.month, hi.tob.day, hi.tob.time - hi.Timezone.toDouble());
+		var julday_ut = sweph.JulDay(hi.tob.year, hi.tob.month, hi.tob.day, hi.tob.time - hi.UtcOffset.TotalHours);
 		//	h.tob.hour + (((double)h.tob.minute) / 60.0) + (((double)h.tob.second) / 3600.0));
 		//	(h.tob.time / 24.0) + (h.tz.toDouble()/24.0));
 		//(h.tob.hour/24.0) + (((double)h.tob.minute) / 60.0) + (((double)h.tob.second) / 3600.0));

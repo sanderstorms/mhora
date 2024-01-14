@@ -265,7 +265,7 @@
 			this.labTimezone.Name = "labTimezone";
 			this.labTimezone.Size = new System.Drawing.Size(82, 20);
 			this.labTimezone.TabIndex = 9;
-			this.labTimezone.Text = "Timezone";
+			this.labTimezone.Text = "UtcOffset";
 			// 
 			// labLatitude
 			// 

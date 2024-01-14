@@ -294,7 +294,7 @@ public static class ShadBalas
 
 	public static void KalaHelper(this Horoscope h, ref Body.BodyType yearLord, ref Body.BodyType monthLord)
 	{
-		var ut_arghana = sweph.JulDay(1827, 5, 2, -h.info.Timezone.toDouble() + 12.0 / 24.0);
+		var ut_arghana = sweph.JulDay(1827, 5, 2, -h.info.UtcOffset.TotalHours + 12.0 / 24.0);
 		var ut_noon    = h.baseUT - h.info.tob.time / 24.0 + 12.0 / 24.0;
 
 		var diff = ut_noon - ut_arghana;

@@ -159,7 +159,7 @@ public class Longitude
 
 	public double toNakshatraBase()
 	{
-		var num  = (int) toNakshatra();
+		var num  = toNakshatra().Index();
 		var cusp = (num - 1) * (360.0 / 27.0);
 		return cusp;
 	}
@@ -190,14 +190,14 @@ public class Longitude
 
 	public double toZodiacHouseBase()
 	{
-		var znum = (int) toZodiacHouse().Sign;
+		var znum = toZodiacHouse().Sign.Index ();
 		var cusp = (znum - 1) * 30.0;
 		return cusp;
 	}
 
 	public double toZodiacHouseOffset()
 	{
-		var znum = (int) toZodiacHouse().Sign;
+		var znum = toZodiacHouse().Sign.Index ();
 		var cusp = (znum - 1) * 30.0;
 		var ret  = value - cusp;
 		Trace.Assert(ret >= 0.0 && ret <= 30.0);
@@ -214,7 +214,7 @@ public class Longitude
 
 	public double toNakshatraOffset()
 	{
-		var znum = (int) toNakshatra();
+		var znum = toNakshatra().Index();
 		var cusp = (znum - 1) * (360.0 / 27.0);
 		var ret  = value - cusp;
 		Trace.Assert(ret >= 0.0 && ret <= 360.0 / 27.0);
@@ -239,7 +239,7 @@ public class Longitude
 
 	public int toAbsoluteNakshatraPada()
 	{
-		var n = (int) toNakshatra();
+		var n = toNakshatra().Index();
 		var p = toNakshatraPada();
 		return (n - 1) * 4 + p;
 	}
