@@ -30,7 +30,7 @@ public class UserEvent : MhoraSerializableOptions, ICloneable, ISerializable
 	private string mEventDesc;
 
 	private string mEventName;
-	private Moment mEventTime;
+	private DateTime mEventTime;
 	private bool   mWorkWithEvent;
 
 	protected UserEvent(SerializationInfo info, StreamingContext context) : this()
@@ -41,7 +41,7 @@ public class UserEvent : MhoraSerializableOptions, ICloneable, ISerializable
 	public UserEvent()
 	{
 		EventName     = "Some Event";
-		EventTime     = new Moment();
+		EventTime     = DateTime.Now;
 		WorkWithEvent = true;
 	}
 
@@ -58,7 +58,7 @@ public class UserEvent : MhoraSerializableOptions, ICloneable, ISerializable
 		set => mEventDesc = value;
 	}
 
-	public Moment EventTime
+	public DateTime EventTime
 	{
 		get => mEventTime;
 		set => mEventTime = value;

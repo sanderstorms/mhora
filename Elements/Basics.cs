@@ -23,6 +23,7 @@ using System.Text;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
+using Mhora.Util;
 
 namespace Mhora.Elements;
 
@@ -250,11 +251,7 @@ public static class Basics
 		var std_grahas = new ArrayList(20);
 
 		sweph.SetPath(ephe_path);
-		var julday_ut = sweph.JulDay(hi.tob.year, hi.tob.month, hi.tob.day, hi.tob.time - hi.UtcOffset.TotalHours);
-		//	h.tob.hour + (((double)h.tob.minute) / 60.0) + (((double)h.tob.second) / 3600.0));
-		//	(h.tob.time / 24.0) + (h.tz.toDouble()/24.0));
-		//(h.tob.hour/24.0) + (((double)h.tob.minute) / 60.0) + (((double)h.tob.second) / 3600.0));
-		//julday_ut = julday_ut - (h.tz.toDouble() / 24.0);
+		var julday_ut = h.UniversalTime(hi.DateOfBirth); // (hi.tob - hi.DstOffset).UniversalTime();
 
 		var swephRahuBody = sweph.SE_MEAN_NODE;
 		if (o.nodeType == HoroscopeOptions.ENodeType.True)
@@ -285,7 +282,7 @@ public static class Basics
 		var asc = sweph.Lagna(julday_ut);
 		std_grahas.Add(new Position(h, Body.BodyType.Lagna, Body.Type.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
 
-		var ista_ghati = normalize_exc(0.0, 24.0, hi.tob.time - sunrise) * 2.5;
+		var ista_ghati = normalize_exc(0.0, 24.0, hi.DateOfBirth.Time ().TotalHours - sunrise) * 2.5;
 		var gl_lon     = ((Position) std_grahas[0]).longitude.add(new Longitude(ista_ghati        * 30.0));
 		var hl_lon     = ((Position) std_grahas[0]).longitude.add(new Longitude(ista_ghati * 30.0 / 2.5));
 		var bl_lon     = ((Position) std_grahas[0]).longitude.add(new Longitude(ista_ghati * 30.0 / 5.0));

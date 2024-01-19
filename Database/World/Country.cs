@@ -159,22 +159,6 @@ public class Country : SQLiteBaseObject, IComparable
 	}
 
 	[SQLiteColumn(Ignore = true)]
-	public TimeZoneInfo TimeZoneInfo
-	{
-		get
-		{
-			try
-			{
-				return TimeZone.TimeZoneInfo;
-			}
-			catch (Exception e)
-			{
-				return null;
-			}
-		}
-	}
-
-	[SQLiteColumn(Ignore = true)]
 	public Dictionary<string, string> Translations
 	{
 		get

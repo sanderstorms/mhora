@@ -20,6 +20,7 @@ using System;
 using System.Diagnostics;
 using Mhora.SwissEph;
 using Mhora.Tables;
+using Mhora.Util;
 
 namespace Mhora.Elements.Calculation;
 
@@ -165,16 +166,17 @@ public static class ShadBalas
 			return 60;
 		}
 
-		var    lmt_midnight = h.lmt_offset * 24.0;
-		var    lmt_noon     = 12.0 + h.lmt_offset * 24.0;
+		var    lmt_midnight = h.info.LmtOffset * 24.0;
+		var    lmt_noon     = 12.0 + h.info.LmtOffset * 24.0;
 		double diff         = 0;
-		if (h.info.tob.time > lmt_noon)
+		var    time = h.info.DateOfBirth.Time().TotalHours;
+		if (time > lmt_noon)
 		{
-			diff = lmt_midnight - h.info.tob.time;
+			diff = lmt_midnight - time;
 		}
 		else
 		{
-			diff = h.info.tob.time - lmt_midnight;
+			diff = time - lmt_midnight;
 		}
 
 		while (diff < 0)
@@ -228,7 +230,7 @@ public static class ShadBalas
 		if (h.isDayBirth())
 		{
 			var length = (h.sunset - h.sunrise) / 3;
-			var offset = h.info.tob.time - h.sunrise;
+			var offset = h.info.DateOfBirth.Time ().TotalHours - h.sunrise;
 			var part   = (int) Math.Floor(offset / length);
 			switch (part)
 			{
@@ -246,7 +248,7 @@ public static class ShadBalas
 		else
 		{
 			var length = (h.next_sunrise + 24.0 - h.sunset) / 3;
-			var offset = h.info.tob.time - h.sunset;
+			var offset = h.info.DateOfBirth.Time ().TotalHours - h.sunset;
 			if (offset < 0)
 			{
 				offset += 24;
@@ -294,8 +296,10 @@ public static class ShadBalas
 
 	public static void KalaHelper(this Horoscope h, ref Body.BodyType yearLord, ref Body.BodyType monthLord)
 	{
-		var ut_arghana = sweph.JulDay(1827, 5, 2, -h.info.UtcOffset.TotalHours + 12.0 / 24.0);
-		var ut_noon    = h.baseUT - h.info.tob.time / 24.0 + 12.0 / 24.0;
+		var date       = new DateTime(1827, 5, 2);
+		var dstOffset  = h.info.City.Country.TimeZone.TimeZoneInfo.GetUtcOffset(date);
+		var ut_arghana = sweph.JulDay(1827, 5, 2, -dstOffset.TotalHours + 12.0 / 24.0);
+		var ut_noon    = h.info.Jd - h.info.DateOfBirth.Time ().TotalDays + 12.0 / 24.0;
 
 		var diff = ut_noon - ut_arghana;
 		if (diff >= 0)

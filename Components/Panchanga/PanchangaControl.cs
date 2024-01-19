@@ -29,6 +29,7 @@ using Mhora.Elements.Hora;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using mhora.Util;
+using Mhora.Util;
 using Retrogression = Mhora.Elements.Retrogression;
 
 namespace Mhora.Components.Panchanga;
@@ -93,8 +94,8 @@ public class PanchangaControl : MhoraControl
 	//ProgressDialog fProgress = null;
 	private Mutex mutexProgress;
 
-	private double sunrise;
-	private double ut_sr;
+	private Time sunrise = new Time();
+	private Time ut_sr = new Time();
 
 
 	public PanchangaControl(Horoscope _h)
@@ -283,20 +284,26 @@ public class PanchangaControl : MhoraControl
 		Application.Log.Debug("Starting threaded computation");
 		//fProgress.ShowDialog();
 		//this.mutexProgress.Close();
-		bCompute.Enabled = false;
-		bOpts.Enabled    = false;
-		ContextMenu      = null;
-		Invoke((Action) ComputeEntries);
-		Invoke(m_DelegateComputeFinished);
+		Invoke(() =>
+		{
+			bCompute.Enabled = false;
+			bOpts.Enabled    = false;
+			ContextMenu      = null;
+			ComputeEntries();
+			m_DelegateComputeFinished.Invoke();
+		});
 	}
 
 	private void ComputeFinished()
 	{
 		Application.Log.Debug("Thread finished execution");
-		bResultsInvalid  = false;
-		bCompute.Enabled = true;
-		bOpts.Enabled    = true;
-		ContextMenu      = contextMenu;
+		Invoke(() =>
+		{
+			bResultsInvalid  = false;
+			bCompute.Enabled = true;
+			bOpts.Enabled    = true;
+			ContextMenu      = contextMenu;
+		});
 		//this.m_DelegateComputeFinished -= new DelegateComputeFinished(this.ComputeFinished);
 		//this.mutexProgress.WaitOne();
 		//fProgress.Close();
@@ -315,7 +322,7 @@ public class PanchangaControl : MhoraControl
 			mList.BeginUpdate();
 		}
 
-		var ut_start = Math.Floor(h.baseUT);
+		var ut_start = Math.Floor(h.info.Jd);
 		double[] geopos =
 		{
 			h.info.Longitude,
@@ -341,14 +348,14 @@ public class PanchangaControl : MhoraControl
 		}
 	}
 
-	private Moment utToMoment(double found_ut)
+	private DateTime utToMoment(double found_ut)
 	{
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.UtcOffset.TotalDays;
+		found_ut += h.info.DstOffset.TotalDays;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
-		var m = new Moment(year, month, day, hour);
+		var m = new DateTime(year, month, day).AddHours(hour);
 		return m;
 	}
 
@@ -357,7 +364,7 @@ public class PanchangaControl : MhoraControl
 		int    year = 0, month = 0, day = 0;
 		double time = 0;
 
-		ut += h.info.UtcOffset.TotalDays;
+		ut += h.info.DstOffset.TotalDays;
 		sweph.RevJul(ut, ref year, ref month, ref day, ref time);
 		return timeToString(time);
 	}
@@ -365,7 +372,7 @@ public class PanchangaControl : MhoraControl
 	private string utTimeToString(double ut_event, double ut_sr, double sunrise)
 	{
 		var m   = utToMoment(ut_event);
-		var hms = new HMSInfo(m.time);
+		var hms = new HMSInfo(m.Time ().TotalHours);
 
 		if (ut_event >= ut_sr - sunrise / 24.0 + 1.0)
 		{
@@ -389,15 +396,17 @@ public class PanchangaControl : MhoraControl
 	private void ComputeEntry(double ut, double[] geopos)
 	{
 		int    year   = 0, month = 0, day = 0;
-		double sunset = 0, hour  = 0;
+		double hour  = 0;
+		Time   sunset = new Time();
 		sweph.obtainLock(h);
 		h.populateSunrisetCacheHelper(ut - 0.5, ref sunrise, ref sunset, ref ut_sr);
 		sweph.releaseLock(h);
 
 		sweph.RevJul(ut_sr, ref year, ref month, ref day, ref hour);
-		var moment_sr = new Moment(year, month, day, hour);
-		var moment_ut = new Moment(ut, h);
-		var infoCurr  = new HoraInfo(moment_ut, h.info.Latitude, h.info.Longitude);
+		var moment_sr = new DateTime(year, month, day).AddHours(hour);
+		var moment_ut = h.Moment(ut);
+		var infoCurr  = (HoraInfo) h.info.Clone();
+		infoCurr.DateOfBirth = moment_ut;
 		var hCurr     = new Horoscope(infoCurr, h.options);
 
 		ListViewItem li = null;
@@ -570,7 +579,7 @@ public class PanchangaControl : MhoraControl
 		double time = 0;
 
 		sweph.RevJul(local.sunrise_ut, ref year, ref month, ref day, ref time);
-		var m = new Moment(year, month, day, time);
+		var m = new DateTime(year, month, day).AddHours(time);
 		mList.Items.Add(string.Format("{0}, {1}", local.wday, m.ToDateString()));
 
 		if (opts.ShowSunriset)
@@ -581,9 +590,9 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcSpecialKalas)
 		{
-			var s_rahu   = string.Format("Rahu Kala from {0} to {1}", new Moment(local.kalas_ut[local.rahu_kala_index], h).ToTimeString(), new Moment(local.kalas_ut[local.rahu_kala_index       + 1], h).ToTimeString());
-			var s_gulika = string.Format("Gulika Kala from {0} to {1}", new Moment(local.kalas_ut[local.gulika_kala_index], h).ToTimeString(), new Moment(local.kalas_ut[local.gulika_kala_index + 1], h).ToTimeString());
-			var s_yama   = string.Format("Yama Kala from {0} to {1}", new Moment(local.kalas_ut[local.yama_kala_index], h).ToTimeString(), new Moment(local.kalas_ut[local.yama_kala_index       + 1], h).ToTimeString());
+			var s_rahu   = string.Format("Rahu Kala from {0} to {1}", h.Moment(local.kalas_ut[local.rahu_kala_index]).ToTimeString(), h.Moment(local.kalas_ut[local.rahu_kala_index          + 1]).ToTimeString());
+			var s_gulika = string.Format("Gulika Kala from {0} to {1}", h.Moment(local.kalas_ut[local.gulika_kala_index]).ToTimeString(), h.Moment(local.kalas_ut[local.gulika_kala_index + 1]).ToTimeString());
+			var s_yama   = string.Format("Yama Kala from {0} to {1}", h.Moment(local.kalas_ut[local.yama_kala_index]).ToTimeString(), h.Moment(local.kalas_ut[local.yama_kala_index       + 1]).ToTimeString());
 
 			if (opts.OneEntryPerLine)
 			{

@@ -47,7 +47,7 @@ public class TattwaDasa : Dasa, IDasa
 		var al = new ArrayList();
 
 		var day_length = h.next_sunrise + 24.0 - h.sunrise;
-		var day_sr     = Math.Floor(h.baseUT)  + h.sunrise / 24.0;
+		var day_sr     = Math.Floor(h.info.Jd)  + h.sunrise / 24.0;
 
 		return al;
 	}

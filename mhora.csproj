@@ -263,6 +263,7 @@
     <Compile Include="Util\LocationConverter.cs" />
     <Compile Include="Elements\NonLinearTransit.cs" />
     <Compile Include="Elements\Retrogression.cs" />
+    <Compile Include="Util\RightAscension.cs" />
     <Compile Include="Util\SevenZip.cs" />
     <Compile Include="Util\StringExtension.cs" />
     <Compile Include="Elements\Ashtakavarga.cs">
@@ -409,7 +410,6 @@
     <Compile Include="Components\MhoraSplitContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Database\Settings\Moment.cs" />
     <Compile Include="Components\Converter\MomentConverter.cs" />
     <Compile Include="Elements\Dasas\Graha\MoolaDasa.cs" />
     <Compile Include="Elements\Dasas\Graha\NaisargikaGrahaDasa.cs" />
@@ -480,6 +480,7 @@
     <Compile Include="Elements\Dasas\Nakshatra\TithiAshtottariDasa.cs" />
     <Compile Include="Elements\Dasas\Yearly\TithiPraveshDasa.cs" />
     <Compile Include="Util\Sunriset.cs" />
+    <Compile Include="Util\Time.cs" />
     <Compile Include="Util\TimeUtils.cs" />
     <Compile Include="Util\ToDate.cs" />
     <Compile Include="Components\Transit\TransitItem.cs" />
@@ -527,6 +528,7 @@
     </Content>
     <EmbeddedResource Include="Components\AboutMhora.resx">
       <DependentUpon>AboutMhora.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\AboutSjc.resx">
       <DependentUpon>AboutSjc.cs</DependentUpon>

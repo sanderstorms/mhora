@@ -257,7 +257,7 @@ public class JhoraMainTab : MhoraControl
 
 			//MhoraControlContainer mcc = new MhoraControlContainer(mc);
 			mc.ControlHoroscope = h;
-			switch (h.info.type)
+			switch (h.info.Type)
 			{
 				case HoraInfo.ChartType.TithiPravesh:
 					mc.ViewControl(MhoraControlContainer.BaseUserOptions.ViewType.DasaTithiPraveshAshtottariCompressedTithi);

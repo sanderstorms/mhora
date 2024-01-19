@@ -16,12 +16,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using System;
 using System.Collections;
 using Mhora.Components.Dasa;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.Yearly;
 
@@ -120,19 +122,19 @@ public class YogaPraveshDasa : Dasa, IDasa
 		;
 	}
 
-	public new string EntryDescription(DasaEntry pdi, Moment start, Moment end)
+	public new string EntryDescription(DasaEntry pdi, DateTime start, DateTime end)
 	{
 		if (pdi.level == 2)
 		{
-			var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Sun));
+			var l  = Basics.CalculateBodyLongitude(start.UniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Sun));
 			var zh = l.toZodiacHouse();
 			return zh.ToString();
 		}
 
 		if (pdi.level == 3)
 		{
-			var lSun  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Sun));
-			var lMoon = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Moon));
+			var lSun  = Basics.CalculateBodyLongitude(start.UniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Sun));
+			var lMoon = Basics.CalculateBodyLongitude(start.UniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Moon));
 			var l     = lMoon.add(lSun);
 
 			// this seems wrong. Why should we need to go to the next yoga here?

@@ -26,6 +26,7 @@ using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
+using Mhora.Util;
 using CuspTransitSearch = Mhora.Elements.CuspTransitSearch;
 
 namespace Mhora.Components.Varga;
@@ -45,7 +46,7 @@ public class VargaRectificationForm : Form
 	private readonly Horoscope h;
 	private readonly int       half_tick_height = 3;
 	private readonly Body.BodyType mBody            = Body.BodyType.Lagna;
-	private readonly Moment    mOriginal;
+	private readonly DateTime  mOriginal;
 	private readonly int       unit_height = 30;
 
 	private readonly int                  vname_width = 50;
@@ -87,7 +88,7 @@ public class VargaRectificationForm : Form
 
 		h         = _h;
 		dc        = _dc;
-		mOriginal = (Moment) h.info.tob.Clone();
+		mOriginal = h.info.DateOfBirth;
 		PopulateOptionsInit(_dtype);
 		//this.PopulateOptions();
 		PopulateCache();
@@ -96,27 +97,20 @@ public class VargaRectificationForm : Form
 		Invalidate();
 	}
 
-	private Moment utToMoment(double found_ut)
+	private DateTime utToMoment(double found_ut)
 	{
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.UtcOffset.TotalDays;
+		found_ut += h.info.DstOffset.TotalDays;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
-		var m = new Moment(year, month, day, hour);
+		var m = new DateTime(year, month, day).AddHours(hour);
 		return m;
 	}
-
-	private double momentToUT(Moment m)
-	{
-		var local_ut = sweph.JulDay(m.year, m.month, m.day, m.time);
-		return local_ut - h.info.UtcOffset.TotalDays;
-	}
-
 	private void PopulateOptions()
 	{
-		ut_lower  = momentToUT(opts.StartTime);
-		ut_higher = momentToUT(opts.EndTime);
+		ut_lower  = h.UniversalTime(opts.StartTime);
+		ut_higher = h.UniversalTime(opts.EndTime);
 	}
 
 	private void PopulateOptionsInit(Division dtype)
@@ -124,12 +118,12 @@ public class VargaRectificationForm : Form
 		var dp       = h.getPosition(mBody).toDivisionPosition(dtypeRasi);
 		var foundLon = new Longitude(0);
 		var bForward = true;
-		ut_lower  = h.TransitSearch(mBody, h.info.tob, false, new Longitude(dp.cusp_lower), foundLon, ref bForward);
-		ut_higher = h.TransitSearch(mBody, h.info.tob, true, new Longitude(dp.cusp_higher), foundLon, ref bForward);
+		ut_lower  = h.TransitSearch(mBody, h.info.DateOfBirth, false, new Longitude(dp.cusp_lower), foundLon, ref bForward);
+		ut_higher = h.TransitSearch(mBody, h.info.DateOfBirth, true, new Longitude(dp.cusp_higher), foundLon, ref bForward);
 
 
 		var ut_span = (ut_higher - ut_lower) / dtype.NumPartsInDivision() * 5.0;
-		var ut_curr = h.baseUT;
+		var ut_curr = h.info.Jd;
 		ut_lower  = ut_curr - ut_span / 2.0;
 		ut_higher = ut_curr + ut_span / 2.0;
 
@@ -138,8 +132,8 @@ public class VargaRectificationForm : Form
 		//ut_higher += ut_extra;
 
 
-		//ut_lower = h.baseUT - 1.0/24.0;
-		//ut_higher = h.baseUT + 1.0/24.0;
+		//ut_lower = h.info.Jd - 1.0/24.0;
+		//ut_higher = h.info.Jd + 1.0/24.0;
 		opts = new UserOptions(utToMoment(ut_lower), utToMoment(ut_higher), dtype);
 	}
 
@@ -390,14 +384,14 @@ public class VargaRectificationForm : Form
 
 		g.Clear(Color.AliceBlue);
 
-		x_offset = (float) ((momentToUT(mOriginal) - ut_lower) / (ut_higher - ut_lower) * bar_width) + vname_width;
+		x_offset = (float) ((h.UniversalTime(mOriginal) - ut_lower) / (ut_higher - ut_lower) * bar_width) + vname_width;
 		g.DrawLine(p_lgray, x_offset, unit_height / 2, x_offset, opts.Divisions.Length  * unit_height + unit_height / 2);
 
 
-		x_offset = (float) ((h.baseUT - ut_lower) / (ut_higher - ut_lower) * bar_width) + vname_width;
+		x_offset = (float) ((h.info.Jd - ut_lower) / (ut_higher - ut_lower) * bar_width) + vname_width;
 		float y_max = opts.Divisions.Length                                * unit_height + unit_height / 2;
 		g.DrawLine(p_red, x_offset, unit_height / 2, x_offset, y_max);
-		var mNow = utToMoment(h.baseUT);
+		var mNow = utToMoment(h.info.Jd);
 		s  = mNow.ToTimeString(menuDisplaySeconds.Checked);
 		sz = g.MeasureString(s, f_time);
 		g.DrawString(s, f_time, Brushes.DarkRed, x_offset - sz.Width / 2, y_max);
@@ -512,7 +506,7 @@ public class VargaRectificationForm : Form
 
 		var ut_new = ut_lower + (ut_higher - ut_lower) * perc;
 		var mNew   = utToMoment(ut_new);
-		h.info.tob = mNew;
+		h.info.DateOfBirth = mNew;
 		h.OnChanged();
 		bmpBuffer = null;
 		Invalidate();
@@ -523,7 +517,7 @@ public class VargaRectificationForm : Form
 
 	private void menuReset_Click(object sender, EventArgs e)
 	{
-		h.info.tob = (Moment) mOriginal.Clone();
+		h.info.DateOfBirth = mOriginal;
 		h.OnChanged();
 		bmpBuffer = null;
 		Invalidate();
@@ -554,7 +548,7 @@ public class VargaRectificationForm : Form
 	private void menuCenter_Click(object sender, EventArgs e)
 	{
 		var ut_half = (ut_higher - ut_lower) / 2.0;
-		var ut_curr = momentToUT(h.info.tob);
+		var ut_curr = h.UniversalTime(h.info.DateOfBirth);
 		ut_lower  = ut_curr - ut_half;
 		ut_higher = ut_curr + ut_half;
 		UpdateOptsFromUT();
@@ -565,7 +559,7 @@ public class VargaRectificationForm : Form
 
 	private void menuHalve_Click(object sender, EventArgs e)
 	{
-		var ut_curr    = momentToUT(h.info.tob);
+		var ut_curr    = h.UniversalTime(h.info.DateOfBirth);
 		var ut_quarter = (ut_higher - ut_lower) / 4.0;
 		ut_lower  = ut_curr - ut_quarter;
 		ut_higher = ut_curr + ut_quarter;
@@ -577,7 +571,7 @@ public class VargaRectificationForm : Form
 
 	private void menuDouble_Click(object sender, EventArgs e)
 	{
-		var ut_curr = momentToUT(h.info.tob);
+		var ut_curr = h.UniversalTime(h.info.DateOfBirth);
 		var ut_half = ut_higher - ut_lower;
 		ut_lower  = ut_curr - ut_half;
 		ut_higher = ut_curr + ut_half;
@@ -640,7 +634,7 @@ public class VargaRectificationForm : Form
 
 	public class UserOptions : ICloneable
 	{
-		public UserOptions(Moment _start, Moment _end, Division dtype)
+		public UserOptions(DateTime _start, DateTime _end, Division dtype)
 		{
 			StartTime = _start;
 			EndTime   = _end;
@@ -665,7 +659,7 @@ public class VargaRectificationForm : Form
 			}
 		}
 
-		public UserOptions(Moment _start, Moment _end)
+		public UserOptions(DateTime _start, DateTime _end)
 		{
 			StartTime = _start;
 			EndTime   = _end;
@@ -686,13 +680,13 @@ public class VargaRectificationForm : Form
 			new(Vargas.DivisionType.Shodasamsa)
 		};
 
-		public Moment StartTime
+		public DateTime StartTime
 		{
 			get;
 			set;
 		}
 
-		public Moment EndTime
+		public DateTime EndTime
 		{
 			get;
 			set;
@@ -700,7 +694,7 @@ public class VargaRectificationForm : Form
 
 		public object Clone()
 		{
-			var uo = new UserOptions((Moment) StartTime.Clone(), (Moment) EndTime.Clone());
+			var uo = new UserOptions(StartTime, EndTime);
 			uo.Divisions = (Division[]) Divisions.Clone();
 			return uo;
 		}

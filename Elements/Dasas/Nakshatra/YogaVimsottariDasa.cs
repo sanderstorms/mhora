@@ -60,7 +60,7 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 	public ArrayList Dasa(int cycle)
 	{
 		var t = new Elements.Transit(h);
-		var l = t.LongitudeOfSunMoonYoga(h.baseUT);
+		var l = t.LongitudeOfSunMoonYoga(h.info.Jd);
 		return _YogaDasa(l, 1, cycle);
 	}
 

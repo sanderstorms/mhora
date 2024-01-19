@@ -37,8 +37,7 @@ public class TransitSearchOptions : ICloneable
 
 	public TransitSearchOptions()
 	{
-		var dt = DateTime.Now;
-		StartDate    = new Moment(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
+		StartDate    = DateTime.Now;
 		SearchBody   = Body.BodyType.Sun;
 		TransitPoint = new Longitude(0.0);
 		Forward      = true;
@@ -99,7 +98,7 @@ public class TransitSearchOptions : ICloneable
 	[Category("Transit Search")]
 	[PropertyOrder(3)]
 	[PGDisplayName("Date")]
-	public Moment StartDate
+	public DateTime StartDate
 	{
 		get;
 		set;
@@ -138,7 +137,7 @@ public class TransitSearchOptions : ICloneable
 	{
 		// TODO:  Add TransitSearchOptions.Clone implementation
 		var ret = new TransitSearchOptions();
-		ret.StartDate    = (Moment) StartDate.Clone();
+		ret.StartDate    = StartDate;
 		ret.Forward      = Forward;
 		ret.SearchBody   = SearchBody;
 		ret.TransitPoint = TransitPoint;
@@ -148,7 +147,7 @@ public class TransitSearchOptions : ICloneable
 	public object CopyFrom(object o)
 	{
 		var nopt = (TransitSearchOptions) o;
-		StartDate    = (Moment) nopt.StartDate.Clone();
+		StartDate    = nopt.StartDate;
 		Forward      = nopt.Forward;
 		SearchBody   = nopt.SearchBody;
 		TransitPoint = nopt.TransitPoint;

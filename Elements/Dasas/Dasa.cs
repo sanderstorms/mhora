@@ -71,7 +71,7 @@ public abstract class Dasa
 		}
 	}
 
-	public string EntryDescription(DasaEntry de, Moment start, Moment end)
+	public string EntryDescription(DasaEntry de, DateTime start, DateTime end)
 	{
 		return string.Empty;
 	}

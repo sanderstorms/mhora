@@ -94,7 +94,7 @@ public class Dasa3Parts : Form
 			alParts.Add(m);
 		}
 
-		var momentParts = (Moment[]) alParts.ToArray(typeof(Moment));
+		var momentParts = (DateTime[]) alParts.ToArray(typeof(DateTime));
 		sweph.releaseLock(h);
 
 		for (var i = 1; i < momentParts.Length; i++)

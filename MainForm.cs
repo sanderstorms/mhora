@@ -122,8 +122,7 @@ namespace Mhora
 
 		private void openJhdFileNow()
 		{
-			var tNow = DateTime.Now;
-			var mNow = new Moment(tNow.Year, tNow.Month, tNow.Day, tNow.Hour, tNow.Minute, tNow.Second);
+			var mNow = DateTime.Now;
 
 			var ofd = new OpenFileDialog();
 			ofd.Filter = "JHD Files (*.jhd)|*.jhd";
@@ -135,7 +134,7 @@ namespace Mhora
 
 
 			var info = new Jhd(ofd.FileName).toHoraInfo();
-			info.tob = mNow;
+			info.DateOfBirth = mNow;
 
 			var _path_split = ofd.FileName.Split('/', '\\');
 			var path_split = new ArrayList(_path_split);

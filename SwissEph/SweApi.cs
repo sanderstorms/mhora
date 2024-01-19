@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Mhora.Util;
 
 namespace Mhora.SwissEph;
 
@@ -44,7 +45,7 @@ internal class SweApi : IDisposable
 	/// <returns>Время восхода/заката в формате Юлианского дня.</returns>
 	public double SunriseSunsetJulDay(GeoPosition position, double pressure, double temperature, DateTime date)
 	{
-		var tjd = sweph.JulDay(date.Year, date.Month, date.Day, date.Hour);
+		var tjd = date.UniversalTime();
 
 		var geopos = new[]
 		{
@@ -70,7 +71,7 @@ internal class SweApi : IDisposable
 			throw new ArgumentOutOfRangeException(nameof(position), "Не удалось найти время восхода/захода");
 		}
 
-		if (result == Sweodef.ERR)
+		if (result == sweph.ERR)
 		{
 			throw new SwedllException(sterr.ToString());
 		}
@@ -95,17 +96,6 @@ internal class SweApi : IDisposable
 	}
 
 	/// <summary>
-	///     Конвертирует UTC дату в Юлианский день.
-	/// </summary>
-	/// <param name="date">Дата. UTC.</param>
-	/// <returns>UTC дату в формате юлианского дня.</returns>
-	public double DateTimeToJulDay(DateTime date)
-	{
-		var hour = date.Hour + date.Minute / 60d;
-		return sweph.JulDay(date.Year, date.Month, date.Day, hour);
-	}
-
-	/// <summary>
 	///     Вычисляет позицию Солнца для указанного юлианского дня.
 	/// </summary>
 	/// <param name="jday">Юлианский день. UTC.</param>
@@ -117,7 +107,7 @@ internal class SweApi : IDisposable
 		var position = new double[6];
 
 		var result = sweph.CalcUT(jday, sweph.SE_SUN, 0, position, sterr);
-		if (result == Sweodef.ERR)
+		if (result == sweph.ERR)
 		{
 			throw new SwedllException(sterr.ToString());
 		}

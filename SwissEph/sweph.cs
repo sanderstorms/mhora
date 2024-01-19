@@ -22,7 +22,7 @@ using System.Text;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
-using Mhora.Elements.Hora;
+using mhora.Util;
 
 namespace Mhora.SwissEph;
 
@@ -32,54 +32,9 @@ namespace Mhora.SwissEph;
 ///     For documentation go to http://www.astro.ch and follow the
 ///     Swiss Ephemeris (for programmers) link.
 /// </summary>
-public static class sweph
+public static partial class sweph
 {
-	public const int SE_JUL_CAL  = 0;
-	public const int SE_GREG_CAL = 1;
-
-	/* for swe_azalt() and swe_azalt_rev() */
-	public const int SE_ECL2HOR = 0;
-	public const int SE_EQU2HOR = 1;
-	public const int SE_HOR2ECL = 0;
-	public const int SE_HOR2EQU = 1;
-
-	public static int SEFLG_SWIEPH     = 2;
-	public static int SEFLG_TRUEPOS    = 16;
-	public static int SEFLG_SPEED      = 256;
-	public static int SEFLG_SIDEREAL   = 64 * 1024;
-	public static int SEFLG_EQUATORIAL = 2  * 1024;
-
 	public static int iflag = SEFLG_SWIEPH | SEFLG_SPEED | SEFLG_SIDEREAL;
-
-	public static int SE_AYANAMSA_LAHIRI = 1;
-	public static int SE_AYANAMSA_RAMAN  = 3;
-	public static int ayanamsa           = SE_AYANAMSA_LAHIRI;
-
-	public static int SE_SUN       = 0;
-	public static int SE_MOON      = 1;
-	public static int SE_MERCURY   = 2;
-	public static int SE_VENUS     = 3;
-	public static int SE_MARS      = 4;
-	public static int SE_JUPITER   = 5;
-	public static int SE_SATURN    = 6;
-	public static int SE_MEAN_NODE = 10;
-	public static int SE_TRUE_NODE = 11;
-
-	public static int SE_CALC_RISE         = 1;
-	public static int SE_CALC_SET          = 2;
-	public static int SE_CALC_MTRANSIT     = 4;
-	public static int SE_CALC_ITRANSIT     = 8;
-	public static int SE_BIT_DISC_CENTER   = 256;
-	public static int SE_BIT_NO_REFRACTION = 512;
-
-	public static int SE_WK_MONDAY    = 0;
-	public static int SE_WK_TUESDAY   = 1;
-	public static int SE_WK_WEDNESDAY = 2;
-	public static int SE_WK_THURSDAY  = 3;
-	public static int SE_WK_FRIDAY    = 4;
-	public static int SE_WK_SATURDAY  = 5;
-	public static int SE_WK_SUNDAY    = 6;
-
 
 	private static Horoscope mCurrentLockHolder;
 	private static object    SwephLockObject;
@@ -111,7 +66,8 @@ public static class sweph
 
 			//Debug.WriteLine("Sweph Lock obtained");
 			mCurrentLockHolder = h;
-			SetSidMode((int) h.options.Ayanamsa, 0.0, 0.0);
+			//SetAyanamsa(h.options.Ayanamsa);
+			SetSidMode((int) HoroscopeOptions.AyanamsaType.TrueCitra, 0.0, 0.0);
 		}
 	}
 
@@ -195,6 +151,7 @@ public static class sweph
 	public static void SetSidMode(int sid_mode, double t0, double ayan_t0)
 	{
 		checkLock();
+
 		if (IntPtr.Size == 4)
 		{
 			Swe32.swe_set_sid_mode(sid_mode, 0.0, 0.0);
@@ -271,6 +228,74 @@ public static class sweph
 		return ret;
 	}
 
+	/*****************************************************
+	**
+	**   CalculatorSwe   ---   calcJd
+	**
+	******************************************************/
+	public static double calcJd(double jd )
+	{
+		if (IntPtr.Size == 4)
+		{
+			return(jd + Swe32.swe_deltat( jd ));
+		}
+		return(jd + Swe64.swe_deltat( jd ));
+	}
+
+
+
+	public enum EventType { SOLAR_EVENT_SUNRISE, SOLAR_EVENT_SUNSET, SOLAR_EVENT_MIDNIGHT, SOLAR_EVENT_NOON };
+
+	/*****************************************************
+	 **
+	 **   CalculatorSwe   ---   calcNextSolarEvent
+	 **
+	 ******************************************************/
+	public static double CalcNextSolarEvent(EventType type, double jd, double lat, double lon)
+	{
+		StringBuilder err  = new StringBuilder();
+		var           rsmi = new double [3];
+		var           tret = new double [3];
+		int           flag = 0;
+		/*
+		int flag                                    = 0;
+		if ( ! config->ephem->sunrise_def ) flag    =  SE_BIT_DISC_CENTER;
+		if ( ! config->ephem->sunrise_refrac ) flag |= SE_BIT_NO_REFRACTION;
+		*/
+
+		//int event_flag = 0;
+		switch ( type )
+		{
+			case EventType.SOLAR_EVENT_SUNRISE:
+				flag |= SE_CALC_RISE;
+				break;
+			case EventType.SOLAR_EVENT_SUNSET:
+				flag |= SE_CALC_SET;
+				break;
+			case EventType.SOLAR_EVENT_NOON:
+				flag |= SE_CALC_ITRANSIT;
+				break;
+			case EventType.SOLAR_EVENT_MIDNIGHT:
+				flag |= SE_CALC_MTRANSIT;
+				break;
+		}
+
+		rsmi[0] = lon;
+		rsmi[1] = lat;
+		rsmi[2] = 0;
+
+		if (IntPtr.Size == 4)
+		{
+			Swe32.swe_rise_trans( calcJd( jd ), SE_SUN, string.Empty, 0, flag, rsmi, 0, 0, tret, err );
+		}
+		else
+		{
+			Swe64.swe_rise_trans( calcJd( jd ), SE_SUN, string.Empty, 0, flag, rsmi, 0, 0, tret, err );
+		}
+		return tret[0];
+	}
+
+
 
 	public static int SolEclipseWhenGlob(double tjd_ut, double[] tret, bool forward)
 	{
@@ -323,6 +348,384 @@ public static class sweph
 		{
 			Application.Log.Debug("Sweph Error: {0}", serr);
 			throw new SwephException(serr.ToString());
+		}
+	}
+
+	public struct aya_config
+	{
+		public double t0;
+		public double ayan_t0;
+
+		public aya_config(double t, double ayan)
+		{
+			t0      = t;
+			ayan_t0 = ayan;
+		}
+	}
+
+	public struct aya_init
+	{
+		public double t0;
+		public double ayan_t0;
+		public bool   t0_is_UT;
+	}
+
+	public static aya_init[] ayanamsa =
+	{
+		new()
+		{
+			t0       = 2433282.5,
+			ayan_t0  = 24.042044444,
+			t0_is_UT = false
+		}, /* 0: Fagan/Bradley (Default) */
+		/*{J1900, 360 - 337.53953},   * 1: Lahiri (Robert Hand) */
+		new()
+		{
+			t0       = 2435553.5,
+			ayan_t0  = 23.250182778 - 0.004660222,
+			t0_is_UT = false
+		},
+		/* 1: Lahiri (derived from: Indian
+		 * Astronomical Ephemeris 1989, p. 556;
+		 * the subtracted value is nutation) */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 333.58695,
+			t0_is_UT = false
+		}, /* 2: Robert DeLuce (Constellational Astrology ... p. 5 */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 338.98556,
+			t0_is_UT = false
+		}, /* 3: B.V. Raman (Robert Hand) */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 341.33904,
+			t0_is_UT = false
+		}, /* 4: Usha/Shashi (Robert Hand) */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 337.636111,
+			t0_is_UT = false
+		}, /* 5: Krishnamurti (Robert Hand) */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 333.0369024,
+			t0_is_UT = false
+		}, /* 6: Djwhal Khool; (Graham Dawson)
+		    *    Aquarius entered on 1 July 2117 */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 338.917778,
+			t0_is_UT = false
+		}, /* 7: Shri Yukteshwar; (David Cochrane) */
+		//{2412543.5, 20.91, TRUE},          /* 7: Shri Yukteshwar; (Holy Science, p. xx) */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 338.634444,
+			t0_is_UT = false
+		}, /* 8: J.N. Bhasin; (David Cochrane) */
+		/* 14 Sept. 2018: the following three ayanamshas have been wrong for
+		 * many years */
+		new()
+		{
+			t0       = 1684532.5,
+			ayan_t0  = -5.66667,
+			t0_is_UT = true
+		}, /* 9: Babylonian, Kugler 1 */
+		new()
+		{
+			t0       = 1684532.5,
+			ayan_t0  = -4.26667,
+			t0_is_UT = true
+		}, /*10: Babylonian, Kugler 2 */
+		new()
+		{
+			t0       = 1684532.5,
+			ayan_t0  = -3.41667,
+			t0_is_UT = true
+		}, /*11: Babylonian, Kugler 3 */
+		new()
+		{
+			t0       = 1684532.5,
+			ayan_t0  = -4.46667,
+			t0_is_UT = true
+		}, /*12: Babylonian, Huber */
+		/*{1684532.5, -4.56667, TRUE},         *12: Babylonian, Huber (Swisseph has been wrong for many years!) */
+		new()
+		{
+			t0       = 1673941,
+			ayan_t0  = -5.079167,
+			t0_is_UT = true
+		}, /*13: Babylonian, Mercier;
+		    *    eta Piscium culminates with zero point */
+		new()
+		{
+			t0       = 1684532.5,
+			ayan_t0  = -4.44088389,
+			t0_is_UT = true
+		}, /*14: t0 is defined by Aldebaran at 15 Taurus */
+		new()
+		{
+			t0       = 1674484,
+			ayan_t0  = -9.33333,
+			t0_is_UT = true
+		}, /*15: Hipparchos */
+		new()
+		{
+			t0       = 1927135.8747793,
+			ayan_t0  = 0,
+			t0_is_UT = true
+		}, /*16: Sassanian */
+		//{1746412.236, 0, FALSE},             /*17: Galactic Center at 0 Sagittarius */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*17: Galactic Center at 0 Sagittarius */
+		new()
+		{
+			t0       = J2000,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*18: J2000 */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*19: J1900 */
+		new()
+		{
+			t0       = B1950,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*20: B1950 */
+		new()
+		{
+			t0       = 1903396.8128654,
+			ayan_t0  = 0,
+			t0_is_UT = true
+		}, /*21: Suryasiddhanta, assuming
+	                                       ingress of mean Sun into Aries at point
+					       of mean equinox of date on
+					       21.3.499, near noon, Ujjain (75.7684565 E)
+	                                       = 7:30:31.57 UT = 12:33:36 LMT*/
+		new()
+		{
+			t0       = 1903396.8128654,
+			ayan_t0  = -0.21463395,
+			t0_is_UT = true
+		}, /*22: Suryasiddhanta, assuming
+					       ingress of mean Sun into Aries at
+					       true position of mean Sun at same epoch */
+		new()
+		{
+			t0       = 1903396.7895321,
+			ayan_t0  = 0,
+			t0_is_UT = true
+		}, /*23: Aryabhata, same date, but UT 6:56:55.57
+					       analogous 21 */
+		new()
+		{
+			t0       = 1903396.7895321,
+			ayan_t0  = -0.23763238,
+			t0_is_UT = true
+		}, /*24: Aryabhata, analogous 22 */
+		new()
+		{
+			t0       = 1903396.8128654,
+			ayan_t0  = -0.79167046,
+			t0_is_UT = true
+		}, /*25: SS, Revati/zePsc at polar long. 359°50'*/
+		new()
+		{
+			t0       = 1903396.8128654,
+			ayan_t0  = 2.11070444,
+			t0_is_UT = true
+		}, /*26: SS, Citra/Spica at polar long. 180° */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*27: True Citra (Spica exactly at 0 Libra) */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*28: True Revati (zeta Psc exactly at 29°50' Pisces) */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*29: True Pushya (delta Cnc exactly a 16 Cancer */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*30: R. Gil Brand; Galactic Center at golden section
+	                                       between 0 Sco and 0 Aqu; note: 0° Aqu/Leo is
+					       the symmetric axis of rulerships */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*31: Galactic Equator IAU 1958, i.e. galactic/ecliptic
+	                                       intersection point based on galactic coordinate system */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*32: Galactic Equator True, i.e. galactic/ecliptic
+	                                       intersection point based on the galactic pole as given in:
+					       Liu/Zhu/Zhang, „Reconsidering the galactic
+					       coordinate system“, A & A No. AA2010, Oct. 2010 */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*33: Galactic Equator Mula, i.e. galactic/ecliptic
+	                                       intersection point in the middle of lunar mansion Mula */
+		new()
+		{
+			t0       = 2451079.734892000,
+			ayan_t0  = 30,
+			t0_is_UT = false
+		}, /*34: Skydram/Galactic Alignment (R. Mardyks);
+	                                       autumn equinox aligned with Galactic Equator/Pole */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*35: Chandra Hari */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*36: Dhruva Galactic Centre Middle of Mula (Ernst Wilhelm) */
+		new()
+		{
+			t0       = 1911797.740782065,
+			ayan_t0  = 0,
+			t0_is_UT = true
+		}, /*37: Kali 3623 = 522 CE, Ujjain (75.7684565),
+		    *    based on Kali midnight and SS year length */
+		new()
+		{
+			t0       = 1721057.5,
+			ayan_t0  = -3.2,
+			t0_is_UT = true
+		}, /*38: Babylonian (Britton 2010) */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*39: Sunil Sheoran ("Vedic") */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*40: Galactic Center at 0 Capricon (Cochrane) */
+		new()
+		{
+			t0       = 2451544.5,
+			ayan_t0  = 25.0,
+			t0_is_UT = true
+		}, /*41: "Galactic Equatorial" (N.A. Fiorenza) */
+		new()
+		{
+			t0       = 1775845.5,
+			ayan_t0  = -2.9422,
+			t0_is_UT = true
+		}, /*42: Vettius Valens (Moon; derived from
+	                                           Holden 1995 p. 12 for epoch of Valens
+						   1 Jan. 150 CE julian) */
+		/*{2061539.789532065, 6.83333333, TRUE}, *41: Manjula's Laghumanasa, 10 March 932,
+		 *    12 PM LMT Ujjain (75.7684565 E),
+		 *    ayanamsha = 6°50' */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		} /*42: - */
+	};
+
+
+	public static aya_config[] aya_param =
+	{
+		new(2415020.0, 360 - 337.53953), // 1: Lahiri (Robert Hand) 
+		new(2415020.0, 360 - 338.98556), // 3: Raman (Robert Hand) 
+		new(2415020.0, 360 - 337.636111) // 5: Krishnamurti (Robert Hand) 
+	};
+
+	/*****************************************************
+	 **
+	 **   CalculatorSwe   ---   calcAyanamsa
+	 **
+	 ******************************************************/
+	public static void SetAyanamsa(HoroscopeOptions.AyanamsaType type)
+	{
+		var    aya     = ayanamsa[type.Index()];
+		double t0      = 0;
+		double ayan_t0 = 0;
+
+		if (type >= HoroscopeOptions.AyanamsaType.Lahiri && type <= HoroscopeOptions.AyanamsaType.Krishnamurti)
+		{
+			t0      = aya_param[(int) (type - 1)].t0;
+			ayan_t0 = aya_param[(int) (type - 1)].ayan_t0;
+		}
+
+		/*
+		if ( config->ephem->custom_aya_constant )
+		{
+			t = jd - t0;
+			double years   = t       /365.25;
+			double portion = years   /config->ephem->custom_aya_period;
+			double aya     = portion * 360;
+			//return red_deg( config->custom_ayan_t0 + 360 * ( jd - config->custom_t0 ) / ( config->custom_aya_period * 365.25 ));
+
+			// bugfix 6.0: forgot ayan_t0
+			//return red_deg( aya );
+			return red_deg( ayan_t0 + aya );
+		}
+		else
+		*/
+		{
+			if (t0 != 0)
+			{
+				if (IntPtr.Size == 4)
+				{
+					Swe32.swe_set_sid_mode(255, t0, ayan_t0);
+				}
+				else
+				{
+					Swe64.swe_set_sid_mode(255, aya.t0, aya.ayan_t0);
+				}
+			}
+			else
+			{
+				SetSidMode(type.Index(), 0.0, 0.0);
+			}
 		}
 	}
 
@@ -440,6 +843,21 @@ public static class sweph
 		}
 	}
 
+	/*****************************************************
+	 **
+	 **   CalculatorSwe   ---   calcSiderealTime
+	 **
+	 ******************************************************/
+	public static double CalcSiderealTime(double jd, double longitude )
+	{
+		if (IntPtr.Size == 4)
+		{
+			return Swe32.swe_sidtime( jd + longitude / 360 );
+		}
+		return Swe64.swe_sidtime( jd + longitude / 360 );
+	}
+
+
 	public static void Azalt(double   tjd_ut,    // UT
 	                         int      calc_flag, // SE_ECL2HOR or SE_EQU2HOR
 	                         double[] geopos,    // array of 3 doubles: geograph. long., lat., height
@@ -523,6 +941,12 @@ public static class sweph
 		[DllImport("swedll64", CharSet = CharSet.Ansi)]
 		public static extern void swe_set_topo(double geolon, double geolat, double altitude);
 
+		/* sidereal time */
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern double swe_sidtime0(double tjd_ut, double eps, double nut);
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern double swe_sidtime(double tjd_ut);
+
 		[DllImport("swedll64", CharSet = CharSet.Ansi)]
 		public static extern void swe_azalt(double   tjd_ut,    // UT
 		                                    int      calc_flag, // SE_ECL2HOR or SE_EQU2HOR
@@ -595,6 +1019,12 @@ public static class sweph
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi)]
 		public static extern void swe_set_topo(double geolon, double geolat, double altitude);
+
+		/* sidereal time */
+		[DllImport("swedll32", CharSet = CharSet.Ansi)]
+		public static extern double swe_sidtime0(double tjd_ut, double eps, double nut);
+		[DllImport("swedll32", CharSet = CharSet.Ansi)]
+		public static extern double swe_sidtime(double tjd_ut);
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi)]
 		public static extern void swe_azalt(double   tjd_ut,    // UT

@@ -1,9 +1,159 @@
 ﻿using System;
+using Mhora.Elements.Calculation;
+using Mhora.SwissEph;
 
 namespace Mhora.Util;
 
 public static class TimeUtils
 {
+	public static TimeSpan SiderealYear => new TimeSpan(365, 6, 12, 36, 56);
+
+	public static double SideralMonth => 27.32;
+
+	public static TimeSpan Time (this DateTime dateTime)
+	{
+		return new TimeSpan(dateTime.Hour, dateTime.Minute, dateTime.Second);
+	}
+
+	public static TimeSpan Mul(this TimeSpan timeSpan, double factor)
+	{
+		return TimeSpan.FromHours(timeSpan.TotalHours * factor);
+	}
+
+	public static TimeSpan Div(this TimeSpan timeSpan, double factor)
+	{
+		return TimeSpan.FromHours(timeSpan.TotalHours / factor);
+	}
+
+	public static DateTime Moment(this Horoscope h, double tjdUt)
+	{
+		double time  = 0;
+		int    year  = 0;
+		int    month = 0;
+		int    day   = 0;
+
+		tjdUt += h.info.DstOffset.TotalDays;
+		sweph.RevJul(tjdUt, ref year, ref month, ref day, ref time);
+		return new DateTime(year, month, day).AddHours(time);
+	}
+
+	public static double UniversalTime(this DateTime dateTime)
+	{
+		return sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Time().TotalHours);
+	}
+
+	public static double UtcToJulian(this DateTime dateTime)
+	{
+		double jd;
+		double u, u0, u1, u2;
+		u = dateTime.Year;
+		if (dateTime.Month < 3) u -= 1;
+		u0 = u              + 4712.0;
+		u1 = dateTime.Month + 1.0;
+		if (u1 < 4) u1 += 12.0;
+		jd = Math.Floor(u0 * SiderealYear.TotalDays)
+			+ Math.Floor(30.6 * u1 + 0.000001)
+			+ dateTime.Day + dateTime.Time().TotalHours / 24.0 - 63.5;
+
+		return (jd);
+	}
+
+	public static DateTime UtcDateTime(this double jd)
+	{
+		double u0, u1, u2, u3, u4;
+		u0 = jd + 32082.5;
+		u2   = Math.Floor(u0 + 123.0);
+		u3   = Math.Floor((u2 - 122.2)                   / 365.25);
+		u4   = Math.Floor((u2 - Math.Floor(365.25 * u3)) / 30.6001);
+		var jmon = (int)(u4 - 1.0);
+		if (jmon > 12) jmon -= 12;
+		var jday  = (int)(u2 - Math.Floor(SiderealYear.TotalHours * u3) - Math.Floor(30.6001 * u4));
+		var jyear = (int)(u3 + Math.Floor((u4 - 2.0) / 12.0) - 4800);
+		var jut   = (jd      - Math.Floor(jd + 0.5)          + 0.5) * 24.0;
+
+		return new DateTime(jyear, jmon, jday).AddHours(jut);
+
+	}
+
+	public static double UniversalTime(this Horoscope h, DateTime dateTime)
+	{
+		return sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, (dateTime - h.info.DstOffset).Time().TotalHours);
+	}
+
+	public static int FromStringMonth(this string s)
+	{
+		switch (s)
+		{
+			case "Jan": return 1;
+			case "Feb": return 2;
+			case "Mar": return 3;
+			case "Apr": return 4;
+			case "May": return 5;
+			case "Jun": return 6;
+			case "Jul": return 7;
+			case "Aug": return 8;
+			case "Sep": return 9;
+			case "Oct": return 10;
+			case "Nov": return 11;
+			case "Dec": return 12;
+		}
+
+		return 1;
+	}
+
+	public static string ToStringMonth(this DateTime dateTime)
+	{
+		switch (dateTime.Month)
+		{
+			case 1:  return "Jan";
+			case 2:  return "Feb";
+			case 3:  return "Mar";
+			case 4:  return "Apr";
+			case 5:  return "May";
+			case 6:  return "Jun";
+			case 7:  return "Jul";
+			case 8:  return "Aug";
+			case 9:  return "Sep";
+			case 10: return "Oct";
+			case 11: return "Nov";
+			case 12: return "Dec";
+		}
+
+		return string.Empty;
+	}
+
+	public static string ToString(this DateTime dateTime)
+	{
+		return (dateTime.Day < 10 ? "0" : string.Empty) + dateTime.Day + " " + ToStringMonth(dateTime) + " " + dateTime.Year + " " + (dateTime.Hour < 10 ? "0" : string.Empty) + dateTime.Hour + ":" + (dateTime.Minute < 10 ? "0" : string.Empty) + dateTime.Minute + ":" + (dateTime.Second < 10 ? "0" : string.Empty) + dateTime.Second;
+	}
+
+	public static string ToShortDateString(this DateTime dateTime)
+	{
+		var year = dateTime.Year % 100;
+		return string.Format("{0:00}-{1:00}-{2:00}", dateTime.Day, dateTime.Month, year);
+	}
+
+	public static string ToDateString(this DateTime dateTime)
+	{
+		return string.Format("{0:00} {1} {2}", dateTime.Day, ToStringMonth(dateTime), dateTime.Year);
+	}
+
+	public static string ToTimeString(this DateTime dateTime)
+	{
+		return dateTime.ToTimeString(false);
+	}
+
+	public static string ToTimeString(this DateTime dateTime, bool bDisplaySeconds)
+	{
+		if (bDisplaySeconds)
+		{
+			return string.Format("{0:00}:{1:00}:{2:00}", dateTime.Hour, dateTime.Minute, dateTime.Second);
+		}
+
+		return string.Format("{0:00}:{1:00}", dateTime.Hour, dateTime.Minute);
+	}
+
+
 	//*********************************************************************/
 
 	// Convert radian angle to degrees

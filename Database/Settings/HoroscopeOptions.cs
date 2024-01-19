@@ -31,11 +31,15 @@ public class HoroscopeOptions : MhoraSerializableOptions, ICloneable, ISerializa
 {
 	public enum AyanamsaType
 	{
-		Fagan        = 0,
-		Lahiri       = 1,
-		Raman        = 3,
-		Ushashashi   = 4,
-		Krishnamurti = 5
+		Fagan              = 0,
+		Lahiri             = 1,
+		Raman              = 3,
+		Ushashashi         = 4,
+		Krishnamurti       = 5,
+		Suryasiddhanta     = 21,
+		SuryasiddhantaMsun = 22,
+		Citra              = 26,
+		TrueCitra          = 27
 	}
 
 	[TypeConverter(typeof(EnumDescConverter))]

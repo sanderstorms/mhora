@@ -1296,7 +1296,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 		if (options.ChartStyle == UserOptions.EChartStyle.SouthIndian && MhoraGlobalOptions.Instance.VargaShowDob && false == PrintMode && false == bDrawInner)
 		{
-			var tob = h.info.tob.ToString();
+			var tob = h.info.DateOfBirth.ToString();
 			hint = g.MeasureString(tob, f);
 			g.DrawString(tob, f, Brushes.Black, xw * 2 / 4 - hint.Width / 2, (float) (yw * 2 / 4 - hint.Height / 2 + f.Height * 1.5));
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Mhora.Util;
 
 namespace Mhora.SwissEph;
 
@@ -192,7 +193,7 @@ public class AzimuthCalculator : IAzimuthCalculator
 		var dT       = GetAltitudeCorrection(position.Altitude) / (15 * Math.Cos(ToRad(position.Latitude)) * Math.Sin(ToRad(coord.Coordinates.Azimuth)));
 		var timeBase = sweApi.JulDayToDateTime(coord.JulDay);
 		var time     = timeBase.AddMinutes(dT);
-		var jday     = sweApi.DateTimeToJulDay(time);
+		var jday     = time.UniversalTime();
 
 		return new SunriseSunsetTimeCalcResult
 		{

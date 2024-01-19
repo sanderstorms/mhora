@@ -440,27 +440,28 @@ public class TransitSearch : MhoraControl
 	}
 
 
-	private Horoscope utToHoroscope(double found_ut, ref Moment m2)
+	private Horoscope utToHoroscope(double found_ut, ref DateTime m2)
 	{
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.UtcOffset.TotalDays;
+		found_ut += h.info.DstOffset.TotalDays;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
-		var m        = new Moment(year, month, day, hour);
-		var inf      = new HoraInfo(m, (double) h.info.Latitude, (double) h.info.Longitude);
+		var m        = new DateTime(year, month, day).AddHours(hour);
+		var inf      = new HoraInfo(h.info);
+		inf.DateOfBirth = m;
 		var hTransit = new Horoscope(inf, (HoroscopeOptions) h.options.Clone());
 
 		sweph.RevJul(found_ut + 5.0, ref year, ref month, ref day, ref hour);
-		m2 = new Moment(year, month, day, hour);
+		m2 = new DateTime(year, month, day).AddHours(hour);
 		return hTransit;
 	}
 
-	private void ApplyLocal(Moment m)
+	private void ApplyLocal(DateTime m)
 	{
 		if (opts.Apply)
 		{
-			h.info.tob = m;
+			h.info.DateOfBirth = m;
 			h.OnChanged();
 		}
 	}
@@ -485,10 +486,10 @@ public class TransitSearch : MhoraControl
 			return;
 		}
 
-		var julday_ut = opts.StartDate.toUniversalTime() - h.info.UtcOffset.TotalDays;
+		var julday_ut = h.UniversalTime(opts.StartDate);
 		//;.tob.time / 24.0;
 
-		if (julday_ut <= h.baseUT)
+		if (julday_ut <= h.info.Jd)
 		{
 			MessageBox.Show("Error: Unable to progress in the future");
 			return;
@@ -500,9 +501,9 @@ public class TransitSearch : MhoraControl
 		sweph.obtainLock(h);
 		var r = new Retrogression(h, opts.SearchBody);
 
-		var start_lon = r.GetLon(h.baseUT);
+		var start_lon = r.GetLon(h.info.Jd);
 		//mhora.Log.Debug ("Real start lon is {0}", start_lon);
-		var curr_julday = h.baseUT;
+		var curr_julday = h.info.Jd;
 		var t           = new Elements.Transit(h, opts.SearchBody);
 		while (totalProgression >= 360.0)
 		{
@@ -522,13 +523,13 @@ public class TransitSearch : MhoraControl
 
 		sweph.releaseLock(h);
 
-		var          m2       = new Moment(0, 0, 0, 0.0);
+		var          m2       = DateTime.MinValue;
 		var          hTransit = utToHoroscope(curr_julday, ref m2);
 		var          fmt      = hTransit.info.DateOfBirth.ToString();
 		ListViewItem li       = new TransitItem(hTransit);
 		li.Text = string.Format("{0}'s Prog: {2}+{3:00.00} deg", opts.SearchBody, totalProgressionOrig, (int) Math.Floor(totalProgressionOrig / 360.0), new Longitude(totalProgressionOrig).value);
 		li.SubItems.Add(fmt);
-		ApplyLocal(hTransit.info.tob);
+		ApplyLocal(hTransit.info.DateOfBirth);
 
 		mlTransits.Items.Add(li);
 		updateOptions();
@@ -536,14 +537,14 @@ public class TransitSearch : MhoraControl
 
 	private double GetProgressionDegree()
 	{
-		var julday_ut = opts.StartDate.toUniversalTime() - h.info.UtcOffset.TotalDays;
-		var ut_diff   = julday_ut                        - h.baseUT;
+		var julday_ut = h.UniversalTime(opts.StartDate);
+		var ut_diff   = julday_ut - h.info.Jd;
 
 		//mhora.Log.Debug ("Expected ut_diff is {0}", ut_diff);
 		var bDummy = true;
 		sweph.obtainLock(h);
 		var t         = new Elements.Transit(h);
-		var lon_start = t.LongitudeOfSun(h.baseUT, ref bDummy);
+		var lon_start = t.LongitudeOfSun(h.info.Jd, ref bDummy);
 		var lon_prog  = t.LongitudeOfSun(julday_ut, ref bDummy);
 
 		//mhora.Log.Debug ("Progression lons are {0} and {1}", lon_start, lon_prog);
@@ -582,9 +583,9 @@ public class TransitSearch : MhoraControl
 
 		var dp                = h.getPosition(opts.SearchBody).toDivisionPosition(opts.Division);
 		var yearlyProgression = (dp.cusp_higher - dp.cusp_lower) / 30.0;
-		var julday_ut         = sweph.JulDay(opts.StartDate.year, opts.StartDate.month, opts.StartDate.day, opts.StartDate.hour + opts.StartDate.minute / 60.0 + opts.StartDate.second / 3600.0);
+		var julday_ut         = opts.StartDate.UniversalTime();
 
-		if (julday_ut <= h.baseUT)
+		if (julday_ut <= h.info.Jd)
 		{
 			MessageBox.Show("Error: Unable to progress in the future");
 			return;
@@ -598,9 +599,9 @@ public class TransitSearch : MhoraControl
 		var becomesDirect = false;
 		sweph.obtainLock(h);
 		var    r        = new Retrogression(h, opts.SearchBody);
-		var    curr_ut  = h.baseUT;
+		var    curr_ut  = h.info.Jd;
 		double next_ut  = 0;
-		var    found_ut = h.baseUT;
+		var    found_ut = h.info.Jd;
 		while (true)
 		{
 			next_ut = r.findNextCuspForward(curr_ut, ref becomesDirect);
@@ -638,7 +639,7 @@ public class TransitSearch : MhoraControl
 
 		sweph.releaseLock(h);
 
-		var          m2       = new Moment(0, 0, 0, 0.0);
+		var          m2       = DateTime.MinValue;
 		var          hTransit = utToHoroscope(found_ut, ref m2);
 		var          fmt      = hTransit.info.DateOfBirth.ToString();
 		ListViewItem li       = new TransitItem(hTransit);
@@ -646,7 +647,7 @@ public class TransitSearch : MhoraControl
 		li.SubItems.Add(fmt);
 		mlTransits.Items.Add(li);
 		updateOptions();
-		ApplyLocal(hTransit.info.tob);
+		ApplyLocal(hTransit.info.DateOfBirth);
 	}
 
 	private void bProgressionLon_Click(object sender, EventArgs e)
@@ -679,7 +680,7 @@ public class TransitSearch : MhoraControl
 		var becomesDirect = false;
 		sweph.obtainLock(h);
 		var r         = new Retrogression(h, opts.SearchBody);
-		var julday_ut = opts.StartDate.toUniversalTime() - h.info.UtcOffset.TotalDays;
+		var julday_ut = h.UniversalTime(opts.StartDate);
 		var found_ut  = julday_ut;
 		if (opts.Forward)
 		{
@@ -698,10 +699,11 @@ public class TransitSearch : MhoraControl
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.UtcOffset.TotalDays;
+		found_ut += h.info.DstOffset.TotalDays;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
-		var m        = new Moment(year, month, day, hour);
-		var inf      = new HoraInfo(m, (double) h.info.Latitude, (double) h.info.Longitude);
+		var m        = new DateTime(year, month, day).AddHours(hour);
+		var inf      = new HoraInfo(h.info);
+		inf.DateOfBirth = m;
 		var hTransit = new Horoscope(inf, (HoroscopeOptions) h.options.Clone());
 
 		if (opts.Forward)
@@ -713,7 +715,7 @@ public class TransitSearch : MhoraControl
 			sweph.RevJul(found_ut - 5.0, ref year, ref month, ref day, ref hour);
 		}
 
-		var m2 = new Moment(year, month, day, hour);
+		var m2 = new DateTime(year, month, day).AddHours(hour);
 		opts.StartDate = m2;
 		// add entry to our list
 		var          fmt = hTransit.info.DateOfBirth.ToString();
@@ -731,7 +733,7 @@ public class TransitSearch : MhoraControl
 		li.SubItems.Add(fmt);
 		mlTransits.Items.Add(li);
 		updateOptions();
-		ApplyLocal(hTransit.info.tob);
+		ApplyLocal(hTransit.info.DateOfBirth);
 	}
 
 	private void bStartSearch_Click(object sender, EventArgs e)
@@ -756,7 +758,7 @@ public class TransitSearch : MhoraControl
 
 
 		sweph.RevJul(ut, ref year, ref month, ref day, ref hour);
-		var m2 = new Moment(year, month, day, hour);
+		var m2 = new DateTime(year, month, day).AddHours(hour);
 		opts.StartDate = m2;
 		updateOptions();
 	}
@@ -769,7 +771,7 @@ public class TransitSearch : MhoraControl
 		var found_ut  = h.TransitSearch(opts.SearchBody, opts.StartDate, opts.Forward, opts.TransitPoint, found_lon, ref bForward);
 
 
-		var m2       = new Moment(0, 0, 0, 0);
+		var m2       = DateTime.MinValue;
 		var hTransit = utToHoroscope(found_ut, ref m2);
 		UpdateDateForNextSearch(found_ut);
 
@@ -787,7 +789,7 @@ public class TransitSearch : MhoraControl
 		li.SubItems.Add(fmt);
 		mlTransits.Items.Add(li);
 		updateOptions();
-		ApplyLocal(hTransit.info.tob);
+		ApplyLocal(hTransit.info.DateOfBirth);
 
 		return found_ut;
 	}
@@ -803,7 +805,7 @@ public class TransitSearch : MhoraControl
 
 	private void openTransitHelper(Horoscope hTransit)
 	{
-		hTransit.info.type = HoraInfo.ChartType.Transit;
+		hTransit.info.Type = HoraInfo.ChartType.Transit;
 		var mcTransit = new MhoraChild(hTransit);
 		mcTransit.Name      = "Transit Chart";
 		mcTransit.Text      = "Transit Chart";
@@ -840,7 +842,7 @@ public class TransitSearch : MhoraControl
 			var tiNext       = (TransitItem) mlTransits.Items[nextEntry];
 			var hTransitNext = tiNext.GetHoroscope();
 
-			var ut_diff = hTransitNext.baseUT - hTransit.baseUT;
+			var ut_diff = hTransitNext.info.Jd - hTransit.info.Jd;
 			if (ut_diff > 0)
 			{
 				hTransit.info.defaultYearCompression = 1;
@@ -861,7 +863,7 @@ public class TransitSearch : MhoraControl
 
 		var ti       = (TransitItem) mlTransits.SelectedItems[0];
 		var hTransit = ti.GetHoroscope();
-		hTransit.info.type = HoraInfo.ChartType.Transit;
+		hTransit.info.Type = HoraInfo.ChartType.Transit;
 
 		var prevEntry = mlTransits.SelectedItems[0].Index - 1;
 		if (prevEntry >= 0)
@@ -869,7 +871,7 @@ public class TransitSearch : MhoraControl
 			var tiPrev       = (TransitItem) mlTransits.Items[prevEntry];
 			var hTransitPrev = tiPrev.GetHoroscope();
 
-			var ut_diff = hTransit.baseUT - hTransitPrev.baseUT;
+			var ut_diff = hTransit.info.Jd - hTransitPrev.info.Jd;
 			if (ut_diff > 0)
 			{
 				hTransit.info.defaultYearCompression = 1;
@@ -899,9 +901,7 @@ public class TransitSearch : MhoraControl
 
 	private void bNow_Click(object sender, EventArgs e)
 	{
-		var now = DateTime.Now;
-		var m   = new Moment(now.Year, now.Month, now.Day, now.Hour + now.Minute / 60.0 + now.Second / 3600.0);
-		opts.StartDate = m;
+		opts.StartDate = DateTime.Now;
 		updateOptions();
 	}
 
@@ -916,12 +916,12 @@ public class TransitSearch : MhoraControl
 	private void bTransitPrevVarga_Click(object sender, EventArgs e)
 	{
 		var h2 = (Horoscope) h.Clone();
-		h2.info.tob = opts.StartDate;
+		h2.info.DateOfBirth = opts.StartDate;
 		h2.OnChanged();
 		var dp = h2.getPosition(opts.SearchBody).toDivisionPosition(opts.Division);
 		opts.TransitPoint = new Longitude(dp.cusp_lower);
 
-		var found_ut = StartSearch(false) + h.info.UtcOffset.TotalDays;
+		var found_ut = StartSearch(false) + h.info.DstOffset.TotalDays;
 		UpdateDateForNextSearch(found_ut);
 		updateOptions();
 	}
@@ -935,13 +935,13 @@ public class TransitSearch : MhoraControl
 	{
 		// Update Search Parameters
 		var h2 = (Horoscope) h.Clone();
-		h2.info.tob = opts.StartDate;
+		h2.info.DateOfBirth = opts.StartDate;
 		h2.OnChanged();
 		var dp = h2.getPosition(opts.SearchBody).toDivisionPosition(opts.Division);
 		opts.TransitPoint = new Longitude(dp.cusp_higher);
 		opts.TransitPoint = opts.TransitPoint.add(1.0 / (60.0 * 60.0 * 60.0));
 
-		var found_ut = StartSearch(false) + h.info.UtcOffset.TotalDays;
+		var found_ut = StartSearch(false) + h.info.DstOffset.TotalDays;
 		UpdateDateForNextSearch(found_ut);
 		updateOptions();
 	}
@@ -963,7 +963,7 @@ public class TransitSearch : MhoraControl
 		}
 
 		var h2 = (Horoscope) h.Clone();
-		h2.info.tob = opts.StartDate;
+		h2.info.DateOfBirth = opts.StartDate;
 		h2.OnChanged();
 		var bp = h2.getPosition(opts.SearchBody);
 		var dp = bp.toDivisionPosition(opts.Division);
@@ -972,7 +972,7 @@ public class TransitSearch : MhoraControl
 		var bForward      = false;
 		sweph.obtainLock(h);
 		var r                   = new Retrogression(h, opts.SearchBody);
-		var julday_ut           = opts.StartDate.toUniversalTime() - h.info.UtcOffset.TotalDays;
+		var julday_ut           = h.UniversalTime(opts.StartDate);
 		var found_ut            = julday_ut;
 		var bTransitForwardCusp = true;
 		while (true)
@@ -1070,15 +1070,15 @@ public class TransitSearch : MhoraControl
 		}
 
 		var li       = new ListViewItem(desc);
-		var m        = new Moment(0, 0, 0, 0);
+		var m        = DateTime.MinValue;
 		var hTransit = utToHoroscope(ut, ref m);
-		li.SubItems.Add(hTransit.info.tob.ToString());
+		li.SubItems.Add(hTransit.info.DateOfBirth.ToString());
 		mlTransits.Items.Add(li);
 	}
 
 	private void bGlobSolEclipse_Click(object sender, EventArgs e)
 	{
-		var julday_ut = opts.StartDate.toUniversalTime(h);
+		var julday_ut = h.UniversalTime(opts.StartDate);
 		var tret      = new double[10];
 		sweph.obtainLock(h);
 		sweph.SolEclipseWhenGlob(julday_ut, tret, opts.Forward);
@@ -1092,11 +1092,11 @@ public class TransitSearch : MhoraControl
 		SolarEclipseHelper(tret[7], tret[2], tret[3], "   Global Solar Eclipse Centerline Begins");
 		if (opts.Forward)
 		{
-			opts.StartDate = new Moment(tret[3] + 1.0, h);
+			opts.StartDate = h.Moment(tret[3] + 1.0);
 		}
 		else
 		{
-			opts.StartDate = new Moment(tret[2] - 1.0, h);
+			opts.StartDate = h.Moment(tret[2] - 1.0);
 		}
 
 		updateOptions();
@@ -1104,7 +1104,7 @@ public class TransitSearch : MhoraControl
 
 	private void bLocSolEclipse_Click(object sender, EventArgs e)
 	{
-		var julday_ut = opts.StartDate.toUniversalTime(h);
+		var julday_ut = h.UniversalTime(opts.StartDate);
 		var tret      = new double[10];
 		var attr      = new double[10];
 		sweph.obtainLock(h);
@@ -1117,11 +1117,11 @@ public class TransitSearch : MhoraControl
 		SolarEclipseHelper(tret[4], tret[0] - 1, tret[0] + 1, "   Local Solar Eclipse 4th Contact");
 		if (opts.Forward)
 		{
-			opts.StartDate = new Moment(tret[0] + 1.0, h);
+			opts.StartDate = h.Moment(tret[0] + 1.0);
 		}
 		else
 		{
-			opts.StartDate = new Moment(tret[0] - 1.0, h);
+			opts.StartDate = h.Moment(tret[0] - 1.0);
 		}
 
 		updateOptions();
@@ -1129,7 +1129,7 @@ public class TransitSearch : MhoraControl
 
 	private void bGlobalLunarEclipse_Click(object sender, EventArgs e)
 	{
-		var julday_ut = opts.StartDate.toUniversalTime(h);
+		var julday_ut = h.UniversalTime(opts.StartDate);
 		var tret      = new double[10];
 		sweph.obtainLock(h);
 		sweph.LunEclipseWhen(julday_ut, tret, opts.Forward);
@@ -1143,11 +1143,11 @@ public class TransitSearch : MhoraControl
 		SolarEclipseHelper(tret[7], tret[0] - 1, tret[0] + 1, "   Lunar Penumbral Eclipse Ends");
 		if (opts.Forward)
 		{
-			opts.StartDate = new Moment(tret[0] + 1.0, h);
+			opts.StartDate = h.Moment(tret[0] + 1.0);
 		}
 		else
 		{
-			opts.StartDate = new Moment(tret[0] - 1.0, h);
+			opts.StartDate = h.Moment(tret[0] - 1.0);
 		}
 
 		updateOptions();

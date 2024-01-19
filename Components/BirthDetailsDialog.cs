@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using Mhora.Database.Settings;
 using Mhora.Database.World;
@@ -80,11 +81,14 @@ public partial class BirthDetailsDialog : Form
 
 			var date   = dateTimePicker.Value;
 			var time   = timePicker.Value;
-			var moment = new Moment(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
+			var moment = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
 
-			var info   = new HoraInfo(moment, MhoraGlobalOptions.Instance.Latitude, MhoraGlobalOptions.Instance.Longitude)
+			var info   = new HoraInfo()
 			{
-				City  = City,
+				DateOfBirth = moment,
+				Latitude    = MhoraGlobalOptions.Instance.Latitude,
+				Longitude   = MhoraGlobalOptions.Instance.Longitude,
+				City        = City,
 			};
 			return (info);
 		}
@@ -161,28 +165,35 @@ public partial class BirthDetailsDialog : Form
 			return;
 		}
 		timePicker.Value = DateTime.Now;
+		dateTimePicker.Value = DateTime.Now;
 
-		if (File.Exists("world.db"))
-		{
-			try
-			{
-				var query  = Query.From<City>().Where(city => city.Name == "Maastricht").SelectAll();
-				var cities = Application.WorldDb.Load<City>(query.ToString()).ToArray();
-				if (cities.Length > 0)
-				{
-					comboBoxCountry.SelectedItem = _countries.Find(country => country.Id == cities[0].Country.Id);
-					comboBoxState.SelectedItem   = _states.Find(state => state.Id        == cities[0].StateId);
-					comboBoxCity.SelectedItem    = _cities.Find(city => city.Id          == cities[0].Id);
-				}
-			}
-			catch (Exception ex)
-			{
-				Application.Log.Exception(ex);
-			}
-		}
+        if (File.Exists("world.db"))
+        {
+            try
+            {
+                ThreadPool.QueueUserWorkItem (state =>
+                {
+                    var query  = Query.From<City>().Where(city => city.Name == "Maastricht").SelectAll();
+                    var cities = Application.WorldDb.Load<City>(query.ToString()).ToArray();
+                    if (cities.Length > 0)
+                    {
+                        Country = _countries.Find(country => country.Id == cities[0].Country.Id);
+                        Invoke(() => comboBoxCountry.SelectedItem = Country);
+                        State = _states.Find(state => state.Id == cities[0].StateId);
+                        Invoke(() => comboBoxState.SelectedItem = State);
+                        City = _cities.Find(city => city.Id == cities[0].Id);
+                        Invoke(() => comboBoxCity.SelectedItem = City);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Application.Log.Exception(ex);
+            }
+        }
 	}
 
-	private void OnCountrySelected(object sender, EventArgs e)
+    private void OnCountrySelected(object sender, EventArgs e)
 	{
 		Country = (Country) comboBoxCountry.SelectedItem;
 		var states = Query.From<State>().Where(state => state.CountryId == Country.Id).SelectAll().ToString();
@@ -247,7 +258,7 @@ public partial class BirthDetailsDialog : Form
 
 	private void OnCityDropDown(object sender, EventArgs e)
 	{
-		if (_manualEnter == false)
+		if (_manualEnter)
 		{
 			comboBoxCity.AutoCompleteSource = AutoCompleteSource.ListItems;
 			comboBoxCity.AutoCompleteMode   = AutoCompleteMode.Suggest;

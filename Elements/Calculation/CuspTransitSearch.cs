@@ -16,8 +16,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using System;
 using Mhora.Database.Settings;
 using Mhora.SwissEph;
+using Mhora.Util;
 
 namespace Mhora.Elements.Calculation;
 
@@ -42,13 +44,13 @@ internal class CuspTransitSearch
 		return 0.0;
 	}
 
-	public double TransitSearchDirect(Body.BodyType SearchBody, Moment StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
+	public double TransitSearchDirect(Body.BodyType SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
 	{
 		var bDiscard = true;
 
 		sweph.obtainLock(h);
 		var t        = new Transit(h, SearchBody);
-		var ut_base  = StartDate.toUniversalTime() - h.info.UtcOffset.TotalDays;
+		var ut_base  = StartDate.UniversalTime() - h.info.DstOffset.TotalDays;
 		var lon_curr = t.GenericLongitude(ut_base, ref bDiscard);
 		sweph.releaseLock(h);
 
@@ -80,7 +82,7 @@ internal class CuspTransitSearch
 	}
 
 
-	public double TransitSearch(Body.BodyType SearchBody, Moment StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
+	public double TransitSearch(Body.BodyType SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
 	{
 		if (SearchBody == Body.BodyType.Sun || SearchBody == Body.BodyType.Moon)
 		{
@@ -89,14 +91,14 @@ internal class CuspTransitSearch
 
 		if (((int) SearchBody <= (int) Body.BodyType.Moon || (int) SearchBody > (int) Body.BodyType.Saturn) && SearchBody != Body.BodyType.Lagna)
 		{
-			return StartDate.toUniversalTime();
+			return StartDate.UniversalTime();
 		}
 
 		sweph.obtainLock(h);
 
 		var r = new Retrogression(h, SearchBody);
 
-		var julday_ut = StartDate.toUniversalTime() - h.info.UtcOffset.TotalDays;
+		var julday_ut = StartDate.UniversalTime() - h.info.DstOffset.TotalDays;
 		var found_ut  = julday_ut;
 
 		if (Forward)

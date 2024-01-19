@@ -190,7 +190,7 @@ public class KeyInfoControl : MhoraControl
 		ListViewItem li;
 
 		li = new ListViewItem("Date of Birth");
-		li.SubItems.Add(h.info.tob.ToString());
+		li.SubItems.Add(h.info.DateOfBirth.ToString());
 		mList.Items.Add(li);
 
 		li = new ListViewItem("Time Zone");
@@ -316,7 +316,7 @@ public class KeyInfoControl : MhoraControl
 		}
 		{
 			li = new ListViewItem("LMT Offset");
-			var e      = h.lmt_offset;
+			var e      = h.info.LmtOffset;
 			var orig_e = e;
 			e =  e < 0 ? -e : e;
 			e *= 24.0;
@@ -330,15 +330,15 @@ public class KeyInfoControl : MhoraControl
 				prefix = "-";
 			}
 
-			var fmt  = string.Format("{0}{1:00}:{2:00}:{3:00.00}", prefix, hour, min, e);
-			var fmt2 = string.Format(" ({0:00.00} minutes)", h.lmt_offset * 24.0 * 60.0);
+			var fmt  = string.Format("{0}{1:00}:{2:00}:{3:00.00}", prefix, hour, min, (double) e);
+			var fmt2 = string.Format(" ({0:00.00} minutes)", (double) h.info.LmtOffset * 24.0 * 60.0);
 			li.SubItems.Add(fmt + fmt2);
 			mList.Items.Add(li);
 		}
 		{
 			sweph.obtainLock(h);
 			li = new ListViewItem("Ayanamsa");
-			var aya      = sweph.GetAyanamsaUT(h.baseUT);
+			var aya      = sweph.GetAyanamsaUT(h.info.Jd);
 			var aya_hour = (int) Math.Floor(aya);
 			aya = (aya - Math.Floor(aya)) * 60.0;
 			var aya_min = (int) Math.Floor(aya);
@@ -350,7 +350,7 @@ public class KeyInfoControl : MhoraControl
 		}
 		{
 			li = new ListViewItem("Universal Time");
-			li.SubItems.Add(h.baseUT.ToString());
+			li.SubItems.Add(h.info.Jd.ToString());
 			mList.Items.Add(li);
 		}
 

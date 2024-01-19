@@ -23,6 +23,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Mhora.Components.Property;
 using Mhora.Database.World;
+using Mhora.SwissEph;
 using Mhora.Util;
 using Newtonsoft.Json;
 using SqlNado.Query;
@@ -59,8 +60,8 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 	
 	private City   _city;
 	private string _country;
-	private Angle  _latitude;
-	private Angle  _longitude;
+	private Angle  _latitude  = Angle.Empty;
+	private Angle  _longitude = Angle.Empty;
 	private string _name;
 
 	//public double lon, lat, alt, tz;
@@ -71,45 +72,64 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 	private UserEvent[] events;
 	public  EFileType   FileType;
 
-	public Moment    tob;
-	public ChartType type;
+	private DateTime  _tob;
+	private ChartType _type;
 
 	protected HoraInfo(SerializationInfo info, StreamingContext context) : this()
 	{
 		Constructor(GetType(), info, context);
 	}
 
-	public HoraInfo(Moment atob, Angle alat, Angle alon)
-	{
-		tob       = atob;
-		Longitude = alon;
-		Latitude  = alat;
-		Altitude  = 0.0;
-		type      = ChartType.Birth;
-		FileType  = EFileType.MudgalaHora;
-		events    = new UserEvent[0];
-	}
-
 	public HoraInfo()
 	{
-		var t = DateTime.Now;
-		tob       = new Moment(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
-		Longitude = MhoraGlobalOptions.Instance.Longitude;
-		Latitude  = MhoraGlobalOptions.Instance.Latitude;
-		Altitude  = 0.0;
-		type      = ChartType.Birth;
-		FileType  = EFileType.MudgalaHora;
-		events    = new UserEvent[0];
+		_tob       = DateTime.Now;
+		_lmtOffset = null;
+		_jd        = double.NaN;
+		Longitude  = MhoraGlobalOptions.Instance.Longitude;
+		Latitude   = MhoraGlobalOptions.Instance.Latitude;
+		Altitude   = 0.0;
+		_type      = ChartType.Birth;
+		FileType   = EFileType.MudgalaHora;
+		events     = new UserEvent[0];
+	}
+
+	public HoraInfo(HoraInfo h)
+	{
+		City                   = h.City;
+		Events                 = h.Events;
+		Name                   = h.Name;
+		Longitude              = h.Longitude;
+		Latitude               = h.Latitude;
+		Altitude               = h.Altitude;
+		defaultYearCompression = h.defaultYearCompression;
+		defaultYearLength      = h.defaultYearLength;
+		defaultYearType        = h.defaultYearType;
+	}
+
+	public object Clone()
+	{
+		return new HoraInfo(this);
+	}
+
+	public ChartType Type
+	{
+		get => _type;
+		set => _type = value;
 	}
 
 	[Category(CAT_TOB)]
 	[PropertyOrder(1)]
 	[PGDisplayName("Time of Birth")]
 	[Description("Date of Birth. Format is 'dd Mmm yyyy hh:mm:ss'\n Example 23 Mar 1979 23:11:00")]
-	public Moment DateOfBirth
+	public DateTime DateOfBirth
 	{
-		get => tob;
-		set => tob = value;
+		get => _tob;
+		set
+		{
+			_tob       = value;
+			_lmtOffset = null;
+			_jd        = double.NaN;
+		}
 	}
 
 	[Category(CAT_TOB)]
@@ -182,30 +202,83 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 	}
 
 	[JsonIgnore]
-	public DateTime UtcTime => TimeZoneInfo.ConvertTimeToUtc(tob, City.Country.TimeZoneInfo);
+	public DateTime UtcTob => TimeZoneInfo.ConvertTimeToUtc(_tob, City.Country.TimeZone.TimeZoneInfo);
 
 	[JsonIgnore]
-	public TimeSpan UtcOffset => City.Country.TimeZoneInfo.BaseUtcOffset;
+	public TimeSpan UtcOffset => City.Country.TimeZone.TimeZoneInfo.BaseUtcOffset;
 
 	[JsonIgnore]
-	public TimeSpan DstOffset => City.Country.TimeZoneInfo.GetUtcOffset(tob);
+	public TimeSpan DstOffset => City.Country.TimeZone.TimeZoneInfo.GetUtcOffset(_tob);
 
+	private Time _lmtOffset = null;
 	[JsonIgnore]
-	public TimeSpan TimeFromMidnight => new TimeSpan(0, tob.hour, tob.minute, tob.second);
-
-	public object Clone()
+	public Time LmtOffset
 	{
-		var hi = new HoraInfo((Moment) tob.Clone(), Latitude, Longitude)
+		get
 		{
-			City			       = City,
-			Events                 = Events,
-			Name                   = Name,
-			defaultYearCompression = defaultYearCompression,
-			defaultYearLength      = defaultYearLength,
-			defaultYearType        = defaultYearType
-		};
-		return hi;
+			if (_lmtOffset == null)
+			{
+				var jd = UtcTob.UniversalTime();
+				_lmtOffset = (GetLmtOffset(jd));
+			}
+			return _lmtOffset;
+		}
+	
 	}
+
+	private double _jd = double.NaN;
+	[JsonIgnore]
+	public double Jd
+	{
+		get
+		{
+			if (double.IsNaN(_jd))
+			{
+				_jd = UtcTob.UniversalTime();
+				//_jd += GetLmtOffset(_jd);
+			}
+			return (_jd);
+		}
+	}
+
+	public Time GetLmtOffset(double baseUT)
+	{
+		var geopos = new double[3]
+		{
+			Longitude,
+			Latitude,
+			Altitude
+		};
+		var tret = new double[6]
+		{
+			0,
+			0,
+			0,
+			0,
+			0,
+			0
+		};
+		var midnight_ut = baseUT - _tob.Time ().TotalDays;
+		sweph.Lmt(midnight_ut, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, tret);
+		var lmt_noon_1   = tret[0];
+		var lmt_offset_1 = lmt_noon_1 - (midnight_ut + 12.0 / 24.0);
+		sweph.Lmt(midnight_ut, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, tret);
+		var lmt_noon_2   = tret[0];
+		var lmt_offset_2 = lmt_noon_2 - (midnight_ut + 12.0 / 24.0);
+
+		var ret_lmt_offset = (lmt_offset_1 + lmt_offset_2) / 2.0;
+		//mhora.Log.Debug("LMT: {0}, {1}", lmt_offset_1, lmt_offset_2);
+
+		return ret_lmt_offset;
+#if DND
+			// determine offset from ephemeris time
+			lmt_offset = 0;
+			double tjd_et = baseUT + sweph.swe_deltat(baseUT);
+			System.Text.StringBuilder s = new System.Text.StringBuilder(256);
+			int ret = sweph.swe_time_equ(tjd_et, ref lmt_offset, s);
+#endif
+	}
+
 
 	void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
 	{

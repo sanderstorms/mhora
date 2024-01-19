@@ -115,8 +115,8 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 	private Font mfVarga;
 	private int  miDasaShowEventsLevel;
 
-	private Angle           mLat;
-	private Angle           mLon;
+	private double          mLat;
+	private double          mLon;
 	private string          msNotesExtension;
 	private HMSInfo         mTz;
 	public  Size            RasiStrengthsFormSize = new(0, 0);

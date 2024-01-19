@@ -166,7 +166,7 @@ public class Retrogression
 			int    day  = 0, month = 0, year = 0;
 			double hour = 0;
 			sweph.RevJul(ut_start, ref year, ref month, ref day, ref hour);
-			var m = new Moment(year, month, day, hour);
+			var m = new DateTime(year, month, day).AddHours(hour);
 
 			//mhora.Log.Debug ("F {3} Lagna search for {0} between {1} and {2}",
 			//lonToFind, lon_start, lon_end, m);
@@ -196,7 +196,7 @@ public class Retrogression
 			int    day  = 0, month = 0, year = 0;
 			double hour = 0;
 			sweph.RevJul(ut_start, ref year, ref month, ref day, ref hour);
-			var m = new Moment(year, month, day, hour);
+			var m = new DateTime(year, month, day).AddHours(hour);
 
 			//mhora.Log.Debug ("B {3} Lagna search for {0} between {1} and {2}",
 			//lonToFind, lon_start, lon_end, m);

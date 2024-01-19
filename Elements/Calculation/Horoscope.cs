@@ -26,6 +26,7 @@ using Mhora.Elements.Hora;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using mhora.Util;
+using Mhora.Util;
 
 namespace Mhora.Elements.Calculation;
 
@@ -53,13 +54,6 @@ public class Horoscope : ICloneable
 
 	public double ayanamsa;
 
-	public double baseUT
-	{
-		get;
-		private set;
-	}
-
-
 	public Body.BodyType[] horaOrder =
 	{
 		Body.BodyType.Sun,
@@ -85,17 +79,16 @@ public class Horoscope : ICloneable
 		Body.BodyType.Rahu
 	};
 
-	public double              lmt_offset;
-	public double              lmt_sunrise;
-	public double              lmt_sunset;
+	public Time                lmt_sunrise = new Time();
+	public Time                lmt_sunset = new Time();
 	public Tables.Hora.Weekday lmt_wday;
-	public double              next_sunrise;
-	public double              next_sunset;
+	public Time                next_sunrise = new Time();
+	public Time                next_sunset  = new Time();
 	public HoroscopeOptions    options;
 	public ArrayList           positionList;
 	public StrengthOptions     strength_options;
-	public double              sunrise;
-	public double              sunset;
+	public Time                sunrise = new Time();
+	public Time                sunset  = new Time();
 	public Longitude[]         swephHouseCusps;
 	public int                 swephHouseSystem;
 
@@ -432,72 +425,33 @@ public class Horoscope : ICloneable
 
 	private void populateLmt()
 	{
-		lmt_offset  = getLmtOffset(info, baseUT);
-		lmt_sunrise = 6.0  + lmt_offset * 24.0;
-		lmt_sunset  = 18.0 + lmt_offset * 24.0;
+		lmt_sunrise = 6.0  + info.LmtOffset * 24.0;
+		lmt_sunset  = 18.0 + info.LmtOffset * 24.0;
 	}
 
-	public double getLmtOffsetDays(HoraInfo info, double _baseUT)
+	public double getLmtOffsetDays(HoraInfo info, double baseUt)
 	{
-		var ut_lmt_noon = getLmtOffset(info, _baseUT);
-		var ut_noon     = baseUT - info.tob.time / 24.0 + 12.0 / 24.0;
+		var ut_lmt_noon = info.GetLmtOffset(info.Jd);
+		var ut_noon     = info.Jd - info.DateOfBirth.Time ().TotalDays + 12.0 / 24.0;
 		return ut_lmt_noon - ut_noon;
-	}
-
-	public double getLmtOffset(HoraInfo _info, double _baseUT)
-	{
-		var geopos = new double[3]
-		{
-			_info.Longitude,
-			_info.Latitude,
-			_info.Altitude
-		};
-		var tret = new double[6]
-		{
-			0,
-			0,
-			0,
-			0,
-			0,
-			0
-		};
-		var midnight_ut = _baseUT - _info.tob.time / 24.0;
-		sweph.Lmt(midnight_ut, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, tret);
-		var lmt_noon_1   = tret[0];
-		var lmt_offset_1 = lmt_noon_1 - (midnight_ut + 12.0 / 24.0);
-		sweph.Lmt(midnight_ut, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, tret);
-		var lmt_noon_2   = tret[0];
-		var lmt_offset_2 = lmt_noon_2 - (midnight_ut + 12.0 / 24.0);
-
-		var ret_lmt_offset = (lmt_offset_1 + lmt_offset_2) / 2.0;
-		//mhora.Log.Debug("LMT: {0}, {1}", lmt_offset_1, lmt_offset_2);
-
-		return ret_lmt_offset;
-#if DND
-			// determine offset from ephemeris time
-			lmt_offset = 0;
-			double tjd_et = baseUT + sweph.swe_deltat(baseUT);
-			System.Text.StringBuilder s = new System.Text.StringBuilder(256);
-			int ret = sweph.swe_time_equ(tjd_et, ref lmt_offset, s);
-#endif
 	}
 
 	private void populateSunrisetCache()
 	{
-		var sunrise_ut = 0.0;
-		populateSunrisetCacheHelper(baseUT, ref next_sunrise, ref next_sunset, ref sunrise_ut);
+		Time sunrise_ut = 0.0;
+		populateSunrisetCacheHelper(info.Jd, ref next_sunrise, ref next_sunset, ref sunrise_ut);
 		populateSunrisetCacheHelper(sunrise_ut - 1.0 - 1.0 / 24.0, ref sunrise, ref sunset, ref sunrise_ut);
 		//Debug.WriteLine("Sunrise[t]: " + this.sunrise.ToString() + " " + this.sunrise.ToString(), "Basics");
 	}
 
-	public void populateSunrisetCacheHelper(double ut, ref double sr, ref double ss, ref double sr_ut)
+	public void populateSunrisetCacheHelper(double ut, ref Time sr, ref Time ss, ref Time sr_ut)
 	{
 		var srflag = 0;
 		switch (options.sunrisePosition)
 		{
 			case HoroscopeOptions.SunrisePositionType.Lmt:
-				sr = 6.0  + lmt_offset * 24.0;
-				ss = 18.0 + lmt_offset * 24.0;
+				sr = 6.0  + info.LmtOffset * 24.0;
+				ss = 18.0 + info.LmtOffset * 24.0;
 				break;
 			case HoroscopeOptions.SunrisePositionType.TrueDiscEdge:
 				srflag = sweph.SE_BIT_NO_REFRACTION;
@@ -540,10 +494,10 @@ public class Horoscope : ICloneable
 
 				sr_ut = tret[0];
 				sweph.RevJul(tret[0], ref year, ref month, ref day, ref hour);
-				sr = hour + info.UtcOffset.TotalHours;
+				sr = hour + info.DstOffset.TotalHours;
 				sweph.Set(tret[0], sweph.SE_SUN, srflag, geopos, 0.0, 0.0, tret);
 				sweph.RevJul(tret[0], ref year, ref month, ref day, ref hour);
-				ss = hour + info.UtcOffset.TotalHours;
+				ss = hour + info.DstOffset.TotalHours;
 				sr = Basics.normalize_exc(0.0, 24.0, sr);
 				ss = Basics.normalize_exc(0.0, 24.0, ss);
 				break;
@@ -597,7 +551,7 @@ public class Horoscope : ICloneable
 	{
 		var ret = new double[dayParts * 2 + 1];
 
-		var sr_ut      = baseUT                 - hoursAfterSunrise() / 24.0;
+		var sr_ut      = info.Jd                 - hoursAfterSunrise() / 24.0;
 		var ss_ut      = sr_ut - sunrise / 24.0 + sunset              / 24.0;
 		var sr_next_ut = sr_ut - sunrise / 24.0 + next_sunrise        / 24.0 + 1.0;
 
@@ -621,7 +575,7 @@ public class Horoscope : ICloneable
 	{
 		var ret = new double[dayParts * 2 + 1];
 
-		var sr_ut      = baseUT                                  - hoursAfterSunrise() / 24.0;
+		var sr_ut      = info.Jd                                  - hoursAfterSunrise() / 24.0;
 		var sr_next_ut = sr_ut - sunrise                  / 24.0 + next_sunrise        / 24.0 + 1.0;
 		var span       = (sr_next_ut - sr_ut) / (dayParts * 2);
 
@@ -636,16 +590,15 @@ public class Horoscope : ICloneable
 	public double[] getLmtCuspsUt(int dayParts)
 	{
 		var ret            = new double[dayParts * 2 + 1];
-		var sr_lmt_ut      = baseUT                  - hoursAfterSunrise() / 24.0 - sunrise / 24.0 + 6.0 / 24.0;
+		var sr_lmt_ut      = info.Jd                  - hoursAfterSunrise() / 24.0 - sunrise / 24.0 + 6.0 / 24.0;
 		var sr_lmt_next_ut = sr_lmt_ut                                                             + 1.0;
-		//double sr_lmt_ut = this.baseUT - this.info.tob.time / 24.0 + 6.0 / 24.0;
+		//double sr_lmt_ut = this.info.Jd - this.info.DateOfBirth.time / 24.0 + 6.0 / 24.0;
 		//double sr_lmt_next_ut = sr_lmt_ut + 1.0;
 
-		var lmt_offset = getLmtOffset(info, baseUT);
-		sr_lmt_ut      += lmt_offset;
-		sr_lmt_next_ut += lmt_offset;
+		sr_lmt_ut      += info.LmtOffset;
+		sr_lmt_next_ut += info.LmtOffset;
 
-		if (sr_lmt_ut > baseUT)
+		if (sr_lmt_ut > info.Jd)
 		{
 			sr_lmt_ut--;
 			sr_lmt_next_ut--;
@@ -687,7 +640,7 @@ public class Horoscope : ICloneable
 		if (options.KalaType == HoroscopeOptions.EHoraType.Lmt)
 		{
 			b          = lmt_wday.WeekdayRuler();
-			bday_birth = info.tob.time > lmt_sunset || info.tob.time < lmt_sunrise;
+			bday_birth = info.DateOfBirth.Time().TotalHours > lmt_sunset || info.DateOfBirth.Time().TotalHours < lmt_sunrise;
 		}
 
 		var i = offsets_day[(int) b];
@@ -698,7 +651,7 @@ public class Horoscope : ICloneable
 		{
 			for (j = 0; j < 8; j++)
 			{
-				if (baseUT >= cusps[j] && baseUT < cusps[j + 1])
+				if (info.Jd >= cusps[j] && info.Jd < cusps[j + 1])
 				{
 					break;
 				}
@@ -716,7 +669,7 @@ public class Horoscope : ICloneable
 		//i+=4;
 		for (j = 8; j < 16; j++)
 		{
-			if (baseUT >= cusps[j] && baseUT < cusps[j + 1])
+			if (info.Jd >= cusps[j] && info.Jd < cusps[j + 1])
 			{
 				break;
 			}
@@ -734,10 +687,10 @@ public class Horoscope : ICloneable
 	public Body.BodyType calculateHora()
 	{
 		var iBody = 0;
-		return calculateHora(baseUT, ref iBody);
+		return calculateHora(info.Jd, ref iBody);
 	}
 
-	public Body.BodyType calculateHora(double _baseUT, ref int baseBody)
+	public Body.BodyType calculateHora(double base_ut, ref int baseBody)
 	{
 		int[] offsets =
 		{
@@ -767,7 +720,7 @@ public class Horoscope : ICloneable
 		//}
 		for (j = 0; j < 23; j++)
 		{
-			if (_baseUT >= cusps[j] && _baseUT < cusps[j + 1])
+			if (base_ut >= cusps[j] && base_ut < cusps[j + 1])
 			{
 				break;
 			}
@@ -839,8 +792,8 @@ public class Horoscope : ICloneable
 	{
 		double dStart = 0, dEnd = 0;
 
-		var m         = info.tob;
-		dStart = dEnd = sweph.JulDay(m.year, m.month, m.day, -info.UtcOffset.TotalHours);
+		var m         = info.DateOfBirth;
+		dStart = dEnd = sweph.JulDay(m.Year, m.Month, m.Day, -info.DstOffset.TotalHours);
 		var bStart    = calculateUpagrahasStart();
 
 		if (isDayBirth())
@@ -924,17 +877,17 @@ public class Horoscope : ICloneable
 
 	private void calculateWeekday()
 	{
-		var m  = info.tob;
-		var jd = sweph.JulDay(m.year, m.month, m.day, 12.0);
-		if (info.tob.time < sunrise)
+		var m  = info.DateOfBirth;
+		var jd = sweph.JulDay(m.Year, m.Month, m.Day, 12.0);
+		if (info.DateOfBirth.Time().TotalHours < sunrise)
 		{
 			jd -= 1;
 		}
 
 		wday = (Tables.Hora.Weekday) sweph.DayOfWeek(jd);
 
-		jd = sweph.JulDay(m.year, m.month, m.day, 12.0);
-		if (info.tob.time < lmt_sunrise)
+		jd = sweph.JulDay(m.Year, m.Month, m.Day, 12.0);
+		if (info.DateOfBirth.Time().TotalHours < lmt_sunrise)
 		{
 			jd -= 1;
 		}
@@ -957,7 +910,7 @@ public class Horoscope : ICloneable
 
 		//mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
 
-		var ista_ghati = Basics.normalize_exc(0.0, 24.0, info.tob.time - sunrise) * 2.5;
+		var ista_ghati = Basics.normalize_exc(0.0, 24.0, info.DateOfBirth.Time().TotalHours - sunrise) * 2.5;
 		var gl_lon     = lon_base.add(new Longitude(ista_ghati        * 30.0));
 		var hl_lon     = lon_base.add(new Longitude(ista_ghati * 30.0 / 2.5));
 		var bl_lon     = lon_base.add(new Longitude(ista_ghati * 30.0 / 5.0));
@@ -989,7 +942,7 @@ public class Horoscope : ICloneable
 	private void calculatePranapada()
 	{
 		var spos   = getPosition(Body.BodyType.Sun).longitude;
-		var offset = info.tob.time - sunrise;
+		var offset = info.DateOfBirth.Time().TotalHours - sunrise;
 		if (offset < 0)
 		{
 			offset += 24.0;
@@ -1079,7 +1032,7 @@ public class Horoscope : ICloneable
 		var ascmc  = new double[10];
 
 		sweph.obtainLock(this);
-		sweph.HousesEx(baseUT, sweph.SEFLG_SIDEREAL, info.Latitude, info.Longitude, swephHouseSystem, dCusps, ascmc);
+		sweph.HousesEx(info.Jd, sweph.SEFLG_SIDEREAL, info.Latitude, info.Longitude, swephHouseSystem, dCusps, ascmc);
 		sweph.releaseLock(this);
 		for (var i = 0; i < 12; i++)
 		{
@@ -1104,8 +1057,6 @@ public class Horoscope : ICloneable
 	{
 		// The stuff here is largely order sensitive
 		// Try to add new definitions to the end
-
-		baseUT = sweph.JulDay(info.tob.year, info.tob.month, info.tob.day, info.tob.time - info.UtcOffset.TotalHours);
 
 		sweph.obtainLock(this);
 		sweph.SetPath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
@@ -1146,7 +1097,7 @@ public class Horoscope : ICloneable
 
 	public double hoursAfterSunrise()
 	{
-		var ret = info.tob.time - sunrise;
+		var ret = info.DateOfBirth.Time ().TotalHours - sunrise;
 		if (ret < 0)
 		{
 			ret += 24.0;
@@ -1160,11 +1111,11 @@ public class Horoscope : ICloneable
 		double ret = 0;
 		if (isDayBirth())
 		{
-			ret = info.tob.time - sunrise;
+			ret = info.DateOfBirth.Time ().TotalHours - sunrise;
 		}
 		else
 		{
-			ret = info.tob.time - sunset;
+			ret = info.DateOfBirth.Time ().TotalHours - sunset;
 		}
 
 		if (ret < 0)
@@ -1177,7 +1128,7 @@ public class Horoscope : ICloneable
 
 	public bool isDayBirth()
 	{
-		if (info.tob.time >= sunrise && info.tob.time < sunset)
+		if (info.DateOfBirth.Time().TotalHours >= sunrise && info.DateOfBirth.Time().TotalHours < sunset)
 		{
 			return true;
 		}
@@ -1199,7 +1150,7 @@ public class Horoscope : ICloneable
 
 	public void addSpecialLagnaPositions()
 	{
-		var diff = info.tob.time - sunrise;
+		var diff = info.DateOfBirth.Time().TotalHours - sunrise;
 		if (diff < 0)
 		{
 			diff += 24.0;
@@ -1209,7 +1160,7 @@ public class Horoscope : ICloneable
 		for (var i = 1; i <= 12; i++)
 		{
 			var specialDiff = diff * (i - 1);
-			var tjd         = baseUT + specialDiff / 24.0;
+			var tjd         = info.Jd + specialDiff / 24.0;
 			var asc         = sweph.Lagna(tjd);
 			var desc        = string.Format("Special Lagna ({0:00})", i);
 			addOtherPosition(desc, new Longitude(asc));

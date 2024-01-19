@@ -71,10 +71,13 @@ public class Jhd : IFileToHoraInfo
 			}
 		}
 
-		var hi = new HoraInfo(m, (double) lat, (double) lon)
+		var hi = new HoraInfo()
 		{
-			City = worldCity,
-			FileType  = HoraInfo.EFileType.JagannathaHora
+			DateOfBirth = m,
+			Latitude    = (double) lat,
+			Longitude   = (double) lon,
+			City        = worldCity,
+			FileType    = HoraInfo.EFileType.JagannathaHora
 		};
 		hi.Name = Path.GetFileNameWithoutExtension(fname);
 		return hi;
@@ -83,8 +86,8 @@ public class Jhd : IFileToHoraInfo
 	public void ToFile(HoraInfo h)
 	{
 		var sw = new StreamWriter(fname, false);
-		writeMomentLine(sw, h.tob);
-		writeHMSInfoLine(sw, h.City.Country.TimeZoneInfo.BaseUtcOffset.TotalHours);
+		writeMomentLine(sw, h.DateOfBirth);
+		writeHMSInfoLine(sw, h.City.Country.TimeZone.TimeZoneInfo.BaseUtcOffset.TotalHours);
 		writeHMSInfoLine(sw, (double) h.Longitude);
 		writeHMSInfoLine(sw, (double) h.Latitude);
 		sw.WriteLine("0.000000");
@@ -160,7 +163,7 @@ public class Jhd : IFileToHoraInfo
 		second = (int) _second;
 	}
 
-	private static Moment readMomentLine(StreamReader sr)
+	private static DateTime readMomentLine(StreamReader sr)
 	{
 		var month = readIntLine(sr);
 		var day   = readIntLine(sr);
@@ -168,7 +171,7 @@ public class Jhd : IFileToHoraInfo
 
 		int hour = 0, minute = 0, second = 0;
 		readHmsLine(sr, ref hour, ref minute, ref second);
-		return new Moment(year, month, day, hour, minute, second);
+		return new DateTime(year, month, day, hour, minute, second);
 	}
 
 	private static string numToString(int _n)
@@ -187,12 +190,12 @@ public class Jhd : IFileToHoraInfo
 		return s;
 	}
 
-	private static void writeMomentLine(StreamWriter sw, Moment m)
+	private static void writeMomentLine(StreamWriter sw, DateTime m)
 	{
-		sw.WriteLine(m.month);
-		sw.WriteLine(m.day);
-		sw.WriteLine(m.year);
+		sw.WriteLine(m.Month);
+		sw.WriteLine(m.Day);
+		sw.WriteLine(m.Year);
 
-		sw.WriteLine(m.hour + "." + numToString(m.minute) + numToString(m.second) + "00");
+		sw.WriteLine(m.Hour + "." + numToString(m.Minute) + numToString(m.Second) + "00");
 	}
 }

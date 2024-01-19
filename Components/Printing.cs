@@ -215,7 +215,7 @@ public class MhoraPrintDocument : PrintDocument
 	{
 		var b      = Brushes.Black;
 		var alDasa = id.Dasa(0);
-		var td     = new ToDate(h.baseUT, 360, 0, h);
+		var td     = new ToDate(h.info.Jd, 360, 0, h);
 
 		var num_entries_per_line = 6;
 		var entry_width          = width / 6;
@@ -336,7 +336,7 @@ public class MhoraPrintDocument : PrintDocument
 	{
 		var b       = Brushes.Black;
 		var al_dasa = vd.Dasa(0);
-		var td      = new ToDate(h.baseUT, 360, 0, h);
+		var td      = new ToDate(h.info.Jd, 360, 0, h);
 		var s       = string.Empty;
 
 		g.ResetTransform();
@@ -528,7 +528,7 @@ public class MhoraPrintDocument : PrintDocument
 		top += width / 2 + pad_height;
 
 		// Birth Details
-		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.wday, h.info.tob, h.info.UtcOffset, h.info.Latitude, h.info.Longitude));
+		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.wday, h.info.DateOfBirth, h.info.DstOffset, h.info.Latitude, h.info.Longitude));
 
 		// Tithis
 		var ltithi = h.getPosition(Body.BodyType.Moon).longitude.sub(h.getPosition(Body.BodyType.Sun).longitude);
