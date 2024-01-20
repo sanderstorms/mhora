@@ -1,4 +1,4 @@
-﻿namespace Mhora.SwissEph;
+﻿namespace Mhora.SwissEph.Helpers;
 
 /// <summary>
 ///     Позиция небесного тела.

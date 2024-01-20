@@ -126,14 +126,14 @@ public class NakshatraPraveshDasa : Dasa, IDasa
 	{
 		if (pdi.level == 2)
 		{
-			var l  = Basics.CalculateBodyLongitude(start.UniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Sun));
+			var l  = h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Sun.SwephBody());
 			var zh = l.toZodiacHouse();
 			return zh.ToString();
 		}
 
 		if (pdi.level == 3)
 		{
-			var l = Basics.CalculateBodyLongitude(start.UniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Moon));
+			var l = h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Moon.SwephBody());
 			var n = l.toNakshatra();
 			return n.ToShortString();
 		}

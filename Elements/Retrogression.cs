@@ -45,8 +45,8 @@ public class Retrogression
 #if DND
 			Longitude cusp_start = new Longitude(0);
 			Longitude cusp_end = new Longitude(0);
-			BodyPosition bp_sun = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(Body.Type.Sun), Body.Type.Sun, BodyType.Type.Other);
-			BodyPosition bp_b = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, BodyType.Type.Other);
+			BodyPosition bp_sun = h.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(Body.Type.Sun), Body.Type.Sun, BodyType.Type.Other);
+			BodyPosition bp_b = h.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, BodyType.Type.Other);
 			Longitude diff = bp_b.longitude.sub(bp_sun.longitude);
 			if (Transit.CircLonLessThan(cusp_start, diff) &&
 				Transit.CircLonLessThan(diff, cusp_end))
@@ -60,19 +60,19 @@ public class Retrogression
 
 	public double FindClosestTransit(double ut, Longitude lonToFind)
 	{
-		var bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
 		while (Transit.CircLonLessThan(bp.longitude, lonToFind))
 		{
 			//mhora.Log.Debug("- {0} {1}", bp.longitude.value, lonToFind.value);
 			ut++;
-			bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+			bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
 		}
 
 		while (Transit.CircLonLessThan(lonToFind, bp.longitude))
 		{
 			//mhora.Log.Debug("+ {0} {1}", bp.longitude.value, lonToFind.value);
 			ut--;
-			bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+			bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
 		}
 
 		return ut;
@@ -101,8 +101,8 @@ public class Retrogression
 
 			ut_next = findNextCuspBackward(ut_start, ref becomesDirect);
 
-			var bp_next = Basics.CalculateSingleBodyPosition(ut_curr, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
-			var bp_curr = Basics.CalculateSingleBodyPosition(ut_next, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+			var bp_next = h.CalculateSingleBodyPosition(ut_curr, b.SwephBody(), b, Body.Type.Other);
+			var bp_curr = h.CalculateSingleBodyPosition(ut_next, b.SwephBody(), b, Body.Type.Other);
 
 			//mhora.Log.Debug ("{0}, {1}, {2}", becomesDirect, bp_curr.longitude, bp_next.longitude);
 
@@ -217,8 +217,8 @@ public class Retrogression
 
 			ut_next = findNextCuspForward(ut_start, ref becomesDirect);
 
-			var bp_curr = Basics.CalculateSingleBodyPosition(ut_curr, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
-			var bp_next = Basics.CalculateSingleBodyPosition(ut_next, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+			var bp_curr = h.CalculateSingleBodyPosition(ut_curr, b.SwephBody(), b, Body.Type.Other);
+			var bp_next = h.CalculateSingleBodyPosition(ut_next, b.SwephBody(), b, Body.Type.Other);
 
 			//mhora.Log.Debug ("{0}, {1}, {2}", becomesDirect, bp_curr.longitude, bp_next.longitude);
 
@@ -246,7 +246,7 @@ public class Retrogression
 
 	public double GetSpeed(double ut)
 	{
-		var bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
 		return bp.speed_longitude;
 	}
 
@@ -254,17 +254,17 @@ public class Retrogression
 	{
 		if (b == Body.BodyType.Lagna)
 		{
-			return new Longitude(sweph.Lagna(ut));
+			return new Longitude(h.Lagna(ut));
 		}
 
-		var bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
 		bForward = bp.speed_longitude >= 0;
 		return bp.longitude;
 	}
 
 	public Longitude GetLon(double ut)
 	{
-		var bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
 		return bp.longitude;
 	}
 
@@ -359,7 +359,7 @@ public class Retrogression
 	public double findNextCuspBackward(double start_ut, ref bool becomesDirect)
 	{
 		var ut_step = 5.0;
-		var bp      = Basics.CalculateSingleBodyPosition(start_ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+		var bp      = h.CalculateSingleBodyPosition(start_ut, b.SwephBody(), b, Body.Type.Other);
 
 		// Body is currently direct
 		if (bp.speed_longitude >= 0)
@@ -374,8 +374,8 @@ public class Retrogression
 				higher_ut = lower_ut - ut_step;
 
 				// Find speeds
-				var bp_l = Basics.CalculateSingleBodyPosition(lower_ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
-				var bp_h = Basics.CalculateSingleBodyPosition(higher_ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+				var bp_l = h.CalculateSingleBodyPosition(lower_ut, b.SwephBody(), b, Body.Type.Other);
+				var bp_h = h.CalculateSingleBodyPosition(higher_ut, b.SwephBody(), b, Body.Type.Other);
 
 				//mhora.Log.Debug ("DChecking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
 				// If first one is retro, we're exactly at the cusp
@@ -408,8 +408,8 @@ public class Retrogression
 				lower_ut  = higher_ut;
 				higher_ut = lower_ut - ut_step;
 				// Find speeds
-				var bp_l = Basics.CalculateSingleBodyPosition(lower_ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
-				var bp_h = Basics.CalculateSingleBodyPosition(higher_ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+				var bp_l = h.CalculateSingleBodyPosition(lower_ut, b.SwephBody(), b, Body.Type.Other);
+				var bp_h = h.CalculateSingleBodyPosition(higher_ut, b.SwephBody(), b, Body.Type.Other);
 
 				//mhora.Log.Debug ("R Checking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
 				if (bp_l.speed_longitude > 0 && bp_h.speed_longitude <= 0)
@@ -433,7 +433,7 @@ public class Retrogression
 	public double findNextCuspForward(double start_ut, ref bool becomesDirect)
 	{
 		var ut_step = 1.0;
-		var bp      = Basics.CalculateSingleBodyPosition(start_ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+		var bp      = h.CalculateSingleBodyPosition(start_ut, b.SwephBody(), b, Body.Type.Other);
 
 		// Body is currently direct
 		if (bp.speed_longitude >= 0)
@@ -448,8 +448,8 @@ public class Retrogression
 				higher_ut = lower_ut + ut_step;
 
 				// Find speeds
-				var bp_l = Basics.CalculateSingleBodyPosition(lower_ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
-				var bp_h = Basics.CalculateSingleBodyPosition(higher_ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+				var bp_l = h.CalculateSingleBodyPosition(lower_ut, b.SwephBody(), b, Body.Type.Other);
+				var bp_h = h.CalculateSingleBodyPosition(higher_ut, b.SwephBody(), b, Body.Type.Other);
 
 				//mhora.Log.Debug ("DChecking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
 				// If first one is retro, we're exactly at the cusp
@@ -480,8 +480,8 @@ public class Retrogression
 				lower_ut  = higher_ut;
 				higher_ut = lower_ut + ut_step;
 				// Find speeds
-				var bp_l = Basics.CalculateSingleBodyPosition(lower_ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
-				var bp_h = Basics.CalculateSingleBodyPosition(higher_ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+				var bp_l = h.CalculateSingleBodyPosition(lower_ut, b.SwephBody(), b, Body.Type.Other);
+				var bp_h = h.CalculateSingleBodyPosition(higher_ut, b.SwephBody(), b, Body.Type.Other);
 
 				//mhora.Log.Debug ("R Checking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
 				if (bp_l.speed_longitude < 0 && bp_h.speed_longitude >= 0)

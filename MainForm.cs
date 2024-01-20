@@ -309,7 +309,7 @@ namespace Mhora
 		private object updateDisplayPreferences(object o)
 		{
 			MhoraGlobalOptions.NotifyDisplayChange();
-			sweph.SetPath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
+			sweph.SetEphePath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
 			return o;
 		}
 
@@ -375,7 +375,7 @@ namespace Mhora
 
 		public object updateCalcPreferences(object o)
 		{
-			sweph.SetPath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
+			sweph.SetEphePath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
 			MhoraGlobalOptions.NotifyCalculationChange();
 			return o;
 		}

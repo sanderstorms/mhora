@@ -26,7 +26,7 @@ public class Transit
 
 	public Longitude LongitudeOfSun(double ut, ref bool bDirRetro)
 	{
-		var bp = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha, h);
+		var bp = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
 		if (bp.speed_longitude >= 0)
 		{
 			bDirRetro = false;
@@ -43,10 +43,10 @@ public class Transit
 	{
 		if (b == Body.BodyType.Lagna)
 		{
-			return new Longitude(sweph.Lagna(ut));
+			return new Longitude(h.Lagna(ut));
 		}
 
-		var bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
+		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
 		if (bp.speed_longitude >= 0)
 		{
 			bDirRetro = false;
@@ -67,8 +67,8 @@ public class Transit
 
 	public Longitude LongitudeOfTithi(double ut)
 	{
-		var bp_sun  = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha, h);
-		var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha, h);
+		var bp_sun  = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
+		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
 		var rel     = bp_moon.longitude.sub(bp_sun.longitude);
 		return rel;
 	}
@@ -81,7 +81,7 @@ public class Transit
 
 	public Longitude LongitudeOfMoon(double ut)
 	{
-		var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha, h);
+		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
 		return bp_moon.longitude.add(0);
 	}
 
@@ -93,8 +93,8 @@ public class Transit
 
 	public Longitude LongitudeOfSunMoonYoga(double ut)
 	{
-		var bp_sun  = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha, h);
-		var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha, h);
+		var bp_sun  = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
+		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
 		var rel     = bp_moon.longitude.add(bp_sun.longitude);
 		return rel;
 	}

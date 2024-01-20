@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Text;
+using Mhora.Elements.Calculation;
 using Mhora.Util;
 
-namespace Mhora.SwissEph;
+namespace Mhora.SwissEph.Helpers;
 
 /// <summary>
 ///     Обертка для вызова функиций swedll64.dll.
@@ -14,7 +15,7 @@ internal class SweApi : IDisposable
 
 	public SweApi()
 	{
-		sweph.SetPath(null);
+		sweph.SetEphePath(null);
 	}
 
 	public void Dispose()
@@ -64,8 +65,9 @@ internal class SweApi : IDisposable
 			0
 		};
 
-		var result = sweph.Rise(tjd, sweph.SE_SUN, sweph.SEFLG_SWIEPH, geopos, pressure, temperature, riseTime, sterr);
+		//var result = sweph.Rise(tjd, sweph.SE_SUN, sweph.SEFLG_SWIEPH, geopos, pressure, temperature, riseTime, sterr);
 
+		var result = 0;
 		if (result == -2)
 		{
 			throw new ArgumentOutOfRangeException(nameof(position), "Не удалось найти время восхода/захода");
@@ -101,12 +103,12 @@ internal class SweApi : IDisposable
 	/// <param name="jday">Юлианский день. UTC.</param>
 	/// <param name="calcFlag">Тип вычислений. По умолчанию <see cref="sweph.SEFLG_EQUATORIAL" />.</param>
 	/// <returns><see cref="BodyPosition" />.</returns>
-	public BodyPosition GetSunPosition(double jday)
+	public BodyPosition GetSunPosition(Horoscope h, double jday)
 	{
 		var sterr    = new StringBuilder();
 		var position = new double[6];
 
-		var result = sweph.CalcUT(jday, sweph.SE_SUN, 0, position, sterr);
+		var result = h.CalcUT(jday, sweph.SE_SUN, 0, position, sterr);
 		if (result == sweph.ERR)
 		{
 			throw new SwedllException(sterr.ToString());

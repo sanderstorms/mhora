@@ -23,6 +23,7 @@ using System.Text;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
+using Mhora.SwissEph.Helpers;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -170,7 +171,7 @@ public static class Basics
 	}
 
 
-	public static Longitude CalculateBodyLongitude(double ut, int ipl)
+	public static Longitude CalculateBodyLongitude(this Horoscope h, double ut, int ipl)
 	{
 		var xx = new double[6]
 		{
@@ -183,7 +184,7 @@ public static class Basics
 		};
 		try
 		{
-			sweph.CalcUT(ut, ipl, 0, xx);
+			h.CalcUT(ut, ipl, 0, xx);
 			return new Longitude(xx[0]);
 		}
 		catch (SwephException exc)
@@ -201,11 +202,11 @@ public static class Basics
 	/// <param name="body">The local application body name</param>
 	/// <param name="type">The local application body type</param>
 	/// <returns>A BodyPosition class</returns>
-	public static Position CalculateSingleBodyPosition(double ut, int ipl, Body.BodyType body, Body.Type type, Horoscope h)
+	public static Position CalculateSingleBodyPosition(this Horoscope h, double ut, int ipl, Body.BodyType body, Body.Type type)
 	{
 		if (body == Body.BodyType.Lagna)
 		{
-			var b = new Position(h, body, type, new Longitude(sweph.Lagna(ut)), 0, 0, 0, 0, 0);
+			var b = new Position(h, body, type, new Longitude(h.Lagna(ut)), 0, 0, 0, 0, 0);
 			return b;
 		}
 
@@ -220,7 +221,7 @@ public static class Basics
 		};
 		try
 		{
-			sweph.CalcUT(ut, ipl, 0, xx);
+			h.CalcUT(ut, ipl, 0, xx);
 
 			var b = new Position(h, body, type, new Longitude(xx[0]), xx[1], xx[2], xx[3], xx[4], xx[5]);
 			return b;
@@ -250,7 +251,7 @@ public static class Basics
 		// The order of the array must reflect the order define in Basics.GrahaIndex
 		var std_grahas = new ArrayList(20);
 
-		sweph.SetPath(ephe_path);
+		sweph.SetEphePath(ephe_path);
 		var julday_ut = h.UniversalTime(hi.DateOfBirth); // (hi.tob - hi.DstOffset).UniversalTime();
 
 		var swephRahuBody = sweph.SE_MEAN_NODE;
@@ -265,21 +266,21 @@ public static class Basics
 			addFlags = sweph.SEFLG_TRUEPOS;
 		}
 
-		std_grahas.Add(CalculateSingleBodyPosition(julday_ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha, h));
-		std_grahas.Add(CalculateSingleBodyPosition(julday_ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha, h));
-		std_grahas.Add(CalculateSingleBodyPosition(julday_ut, sweph.SE_MARS, Body.BodyType.Mars, Body.Type.Graha, h));
-		std_grahas.Add(CalculateSingleBodyPosition(julday_ut, sweph.SE_MERCURY, Body.BodyType.Mercury, Body.Type.Graha, h));
-		std_grahas.Add(CalculateSingleBodyPosition(julday_ut, sweph.SE_JUPITER, Body.BodyType.Jupiter, Body.Type.Graha, h));
-		std_grahas.Add(CalculateSingleBodyPosition(julday_ut, sweph.SE_VENUS, Body.BodyType.Venus, Body.Type.Graha, h));
-		std_grahas.Add(CalculateSingleBodyPosition(julday_ut, sweph.SE_SATURN, Body.BodyType.Saturn, Body.Type.Graha, h));
-		var rahu = CalculateSingleBodyPosition(julday_ut, swephRahuBody, Body.BodyType.Rahu, Body.Type.Graha, h);
+		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha));
+		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha));
+		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_MARS, Body.BodyType.Mars, Body.Type.Graha));
+		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_MERCURY, Body.BodyType.Mercury, Body.Type.Graha));
+		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_JUPITER, Body.BodyType.Jupiter, Body.Type.Graha));
+		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_VENUS, Body.BodyType.Venus, Body.Type.Graha));
+		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_SATURN, Body.BodyType.Saturn, Body.Type.Graha));
+		var rahu = h.CalculateSingleBodyPosition(julday_ut, swephRahuBody, Body.BodyType.Rahu, Body.Type.Graha);
 
-		var ketu = CalculateSingleBodyPosition(julday_ut, swephRahuBody, Body.BodyType.Ketu, Body.Type.Graha, h);
+		var ketu = h.CalculateSingleBodyPosition(julday_ut, swephRahuBody, Body.BodyType.Ketu, Body.Type.Graha);
 		ketu.longitude = rahu.longitude.add(new Longitude(180.0));
 		std_grahas.Add(rahu);
 		std_grahas.Add(ketu);
 
-		var asc = sweph.Lagna(julday_ut);
+		var asc = h.Lagna(julday_ut);
 		std_grahas.Add(new Position(h, Body.BodyType.Lagna, Body.Type.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
 
 		var ista_ghati = normalize_exc(0.0, 24.0, hi.DateOfBirth.Time ().TotalHours - sunrise) * 2.5;

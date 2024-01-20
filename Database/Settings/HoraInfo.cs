@@ -83,7 +83,6 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 	public HoraInfo()
 	{
 		_tob       = DateTime.Now;
-		_lmtOffset = null;
 		_jd        = double.NaN;
 		Longitude  = MhoraGlobalOptions.Instance.Longitude;
 		Latitude   = MhoraGlobalOptions.Instance.Latitude;
@@ -126,9 +125,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		get => _tob;
 		set
 		{
-			_tob       = value;
-			_lmtOffset = null;
-			_jd        = double.NaN;
+			_tob = value;
 		}
 	}
 
@@ -210,22 +207,6 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 	[JsonIgnore]
 	public TimeSpan DstOffset => City.Country.TimeZone.TimeZoneInfo.GetUtcOffset(_tob);
 
-	private Time _lmtOffset = null;
-	[JsonIgnore]
-	public Time LmtOffset
-	{
-		get
-		{
-			if (_lmtOffset == null)
-			{
-				var jd = UtcTob.UniversalTime();
-				_lmtOffset = (GetLmtOffset(jd));
-			}
-			return _lmtOffset;
-		}
-	
-	}
-
 	private double _jd = double.NaN;
 	[JsonIgnore]
 	public double Jd
@@ -240,45 +221,6 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 			return (_jd);
 		}
 	}
-
-	public Time GetLmtOffset(double baseUT)
-	{
-		var geopos = new double[3]
-		{
-			Longitude,
-			Latitude,
-			Altitude
-		};
-		var tret = new double[6]
-		{
-			0,
-			0,
-			0,
-			0,
-			0,
-			0
-		};
-		var midnight_ut = baseUT - _tob.Time ().TotalDays;
-		sweph.Lmt(midnight_ut, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, tret);
-		var lmt_noon_1   = tret[0];
-		var lmt_offset_1 = lmt_noon_1 - (midnight_ut + 12.0 / 24.0);
-		sweph.Lmt(midnight_ut, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, tret);
-		var lmt_noon_2   = tret[0];
-		var lmt_offset_2 = lmt_noon_2 - (midnight_ut + 12.0 / 24.0);
-
-		var ret_lmt_offset = (lmt_offset_1 + lmt_offset_2) / 2.0;
-		//mhora.Log.Debug("LMT: {0}, {1}", lmt_offset_1, lmt_offset_2);
-
-		return ret_lmt_offset;
-#if DND
-			// determine offset from ephemeris time
-			lmt_offset = 0;
-			double tjd_et = baseUT + sweph.swe_deltat(baseUT);
-			System.Text.StringBuilder s = new System.Text.StringBuilder(256);
-			int ret = sweph.swe_time_equ(tjd_et, ref lmt_offset, s);
-#endif
-	}
-
 
 	void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
 	{

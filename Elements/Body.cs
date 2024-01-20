@@ -16,8 +16,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using Mhora.SwissEph;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -162,6 +164,22 @@ public static class Body
 		8,
 		9
 	};
+
+	public static int SwephBody(this BodyType b)
+	{
+		switch (b)
+		{
+			case BodyType.Sun:     return sweph.SE_SUN;
+			case BodyType.Moon:    return sweph.SE_MOON;
+			case BodyType.Mars:    return sweph.SE_MARS;
+			case BodyType.Mercury: return sweph.SE_MERCURY;
+			case BodyType.Jupiter: return sweph.SE_JUPITER;
+			case BodyType.Venus:   return sweph.SE_VENUS;
+			case BodyType.Saturn:  return sweph.SE_SATURN;
+			case BodyType.Lagna:   return sweph.SE_BIT_NO_REFRACTION;
+			default:                    throw new Exception();
+		}
+	}
 
 	public static Longitude ExaltationDegree(this BodyType b)
 	{

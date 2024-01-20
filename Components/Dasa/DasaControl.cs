@@ -221,7 +221,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		min_cycle = max_cycle = 0;
 		var compress          = DasaOptions.Compression == 0.0 ? 0.0 : DasaOptions.Compression / id.paramAyus();
 
-		sweph.obtainLock(h);
 		var a = id.Dasa(0);
 		foreach (DasaEntry de in a)
 		{
@@ -230,7 +229,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			dasaItemList.Items.Add(di);
 		}
 
-		sweph.releaseLock(h);
 		LocateChartEvents();
 	}
 
@@ -715,10 +713,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var h2 = (Horoscope) h.Clone();
 		var di = (DasaItem) dasaItemList.SelectedItems[0];
 
-		sweph.obtainLock(h);
 		var m = td.AddYears(di.entry.startUT);
 		h2.info.DateOfBirth = m;
-		sweph.releaseLock(h);
 
 		var mchild = (MhoraChild) ParentForm;
 		var mcont  = (MainForm) ParentForm.ParentForm;
@@ -737,14 +733,11 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var h2 = (Horoscope) h.Clone();
 		var di = (DasaItem) dasaItemList.SelectedItems[0];
 
-		sweph.obtainLock(h);
 		var m    = td.AddYears(di.entry.startUT);
 		var mEnd = td.AddYears(di.entry.startUT + di.entry.dasaLength);
 
 		var ut_diff = mEnd.ToUniversalTime() - m.ToUniversalTime();
 		h2.info.DateOfBirth = m;
-		sweph.releaseLock(h);
-
 
 		h2.info.defaultYearCompression = 1;
 		h2.info.defaultYearLength      = ut_diff.TotalHours;
@@ -767,9 +760,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var h2 = (Horoscope) h.Clone();
 		var di = (DasaItem) dasaItemList.SelectedItems[0];
 
-		sweph.obtainLock(h);
 		var m = td.AddYears(di.entry.startUT);
-		sweph.releaseLock(h);
 		h2.info.DateOfBirth = m;
 
 		h2.OnChanged();
@@ -802,9 +793,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		}
 
 		var di = (DasaItem) dasaItemList.SelectedItems[0];
-		sweph.obtainLock(h);
 		var m = td.AddYears(di.entry.startUT);
-		sweph.releaseLock(h);
 		Clipboard.SetDataObject(m.ToString(), true);
 	}
 
@@ -850,7 +839,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var a        = id.AntarDasa(di.entry);
 		var compress = DasaOptions.Compression == 0.0 ? 0.0 : DasaOptions.Compression / id.paramAyus();
 
-		sweph.obtainLock(h);
 		foreach (DasaEntry de in a)
 		{
 			var pdi = new DasaItem(de);
@@ -859,7 +847,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			index = index + 1;
 		}
 
-		sweph.releaseLock(h);
 		dasaItemList.EndUpdate();
 		//this.dasaItemList.Items[index-1].Selected = true;
 	}
@@ -904,7 +891,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			a.AddRange(b);
 		}
 
-		sweph.obtainLock(h);
 		foreach (DasaEntry de in a)
 		{
 			var di = new DasaItem(de);
@@ -912,7 +898,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			dasaItemList.Items.Add(di);
 		}
 
-		sweph.releaseLock(h);
 		LocateChartEvents();
 	}
 
@@ -929,7 +914,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		min_cycle--;
 		var a = id.Dasa(min_cycle);
 		var i = 0;
-		sweph.obtainLock(h);
 		foreach (DasaEntry de in a)
 		{
 			var di = new DasaItem(de);
@@ -937,23 +921,18 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			dasaItemList.Items.Insert(i, di);
 			i++;
 		}
-
-		sweph.releaseLock(h);
 	}
 
 	private void mNextCycle_Click(object sender, EventArgs e)
 	{
 		max_cycle++;
 		var a = id.Dasa(max_cycle);
-		sweph.obtainLock(h);
 		foreach (DasaEntry de in a)
 		{
 			var di = new DasaItem(de);
 			di.populateListViewItemMembers(td, id);
 			dasaItemList.Items.Add(di);
 		}
-
-		sweph.releaseLock(h);
 	}
 
 	private void mReset_Click(object sender, EventArgs e)
@@ -1210,7 +1189,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		DasaOptions.YearType = ToDate.DateType.TithiYear;
 		var td_pravesh = new ToDate(h.info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 		var td_tithi   = new ToDate(h.info.Jd, ToDate.DateType.TithiYear, 360.0, 0, h);
-		sweph.obtainLock(h);
 		if (td_tithi.AddYears(1).UniversalTime() + 15.0 < td_pravesh.AddYears(1).UniversalTime())
 		{
 			DasaOptions.YearLength = 390;
@@ -1219,8 +1197,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		{
 			DasaOptions.YearLength = 360;
 		}
-
-		sweph.releaseLock(h);
 		DasaOptions.Compression = 1;
 		SetDasaYearType();
 		Reset();
@@ -1231,7 +1207,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		DasaOptions.YearType = ToDate.DateType.YogaYear;
 		var td_pravesh = new ToDate(h.info.Jd, ToDate.DateType.YogaPraveshYear, 360.0, 0, h);
 		var td_yoga    = new ToDate(h.info.Jd, ToDate.DateType.YogaYear, 324.0, 0, h);
-		sweph.obtainLock(h);
 		var    date_to_surpass = td_pravesh.AddYears(1).UniversalTime() - 5;
 		var    date_current    = td_yoga.AddYears(0).UniversalTime();
 		double months          = 0;
@@ -1242,8 +1217,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			months++;
 			date_current = td_yoga.AddYears(months / 12.0).UniversalTime();
 		}
-
-		sweph.releaseLock(h);
 		DasaOptions.Compression = 1;
 		DasaOptions.YearLength  = (int) months * 27;
 		SetDasaYearType();
@@ -1258,11 +1231,10 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	private void mCompressTithiPraveshaSolar_Click(object sender, EventArgs e)
 	{
 		var td_pravesh = new ToDate(h.info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
-		sweph.obtainLock(h);
 		var ut_start = td_pravesh.AddYears(0).ToUniversalTime();
 		var ut_end   = td_pravesh.AddYears(1).ToUniversalTime();
-		var sp_start = Basics.CalculateSingleBodyPosition(ut_start.Time().TotalHours, sweph.BodyNameToSweph(Body.BodyType.Sun), Body.BodyType.Sun, Body.Type.Graha, h);
-		var sp_end   = Basics.CalculateSingleBodyPosition(ut_end.Time().TotalHours, sweph.BodyNameToSweph(Body.BodyType.Sun), Body.BodyType.Sun, Body.Type.Graha, h);
+		var sp_start = h.CalculateSingleBodyPosition(ut_start.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
+		var sp_end   = h.CalculateSingleBodyPosition(ut_end.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
 		var lDiff    = sp_end.longitude.sub(sp_start.longitude);
 		var diff     = lDiff.value;
 		if (diff < 120.0)
@@ -1272,7 +1244,6 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 		DasaOptions.YearType   = ToDate.DateType.SolarYear;
 		DasaOptions.YearLength = diff;
-		sweph.releaseLock(h);
 		DasaOptions.Compression = 1;
 		Reset();
 	}
@@ -1280,10 +1251,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	private void mCompressedTithiPraveshaFixed_Click(object sender, EventArgs e)
 	{
 		var td_pravesh = new ToDate(h.info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
-		sweph.obtainLock(h);
 		DasaOptions.YearType   = ToDate.DateType.FixedYear;
 		DasaOptions.YearLength = td_pravesh.AddYears(1).UniversalTime() - td_pravesh.AddYears(0).UniversalTime();
-		sweph.releaseLock(h);
 		Reset();
 	}
 
@@ -1323,15 +1292,12 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	{
 		dasaItemList.Items.Clear();
 		var al = ((DasaEntriesWrapper) a).Entries;
-		sweph.obtainLock(h);
 		for (var i = 0; i < al.Length; i++)
 		{
 			var di = new DasaItem(al[i]);
 			di.populateListViewItemMembers(td, id);
 			dasaItemList.Items.Add(di);
 		}
-
-		sweph.releaseLock(h);
 		LocateChartEvents();
 		return a;
 	}
@@ -1368,14 +1334,11 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		}
 
 		dasaItemList.Items.Clear();
-		sweph.obtainLock(h);
 		for (var i = 0; i < am.Length; i++)
 		{
 			am[i].populateListViewItemMembers(td, id);
 			dasaItemList.Items.Add(am[i]);
 		}
-
-		sweph.releaseLock(h);
 	}
 
 	private void mDasaDown_Click(object sender, EventArgs e)
@@ -1425,11 +1388,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		{
 			var di = (DasaItem) dasaItemList.Items[i];
 
-			sweph.obtainLock(h);
 			var m_start = td.AddYears(di.entry.startUT);
 			var m_end   = td.AddYears(di.entry.startUT + di.entry.dasaLength);
-			sweph.releaseLock(h);
-
 
 			var ut_start = h.UniversalTime(m_start);
 			var ut_end   = h.UniversalTime(m_end);

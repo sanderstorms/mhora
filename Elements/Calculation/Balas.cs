@@ -166,8 +166,8 @@ public static class ShadBalas
 			return 60;
 		}
 
-		var    lmt_midnight = h.info.LmtOffset * 24.0;
-		var    lmt_noon     = 12.0 + h.info.LmtOffset * 24.0;
+		var    lmt_midnight = h.lmt_offset * 24.0;
+		var    lmt_noon     = 12.0 + h.lmt_offset * 24.0;
 		double diff         = 0;
 		var    time = h.info.DateOfBirth.Time().TotalHours;
 		if (time > lmt_noon)

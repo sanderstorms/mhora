@@ -316,7 +316,7 @@ public class KeyInfoControl : MhoraControl
 		}
 		{
 			li = new ListViewItem("LMT Offset");
-			var e      = h.info.LmtOffset;
+			var e      = h.lmt_offset;
 			var orig_e = e;
 			e =  e < 0 ? -e : e;
 			e *= 24.0;
@@ -331,12 +331,11 @@ public class KeyInfoControl : MhoraControl
 			}
 
 			var fmt  = string.Format("{0}{1:00}:{2:00}:{3:00.00}", prefix, hour, min, (double) e);
-			var fmt2 = string.Format(" ({0:00.00} minutes)", (double) h.info.LmtOffset * 24.0 * 60.0);
+			var fmt2 = string.Format(" ({0:00.00} minutes)", (double) h.lmt_offset * 24.0 * 60.0);
 			li.SubItems.Add(fmt + fmt2);
 			mList.Items.Add(li);
 		}
 		{
-			sweph.obtainLock(h);
 			li = new ListViewItem("Ayanamsa");
 			var aya      = sweph.GetAyanamsaUT(h.info.Jd);
 			var aya_hour = (int) Math.Floor(aya);
@@ -346,7 +345,6 @@ public class KeyInfoControl : MhoraControl
 			var fmt = string.Format("{0:00}-{1:00}-{2:00.00}", aya_hour, aya_min, aya);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
-			sweph.releaseLock(h);
 		}
 		{
 			li = new ListViewItem("Universal Time");

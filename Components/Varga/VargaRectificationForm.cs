@@ -150,9 +150,7 @@ public class VargaRectificationForm : Form
 			//	dtype, this.utToMoment(ut_lower), this.utToMoment(ut_higher));
 			var ut_curr = ut_lower - 1.0 / (24.0 * 60.0);
 
-			sweph.obtainLock(h);
-			var bp = Basics.CalculateSingleBodyPosition(ut_curr, sweph.BodyNameToSweph(mBody), mBody, Body.Type.Graha, h);
-			sweph.releaseLock(h);
+			var bp = h.CalculateSingleBodyPosition(ut_curr, mBody.SwephBody(), mBody, Body.Type.Graha);
 			//BodyPosition bp = (BodyPosition)h.getPosition(mBody).Clone();
 			//DivisionPosition dp = bp.toDivisionPosition(this.dtypeRasi);
 

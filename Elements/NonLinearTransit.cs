@@ -37,7 +37,7 @@ public class NonLinearTransit
 	public Longitude GetLongitude(double ut, ref bool bForwardDir)
 	{
 		var swephBody = BodyNameToSweph(b);
-		var bp        = Basics.CalculateSingleBodyPosition(ut, swephBody, b, Body.Type.Other, h);
+		var bp        = h.CalculateSingleBodyPosition(ut, swephBody, b, Body.Type.Other);
 		if (bp.speed_longitude >= 0)
 		{
 			bForwardDir = true;

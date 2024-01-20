@@ -1,4 +1,4 @@
-﻿namespace Mhora.SwissEph;
+﻿namespace Mhora.SwissEph.Helpers;
 
 public class HorizontalCoordinates
 {

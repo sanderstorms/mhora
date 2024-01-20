@@ -48,11 +48,9 @@ internal class CuspTransitSearch
 	{
 		var bDiscard = true;
 
-		sweph.obtainLock(h);
 		var t        = new Transit(h, SearchBody);
 		var ut_base  = StartDate.UniversalTime() - h.info.DstOffset.TotalDays;
 		var lon_curr = t.GenericLongitude(ut_base, ref bDiscard);
-		sweph.releaseLock(h);
 
 		double diff = 0;
 		diff = TransitPoint.sub(lon_curr).value;
@@ -63,7 +61,6 @@ internal class CuspTransitSearch
 		}
 
 		var ut_diff_approx = diff / 360.0 * DirectSpeed(SearchBody);
-		sweph.obtainLock(h);
 		double found_ut = 0;
 
 		if (SearchBody == Body.BodyType.Lagna)
@@ -77,7 +74,6 @@ internal class CuspTransitSearch
 
 		FoundLon.value = t.GenericLongitude(found_ut, ref bForward).value;
 		bForward       = true;
-		sweph.releaseLock(h);
 		return found_ut;
 	}
 
@@ -94,8 +90,6 @@ internal class CuspTransitSearch
 			return StartDate.UniversalTime();
 		}
 
-		sweph.obtainLock(h);
-
 		var r = new Retrogression(h, SearchBody);
 
 		var julday_ut = StartDate.UniversalTime() - h.info.DstOffset.TotalDays;
@@ -111,8 +105,6 @@ internal class CuspTransitSearch
 		}
 
 		FoundLon.value = r.GetLon(found_ut, ref bForward).value;
-
-		sweph.releaseLock(h);
 		return found_ut;
 	}
 }

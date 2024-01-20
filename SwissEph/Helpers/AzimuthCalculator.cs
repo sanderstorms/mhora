@@ -1,7 +1,8 @@
 ﻿using System;
+using Mhora.Elements.Calculation;
 using Mhora.Util;
 
-namespace Mhora.SwissEph;
+namespace Mhora.SwissEph.Helpers;
 
 public interface IAzimuthCalculator
 {
@@ -52,9 +53,9 @@ public interface IAzimuthCalculator
 	SunriseSunsetTimeCalcResult CalculateSunriseSunsetTime(DateTime date, GeoPosition position, double pressure, double temperature, int purpose);
 }
 
-public class AzimuthCalculator : IAzimuthCalculator
+public class AzimuthCalculator
 {
-	public AzimuthCalcResult CalculateSunriseSunsetAzimuth(DateTime date, GeoPosition position, double pressure, double temperature, int purpose, double KP)
+	public AzimuthCalcResult CalculateSunriseSunsetAzimuth(Horoscope h, DateTime date, GeoPosition position, double pressure, double temperature, int purpose, double KP)
 	{
 		if (position.Latitude < -90 || position.Latitude > 90 || position.Altitude < 0 || position.Altitude > 50 || position.Longitude < -180 || position.Longitude > 180)
 		{
@@ -95,20 +96,20 @@ public class AzimuthCalculator : IAzimuthCalculator
 			}
 
 			baseLatitude      = left;
-			baseAzimuthResult = GetStandardSunriseSunsetAzimuthAndTime(date, left, purpose); // A_т
+			baseAzimuthResult = GetStandardSunriseSunsetAzimuthAndTime(h, date, left, purpose); // A_т
 
 			// 2 Расчет поправки за широту (∆А_φ)
-			var rAzimuthResult = GetStandardSunriseSunsetAzimuthAndTime(date, right, purpose);
+			var rAzimuthResult = GetStandardSunriseSunsetAzimuthAndTime(h, date, right, purpose);
 			latitudeCorrection = GetLatitudeCorrection(baseAzimuthResult.Coordinates.Azimuth, rAzimuthResult.Coordinates.Azimuth, left, right, position.Latitude);
 		}
 		else
 		{
 			baseLatitude      = position.Latitude;
-			baseAzimuthResult = GetStandardSunriseSunsetAzimuthAndTime(date, baseLatitude, purpose); // A_т
+			baseAzimuthResult = GetStandardSunriseSunsetAzimuthAndTime(h, date, baseLatitude, purpose); // A_т
 		}
 
 		// Расчет поправки за долготу (∆А_λ)
-		var longitudeCorrection = GetLongitudeCorrection(date, baseAzimuthResult.Coordinates.Azimuth, baseLatitude, position.Longitude, purpose);
+		var longitudeCorrection = GetLongitudeCorrection(h, date, baseAzimuthResult.Coordinates.Azimuth, baseLatitude, position.Longitude, purpose);
 
 		// Расчет поправки за высоту (Δh_d)
 		var altitudeCorrection = GetAltitudeCorrection(position.Altitude);
@@ -167,10 +168,10 @@ public class AzimuthCalculator : IAzimuthCalculator
 		return result;
 	}
 
-	public (HorizontalCoordinates Coordinates, double JulDay) GetSunriseSunsetAzimuthAndTime(DateTime date, GeoPosition position, double pressure, double temperature, int purpose)
+	public (HorizontalCoordinates Coordinates, double JulDay) GetSunriseSunsetAzimuthAndTime(Horoscope h, DateTime date, GeoPosition position, double pressure, double temperature, int purpose)
 	{
 		using var sweApi = new SweApi();
-		return GetSunriseSunsetAzimuthAndTimeInternal(date, position, pressure, temperature, purpose, sweApi);
+		return GetSunriseSunsetAzimuthAndTimeInternal(h, date, position, pressure, temperature, purpose, sweApi);
 	}
 
 	/// <summary>
@@ -185,11 +186,11 @@ public class AzimuthCalculator : IAzimuthCalculator
 	///     Одно из значений: <see cref="sweph.SE_CALC_RISE" /> или <see cref="sweph.SE_CALC_SET" />.
 	/// </param>
 	/// <returns>Кординаты и точное время восхода/захода солнца.</returns>
-	public SunriseSunsetTimeCalcResult CalculateSunriseSunsetTime(DateTime date, GeoPosition position, double pressure, double temperature, int purpose)
+	public SunriseSunsetTimeCalcResult CalculateSunriseSunsetTime(Horoscope h, DateTime date, GeoPosition position, double pressure, double temperature, int purpose)
 	{
 		using var sweApi = new SweApi();
 
-		var coord    = GetSunriseSunsetAzimuthAndTimeInternal(date, position, pressure, temperature, purpose, sweApi);
+		var coord    = GetSunriseSunsetAzimuthAndTimeInternal(h, date, position, pressure, temperature, purpose, sweApi);
 		var dT       = GetAltitudeCorrection(position.Altitude) / (15 * Math.Cos(ToRad(position.Latitude)) * Math.Sin(ToRad(coord.Coordinates.Azimuth)));
 		var timeBase = sweApi.JulDayToDateTime(coord.JulDay);
 		var time     = timeBase.AddMinutes(dT);
@@ -203,10 +204,10 @@ public class AzimuthCalculator : IAzimuthCalculator
 		};
 	}
 
-	private (HorizontalCoordinates Coordinates, double JulDay) GetSunriseSunsetAzimuthAndTimeInternal(DateTime date, GeoPosition position, double pressure, double temperature, int purpose, SweApi sweApi)
+	private (HorizontalCoordinates Coordinates, double JulDay) GetSunriseSunsetAzimuthAndTimeInternal(Horoscope h, DateTime date, GeoPosition position, double pressure, double temperature, int purpose, SweApi sweApi)
 	{
 		var jday        = sweApi.SunriseSunsetJulDay(position, pressure, temperature, date);
-		var sunPosition = sweApi.GetSunPosition(jday);
+		var sunPosition = sweApi.GetSunPosition(h, jday);
 		var azimuth     = sweApi.GetHorizontalCoordinates(jday, position, pressure, temperature, sunPosition);
 
 		// Перевод в круговой счет от N
@@ -226,7 +227,7 @@ public class AzimuthCalculator : IAzimuthCalculator
 	/// </param>
 	/// <param name="sweApi"><see cref="SweApi" />.</param>
 	/// <returns>Кординаты и точное время восхода/захода солнца или null если произошла ошибка.</returns>
-	private (HorizontalCoordinates Coordinates, double JulDay) GetStandardSunriseSunsetAzimuthAndTime(DateTime date, double latitude, int purpose)
+	private (HorizontalCoordinates Coordinates, double JulDay) GetStandardSunriseSunsetAzimuthAndTime(Horoscope h, DateTime date, double latitude, int purpose)
 	{
 		var position = new GeoPosition
 		{
@@ -235,7 +236,7 @@ public class AzimuthCalculator : IAzimuthCalculator
 			Altitude  = AstroCatalogue.StandardAltitude
 		};
 
-		return GetSunriseSunsetAzimuthAndTime(date, position, AstroCatalogue.StandardPressure, AstroCatalogue.StandardTemperature, purpose);
+		return GetSunriseSunsetAzimuthAndTime(h, date, position, AstroCatalogue.StandardPressure, AstroCatalogue.StandardTemperature, purpose);
 	}
 
 #region Corrections
@@ -276,17 +277,17 @@ public class AzimuthCalculator : IAzimuthCalculator
 	///     Одно из значений: <see cref="sweph.SE_CALC_RISE" /> или <see cref="sweph.SE_CALC_SET" />.
 	/// </param>
 	/// <returns>Поправку по широте для значения азимута.</returns>
-	private double GetLongitudeCorrection(DateTime date, double azimuth, double latitude, double longitude, int purpose)
+	private double GetLongitudeCorrection(Horoscope h, DateTime date, double azimuth, double latitude, double longitude, int purpose)
 	{
 		if (longitude >= 0)
 		{
-			var result = GetStandardSunriseSunsetAzimuthAndTime(date.AddDays(-1), latitude, purpose);
+			var result = GetStandardSunriseSunsetAzimuthAndTime(h, date.AddDays(-1), latitude, purpose);
 
 			return (azimuth - result.Coordinates.Azimuth) / 360d * longitude;
 		}
 		else
 		{
-			var result = GetStandardSunriseSunsetAzimuthAndTime(date.AddDays(1), latitude, purpose);
+			var result = GetStandardSunriseSunsetAzimuthAndTime(h, date.AddDays(1), latitude, purpose);
 
 			return (result.Coordinates.Azimuth - azimuth) / 360d * longitude;
 		}

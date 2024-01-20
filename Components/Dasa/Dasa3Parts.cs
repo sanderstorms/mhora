@@ -64,10 +64,8 @@ public class Dasa3Parts : Form
 
 	private void populateDescription()
 	{
-		sweph.obtainLock(h);
 		var start = td.AddYears(de.startUT);
 		var end   = td.AddYears(de.startUT + de.DasaLength);
-		sweph.releaseLock(h);
 		var zh = new ZodiacHouse(de.ZHouse);
 		if ((int) de.ZHouse != 0)
 		{
@@ -86,7 +84,6 @@ public class Dasa3Parts : Form
 
 		var partLength = de.DasaLength / 3.0;
 
-		sweph.obtainLock(h);
 		var alParts = new ArrayList();
 		for (var i = 0; i < 4; i++)
 		{
@@ -95,7 +92,6 @@ public class Dasa3Parts : Form
 		}
 
 		var momentParts = (DateTime[]) alParts.ToArray(typeof(DateTime));
-		sweph.releaseLock(h);
 
 		for (var i = 1; i < momentParts.Length; i++)
 		{

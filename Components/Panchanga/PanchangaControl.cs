@@ -398,9 +398,7 @@ public class PanchangaControl : MhoraControl
 		int    year   = 0, month = 0, day = 0;
 		double hour  = 0;
 		Time   sunset = new Time();
-		sweph.obtainLock(h);
 		h.populateSunrisetCacheHelper(ut - 0.5, ref sunrise, ref sunset, ref ut_sr);
-		sweph.releaseLock(h);
 
 		sweph.RevJul(ut_sr, ref year, ref month, ref day, ref hour);
 		var moment_sr = new DateTime(year, month, day).AddHours(hour);
@@ -436,8 +434,7 @@ public class PanchangaControl : MhoraControl
 		if (opts.CalcLagnaCusps)
 		{
 			li = new ListViewItem();
-			sweph.obtainLock(h);
-			var bp_lagna_sr = Basics.CalculateSingleBodyPosition(ut_sr, sweph.BodyNameToSweph(Body.BodyType.Lagna), Body.BodyType.Lagna, Body.Type.Lagna, h);
+			var bp_lagna_sr = h.CalculateSingleBodyPosition(ut_sr, Body.BodyType.Lagna.SwephBody(), Body.BodyType.Lagna, Body.Type.Lagna);
 			var dp_lagna_sr = bp_lagna_sr.toDivisionPosition(new Division(Vargas.DivisionType.Rasi));
 			local.lagna_zh = dp_lagna_sr.zodiac_house.Sign;
 
@@ -451,14 +448,11 @@ public class PanchangaControl : MhoraControl
 				var pmi = new PanchangaMomentInfo(ut_transit, (int) bp_lagna_sr.longitude.toZodiacHouse().Add(i + 1).Sign);
 				local.lagnas_ut.Add(pmi);
 			}
-
-			sweph.releaseLock(h);
 		}
 
 		if (opts.CalcTithiCusps)
 		{
 			var t = new Elements.Transit(h);
-			sweph.obtainLock(h);
 			var tithi_start = t.LongitudeOfTithi(ut_sr).toTithi();
 			var tithi_end   = t.LongitudeOfTithi(ut_sr + 1.0).toTithi();
 
@@ -475,15 +469,12 @@ public class PanchangaControl : MhoraControl
 				globals.tithis_ut.Add(new PanchangaMomentInfo(ut_found, (int) tithi_curr));
 				local.tithi_index_end++;
 			}
-
-			sweph.releaseLock(h);
 		}
 
 
 		if (opts.CalcKaranaCusps)
 		{
 			var t = new Elements.Transit(h);
-			sweph.obtainLock(h);
 			var karana_start = t.LongitudeOfTithi(ut_sr).toKarana();
 			var karana_end   = t.LongitudeOfTithi(ut_sr + 1.0).toKarana();
 
@@ -500,14 +491,11 @@ public class PanchangaControl : MhoraControl
 				globals.karanas_ut.Add(new PanchangaMomentInfo(ut_found, (int) karana_curr));
 				local.karana_index_end++;
 			}
-
-			sweph.releaseLock(h);
 		}
 
 		if (opts.CalcSMYogaCusps)
 		{
 			var t = new Elements.Transit(h);
-			sweph.obtainLock(h);
 			var sm_start = t.LongitudeOfSunMoonYoga(ut_sr).toSunMoonYoga();
 			var sm_end   = t.LongitudeOfSunMoonYoga(ut_sr + 1.0).toSunMoonYoga();
 
@@ -524,8 +512,6 @@ public class PanchangaControl : MhoraControl
 				globals.smyogas_ut.Add(new PanchangaMomentInfo(ut_found, (int) sm_curr.value));
 				local.smyoga_index_end++;
 			}
-
-			sweph.releaseLock(h);
 		}
 
 
@@ -533,7 +519,6 @@ public class PanchangaControl : MhoraControl
 		{
 			var bDiscard = true;
 			var t        = new Elements.Transit(h, Body.BodyType.Moon);
-			sweph.obtainLock(h);
 			var nak_start = t.GenericLongitude(ut_sr, ref bDiscard).toNakshatra();
 			var nak_end   = t.GenericLongitude(ut_sr + 1.0, ref bDiscard).toNakshatra();
 
@@ -552,8 +537,6 @@ public class PanchangaControl : MhoraControl
 				Application.Log.Debug("Found nakshatra {0}", nak_curr);
 				local.nakshatra_index_end++;
 			}
-
-			sweph.releaseLock(h);
 		}
 
 		if (opts.CalcHoraCusps)

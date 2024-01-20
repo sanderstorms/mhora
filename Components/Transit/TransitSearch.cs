@@ -498,7 +498,6 @@ public class TransitSearch : MhoraControl
 		var totalProgression     = GetProgressionDegree();
 		var totalProgressionOrig = totalProgression;
 
-		sweph.obtainLock(h);
 		var r = new Retrogression(h, opts.SearchBody);
 
 		var start_lon = r.GetLon(h.info.Jd);
@@ -521,8 +520,6 @@ public class TransitSearch : MhoraControl
 		//	got_lon.value, got_lon.sub(start_lon.add(totalProgressionOrig)).value
 		//	);
 
-		sweph.releaseLock(h);
-
 		var          m2       = DateTime.MinValue;
 		var          hTransit = utToHoroscope(curr_julday, ref m2);
 		var          fmt      = hTransit.info.DateOfBirth.ToString();
@@ -542,7 +539,6 @@ public class TransitSearch : MhoraControl
 
 		//mhora.Log.Debug ("Expected ut_diff is {0}", ut_diff);
 		var bDummy = true;
-		sweph.obtainLock(h);
 		var t         = new Elements.Transit(h);
 		var lon_start = t.LongitudeOfSun(h.info.Jd, ref bDummy);
 		var lon_prog  = t.LongitudeOfSun(julday_ut, ref bDummy);
@@ -551,8 +547,6 @@ public class TransitSearch : MhoraControl
 
 		var dExpectedLon = ut_diff * 360.0 / 365.2425;
 		var lon_expected = lon_start.add(dExpectedLon);
-		sweph.releaseLock(h);
-
 
 		if (Elements.Transit.CircLonLessThan(lon_expected, lon_prog))
 		{
@@ -597,7 +591,6 @@ public class TransitSearch : MhoraControl
 
 		//mhora.Log.Debug ("Total Progression is {0}", totalProgression);
 		var becomesDirect = false;
-		sweph.obtainLock(h);
 		var    r        = new Retrogression(h, opts.SearchBody);
 		var    curr_ut  = h.info.Jd;
 		double next_ut  = 0;
@@ -636,8 +629,6 @@ public class TransitSearch : MhoraControl
 
 			curr_ut = next_ut + 5.0;
 		}
-
-		sweph.releaseLock(h);
 
 		var          m2       = DateTime.MinValue;
 		var          hTransit = utToHoroscope(found_ut, ref m2);
@@ -678,7 +669,6 @@ public class TransitSearch : MhoraControl
 		}
 
 		var becomesDirect = false;
-		sweph.obtainLock(h);
 		var r         = new Retrogression(h, opts.SearchBody);
 		var julday_ut = h.UniversalTime(opts.StartDate);
 		var found_ut  = julday_ut;
@@ -694,7 +684,6 @@ public class TransitSearch : MhoraControl
 
 		var bForward  = false;
 		var found_lon = r.GetLon(found_ut, ref bForward);
-		sweph.releaseLock(h);
 
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
@@ -970,7 +959,6 @@ public class TransitSearch : MhoraControl
 
 		var becomesDirect = false;
 		var bForward      = false;
-		sweph.obtainLock(h);
 		var r                   = new Retrogression(h, opts.SearchBody);
 		var julday_ut           = h.UniversalTime(opts.StartDate);
 		var found_ut            = julday_ut;
@@ -1011,7 +999,6 @@ public class TransitSearch : MhoraControl
 			}
 		}
 
-		sweph.releaseLock(h);
 		if (opts.Forward)
 		{
 			found_ut += 5.0;
@@ -1080,9 +1067,7 @@ public class TransitSearch : MhoraControl
 	{
 		var julday_ut = h.UniversalTime(opts.StartDate);
 		var tret      = new double[10];
-		sweph.obtainLock(h);
-		sweph.SolEclipseWhenGlob(julday_ut, tret, opts.Forward);
-		sweph.releaseLock(h);
+		h.SolEclipseWhenGlob(julday_ut, tret, opts.Forward);
 		SolarEclipseHelper(tret[2], "Global Solar Eclipse Begins");
 		SolarEclipseHelper(tret[3], "   Global Solar Eclipse Ends");
 		SolarEclipseHelper(tret[4], tret[2], tret[3], "   Global Solar Eclipse Totality Begins");
@@ -1107,9 +1092,7 @@ public class TransitSearch : MhoraControl
 		var julday_ut = h.UniversalTime(opts.StartDate);
 		var tret      = new double[10];
 		var attr      = new double[10];
-		sweph.obtainLock(h);
-		sweph.SolEclipseWhenLoc(h.info, julday_ut, tret, attr, opts.Forward);
-		sweph.releaseLock(h);
+		h.SolEclipseWhenLoc(julday_ut, tret, attr, opts.Forward);
 		SolarEclipseHelper(tret[0], "Local Solar Eclipse Maximum");
 		SolarEclipseHelper(tret[1], tret[0] - 1, tret[0] + 1, "   Local Solar Eclipse 1st Contact");
 		SolarEclipseHelper(tret[2], tret[0] - 1, tret[0] + 1, "   Local Solar Eclipse 2nd Contact");
@@ -1131,9 +1114,7 @@ public class TransitSearch : MhoraControl
 	{
 		var julday_ut = h.UniversalTime(opts.StartDate);
 		var tret      = new double[10];
-		sweph.obtainLock(h);
-		sweph.LunEclipseWhen(julday_ut, tret, opts.Forward);
-		sweph.releaseLock(h);
+		h.LunEclipseWhen(julday_ut, tret, opts.Forward);
 		SolarEclipseHelper(tret[0], "Lunar Eclipse Maximum");
 		SolarEclipseHelper(tret[2], tret[0] - 1, tret[0] + 1, "   Lunar Eclipse Begins");
 		SolarEclipseHelper(tret[3], tret[0] - 1, tret[0] + 1, "   Lunar Eclipse Ends");

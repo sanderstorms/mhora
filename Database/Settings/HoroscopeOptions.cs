@@ -155,13 +155,13 @@ public class HoroscopeOptions : MhoraSerializableOptions, ICloneable, ISerializa
 
 	public HoroscopeOptions()
 	{
-		sunrisePosition   = SunrisePositionType.TrueDiscEdge;
+		sunrisePosition   = SunrisePositionType.TrueDiscCenter;
 		mHoraType         = EHoraType.Lmt;
 		mKalaType         = EHoraType.Sunriset;
 		mBhavaType        = EBhavaType.Start;
 		grahaPositionType = EGrahaPositionType.True;
 		nodeType          = ENodeType.Mean;
-		Ayanamsa          = AyanamsaType.Lahiri;
+		Ayanamsa          = AyanamsaType.TrueCitra;
 		AyanamsaOffset    = new HMSInfo(0, 0, 0, HMSInfo.dir_type.EW);
 		mUserLongitude    = new Longitude(0);
 		MaandiType        = EMaandiType.SaturnBegin;

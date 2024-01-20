@@ -175,18 +175,18 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SwissEph\AstroCatalogue.cs" />
-    <Compile Include="SwissEph\AzimuthCalcResult.cs" />
-    <Compile Include="SwissEph\AzimuthCalculator.cs" />
-    <Compile Include="SwissEph\BodyPosition.cs" />
+    <Compile Include="SwissEph\Helpers\AzimuthCalcResult.cs" />
+    <Compile Include="SwissEph\Helpers\AzimuthCalculator.cs" />
+    <Compile Include="SwissEph\Helpers\BodyPosition.cs" />
+    <Compile Include="SwissEph\SwephDll.cs" />
     <Compile Include="Util\Angle.cs" />
     <Compile Include="Util\CompilerService.cs" />
-    <Compile Include="SwissEph\GeoPosition.cs" />
-    <Compile Include="SwissEph\HorizontalCoordinates.cs" />
-    <Compile Include="SwissEph\JulDay.cs" />
+    <Compile Include="SwissEph\Helpers\GeoPosition.cs" />
+    <Compile Include="SwissEph\Helpers\HorizontalCoordinates.cs" />
     <Compile Include="Util\Range.cs" />
-    <Compile Include="SwissEph\SunriseSunsetTimeCalcResult.cs" />
-    <Compile Include="SwissEph\SweApi.cs" />
-    <Compile Include="SwissEph\SwedllException.cs" />
+    <Compile Include="SwissEph\Helpers\SunriseSunsetTimeCalcResult.cs" />
+    <Compile Include="SwissEph\Helpers\SweApi.cs" />
+    <Compile Include="SwissEph\Helpers\SwedllException.cs" />
     <Compile Include="SwissEph\Sweodef.cs" />
     <Compile Include="Tables\Muhurtas.cs" />
     <Compile Include="Util\Base64Decoder.cs" />
@@ -474,7 +474,7 @@
     <Compile Include="Components\Delegates\ReturnLon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SwissEph\SwephException.cs" />
+    <Compile Include="SwissEph\Helpers\SwephException.cs" />
     <Compile Include="Elements\Dasas\Yearly\TajakaDasa.cs" />
     <Compile Include="Elements\Dasas\Yearly\TattwaDasa.cs" />
     <Compile Include="Elements\Dasas\Nakshatra\TithiAshtottariDasa.cs" />

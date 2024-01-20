@@ -126,15 +126,15 @@ public class YogaPraveshDasa : Dasa, IDasa
 	{
 		if (pdi.level == 2)
 		{
-			var l  = Basics.CalculateBodyLongitude(start.UniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Sun));
+			var l  = h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Sun.SwephBody());
 			var zh = l.toZodiacHouse();
 			return zh.ToString();
 		}
 
 		if (pdi.level == 3)
 		{
-			var lSun  = Basics.CalculateBodyLongitude(start.UniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Sun));
-			var lMoon = Basics.CalculateBodyLongitude(start.UniversalTime(), sweph.BodyNameToSweph(Body.BodyType.Moon));
+			var lSun  = h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Sun.SwephBody());
+			var lMoon = h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Moon.SwephBody());
 			var l     = lMoon.add(lSun);
 
 			// this seems wrong. Why should we need to go to the next yoga here?

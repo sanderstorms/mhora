@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mhora.SwissEph;
+namespace Mhora.SwissEph.Helpers;
 
 public class SwedllException : Exception
 {
