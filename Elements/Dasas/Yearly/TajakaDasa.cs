@@ -78,11 +78,10 @@ public class TajakaDasa : Dasa, IDasa
 			return new ArrayList();
 		}
 
-		ArrayList al;
 		double    start = 0.0, length = 0.0;
 		var       level = 0;
 
-		al     = new ArrayList(12);
+		var al = new ArrayList(12);
 		start  = pdi.StartUT;
 		level  = pdi.Level + 1;
 		length = pdi.DasaLength / 12.0;

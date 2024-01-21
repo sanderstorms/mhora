@@ -44,14 +44,13 @@ public static class TimeUtils
 
 	public static double UtcToJulian(this DateTime dateTime)
 	{
-		double jd;
-		double u, u0, u1, u2;
-		u = dateTime.Year;
+		double u2;
+		double u                  = dateTime.Year;
 		if (dateTime.Month < 3) u -= 1;
-		u0 = u              + 4712.0;
-		u1 = dateTime.Month + 1.0;
-		if (u1 < 4) u1 += 12.0;
-		jd = Math.Floor(u0 * SiderealYear.TotalDays)
+		var u0                    = u              + 4712.0;
+		var u1                    = dateTime.Month + 1.0;
+		if (u1 < 4) u1            += 12.0;
+		var jd = Math.Floor(u0 * SiderealYear.TotalDays)
 			+ Math.Floor(30.6 * u1 + 0.000001)
 			+ dateTime.Day + dateTime.Time().TotalHours / 24.0 - 63.5;
 
@@ -60,16 +59,16 @@ public static class TimeUtils
 
 	public static DateTime UtcDateTime(this double jd)
 	{
-		double u0, u1, u2, u3, u4;
-		u0 = jd + 32082.5;
-		u2   = Math.Floor(u0 + 123.0);
-		u3   = Math.Floor((u2 - 122.2)                   / 365.25);
-		u4   = Math.Floor((u2 - Math.Floor(365.25 * u3)) / 30.6001);
-		var jmon = (int)(u4 - 1.0);
+		double u1;
+		var    u0           = jd + 32082.5;
+		var    u2           = Math.Floor(u0 + 123.0);
+		var    u3           = Math.Floor((u2 - 122.2)                   / 365.25);
+		var    u4           = Math.Floor((u2 - Math.Floor(365.25 * u3)) / 30.6001);
+		var    jmon         = (int)(u4 - 1.0);
 		if (jmon > 12) jmon -= 12;
-		var jday  = (int)(u2 - Math.Floor(SiderealYear.TotalHours * u3) - Math.Floor(30.6001 * u4));
-		var jyear = (int)(u3 + Math.Floor((u4 - 2.0) / 12.0) - 4800);
-		var jut   = (jd      - Math.Floor(jd + 0.5)          + 0.5) * 24.0;
+		var jday            = (int)(u2                                 - Math.Floor(SiderealYear.TotalHours * u3) - Math.Floor(30.6001 * u4));
+		var jyear           = (int)(u3 + Math.Floor((u4 - 2.0) / 12.0) - 4800);
+		var jut             = (jd      - Math.Floor(jd + 0.5)          + 0.5) * 24.0;
 
 		return new DateTime(jyear, jmon, jday).AddHours(jut);
 

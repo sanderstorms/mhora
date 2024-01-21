@@ -435,10 +435,10 @@ public class Horoscope : ICloneable
 		DivisionPosition first, second;
 		for (var j = 1; j <= 12; j++)
 		{
-			var       zlagna                 = CalculateDivisionPosition(GetPosition(Body.BodyType.Lagna), d).ZodiacHouse;
-			var       zh                     = zlagna.Add(j);
-			Body.BodyType bnStronger, bnWeaker = Body.BodyType.Other;
-			bnStronger = zh.Sign.SimpleLordOfZodiacHouse();
+			var           zlagna     = CalculateDivisionPosition(GetPosition(Body.BodyType.Lagna), d).ZodiacHouse;
+			var           zh         = zlagna.Add(j);
+			var bnWeaker   = Body.BodyType.Other;
+			var           bnStronger = zh.Sign.SimpleLordOfZodiacHouse();
 			if (zh.Sign == ZodiacHouse.Rasi.Aqu)
 			{
 				bnStronger = fsColord.StrongerGraha(Body.BodyType.Rahu, Body.BodyType.Saturn, true);
@@ -577,8 +577,8 @@ public class Horoscope : ICloneable
 				this.Set(tret, sweph.SE_SUN, srflag, geopos, 0.0, 0.0, ref tret);
 				sweph.RevJul(tret, ref year, ref month, ref day, ref hour);
 				ss = hour + Info.DstOffset.TotalHours;
-				sr = Basics.NormalizeExc(0.0, 24.0, sr);
-				ss = Basics.NormalizeExc(0.0, 24.0, ss);
+				sr = Basics.NormalizeExc(sr, 0.0, 24.0);
+				ss = Basics.NormalizeExc(ss, 0.0, 24.0);
 				break;
 		}
 	}
@@ -983,7 +983,7 @@ public class Horoscope : ICloneable
 
 		//mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
 
-		var istaGhati = Basics.NormalizeExc(0.0, 24.0, Info.DateOfBirth.Time().TotalHours - Sunrise) * 2.5;
+		var istaGhati = Basics.NormalizeExc(Info.DateOfBirth.Time().TotalHours - Sunrise, 0.0, 24.0) * 2.5;
 		var glLon     = lonBase.Add(new Longitude(istaGhati        * 30.0));
 		var hlLon     = lonBase.Add(new Longitude(istaGhati * 30.0 / 2.5));
 		var blLon     = lonBase.Add(new Longitude(istaGhati * 30.0 / 5.0));
@@ -1135,7 +1135,7 @@ public class Horoscope : ICloneable
 		// Sunrise (depends on lmt)
 		PopulateSunrisetCache();
 		// Basic grahas + Special lagnas (depend on sunrise)
-		PositionList = Basics.CalculateBodyPositions(this, Sunrise);
+		PositionList = this.CalculateBodyPositions(Sunrise);
 		// Srilagna etc
 		CalculateSl();
 		CalculatePranapada();
@@ -1286,26 +1286,23 @@ public class Horoscope : ICloneable
 
 	private Position SahamaHelper(string sahama, Body.BodyType b, Body.BodyType a, Body.BodyType c)
 	{
-		Longitude lonA, lonB, lonC;
-		lonA = GetPosition(a).Longitude;
-		lonB = GetPosition(b).Longitude;
-		lonC = GetPosition(c).Longitude;
+		var lonA = GetPosition(a).Longitude;
+		var       lonB = GetPosition(b).Longitude;
+		var       lonC = GetPosition(c).Longitude;
 		return SahamaHelper(sahama, lonB, lonA, lonC);
 	}
 
 	private Position SahamaHelper(string sahama, Body.BodyType b, Body.BodyType a, Longitude lonC)
 	{
-		Longitude lonA, lonB;
-		lonA = GetPosition(a).Longitude;
-		lonB = GetPosition(b).Longitude;
+		var lonA = GetPosition(a).Longitude;
+		var       lonB = GetPosition(b).Longitude;
 		return SahamaHelper(sahama, lonB, lonA, lonC);
 	}
 
 	private Position SahamaHelper(string sahama, Longitude lonB, Body.BodyType a, Body.BodyType c)
 	{
-		Longitude lonA, lonC;
-		lonA = GetPosition(a).Longitude;
-		lonC = GetPosition(c).Longitude;
+		var lonA = GetPosition(a).Longitude;
+		var       lonC = GetPosition(c).Longitude;
 		return SahamaHelper(sahama, lonB, lonA, lonC);
 	}
 
@@ -1314,8 +1311,7 @@ public class Horoscope : ICloneable
 		// b-a+c
 		var bDay = IsDayBirth();
 
-		Longitude lonR;
-		lonR = lonB.Sub(lonA).Add(lonC);
+		var lonR = lonB.Sub(lonA).Add(lonC);
 		if (lonB.Sub(lonA).Value <= lonC.Sub(lonA).Value)
 		{
 			lonR = lonR.Add(new Longitude(30.0));
@@ -1352,33 +1348,29 @@ public class Horoscope : ICloneable
 
 	private Position SahamaDnHelper(string sahama, Body.BodyType b, Longitude lonA, Body.BodyType c)
 	{
-		Longitude lonB, lonC;
-		lonB = GetPosition(b).Longitude;
-		lonC = GetPosition(c).Longitude;
+		var lonB = GetPosition(b).Longitude;
+		var       lonC = GetPosition(c).Longitude;
 		return SahamaDnHelper(sahama, lonB, lonA, lonC);
 	}
 
 	private Position SahamaDnHelper(string sahama, Longitude lonB, Body.BodyType a, Body.BodyType c)
 	{
-		Longitude lonA, lonC;
-		lonA = GetPosition(a).Longitude;
-		lonC = GetPosition(c).Longitude;
+		var lonA = GetPosition(a).Longitude;
+		var       lonC = GetPosition(c).Longitude;
 		return SahamaDnHelper(sahama, lonB, lonA, lonC);
 	}
 
 	private Position SahamaDnHelper(string sahama, Longitude lonB, Longitude lonA, Body.BodyType c)
 	{
-		Longitude lonC;
-		lonC = GetPosition(c).Longitude;
+		var lonC = GetPosition(c).Longitude;
 		return SahamaDnHelper(sahama, lonB, lonA, lonC);
 	}
 
 	private Position SahamaDnHelper(string sahama, Body.BodyType b, Body.BodyType a, Body.BodyType c)
 	{
-		Longitude lonA, lonB, lonC;
-		lonA = GetPosition(a).Longitude;
-		lonB = GetPosition(b).Longitude;
-		lonC = GetPosition(c).Longitude;
+		var lonA = GetPosition(a).Longitude;
+		var       lonB = GetPosition(b).Longitude;
+		var       lonC = GetPosition(c).Longitude;
 		return SahamaDnHelper(sahama, lonB, lonA, lonC);
 	}
 

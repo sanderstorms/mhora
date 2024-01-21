@@ -103,7 +103,7 @@ public class ShatabdikaDasa : NakshatraDasa, INakshatraDasa
 		};
 		var nak_val  = (int) n;
 		var rev_val  = (int) Nakshatras.Nakshatra.Revati;
-		var diff_val = Basics.NormalizeInc((int) Nakshatras.Nakshatra.Aswini, (int) Nakshatras.Nakshatra.Revati, nak_val - rev_val);
+		var diff_val = Basics.NormalizeInc(nak_val - rev_val, (int) Nakshatras.Nakshatra.Aswini, (int) Nakshatras.Nakshatra.Revati);
 		var diff_off = diff_val % 7;
 		return lords[diff_off];
 	}

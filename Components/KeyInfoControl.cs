@@ -183,9 +183,7 @@ public class KeyInfoControl : MhoraControl
 	{
 		mList.Items.Clear();
 
-		ListViewItem li;
-
-		li = new ListViewItem("Date of Birth");
+		var li = new ListViewItem("Date of Birth");
 		li.SubItems.Add(h.Info.DateOfBirth.ToString());
 		mList.Items.Add(li);
 

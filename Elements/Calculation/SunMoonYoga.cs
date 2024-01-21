@@ -65,18 +65,18 @@ public class SunMoonYoga
 
 	public int normalize()
 	{
-		return Basics.NormalizeInc(1, 27, (int) value);
+		return Basics.NormalizeInc((int) value, 1, 27);
 	}
 
 	public SunMoonYoga add(int i)
 	{
-		var snum = Basics.NormalizeInc(1, 27, (int) value + i - 1);
+		var snum = Basics.NormalizeInc((int) value + i - 1, 1, 27);
 		return new SunMoonYoga((Name) snum);
 	}
 
 	public SunMoonYoga addReverse(int i)
 	{
-		var snum = Basics.NormalizeInc(1, 27, (int) value - i + 1);
+		var snum = Basics.NormalizeInc((int) value - i + 1, 1, 27);
 		return new SunMoonYoga((Name) snum);
 	}
 

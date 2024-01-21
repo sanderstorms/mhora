@@ -373,8 +373,6 @@ public class VargaRectificationForm : Form
 		//int bar_width = this.Width - vname_width*2;
 		var    bar_width = zoomWidth - vname_width * 2;
 		float  x_offset  = 0;
-		string s;
-		SizeF  sz;
 
 		g.Clear(Color.AliceBlue);
 
@@ -385,9 +383,9 @@ public class VargaRectificationForm : Form
 		x_offset = (float) ((h.Info.Jd - ut_lower) / (ut_higher - ut_lower) * bar_width) + vname_width;
 		float y_max = opts.Divisions.Length                                * unit_height + unit_height / 2;
 		g.DrawLine(p_red, x_offset, unit_height / 2, x_offset, y_max);
-		var mNow = utToMoment(h.Info.Jd);
-		s  = mNow.ToTimeString(menuDisplaySeconds.Checked);
-		sz = g.MeasureString(s, f_time);
+		var    mNow = utToMoment(h.Info.Jd);
+		var s    = mNow.ToTimeString(menuDisplaySeconds.Checked);
+		var    sz   = g.MeasureString(s, f_time);
 		g.DrawString(s, f_time, Brushes.DarkRed, x_offset - sz.Width / 2, y_max);
 
 

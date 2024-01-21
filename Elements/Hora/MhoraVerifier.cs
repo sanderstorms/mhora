@@ -70,8 +70,7 @@ public class Base64Encoder
 
 	public char[] GetEncoded()
 	{
-		byte[] source2;
-		source2 = new byte[_length2];
+		var source2 = new byte[_length2];
 		//copy data over insert padding
 		for (var x = 0; x < _length2; x++)
 		{

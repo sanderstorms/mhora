@@ -98,11 +98,10 @@ public class KaranaPraveshDasa : Dasa, IDasa
 			return new ArrayList();
 		}
 
-		ArrayList al;
 		double    start = 0.0, length = 0.0;
 		var       level = 0;
 
-		al    = null;
+		ArrayList al = null;
 		start = pdi.StartUT;
 		level = pdi.Level + 1;
 

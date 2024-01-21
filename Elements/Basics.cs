@@ -33,18 +33,15 @@ namespace Mhora.Elements;
 /// </summary>
 public static class Basics
 {
-
-
-
 	/// <summary>
 	///     Normalize a number between bounds
 	/// </summary>
+	/// <param name="x">The value to be normalized</param>
 	/// <param name="lower">The lower bound of normalization</param>
 	/// <param name="upper">The upper bound of normalization</param>
-	/// <param name="x">The value to be normalized</param>
 	/// <returns>
 	///     The normalized value of x, where lower <= x <= upper </returns>
-	public static int NormalizeInc(int lower, int upper, int x)
+	public static int NormalizeInc(this int x, int lower, int upper)
 	{
 		var size = upper - lower + 1;
 		while (x > upper)
@@ -64,12 +61,12 @@ public static class Basics
 	/// <summary>
 	///     Normalize a number between bounds
 	/// </summary>
+	/// <param name="x">The value to be normalized</param>
 	/// <param name="lower">The lower bound of normalization</param>
 	/// <param name="upper">The upper bound of normalization</param>
-	/// <param name="x">The value to be normalized</param>
 	/// <returns>
 	///     The normalized value of x, where lower = x <= upper </returns>
-	public static double NormalizeExc(double lower, double upper, double x)
+	public static double NormalizeExc(this double x, double lower, double upper)
 	{
 		var size = upper - lower;
 		while (x > upper)
@@ -240,7 +237,7 @@ public static class Basics
 	/// </summary>
 	/// <param name="h">The HoraInfo object</param>
 	/// <returns></returns>
-	public static ArrayList CalculateBodyPositions(Horoscope h, double sunrise)
+	public static ArrayList CalculateBodyPositions(this Horoscope h, double sunrise)
 	{
 		var hi = h.Info;
 		var o  = h.Options;
@@ -283,7 +280,7 @@ public static class Basics
 		var asc = h.Lagna(juldayUt);
 		stdGrahas.Add(new Position(h, Body.BodyType.Lagna, Body.Type.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
 
-		var istaGhati = NormalizeExc(0.0, 24.0, hi.DateOfBirth.Time ().TotalHours - sunrise) * 2.5;
+		var istaGhati = NormalizeExc(hi.DateOfBirth.Time ().TotalHours - sunrise, 0.0, 24.0) * 2.5;
 		var glLon     = ((Position) stdGrahas[0]).Longitude.Add(new Longitude(istaGhati        * 30.0));
 		var hlLon     = ((Position) stdGrahas[0]).Longitude.Add(new Longitude(istaGhati * 30.0 / 2.5));
 		var blLon     = ((Position) stdGrahas[0]).Longitude.Add(new Longitude(istaGhati * 30.0 / 5.0));

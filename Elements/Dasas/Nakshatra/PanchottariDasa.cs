@@ -103,7 +103,7 @@ public class PanchottariDasa : NakshatraDasa, INakshatraDasa
 		};
 		var nak_val  = (int) n;
 		var anu_val  = (int) Nakshatras.Nakshatra.Anuradha;
-		var diff_val = Basics.NormalizeInc((int) Nakshatras.Nakshatra.Aswini, (int) Nakshatras.Nakshatra.Revati, nak_val - anu_val);
+		var diff_val = Basics.NormalizeInc(nak_val - anu_val, (int) Nakshatras.Nakshatra.Aswini, (int) Nakshatras.Nakshatra.Revati);
 		var diff_off = diff_val % 7;
 		return lords[diff_off];
 	}

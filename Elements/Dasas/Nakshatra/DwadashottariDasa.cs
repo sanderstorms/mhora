@@ -105,7 +105,7 @@ public class DwadashottariDasa : NakshatraDasa, INakshatraDasa
 		};
 		var nak_val  = (int) n;
 		var rev_val  = (int) Nakshatras.Nakshatra.Revati;
-		var diff_val = Basics.NormalizeInc((int) Nakshatras.Nakshatra.Aswini, (int) Nakshatras.Nakshatra.Revati, rev_val - nak_val);
+		var diff_val = Basics.NormalizeInc(rev_val - nak_val, (int) Nakshatras.Nakshatra.Aswini, (int) Nakshatras.Nakshatra.Revati);
 		var diff_off = diff_val % 8;
 		return lords[diff_off];
 	}

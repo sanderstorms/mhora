@@ -49,7 +49,7 @@ public abstract class Dasa
 			length--;
 		}
 
-		length = Basics.NormalizeInc(1, 12, length - 1);
+		length = Basics.NormalizeInc(length - 1, 1, 12);
 		return length;
 	}
 
