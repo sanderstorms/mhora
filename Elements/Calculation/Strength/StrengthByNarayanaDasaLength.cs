@@ -16,23 +16,22 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using Mhora.Components.Dasa;
 using Mhora.Elements.Dasas;
 
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has a larger narayana dasa length
-// Stronger graha is in such a rasi
+// Stronger Graha is in such a rasi
 public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
 {
 	public StrengthByNarayanaDasaLength(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
 	{
 	}
 
-	public bool stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		var a = value(m);
-		var b = value(n);
+		var a = Value(m);
+		var b = Value(n);
 		if (a > b)
 		{
 			return true;
@@ -46,10 +45,10 @@ public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStreng
 		throw new EqualStrength();
 	}
 
-	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
-		var a = value(za);
-		var b = value(zb);
+		var a = Value(za);
+		var b = Value(zb);
 		if (a > b)
 		{
 			return true;
@@ -63,16 +62,16 @@ public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStreng
 		throw new EqualStrength();
 	}
 
-	protected int value(ZodiacHouse.Rasi _zh)
+	protected int Value(ZodiacHouse.Rasi zh)
 	{
-		var bl = GetStrengthLord(_zh);
-		var pl = h.getPosition(bl).toDivisionPosition(dtype);
-		return Dasa.NarayanaDasaLength(new ZodiacHouse(_zh), pl);
+		var bl = GetStrengthLord(zh);
+		var pl = H.GetPosition(bl).ToDivisionPosition(Dtype);
+		return Dasa.NarayanaDasaLength(new ZodiacHouse(zh), pl);
 	}
 
-	protected int value(Body.BodyType bm)
+	protected int Value(Body.BodyType bm)
 	{
-		var zm = h.getPosition(bm).toDivisionPosition(dtype).zodiac_house.Sign;
-		return value(zm);
+		var zm = H.GetPosition(bm).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		return Value(zm);
 	}
 }

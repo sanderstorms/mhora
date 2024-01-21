@@ -133,7 +133,7 @@ namespace Mhora
 			}
 
 
-			var info = new Jhd(ofd.FileName).toHoraInfo();
+			var info = new Jhd(ofd.FileName).ToHoraInfo();
 			info.DateOfBirth = mNow;
 
 			var _path_split = ofd.FileName.Split('/', '\\');
@@ -166,11 +166,11 @@ namespace Mhora
 
 			if (sparts[sparts.Length - 1] == "jhd")
 			{
-				info = new Jhd(ofd.FileName).toHoraInfo();
+				info = new Jhd(ofd.FileName).ToHoraInfo();
 			}
 			else
 			{
-				info = new Mhd(ofd.FileName).toHoraInfo();
+				info = new Mhd(ofd.FileName).ToHoraInfo();
 			}
 
 			var _path_split = ofd.FileName.Split('/', '\\');
@@ -243,26 +243,17 @@ namespace Mhora
 			else if (e.Button == toolbarButtonPrint)
 			{
 				var mc = ActiveMdiChild as MhoraChild;
-				if (mc != null)
-				{
-					mc.menuPrint();
-				}
+				mc?.menuPrint();
 			}
 			else if (e.Button == toolbarButtonPreview)
 			{
 				var mc = ActiveMdiChild as MhoraChild;
-				if (mc != null)
-				{
-					mc.menuPrintPreview();
-				}
+				mc?.menuPrintPreview();
 			}
 			else if (e.Button == toolbarButtonDob)
 			{
 				var mc = ActiveMdiChild as MhoraChild;
-				if (mc != null)
-				{
-					mc.menuShowDobOptions();
-				}
+				mc?.menuShowDobOptions();
 			}
 			else if (e.Button == toolbarButtonDisp)
 			{
@@ -328,9 +319,9 @@ namespace Mhora
 
 		private bool checkJhd(string fileName)
 		{
-			var info = new Jhd(fileName).toHoraInfo();
+			var info = new Jhd(fileName).ToHoraInfo();
 			var h = new Horoscope(info, new HoroscopeOptions());
-			if (h.getPosition(Body.BodyType.Ketu).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house.Sign == h.getPosition(Body.BodyType.Lagna).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house.Sign)
+			if (h.GetPosition(Body.BodyType.Ketu).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse.Sign == h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse.Sign)
 			{
 				return true;
 			}

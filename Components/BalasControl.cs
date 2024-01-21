@@ -49,10 +49,7 @@ public class BalasControl : MhoraControl
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);

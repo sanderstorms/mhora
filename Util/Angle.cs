@@ -46,7 +46,7 @@ namespace Mhora.Util
 		/// <param name="degrees">The value of the angle in degrees.</param>
 		public Angle(int degrees)
 		{
-			this.Value = (decimal)degrees;
+			Value = (decimal)degrees;
 		}
 
 		/// <summary>
@@ -56,7 +56,7 @@ namespace Mhora.Util
 		/// <param name="degrees">The value of the angle in degrees.</param>
 		public Angle(decimal degrees)
 		{
-			this.Value = degrees;
+			Value = degrees;
 		}
 
 		/// <summary>
@@ -66,7 +66,7 @@ namespace Mhora.Util
 		/// <param name="degrees">The value of the angle in degrees.</param>
 		public Angle(double degrees)
 		{
-			this.Value = (decimal)degrees;
+			Value = (decimal)degrees;
 		}
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace Mhora.Util
 		/// <param name="arcsecond">The arcsecond value, e.g., 55.8 from the angle 9° 14' 55.8''.</param>
 		public Angle(int degrees, int arcminute, decimal arcsecond)
 		{
-			this.Value = Angle.ToDegrees(degrees, arcminute, arcsecond);
+			Value = ToDegrees(degrees, arcminute, arcsecond);
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ namespace Mhora.Util
 		/// <param name="arcsecond">The arcsecond value, e.g., 55.8 from the angle 9° 14' 55.8''.</param>
 		public Angle(int degrees, int arcminute, double arcsecond)
 		{
-			this.Value = Angle.ToDegrees(degrees, arcminute, (decimal)arcsecond);
+			Value = ToDegrees(degrees, arcminute, (decimal)arcsecond);
 		}
 		#endregion
 
@@ -108,7 +108,7 @@ namespace Mhora.Util
 		{
 			get
 			{
-				return Angle.GetDegrees(this);
+				return GetDegrees(this);
 			}
 		}
 
@@ -121,7 +121,7 @@ namespace Mhora.Util
 		{
 			get
 			{
-				return Angle.GetArcminute(this);
+				return GetArcminute(this);
 			}
 		}
 
@@ -134,7 +134,7 @@ namespace Mhora.Util
 		{
 			get
 			{
-				return Angle.GetArcsecond(this);
+				return GetArcsecond(this);
 			}
 		}
 
@@ -146,7 +146,7 @@ namespace Mhora.Util
 		{
 			get
 			{
-				return Angle.ToRadians(this.Value);
+				return ToRadians(Value);
 			}
 		}
 
@@ -159,7 +159,7 @@ namespace Mhora.Util
 		/// </summary>
 		public decimal RadiansMultiplied(decimal multiplier)
 		{
-			return Angle.ToRadians(this.Value * multiplier);
+			return ToRadians(Value * multiplier);
 		}
 
 		/// <summary>
@@ -171,7 +171,7 @@ namespace Mhora.Util
 		/// </summary>
 		public decimal RadiansDivided(decimal divisor)
 		{
-			return Angle.ToRadians(this.Value / divisor);
+			return ToRadians(Value / divisor);
 		}
 
 		/// <summary>
@@ -183,7 +183,7 @@ namespace Mhora.Util
 		{
 			get
 			{
-				return (this.Degrees * 60M) + this.Arcminute + (this.Arcsecond / 60M);
+				return (Degrees * 60M) + Arcminute + (Arcsecond / 60M);
 			}
 		}
 
@@ -197,7 +197,7 @@ namespace Mhora.Util
 		{
 			get
 			{
-				return (this.Degrees * 3600M) + (this.Arcminute * 60M) + this.Arcsecond;
+				return (Degrees * 3600M) + (Arcminute * 60M) + Arcsecond;
 			}
 		}
 
@@ -206,7 +206,7 @@ namespace Mhora.Util
 		/// </summary>
 		public void Reduce()
 		{
-			this.Value = Angle.Reduce(this).Value;
+			Value = Reduce(this).Value;
 		}
 		#endregion
 
@@ -224,7 +224,7 @@ namespace Mhora.Util
 			if (obj is Angle)
 			{
 				Angle compare = obj as Angle;
-				returnValue = this.Value.Equals(compare.Value);
+				returnValue = Value.Equals(compare.Value);
 			}
 
 			return returnValue;
@@ -236,7 +236,7 @@ namespace Mhora.Util
 		/// <returns>A 32-bit signed integer hash code.</returns>
 		public override int GetHashCode()
 		{
-			return this.Value.GetHashCode();
+			return Value.GetHashCode();
 		}
 		#endregion
 
@@ -496,7 +496,7 @@ namespace Mhora.Util
 			//
 			// Ensure all parameters are the same sing
 			//
-			Angle.NormalDirection(ref degrees, ref arcminute, ref arcsecond);
+			NormalDirection(ref degrees, ref arcminute, ref arcsecond);
 
 			//
 			// 15 degrees per hour
@@ -551,7 +551,7 @@ namespace Mhora.Util
 		{
 			Angle returnValue = new Angle();
 
-			returnValue = new Angle(Angle.ToDegrees(radians));
+			returnValue = new Angle(ToDegrees(radians));
 
 			return returnValue;
 		}
@@ -638,7 +638,7 @@ namespace Mhora.Util
 		/// <returns>A representation of the given Angle in degrees where the value is between 0 and 360.</returns>
 		public static Angle Reduce(Angle angle)
 		{
-			Angle returnValue = Angle.Empty;
+			Angle returnValue = Empty;
 
 			returnValue = new Angle((decimal)angle - (Math.Floor((decimal)angle / 360.0M) * 360.0M));
 
@@ -653,9 +653,9 @@ namespace Mhora.Util
 		/// <returns>An instance of System.Angle instantiated with the parsed value.</returns>
 		public static Angle Parse(string s)
 		{
-			Angle returnValue = Angle.Empty;
+			Angle returnValue = Empty;
 
-			if (!Angle.TryParse(s, out returnValue))
+			if (!TryParse(s, out returnValue))
 			{
 				throw new FormatException();
 			}
@@ -735,7 +735,7 @@ namespace Mhora.Util
 		/// <returns>The string representation of the value of this instance.</returns>
 		public override string ToString()
 		{
-			return this.ToShortFormat();
+			return ToShortFormat();
 		}
 
 		/// <summary>
@@ -746,7 +746,7 @@ namespace Mhora.Util
 		/// <returns>The short format string representation of the value of this instance.</returns>
 		public string ToShortFormat()
 		{
-			return this.Value.ToString("0°.0000####", CultureInfo.InvariantCulture);
+			return Value.ToString("0°.0000####", CultureInfo.InvariantCulture);
 		}
 
 		/// <summary>
@@ -756,7 +756,7 @@ namespace Mhora.Util
 		/// <returns>The long format string representation of the value of this instance.</returns>
 		public string ToLongFormat()
 		{
-			return $"{this.Degrees:0}°{Math.Abs(this.Arcminute):0}´{Math.Abs(this.Arcsecond):0}´´";
+			return $"{Degrees:0}°{Math.Abs(Arcminute):0}´{Math.Abs(Arcsecond):0}´´";
 		}
 		#endregion
 
@@ -778,7 +778,7 @@ namespace Mhora.Util
 
 			if (obj is Angle)
 			{
-				returnValue = this.Value.CompareTo(((Angle)obj).Value);
+				returnValue = Value.CompareTo(((Angle)obj).Value);
 			}
 
 			return returnValue;
@@ -799,11 +799,11 @@ namespace Mhora.Util
 
 			if (formatProvider != null)
 			{
-				returnValue = this.Value.ToString(format, formatProvider);
+				returnValue = Value.ToString(format, formatProvider);
 			}
 			else
 			{
-				returnValue = this.Value.ToString(format);
+				returnValue = Value.ToString(format);
 			}
 
 			return returnValue;
@@ -828,7 +828,7 @@ namespace Mhora.Util
 
 			if (((object)other) != null)
 			{
-				returnValue = this.Value.CompareTo(other.Value);
+				returnValue = Value.CompareTo(other.Value);
 			}
 			return returnValue;
 		}
@@ -847,7 +847,7 @@ namespace Mhora.Util
 
 			if (other != null)
 			{
-				returnValue = this.Value.Equals(other.Value);
+				returnValue = Value.Equals(other.Value);
 			}
 
 			return returnValue;

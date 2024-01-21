@@ -30,7 +30,6 @@ using Mhora.Elements.Calculation;
 using Mhora.Elements.Dasas.Nakshatra;
 using Mhora.Elements.Hora;
 using Mhora.Tables;
-using Newtonsoft.Json;
 
 namespace Mhora.Components;
 
@@ -92,10 +91,7 @@ public class MhoraChild : Form
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -394,7 +390,7 @@ public class MhoraChild : Form
 
 	public void menuShowDobOptions()
 	{
-		using (var birthDetails = new BirthDetailsDialog(h.info))
+		using (var birthDetails = new BirthDetailsDialog(h.Info))
 		{
 			if (birthDetails.ShowDialog() == DialogResult.OK)
 			{
@@ -420,13 +416,13 @@ public class MhoraChild : Form
 
 		try
 		{
-			if (h.info.FileType == HoraInfo.EFileType.JagannathaHora)
+			if (h.Info.FileType == HoraInfo.EFileType.JagannathaHora)
 			{
-				new Jhd(mJhdFileName).ToFile(h.info);
+				new Jhd(mJhdFileName).ToFile(h.Info);
 			}
 			else
 			{
-				new Mhd(mJhdFileName).ToFile(h.info);
+				new Mhd(mJhdFileName).ToFile(h.Info);
 			}
 		}
 		catch (ArgumentNullException)
@@ -460,12 +456,12 @@ public class MhoraChild : Form
 		{
 			if (sparts[sparts.Length - 1] == "jhd")
 			{
-				h.info.FileType = HoraInfo.EFileType.JagannathaHora;
-				new Jhd(ofd.FileName).ToFile(h.info);
+				h.Info.FileType = HoraInfo.EFileType.JagannathaHora;
+				new Jhd(ofd.FileName).ToFile(h.Info);
 			}
 			else
 			{
-				h.info.Export (ofd.FileName);
+				h.Info.Export (ofd.FileName);
 			}
 
 			mJhdFileName = ofd.FileName;
@@ -629,34 +625,34 @@ public class MhoraChild : Form
 	public object SetCalcOptions(object o)
 	{
 		var ho = (HoroscopeOptions) o;
-		h.options.Copy(ho);
+		h.Options.Copy(ho);
 		h.OnChanged();
-		return h.options.Clone();
+		return h.Options.Clone();
 	}
 
 	public object SetStrengthOptions(object o)
 	{
 		var so = (StrengthOptions) o;
-		h.strength_options.Copy(so);
+		h.StrengthOptions.Copy(so);
 		h.OnChanged();
-		return h.strength_options.Clone();
+		return h.StrengthOptions.Clone();
 	}
 
 	private void menuCalcOpts_Click(object sender, EventArgs e)
 	{
-		var f = new MhoraOptions(h.options, SetCalcOptions);
+		var f = new MhoraOptions(h.Options, SetCalcOptions);
 		f.ShowDialog();
 	}
 
 
 	private void menuStrengthOpts_Click(object sender, EventArgs e)
 	{
-		if (h.strength_options == null)
+		if (h.StrengthOptions == null)
 		{
-			h.strength_options = (StrengthOptions) MhoraGlobalOptions.Instance.SOptions.Clone();
+			h.StrengthOptions = (StrengthOptions) MhoraGlobalOptions.Instance.SOptions.Clone();
 		}
 
-		var f = new MhoraOptions(h.strength_options, SetStrengthOptions);
+		var f = new MhoraOptions(h.StrengthOptions, SetStrengthOptions);
 		f.ShowDialog();
 	}
 
@@ -735,14 +731,14 @@ public class MhoraChild : Form
 
 	public object OnCalcOptsChanged(object o)
 	{
-		h.options.Copy((HoroscopeOptions) o);
+		h.Options.Copy((HoroscopeOptions) o);
 		h.OnChanged();
-		return h.options.Clone();
+		return h.Options.Clone();
 	}
 
 	private void menuEditCalcOpts_Click(object sender, EventArgs e)
 	{
-		new MhoraOptions(h.options, OnCalcOptsChanged).ShowDialog();
+		new MhoraOptions(h.Options, OnCalcOptsChanged).ShowDialog();
 	}
 
 	public void menuPrint()

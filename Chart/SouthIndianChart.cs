@@ -25,31 +25,31 @@ namespace Mhora.Chart;
 
 public class SouthIndianChart : IDrawChart
 {
-	private const int xw = 200;
-	private const int yw = 200;
-	private const int xo = 0;
-	private const int yo = 0;
+	private const int Xw = 200;
+	private const int Yw = 200;
+	private const int Xo = 0;
+	private const int Yo = 0;
 
-	private const    int hxs  = 200;
-	private const    int hys  = 125;
-	private const    int hsys = 75;
-	private readonly Pen pn_black;
+	private const    int Hxs  = 200;
+	private const    int Hys  = 125;
+	private const    int Hsys = 75;
+	private readonly Pen _pnBlack;
 
 	public SouthIndianChart()
 	{
-		pn_black = new Pen(Color.Black, (float) 0.1);
+		_pnBlack = new Pen(Color.Black, (float) 0.1);
 	}
 
 	public bool SeparateGrahaHandling => false;
 
 	public Point GetInnerSquareOffset()
 	{
-		return new Point(xw / 4, yw / 4);
+		return new Point(Xw / 4, Yw / 4);
 	}
 
 	public int GetLength()
 	{
-		return xw;
+		return Xw;
 	}
 
 	public Point GetBodyTextPosition(Longitude l, Size itemSize)
@@ -59,10 +59,10 @@ public class SouthIndianChart : IDrawChart
 
 	public Point GetBodyPosition(Longitude l)
 	{
-		var zh      = l.toZodiacHouse().Sign;
-		var dOffset = l.toZodiacHouseOffset();
-		var iOff    = (int) (dOffset / 30.0 * (xw / 4));
-		var pBase   = GetZhouseOffset(l.toZodiacHouse());
+		var zh      = l.ToZodiacHouse().Sign;
+		var dOffset = l.ToZodiacHouseOffset();
+		var iOff    = (int) (dOffset / 30.0 * (Xw / 4));
+		var pBase   = GetZhouseOffset(l.ToZodiacHouse());
 		switch (zh)
 		{
 			case ZodiacHouse.Rasi.Ari:
@@ -73,19 +73,19 @@ public class SouthIndianChart : IDrawChart
 			case ZodiacHouse.Rasi.Can:
 			case ZodiacHouse.Rasi.Leo:
 			case ZodiacHouse.Rasi.Vir:
-				pBase.X += xw / 4;
+				pBase.X += Xw / 4;
 				pBase.Y += iOff;
 				break;
 			case ZodiacHouse.Rasi.Lib:
 			case ZodiacHouse.Rasi.Sco:
 			case ZodiacHouse.Rasi.Sag:
-				pBase.X += xw / 4 - iOff;
-				pBase.Y += xw / 4;
+				pBase.X += Xw / 4 - iOff;
+				pBase.Y += Xw / 4;
 				break;
 			case ZodiacHouse.Rasi.Cap:
 			case ZodiacHouse.Rasi.Aqu:
 			case ZodiacHouse.Rasi.Pis:
-				pBase.Y += xw / 4 - iOff;
+				pBase.Y += Xw / 4 - iOff;
 				break;
 		}
 
@@ -95,18 +95,18 @@ public class SouthIndianChart : IDrawChart
 
 	public void DrawOutline(Graphics g)
 	{
-		g.DrawLine(pn_black, xo, yo + 0, xo              + 0, yo  + yw);
-		g.DrawLine(pn_black, xo, yo + 0, xo              + xw, yo + 0);
-		g.DrawLine(pn_black, xo     + xw, yo             + yw, xo + 0, yo  + yw);
-		g.DrawLine(pn_black, xo     + xw, yo             + yw, xo + xw, yo + 0);
-		g.DrawLine(pn_black, xo, yo + yw     / 4, xo     + xw, yo + yw     / 4);
-		g.DrawLine(pn_black, xo, yo + yw * 3 / 4, xo     + xw, yo + yw * 3 / 4);
-		g.DrawLine(pn_black, xo     + xw     / 4, yo, xo + xw              / 4, yo + yw);
-		g.DrawLine(pn_black, xo     + xw * 3 / 4, yo, xo + xw * 3          / 4, yo + yw);
-		g.DrawLine(pn_black, xo     + xw     / 2, yo, xo + xw              / 2, yo + yw          / 4);
-		g.DrawLine(pn_black, xo     + xw     / 2, yo     + yw * 3          / 4, xo + xw          / 2, yo + yw);
-		g.DrawLine(pn_black, xo, yo + yw     / 2, xo     + xw              / 4, yo + yw          / 2);
-		g.DrawLine(pn_black, xo     + xw * 3 / 4, yo     + yw              / 2, xo + xw, yo + yw / 2);
+		g.DrawLine(_pnBlack, Xo, Yo + 0, Xo              + 0, Yo  + Yw);
+		g.DrawLine(_pnBlack, Xo, Yo + 0, Xo              + Xw, Yo + 0);
+		g.DrawLine(_pnBlack, Xo     + Xw, Yo             + Yw, Xo + 0, Yo  + Yw);
+		g.DrawLine(_pnBlack, Xo     + Xw, Yo             + Yw, Xo + Xw, Yo + 0);
+		g.DrawLine(_pnBlack, Xo, Yo + Yw     / 4, Xo     + Xw, Yo + Yw     / 4);
+		g.DrawLine(_pnBlack, Xo, Yo + Yw * 3 / 4, Xo     + Xw, Yo + Yw * 3 / 4);
+		g.DrawLine(_pnBlack, Xo     + Xw     / 4, Yo, Xo + Xw              / 4, Yo + Yw);
+		g.DrawLine(_pnBlack, Xo     + Xw * 3 / 4, Yo, Xo + Xw * 3          / 4, Yo + Yw);
+		g.DrawLine(_pnBlack, Xo     + Xw     / 2, Yo, Xo + Xw              / 2, Yo + Yw          / 4);
+		g.DrawLine(_pnBlack, Xo     + Xw     / 2, Yo     + Yw * 3          / 4, Xo + Xw          / 2, Yo + Yw);
+		g.DrawLine(_pnBlack, Xo, Yo + Yw     / 2, Xo     + Xw              / 4, Yo + Yw          / 2);
+		g.DrawLine(_pnBlack, Xo     + Xw * 3 / 4, Yo     + Yw              / 2, Xo + Xw, Yo + Yw / 2);
 	}
 
 	public Point GetSingleItemOffset(ZodiacHouse zh, Size itemSize)
@@ -137,7 +137,7 @@ public class SouthIndianChart : IDrawChart
 			return new Point(0, 0);
 		}
 
-		var item_map = new int[7]
+		var itemMap = new int[7]
 		{
 			0,
 			6,
@@ -147,15 +147,15 @@ public class SouthIndianChart : IDrawChart
 			2,
 			1
 		};
-		n = item_map[n - 1];
+		n = itemMap[n - 1];
 
-		var xiw = hxs  / 4;
-		var yiw = hsys / 6;
+		var xiw = Hxs  / 4;
+		var yiw = Hsys / 6;
 
 		var row = (int) Math.Floor(n / (double) 3);
 		var col = n - row * 3;
 
-		return new Point(xiw * row / 3, hys / 4 + yiw * col / 3);
+		return new Point(xiw * row / 3, Hys / 4 + yiw * col / 3);
 	}
 
 	private Point GetZhouseItemOffset(int n)
@@ -166,7 +166,7 @@ public class SouthIndianChart : IDrawChart
 			return GetSmallZhouseItemOffset(n - 10 + 1);
 		}
 
-		var item_map = new int[10]
+		var itemMap = new int[10]
 		{
 			0,
 			5,
@@ -179,10 +179,10 @@ public class SouthIndianChart : IDrawChart
 			6,
 			8
 		};
-		n = item_map[n] - 1;
+		n = itemMap[n] - 1;
 
-		var xiw = hxs / 4;
-		var yiw = hys / 4;
+		var xiw = Hxs / 4;
+		var yiw = Hys / 4;
 
 		var col = (int) Math.Floor(n / (double) 3);
 		var row = n - col * 3;
@@ -194,18 +194,18 @@ public class SouthIndianChart : IDrawChart
 	{
 		switch ((int) zh.Sign)
 		{
-			case 1:  return new Point(xo + xw     / 4, yo + 0);
-			case 2:  return new Point(xo + xw * 2 / 4, yo + 0);
-			case 3:  return new Point(xo + xw * 3 / 4, yo + 0);
-			case 4:  return new Point(xo + xw * 3 / 4, yo + yw     / 4);
-			case 5:  return new Point(xo + xw * 3 / 4, yo + yw * 2 / 4);
-			case 6:  return new Point(xo + xw * 3 / 4, yo + yw * 3 / 4);
-			case 7:  return new Point(xo + xw * 2 / 4, yo + yw * 3 / 4);
-			case 8:  return new Point(xo + xw     / 4, yo + yw * 3 / 4);
-			case 9:  return new Point(xo + 0, yo          + yw * 3 / 4);
-			case 10: return new Point(xo + 0, yo          + yw * 2 / 4);
-			case 11: return new Point(xo + 0, yo          + yw * 1 / 4);
-			case 12: return new Point(xo + 0, yo);
+			case 1:  return new Point(Xo + Xw     / 4, Yo + 0);
+			case 2:  return new Point(Xo + Xw * 2 / 4, Yo + 0);
+			case 3:  return new Point(Xo + Xw * 3 / 4, Yo + 0);
+			case 4:  return new Point(Xo + Xw * 3 / 4, Yo + Yw     / 4);
+			case 5:  return new Point(Xo + Xw * 3 / 4, Yo + Yw * 2 / 4);
+			case 6:  return new Point(Xo + Xw * 3 / 4, Yo + Yw * 3 / 4);
+			case 7:  return new Point(Xo + Xw * 2 / 4, Yo + Yw * 3 / 4);
+			case 8:  return new Point(Xo + Xw     / 4, Yo + Yw * 3 / 4);
+			case 9:  return new Point(Xo + 0, Yo          + Yw * 3 / 4);
+			case 10: return new Point(Xo + 0, Yo          + Yw * 2 / 4);
+			case 11: return new Point(Xo + 0, Yo          + Yw * 1 / 4);
+			case 12: return new Point(Xo + 0, Yo);
 		}
 
 		return new Point(0, 0);

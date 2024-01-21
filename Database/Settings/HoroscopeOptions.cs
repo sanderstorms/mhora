@@ -21,7 +21,6 @@ using System.ComponentModel;
 using System.Runtime.Serialization;
 using Mhora.Components.Property;
 using Mhora.Elements;
-using Mhora.Elements.Hora;
 using Mhora.Util;
 
 namespace Mhora.Database.Settings;
@@ -299,7 +298,7 @@ public class HoroscopeOptions : MhoraSerializableOptions, ICloneable, ISerializa
 		o.HoraType          = HoraType;
 		o.KalaType          = KalaType;
 		o.BhavaType         = BhavaType;
-		o.mUserLongitude    = mUserLongitude.add(0);
+		o.mUserLongitude    = mUserLongitude.Add(0);
 		o.MaandiType        = MaandiType;
 		o.GulikaType        = GulikaType;
 		o.UpagrahaType      = UpagrahaType;
@@ -322,7 +321,7 @@ public class HoroscopeOptions : MhoraSerializableOptions, ICloneable, ISerializa
 		HoraType          = o.HoraType;
 		KalaType          = o.KalaType;
 		BhavaType         = o.BhavaType;
-		mUserLongitude    = o.mUserLongitude.add(0);
+		mUserLongitude    = o.mUserLongitude.Add(0);
 		MaandiType        = o.MaandiType;
 		GulikaType        = o.GulikaType;
 		UpagrahaType      = o.UpagrahaType;

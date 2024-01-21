@@ -17,7 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
@@ -37,12 +36,12 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 		options = new RasiDasaUserOptions(h, FindStronger.RulesNarayanaDasaRasi(h));
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 		options.recalculate();
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 144;
 	}
@@ -84,7 +83,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 			}
 
 			var    lord        = h.LordOfZodiacHouse(zh, m_dtype);
-			var    dp_lord     = h.getPosition(lord).toDivisionPosition(m_dtype);
+			var    dp_lord     = h.GetPosition(lord).ToDivisionPosition(m_dtype);
 			double dasa_length = NarayanaDasaLength(zh, dp_lord);
 			var    de          = new DasaEntry(zh.Sign, dasa_length_sum, dasa_length, 1, zh.Sign.ToString());
 			al.Add(de);
@@ -94,8 +93,8 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 		for (var i = 0; i < 12; i++)
 		{
 			var de_first    = (DasaEntry) al[i];
-			var dasa_length = 12.0 - de_first.dasaLength;
-			var de          = new DasaEntry(de_first.zodiacHouse, dasa_length_sum, dasa_length, 1, de_first.shortDesc);
+			var dasa_length = 12.0 - de_first.DasaLength;
+			var de          = new DasaEntry(de_first.ZHouse, dasa_length_sum, dasa_length, 1, de_first.DasaName);
 			dasa_length_sum += dasa_length;
 			al.Add(de);
 		}

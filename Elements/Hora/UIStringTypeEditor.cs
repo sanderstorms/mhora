@@ -24,13 +24,13 @@ using Mhora.Components;
 
 namespace Mhora.Elements.Hora;
 
-public class UIStringTypeEditor : UITypeEditor
+public class UiStringTypeEditor : UITypeEditor
 {
-	private IWindowsFormsEditorService edSvc;
+	private IWindowsFormsEditorService _edSvc;
 
 	public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
 	{
-		edSvc = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
+		_edSvc = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
 		var stringInit = string.Empty;
 		if (value is string)
 		{
@@ -39,7 +39,7 @@ public class UIStringTypeEditor : UITypeEditor
 
 		var le = new LongStringEditor(stringInit);
 		le.TitleText = "Event Description";
-		edSvc.ShowDialog(le);
+		_edSvc.ShowDialog(le);
 		return le.EditorText;
 	}
 

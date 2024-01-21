@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
 
@@ -35,12 +34,12 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 		options = new RasiDasaUserOptions(h, FindStronger.RulesNarayanaDasaRasi(h));
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 96;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 		options.recalculate();
 	}
@@ -72,10 +71,10 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 			dasa_length_sum += dasa_length;
 		}
 
-		var cycle_length = cycle * paramAyus();
+		var cycle_length = cycle * ParamAyus();
 		foreach (DasaEntry di in al)
 		{
-			di.startUT += cycle_length;
+			di.StartUT += cycle_length;
 		}
 
 		return al;

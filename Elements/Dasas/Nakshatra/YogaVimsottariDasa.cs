@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Components.Delegates;
 using Mhora.Elements.Calculation;
 
@@ -49,18 +48,15 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 	public override object SetOptions(object a)
 	{
 		options = (UserOptions) options.SetOptions(a);
-		if (RecalculateEvent != null)
-		{
-			RecalculateEvent();
-		}
+		RecalculateEvent?.Invoke();
 
 		return options.Clone();
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
-		var t = new Elements.Transit(h);
-		var l = t.LongitudeOfSunMoonYoga(h.info.Jd);
+		var t = new Transit(h);
+		var l = t.LongitudeOfSunMoonYoga(h.Info.Jd);
 		return _YogaDasa(l, 1, cycle);
 	}
 
@@ -74,27 +70,27 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 		return "Yoga Vimsottari Dasa";
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
-		return vd.paramAyus();
+		return vd.ParamAyus();
 	}
 
-	public int numberOfDasaItems()
+	public int NumberOfDasaItems()
 	{
-		return vd.numberOfDasaItems();
+		return vd.NumberOfDasaItems();
 	}
 
-	public DasaEntry nextDasaLord(DasaEntry di)
+	public DasaEntry NextDasaLord(DasaEntry di)
 	{
-		return vd.nextDasaLord(di);
+		return vd.NextDasaLord(di);
 	}
 
-	public double lengthOfDasa(Body.BodyType plt)
+	public double LengthOfDasa(Body.BodyType plt)
 	{
-		return vd.lengthOfDasa(plt);
+		return vd.LengthOfDasa(plt);
 	}
 
-	public Body.BodyType lordOfNakshatra(Nakshatras.Nakshatra n)
+	public Body.BodyType LordOfNakshatra(Nakshatras.Nakshatra n)
 	{
 		throw new Exception();
 		return Body.BodyType.Lagna;
@@ -102,7 +98,7 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 
 	public Body.BodyType lordOfYoga(Longitude l)
 	{
-		return l.toSunMoonYoga().getLord();
+		return l.ToSunMoonYoga().getLord();
 	}
 
 	public class UserOptions : ICloneable

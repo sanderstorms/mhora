@@ -21,7 +21,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using Mhora.Components.Converter;
 using Mhora.Elements.Calculation;
-using Mhora.Tables;
 using mhora.Util;
 
 namespace Mhora.Elements;
@@ -30,7 +29,7 @@ namespace Mhora.Elements;
 [TypeConverter(typeof(LongitudeConverter))]
 public class Longitude
 {
-	private double m_lon;
+	private double _lon;
 
 	public Longitude(double lon)
 	{
@@ -44,137 +43,137 @@ public class Longitude
 			lon += 360.0;
 		}
 
-		m_lon = lon;
-		//m_lon = Basics.normalize_exc (0, 360, lon);
+		_lon = lon;
+		//m_lon = Basics.NormalizeExc (0, 360, lon);
 	}
 
-	public double value
+	public double Value
 	{
-		get => m_lon;
+		get => _lon;
 		set
 		{
 			Trace.Assert(value >= 0 && value <= 360);
-			m_lon = value;
+			_lon = value;
 		}
 	}
 
-	public Longitude add(Longitude b)
+	public Longitude Add(Longitude b)
 	{
-		return new Longitude(Basics.normalize_exc_lower(0, 360, value + b.value));
+		return new Longitude(Basics.NormalizeExcLower(Value + b.Value, 0, 360));
 	}
 
-	public Longitude add(double b)
+	public Longitude Add(double b)
 	{
-		return add(new Longitude(b));
+		return Add(new Longitude(b));
 	}
 
-	public Longitude sub(Longitude b)
+	public Longitude Sub(Longitude b)
 	{
-		return new Longitude(Basics.normalize_exc_lower(0, 360, value - b.value));
+		return new Longitude(Basics.NormalizeExcLower(Value - b.Value, 0, 360));
 	}
 
-	public Longitude sub(double b)
+	public Longitude Sub(double b)
 	{
-		return sub(new Longitude(b));
+		return Sub(new Longitude(b));
 	}
 
-	public double normalize()
+	public double Normalize()
 	{
-		return Basics.normalize_exc_lower(0, 360, value);
+		return Value.NormalizeExcLower(0, 360);
 	}
 
-	public bool isBetween(Longitude cusp_lower, Longitude cusp_higher)
+	public bool IsBetween(Longitude cuspLower, Longitude cuspHigher)
 	{
-		var diff1 = sub(cusp_lower).value;
-		var diff2 = sub(cusp_higher).value;
+		var diff1 = Sub(cuspLower).Value;
+		var diff2 = Sub(cuspHigher).Value;
 
-		var bRet = cusp_higher.sub(cusp_lower).value <= 180 && diff1 <= diff2;
+		var bRet = cuspHigher.Sub(cuspLower).Value <= 180 && diff1 <= diff2;
 
-		Application.Log.Debug("Is it true that {0} < {1} < {2}? {3}", this, cusp_lower, cusp_higher, bRet);
+		Application.Log.Debug("Is it true that {0} < {1} < {2}? {3}", this, cuspLower, cuspHigher, bRet);
 		return bRet;
 	}
 
-	public SunMoonYoga toSunMoonYoga()
+	public SunMoonYoga ToSunMoonYoga()
 	{
-		var smIndex = (int) (Math.Floor(value / (360.0 / 27.0)) + 1);
+		var smIndex = (int) (Math.Floor(Value / (360.0 / 27.0)) + 1);
 		var smYoga  = new SunMoonYoga((SunMoonYoga.Name) smIndex);
 		return smYoga;
 	}
 
-	public double toSunMoonYogaBase()
+	public double ToSunMoonYogaBase()
 	{
-		var num  = (int) toSunMoonYoga().value;
+		var num  = (int) ToSunMoonYoga().value;
 		var cusp = (num - 1) * (360.0 / 27.0);
 		return cusp;
 	}
 
-	public double toSunMoonYogaOffset()
+	public double ToSunMoonYogaOffset()
 	{
-		return value - toSunMoonYogaBase();
+		return Value - ToSunMoonYogaBase();
 	}
 
-	public Tithis.Tithi toTithi()
+	public Tithis.Tithi ToTithi()
 	{
-		var tIndex = (int) (Math.Floor(value / (360.0 / 30.0)) + 1);
+		var tIndex = (int) (Math.Floor(Value / (360.0 / 30.0)) + 1);
 		var t      = tIndex.ToTithi();
 		return t;
 	}
 
-	public Karanas.Karana toKarana()
+	public Karanas.Karana ToKarana()
 	{
-		var kIndex = (int) (Math.Floor(value / (360.0 / 60.0)) + 1);
+		var kIndex = (int) (Math.Floor(Value / (360.0 / 60.0)) + 1);
 		var k      = (Karanas.Karana) kIndex;
 		return k;
 	}
 
-	public double toKaranaBase()
+	public double ToKaranaBase()
 	{
-		var num  = (int) toKarana();
+		var num  = (int) ToKarana();
 		var cusp = (num - 1) * (360.0 / 60.0);
 		return cusp;
 	}
 
-	public double toKaranaOffset()
+	public double ToKaranaOffset()
 	{
-		return value - toKaranaBase();
+		return Value - ToKaranaBase();
 	}
 
-	public double toTithiBase()
+	public double ToTithiBase()
 	{
-		var num  = toTithi().Index();
+		var num  = ToTithi().Index();
 		var cusp = (num - 1) * (360.0 / 30.0);
 		return cusp;
 	}
 
-	public double toTithiOffset()
+	public double ToTithiOffset()
 	{
-		return value - toTithiBase();
+		return Value - ToTithiBase();
 	}
 
-	public Nakshatras.Nakshatra toNakshatra()
+	public Nakshatras.Nakshatra ToNakshatra()
 	{
-		var snum = (int) (Math.Floor(value / (360.0 / 27.0)) + 1.0);
+		var snum = (int) (Math.Floor(Value / (360.0 / 27.0)) + 1.0);
 		return (Nakshatras.Nakshatra) snum;
 	}
 
-	public double toNakshatraBase()
+	public double ToNakshatraBase()
 	{
-		var num  = toNakshatra().Index();
+		var num  = ToNakshatra().Index();
 		var cusp = (num - 1) * (360.0 / 27.0);
 		return cusp;
 	}
 
-	public Nakshatras.Nakshatra28 toNakshatra28()
+	public Nakshatras.Nakshatra28 ToNakshatra28()
 	{
-		var snum = (int) (Math.Floor(value / (360.0 / 27.0)) + 1.0);
+		var snum = (int) (Math.Floor(Value / (360.0 / 27.0)) + 1.0);
 
 		var ret = (Nakshatras.Nakshatra28) snum;
 		if (snum >= (int) Nakshatras.Nakshatra28.Abhijit)
 		{
-			ret = ret.add(2);
+			ret = ret.Add(2);
 		}
 
-		if (value >= 270 + (6.0 + 40.0 / 60.0) && value <= 270 + (10.0 + 53.0 / 60.0 + 20.0 / 3600.0))
+		if (Value >= 270 + (6.0 + 40.0 / 60.0) && Value <= 270 + (10.0 + 53.0 / 60.0 + 20.0 / 3600.0))
 		{
 			ret = Nakshatras.Nakshatra28.Abhijit;
 		}
@@ -182,80 +181,80 @@ public class Longitude
 		return ret;
 	}
 
-	public ZodiacHouse toZodiacHouse()
+	public ZodiacHouse ToZodiacHouse()
 	{
-		var znum = (int) (Math.Floor(value / 30.0) + 1.0);
+		var znum = (int) (Math.Floor(Value / 30.0) + 1.0);
 		return new ZodiacHouse((ZodiacHouse.Rasi) znum);
 	}
 
-	public double toZodiacHouseBase()
+	public double ToZodiacHouseBase()
 	{
-		var znum = toZodiacHouse().Sign.Index ();
+		var znum = ToZodiacHouse().Sign.Index ();
 		var cusp = (znum - 1) * 30.0;
 		return cusp;
 	}
 
-	public double toZodiacHouseOffset()
+	public double ToZodiacHouseOffset()
 	{
-		var znum = toZodiacHouse().Sign.Index ();
+		var znum = ToZodiacHouse().Sign.Index ();
 		var cusp = (znum - 1) * 30.0;
-		var ret  = value - cusp;
+		var ret  = Value - cusp;
 		Trace.Assert(ret >= 0.0 && ret <= 30.0);
 		return ret;
 	}
 
-	public double percentageOfZodiacHouse()
+	public double PercentageOfZodiacHouse()
 	{
-		var offset = toZodiacHouseOffset();
+		var offset = ToZodiacHouseOffset();
 		var perc   = offset / 30.0 * 100;
 		Trace.Assert(perc >= 0 && perc <= 100);
 		return perc;
 	}
 
-	public double toNakshatraOffset()
+	public double ToNakshatraOffset()
 	{
-		var znum = toNakshatra().Index();
+		var znum = ToNakshatra().Index();
 		var cusp = (znum - 1) * (360.0 / 27.0);
-		var ret  = value - cusp;
+		var ret  = Value - cusp;
 		Trace.Assert(ret >= 0.0 && ret <= 360.0 / 27.0);
 		return ret;
 	}
 
-	public double percentageOfNakshatra()
+	public double PercentageOfNakshatra()
 	{
-		var offset = toNakshatraOffset();
+		var offset = ToNakshatraOffset();
 		var perc   = offset / (360.0 / 27.0) * 100;
 		Trace.Assert(perc >= 0 && perc <= 100);
 		return perc;
 	}
 
-	public int toNakshatraPada()
+	public int ToNakshatraPada()
 	{
-		var offset = toNakshatraOffset();
+		var offset = ToNakshatraOffset();
 		var val    = (int) Math.Floor(offset / (360.0 / (27.0 * 4.0))) + 1;
 		Trace.Assert(val >= 1 && val <= 4);
 		return val;
 	}
 
-	public int toAbsoluteNakshatraPada()
+	public int ToAbsoluteNakshatraPada()
 	{
-		var n = toNakshatra().Index();
-		var p = toNakshatraPada();
+		var n = ToNakshatra().Index();
+		var p = ToNakshatraPada();
 		return (n - 1) * 4 + p;
 	}
 
-	public double toNakshatraPadaOffset()
+	public double ToNakshatraPadaOffset()
 	{
-		var pnum = toAbsoluteNakshatraPada();
+		var pnum = ToAbsoluteNakshatraPada();
 		var cusp = (pnum - 1) * (360.0 / (27.0 * 4.0));
-		var ret  = value - cusp;
+		var ret  = Value - cusp;
 		Trace.Assert(ret >= 0.0 && ret <= 360.0 / 27.0);
 		return ret;
 	}
 
-	public double toNakshatraPadaPercentage()
+	public double ToNakshatraPadaPercentage()
 	{
-		var offset = toNakshatraPadaOffset();
+		var offset = ToNakshatraPadaOffset();
 		var perc   = offset / (360.0 / (27.0 * 4.0)) * 100;
 		Trace.Assert(perc >= 0 && perc <= 100);
 		return perc;
@@ -264,8 +263,8 @@ public class Longitude
 	public override string ToString()
 	{
 		var lon     = this;
-		var rasi    = lon.toZodiacHouse().Sign.ToString();
-		var offset  = lon.toZodiacHouseOffset();
+		var rasi    = lon.ToZodiacHouse().Sign.ToString();
+		var offset  = lon.ToZodiacHouseOffset();
 		var minutes = Math.Floor(offset);
 		offset = (offset - minutes) * 60.0;
 		var seconds = Math.Floor(offset);

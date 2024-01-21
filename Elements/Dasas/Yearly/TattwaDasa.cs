@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Components.Property;
 using Mhora.Elements.Calculation;
 
@@ -33,12 +32,12 @@ public class TattwaDasa : Dasa, IDasa
 		h = _h;
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 1.0 / 24.0 / 60.0;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
@@ -46,8 +45,8 @@ public class TattwaDasa : Dasa, IDasa
 	{
 		var al = new ArrayList();
 
-		var day_length = h.next_sunrise + 24.0 - h.sunrise;
-		var day_sr     = Math.Floor(h.info.Jd)  + h.sunrise / 24.0;
+		var day_length = h.NextSunrise + 24.0 - h.Sunrise;
+		var day_sr     = Math.Floor(h.Info.Jd)  + h.Sunrise / 24.0;
 
 		return al;
 	}

@@ -20,18 +20,18 @@ using Mhora.Tables;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has a graha which has traversed larger longitude
-// Stronger graha has traversed larger longitude in its house
+// Stronger rasi has a Graha which has traversed larger longitude
+// Stronger Graha has traversed larger longitude in its house
 public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 {
 	public StrengthByLongitude(Horoscope h, Division dtype) : base(h, dtype, true)
 	{
 	}
 
-	public bool stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		var lonm = karakaLongitude(m);
-		var lonn = karakaLongitude(n);
+		var lonm = KarakaLongitude(m);
+		var lonn = KarakaLongitude(n);
 		if (lonm > lonn)
 		{
 			return true;
@@ -45,7 +45,7 @@ public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		Body.BodyType[] karakaBodies =
 		{
@@ -62,13 +62,13 @@ public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 		double lona = 0.0, lonb = 0.0;
 		foreach (var bn in karakaBodies)
 		{
-			var div    = h.getPosition(bn).toDivisionPosition(new Division(Vargas.DivisionType.Rasi));
-			var offset = karakaLongitude(bn);
-			if (div.zodiac_house.Sign == za && offset > lona)
+			var div    = H.GetPosition(bn).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi));
+			var offset = KarakaLongitude(bn);
+			if (div.ZodiacHouse.Sign == za && offset > lona)
 			{
 				lona = offset;
 			}
-			else if (div.zodiac_house.Sign == zb && offset > lonb)
+			else if (div.ZodiacHouse.Sign == zb && offset > lonb)
 			{
 				lonb = offset;
 			}

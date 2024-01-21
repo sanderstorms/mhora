@@ -20,7 +20,6 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.Drawing.Printing;
-using Mhora.Components.Dasa;
 using Mhora.Components.Varga;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
@@ -175,12 +174,12 @@ public class MhoraPrintDocument : PrintDocument
 		var b = Brushes.Black;
 		g.ResetTransform();
 		g.TranslateTransform(left, top);
-		g.DrawString(bp.name.ToString(), f, b, 0, 0);
-		g.DrawString(bp.longitude.ToString(), f_fix, b, width / 6, 0);
+		g.DrawString(bp.Name.ToString(), f, b, 0, 0);
+		g.DrawString(bp.Longitude.ToString(), f_fix, b, width / 6, 0);
 
 		var s        = string.Empty;
-		var nak      = bp.longitude.toNakshatra();
-		var nak_pada = bp.longitude.toNakshatraPada();
+		var nak      = bp.Longitude.ToNakshatra();
+		var nak_pada = bp.Longitude.ToNakshatraPada();
 		s = string.Format("{0} {1}", nak.ToShortString(), nak_pada);
 		g.DrawString(s, f, b, (float) (width / 6 * 2.5), 0);
 
@@ -201,11 +200,11 @@ public class MhoraPrintDocument : PrintDocument
 		string s;
 		if (bGraha)
 		{
-			s = string.Format("{0} {1}", deAntar.graha.ToShortString(), td.AddYears(deAntar.startUT).ToDateString());
+			s = string.Format("{0} {1}", deAntar.Graha.ToShortString(), td.AddYears(deAntar.StartUT).ToDateString());
 		}
 		else
 		{
-			s = string.Format("{0} {1}", ZodiacHouse.ToShortString(deAntar.zodiacHouse), td.AddYears(deAntar.startUT).ToDateString());
+			s = string.Format("{0} {1}", ZodiacHouse.ToShortString(deAntar.ZHouse), td.AddYears(deAntar.StartUT).ToDateString());
 		}
 
 		return s;
@@ -215,7 +214,7 @@ public class MhoraPrintDocument : PrintDocument
 	{
 		var b      = Brushes.Black;
 		var alDasa = id.Dasa(0);
-		var td     = new ToDate(h.info.Jd, 360, 0, h);
+		var td     = new ToDate(h.Info.Jd, 360, 0, h);
 
 		var num_entries_per_line = 6;
 		var entry_width          = width / 6;
@@ -232,11 +231,11 @@ public class MhoraPrintDocument : PrintDocument
 			var s = string.Empty;
 			if (bGraha)
 			{
-				s = de.graha.ToString();
+				s = de.Graha.ToString();
 			}
 			else
 			{
-				s = de.zodiacHouse.ToString();
+				s = de.ZHouse.ToString();
 			}
 
 			g.DrawString(s, f, b, 0, 0);
@@ -328,15 +327,15 @@ public class MhoraPrintDocument : PrintDocument
 
 	private string GetVimAntarString(ToDate td, DasaEntry de)
 	{
-		var mStart = td.AddYears(de.startUT);
-		return string.Format("{0} {1}", de.graha.ToShortString(), mStart.ToDateString());
+		var mStart = td.AddYears(de.StartUT);
+		return string.Format("{0} {1}", de.Graha.ToShortString(), mStart.ToDateString());
 	}
 
 	private void PrintVimDasa(VimsottariDasa vd)
 	{
 		var b       = Brushes.Black;
 		var al_dasa = vd.Dasa(0);
-		var td      = new ToDate(h.info.Jd, 360, 0, h);
+		var td      = new ToDate(h.Info.Jd, 360, 0, h);
 		var s       = string.Empty;
 
 		g.ResetTransform();
@@ -350,7 +349,7 @@ public class MhoraPrintDocument : PrintDocument
 			g.ResetTransform();
 			g.TranslateTransform(left, top);
 			var mStart = td.AddYears(de.StartUT);
-			g.DrawString(de.graha.Name(), f, b, 0, 0);
+			g.DrawString(de.Graha.Name(), f, b, 0, 0);
 			//s = string.Format("{0} ", mStart.ToDateString());
 			//g.DrawString(s, f_fix, b, width / 6, 0);
 
@@ -528,34 +527,34 @@ public class MhoraPrintDocument : PrintDocument
 		top += width / 2 + pad_height;
 
 		// Birth Details
-		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.wday, h.info.DateOfBirth, h.info.DstOffset, h.info.Latitude, h.info.Longitude));
+		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.Wday, h.Info.DateOfBirth, h.Info.DstOffset, h.Info.Latitude, h.Info.Longitude));
 
 		// Tithis
-		var ltithi = h.getPosition(Body.BodyType.Moon).longitude.sub(h.getPosition(Body.BodyType.Sun).longitude);
-		var offset = 360.0 / 30.0 - ltithi.toTithiOffset();
-		var ti     = ltithi.toTithi();
+		var ltithi = h.GetPosition(Body.BodyType.Moon).Longitude.Sub(h.GetPosition(Body.BodyType.Sun).Longitude);
+		var offset = 360.0 / 30.0 - ltithi.ToTithiOffset();
+		var ti     = ltithi.ToTithi();
 		PrintString(string.Format("Tithis: {0} {1:N}% left", ti.GetEnumDescription(), offset / 12.0 * 100));
 
 		// Nakshatra
-		var lmoon = h.getPosition(Body.BodyType.Moon).longitude;
-		var nmoon = lmoon.toNakshatra();
-		offset = 360.0 / 27.0 - lmoon.toNakshatraOffset();
-		var pada = lmoon.toNakshatraPada();
+		var lmoon = h.GetPosition(Body.BodyType.Moon).Longitude;
+		var nmoon = lmoon.ToNakshatra();
+		offset = 360.0 / 27.0 - lmoon.ToNakshatraOffset();
+		var pada = lmoon.ToNakshatraPada();
 		PrintString(string.Format("Nakshatra: {0} {1}  {2:N}% left", nmoon.Name(), pada, offset / (360.0 / 27.0) * 100));
 
 		// Yoga, Hora
-		var smLon  = h.getPosition(Body.BodyType.Sun).longitude.add(h.getPosition(Body.BodyType.Moon).longitude);
-		var smYoga = smLon.toSunMoonYoga();
-		var bHora  = h.calculateHora();
+		var smLon  = h.GetPosition(Body.BodyType.Sun).Longitude.Add(h.GetPosition(Body.BodyType.Moon).Longitude);
+		var smYoga = smLon.ToSunMoonYoga();
+		var bHora  = h.CalculateHora();
 		PrintString(string.Format("{0} Yoga, {1} Hora", smYoga.value, bHora));
 
 
 		top += pad_height;
 
 		// Calculation Details
-		foreach (Position bp in h.positionList)
+		foreach (Position bp in h.PositionList)
 		{
-			switch (bp.type)
+			switch (bp.Type)
 			{
 				case Body.Type.Graha:
 				case Body.Type.Lagna:

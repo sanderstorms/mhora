@@ -20,7 +20,7 @@ namespace Mhora.Elements.Ghataka;
 
 public class GhatakaStar
 {
-	public static bool checkStar(ZodiacHouse janmaRasi, Nakshatras.Nakshatra nak)
+	public static bool CheckStar(ZodiacHouse janmaRasi, Nakshatras.Nakshatra nak)
 	{
 		var ja = janmaRasi.Sign;
 		var gh = Nakshatras.Nakshatra.Aswini;

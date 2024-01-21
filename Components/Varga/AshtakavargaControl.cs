@@ -137,10 +137,7 @@ public class AshtakavargaControl : MhoraControl
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -293,7 +290,7 @@ public class AshtakavargaControl : MhoraControl
 			g.Clear(BackColor);
 		}
 
-		var        lagna  = h.getPosition(Body.BodyType.Lagna).longitude.toZodiacHouse();
+		var        lagna  = h.GetPosition(Body.BodyType.Lagna).Longitude.ToZodiacHouse();
 		var        offset = 5;
 		var        size   = Math.Min(bmpBuffer.Width, bmpBuffer.Height) / 3 - 10;
 		IDrawChart dc     = null;
@@ -327,21 +324,21 @@ public class AshtakavargaControl : MhoraControl
 
 		if (userOptions.SavType == ESavType.Normal)
 		{
-			bins[0] = av.getSav();
+			bins[0] = av.GetSav();
 		}
 		else
 		{
-			bins[0] = av.getSavRao();
+			bins[0] = av.GetSavRao();
 		}
 
-		bins[1] = av.getPav(Body.BodyType.Lagna);
-		bins[2] = av.getPav(Body.BodyType.Sun);
-		bins[3] = av.getPav(Body.BodyType.Moon);
-		bins[4] = av.getPav(Body.BodyType.Mars);
-		bins[5] = av.getPav(Body.BodyType.Mercury);
-		bins[6] = av.getPav(Body.BodyType.Jupiter);
-		bins[7] = av.getPav(Body.BodyType.Venus);
-		bins[8] = av.getPav(Body.BodyType.Saturn);
+		bins[1] = av.GetPav(Body.BodyType.Lagna);
+		bins[2] = av.GetPav(Body.BodyType.Sun);
+		bins[3] = av.GetPav(Body.BodyType.Moon);
+		bins[4] = av.GetPav(Body.BodyType.Mars);
+		bins[5] = av.GetPav(Body.BodyType.Mercury);
+		bins[6] = av.GetPav(Body.BodyType.Jupiter);
+		bins[7] = av.GetPav(Body.BodyType.Venus);
+		bins[8] = av.GetPav(Body.BodyType.Saturn);
 
 		var strs = new string[9];
 		strs[0] = "SAV";
@@ -375,7 +372,7 @@ public class AshtakavargaControl : MhoraControl
 				for (var z = 0; z < 12; z++)
 				{
 					var f  = fBig;
-					var zh = (int) h.getPosition(bin_body[off]).toDivisionPosition(userOptions.VargaType).zodiac_house.Sign;
+					var zh = (int) h.GetPosition(bin_body[off]).ToDivisionPosition(userOptions.VargaType).ZodiacHouse.Sign;
 					if (z == zh - 1)
 					{
 						f = fBigBold;
@@ -402,10 +399,7 @@ public class AshtakavargaControl : MhoraControl
 
 	private Image DrawToBuffer()
 	{
-		if (bmpBuffer != null)
-		{
-			bmpBuffer.Dispose();
-		}
+		bmpBuffer?.Dispose();
 
 		if (Width == 0 || Height == 0)
 		{
@@ -509,7 +503,7 @@ public class AshtakavargaControl : MhoraControl
 
 	private void DrawChanchaInner(Graphics g)
 	{
-		var        lagna = h.getPosition(Body.BodyType.Lagna).longitude.toZodiacHouse();
+		var        lagna = h.GetPosition(Body.BodyType.Lagna).Longitude.ToZodiacHouse();
 		IDrawChart dc    = null;
 		switch (userOptions.ChartStyle)
 		{
@@ -541,16 +535,16 @@ public class AshtakavargaControl : MhoraControl
 		{
 			if (userOptions.SavType == ESavType.Rao)
 			{
-				inner_bindus = av.getSavRao();
+				inner_bindus = av.GetSavRao();
 			}
 			else
 			{
-				inner_bindus = av.getSav();
+				inner_bindus = av.GetSav();
 			}
 		}
 		else
 		{
-			inner_bindus = av.getPav(outerBodies[0]);
+			inner_bindus = av.GetPav(outerBodies[0]);
 		}
 
 		for (var i = 0; i < 12; i++)
@@ -677,7 +671,7 @@ public class AshtakavargaControl : MhoraControl
 		// write the pav values at the top of the circle
 		foreach (var bOuter in outerBodies)
 		{
-			var pav = av.getPav(bOuter);
+			var pav = av.GetPav(bOuter);
 			for (var i = 0; i < 12; i++)
 			{
 				var iRing = i * 8 + av.BodyToInt(bOuter);
@@ -702,7 +696,7 @@ public class AshtakavargaControl : MhoraControl
 			{
 				var   iOuter = av.BodyToInt(bOuter);
 				var   iInner = av.BodyToInt(bInner);
-				var   zhBins = av.getBindus(bOuter, bInner);
+				var   zhBins = av.GetBindus(bOuter, bInner);
 				Brush br     = new SolidBrush(MhoraGlobalOptions.Instance.getBinduColor(bInner));
 
 				foreach (var zh in zhBins)

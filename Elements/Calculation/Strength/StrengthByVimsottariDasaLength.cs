@@ -27,10 +27,10 @@ public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStre
 	{
 	}
 
-	public bool stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		var a = VimsottariDasa.LengthOfDasa(m);
-		var b = VimsottariDasa.LengthOfDasa(n);
+		var a = VimsottariDasa.DasaLength(m);
+		var b = VimsottariDasa.DasaLength(n);
 		if (a > b)
 		{
 			return true;
@@ -44,10 +44,10 @@ public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStre
 		throw new EqualStrength();
 	}
 
-	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
-		var a = value(za);
-		var b = value(zb);
+		var a = Value(za);
+		var b = Value(zb);
 		if (a > b)
 		{
 			return true;
@@ -61,14 +61,14 @@ public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStre
 		throw new EqualStrength();
 	}
 
-	protected double value(ZodiacHouse.Rasi zh)
+	protected double Value(ZodiacHouse.Rasi zh)
 	{
 		double length = 0;
-		foreach (Position bp in h.positionList)
+		foreach (Position bp in H.PositionList)
 		{
-			if (bp.type == Body.Type.Graha)
+			if (bp.Type == Body.Type.Graha)
 			{
-				length = Math.Max(length, VimsottariDasa.LengthOfDasa(bp.name));
+				length = Math.Max(length, VimsottariDasa.DasaLength(bp.Name));
 			}
 		}
 

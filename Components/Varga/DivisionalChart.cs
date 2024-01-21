@@ -196,7 +196,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		// TODO: Add any initialization after the InitForm call
 		h                                      =  _h;
 		options                                =  new UserOptions();
-		calculation_options                    =  h.options;
+		calculation_options                    =  h.Options;
 		h.Changed                              += OnRecalculate;
 		MhoraGlobalOptions.DisplayPrefsChanged += OnRedisplay;
 		OnRecalculate(h);
@@ -211,10 +211,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -877,7 +874,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 				var dp = dpList[item];
 				if (PrintMode == false)
 				{
-					if (dp.type == Body.Type.Graha || dp.type == Body.Type.Lagna)
+					if (dp.Type == Body.Type.Graha || dp.Type == Body.Type.Lagna)
 					{
 						if (dc.SeparateGrahaHandling)
 						{
@@ -902,14 +899,14 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		if (large)
 		{
 			f = fBase;
-			if (dp.type == Body.Type.Graha || dp.type == Body.Type.Lagna)
+			if (dp.Type == Body.Type.Graha || dp.Type == Body.Type.Lagna)
 			{
-				var bp = h.getPosition(dp.name);
-				if (dp.name == Body.BodyType.Lagna)
+				var bp = h.GetPosition(dp.Name);
+				if (dp.Name == Body.BodyType.Lagna)
 				{
 					f = new Font(fBase.Name, fBase.Size, FontStyle.Bold);
 				}
-				else if (bp.speed_longitude < 0.0 && bp.name != Body.BodyType.Rahu && bp.name != Body.BodyType.Ketu)
+				else if (bp.SpeedLongitude < 0.0 && bp.Name != Body.BodyType.Rahu && bp.Name != Body.BodyType.Ketu)
 				{
 					f = new Font(fBase.Name, fBase.Size, FontStyle.Underline);
 				}
@@ -925,13 +922,13 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			if (p.IsEmpty)
 			{
 				var strSize = g.MeasureString(dp.Description, f);
-				p = dc.GetItemOffset(dp.zodiac_house, Size.Round(strSize), item);
+				p = dc.GetItemOffset(dp.ZodiacHouse, Size.Round(strSize), item);
 			}
 		}
 		else
 		{
 			var fs = FontStyle.Regular;
-			if (dp.type == Body.Type.BhavaArudhaSecondary)
+			if (dp.Type == Body.Type.BhavaArudhaSecondary)
 			{
 				fs = FontStyle.Italic;
 			}
@@ -939,15 +936,15 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			f = new Font(fBase.Name, fBase.SizeInPoints - 1, fs);
 
 			var strSize = g.MeasureString(dp.Description, f);
-			p = dc.GetSmallItemOffset(dp.zodiac_house, Size.Round(strSize), item);
+			p = dc.GetSmallItemOffset(dp.ZodiacHouse, Size.Round(strSize), item);
 		}
 
-		if (dp.type == Body.Type.GrahaArudha)
+		if (dp.Type == Body.Type.GrahaArudha)
 		{
 			f = new Font(fBase.Name, fBase.SizeInPoints - 1);
 		}
 
-		switch (dp.type)
+		switch (dp.Type)
 		{
 			case Body.Type.Graha:
 			case Body.Type.GrahaArudha:
@@ -983,8 +980,8 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		if (PrintMode == false && dp.HasLongitude)
 		{
 			var   pLon = dc.GetBodyPosition(dp.Longitude);
-			var   pn   = new Pen(MhoraGlobalOptions.Instance.getBinduColor(dp.name), (float) 0.01);
-			Brush br   = new SolidBrush(MhoraGlobalOptions.Instance.getBinduColor(dp.name));
+			var   pn   = new Pen(MhoraGlobalOptions.Instance.getBinduColor(dp.Name), (float) 0.01);
+			Brush br   = new SolidBrush(MhoraGlobalOptions.Instance.getBinduColor(dp.Name));
 			g.FillEllipse(br, pLon.X - 2, pLon.Y - 2, 4, 4);
 			//g.DrawEllipse(pn, pLon.X-1, pLon.Y-1, 2, 2);
 			g.DrawEllipse(new Pen(Color.Gray), pLon.X - 2, pLon.Y - 2, 4, 4);
@@ -1032,7 +1029,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		for (var i = (int) Body.BodyType.Sun; i <= max; i++)
 		{
 			var b   = (Body.BodyType) i;
-			var bp  = h.getPosition(b);
+			var bp  = h.GetPosition(b);
 			var bkc = new KarakaComparer(bp);
 			al.Add(bkc);
 		}
@@ -1043,7 +1040,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		for (var i = 0; i <= max; i++)
 		{
 			var bp = ((KarakaComparer) al[i]).GetPosition;
-			kindex[(int) bp.name] = i;
+			kindex[(int) bp.Name] = i;
 		}
 
 
@@ -1071,7 +1068,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void PaintDualGrahaArudhasView(Graphics g)
 	{
-		var dpo = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(options.Varga);
+		var dpo = h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(options.Varga);
 		items.Add(dpo);
 
 		foreach (DivisionPosition dp in graha_arudha_pos)
@@ -1155,12 +1152,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 		foreach (DivisionPosition dp in div_pos)
 		{
-			if (options.ViewStyle == UserOptions.EViewStyle.Panchanga && dp.type != Body.Type.Graha)
+			if (options.ViewStyle == UserOptions.EViewStyle.Panchanga && dp.Type != Body.Type.Graha)
 			{
 				continue;
 			}
 
-			if (dp.type != Body.Type.Graha && dp.type != Body.Type.Lagna)
+			if (dp.Type != Body.Type.Graha && dp.Type != Body.Type.Lagna)
 			{
 				continue;
 			}
@@ -1177,7 +1174,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 		foreach (DivisionPosition dp in div_pos)
 		{
-			if (dp.type != Body.Type.SpecialLagna)
+			if (dp.Type != Body.Type.SpecialLagna)
 			{
 				continue;
 			}
@@ -1296,16 +1293,16 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 		if (options.ChartStyle == UserOptions.EChartStyle.SouthIndian && MhoraGlobalOptions.Instance.VargaShowDob && false == PrintMode && false == bDrawInner)
 		{
-			var tob = h.info.DateOfBirth.ToString();
+			var tob = h.Info.DateOfBirth.ToString();
 			hint = g.MeasureString(tob, f);
 			g.DrawString(tob, f, Brushes.Black, xw * 2 / 4 - hint.Width / 2, (float) (yw * 2 / 4 - hint.Height / 2 + f.Height * 1.5));
 
-			var latlon = h.info.Latitude + " " + h.info.Longitude;
+			var latlon = h.Info.Latitude + " " + h.Info.Longitude;
 			hint = g.MeasureString(latlon, f);
 			g.DrawString(latlon, f, Brushes.Black, xw * 2 / 4 - hint.Width / 2, (float) (yw * 2 / 4 - hint.Height / 2 + f.Height * 2.5));
 
-			hint = g.MeasureString(h.info.Name, f);
-			g.DrawString(h.info.Name, f, Brushes.Black, xw * 2 / 4 - hint.Width / 2, (float) (yw * 2 / 4 - hint.Height / 2 - f.Height * 1.5));
+			hint = g.MeasureString(h.Info.Name, f);
+			g.DrawString(h.Info.Name, f, Brushes.Black, xw * 2 / 4 - hint.Width / 2, (float) (yw * 2 / 4 - hint.Height / 2 - f.Height * 1.5));
 		}
 
 
@@ -1330,13 +1327,13 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void SetChartStyle(UserOptions.EChartStyle cs)
 	{
-		var dp   = h.getPosition(Body.BodyType.Lagna);
-		var lagna = dp.toDivisionPosition(options.Varga);
+		var dp   = h.GetPosition(Body.BodyType.Lagna);
+		var lagna = dp.ToDivisionPosition(options.Varga);
 
 		switch (cs)
 		{
 			case UserOptions.EChartStyle.NorthIndian:
-				dc = new NorthIndianChart(lagna.zodiac_house);
+				dc = new NorthIndianChart(lagna.ZodiacHouse);
 				return;
 			case UserOptions.EChartStyle.EastIndian:
 				dc = new EastIndianChart();
@@ -1372,11 +1369,11 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	{
 		if (MhoraGlobalOptions.Instance.VargaShowSAVVarga)
 		{
-			sav_bindus = new Ashtakavarga(h, options.Varga).getSav();
+			sav_bindus = new Ashtakavarga(h, options.Varga).GetSav();
 		}
 		else if (MhoraGlobalOptions.Instance.VargaShowSAVRasi)
 		{
-			sav_bindus = new Ashtakavarga(h, new Division(Vargas.DivisionType.Rasi)).getSav();
+			sav_bindus = new Ashtakavarga(h, new Division(Vargas.DivisionType.Rasi)).GetSav();
 		}
 	}
 
@@ -1702,17 +1699,17 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mExtrapolate_Click(object sender, EventArgs e)
 	{
-		foreach (Position bp in h.positionList)
+		foreach (Position bp in h.PositionList)
 		{
-			var dp      = bp.toDivisionPosition(options.Varga);
-			var lLower  = new Longitude(dp.cusp_lower);
-			var lOffset = bp.longitude.sub(lLower);
-			var lRange  = new Longitude(dp.cusp_higher).sub(lLower);
-			Trace.Assert(lOffset.value <= lRange.value, "Extrapolation internal error: Slice smaller than range. Weird.");
+			var dp      = bp.ToDivisionPosition(options.Varga);
+			var lLower  = new Longitude(dp.CuspLower);
+			var lOffset = bp.Longitude.Sub(lLower);
+			var lRange  = new Longitude(dp.CuspHigher).Sub(lLower);
+			Trace.Assert(lOffset.Value <= lRange.Value, "Extrapolation internal error: Slice smaller than range. Weird.");
 
-			var newOffset = lOffset.value / lRange.value      * 30.0;
-			var newBase   = ((int) dp.zodiac_house.Sign - 1) * 30.0;
-			bp.longitude = new Longitude(newOffset + newBase);
+			var newOffset = lOffset.Value / lRange.Value      * 30.0;
+			var newBase   = ((int) dp.ZodiacHouse.Sign - 1) * 30.0;
+			bp.Longitude = new Longitude(newOffset + newBase);
 		}
 
 		h.OnlySignalChanged();

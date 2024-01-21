@@ -39,8 +39,8 @@ public static class ShadBalas
 	{
 		h.VerifyGraha(b);
 		var debLon = b.DebilitationDegree();
-		var posLon = h.getPosition(b).longitude;
-		var diff   = posLon.sub(debLon).value;
+		var posLon = h.GetPosition(b).Longitude;
+		var diff   = posLon.Sub(debLon).Value;
 		if (diff > 180)
 		{
 			diff = 360 - diff;
@@ -82,9 +82,9 @@ public static class ShadBalas
 	public static double OjaYugmaRasyAmsaBala(this Horoscope h, Body.BodyType b)
 	{
 		h.VerifyGraha(b);
-		var    bp      = h.getPosition(b);
-		var    zh_rasi = bp.toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house;
-		var    zh_amsa = bp.toDivisionPosition(new Division(Vargas.DivisionType.Navamsa)).zodiac_house;
+		var    bp      = h.GetPosition(b);
+		var    zh_rasi = bp.ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse;
+		var    zh_amsa = bp.ToDivisionPosition(new Division(Vargas.DivisionType.Navamsa)).ZodiacHouse;
 		double s       = 0;
 		s += OjaYugmaHelper(b, zh_rasi);
 		s += OjaYugmaHelper(b, zh_amsa);
@@ -94,8 +94,8 @@ public static class ShadBalas
 	public static double KendraBala(this Horoscope h, Body.BodyType b)
 	{
 		h.VerifyGraha(b);
-		var zh_b = h.getPosition(b).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house;
-		var zh_l = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house;
+		var zh_b = h.GetPosition(b).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse;
+		var zh_l = h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse;
 		var diff = zh_l.NumHousesBetween(zh_b);
 		switch (diff % 3)
 		{
@@ -109,7 +109,7 @@ public static class ShadBalas
 	public static double DrekkanaBala(this Horoscope h, Body.BodyType b)
 	{
 		h.VerifyGraha(b);
-		var part = h.getPosition(b).partOfZodiacHouse(3);
+		var part = h.GetPosition(b).PartOfZodiacHouse(3);
 		if (part == 1 && (b == Body.BodyType.Sun || b == Body.BodyType.Jupiter || b == Body.BodyType.Mars))
 		{
 			return 15.0;
@@ -141,14 +141,14 @@ public static class ShadBalas
 			10,
 			1
 		};
-		var lagLon = h.getPosition(Body.BodyType.Lagna).longitude;
-		var debLon = new Longitude(lagLon.toZodiacHouseBase());
-		debLon = debLon.add(powerlessHouse[(int) b] * 30.0 + 15.0);
-		var posLon = h.getPosition(b).longitude;
+		var lagLon = h.GetPosition(Body.BodyType.Lagna).Longitude;
+		var debLon = new Longitude(lagLon.ToZodiacHouseBase());
+		debLon = debLon.Add(powerlessHouse[(int) b] * 30.0 + 15.0);
+		var posLon = h.GetPosition(b).Longitude;
 
-		Application.Log.Debug("digBala {0} {1} {2}", b, posLon.value, debLon.value);
+		Application.Log.Debug("digBala {0} {1} {2}", b, posLon.Value, debLon.Value);
 
-		var diff = posLon.sub(debLon).value;
+		var diff = posLon.Sub(debLon).Value;
 		if (diff > 180)
 		{
 			diff = 360 - diff;
@@ -166,10 +166,10 @@ public static class ShadBalas
 			return 60;
 		}
 
-		var    lmt_midnight = h.lmt_offset * 24.0;
-		var    lmt_noon     = 12.0 + h.lmt_offset * 24.0;
+		var    lmt_midnight = h.LmtOffset * 24.0;
+		var    lmt_noon     = 12.0 + h.LmtOffset * 24.0;
 		double diff         = 0;
-		var    time = h.info.DateOfBirth.Time().TotalHours;
+		var    time = h.Info.DateOfBirth.Time().TotalHours;
 		if (time > lmt_noon)
 		{
 			diff = lmt_midnight - time;
@@ -198,10 +198,10 @@ public static class ShadBalas
 	{
 		h.VerifyGraha(b);
 
-		var mlon = h.getPosition(Body.BodyType.Moon).longitude;
-		var slon = h.getPosition(Body.BodyType.Sun).longitude;
+		var mlon = h.GetPosition(Body.BodyType.Moon).Longitude;
+		var slon = h.GetPosition(Body.BodyType.Sun).Longitude;
 
-		var diff = mlon.sub(slon).value;
+		var diff = mlon.Sub(slon).Value;
 		if (diff > 180)
 		{
 			diff = 360.0 - diff;
@@ -227,10 +227,10 @@ public static class ShadBalas
 	{
 		var ret = Body.BodyType.Jupiter;
 		h.VerifyGraha(b);
-		if (h.isDayBirth())
+		if (h.IsDayBirth())
 		{
-			var length = (h.sunset - h.sunrise) / 3;
-			var offset = h.info.DateOfBirth.Time ().TotalHours - h.sunrise;
+			var length = (h.Sunset - h.Sunrise) / 3;
+			var offset = h.Info.DateOfBirth.Time ().TotalHours - h.Sunrise;
 			var part   = (int) Math.Floor(offset / length);
 			switch (part)
 			{
@@ -247,8 +247,8 @@ public static class ShadBalas
 		}
 		else
 		{
-			var length = (h.next_sunrise + 24.0 - h.sunset) / 3;
-			var offset = h.info.DateOfBirth.Time ().TotalHours - h.sunset;
+			var length = (h.NextSunrise + 24.0 - h.Sunset) / 3;
+			var offset = h.Info.DateOfBirth.Time ().TotalHours - h.Sunset;
 			if (offset < 0)
 			{
 				offset += 24;
@@ -297,9 +297,9 @@ public static class ShadBalas
 	public static void KalaHelper(this Horoscope h, ref Body.BodyType yearLord, ref Body.BodyType monthLord)
 	{
 		var date       = new DateTime(1827, 5, 2);
-		var dstOffset  = h.info.City.Country.TimeZone.TimeZoneInfo.GetUtcOffset(date);
+		var dstOffset  = h.Info.City.Country.TimeZone.TimeZoneInfo.GetUtcOffset(date);
 		var ut_arghana = sweph.JulDay(1827, 5, 2, -dstOffset.TotalHours + 12.0 / 24.0);
-		var ut_noon    = h.info.Jd - h.info.DateOfBirth.Time ().TotalDays + 12.0 / 24.0;
+		var ut_noon    = h.Info.Jd - h.Info.DateOfBirth.Time ().TotalDays + 12.0 / 24.0;
 
 		var diff = ut_noon - ut_arghana;
 		if (diff >= 0)
@@ -359,7 +359,7 @@ public static class ShadBalas
 	public static double VaraBala(this Horoscope h, Body.BodyType b)
 	{
 		h.VerifyGraha(b);
-		if (h.wday.WeekdayRuler() == b)
+		if (h.Wday.WeekdayRuler() == b)
 		{
 			return 45.0;
 		}
@@ -370,7 +370,7 @@ public static class ShadBalas
 	public static double HoraBala(this Horoscope h, Body.BodyType b)
 	{
 		h.VerifyGraha(b);
-		if (h.calculateHora() == b)
+		if (h.CalculateHora() == b)
 		{
 			return 60.0;
 		}

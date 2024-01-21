@@ -17,7 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Elements.Dasas.Yearly;
@@ -41,11 +40,11 @@ public class TajakaDasa : Dasa, IDasa
 		return new object();
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 60.0;
 	}
@@ -53,7 +52,7 @@ public class TajakaDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al          = new ArrayList(60);
-		var cycle_start = cycle * paramAyus();
+		var cycle_start = cycle * ParamAyus();
 		for (var i = 0; i < 60; i++)
 		{
 			var start = cycle_start + i;
@@ -74,7 +73,7 @@ public class TajakaDasa : Dasa, IDasa
 			"        Tajaka 25 minute",
 			"          Tajaka 2 minute"
 		};
-		if (pdi.level == 6)
+		if (pdi.Level == 6)
 		{
 			return new ArrayList();
 		}
@@ -84,9 +83,9 @@ public class TajakaDasa : Dasa, IDasa
 		var       level = 0;
 
 		al     = new ArrayList(12);
-		start  = pdi.startUT;
-		level  = pdi.level + 1;
-		length = pdi.dasaLength / 12.0;
+		start  = pdi.StartUT;
+		level  = pdi.Level + 1;
+		length = pdi.DasaLength / 12.0;
 		for (var i = 0; i < 12; i++)
 		{
 			var di = new DasaEntry(Body.BodyType.Other, start, length, level, desc[level - 2]);

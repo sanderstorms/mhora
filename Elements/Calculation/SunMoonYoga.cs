@@ -17,8 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 
-using Mhora.Tables;
-
 namespace Mhora.Elements.Calculation;
 
 public class SunMoonYoga
@@ -67,18 +65,18 @@ public class SunMoonYoga
 
 	public int normalize()
 	{
-		return Basics.normalize_inc(1, 27, (int) value);
+		return Basics.NormalizeInc(1, 27, (int) value);
 	}
 
 	public SunMoonYoga add(int i)
 	{
-		var snum = Basics.normalize_inc(1, 27, (int) value + i - 1);
+		var snum = Basics.NormalizeInc(1, 27, (int) value + i - 1);
 		return new SunMoonYoga((Name) snum);
 	}
 
 	public SunMoonYoga addReverse(int i)
 	{
-		var snum = Basics.normalize_inc(1, 27, (int) value - i + 1);
+		var snum = Basics.NormalizeInc(1, 27, (int) value - i + 1);
 		return new SunMoonYoga((Name) snum);
 	}
 

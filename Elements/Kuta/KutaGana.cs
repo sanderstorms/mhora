@@ -22,32 +22,32 @@ public class KutaGana
 {
 	public enum EType
 	{
-		IDeva,
-		INara,
-		IRakshasa
+		Deva,
+		Nara,
+		Rakshasa
 	}
 
-	public static int getScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra f)
+	public static int GetScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra f)
 	{
-		var em = getType(m);
-		var ef = getType(f);
+		var em = GetType(m);
+		var ef = GetType(f);
 
 		if (em == ef)
 		{
 			return 5;
 		}
 
-		if (em == EType.IDeva && ef == EType.INara)
+		if (em == EType.Deva && ef == EType.Nara)
 		{
 			return 4;
 		}
 
-		if (em == EType.IRakshasa && ef == EType.INara)
+		if (em == EType.Rakshasa && ef == EType.Nara)
 		{
 			return 3;
 		}
 
-		if (em == EType.INara && ef == EType.IDeva)
+		if (em == EType.Nara && ef == EType.Deva)
 		{
 			return 2;
 		}
@@ -55,12 +55,12 @@ public class KutaGana
 		return 1;
 	}
 
-	public static int getMaxScore()
+	public static int GetMaxScore()
 	{
 		return 5;
 	}
 
-	public static EType getType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatras.Nakshatra n)
 	{
 		switch (n)
 		{
@@ -72,7 +72,7 @@ public class KutaGana
 			case Nakshatras.Nakshatra.Swati:
 			case Nakshatras.Nakshatra.Anuradha:
 			case Nakshatras.Nakshatra.Sravana:
-			case Nakshatras.Nakshatra.Revati: return EType.IDeva;
+			case Nakshatras.Nakshatra.Revati: return EType.Deva;
 			case Nakshatras.Nakshatra.Bharani:
 			case Nakshatras.Nakshatra.Rohini:
 			case Nakshatras.Nakshatra.Aridra:
@@ -81,9 +81,9 @@ public class KutaGana
 			case Nakshatras.Nakshatra.PoorvaShada:
 			case Nakshatras.Nakshatra.UttaraShada:
 			case Nakshatras.Nakshatra.PoorvaBhadra:
-			case Nakshatras.Nakshatra.UttaraBhadra: return EType.INara;
+			case Nakshatras.Nakshatra.UttaraBhadra: return EType.Nara;
 		}
 
-		return EType.IRakshasa;
+		return EType.Rakshasa;
 	}
 }

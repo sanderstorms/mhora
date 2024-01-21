@@ -16,13 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using Mhora.Tables;
-
 namespace Mhora.Elements.Ghataka;
 
 public class GhatakaTithi
 {
-	public static bool checkTithi(ZodiacHouse janmaRasi, Tithis.Tithi t)
+	public static bool CheckTithi(ZodiacHouse janmaRasi, Tithis.Tithi t)
 	{
 		var ja = janmaRasi.Sign;
 		var gh = Tithis.NandaType.Nanda;

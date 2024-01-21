@@ -20,7 +20,6 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
-using Mhora.Components.Dasa;
 using Mhora.Components.Property;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
@@ -85,7 +84,7 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		return _Dasa(horoscope.getPosition(options.start_graha).extrapolateLongitude(options.div), options.nakshatra_offset, cycle);
+		return _Dasa(horoscope.GetPosition(options.start_graha).ExtrapolateLongitude(options.div), options.nakshatra_offset, cycle);
 	}
 
 	public ArrayList AntarDasa(DasaEntry di)
@@ -98,29 +97,29 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 		return "Vimsottari Dasa Seeded from " + options.SeedBody;
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 120.0;
 	}
 
-	public int numberOfDasaItems()
+	public int NumberOfDasaItems()
 	{
 		return 9;
 	}
 
-	public DasaEntry nextDasaLord(DasaEntry di)
+	public DasaEntry NextDasaLord(DasaEntry di)
 	{
-		return new DasaEntry(nextDasaLordHelper(di.graha), 0, 0, di.level, string.Empty);
+		return new DasaEntry(NextDasaLordHelper(di.Graha), 0, 0, di.Level, string.Empty);
 	}
 
-	public double lengthOfDasa(Body.BodyType plt)
+	public double LengthOfDasa(Body.BodyType plt)
 	{
-		return LengthOfDasa(plt);
+		return DasaLength(plt);
 	}
 
-	public Body.BodyType lordOfNakshatra(Nakshatras.Nakshatra n)
+	public Body.BodyType LordOfNakshatra(Nakshatras.Nakshatra n)
 	{
-		return LordOfNakshatra(n);
+		return NakshatraLord(n);
 	}
 
 	public new void DivisionChanged(Division div)
@@ -136,7 +135,7 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 		OnChanged();
 	}
 
-	private Body.BodyType nextDasaLordHelper(Body.BodyType b)
+	private Body.BodyType NextDasaLordHelper(Body.BodyType b)
 	{
 		switch (b)
 		{
@@ -151,11 +150,11 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 			case Body.BodyType.Venus:   return Body.BodyType.Sun;
 		}
 
-		Trace.Assert(false, "VimsottariDasa::nextDasaLord");
+		Trace.Assert(false, "VimsottariDasa::NextDasaLord");
 		return Body.BodyType.Lagna;
 	}
 
-	public static double LengthOfDasa(Body.BodyType plt)
+	public static double DasaLength(Body.BodyType plt)
 	{
 		switch (plt)
 		{
@@ -170,11 +169,11 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 			case Body.BodyType.Venus:   return 20;
 		}
 
-		Trace.Assert(false, "Vimsottari::lengthOfDasa");
+		Trace.Assert(false, "Vimsottari::LengthOfDasa");
 		return 0;
 	}
 
-	public static Body.BodyType LordOfNakshatra(Nakshatras.Nakshatra n)
+	public static Body.BodyType NakshatraLord(Nakshatras.Nakshatra n)
 	{
 		var lords = new Body.BodyType[9]
 		{

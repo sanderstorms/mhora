@@ -23,9 +23,9 @@ namespace Mhora.Elements;
 
 public class KarakaComparer : IComparable
 {
-	public KarakaComparer(Position _bp)
+	public KarakaComparer(Position bp)
 	{
-		GetPosition = _bp;
+		GetPosition = bp;
 	}
 
 	public Position GetPosition
@@ -37,15 +37,15 @@ public class KarakaComparer : IComparable
 	public int CompareTo(object obj)
 	{
 		Debug.Assert(obj is KarakaComparer);
-		var offa = getOffset();
-		var offb = ((KarakaComparer) obj).getOffset();
+		var offa = GetOffset();
+		var offb = ((KarakaComparer) obj).GetOffset();
 		return offb.CompareTo(offa);
 	}
 
-	public double getOffset()
+	public double GetOffset()
 	{
-		var off = GetPosition.longitude.toZodiacHouseOffset();
-		if (GetPosition.name == Body.BodyType.Rahu)
+		var off = GetPosition.Longitude.ToZodiacHouseOffset();
+		if (GetPosition.Name == Body.BodyType.Rahu)
 		{
 			off = 30.0 - off;
 		}

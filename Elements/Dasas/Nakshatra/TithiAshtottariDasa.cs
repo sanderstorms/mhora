@@ -19,7 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections;
 using System.Diagnostics;
-using Mhora.Components.Dasa;
 using Mhora.Components.Delegates;
 using Mhora.Elements.Calculation;
 
@@ -51,29 +50,26 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 	public override object SetOptions(object a)
 	{
 		options = (UserOptions) options.SetOptions(a);
-		if (RecalculateEvent != null)
-		{
-			RecalculateEvent();
-		}
+		RecalculateEvent?.Invoke();
 
 		return options.Clone();
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
-		var mpos = h.getPosition(Body.BodyType.Moon).longitude;
-		var spos = h.getPosition(Body.BodyType.Sun).longitude;
+		var mpos = h.GetPosition(Body.BodyType.Moon).Longitude;
+		var spos = h.GetPosition(Body.BodyType.Sun).Longitude;
 
-		var tithi = mpos.sub(spos);
+		var tithi = mpos.Sub(spos);
 		if (options.UseTithiRemainder == false)
 		{
-			var offset = tithi.value;
+			var offset = tithi.Value;
 			while (offset >= 12.0)
 			{
 				offset -= 12.0;
 			}
 
-			tithi = tithi.sub(new Longitude(offset));
+			tithi = tithi.Sub(new Longitude(offset));
 		}
 
 		return _TithiDasa(tithi, options.TithiOffset, cycle);
@@ -89,27 +85,27 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		return string.Format("({0}) Tithis Ashtottari Dasa", options.TithiOffset);
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
-		return ad.paramAyus();
+		return ad.ParamAyus();
 	}
 
-	public int numberOfDasaItems()
+	public int NumberOfDasaItems()
 	{
-		return ad.numberOfDasaItems();
+		return ad.NumberOfDasaItems();
 	}
 
-	public DasaEntry nextDasaLord(DasaEntry di)
+	public DasaEntry NextDasaLord(DasaEntry di)
 	{
-		return ad.nextDasaLord(di);
+		return ad.NextDasaLord(di);
 	}
 
-	public double lengthOfDasa(Body.BodyType plt)
+	public double LengthOfDasa(Body.BodyType plt)
 	{
-		return ad.lengthOfDasa(plt);
+		return ad.LengthOfDasa(plt);
 	}
 
-	public Body.BodyType lordOfNakshatra(Nakshatras.Nakshatra n)
+	public Body.BodyType LordOfNakshatra(Nakshatras.Nakshatra n)
 	{
 		Debug.Assert(false, "TithiAshtottari::lordOfNakshatra");
 		return Body.BodyType.Sun;
@@ -117,7 +113,7 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 
 	public Body.BodyType lordOfTithi(Longitude l)
 	{
-		return l.toTithi().GetLord();
+		return l.ToTithi().GetLord();
 	}
 
 	public class UserOptions : ICloneable

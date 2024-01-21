@@ -263,7 +263,6 @@
     <Compile Include="Util\LocationConverter.cs" />
     <Compile Include="Elements\NonLinearTransit.cs" />
     <Compile Include="Elements\Retrogression.cs" />
-    <Compile Include="Util\RightAscension.cs" />
     <Compile Include="Util\SevenZip.cs" />
     <Compile Include="Util\StringExtension.cs" />
     <Compile Include="Elements\Ashtakavarga.cs">

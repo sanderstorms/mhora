@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Elements.Dasas.Graha;
@@ -34,12 +33,12 @@ public class NaisargikaGrahaDasaSP : Dasa, IDasa
 		options = new UserOptions();
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 108.0;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
@@ -59,7 +58,7 @@ public class NaisargikaGrahaDasaSP : Dasa, IDasa
 			Body.BodyType.Saturn
 		};
 
-		var cycle_start = paramAyus() * cycle;
+		var cycle_start = ParamAyus() * cycle;
 		var curr        = 0.0;
 		for (var i = 0; i < 3; i++)
 		{
@@ -91,10 +90,7 @@ public class NaisargikaGrahaDasaSP : Dasa, IDasa
 	public object SetOptions(object a)
 	{
 		var uo = (UserOptions) a;
-		if (RecalculateEvent != null)
-		{
-			RecalculateEvent();
-		}
+		RecalculateEvent?.Invoke();
 
 		return options.Clone();
 	}

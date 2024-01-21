@@ -107,7 +107,7 @@ public static class Body
 		Other
 	}
 
-	public static readonly string[] karakas =
+	public static readonly string[] Karakas =
 	{
 		"Atma",
 		"Amatya",
@@ -119,7 +119,7 @@ public static class Body
 		"Dara"
 	};
 
-	public static readonly string[] karakas_s =
+	public static readonly string[] KarakasS =
 	{
 		"AK",
 		"AmK",
@@ -131,7 +131,7 @@ public static class Body
 		"DK"
 	};
 
-	public static readonly string[] karakas7 =
+	public static readonly string[] Karakas7 =
 	{
 		"Atma",
 		"Amatya",
@@ -142,7 +142,7 @@ public static class Body
 		"Dara"
 	};
 
-	public static readonly string[] karakas_s7 =
+	public static readonly string[] KarakasS7 =
 	{
 		"AK",
 		"AmK",
@@ -153,7 +153,7 @@ public static class Body
 		"DK"
 	};
 
-	public static readonly int[] latta_aspects =
+	public static readonly int[] LattaAspects =
 	{
 		12,
 		22,
@@ -181,12 +181,12 @@ public static class Body
 		}
 	}
 
-	public static Longitude ExaltationDegree(this BodyType b)
+	public static Longitude ExaltationDegree(this BodyType body)
 	{
-		var _b = (int) b;
-		Debug.Assert(_b >= (int) BodyType.Sun && _b <= (int) BodyType.Saturn);
+		var b = (int) body;
+		Debug.Assert(b >= (int) BodyType.Sun && b <= (int) BodyType.Saturn);
 		double d = 0;
-		switch (b)
+		switch (body)
 		{
 			case BodyType.Sun:
 				d = 10;
@@ -216,7 +216,7 @@ public static class Body
 
 	public static Longitude DebilitationDegree(this BodyType b)
 	{
-		return ExaltationDegree(b).add(180);
+		return ExaltationDegree(b).Add(180);
 	}
 
 	public static string Name(this BodyType b)

@@ -16,8 +16,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using Mhora.Tables;
-
 namespace Mhora.Elements;
 
 public static class Nakshatras
@@ -87,7 +85,7 @@ public static class Nakshatras
 		Revati         = 28
 	}
 
-	public static readonly int[][] tara_aspects =
+	public static readonly int[][] TaraAspects =
 	{
 		new[]
 		{
@@ -207,29 +205,29 @@ public static class Nakshatras
 
 	public static int Normalize(this Nakshatra value)
 	{
-		return Basics.normalize_inc(1, 27, (int) value);
+		return Basics.NormalizeInc(1, 27, (int) value);
 	}
 
 	public static Nakshatra Add(this Nakshatra value, int i)
 	{
-		var snum = Basics.normalize_inc(1, 27, (int) value + i - 1);
+		var snum = Basics.NormalizeInc(1, 27, (int) value + i - 1);
 		return (Nakshatra) snum;
 	}
 
 	public static Nakshatra AddReverse(this Nakshatra value, int i)
 	{
-		var snum = Basics.normalize_inc(1, 27, (int) value - i + 1);
+		var snum = Basics.NormalizeInc(1, 27, (int) value - i + 1);
 		return (Nakshatra) snum;
 	}
 
-	public static int normalize(this Nakshatra28 value)
+	public static int Normalize(this Nakshatra28 value)
 	{
-		return Basics.normalize_inc(1, 28, (int)value);
+		return Basics.NormalizeInc(1, 28, (int)value);
 	}
 
-	public static Nakshatra28 add(this Nakshatra28 value, int i)
+	public static Nakshatra28 Add(this Nakshatra28 value, int i)
 	{
-		var snum = Basics.normalize_inc(1, 28, (int)value + i - 1);
+		var snum = Basics.NormalizeInc(1, 28, (int)value + i - 1);
 		return (Nakshatra28) snum;
 	}
 }

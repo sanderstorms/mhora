@@ -19,16 +19,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi contains AK
-// Stronger graha is AK
+// Stronger Graha is AK
 public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 {
 	public StrengthByAtmaKaraka(Horoscope h, Division dtype) : base(h, dtype, true)
 	{
 	}
 
-	public bool stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		var ak = findAtmaKaraka();
+		var ak = FindAtmaKaraka();
 		if (m == ak)
 		{
 			return true;
@@ -42,11 +42,11 @@ public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	public bool stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
-		var ala = findGrahasInHouse(za);
-		var alb = findGrahasInHouse(zb);
-		var ak  = findAtmaKaraka();
+		var ala = FindGrahasInHouse(za);
+		var alb = FindGrahasInHouse(zb);
+		var ak  = FindAtmaKaraka();
 		foreach (Body.BodyType ba in ala)
 		{
 			if (ba == ak)

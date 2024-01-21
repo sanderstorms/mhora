@@ -58,10 +58,7 @@ public class VaraChakra : MhoraControl
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -152,7 +149,7 @@ public class VaraChakra : MhoraControl
 			g.DrawString(bodies[i].Name(), f, b_black, -sz.Width / 2, 0);
 		}
 
-		if (h.isDayBirth())
+		if (h.IsDayBirth())
 		{
 		}
 	}

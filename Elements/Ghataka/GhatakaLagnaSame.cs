@@ -20,7 +20,7 @@ namespace Mhora.Elements.Ghataka;
 
 public class GhatakaLagnaSame
 {
-	public static bool checkLagna(ZodiacHouse janma, ZodiacHouse same)
+	public static bool CheckLagna(ZodiacHouse janma, ZodiacHouse same)
 	{
 		var ja = janma.Sign;
 		var gh = ZodiacHouse.Rasi.Ari;

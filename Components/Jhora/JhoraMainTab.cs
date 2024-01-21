@@ -26,7 +26,6 @@ using Mhora.Components.Varga;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Dasas.Yearly;
-using Mhora.Elements.Hora;
 using Mhora.Util;
 
 namespace Mhora.Components.Jhora;
@@ -39,54 +38,54 @@ public class JhoraMainTab : MhoraControl
 	/// <summary>
 	///     Required designer variable.
 	/// </summary>
-	private readonly Container components = null;
+	private readonly Container _components = null;
 
-	private bool bTabDasaLoaded;
+	private bool _bTabDasaLoaded;
 
-	private bool bTabPanchangaLoaded;
+	private bool _bTabPanchangaLoaded;
 
 	//bool bTabTajakaLoaded = false;
-	private bool bTabTithiPraveshLoaded;
+	private bool _bTabTithiPraveshLoaded;
 
-	private bool bTabTransitsLoaded;
+	private bool _bTabTransitsLoaded;
 
 	//bool bTabBasicsLoaded = false;
-	private bool bTabVargasLoaded;
+	private bool _bTabVargasLoaded;
 
-	private ContextMenu contextMenu1;
-	private TabControl  mTab;
-	private TabPage     tabBasics;
-	private TabPage     tabDasa;
-	private TabPage     tabPanchanga;
+	private ContextMenu _contextMenu1;
+	private TabControl  _mTab;
+	private TabPage     _tabBasics;
+	private TabPage     _tabDasa;
+	private TabPage     _tabPanchanga;
 
-	private TabPage tabTithiPravesh;
-	private TabPage tabTransits;
-	private TabPage tabVargas;
+	private TabPage _tabTithiPravesh;
+	private TabPage _tabTransits;
+	private TabPage _tabVargas;
 
-	public JhoraMainTab(Horoscope _h)
+	public JhoraMainTab(Horoscope h)
 	{
 		//
 		// Required for Windows Form Designer support
 		//
 		InitializeComponent();
 
-		mTab.TabPages[0] = tabBasics;
-		mTab.TabPages[1] = tabVargas;
-		mTab.TabPages[2] = tabDasa;
-		mTab.TabPages[3] = tabTransits;
-		mTab.TabPages[4] = tabPanchanga;
-		mTab.TabPages[5] = tabTithiPravesh;
+		_mTab.TabPages[0] = _tabBasics;
+		_mTab.TabPages[1] = _tabVargas;
+		_mTab.TabPages[2] = _tabDasa;
+		_mTab.TabPages[3] = _tabTransits;
+		_mTab.TabPages[4] = _tabPanchanga;
+		_mTab.TabPages[5] = _tabTithiPravesh;
 
-		mTab.SelectedTab = tabBasics;
+		_mTab.SelectedTab = _tabBasics;
 
 		//
 		// TODO: Add any constructor code after InitializeComponent call
 		//
-		h                                      =  _h;
+		base.h                                      =  h;
 		MhoraGlobalOptions.DisplayPrefsChanged += OnRedisplay;
 		OnRedisplay(MhoraGlobalOptions.Instance);
 
-		AddControlToTab(tabBasics, new JhoraBasicsTab(h));
+		AddControlToTab(_tabBasics, new JhoraBasicsTab(base.h));
 		//this.bTabBasicsLoaded = true;
 	}
 
@@ -117,10 +116,7 @@ public class JhoraMainTab : MhoraControl
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			_components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -134,95 +130,95 @@ public class JhoraMainTab : MhoraControl
 	/// </summary>
 	private void InitializeComponent()
 	{
-		this.mTab            = new System.Windows.Forms.TabControl();
-		this.tabBasics       = new System.Windows.Forms.TabPage();
-		this.tabTransits     = new System.Windows.Forms.TabPage();
-		this.tabDasa         = new System.Windows.Forms.TabPage();
-		this.tabVargas       = new System.Windows.Forms.TabPage();
-		this.tabPanchanga    = new System.Windows.Forms.TabPage();
-		this.tabTithiPravesh = new System.Windows.Forms.TabPage();
-		this.contextMenu1    = new System.Windows.Forms.ContextMenu();
-		this.mTab.SuspendLayout();
+		this._mTab            = new System.Windows.Forms.TabControl();
+		this._tabBasics       = new System.Windows.Forms.TabPage();
+		this._tabTransits     = new System.Windows.Forms.TabPage();
+		this._tabDasa         = new System.Windows.Forms.TabPage();
+		this._tabVargas       = new System.Windows.Forms.TabPage();
+		this._tabPanchanga    = new System.Windows.Forms.TabPage();
+		this._tabTithiPravesh = new System.Windows.Forms.TabPage();
+		this._contextMenu1    = new System.Windows.Forms.ContextMenu();
+		this._mTab.SuspendLayout();
 		this.SuspendLayout();
 		// 
 		// mTab
 		// 
-		this.mTab.Controls.Add(this.tabBasics);
-		this.mTab.Controls.Add(this.tabDasa);
-		this.mTab.Controls.Add(this.tabTransits);
-		this.mTab.Controls.Add(this.tabVargas);
-		this.mTab.Controls.Add(this.tabPanchanga);
-		this.mTab.Controls.Add(this.tabTithiPravesh);
-		this.mTab.Dock                 =  System.Windows.Forms.DockStyle.Fill;
-		this.mTab.Font                 =  new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
-		this.mTab.Location             =  new System.Drawing.Point(0, 0);
-		this.mTab.Name                 =  "mTab";
-		this.mTab.Padding              =  new System.Drawing.Point(20, 4);
-		this.mTab.SelectedIndex        =  0;
-		this.mTab.Size                 =  new System.Drawing.Size(472, 256);
-		this.mTab.TabIndex             =  0;
-		this.mTab.SelectedIndexChanged += new System.EventHandler(this.mTab_SelectedIndexChanged);
+		this._mTab.Controls.Add(this._tabBasics);
+		this._mTab.Controls.Add(this._tabDasa);
+		this._mTab.Controls.Add(this._tabTransits);
+		this._mTab.Controls.Add(this._tabVargas);
+		this._mTab.Controls.Add(this._tabPanchanga);
+		this._mTab.Controls.Add(this._tabTithiPravesh);
+		this._mTab.Dock                 =  System.Windows.Forms.DockStyle.Fill;
+		this._mTab.Font                 =  new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
+		this._mTab.Location             =  new System.Drawing.Point(0, 0);
+		this._mTab.Name                 =  "_mTab";
+		this._mTab.Padding              =  new System.Drawing.Point(20, 4);
+		this._mTab.SelectedIndex        =  0;
+		this._mTab.Size                 =  new System.Drawing.Size(472, 256);
+		this._mTab.TabIndex             =  0;
+		this._mTab.SelectedIndexChanged += new System.EventHandler(this.mTab_SelectedIndexChanged);
 		// 
 		// tabBasics
 		// 
-		this.tabBasics.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-		this.tabBasics.Location =  new System.Drawing.Point(4, 25);
-		this.tabBasics.Name     =  "tabBasics";
-		this.tabBasics.Size     =  new System.Drawing.Size(464, 227);
-		this.tabBasics.TabIndex =  1;
-		this.tabBasics.Text     =  "Basics";
-		this.tabBasics.Click    += new System.EventHandler(this.tabBasics_Click);
+		this._tabBasics.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+		this._tabBasics.Location =  new System.Drawing.Point(4, 25);
+		this._tabBasics.Name     =  "_tabBasics";
+		this._tabBasics.Size     =  new System.Drawing.Size(464, 227);
+		this._tabBasics.TabIndex =  1;
+		this._tabBasics.Text     =  "Basics";
+		this._tabBasics.Click    += new System.EventHandler(this.tabBasics_Click);
 		// 
 		// tabTransits
 		// 
-		this.tabTransits.Location =  new System.Drawing.Point(4, 25);
-		this.tabTransits.Name     =  "tabTransits";
-		this.tabTransits.Size     =  new System.Drawing.Size(464, 227);
-		this.tabTransits.TabIndex =  4;
-		this.tabTransits.Text     =  "Transits";
-		this.tabTransits.Click    += new System.EventHandler(this.tabTransits_Click);
+		this._tabTransits.Location =  new System.Drawing.Point(4, 25);
+		this._tabTransits.Name     =  "_tabTransits";
+		this._tabTransits.Size     =  new System.Drawing.Size(464, 227);
+		this._tabTransits.TabIndex =  4;
+		this._tabTransits.Text     =  "Transits";
+		this._tabTransits.Click    += new System.EventHandler(this.tabTransits_Click);
 		// 
 		// tabDasa
 		// 
-		this.tabDasa.Location =  new System.Drawing.Point(4, 25);
-		this.tabDasa.Name     =  "tabDasa";
-		this.tabDasa.Size     =  new System.Drawing.Size(464, 227);
-		this.tabDasa.TabIndex =  0;
-		this.tabDasa.Text     =  "Dasas";
-		this.tabDasa.Click    += new System.EventHandler(this.tabDasa_Click);
+		this._tabDasa.Location =  new System.Drawing.Point(4, 25);
+		this._tabDasa.Name     =  "_tabDasa";
+		this._tabDasa.Size     =  new System.Drawing.Size(464, 227);
+		this._tabDasa.TabIndex =  0;
+		this._tabDasa.Text     =  "Dasas";
+		this._tabDasa.Click    += new System.EventHandler(this.tabDasa_Click);
 		// 
 		// tabVargas
 		// 
-		this.tabVargas.Location =  new System.Drawing.Point(4, 25);
-		this.tabVargas.Name     =  "tabVargas";
-		this.tabVargas.Size     =  new System.Drawing.Size(464, 227);
-		this.tabVargas.TabIndex =  2;
-		this.tabVargas.Text     =  "Vargas";
-		this.tabVargas.Click    += new System.EventHandler(this.tabVargas_Click);
+		this._tabVargas.Location =  new System.Drawing.Point(4, 25);
+		this._tabVargas.Name     =  "_tabVargas";
+		this._tabVargas.Size     =  new System.Drawing.Size(464, 227);
+		this._tabVargas.TabIndex =  2;
+		this._tabVargas.Text     =  "Vargas";
+		this._tabVargas.Click    += new System.EventHandler(this.tabVargas_Click);
 		// 
 		// tabPanchanga
 		// 
-		this.tabPanchanga.Location =  new System.Drawing.Point(4, 25);
-		this.tabPanchanga.Name     =  "tabPanchanga";
-		this.tabPanchanga.Size     =  new System.Drawing.Size(464, 227);
-		this.tabPanchanga.TabIndex =  6;
-		this.tabPanchanga.Text     =  "Panchanga";
-		this.tabPanchanga.Click    += new System.EventHandler(this.tabPanchanga_Click);
+		this._tabPanchanga.Location =  new System.Drawing.Point(4, 25);
+		this._tabPanchanga.Name     =  "_tabPanchanga";
+		this._tabPanchanga.Size     =  new System.Drawing.Size(464, 227);
+		this._tabPanchanga.TabIndex =  6;
+		this._tabPanchanga.Text     =  "Panchanga";
+		this._tabPanchanga.Click    += new System.EventHandler(this.tabPanchanga_Click);
 		// 
 		// tabTithiPravesh
 		// 
-		this.tabTithiPravesh.Location = new System.Drawing.Point(4, 25);
-		this.tabTithiPravesh.Name     = "tabTithiPravesh";
-		this.tabTithiPravesh.Size     = new System.Drawing.Size(464, 227);
-		this.tabTithiPravesh.TabIndex = 5;
-		this.tabTithiPravesh.Text     = "TithiPravesh";
+		this._tabTithiPravesh.Location = new System.Drawing.Point(4, 25);
+		this._tabTithiPravesh.Name     = "_tabTithiPravesh";
+		this._tabTithiPravesh.Size     = new System.Drawing.Size(464, 227);
+		this._tabTithiPravesh.TabIndex = 5;
+		this._tabTithiPravesh.Text     = "TithiPravesh";
 		// 
 		// JhoraMainTab
 		// 
-		this.Controls.Add(this.mTab);
+		this.Controls.Add(this._mTab);
 		this.Name = "JhoraMainTab";
 		this.Size = new System.Drawing.Size(472, 256);
-		this.mTab.ResumeLayout(false);
+		this._mTab.ResumeLayout(false);
 		this.ResumeLayout(false);
 	}
 
@@ -243,21 +239,21 @@ public class JhoraMainTab : MhoraControl
 
 	private void mTab_SelectedIndexChanged(object sender, EventArgs e)
 	{
-		if (mTab.SelectedTab == tabTransits && bTabTransitsLoaded == false)
+		if (_mTab.SelectedTab == _tabTransits && _bTabTransitsLoaded == false)
 		{
-			AddControlToTab(tabTransits, new TransitSearch(h));
-			bTabTransitsLoaded = true;
+			AddControlToTab(_tabTransits, new TransitSearch(h));
+			_bTabTransitsLoaded = true;
 			return;
 		}
 
-		if (mTab.SelectedTab == tabDasa && bTabDasaLoaded == false)
+		if (_mTab.SelectedTab == _tabDasa && _bTabDasaLoaded == false)
 		{
 			var mc = new MhoraControl();
-			AddControlToTab(tabDasa, mc);
+			AddControlToTab(_tabDasa, mc);
 
 			//MhoraControlContainer mcc = new MhoraControlContainer(mc);
 			mc.ControlHoroscope = h;
-			switch (h.info.Type)
+			switch (h.Info.Type)
 			{
 				case HoraInfo.ChartType.TithiPravesh:
 					mc.ViewControl(MhoraControlContainer.BaseUserOptions.ViewType.DasaTithiPraveshAshtottariCompressedTithi);
@@ -267,30 +263,30 @@ public class JhoraMainTab : MhoraControl
 					break;
 			}
 
-			bTabDasaLoaded = true;
+			_bTabDasaLoaded = true;
 			return;
 		}
 
-		if (mTab.SelectedTab == tabVargas && bTabVargasLoaded == false)
+		if (_mTab.SelectedTab == _tabVargas && _bTabVargasLoaded == false)
 		{
-			AddControlToTab(tabVargas, new DivisionalChart(h));
-			bTabVargasLoaded = true;
+			AddControlToTab(_tabVargas, new DivisionalChart(h));
+			_bTabVargasLoaded = true;
 		}
 
-		if (mTab.SelectedTab == tabTransits && bTabTransitsLoaded == false)
+		if (_mTab.SelectedTab == _tabTransits && _bTabTransitsLoaded == false)
 		{
-			AddControlToTab(tabTransits, new TransitSearch(h));
-			bTabTransitsLoaded = true;
+			AddControlToTab(_tabTransits, new TransitSearch(h));
+			_bTabTransitsLoaded = true;
 		}
 
-		if (mTab.SelectedTab == tabTithiPravesh && bTabTithiPraveshLoaded == false)
+		if (_mTab.SelectedTab == _tabTithiPravesh && _bTabTithiPraveshLoaded == false)
 		{
 			var dc = new DasaControl(h, new TithiPraveshDasa(h));
 			dc.LinkToHoroscope      = false;
 			dc.DasaOptions.YearType = ToDate.DateType.TithiPraveshYear;
 			dc.Reset();
-			AddControlToTab(tabTithiPravesh, dc);
-			bTabTithiPraveshLoaded = true;
+			AddControlToTab(_tabTithiPravesh, dc);
+			_bTabTithiPraveshLoaded = true;
 		}
 
 		//if (this.mTab.SelectedTab == tabTajaka && this.bTabTajakaLoaded == false)
@@ -298,10 +294,10 @@ public class JhoraMainTab : MhoraControl
 		//	this.AddControlToTab(tabTajaka, new DasaControl(h, new TajakaDasa(h)));
 		//	this.bTabTajakaLoaded = true;		
 		//}
-		if (mTab.SelectedTab == tabPanchanga && bTabPanchangaLoaded == false)
+		if (_mTab.SelectedTab == _tabPanchanga && _bTabPanchangaLoaded == false)
 		{
-			AddControlToTab(tabPanchanga, new PanchangaControl(h));
-			bTabPanchangaLoaded = true;
+			AddControlToTab(_tabPanchanga, new PanchangaControl(h));
+			_bTabPanchangaLoaded = true;
 		}
 	}
 

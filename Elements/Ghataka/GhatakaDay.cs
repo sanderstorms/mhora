@@ -16,13 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using Mhora.Tables;
-
 namespace Mhora.Elements.Ghataka;
 
 public class GhatakaDay
 {
-	public static bool checkDay(ZodiacHouse janmaRasi, Tables.Hora.Weekday wd)
+	public static bool CheckDay(ZodiacHouse janmaRasi, Tables.Hora.Weekday wd)
 	{
 		var ja = janmaRasi.Sign;
 		var gh = Tables.Hora.Weekday.Sunday;

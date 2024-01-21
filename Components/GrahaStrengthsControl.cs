@@ -28,7 +28,6 @@ using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
 using mhora.Util;
-using Mhora.Util;
 
 namespace Mhora.Components;
 
@@ -75,10 +74,7 @@ public class GrahaStrengthsControl : Form
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);

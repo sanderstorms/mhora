@@ -17,10 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
-using Mhora.Tables;
 
 namespace Mhora.Elements.Dasas.Rasi;
 
@@ -35,12 +33,12 @@ public class CharaDasa : Dasa, IDasa
 		options = new RasiDasaUserOptions(h, FindStronger.RulesNavamsaDasaRasi(h));
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 144;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 		options.recalculate();
 	}
@@ -77,17 +75,17 @@ public class CharaDasa : Dasa, IDasa
 		for (var i = 0; i < 12; i++)
 		{
 			var df          = (DasaEntry) al[i];
-			var dasa_length = 12.0 - df.dasaLength;
-			var di          = new DasaEntry(df.zodiacHouse, dasa_length_sum, dasa_length, 1, df.shortDesc);
+			var dasa_length = 12.0 - df.DasaLength;
+			var di          = new DasaEntry(df.ZHouse, dasa_length_sum, dasa_length, 1, df.DasaName);
 			al.Add(di);
 			dasa_length_sum += dasa_length;
 		}
 
 
-		var cycle_length = cycle * paramAyus();
+		var cycle_length = cycle * ParamAyus();
 		foreach (DasaEntry di in al)
 		{
-			di.startUT += cycle_length;
+			di.StartUT += cycle_length;
 		}
 
 		return al;
@@ -141,6 +139,6 @@ public class CharaDasa : Dasa, IDasa
 			b = zh.Sign.SimpleLordOfZodiacHouse();
 		}
 
-		return h.getPosition(b).toDivisionPosition(options.Division);
+		return h.GetPosition(b).ToDivisionPosition(options.Division);
 	}
 }

@@ -17,8 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 
-using Mhora.Tables;
-
 namespace Mhora.Elements;
 
 public static class Karanas
@@ -87,19 +85,19 @@ public static class Karanas
 		Naga
 	}
 
-	public static Karana add(this Karana value, int i)
+	public static Karana Add(this Karana value, int i)
 	{
-		var tnum = Basics.normalize_inc(1, 60, (int) value + i - 1);
+		var tnum = Basics.NormalizeInc(1, 60, (int) value + i - 1);
 		return (Karana) tnum;
 	}
 
-	public static Karana addReverse(this Karana value, int i)
+	public static Karana AddReverse(this Karana value, int i)
 	{
-		var tnum = Basics.normalize_inc(1, 60, (int) value - i + 1);
+		var tnum = Basics.NormalizeInc(1, 60, (int) value - i + 1);
 		return (Karana) tnum;
 	}
 
-	public static Body.BodyType getLord(this Karana value)
+	public static Body.BodyType GetLord(this Karana value)
 	{
 		switch (value)
 		{
@@ -109,7 +107,7 @@ public static class Karanas
 			case Karana.Naga:        return Body.BodyType.Venus;
 			default:
 			{
-				var vn = Basics.normalize_inc(1, 7, (int) value - 1);
+				var vn = Basics.NormalizeInc(1, 7, (int) value - 1);
 				switch (vn)
 				{
 					case 1:  return Body.BodyType.Sun;

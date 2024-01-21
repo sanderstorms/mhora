@@ -111,7 +111,7 @@ public static class Tithis
 
 	public static Tithi ToTithi(this int index)
 	{
-		return (Tithi) Basics.normalize_inc(1, 30, index);
+		return (Tithi) Basics.NormalizeInc(1, 30, index);
 	}
 
 	public static NandaType ToNandaType(this Tithi tithi)
@@ -199,13 +199,13 @@ public static class Tithis
 
 	public static Tithi Add(this Tithi tithi, int i)
 	{
-		var tnum = Basics.normalize_inc(1, 30, tithi.Index() + i - 1);
+		var tnum = Basics.NormalizeInc(1, 30, tithi.Index() + i - 1);
 		return (Tithi)tnum;
 	}
 
 	public static Tithi AddReverse(this Tithi tithi, int i)
 	{
-		var tnum = Basics.normalize_inc(1, 30, tithi.Index() - i + 1);
+		var tnum = Basics.NormalizeInc(1, 30, tithi.Index() - i + 1);
 		return (Tithi)tnum;
 	}
 

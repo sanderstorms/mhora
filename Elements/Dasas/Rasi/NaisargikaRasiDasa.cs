@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Components.Property;
 using Mhora.Elements.Calculation;
 
@@ -35,11 +34,11 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 		options = new UserOptions();
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		switch (options.ParamAyus)
 		{
@@ -74,10 +73,10 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 		};
 		var al = new ArrayList(9);
 
-		var    cycle_start = paramAyus() * cycle;
+		var    cycle_start = ParamAyus() * cycle;
 		var    curr        = 0.0;
 		double dasa_length;
-		var    zlagna = h.getPosition(Body.BodyType.Lagna).longitude.toZodiacHouse();
+		var    zlagna = h.GetPosition(Body.BodyType.Lagna).Longitude.ToZodiacHouse();
 		for (var i = 0; i < 12; i++)
 		{
 			var zh = zlagna.Add(order[i]);

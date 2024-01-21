@@ -117,16 +117,16 @@ public static partial class sweph
 
 		if (IntPtr.Size == 4)
 		{
-			ret = SwephDll.Swe32.swe_calc_ut(tjd_ut, ipl, h.iflag | addFlags, xx, serr);
+			ret = SwephDll.Swe32.swe_calc_ut(tjd_ut, ipl, h.Iflag | addFlags, xx, serr);
 		}
 		else
 		{
-			ret = SwephDll.Swe64.swe_calc_ut(tjd_ut, ipl, h.iflag | addFlags, xx, serr);
+			ret = SwephDll.Swe64.swe_calc_ut(tjd_ut, ipl, h.Iflag | addFlags, xx, serr);
 		}
 
 		if (ret >= 0)
 		{
-			xx[0] += h.options.AyanamsaOffset.toDouble();
+			xx[0] += h.Options.AyanamsaOffset.toDouble();
 		}
 
 		return ret;
@@ -139,16 +139,16 @@ public static partial class sweph
 
 		if (IntPtr.Size == 4)
 		{
-			ret = SwephDll.Swe32.swe_calc(tjd_ut, ipl, h.iflag | addFlags, xx, serr);
+			ret = SwephDll.Swe32.swe_calc(tjd_ut, ipl, h.Iflag | addFlags, xx, serr);
 		}
 		else
 		{
-			ret = SwephDll.Swe64.swe_calc(tjd_ut, ipl, h.iflag | addFlags, xx, serr);
+			ret = SwephDll.Swe64.swe_calc(tjd_ut, ipl, h.Iflag | addFlags, xx, serr);
 		}
 
 		if (ret >= 0)
 		{
-			xx[0] += h.options.AyanamsaOffset.toDouble();
+			xx[0] += h.Options.AyanamsaOffset.toDouble();
 		}
 
 		return ret;
@@ -229,10 +229,10 @@ public static partial class sweph
 
 		if (IntPtr.Size == 4)
 		{
-			return SwephDll.Swe32.swe_sol_eclipse_when_glob(tjd_ut, h.iflag, 0, tret, !forward, serr);
+			return SwephDll.Swe32.swe_sol_eclipse_when_glob(tjd_ut, h.Iflag, 0, tret, !forward, serr);
 		}
 
-		return SwephDll.Swe64.swe_sol_eclipse_when_glob(tjd_ut, h.iflag, 0, tret, !forward, serr);
+		return SwephDll.Swe64.swe_sol_eclipse_when_glob(tjd_ut, h.Iflag, 0, tret, !forward, serr);
 	}
 
 	public static int SolEclipseWhenLoc(this Horoscope h, double tjd_ut, double[] tret, double[] attr, bool forward)
@@ -240,17 +240,17 @@ public static partial class sweph
 		var serr = new StringBuilder(256);
 		var geopos = new double[3]
 		{
-			h.info.Longitude,
-			h.info.Latitude,
-			h.info.Altitude
+			h.Info.Longitude,
+			h.Info.Latitude,
+			h.Info.Altitude
 		};
 
 		if (IntPtr.Size == 4)
 		{
-			return SwephDll.Swe32.swe_sol_eclipse_when_loc(tjd_ut, h.iflag, geopos, tret, attr, !forward, serr);
+			return SwephDll.Swe32.swe_sol_eclipse_when_loc(tjd_ut, h.Iflag, geopos, tret, attr, !forward, serr);
 		}
 
-		return SwephDll.Swe64.swe_sol_eclipse_when_loc(tjd_ut, h.iflag, geopos, tret, attr, !forward, serr);
+		return SwephDll.Swe64.swe_sol_eclipse_when_loc(tjd_ut, h.Iflag, geopos, tret, attr, !forward, serr);
 	}
 
 	public static void LunEclipseWhen(this Horoscope h, double tjd_ut, double[] tret, bool forward)
@@ -260,11 +260,11 @@ public static partial class sweph
 
 		if (IntPtr.Size == 4)
 		{
-			ret = SwephDll.Swe32.swe_lun_eclipse_when(tjd_ut, h.iflag, 0, tret, !forward, serr);
+			ret = SwephDll.Swe32.swe_lun_eclipse_when(tjd_ut, h.Iflag, 0, tret, !forward, serr);
 		}
 		else
 		{
-			ret = SwephDll.Swe64.swe_lun_eclipse_when(tjd_ut, h.iflag, 0, tret, !forward, serr);
+			ret = SwephDll.Swe64.swe_lun_eclipse_when(tjd_ut, h.Iflag, 0, tret, !forward, serr);
 		}
 
 		if (ret < 0)
@@ -668,10 +668,10 @@ public static partial class sweph
 
 		if (IntPtr.Size == 4)
 		{
-			return SwephDll.Swe32.swe_rise_trans(tjd_ut, ipl, string.Empty, h.iflag, SE_CALC_RISE | rsflag, geopos, atpress, attemp, ref tret, serr);
+			return SwephDll.Swe32.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, SE_CALC_RISE | rsflag, geopos, atpress, attemp, ref tret, serr);
 		}
 
-		return SwephDll.Swe64.swe_rise_trans(tjd_ut, ipl, string.Empty, h.iflag, SE_CALC_RISE | rsflag, geopos, atpress, attemp, ref tret, serr);
+		return SwephDll.Swe64.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, SE_CALC_RISE | rsflag, geopos, atpress, attemp, ref tret, serr);
 	}
 
 	public static int Set(this Horoscope h, double tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, ref double tret)
@@ -680,10 +680,10 @@ public static partial class sweph
 
 		if (IntPtr.Size == 4)
 		{
-			return SwephDll.Swe32.swe_rise_trans(tjd_ut, ipl, string.Empty, h.iflag, SE_CALC_SET | rsflag, geopos, atpress, attemp, ref tret, serr);
+			return SwephDll.Swe32.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, SE_CALC_SET | rsflag, geopos, atpress, attemp, ref tret, serr);
 		}
 
-		return SwephDll.Swe64.swe_rise_trans(tjd_ut, ipl, string.Empty, h.iflag, SE_CALC_SET | rsflag, geopos, atpress, attemp, ref tret, serr);
+		return SwephDll.Swe64.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, SE_CALC_SET | rsflag, geopos, atpress, attemp, ref tret, serr);
 	}
 
 	public static int Lmt(this Horoscope h, double tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, ref double tret)
@@ -692,10 +692,10 @@ public static partial class sweph
 
 		if (IntPtr.Size == 4)
 		{
-			return SwephDll.Swe32.swe_rise_trans(tjd_ut, ipl, string.Empty, h.iflag, rsflag, geopos, atpress, attemp, ref tret, serr);
+			return SwephDll.Swe32.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, rsflag, geopos, atpress, attemp, ref tret, serr);
 		}
 
-		return SwephDll.Swe64.swe_rise_trans(tjd_ut, ipl, string.Empty, h.iflag, rsflag, geopos, atpress, attemp, ref tret, serr);
+		return SwephDll.Swe64.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, rsflag, geopos, atpress, attemp, ref tret, serr);
 	}
 
 
@@ -712,18 +712,18 @@ public static partial class sweph
 			ret = SwephDll.Swe64.swe_houses_ex(tjd_ut, iflag, lat, lon, hsys, cusps, ascmc);
 		}
 
-		var lOffset = new Longitude(h.options.AyanamsaOffset.toDouble());
+		var lOffset = new Longitude(h.Options.AyanamsaOffset.toDouble());
 
 		// House cusps defined from 1 to 12 inclusive as per sweph docs
 		// Ascendants defined from 0 to 7 inclusive as per sweph docs
 		for (var i = 1; i <= 12; i++)
 		{
-			cusps[i] = new Longitude(cusps[i]).add(lOffset).value;
+			cusps[i] = new Longitude(cusps[i]).Add(lOffset).Value;
 		}
 
 		for (var i = 0; i <= 7; i++)
 		{
-			ascmc[i] = new Longitude(ascmc[i]).add(lOffset).value;
+			ascmc[i] = new Longitude(ascmc[i]).Add(lOffset).Value;
 		}
 
 		return ret;
@@ -731,7 +731,7 @@ public static partial class sweph
 
 	public static double Lagna(this Horoscope h, double tjd_ut)
 	{
-		var hi    = h.info;
+		var hi    = h.Info;
 		var cusps = new double[13];
 		var ascmc = new double[10];
 		var ret   = h.HousesEx(tjd_ut, SEFLG_SIDEREAL, hi.Latitude, hi.Longitude, 'R', cusps, ascmc);

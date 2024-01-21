@@ -17,7 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Elements.Dasas.Nakshatra;
@@ -48,9 +47,9 @@ public class KaranaChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa, INaksha
 
 	public ArrayList Dasa(int cycle)
 	{
-		var mMoon = h.getPosition(Body.BodyType.Moon).longitude;
-		var mSun  = h.getPosition(Body.BodyType.Sun).longitude;
-		return _KaranaDasa(mMoon.sub(mSun), 1, cycle);
+		var mMoon = h.GetPosition(Body.BodyType.Moon).Longitude;
+		var mSun  = h.GetPosition(Body.BodyType.Sun).Longitude;
+		return _KaranaDasa(mMoon.Sub(mSun), 1, cycle);
 	}
 
 	public ArrayList AntarDasa(DasaEntry di)
@@ -63,33 +62,33 @@ public class KaranaChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa, INaksha
 		return "Karana Chaturashiti-Sama Dasa";
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
-		return cd.paramAyus();
+		return cd.ParamAyus();
 	}
 
-	public int numberOfDasaItems()
+	public int NumberOfDasaItems()
 	{
-		return cd.numberOfDasaItems();
+		return cd.NumberOfDasaItems();
 	}
 
-	public DasaEntry nextDasaLord(DasaEntry di)
+	public DasaEntry NextDasaLord(DasaEntry di)
 	{
-		return cd.nextDasaLord(di);
+		return cd.NextDasaLord(di);
 	}
 
-	public double lengthOfDasa(Body.BodyType plt)
+	public double LengthOfDasa(Body.BodyType plt)
 	{
-		return cd.lengthOfDasa(plt);
+		return cd.LengthOfDasa(plt);
 	}
 
-	public Body.BodyType lordOfNakshatra(Nakshatras.Nakshatra n)
+	public Body.BodyType LordOfNakshatra(Nakshatras.Nakshatra n)
 	{
-		return cd.lordOfNakshatra(n);
+		return cd.LordOfNakshatra(n);
 	}
 
-	public Body.BodyType lordOfKarana(Longitude l)
+	public Body.BodyType LordOfKarana(Longitude l)
 	{
-		return l.toKarana().getLord();
+		return l.ToKarana().GetLord();
 	}
 }

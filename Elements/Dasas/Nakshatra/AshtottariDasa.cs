@@ -18,19 +18,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using System.Diagnostics;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Elements.Dasas.Nakshatra;
 
 public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 {
-	private readonly Horoscope h;
+	private readonly Horoscope _h;
 
-	public AshtottariDasa(Horoscope _h)
+	public AshtottariDasa(Horoscope horoscope)
 	{
 		common = this;
-		h      = _h;
+		_h      = horoscope;
 	}
 
 	public override object GetOptions()
@@ -45,7 +44,7 @@ public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		return _Dasa(h.getPosition(Body.BodyType.Moon).longitude, 1, cycle);
+		return _Dasa(_h.GetPosition(Body.BodyType.Moon).Longitude, 1, cycle);
 	}
 
 	public ArrayList AntarDasa(DasaEntry di)
@@ -58,22 +57,22 @@ public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 		return "Ashtottari Dasa";
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 108.0;
 	}
 
-	public int numberOfDasaItems()
+	public int NumberOfDasaItems()
 	{
 		return 8;
 	}
 
-	public DasaEntry nextDasaLord(DasaEntry di)
+	public DasaEntry NextDasaLord(DasaEntry di)
 	{
-		return new DasaEntry(nextDasaLordHelper(di.graha), 0, 0, di.level, string.Empty);
+		return new DasaEntry(NextDasaLordHelper(di.Graha), 0, 0, di.Level, string.Empty);
 	}
 
-	public double lengthOfDasa(Body.BodyType plt)
+	public double LengthOfDasa(Body.BodyType plt)
 	{
 		switch (plt)
 		{
@@ -87,11 +86,11 @@ public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 			case Body.BodyType.Venus:   return 21;
 		}
 
-		Trace.Assert(false, "Ashtottari::lengthOfDasa");
+		Trace.Assert(false, "Ashtottari::LengthOfDasa");
 		return 0;
 	}
 
-	public Body.BodyType lordOfNakshatra(Nakshatras.Nakshatra n)
+	public Body.BodyType LordOfNakshatra(Nakshatras.Nakshatra n)
 	{
 		switch (n)
 		{
@@ -124,11 +123,11 @@ public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 			case Nakshatras.Nakshatra.Revati:         return Body.BodyType.Rahu;
 		}
 
-		Trace.Assert(false, "AshtottariDasa::LordOfNakshatra");
+		Trace.Assert(false, "AshtottariDasa::NakshatraLord");
 		return Body.BodyType.Lagna;
 	}
 
-	private Body.BodyType nextDasaLordHelper(Body.BodyType b)
+	private Body.BodyType NextDasaLordHelper(Body.BodyType b)
 	{
 		switch (b)
 		{
@@ -142,7 +141,7 @@ public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 			case Body.BodyType.Venus:   return Body.BodyType.Sun;
 		}
 
-		Trace.Assert(false, "AshtottariDasa::nextDasaLord");
+		Trace.Assert(false, "AshtottariDasa::NextDasaLord");
 		return Body.BodyType.Lagna;
 	}
 }

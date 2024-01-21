@@ -24,25 +24,25 @@ public class KutaVedha
 {
 	public enum EType
 	{
-		IAswJye,
-		IBhaAnu,
-		IKriVis,
-		IRohSwa,
-		IAriSra,
-		IPunUsh,
-		IPusPsh,
-		IAslMoo,
-		IMakRev,
-		IPphUbh,
-		IUphPbh,
-		IHasSat,
-		IMriDha,
-		IChi
+		AswJye,
+		BhaAnu,
+		KriVis,
+		RohSwa,
+		AriSra,
+		PunUsh,
+		PusPsh,
+		AslMoo,
+		MakRev,
+		PphUbh,
+		UphPbh,
+		HasSat,
+		MriDha,
+		Chi
 	}
 
-	public static int getScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
+	public static int GetScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
 	{
-		if (getType(m) == getType(n))
+		if (GetType(m) == GetType(n))
 		{
 			return 0;
 		}
@@ -50,45 +50,45 @@ public class KutaVedha
 		return 1;
 	}
 
-	public static int getMaxScore()
+	public static int GetMaxScore()
 	{
 		return 1;
 	}
 
-	public static EType getType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatras.Nakshatra n)
 	{
 		switch (n)
 		{
 			case Nakshatras.Nakshatra.Aswini:
-			case Nakshatras.Nakshatra.Jyestha: return EType.IAswJye;
+			case Nakshatras.Nakshatra.Jyestha: return EType.AswJye;
 			case Nakshatras.Nakshatra.Bharani:
-			case Nakshatras.Nakshatra.Anuradha: return EType.IBhaAnu;
+			case Nakshatras.Nakshatra.Anuradha: return EType.BhaAnu;
 			case Nakshatras.Nakshatra.Krittika:
-			case Nakshatras.Nakshatra.Vishaka: return EType.IKriVis;
+			case Nakshatras.Nakshatra.Vishaka: return EType.KriVis;
 			case Nakshatras.Nakshatra.Rohini:
-			case Nakshatras.Nakshatra.Swati: return EType.IRohSwa;
+			case Nakshatras.Nakshatra.Swati: return EType.RohSwa;
 			case Nakshatras.Nakshatra.Aridra:
-			case Nakshatras.Nakshatra.Sravana: return EType.IAriSra;
+			case Nakshatras.Nakshatra.Sravana: return EType.AriSra;
 			case Nakshatras.Nakshatra.Punarvasu:
-			case Nakshatras.Nakshatra.UttaraShada: return EType.IPunUsh;
+			case Nakshatras.Nakshatra.UttaraShada: return EType.PunUsh;
 			case Nakshatras.Nakshatra.Pushya:
-			case Nakshatras.Nakshatra.PoorvaShada: return EType.IPusPsh;
+			case Nakshatras.Nakshatra.PoorvaShada: return EType.PusPsh;
 			case Nakshatras.Nakshatra.Aslesha:
-			case Nakshatras.Nakshatra.Moola: return EType.IAslMoo;
+			case Nakshatras.Nakshatra.Moola: return EType.AslMoo;
 			case Nakshatras.Nakshatra.Makha:
-			case Nakshatras.Nakshatra.Revati: return EType.IMakRev;
+			case Nakshatras.Nakshatra.Revati: return EType.MakRev;
 			case Nakshatras.Nakshatra.PoorvaPhalguni:
-			case Nakshatras.Nakshatra.UttaraBhadra: return EType.IPphUbh;
+			case Nakshatras.Nakshatra.UttaraBhadra: return EType.PphUbh;
 			case Nakshatras.Nakshatra.UttaraPhalguni:
-			case Nakshatras.Nakshatra.PoorvaBhadra: return EType.IUphPbh;
+			case Nakshatras.Nakshatra.PoorvaBhadra: return EType.UphPbh;
 			case Nakshatras.Nakshatra.Hasta:
-			case Nakshatras.Nakshatra.Satabisha: return EType.IHasSat;
+			case Nakshatras.Nakshatra.Satabisha: return EType.HasSat;
 			case Nakshatras.Nakshatra.Mrigarirsa:
-			case Nakshatras.Nakshatra.Dhanishta: return EType.IMriDha;
-			case Nakshatras.Nakshatra.Chittra: return EType.IChi;
+			case Nakshatras.Nakshatra.Dhanishta: return EType.MriDha;
+			case Nakshatras.Nakshatra.Chittra: return EType.Chi;
 		}
 
 		Debug.Assert(false, "KutaVedha::getType");
-		return EType.IAriSra;
+		return EType.AriSra;
 	}
 }

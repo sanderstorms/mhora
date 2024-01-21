@@ -17,9 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
-using Mhora.Database.Settings;
 using Mhora.SwissEph;
-using Mhora.Tables;
 
 namespace Mhora.Elements.Calculation;
 
@@ -42,16 +40,16 @@ public class Retrogression
 		switch (b)
 		{
 			case Body.BodyType.Mars:
-				start.value = 211;
-				end.value   = 232;
+				start.Value = 211;
+				end.Value   = 232;
 				break;
 			case Body.BodyType.Jupiter:
-				start.value = 240;
-				end.value   = 248;
+				start.Value = 240;
+				end.Value   = 248;
 				break;
 			case Body.BodyType.Saturn:
-				start.value = 248;
-				end.value   = 253;
+				start.Value = 248;
+				end.Value   = 253;
 				break;
 		}
 	}
@@ -78,14 +76,14 @@ public class Retrogression
 	public double FindClosestTransit(double ut, Longitude lonToFind)
 	{
 		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
-		while (Transit.CircLonLessThan(bp.longitude, lonToFind))
+		while (Transit.CircLonLessThan(bp.Longitude, lonToFind))
 		{
 			//mhora.Log.Debug("- {0} {1}", bp.longitude.value, lonToFind.value);
 			ut++;
 			bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
 		}
 
-		while (Transit.CircLonLessThan(lonToFind, bp.longitude))
+		while (Transit.CircLonLessThan(lonToFind, bp.Longitude))
 		{
 			//mhora.Log.Debug("+ {0} {1}", bp.longitude.value, lonToFind.value);
 			ut--;
@@ -123,13 +121,13 @@ public class Retrogression
 
 			//mhora.Log.Debug ("{0}, {1}, {2}", becomesDirect, bp_curr.longitude, bp_next.longitude);
 
-			if (false == becomesDirect && lonToFind.sub(bp_curr.longitude).value <= bp_next.longitude.sub(bp_curr.longitude).value)
+			if (false == becomesDirect && lonToFind.Sub(bp_curr.Longitude).Value <= bp_next.Longitude.Sub(bp_curr.Longitude).Value)
 			{
 				//mhora.Log.Debug ("+ Found {0} between {1} and {2}", lonToFind, bp_curr.longitude, bp_next.longitude);
 				break;
 			}
 
-			if (becomesDirect && lonToFind.sub(bp_next.longitude).value <= bp_curr.longitude.sub(bp_next.longitude).value)
+			if (becomesDirect && lonToFind.Sub(bp_next.Longitude).Value <= bp_curr.Longitude.Sub(bp_next.Longitude).Value)
 			{
 				//mhora.Log.Debug ("- Found {0} betweeen {1} and {2}", lonToFind, bp_next.longitude, bp_curr.longitude);
 				break;
@@ -171,7 +169,7 @@ public class Retrogression
 			//mhora.Log.Debug ("F {3} Lagna search for {0} between {1} and {2}",
 			//lonToFind, lon_start, lon_end, m);
 
-			if (lonToFind.sub(lon_start).value <= lon_end.sub(lon_start).value)
+			if (lonToFind.Sub(lon_start).Value <= lon_end.Sub(lon_start).Value)
 			{
 				break;
 			}
@@ -201,7 +199,7 @@ public class Retrogression
 			//mhora.Log.Debug ("B {3} Lagna search for {0} between {1} and {2}",
 			//lonToFind, lon_start, lon_end, m);
 
-			if (lonToFind.sub(lon_end).value <= lon_start.sub(lon_end).value)
+			if (lonToFind.Sub(lon_end).Value <= lon_start.Sub(lon_end).Value)
 			{
 				break;
 			}
@@ -239,13 +237,13 @@ public class Retrogression
 
 			//mhora.Log.Debug ("{0}, {1}, {2}", becomesDirect, bp_curr.longitude, bp_next.longitude);
 
-			if (false == becomesDirect && lonToFind.sub(bp_curr.longitude).value <= bp_next.longitude.sub(bp_curr.longitude).value)
+			if (false == becomesDirect && lonToFind.Sub(bp_curr.Longitude).Value <= bp_next.Longitude.Sub(bp_curr.Longitude).Value)
 			{
 				//mhora.Log.Debug ("+ Found {0} between {1} and {2}", lonToFind, bp_curr.longitude, bp_next.longitude);
 				break;
 			}
 
-			if (becomesDirect && lonToFind.sub(bp_next.longitude).value <= bp_curr.longitude.sub(bp_next.longitude).value)
+			if (becomesDirect && lonToFind.Sub(bp_next.Longitude).Value <= bp_curr.Longitude.Sub(bp_next.Longitude).Value)
 			{
 				//mhora.Log.Debug ("- Found {0} betweeen {1} and {2}", lonToFind, bp_next.longitude, bp_curr.longitude);
 				break;
@@ -264,7 +262,7 @@ public class Retrogression
 	public double GetSpeed(double ut)
 	{
 		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
-		return bp.speed_longitude;
+		return bp.SpeedLongitude;
 	}
 
 	public Longitude GetLon(double ut, ref bool bForward)
@@ -275,14 +273,14 @@ public class Retrogression
 		}
 
 		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
-		bForward = bp.speed_longitude >= 0;
-		return bp.longitude;
+		bForward = bp.SpeedLongitude >= 0;
+		return bp.Longitude;
 	}
 
 	public Longitude GetLon(double ut)
 	{
 		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
-		return bp.longitude;
+		return bp.Longitude;
 	}
 
 	public double BinaryLonSearch(double ut_start, double ut_end, Longitude lon_to_find, bool normal)
@@ -315,7 +313,7 @@ public class Retrogression
 
 		if (normal)
 		{
-			if (lon_to_find.sub(lon_start).value <= lon_middle.sub(lon_start).value)
+			if (lon_to_find.Sub(lon_start).Value <= lon_middle.Sub(lon_start).Value)
 			{
 				return BinaryLonSearch(ut_start, ut_middle, lon_to_find, normal);
 			}
@@ -323,7 +321,7 @@ public class Retrogression
 			return BinaryLonSearch(ut_middle, ut_end, lon_to_find, normal);
 		}
 
-		if (lon_to_find.sub(lon_end).value <= lon_middle.sub(lon_end).value)
+		if (lon_to_find.Sub(lon_end).Value <= lon_middle.Sub(lon_end).Value)
 		{
 			return BinaryLonSearch(ut_middle, ut_end, lon_to_find, normal);
 		}
@@ -379,7 +377,7 @@ public class Retrogression
 		var bp      = h.CalculateSingleBodyPosition(start_ut, b.SwephBody(), b, Body.Type.Other);
 
 		// Body is currently direct
-		if (bp.speed_longitude >= 0)
+		if (bp.SpeedLongitude >= 0)
 		{
 			start_ut = GotoNextRetroSolarCusp(start_ut);
 			var lower_ut  = start_ut;
@@ -397,12 +395,12 @@ public class Retrogression
 				//mhora.Log.Debug ("DChecking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
 				// If first one is retro, we're exactly at the cusp
 				// If higher is still direct, contine
-				if (bp_l.speed_longitude < 0 && bp_h.speed_longitude > 0)
+				if (bp_l.SpeedLongitude < 0 && bp_h.SpeedLongitude > 0)
 				{
 					break;
 				}
 
-				if (bp_l.speed_longitude > 0 && bp_h.speed_longitude < 0)
+				if (bp_l.SpeedLongitude > 0 && bp_h.SpeedLongitude < 0)
 				{
 					break;
 				}
@@ -429,12 +427,12 @@ public class Retrogression
 				var bp_h = h.CalculateSingleBodyPosition(higher_ut, b.SwephBody(), b, Body.Type.Other);
 
 				//mhora.Log.Debug ("R Checking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
-				if (bp_l.speed_longitude > 0 && bp_h.speed_longitude <= 0)
+				if (bp_l.SpeedLongitude > 0 && bp_h.SpeedLongitude <= 0)
 				{
 					break;
 				}
 
-				if (bp_l.speed_longitude < 0 && bp_h.speed_longitude > 0)
+				if (bp_l.SpeedLongitude < 0 && bp_h.SpeedLongitude > 0)
 				{
 					break;
 				}
@@ -453,7 +451,7 @@ public class Retrogression
 		var bp      = h.CalculateSingleBodyPosition(start_ut, b.SwephBody(), b, Body.Type.Other);
 
 		// Body is currently direct
-		if (bp.speed_longitude >= 0)
+		if (bp.SpeedLongitude >= 0)
 		{
 			start_ut = GotoNextRetroSolarCusp(start_ut);
 			var lower_ut  = start_ut;
@@ -471,12 +469,12 @@ public class Retrogression
 				//mhora.Log.Debug ("DChecking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
 				// If first one is retro, we're exactly at the cusp
 				// If higher is still direct, contine
-				if (bp_l.speed_longitude > 0 && bp_h.speed_longitude < 0)
+				if (bp_l.SpeedLongitude > 0 && bp_h.SpeedLongitude < 0)
 				{
 					break;
 				}
 
-				if (bp_l.speed_longitude < 0 && bp_h.speed_longitude < 0)
+				if (bp_l.SpeedLongitude < 0 && bp_h.SpeedLongitude < 0)
 				{
 					return findNextCuspForward(lower_ut, ref becomesDirect);
 				}
@@ -501,12 +499,12 @@ public class Retrogression
 				var bp_h = h.CalculateSingleBodyPosition(higher_ut, b.SwephBody(), b, Body.Type.Other);
 
 				//mhora.Log.Debug ("R Checking daily {0} UT: {1} {2} Speed {3} {4}", b, lower_ut, higher_ut, bp_l.speed_longitude, bp_h.speed_longitude);
-				if (bp_l.speed_longitude < 0 && bp_h.speed_longitude >= 0)
+				if (bp_l.SpeedLongitude < 0 && bp_h.SpeedLongitude >= 0)
 				{
 					break;
 				}
 
-				if (bp_l.speed_longitude > 0 && bp_h.speed_longitude > 0)
+				if (bp_l.SpeedLongitude > 0 && bp_h.SpeedLongitude > 0)
 				{
 					return findNextCuspForward(lower_ut, ref becomesDirect);
 				}

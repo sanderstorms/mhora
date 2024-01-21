@@ -33,7 +33,7 @@ public class ChartItems
 
 	public void Add(DivisionPosition dp)
 	{
-		if (_items.TryGetValue(dp.zodiac_house.Sign, out var dpList))
+		if (_items.TryGetValue(dp.ZodiacHouse.Sign, out var dpList))
 		{
 			dpList.Add(dp);
 		}
@@ -43,7 +43,7 @@ public class ChartItems
 			{
 				dp
 			};
-			_items.Add(dp.zodiac_house.Sign, dpList);
+			_items.Add(dp.ZodiacHouse.Sign, dpList);
 		}
 	}
 }

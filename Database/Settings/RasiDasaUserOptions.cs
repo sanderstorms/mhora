@@ -207,7 +207,7 @@ public class RasiDasaUserOptions : ICloneable
 
 	public void calculateSeed()
 	{
-		mSeed      = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(Division).zodiac_house.Sign;
+		mSeed      = h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(Division).ZodiacHouse.Sign;
 		mSeedHouse = 1;
 	}
 
@@ -223,8 +223,8 @@ public class RasiDasaUserOptions : ICloneable
 		KetuExceptions.houses.Clear();
 		SaturnExceptions.houses.Clear();
 
-		var zhKetu = h.getPosition(Body.BodyType.Ketu).toDivisionPosition(Division).zodiac_house.Sign;
-		var zhSat  = h.getPosition(Body.BodyType.Saturn).toDivisionPosition(Division).zodiac_house.Sign;
+		var zhKetu = h.GetPosition(Body.BodyType.Ketu).ToDivisionPosition(Division).ZodiacHouse.Sign;
+		var zhSat  = h.GetPosition(Body.BodyType.Saturn).ToDivisionPosition(Division).ZodiacHouse.Sign;
 
 		if (zhKetu != zhSat)
 		{

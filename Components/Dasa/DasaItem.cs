@@ -26,53 +26,53 @@ namespace Mhora.Components.Dasa;
 
 /// <summary>
 ///     Specifies a DasaItem which can be used by any of the Dasa Systems.
-///     Hence it includes _both_ a graha and zodiacHouse in order to be used
+///     Hence it includes _both_ a Graha and zodiacHouse in order to be used
 ///     by systems which Graha dasas and Rasi bhukti's and vice-versa. The logic
 ///     should be checked carefully
 /// </summary>
 public class DasaItem : ListViewItem
 {
-	public DasaEntry entry;
+	public DasaEntry Entry;
 	public string    EventDesc;
 
-	public DasaItem(DasaEntry _entry)
+	public DasaItem(DasaEntry entry)
 	{
-		entry = _entry;
+		Entry = entry;
 	}
 
-	public DasaItem(Body.BodyType _graha, double _startUT, double _dasaLength, int _level, string _shortDesc)
+	public DasaItem(Body.BodyType graha, double startUt, double dasaLength, int level, string shortDesc)
 	{
-		Construct(new DasaEntry(_graha, _startUT, _dasaLength, _level, _shortDesc));
+		Construct(new DasaEntry(graha, startUt, dasaLength, level, shortDesc));
 	}
 
-	public DasaItem(ZodiacHouse.Rasi _zodiacHouse, double _startUT, double _dasaLength, int _level, string _shortDesc)
+	public DasaItem(ZodiacHouse.Rasi zodiacHouse, double startUt, double dasaLength, int level, string shortDesc)
 	{
-		Construct(new DasaEntry(_zodiacHouse, _startUT, _dasaLength, _level, _shortDesc));
+		Construct(new DasaEntry(zodiacHouse, startUt, dasaLength, level, shortDesc));
 	}
 
-	public void populateListViewItemMembers(ToDate td, IDasa id)
+	public void PopulateListViewItemMembers(ToDate td, IDasa id)
 	{
 		UseItemStyleForSubItems = false;
 
 		//this.Text = entry.shortDesc;
 		Font      = MhoraGlobalOptions.Instance.GeneralFont;
 		ForeColor = MhoraGlobalOptions.Instance.DasaPeriodColor;
-		var m          = td.AddYears(entry.startUT);
-		var m2         = td.AddYears(entry.startUT + entry.dasaLength);
+		var m          = td.AddYears(Entry.StartUT);
+		var m2         = td.AddYears(Entry.StartUT + Entry.DasaLength);
 		var sDateRange = m + " - " + m2;
-		for (var i = 1; i < entry.level; i++)
+		for (var i = 1; i < Entry.Level; i++)
 		{
 			sDateRange = " " + sDateRange;
 		}
 
 		SubItems.Add(sDateRange);
-		Text                  = entry.shortDesc + id.EntryDescription(entry, m, m2);
+		Text                  = Entry.DasaName + id.EntryDescription(Entry, m, m2);
 		SubItems[1].Font      = MhoraGlobalOptions.Instance.FixedWidthFont;
 		SubItems[1].ForeColor = MhoraGlobalOptions.Instance.DasaDateColor;
 	}
 
-	private void Construct(DasaEntry _entry)
+	private void Construct(DasaEntry entry)
 	{
-		entry = _entry;
+		Entry = entry;
 	}
 }

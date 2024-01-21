@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Diagnostics;
-using Mhora.Tables;
 using mhora.Util;
 
 namespace Mhora.Elements;
@@ -99,29 +98,29 @@ public class ZodiacHouse : ICloneable
 
 	public int Normalize()
 	{
-		return Basics.normalize_inc(1, 12, (int) _rasi);
+		return Basics.NormalizeInc(1, 12, (int) _rasi);
 	}
 
 	public ZodiacHouse Add(int i)
 	{
-		var znum = Basics.normalize_inc(1, 12, (int) _rasi + i - 1);
+		var znum = Basics.NormalizeInc(1, 12, (int) _rasi + i - 1);
 		return new ZodiacHouse((Rasi) znum);
 	}
 
 	public ZodiacHouse AddReverse(int i)
 	{
-		var znum = Basics.normalize_inc(1, 12, (int) _rasi - i + 1);
+		var znum = Basics.NormalizeInc(1, 12, (int) _rasi - i + 1);
 		return new ZodiacHouse((Rasi) znum);
 	}
 
 	public int NumHousesBetweenReverse(ZodiacHouse zrel)
 	{
-		return Basics.normalize_inc(1, 12, 14 - NumHousesBetween(zrel));
+		return Basics.NormalizeInc(1, 12, 14 - NumHousesBetween(zrel));
 	}
 
 	public int NumHousesBetween(ZodiacHouse zrel)
 	{
-		var ret = Basics.normalize_inc(1, 12, (int) zrel._rasi - (int) _rasi + 1);
+		var ret = Basics.NormalizeInc(1, 12, (int) zrel._rasi - (int) _rasi + 1);
 		Trace.Assert(ret >= 1 && ret <= 12, "ZodiacHouse.numHousesBetween failed");
 		return ret;
 	}
@@ -130,9 +129,9 @@ public class ZodiacHouse : ICloneable
 	{
 		var houseBase = Origin;
 		var div       = 30.0            / nrOfDivisions;
-		var offset    = longitude.value % div;
+		var offset    = longitude.Value % div;
 
-		return new Longitude(houseBase.value + offset * nrOfDivisions);
+		return new Longitude(houseBase.Value + offset * nrOfDivisions);
 	}
 
 	public bool IsDaySign()

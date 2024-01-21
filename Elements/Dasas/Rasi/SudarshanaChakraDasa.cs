@@ -17,7 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
 
@@ -32,7 +31,7 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 		h = _h;
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 12;
 	}
@@ -52,15 +51,15 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 		return o;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
 		var al    = new ArrayList(12);
-		var start = cycle * paramAyus();
-		var lzh   = h.getPosition(Body.BodyType.Lagna).toDivisionPosition(new Division(Vargas.DivisionType.Rasi)).zodiac_house;
+		var start = cycle * ParamAyus();
+		var lzh   = h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse;
 		for (var i = 1; i <= 12; i++)
 		{
 			var czh = lzh.Add(i);
@@ -76,11 +75,11 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 		var al     = new ArrayList(12);
 		var start  = de.StartUT;
 		var length = de.DasaLength / 12.0;
-		var zh     = new ZodiacHouse(de.zodiacHouse);
+		var zh     = new ZodiacHouse(de.ZHouse);
 		for (var i = 1; i <= 12; i++)
 		{
 			var czh = zh.Add(i);
-			al.Add(new DasaEntry(czh.Sign, start, length, de.level + 1, de.shortDesc + " " + czh.Sign));
+			al.Add(new DasaEntry(czh.Sign, start, length, de.Level + 1, de.DasaName + " " + czh.Sign));
 			start += length;
 		}
 

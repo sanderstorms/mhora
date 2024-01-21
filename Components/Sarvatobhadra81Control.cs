@@ -63,10 +63,7 @@ public class Sarvatobhadra81Control : MhoraControl
 		MhoraGlobalOptions.DisplayPrefsChanged -= OnRedisplay;
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -186,19 +183,19 @@ public class Sarvatobhadra81Control : MhoraControl
 			items[i] = 0;
 		}
 
-		foreach (Position bp in h.positionList)
+		foreach (Position bp in h.PositionList)
 		{
-			if (bp.type != Body.Type.Graha && bp.type != Body.Type.Lagna)
+			if (bp.Type != Body.Type.Graha && bp.Type != Body.Type.Lagna)
 			{
 				continue;
 			}
 
-			var n = bp.longitude.toNakshatra28();
+			var n = bp.Longitude.ToNakshatra28();
 			items[(int) n]++;
 			var pxBase = GetCellInRectangle(9, 26, (int) n);
 			var pxOff  = GetItemOffset(items[(int) n]);
 			var px     = new Point(pxBase.X + pxOff.X, pxBase.Y + pxOff.Y);
-			var s      = bp.name.ToShortString();
+			var s      = bp.Name.ToShortString();
 			g.DrawString(s, f, Brushes.Maroon, px.X, px.Y);
 		}
 	}
@@ -230,7 +227,7 @@ public class Sarvatobhadra81Control : MhoraControl
 
 		for (var i = 1; i <= 28; i++)
 		{
-			var na     = Nakshatras.Nakshatra28.Aswini.add(i);
+			var na     = Nakshatras.Nakshatra28.Aswini.Add(i);
 			var pxBase = GetCellInRectangle(9, 26, i);
 			var pxOff  = GetItemOffsetCenter();
 			var px     = new Point(pxBase.X + pxOff.X, pxBase.Y);

@@ -23,34 +23,32 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Mhora.Database.Settings;
 using Mhora.Database.World;
-using Mhora.Elements.Calculation;
 using Mhora.Elements.Hora;
-using SqlNado;
 using SqlNado.Query;
 
 namespace Mhora.Components.Jhora;
 
 public class Jhd : IFileToHoraInfo
 {
-	private readonly string fname;
+	private readonly string _fname;
 
 	public Jhd(string fileName)
 	{
-		fname = fileName;
+		_fname = fileName;
 	}
 
-	public HoraInfo toHoraInfo()
+	public HoraInfo ToHoraInfo()
 	{
-		var  sr      = File.OpenText(fname);
-		var  m       = readMomentLine(sr);
-		var  tz      = readHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
-		var  lon     = readHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
-		var  lat     = readHmsLineInfo(sr, false, HMSInfo.dir_type.NS);
-		var  alt     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
-		var  est     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
-		var  dst     = readHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
-		var  i1      = readIntLine(sr);
-		var  i2      = readIntLine(sr);
+		var  sr      = File.OpenText(_fname);
+		var  m       = ReadMomentLine(sr);
+		var  tz      = ReadHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
+		var  lon     = ReadHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
+		var  lat     = ReadHmsLineInfo(sr, false, HMSInfo.dir_type.NS);
+		var  alt     = ReadHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
+		var  est     = ReadHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
+		var  dst     = ReadHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
+		var  i1      = ReadIntLine(sr);
+		var  i2      = ReadIntLine(sr);
 		var  cityName = sr.ReadLine();
 		var  country = sr.ReadLine();
 		City worldCity = null;
@@ -79,29 +77,29 @@ public class Jhd : IFileToHoraInfo
 			City        = worldCity,
 			FileType    = HoraInfo.EFileType.JagannathaHora
 		};
-		hi.Name = Path.GetFileNameWithoutExtension(fname);
+		hi.Name = Path.GetFileNameWithoutExtension(_fname);
 		return hi;
 	}
 
 	public void ToFile(HoraInfo h)
 	{
-		var sw = new StreamWriter(fname, false);
-		writeMomentLine(sw, h.DateOfBirth);
-		writeHMSInfoLine(sw, h.City.Country.TimeZone.TimeZoneInfo.BaseUtcOffset.TotalHours);
-		writeHMSInfoLine(sw, (double) h.Longitude);
-		writeHMSInfoLine(sw, (double) h.Latitude);
+		var sw = new StreamWriter(_fname, false);
+		WriteMomentLine(sw, h.DateOfBirth);
+		WriteHmsInfoLine(sw, h.City.Country.TimeZone.TimeZoneInfo.BaseUtcOffset.TotalHours);
+		WriteHmsInfoLine(sw, (double) h.Longitude);
+		WriteHmsInfoLine(sw, (double) h.Latitude);
 		sw.WriteLine("0.000000");
 		sw.Flush();
 		sw.Close();
 	}
 
-	private static int readIntLine(StreamReader sr)
+	private static int ReadIntLine(StreamReader sr)
 	{
 		var s = sr.ReadLine();
 		return int.Parse(s);
 	}
 
-	private static void writeHMSInfoLine(StreamWriter sw, HMSInfo hi)
+	private static void WriteHmsInfoLine(StreamWriter sw, HMSInfo hi)
 	{
 		string q;
 		if (hi.direction == HMSInfo.dir_type.NS && hi.degree >= 0)
@@ -122,14 +120,14 @@ public class Jhd : IFileToHoraInfo
 		}
 
 		var thour = hi.degree >= 0 ? hi.degree : -hi.degree;
-		var w     = q + thour + "." + numToString(hi.minute) + numToString(hi.second) + "00";
+		var w     = q + thour + "." + NumToString(hi.minute) + NumToString(hi.second) + "00";
 		sw.WriteLine(w);
 	}
 
-	private static HMSInfo readHmsLineInfo(StreamReader sr, bool negate, HMSInfo.dir_type dir)
+	private static HMSInfo ReadHmsLineInfo(StreamReader sr, bool negate, HMSInfo.dir_type dir)
 	{
 		int h = 0, m = 0, s = 0;
-		readHmsLine(sr, ref h, ref m, ref s);
+		ReadHmsLine(sr, ref h, ref m, ref s);
 		if (negate)
 		{
 			h *= -1;
@@ -138,7 +136,7 @@ public class Jhd : IFileToHoraInfo
 		return new HMSInfo(h, m, s, dir);
 	}
 
-	private static void readHmsLine(StreamReader sr, ref int hour, ref int minute, ref int second)
+	private static void ReadHmsLine(StreamReader sr, ref int hour, ref int min, ref int sec)
 	{
 		var s  = sr.ReadLine();
 		var re = new Regex("[0-9]*$");
@@ -153,30 +151,30 @@ public class Jhd : IFileToHoraInfo
 		var dhour = double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture);
 		dhour  = dhour < 0 ? Math.Ceiling(dhour) : Math.Floor(dhour);
 		hour   = (int) dhour;
-		minute = int.Parse(s2.Substring(0, 2));
-		var _second = 0.0;
+		min = int.Parse(s2.Substring(0, 2));
+		var second = 0.0;
 		if (s2.Length > 5)
 		{
-			_second = double.Parse(s2.Substring(2, 4)) / 10000.0 * 60.0;
+			second = double.Parse(s2.Substring(2, 4)) / 10000.0 * 60.0;
 		}
 
-		second = (int) _second;
+		sec = (int) second;
 	}
 
-	private static DateTime readMomentLine(StreamReader sr)
+	private static DateTime ReadMomentLine(StreamReader sr)
 	{
-		var month = readIntLine(sr);
-		var day   = readIntLine(sr);
-		var year  = readIntLine(sr);
+		var month = ReadIntLine(sr);
+		var day   = ReadIntLine(sr);
+		var year  = ReadIntLine(sr);
 
 		int hour = 0, minute = 0, second = 0;
-		readHmsLine(sr, ref hour, ref minute, ref second);
+		ReadHmsLine(sr, ref hour, ref minute, ref second);
 		return new DateTime(year, month, day, hour, minute, second);
 	}
 
-	private static string numToString(int _n)
+	private static string NumToString(int number)
 	{
-		var    n = _n < 0 ? -_n : _n;
+		var    n = number < 0 ? -number : number;
 		string s;
 		if (n < 10)
 		{
@@ -190,12 +188,12 @@ public class Jhd : IFileToHoraInfo
 		return s;
 	}
 
-	private static void writeMomentLine(StreamWriter sw, DateTime m)
+	private static void WriteMomentLine(StreamWriter sw, DateTime m)
 	{
 		sw.WriteLine(m.Month);
 		sw.WriteLine(m.Day);
 		sw.WriteLine(m.Year);
 
-		sw.WriteLine(m.Hour + "." + numToString(m.Minute) + numToString(m.Second) + "00");
+		sw.WriteLine(m.Hour + "." + NumToString(m.Minute) + NumToString(m.Second) + "00");
 	}
 }

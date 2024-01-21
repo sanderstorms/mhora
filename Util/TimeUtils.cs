@@ -32,7 +32,7 @@ public static class TimeUtils
 		int    month = 0;
 		int    day   = 0;
 
-		tjdUt += h.info.DstOffset.TotalDays;
+		tjdUt += h.Info.DstOffset.TotalDays;
 		sweph.RevJul(tjdUt, ref year, ref month, ref day, ref time);
 		return new DateTime(year, month, day).AddHours(time);
 	}
@@ -77,7 +77,7 @@ public static class TimeUtils
 
 	public static double UniversalTime(this Horoscope h, DateTime dateTime)
 	{
-		return sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, (dateTime - h.info.DstOffset).Time().TotalHours);
+		return sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, (dateTime - h.Info.DstOffset).Time().TotalHours);
 	}
 
 	public static int FromStringMonth(this string s)

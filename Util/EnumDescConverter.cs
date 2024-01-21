@@ -39,11 +39,11 @@ namespace Mhora.Util;
 /// </summary>
 public class EnumDescConverter : EnumConverter
 {
-	protected Type myVal;
+	private readonly Type _myVal;
 
 	public EnumDescConverter(Type type) : base(type)
 	{
-		myVal = type;
+		_myVal = type;
 	}
 
 
@@ -56,7 +56,7 @@ public class EnumDescConverter : EnumConverter
 
 		if (value is string && destinationType == typeof(string))
 		{
-			return myVal.GetEnumDescription((string) value);
+			return _myVal.GetEnumDescription((string) value);
 		}
 
 		return base.ConvertTo(context, culture, value, destinationType);
@@ -66,7 +66,7 @@ public class EnumDescConverter : EnumConverter
 	{
 		if (value is string)
 		{
-			return myVal.GetEnumValue((string)value);
+			return _myVal.GetEnumValue((string)value);
 		}
 
 		if (value is Enum)

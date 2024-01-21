@@ -17,7 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
@@ -35,12 +34,12 @@ public class MandookaDasa : Dasa, IDasa
 		options = new RasiDasaUserOptions(h, FindStronger.RulesNavamsaDasaRasi(h));
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 96;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 		options.recalculate();
 	}
@@ -100,10 +99,10 @@ public class MandookaDasa : Dasa, IDasa
 			dasa_length_sum += dasa_length;
 		}
 
-		var cycle_length = cycle * paramAyus();
+		var cycle_length = cycle * ParamAyus();
 		foreach (DasaEntry di in al)
 		{
-			di.startUT += cycle_length;
+			di.StartUT += cycle_length;
 		}
 
 		return al;
@@ -113,21 +112,21 @@ public class MandookaDasa : Dasa, IDasa
 	{
 		var al = new ArrayList(12);
 
-		var zh_first    = new ZodiacHouse(pdi.zodiacHouse);
+		var zh_first    = new ZodiacHouse(pdi.ZHouse);
 		var zh_stronger = zh_first.Add(1);
 		if (!zh_stronger.IsOdd())
 		{
 			zh_stronger = zh_stronger.AdarsaSign();
 		}
 
-		var dasa_start = pdi.startUT;
+		var dasa_start = pdi.StartUT;
 
 		for (var i = 1; i <= 12; i++)
 		{
 			var zh_dasa = zh_stronger.Add(i);
-			var di      = new DasaEntry(zh_dasa.Sign, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.Sign);
+			var di      = new DasaEntry(zh_dasa.Sign, dasa_start, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zh_dasa.Sign);
 			al.Add(di);
-			dasa_start += pdi.dasaLength / 12.0;
+			dasa_start += pdi.DasaLength / 12.0;
 		}
 
 		return al;

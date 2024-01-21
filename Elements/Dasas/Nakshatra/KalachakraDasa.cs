@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
 
@@ -54,7 +53,7 @@ public class KalachakraDasa : Dasa, IDasa
 		}
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 144;
 	}
@@ -62,7 +61,7 @@ public class KalachakraDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var dRasi = new Division(Vargas.DivisionType.Rasi);
-		var mLon  = h.getPosition(Body.BodyType.Moon).extrapolateLongitude(dRasi);
+		var mLon  = h.GetPosition(Body.BodyType.Moon).ExtrapolateLongitude(dRasi);
 
 		var           offset  = 0;
 		ZodiacHouse[] zhOrder = null;
@@ -73,18 +72,18 @@ public class KalachakraDasa : Dasa, IDasa
 		double dasa_length_sum = 0;
 		for (var i = 0; i < 9; i++)
 		{
-			var zhCurr      = zhOrder[(int) Basics.normalize_exc_lower(0, 24, offset + i)];
+			var zhCurr      = zhOrder[(int) Basics.NormalizeExcLower(offset + i, 0, 24)];
 			var dasa_length = DasaLength(zhCurr);
 			var de          = new DasaEntry(zhCurr.Sign, dasa_length_sum, dasa_length, 1, zhCurr.Sign.ToString());
 			al.Add(de);
 			dasa_length_sum += dasa_length;
 		}
 
-		var offsetLength = mLon.toNakshatraPadaPercentage() / 100.0 * dasa_length_sum;
+		var offsetLength = mLon.ToNakshatraPadaPercentage() / 100.0 * dasa_length_sum;
 
 		foreach (DasaEntry de in al)
 		{
-			de.startUT -= offsetLength;
+			de.StartUT -= offsetLength;
 		}
 
 		return al;
@@ -110,7 +109,7 @@ public class KalachakraDasa : Dasa, IDasa
 		return o;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
@@ -152,8 +151,8 @@ public class KalachakraDasa : Dasa, IDasa
 
 	private void initHelper(Longitude lon, ref ZodiacHouse[] mzhOrder, ref int offset)
 	{
-		var grp  = NakshatraToGroup(lon.toNakshatra());
-		var pada = lon.toNakshatraPada();
+		var grp  = NakshatraToGroup(lon.ToNakshatra());
+		var pada = lon.ToNakshatraPada();
 
 		switch (grp)
 		{
@@ -177,7 +176,7 @@ public class KalachakraDasa : Dasa, IDasa
 				break;
 		}
 
-		offset = (int) Basics.normalize_exc_lower(0, 24, (pada - 1) * 9 + offset);
+		offset = (int) Basics.NormalizeExcLower((pada - 1) * 9 + offset, 0, 24);
 	}
 
 	public double DasaLength(ZodiacHouse zh)

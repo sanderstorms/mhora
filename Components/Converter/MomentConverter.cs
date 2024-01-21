@@ -21,8 +21,6 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-using Mhora.Database.Settings;
-using Mhora.Elements.Calculation;
 using Mhora.Util;
 
 namespace Mhora.Components.Converter;

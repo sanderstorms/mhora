@@ -22,25 +22,25 @@ public class KutaRasiYoni
 {
 	public enum EType
 	{
-		IPakshi,
-		IReptile,
-		IPasu,
-		INara
+		Pakshi,
+		Reptile,
+		Pasu,
+		Nara
 	}
 
-	public static EType getType(ZodiacHouse z)
+	public static EType GetType(ZodiacHouse z)
 	{
 		switch (z.Sign)
 		{
 			case ZodiacHouse.Rasi.Cap:
-			case ZodiacHouse.Rasi.Pis: return EType.IPakshi;
+			case ZodiacHouse.Rasi.Pis: return EType.Pakshi;
 			case ZodiacHouse.Rasi.Can:
-			case ZodiacHouse.Rasi.Sco: return EType.IReptile;
+			case ZodiacHouse.Rasi.Sco: return EType.Reptile;
 			case ZodiacHouse.Rasi.Ari:
 			case ZodiacHouse.Rasi.Tau:
-			case ZodiacHouse.Rasi.Leo: return EType.IPasu;
+			case ZodiacHouse.Rasi.Leo: return EType.Pasu;
 		}
 
-		return EType.INara;
+		return EType.Nara;
 	}
 }

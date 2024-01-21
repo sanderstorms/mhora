@@ -16,12 +16,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using Mhora.Components.Dasa;
-
 namespace Mhora.Elements.Dasas.Nakshatra;
 
 public interface INakshatraTithiDasa : IDasa
 {
 	Body.BodyType lordOfTithi(Longitude  l);
-	double    lengthOfDasa(Body.BodyType plt); // Length of a maha dasa
+	double    LengthOfDasa(Body.BodyType plt); // Length of a maha dasa
 }

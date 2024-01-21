@@ -30,17 +30,17 @@ public static class Hora
 		"Sunday"
 	};
 
-	public static Hora.Weekday BodyToWeekday(this Body.BodyType b)
+	public static Weekday BodyToWeekday(this Body.BodyType b)
 	{
 		switch (b)
 		{
-			case Body.BodyType.Sun:     return Hora.Weekday.Sunday;
-			case Body.BodyType.Moon:    return Hora.Weekday.Monday;
-			case Body.BodyType.Mars:    return Hora.Weekday.Tuesday;
-			case Body.BodyType.Mercury: return Hora.Weekday.Wednesday;
-			case Body.BodyType.Jupiter: return Hora.Weekday.Thursday;
-			case Body.BodyType.Venus:   return Hora.Weekday.Friday;
-			case Body.BodyType.Saturn:  return Hora.Weekday.Saturday;
+			case Body.BodyType.Sun:     return Weekday.Sunday;
+			case Body.BodyType.Moon:    return Weekday.Monday;
+			case Body.BodyType.Mars:    return Weekday.Tuesday;
+			case Body.BodyType.Mercury: return Weekday.Wednesday;
+			case Body.BodyType.Jupiter: return Weekday.Thursday;
+			case Body.BodyType.Venus:   return Weekday.Friday;
+			case Body.BodyType.Saturn:  return Weekday.Saturday;
 		}
 
 		Debug.Assert(false, string.Format("bodyToWeekday({0})", b));
@@ -51,13 +51,13 @@ public static class Hora
 	{
 		switch (w)
 		{
-			case Hora.Weekday.Sunday:    return Body.BodyType.Sun;
-			case Hora.Weekday.Monday:    return Body.BodyType.Moon;
-			case Hora.Weekday.Tuesday:   return Body.BodyType.Mars;
-			case Hora.Weekday.Wednesday: return Body.BodyType.Mercury;
-			case Hora.Weekday.Thursday:  return Body.BodyType.Jupiter;
-			case Hora.Weekday.Friday:    return Body.BodyType.Venus;
-			case Hora.Weekday.Saturday:  return Body.BodyType.Saturn;
+			case Weekday.Sunday:    return Body.BodyType.Sun;
+			case Weekday.Monday:    return Body.BodyType.Moon;
+			case Weekday.Tuesday:   return Body.BodyType.Mars;
+			case Weekday.Wednesday: return Body.BodyType.Mercury;
+			case Weekday.Thursday:  return Body.BodyType.Jupiter;
+			case Weekday.Friday:    return Body.BodyType.Venus;
+			case Weekday.Saturday:  return Body.BodyType.Saturn;
 			default:
 				Debug.Assert(false, "Basics::weekdayRuler");
 				return Body.BodyType.Sun;
@@ -68,13 +68,13 @@ public static class Hora
 	{
 		switch (w)
 		{
-			case Hora.Weekday.Sunday:    return "Su";
-			case Hora.Weekday.Monday:    return "Mo";
-			case Hora.Weekday.Tuesday:   return "Tu";
-			case Hora.Weekday.Wednesday: return "We";
-			case Hora.Weekday.Thursday:  return "Th";
-			case Hora.Weekday.Friday:    return "Fr";
-			case Hora.Weekday.Saturday:  return "Sa";
+			case Weekday.Sunday:    return "Su";
+			case Weekday.Monday:    return "Mo";
+			case Weekday.Tuesday:   return "Tu";
+			case Weekday.Wednesday: return "We";
+			case Weekday.Thursday:  return "Th";
+			case Weekday.Friday:    return "Fr";
+			case Weekday.Saturday:  return "Sa";
 		}
 
 		return string.Empty;

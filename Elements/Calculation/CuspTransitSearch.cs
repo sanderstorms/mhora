@@ -17,8 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
-using Mhora.Database.Settings;
-using Mhora.SwissEph;
 using Mhora.Util;
 
 namespace Mhora.Elements.Calculation;
@@ -49,11 +47,11 @@ internal class CuspTransitSearch
 		var bDiscard = true;
 
 		var t        = new Transit(h, SearchBody);
-		var ut_base  = StartDate.UniversalTime() - h.info.DstOffset.TotalDays;
+		var ut_base  = StartDate.UniversalTime() - h.Info.DstOffset.TotalDays;
 		var lon_curr = t.GenericLongitude(ut_base, ref bDiscard);
 
 		double diff = 0;
-		diff = TransitPoint.sub(lon_curr).value;
+		diff = TransitPoint.Sub(lon_curr).Value;
 
 		if (false == Forward)
 		{
@@ -72,7 +70,7 @@ internal class CuspTransitSearch
 			found_ut = t.LinearSearch(ut_base + ut_diff_approx, TransitPoint, t.GenericLongitude);
 		}
 
-		FoundLon.value = t.GenericLongitude(found_ut, ref bForward).value;
+		FoundLon.Value = t.GenericLongitude(found_ut, ref bForward).Value;
 		bForward       = true;
 		return found_ut;
 	}
@@ -92,7 +90,7 @@ internal class CuspTransitSearch
 
 		var r = new Retrogression(h, SearchBody);
 
-		var julday_ut = StartDate.UniversalTime() - h.info.DstOffset.TotalDays;
+		var julday_ut = StartDate.UniversalTime() - h.Info.DstOffset.TotalDays;
 		var found_ut  = julday_ut;
 
 		if (Forward)
@@ -104,7 +102,7 @@ internal class CuspTransitSearch
 			found_ut = r.GetTransitBackward(julday_ut, TransitPoint);
 		}
 
-		FoundLon.value = r.GetLon(found_ut, ref bForward).value;
+		FoundLon.Value = r.GetLon(found_ut, ref bForward).Value;
 		return found_ut;
 	}
 }

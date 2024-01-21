@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using System.Diagnostics;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Elements.Dasas.Nakshatra;
@@ -45,7 +44,7 @@ public class YoginiDasa : NakshatraDasa, INakshatraDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		return _Dasa(h.getPosition(Body.BodyType.Moon).longitude, 1, cycle);
+		return _Dasa(h.GetPosition(Body.BodyType.Moon).Longitude, 1, cycle);
 	}
 
 	public ArrayList AntarDasa(DasaEntry di)
@@ -58,22 +57,22 @@ public class YoginiDasa : NakshatraDasa, INakshatraDasa
 		return "Yogini Dasa";
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 36.0;
 	}
 
-	public int numberOfDasaItems()
+	public int NumberOfDasaItems()
 	{
 		return 8;
 	}
 
-	public DasaEntry nextDasaLord(DasaEntry di)
+	public DasaEntry NextDasaLord(DasaEntry di)
 	{
-		return new DasaEntry(nextDasaLordHelper(di.graha), 0, 0, di.level, string.Empty);
+		return new DasaEntry(NextDasaLordHelper(di.Graha), 0, 0, di.Level, string.Empty);
 	}
 
-	public double lengthOfDasa(Body.BodyType plt)
+	public double LengthOfDasa(Body.BodyType plt)
 	{
 		switch (plt)
 		{
@@ -87,11 +86,11 @@ public class YoginiDasa : NakshatraDasa, INakshatraDasa
 			case Body.BodyType.Rahu:    return 8;
 		}
 
-		Trace.Assert(false, "YoginiDasa::lengthOfDasa");
+		Trace.Assert(false, "YoginiDasa::LengthOfDasa");
 		return 0;
 	}
 
-	public Body.BodyType lordOfNakshatra(Nakshatras.Nakshatra n)
+	public Body.BodyType LordOfNakshatra(Nakshatras.Nakshatra n)
 	{
 		Body.BodyType[] lords =
 		{
@@ -115,7 +114,7 @@ public class YoginiDasa : NakshatraDasa, INakshatraDasa
 		return lords[index];
 	}
 
-	private Body.BodyType nextDasaLordHelper(Body.BodyType b)
+	private Body.BodyType NextDasaLordHelper(Body.BodyType b)
 	{
 		switch (b)
 		{
@@ -129,7 +128,7 @@ public class YoginiDasa : NakshatraDasa, INakshatraDasa
 			case Body.BodyType.Rahu:    return Body.BodyType.Moon;
 		}
 
-		Trace.Assert(false, "YoginiDasa::nextDasaLord");
+		Trace.Assert(false, "YoginiDasa::NextDasaLord");
 		return Body.BodyType.Sun;
 	}
 }

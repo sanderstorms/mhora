@@ -18,11 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
-using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
-using Mhora.SwissEph;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.Yearly;
@@ -46,11 +42,11 @@ public class KaranaPraveshDasa : Dasa, IDasa
 		return new object();
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 60.0;
 	}
@@ -58,7 +54,7 @@ public class KaranaPraveshDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al          = new ArrayList(60);
-		var cycle_start = cycle * paramAyus();
+		var cycle_start = cycle * ParamAyus();
 		for (var i = 0; i < 60; i++)
 		{
 			var start = cycle_start + i;
@@ -71,19 +67,19 @@ public class KaranaPraveshDasa : Dasa, IDasa
 
 	public new string EntryDescription(DasaEntry pdi, DateTime start, DateTime end)
 	{
-		if (pdi.level == 2)
+		if (pdi.Level == 2)
 		{
 			var l  = h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Sun.SwephBody());
-			var zh = l.toZodiacHouse();
+			var zh = l.ToZodiacHouse();
 			return zh.ToString();
 		}
 
-		if (pdi.level == 3)
+		if (pdi.Level == 3)
 		{
 			var lSun  = h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Sun.SwephBody());
 			var lMoon = h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Moon.SwephBody());
-			var l     = lMoon.sub(lSun);
-			var k     = l.toKarana();
+			var l     = lMoon.Sub(lSun);
+			var k     = l.ToKarana();
 			return k.ToString();
 		}
 
@@ -97,7 +93,7 @@ public class KaranaPraveshDasa : Dasa, IDasa
 			"  Month: ",
 			"    Tithis: "
 		};
-		if (pdi.level == 3)
+		if (pdi.Level == 3)
 		{
 			return new ArrayList();
 		}
@@ -107,14 +103,14 @@ public class KaranaPraveshDasa : Dasa, IDasa
 		var       level = 0;
 
 		al    = null;
-		start = pdi.startUT;
-		level = pdi.level + 1;
+		start = pdi.StartUT;
+		level = pdi.Level + 1;
 
-		switch (pdi.level)
+		switch (pdi.Level)
 		{
 			case 1:
 				al     = new ArrayList(13);
-				length = pdi.dasaLength / 13.0;
+				length = pdi.DasaLength / 13.0;
 				//mhora.Log.Debug("AD length is {0}", length);
 				for (var i = 0; i < 13; i++)
 				{
@@ -126,7 +122,7 @@ public class KaranaPraveshDasa : Dasa, IDasa
 				return al;
 			case 2:
 				al     = new ArrayList(60);
-				length = pdi.dasaLength / 60.0;
+				length = pdi.DasaLength / 60.0;
 				//mhora.Log.Debug("PD length is {0}", length);
 				for (var i = 0; i < 60; i++)
 				{

@@ -27,33 +27,33 @@ public class KutaBhutaNakshatra
 {
 	public enum EType
 	{
-		IEarth,
-		IWater,
-		IFire,
-		IAir,
-		IEther
+		Earth,
+		Water,
+		Fire,
+		Air,
+		Ether
 	}
 
-	public static int getMaxScore()
+	public static int GetMaxScore()
 	{
 		return 1;
 	}
 
-	public static int getScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
+	public static int GetScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
 	{
-		var a = getType(m);
-		var b = getType(n);
+		var a = GetType(m);
+		var b = GetType(n);
 		if (a == b)
 		{
 			return 1;
 		}
 
-		if ((a == EType.IFire && b == EType.IAir) || (a == EType.IAir && b == EType.IFire))
+		if ((a == EType.Fire && b == EType.Air) || (a == EType.Air && b == EType.Fire))
 		{
 			return 1;
 		}
 
-		if (a == EType.IEarth || b == EType.IEarth)
+		if (a == EType.Earth || b == EType.Earth)
 		{
 			return 1;
 		}
@@ -61,7 +61,7 @@ public class KutaBhutaNakshatra
 		return 0;
 	}
 
-	public static EType getType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatras.Nakshatra n)
 	{
 		switch (n)
 		{
@@ -69,32 +69,32 @@ public class KutaBhutaNakshatra
 			case Nakshatras.Nakshatra.Bharani:
 			case Nakshatras.Nakshatra.Krittika:
 			case Nakshatras.Nakshatra.Rohini:
-			case Nakshatras.Nakshatra.Mrigarirsa: return EType.IEarth;
+			case Nakshatras.Nakshatra.Mrigarirsa: return EType.Earth;
 			case Nakshatras.Nakshatra.Aridra:
 			case Nakshatras.Nakshatra.Punarvasu:
 			case Nakshatras.Nakshatra.Pushya:
 			case Nakshatras.Nakshatra.Aslesha:
 			case Nakshatras.Nakshatra.Makha:
-			case Nakshatras.Nakshatra.PoorvaPhalguni: return EType.IWater;
+			case Nakshatras.Nakshatra.PoorvaPhalguni: return EType.Water;
 			case Nakshatras.Nakshatra.UttaraPhalguni:
 			case Nakshatras.Nakshatra.Hasta:
 			case Nakshatras.Nakshatra.Chittra:
 			case Nakshatras.Nakshatra.Swati:
-			case Nakshatras.Nakshatra.Vishaka: return EType.IFire;
+			case Nakshatras.Nakshatra.Vishaka: return EType.Fire;
 			case Nakshatras.Nakshatra.Anuradha:
 			case Nakshatras.Nakshatra.Jyestha:
 			case Nakshatras.Nakshatra.Moola:
 			case Nakshatras.Nakshatra.PoorvaShada:
 			case Nakshatras.Nakshatra.UttaraShada:
-			case Nakshatras.Nakshatra.Sravana: return EType.IAir;
+			case Nakshatras.Nakshatra.Sravana: return EType.Air;
 			case Nakshatras.Nakshatra.Dhanishta:
 			case Nakshatras.Nakshatra.Satabisha:
 			case Nakshatras.Nakshatra.PoorvaBhadra:
 			case Nakshatras.Nakshatra.UttaraBhadra:
-			case Nakshatras.Nakshatra.Revati: return EType.IEther;
+			case Nakshatras.Nakshatra.Revati: return EType.Ether;
 		}
 
 		Debug.Assert(false, "KutaBhutaNakshatra::getType");
-		return EType.IAir;
+		return EType.Air;
 	}
 }

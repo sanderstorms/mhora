@@ -22,26 +22,26 @@ public class KutaNadi
 {
 	public enum EType
 	{
-		IVata,
-		IPitta,
-		ISleshma
+		Vata,
+		Pitta,
+		Sleshma
 	}
 
-	public static int getMaxScore()
+	public static int GetMaxScore()
 	{
 		return 2;
 	}
 
-	public static int getScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
+	public static int GetScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
 	{
-		var ea = getType(m);
-		var eb = getType(n);
+		var ea = GetType(m);
+		var eb = GetType(n);
 		if (ea != eb)
 		{
 			return 2;
 		}
 
-		if (ea == EType.IVata || ea == EType.ISleshma)
+		if (ea == EType.Vata || ea == EType.Sleshma)
 		{
 			return 1;
 		}
@@ -49,7 +49,7 @@ public class KutaNadi
 		return 0;
 	}
 
-	public static EType getType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatras.Nakshatra n)
 	{
 		switch (n)
 		{
@@ -61,7 +61,7 @@ public class KutaNadi
 			case Nakshatras.Nakshatra.Jyestha:
 			case Nakshatras.Nakshatra.Moola:
 			case Nakshatras.Nakshatra.Satabisha:
-			case Nakshatras.Nakshatra.PoorvaBhadra: return EType.IVata;
+			case Nakshatras.Nakshatra.PoorvaBhadra: return EType.Vata;
 			case Nakshatras.Nakshatra.Bharani:
 			case Nakshatras.Nakshatra.Mrigarirsa:
 			case Nakshatras.Nakshatra.Pushya:
@@ -70,9 +70,9 @@ public class KutaNadi
 			case Nakshatras.Nakshatra.Anuradha:
 			case Nakshatras.Nakshatra.PoorvaShada:
 			case Nakshatras.Nakshatra.Dhanishta:
-			case Nakshatras.Nakshatra.UttaraBhadra: return EType.IPitta;
+			case Nakshatras.Nakshatra.UttaraBhadra: return EType.Pitta;
 		}
 
-		return EType.ISleshma;
+		return EType.Sleshma;
 	}
 }

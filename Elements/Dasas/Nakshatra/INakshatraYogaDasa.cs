@@ -16,12 +16,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using Mhora.Components.Dasa;
-
 namespace Mhora.Elements.Dasas.Nakshatra;
 
 public interface INakshatraYogaDasa : IDasa
 {
 	Body.BodyType lordOfYoga(Longitude   l);
-	double    lengthOfDasa(Body.BodyType plt);
+	double    LengthOfDasa(Body.BodyType plt);
 }

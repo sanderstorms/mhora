@@ -1,7 +1,5 @@
 using System;
-using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
-using Mhora.SwissEph;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -29,7 +27,7 @@ public static class CuspTransitSearch
 		var lon_curr = t.GenericLongitude(ut_base, ref bDiscard);
 
 		double diff = 0;
-		diff = TransitPoint.sub(lon_curr).value;
+		diff = TransitPoint.Sub(lon_curr).Value;
 
 		if (false == Forward)
 		{
@@ -48,7 +46,7 @@ public static class CuspTransitSearch
 			found_ut = t.LinearSearch(ut_base + ut_diff_approx, TransitPoint, t.GenericLongitude);
 		}
 
-		FoundLon.value = t.GenericLongitude(found_ut, ref bForward).value;
+		FoundLon.Value = t.GenericLongitude(found_ut, ref bForward).Value;
 		bForward       = true;
 		return found_ut;
 	}
@@ -80,7 +78,7 @@ public static class CuspTransitSearch
 			found_ut = r.GetTransitBackward(julday_ut, TransitPoint);
 		}
 
-		FoundLon.value = r.GetLon(found_ut, ref bForward).value;
+		FoundLon.Value = r.GetLon(found_ut, ref bForward).Value;
 
 		return found_ut;
 	}

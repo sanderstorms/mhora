@@ -44,7 +44,7 @@ public static class Basics
 	/// <param name="x">The value to be normalized</param>
 	/// <returns>
 	///     The normalized value of x, where lower <= x <= upper </returns>
-	public static int normalize_inc(int lower, int upper, int x)
+	public static int NormalizeInc(int lower, int upper, int x)
 	{
 		var size = upper - lower + 1;
 		while (x > upper)
@@ -69,7 +69,7 @@ public static class Basics
 	/// <param name="x">The value to be normalized</param>
 	/// <returns>
 	///     The normalized value of x, where lower = x <= upper </returns>
-	public static double normalize_exc(double lower, double upper, double x)
+	public static double NormalizeExc(double lower, double upper, double x)
 	{
 		var size = upper - lower;
 		while (x > upper)
@@ -86,7 +86,7 @@ public static class Basics
 		return x;
 	}
 
-	public static double normalize_exc_lower(double lower, double upper, double x)
+	public static double NormalizeExcLower(this double x, double lower, double upper)
 	{
 		var size = upper - lower;
 		while (x >= upper)
@@ -242,17 +242,17 @@ public static class Basics
 	/// <returns></returns>
 	public static ArrayList CalculateBodyPositions(Horoscope h, double sunrise)
 	{
-		var hi = h.info;
-		var o  = h.options;
+		var hi = h.Info;
+		var o  = h.Options;
 
 		var serr      = new StringBuilder(256);
-		var ephe_path = MhoraGlobalOptions.Instance.HOptions.EphemerisPath;
+		var ephePath = MhoraGlobalOptions.Instance.HOptions.EphemerisPath;
 
 		// The order of the array must reflect the order define in Basics.GrahaIndex
-		var std_grahas = new ArrayList(20);
+		var stdGrahas = new ArrayList(20);
 
-		sweph.SetEphePath(ephe_path);
-		var julday_ut = h.UniversalTime(hi.DateOfBirth); // (hi.tob - hi.DstOffset).UniversalTime();
+		sweph.SetEphePath(ephePath);
+		var juldayUt = h.UniversalTime(hi.DateOfBirth); // (hi.tob - hi.DstOffset).UniversalTime();
 
 		var swephRahuBody = sweph.SE_MEAN_NODE;
 		if (o.nodeType == HoroscopeOptions.ENodeType.True)
@@ -266,42 +266,42 @@ public static class Basics
 			addFlags = sweph.SEFLG_TRUEPOS;
 		}
 
-		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha));
-		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha));
-		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_MARS, Body.BodyType.Mars, Body.Type.Graha));
-		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_MERCURY, Body.BodyType.Mercury, Body.Type.Graha));
-		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_JUPITER, Body.BodyType.Jupiter, Body.Type.Graha));
-		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_VENUS, Body.BodyType.Venus, Body.Type.Graha));
-		std_grahas.Add(h.CalculateSingleBodyPosition(julday_ut, sweph.SE_SATURN, Body.BodyType.Saturn, Body.Type.Graha));
-		var rahu = h.CalculateSingleBodyPosition(julday_ut, swephRahuBody, Body.BodyType.Rahu, Body.Type.Graha);
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_MARS, Body.BodyType.Mars, Body.Type.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_MERCURY, Body.BodyType.Mercury, Body.Type.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_JUPITER, Body.BodyType.Jupiter, Body.Type.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_VENUS, Body.BodyType.Venus, Body.Type.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_SATURN, Body.BodyType.Saturn, Body.Type.Graha));
+		var rahu = h.CalculateSingleBodyPosition(juldayUt, swephRahuBody, Body.BodyType.Rahu, Body.Type.Graha);
 
-		var ketu = h.CalculateSingleBodyPosition(julday_ut, swephRahuBody, Body.BodyType.Ketu, Body.Type.Graha);
-		ketu.longitude = rahu.longitude.add(new Longitude(180.0));
-		std_grahas.Add(rahu);
-		std_grahas.Add(ketu);
+		var ketu = h.CalculateSingleBodyPosition(juldayUt, swephRahuBody, Body.BodyType.Ketu, Body.Type.Graha);
+		ketu.Longitude = rahu.Longitude.Add(new Longitude(180.0));
+		stdGrahas.Add(rahu);
+		stdGrahas.Add(ketu);
 
-		var asc = h.Lagna(julday_ut);
-		std_grahas.Add(new Position(h, Body.BodyType.Lagna, Body.Type.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
+		var asc = h.Lagna(juldayUt);
+		stdGrahas.Add(new Position(h, Body.BodyType.Lagna, Body.Type.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
 
-		var ista_ghati = normalize_exc(0.0, 24.0, hi.DateOfBirth.Time ().TotalHours - sunrise) * 2.5;
-		var gl_lon     = ((Position) std_grahas[0]).longitude.add(new Longitude(ista_ghati        * 30.0));
-		var hl_lon     = ((Position) std_grahas[0]).longitude.add(new Longitude(ista_ghati * 30.0 / 2.5));
-		var bl_lon     = ((Position) std_grahas[0]).longitude.add(new Longitude(ista_ghati * 30.0 / 5.0));
+		var istaGhati = NormalizeExc(0.0, 24.0, hi.DateOfBirth.Time ().TotalHours - sunrise) * 2.5;
+		var glLon     = ((Position) stdGrahas[0]).Longitude.Add(new Longitude(istaGhati        * 30.0));
+		var hlLon     = ((Position) stdGrahas[0]).Longitude.Add(new Longitude(istaGhati * 30.0 / 2.5));
+		var blLon     = ((Position) stdGrahas[0]).Longitude.Add(new Longitude(istaGhati * 30.0 / 5.0));
 
-		var vl = ista_ghati * 5.0;
-		while (ista_ghati > 12.0)
+		var vl = istaGhati * 5.0;
+		while (istaGhati > 12.0)
 		{
-			ista_ghati -= 12.0;
+			istaGhati -= 12.0;
 		}
 
-		var vl_lon = ((Position) std_grahas[0]).longitude.add(new Longitude(vl * 30.0));
+		var vlLon = ((Position) stdGrahas[0]).Longitude.Add(new Longitude(vl * 30.0));
 
-		std_grahas.Add(new Position(h, Body.BodyType.BhavaLagna, Body.Type.SpecialLagna, bl_lon, 0, 0, 0, 0, 0));
-		std_grahas.Add(new Position(h, Body.BodyType.HoraLagna, Body.Type.SpecialLagna, hl_lon, 0, 0, 0, 0, 0));
-		std_grahas.Add(new Position(h, Body.BodyType.GhatiLagna, Body.Type.SpecialLagna, gl_lon, 0, 0, 0, 0, 0));
-		std_grahas.Add(new Position(h, Body.BodyType.VighatiLagna, Body.Type.SpecialLagna, vl_lon, 0, 0, 0, 0, 0));
+		stdGrahas.Add(new Position(h, Body.BodyType.BhavaLagna, Body.Type.SpecialLagna, blLon, 0, 0, 0, 0, 0));
+		stdGrahas.Add(new Position(h, Body.BodyType.HoraLagna, Body.Type.SpecialLagna, hlLon, 0, 0, 0, 0, 0));
+		stdGrahas.Add(new Position(h, Body.BodyType.GhatiLagna, Body.Type.SpecialLagna, glLon, 0, 0, 0, 0, 0));
+		stdGrahas.Add(new Position(h, Body.BodyType.VighatiLagna, Body.Type.SpecialLagna, vlLon, 0, 0, 0, 0, 0));
 
 
-		return std_grahas;
+		return stdGrahas;
 	}
 }

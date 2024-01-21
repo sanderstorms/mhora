@@ -19,9 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
-using Mhora.Database.Settings;
-using Mhora.Elements.Calculation;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Elements.Dasas;
@@ -36,23 +33,23 @@ public abstract class Dasa
 
 		if (zh.IsOddFooted())
 		{
-			length = zh.NumHousesBetween(dp.zodiac_house);
+			length = zh.NumHousesBetween(dp.ZodiacHouse);
 		}
 		else
 		{
-			length = zh.NumHousesBetweenReverse(dp.zodiac_house);
+			length = zh.NumHousesBetweenReverse(dp.ZodiacHouse);
 		}
 
-		if (dp.isExaltedPhalita())
+		if (dp.IsExaltedPhalita())
 		{
 			length++;
 		}
-		else if (dp.isDebilitatedPhalita())
+		else if (dp.IsDebilitatedPhalita())
 		{
 			length--;
 		}
 
-		length = Basics.normalize_inc(1, 12, length - 1);
+		length = Basics.NormalizeInc(1, 12, length - 1);
 		return length;
 	}
 
@@ -65,10 +62,7 @@ public abstract class Dasa
 
 	public void OnChanged()
 	{
-		if (Changed != null)
-		{
-			Changed(this);
-		}
+		Changed?.Invoke(this);
 	}
 
 	public string EntryDescription(DasaEntry de, DateTime start, DateTime end)

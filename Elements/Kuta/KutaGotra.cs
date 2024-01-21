@@ -24,18 +24,18 @@ public class KutaGotra
 {
 	public enum EType
 	{
-		IMarichi,
-		IVasishtha,
-		IAngirasa,
-		IAtri,
-		IPulastya,
-		IPulaha,
-		IKretu
+		Marichi,
+		Vasishtha,
+		Angirasa,
+		Atri,
+		Pulastya,
+		Pulaha,
+		Kretu
 	}
 
-	public static int getScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
+	public static int GetScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
 	{
-		if (getType(m) == getType(n))
+		if (GetType(m) == GetType(n))
 		{
 			return 0;
 		}
@@ -43,45 +43,45 @@ public class KutaGotra
 		return 1;
 	}
 
-	public static int getMaxScore()
+	public static int GetMaxScore()
 	{
 		return 1;
 	}
 
-	public static EType getType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatras.Nakshatra n)
 	{
 		switch (n)
 		{
 			case Nakshatras.Nakshatra.Aswini:
 			case Nakshatras.Nakshatra.Pushya:
-			case Nakshatras.Nakshatra.Swati: return EType.IMarichi;
+			case Nakshatras.Nakshatra.Swati: return EType.Marichi;
 			case Nakshatras.Nakshatra.Bharani:
 			case Nakshatras.Nakshatra.Aslesha:
 			case Nakshatras.Nakshatra.Vishaka:
-			case Nakshatras.Nakshatra.Sravana: return EType.IVasishtha;
+			case Nakshatras.Nakshatra.Sravana: return EType.Vasishtha;
 			case Nakshatras.Nakshatra.Krittika:
 			case Nakshatras.Nakshatra.Makha:
 			case Nakshatras.Nakshatra.Anuradha:
-			case Nakshatras.Nakshatra.Dhanishta: return EType.IAngirasa;
+			case Nakshatras.Nakshatra.Dhanishta: return EType.Angirasa;
 			case Nakshatras.Nakshatra.Rohini:
 			case Nakshatras.Nakshatra.PoorvaPhalguni:
 			case Nakshatras.Nakshatra.Jyestha:
-			case Nakshatras.Nakshatra.Satabisha: return EType.IAtri;
+			case Nakshatras.Nakshatra.Satabisha: return EType.Atri;
 			case Nakshatras.Nakshatra.Mrigarirsa:
 			case Nakshatras.Nakshatra.UttaraPhalguni:
 			case Nakshatras.Nakshatra.Moola:
-			case Nakshatras.Nakshatra.PoorvaBhadra: return EType.IPulastya;
+			case Nakshatras.Nakshatra.PoorvaBhadra: return EType.Pulastya;
 			case Nakshatras.Nakshatra.Aridra:
 			case Nakshatras.Nakshatra.Hasta:
 			case Nakshatras.Nakshatra.PoorvaShada:
-			case Nakshatras.Nakshatra.UttaraBhadra: return EType.IPulaha;
+			case Nakshatras.Nakshatra.UttaraBhadra: return EType.Pulaha;
 			case Nakshatras.Nakshatra.Punarvasu:
 			case Nakshatras.Nakshatra.Chittra:
 			case Nakshatras.Nakshatra.UttaraShada:
-			case Nakshatras.Nakshatra.Revati: return EType.IKretu;
+			case Nakshatras.Nakshatra.Revati: return EType.Kretu;
 		}
 
 		Debug.Assert(false, "KutaGotra::getType");
-		return EType.IAngirasa;
+		return EType.Angirasa;
 	}
 }

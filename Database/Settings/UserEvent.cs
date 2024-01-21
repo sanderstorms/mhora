@@ -51,7 +51,7 @@ public class UserEvent : MhoraSerializableOptions, ICloneable, ISerializable
 		set => mEventName = value;
 	}
 
-	[Editor(typeof(UIStringTypeEditor), typeof(UITypeEditor))]
+	[Editor(typeof(UiStringTypeEditor), typeof(UITypeEditor))]
 	public string EventDesc
 	{
 		get => mEventDesc;

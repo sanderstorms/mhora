@@ -24,7 +24,6 @@ using Mhora.Components.Varga;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
-using Mhora.Elements.Hora;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using mhora.Util;
@@ -172,7 +171,7 @@ public class PanchangaPrintDocument : PrintDocument
 		// turn into horoscope
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
-		found_ut += h.info.DstOffset.TotalDays;
+		found_ut += h.Info.DstOffset.TotalDays;
 		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
 		var m = new DateTime(year, month, day).AddHours(hour);
 		return m;
@@ -378,9 +377,9 @@ public class PanchangaPrintDocument : PrintDocument
 		float offsetX = margin_offset + sm_time_offset + sm_time_width;
 
 		var mCurr  = h.Moment(((PanchangaLocalMoments) locals[iStart]).sunrise_ut);
-		var hiCurr = new HoraInfo(h.info);
+		var hiCurr = new HoraInfo(h.Info);
 		hiCurr.DateOfBirth = mCurr;
-		var hCurr  = new Horoscope(hiCurr, h.options);
+		var hCurr  = new Horoscope(hiCurr, h.Options);
 		var dc     = new DivisionalChart(hCurr);
 		dc.PrintMode         = true;
 		dc.options.ViewStyle = DivisionalChart.UserOptions.EViewStyle.Panchanga;

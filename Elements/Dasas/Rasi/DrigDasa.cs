@@ -17,7 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
@@ -35,12 +34,12 @@ public class DrigDasa : Dasa, IDasa
 		options = new RasiDasaUserOptions(h, FindStronger.RulesNarayanaDasaRasi(h));
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 144;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 		options.recalculate();
 	}
@@ -62,7 +61,7 @@ public class DrigDasa : Dasa, IDasa
 		for (var i = 0; i < 12; i++)
 		{
 			var zh_dasa = (ZodiacHouse) al_order[i];
-			var dp      = h.CalculateDivisionPosition(h.getPosition(GetLord(zh_dasa)), new Division(Vargas.DivisionType.Rasi));
+			var dp      = h.CalculateDivisionPosition(h.GetPosition(GetLord(zh_dasa)), new Division(Vargas.DivisionType.Rasi));
 			dasa_length = NarayanaDasaLength(zh_dasa, dp);
 			var di = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
 			al.Add(di);
