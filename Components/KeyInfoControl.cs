@@ -204,16 +204,16 @@ public class KeyInfoControl : MhoraControl
 		mList.Items.Add(li);
 
 		{
-			var hms_srise = new HMSInfo(h.Sunrise);
+			var hms_srise = (TimeSpan) h.Sunrise;
 			li = new ListViewItem("Sunrise");
-			var fmt = string.Format("{0:00}:{1:00}:{2:00}", hms_srise.degree, hms_srise.minute, hms_srise.second);
+			var fmt = string.Format("{0:00}:{1:00}:{2:00}", hms_srise.Hours, hms_srise.Minutes, hms_srise.Seconds);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			var hms_sset = new HMSInfo(h.Sunset);
+			var hms_sset = (TimeSpan)(h.Sunset);
 			li = new ListViewItem("Sunset");
-			var fmt = string.Format("{0:00}:{1:00}:{2:00}", hms_sset.degree, hms_sset.minute, hms_sset.second);
+			var fmt = string.Format("{0:00}:{1:00}:{2:00}", hms_sset.Hours, hms_sset.Minutes, hms_sset.Seconds);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}

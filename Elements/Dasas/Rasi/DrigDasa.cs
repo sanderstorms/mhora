@@ -25,13 +25,13 @@ namespace Mhora.Elements.Dasas.Rasi;
 
 public class DrigDasa : Dasa, IDasa
 {
-	private readonly Horoscope           h;
-	private readonly RasiDasaUserOptions options;
+	private readonly Horoscope           _h;
+	private readonly RasiDasaUserOptions _options;
 
-	public DrigDasa(Horoscope _h)
+	public DrigDasa(Horoscope h)
 	{
-		h       = _h;
-		options = new RasiDasaUserOptions(h, FindStronger.RulesNarayanaDasaRasi(h));
+		this._h       = h;
+		_options = new RasiDasaUserOptions(this._h, FindStronger.RulesNarayanaDasaRasi(this._h));
 	}
 
 	public double ParamAyus()
@@ -41,31 +41,31 @@ public class DrigDasa : Dasa, IDasa
 
 	public void RecalculateOptions()
 	{
-		options.recalculate();
+		_options.Recalculate();
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
-		var al_order = new ArrayList(12);
-		var zh_seed  = options.getSeed().Add(9);
+		var alOrder = new ArrayList(12);
+		var zhSeed  = _options.GetSeed().Add(9);
 
 		for (var i = 1; i <= 4; i++)
 		{
-			DasaHelper(zh_seed.Add(i), al_order);
+			DasaHelper(zhSeed.Add(i), alOrder);
 		}
 
 		var al = new ArrayList(12);
 
-		var    dasa_length_sum = 0.0;
-		double dasa_length;
+		var    dasaLengthSum = 0.0;
+		double dasaLength;
 		for (var i = 0; i < 12; i++)
 		{
-			var zh_dasa = (ZodiacHouse) al_order[i];
-			var dp      = h.CalculateDivisionPosition(h.GetPosition(GetLord(zh_dasa)), new Division(Vargas.DivisionType.Rasi));
-			dasa_length = NarayanaDasaLength(zh_dasa, dp);
-			var di = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
+			var zhDasa = (ZodiacHouse) alOrder[i];
+			var dp      = _h.CalculateDivisionPosition(_h.GetPosition(GetLord(zhDasa)), new Division(Vargas.DivisionType.Rasi));
+			dasaLength = NarayanaDasaLength(zhDasa, dp);
+			var di = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
 			al.Add(di);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
 
@@ -74,31 +74,31 @@ public class DrigDasa : Dasa, IDasa
 
 	public ArrayList AntarDasa(DasaEntry pdi)
 	{
-		var nd = new NarayanaDasa(h);
-		nd.options = options;
+		var nd = new NarayanaDasa(_h);
+		nd.Options = _options;
 		return nd.AntarDasa(pdi);
 	}
 
 	public string Description()
 	{
-		return "Drig Dasa" + " seeded from " + options.SeedRasi;
+		return "Drig Dasa" + " seeded from " + _options.SeedRasi;
 	}
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
 	{
-		options.CopyFrom(a);
+		_options.CopyFrom(a);
 		RecalculateEvent();
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public new void DivisionChanged(Division div)
 	{
-		var newOpts = (RasiDasaUserOptions) options.Clone();
+		var newOpts = (RasiDasaUserOptions) _options.Clone();
 		newOpts.Division = (Division) div.Clone();
 		SetOptions(newOpts);
 	}
@@ -107,27 +107,27 @@ public class DrigDasa : Dasa, IDasa
 	{
 		switch (zh.Sign)
 		{
-			case ZodiacHouse.Rasi.Aqu: return options.ColordAqu;
-			case ZodiacHouse.Rasi.Sco: return options.ColordSco;
+			case ZodiacHouse.Rasi.Aqu: return _options.ColordAqu;
+			case ZodiacHouse.Rasi.Sco: return _options.ColordSco;
 			default:                   return zh.Sign.SimpleLordOfZodiacHouse();
 		}
 	}
 
 	public void DasaHelper(ZodiacHouse zh, ArrayList al)
 	{
-		int[] order_moveable =
+		int[] orderMoveable =
 		{
 			5,
 			8,
 			11
 		};
-		int[] order_fixed =
+		int[] orderFixed =
 		{
 			3,
 			6,
 			9
 		};
-		int[] order_dual =
+		int[] orderDual =
 		{
 			4,
 			7,
@@ -143,13 +143,13 @@ public class DrigDasa : Dasa, IDasa
 		switch ((int) zh.Sign % 3)
 		{
 			case 1:
-				order = order_moveable;
+				order = orderMoveable;
 				break;
 			case 2:
-				order = order_fixed;
+				order = orderFixed;
 				break;
 			default:
-				order = order_dual;
+				order = orderDual;
 				break;
 		}
 

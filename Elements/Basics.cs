@@ -252,13 +252,13 @@ public static class Basics
 		var juldayUt = h.UniversalTime(hi.DateOfBirth); // (hi.tob - hi.DstOffset).UniversalTime();
 
 		var swephRahuBody = sweph.SE_MEAN_NODE;
-		if (o.nodeType == HoroscopeOptions.ENodeType.True)
+		if (o.NodeType == HoroscopeOptions.ENodeType.True)
 		{
 			swephRahuBody = sweph.SE_TRUE_NODE;
 		}
 
 		var addFlags = 0;
-		if (o.grahaPositionType == HoroscopeOptions.EGrahaPositionType.True)
+		if (o.GrahaPositionType == HoroscopeOptions.EGrahaPositionType.True)
 		{
 			addFlags = sweph.SEFLG_TRUEPOS;
 		}

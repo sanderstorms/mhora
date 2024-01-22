@@ -145,27 +145,27 @@ public class FindStronger
 		VimsottariDasaLength
 	}
 
-	private readonly Division  dtype;
-	private readonly Horoscope h;
-	private readonly ArrayList rules;
+	private readonly Division  _dtype;
+	private readonly Horoscope _h;
+	private readonly ArrayList _rules;
 
-	private bool bUseSimpleLords;
+	private bool _bUseSimpleLords;
 
 
-	public FindStronger(Horoscope _h, Division _dtype, ArrayList _rules, bool _UseSimpleLords)
+	public FindStronger(Horoscope h, Division dtype, ArrayList rules, bool useSimpleLords)
 	{
-		h               = _h;
-		dtype           = _dtype;
-		rules           = _rules;
-		bUseSimpleLords = _UseSimpleLords;
+		this._h         = h;
+		this._dtype     = dtype;
+		this._rules     = rules;
+		_bUseSimpleLords = useSimpleLords;
 	}
 
-	public FindStronger(Horoscope _h, Division _dtype, ArrayList _rules)
+	public FindStronger(Horoscope h, Division dtype, ArrayList rules)
 	{
-		h               = _h;
-		dtype           = _dtype;
-		rules           = _rules;
-		bUseSimpleLords = false;
+		this._h         = h;
+		this._dtype     = dtype;
+		this._rules     = rules;
+		_bUseSimpleLords = false;
 	}
 
 	private static StrengthOptions GetStrengthOptions(Horoscope h)
@@ -215,24 +215,24 @@ public class FindStronger
 
 	public static ArrayList RulesJaiminiFirstRasi(Horoscope h)
 	{
-		var Rules = new ArrayList();
-		Rules.Add(ERasiStrength.AtmaKaraka);
-		Rules.Add(ERasiStrength.Conjunction);
-		Rules.Add(ERasiStrength.Exaltation);
-		Rules.Add(ERasiStrength.MoolaTrikona);
-		Rules.Add(ERasiStrength.OwnHouse);
-		Rules.Add(ERasiStrength.RasisNature);
-		Rules.Add(ERasiStrength.LordIsAtmaKaraka);
-		Rules.Add(ERasiStrength.LordsLongitude);
-		Rules.Add(ERasiStrength.LordInDifferentOddity);
-		return Rules;
+		var rules = new ArrayList();
+		rules.Add(ERasiStrength.AtmaKaraka);
+		rules.Add(ERasiStrength.Conjunction);
+		rules.Add(ERasiStrength.Exaltation);
+		rules.Add(ERasiStrength.MoolaTrikona);
+		rules.Add(ERasiStrength.OwnHouse);
+		rules.Add(ERasiStrength.RasisNature);
+		rules.Add(ERasiStrength.LordIsAtmaKaraka);
+		rules.Add(ERasiStrength.LordsLongitude);
+		rules.Add(ERasiStrength.LordInDifferentOddity);
+		return rules;
 	}
 
 	public static ArrayList RulesJaiminiSecondRasi(Horoscope h)
 	{
-		var Rules = new ArrayList();
-		Rules.Add(ERasiStrength.AspectsRasi);
-		return Rules;
+		var rules = new ArrayList();
+		rules.Add(ERasiStrength.AspectsRasi);
+		return rules;
 	}
 
 	public static ArrayList RulesNaisargikaDasaGraha(Horoscope h)
@@ -242,10 +242,10 @@ public class FindStronger
 
 	public static ArrayList RulesVimsottariGraha(Horoscope h)
 	{
-		var Rules = new ArrayList();
-		Rules.Add(EGrahaStrength.KendraConjunction);
-		Rules.Add(EGrahaStrength.First);
-		return Rules;
+		var rules = new ArrayList();
+		rules.Add(EGrahaStrength.KendraConjunction);
+		rules.Add(EGrahaStrength.First);
+		return rules;
 	}
 
 	public static ArrayList RulesStrongerCoLord(Horoscope h)
@@ -253,10 +253,10 @@ public class FindStronger
 		return new ArrayList(GetStrengthOptions(h).Colord);
 	}
 
-	public OrderedZodiacHouses[] ResultsZodiacKendras(ZodiacHouse.Rasi _zh)
+	public OrderedZodiacHouses[] ResultsZodiacKendras(ZodiacHouse.Rasi rasi)
 	{
 		var zRet = new OrderedZodiacHouses[3];
-		var zh   = new ZodiacHouse(_zh);
+		var zh   = new ZodiacHouse(rasi);
 		var zh1 = new ZodiacHouse.Rasi[4]
 		{
 			zh.Add(1).Sign,
@@ -278,16 +278,16 @@ public class FindStronger
 			zh.Add(9).Sign,
 			zh.Add(12).Sign
 		};
-		zRet[0] = getOrderedHouses(zh1);
-		zRet[1] = getOrderedHouses(zh2);
-		zRet[2] = getOrderedHouses(zh3);
+		zRet[0] = GetOrderedHouses(zh1);
+		zRet[1] = GetOrderedHouses(zh2);
+		zRet[2] = GetOrderedHouses(zh3);
 		return zRet;
 	}
 
-	public ZodiacHouse.Rasi[] ResultsKendraRasis(ZodiacHouse.Rasi _zh)
+	public ZodiacHouse.Rasi[] ResultsKendraRasis(ZodiacHouse.Rasi rasi)
 	{
 		var zRet = new ZodiacHouse.Rasi[12];
-		var zh   = new ZodiacHouse(_zh);
+		var zh   = new ZodiacHouse(rasi);
 		var zh1 = new ZodiacHouse.Rasi[4]
 		{
 			zh.Add(1).Sign,
@@ -309,41 +309,41 @@ public class FindStronger
 			zh.Add(9).Sign,
 			zh.Add(12).Sign
 		};
-		getOrderedRasis(zh1).CopyTo(zRet, 0);
-		getOrderedRasis(zh2).CopyTo(zRet, 4);
-		getOrderedRasis(zh3).CopyTo(zRet, 8);
+		GetOrderedRasis(zh1).CopyTo(zRet, 0);
+		GetOrderedRasis(zh2).CopyTo(zRet, 4);
+		GetOrderedRasis(zh3).CopyTo(zRet, 8);
 		return zRet;
 	}
 
 	public ZodiacHouse.Rasi[] ResultsFirstSeventhRasis()
 	{
 		var zRet = new ZodiacHouse.Rasi[12];
-		getOrderedRasis(new[]
+		GetOrderedRasis(new[]
 		{
 			ZodiacHouse.Rasi.Ari,
 			ZodiacHouse.Rasi.Lib
 		}).CopyTo(zRet, 0);
-		getOrderedRasis(new[]
+		GetOrderedRasis(new[]
 		{
 			ZodiacHouse.Rasi.Tau,
 			ZodiacHouse.Rasi.Sco
 		}).CopyTo(zRet, 2);
-		getOrderedRasis(new[]
+		GetOrderedRasis(new[]
 		{
 			ZodiacHouse.Rasi.Gem,
 			ZodiacHouse.Rasi.Sag
 		}).CopyTo(zRet, 4);
-		getOrderedRasis(new[]
+		GetOrderedRasis(new[]
 		{
 			ZodiacHouse.Rasi.Can,
 			ZodiacHouse.Rasi.Cap
 		}).CopyTo(zRet, 6);
-		getOrderedRasis(new[]
+		GetOrderedRasis(new[]
 		{
 			ZodiacHouse.Rasi.Leo,
 			ZodiacHouse.Rasi.Aqu
 		}).CopyTo(zRet, 8);
-		getOrderedRasis(new[]
+		GetOrderedRasis(new[]
 		{
 			ZodiacHouse.Rasi.Vir,
 			ZodiacHouse.Rasi.Pis
@@ -352,7 +352,7 @@ public class FindStronger
 	}
 
 
-	public Body.BodyType[] getOrderedGrahas()
+	public Body.BodyType[] GetOrderedGrahas()
 	{
 		Body.BodyType[] grahas =
 		{
@@ -366,10 +366,10 @@ public class FindStronger
 			Body.BodyType.Rahu,
 			Body.BodyType.Ketu
 		};
-		return getOrderedGrahas(grahas);
+		return GetOrderedGrahas(grahas);
 	}
 
-	public Body.BodyType[] getOrderedGrahas(Body.BodyType[] grahas)
+	public Body.BodyType[] GetOrderedGrahas(Body.BodyType[] grahas)
 	{
 		if (grahas.Length <= 1)
 		{
@@ -392,7 +392,7 @@ public class FindStronger
 		return grahas;
 	}
 
-	public ZodiacHouse.Rasi[] getOrderedRasis()
+	public ZodiacHouse.Rasi[] GetOrderedRasis()
 	{
 		ZodiacHouse.Rasi[] rasis =
 		{
@@ -409,14 +409,14 @@ public class FindStronger
 			ZodiacHouse.Rasi.Aqu,
 			ZodiacHouse.Rasi.Pis
 		};
-		return getOrderedRasis(rasis);
+		return GetOrderedRasis(rasis);
 	}
 
-	public OrderedZodiacHouses getOrderedHouses(ZodiacHouse.Rasi[] rasis)
+	public OrderedZodiacHouses GetOrderedHouses(ZodiacHouse.Rasi[] rasis)
 	{
-		var zh_ordered = getOrderedRasis(rasis);
+		var zhOrdered = GetOrderedRasis(rasis);
 		var oz         = new OrderedZodiacHouses();
-		foreach (var zn in zh_ordered)
+		foreach (var zn in zhOrdered)
 		{
 			oz.houses.Add(zn);
 		}
@@ -424,7 +424,7 @@ public class FindStronger
 		return oz;
 	}
 
-	public ZodiacHouse.Rasi[] getOrderedRasis(ZodiacHouse.Rasi[] rasis)
+	public ZodiacHouse.Rasi[] GetOrderedRasis(ZodiacHouse.Rasi[] rasis)
 	{
 		if (rasis.Length < 2)
 		{
@@ -514,7 +514,7 @@ public class FindStronger
 		winner = 0;
 
 		//System.mhora.Log.Debug("Rasi: {0} {1}", za.ToString(), zb.ToString());
-		foreach (ERasiStrength s in rules)
+		foreach (ERasiStrength s in _rules)
 		{
 			//System.mhora.Log.Debug("Rasi::{0}", s);
 			switch (s)
@@ -522,7 +522,7 @@ public class FindStronger
 				case ERasiStrength.Conjunction:
 					try
 					{
-						bRet = new StrengthByConjunction(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByConjunction(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -534,7 +534,7 @@ public class FindStronger
 				case ERasiStrength.Exaltation:
 					try
 					{
-						bRet = new StrengthByExaltation(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByExaltation(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -546,7 +546,7 @@ public class FindStronger
 				case ERasiStrength.Longitude:
 					try
 					{
-						bRet = new StrengthByLongitude(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByLongitude(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -558,7 +558,7 @@ public class FindStronger
 				case ERasiStrength.AtmaKaraka:
 					try
 					{
-						bRet = new StrengthByAtmaKaraka(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByAtmaKaraka(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -570,7 +570,7 @@ public class FindStronger
 				case ERasiStrength.LordIsAtmaKaraka:
 					try
 					{
-						bRet = new StrengthByLordIsAtmaKaraka(h, dtype, bSimpleLord).Stronger(za, zb);
+						bRet = new StrengthByLordIsAtmaKaraka(_h, _dtype, bSimpleLord).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -582,7 +582,7 @@ public class FindStronger
 				case ERasiStrength.RasisNature:
 					try
 					{
-						bRet = new StrengthByRasisNature(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByRasisNature(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -594,7 +594,7 @@ public class FindStronger
 				case ERasiStrength.LordsNature:
 					try
 					{
-						bRet = new StrengthByLordsNature(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByLordsNature(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -606,7 +606,7 @@ public class FindStronger
 				case ERasiStrength.AspectsRasi:
 					try
 					{
-						bRet = new StrengthByAspectsRasi(h, dtype, bSimpleLord).Stronger(za, zb);
+						bRet = new StrengthByAspectsRasi(_h, _dtype, bSimpleLord).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -618,7 +618,7 @@ public class FindStronger
 				case ERasiStrength.AspectsGraha:
 					try
 					{
-						bRet = new StrengthByAspectsGraha(h, dtype, bSimpleLord).Stronger(za, zb);
+						bRet = new StrengthByAspectsGraha(_h, _dtype, bSimpleLord).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -630,7 +630,7 @@ public class FindStronger
 				case ERasiStrength.LordInDifferentOddity:
 					try
 					{
-						bRet = new StrengthByLordInDifferentOddity(h, dtype, bSimpleLord).Stronger(za, zb);
+						bRet = new StrengthByLordInDifferentOddity(_h, _dtype, bSimpleLord).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -642,7 +642,7 @@ public class FindStronger
 				case ERasiStrength.LordsLongitude:
 					try
 					{
-						bRet = new StrengthByLordsLongitude(h, dtype, bSimpleLord).Stronger(za, zb);
+						bRet = new StrengthByLordsLongitude(_h, _dtype, bSimpleLord).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -654,7 +654,7 @@ public class FindStronger
 				case ERasiStrength.NarayanaDasaLength:
 					try
 					{
-						bRet = new StrengthByNarayanaDasaLength(h, dtype, bSimpleLord).Stronger(za, zb);
+						bRet = new StrengthByNarayanaDasaLength(_h, _dtype, bSimpleLord).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -666,7 +666,7 @@ public class FindStronger
 				case ERasiStrength.VimsottariDasaLength:
 					try
 					{
-						bRet = new StrengthByVimsottariDasaLength(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByVimsottariDasaLength(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -678,7 +678,7 @@ public class FindStronger
 				case ERasiStrength.MoolaTrikona:
 					try
 					{
-						bRet = new StrengthByMoolaTrikona(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByMoolaTrikona(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -690,7 +690,7 @@ public class FindStronger
 				case ERasiStrength.OwnHouse:
 					try
 					{
-						bRet = new StrengthByOwnHouse(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByOwnHouse(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -702,7 +702,7 @@ public class FindStronger
 				case ERasiStrength.KendraConjunction:
 					try
 					{
-						bRet = new StrengthByKendraConjunction(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByKendraConjunction(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -714,7 +714,7 @@ public class FindStronger
 				case ERasiStrength.KarakaKendradiGrahaDasaLength:
 					try
 					{
-						bRet = new StrengthByKarakaKendradiGrahaDasaLength(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByKarakaKendradiGrahaDasaLength(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -726,7 +726,7 @@ public class FindStronger
 				case ERasiStrength.First:
 					try
 					{
-						bRet = new StrengthByFirst(h, dtype).Stronger(za, zb);
+						bRet = new StrengthByFirst(_h, _dtype).Stronger(za, zb);
 						goto found;
 					}
 					catch
@@ -761,7 +761,7 @@ public class FindStronger
 		var bRet   = false;
 		var bFound = true;
 		winner = 0;
-		foreach (EGrahaStrength s in rules)
+		foreach (EGrahaStrength s in _rules)
 		{
 			//mhora.Log.Debug("Trying {0}. Curr is {1}", s, winner);
 			switch (s)
@@ -769,7 +769,7 @@ public class FindStronger
 				case EGrahaStrength.Conjunction:
 					try
 					{
-						bRet = new StrengthByConjunction(h, dtype).Stronger(m, n);
+						bRet = new StrengthByConjunction(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -781,7 +781,7 @@ public class FindStronger
 				case EGrahaStrength.Exaltation:
 					try
 					{
-						bRet = new StrengthByExaltation(h, dtype).Stronger(m, n);
+						bRet = new StrengthByExaltation(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -793,7 +793,7 @@ public class FindStronger
 				case EGrahaStrength.Longitude:
 					try
 					{
-						bRet = new StrengthByLongitude(h, dtype).Stronger(m, n);
+						bRet = new StrengthByLongitude(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -805,7 +805,7 @@ public class FindStronger
 				case EGrahaStrength.AtmaKaraka:
 					try
 					{
-						bRet = new StrengthByAtmaKaraka(h, dtype).Stronger(m, n);
+						bRet = new StrengthByAtmaKaraka(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -817,7 +817,7 @@ public class FindStronger
 				case EGrahaStrength.RasisNature:
 					try
 					{
-						bRet = new StrengthByRasisNature(h, dtype).Stronger(m, n);
+						bRet = new StrengthByRasisNature(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -829,7 +829,7 @@ public class FindStronger
 				case EGrahaStrength.LordsNature:
 					try
 					{
-						bRet = new StrengthByLordsNature(h, dtype).Stronger(m, n);
+						bRet = new StrengthByLordsNature(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -841,7 +841,7 @@ public class FindStronger
 				case EGrahaStrength.AspectsRasi:
 					try
 					{
-						bRet = new StrengthByAspectsRasi(h, dtype, bSimpleLord).Stronger(m, n);
+						bRet = new StrengthByAspectsRasi(_h, _dtype, bSimpleLord).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -853,7 +853,7 @@ public class FindStronger
 				case EGrahaStrength.AspectsGraha:
 					try
 					{
-						bRet = new StrengthByAspectsGraha(h, dtype, bSimpleLord).Stronger(m, n);
+						bRet = new StrengthByAspectsGraha(_h, _dtype, bSimpleLord).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -865,7 +865,7 @@ public class FindStronger
 				case EGrahaStrength.NarayanaDasaLength:
 					try
 					{
-						bRet = new StrengthByNarayanaDasaLength(h, dtype, bSimpleLord).Stronger(m, n);
+						bRet = new StrengthByNarayanaDasaLength(_h, _dtype, bSimpleLord).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -877,7 +877,7 @@ public class FindStronger
 				case EGrahaStrength.VimsottariDasaLength:
 					try
 					{
-						bRet = new StrengthByVimsottariDasaLength(h, dtype).Stronger(m, n);
+						bRet = new StrengthByVimsottariDasaLength(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -889,7 +889,7 @@ public class FindStronger
 				case EGrahaStrength.MoolaTrikona:
 					try
 					{
-						bRet = new StrengthByMoolaTrikona(h, dtype).Stronger(m, n);
+						bRet = new StrengthByMoolaTrikona(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -901,7 +901,7 @@ public class FindStronger
 				case EGrahaStrength.OwnHouse:
 					try
 					{
-						bRet = new StrengthByOwnHouse(h, dtype).Stronger(m, n);
+						bRet = new StrengthByOwnHouse(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -913,7 +913,7 @@ public class FindStronger
 				case EGrahaStrength.NotInOwnHouse:
 					try
 					{
-						bRet = !new StrengthByOwnHouse(h, dtype).Stronger(m, n);
+						bRet = !new StrengthByOwnHouse(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -925,7 +925,7 @@ public class FindStronger
 				case EGrahaStrength.LordInOwnHouse:
 					try
 					{
-						bRet = new StrengthByLordInOwnHouse(h, dtype, bSimpleLord).Stronger(m, n);
+						bRet = new StrengthByLordInOwnHouse(_h, _dtype, bSimpleLord).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -937,7 +937,7 @@ public class FindStronger
 				case EGrahaStrength.LordInDifferentOddity:
 					try
 					{
-						bRet = new StrengthByLordInDifferentOddity(h, dtype, bSimpleLord).Stronger(m, n);
+						bRet = new StrengthByLordInDifferentOddity(_h, _dtype, bSimpleLord).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -949,7 +949,7 @@ public class FindStronger
 				case EGrahaStrength.KendraConjunction:
 					try
 					{
-						bRet = new StrengthByKendraConjunction(h, dtype).Stronger(m, n);
+						bRet = new StrengthByKendraConjunction(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -961,7 +961,7 @@ public class FindStronger
 				case EGrahaStrength.KarakaKendradiGrahaDasaLength:
 					try
 					{
-						bRet = new StrengthByKarakaKendradiGrahaDasaLength(h, dtype).Stronger(m, n);
+						bRet = new StrengthByKarakaKendradiGrahaDasaLength(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch
@@ -973,7 +973,7 @@ public class FindStronger
 				case EGrahaStrength.First:
 					try
 					{
-						bRet = new StrengthByFirst(h, dtype).Stronger(m, n);
+						bRet = new StrengthByFirst(_h, _dtype).Stronger(m, n);
 						goto found;
 					}
 					catch

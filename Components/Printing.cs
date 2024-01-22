@@ -200,11 +200,11 @@ public class MhoraPrintDocument : PrintDocument
 		string s;
 		if (bGraha)
 		{
-			s = string.Format("{0} {1}", deAntar.Graha.ToShortString(), td.AddYears(deAntar.StartUT).ToDateString());
+			s = string.Format("{0} {1}", deAntar.Graha.ToShortString(), td.AddYears(deAntar.StartUt).ToDateString());
 		}
 		else
 		{
-			s = string.Format("{0} {1}", ZodiacHouse.ToShortString(deAntar.ZHouse), td.AddYears(deAntar.StartUT).ToDateString());
+			s = string.Format("{0} {1}", ZodiacHouse.ToShortString(deAntar.ZHouse), td.AddYears(deAntar.StartUt).ToDateString());
 		}
 
 		return s;
@@ -289,8 +289,8 @@ public class MhoraPrintDocument : PrintDocument
 		PrintDasa(id, false);
 
 		var vd = new VimsottariDasa(h);
-		vd.options.SeedBody = VimsottariDasa.UserOptions.StartBodyType.Lagna;
-		vd.SetOptions(vd.options);
+		vd.Options.SeedBody = VimsottariDasa.UserOptions.StartBodyType.Lagna;
+		vd.SetOptions(vd.Options);
 		id = vd;
 		PrintDasa(id, true);
 	}
@@ -327,7 +327,7 @@ public class MhoraPrintDocument : PrintDocument
 
 	private string GetVimAntarString(ToDate td, DasaEntry de)
 	{
-		var mStart = td.AddYears(de.StartUT);
+		var mStart = td.AddYears(de.StartUt);
 		return string.Format("{0} {1}", de.Graha.ToShortString(), mStart.ToDateString());
 	}
 
@@ -348,7 +348,7 @@ public class MhoraPrintDocument : PrintDocument
 		{
 			g.ResetTransform();
 			g.TranslateTransform(left, top);
-			var mStart = td.AddYears(de.StartUT);
+			var mStart = td.AddYears(de.StartUt);
 			g.DrawString(de.Graha.Name(), f, b, 0, 0);
 			//s = string.Format("{0} ", mStart.ToDateString());
 			//g.DrawString(s, f_fix, b, width / 6, 0);
@@ -569,7 +569,7 @@ public class MhoraPrintDocument : PrintDocument
 		left = e.MarginBounds.Left + width / 2;
 		// Vimsottari Dasa
 		var vd = new VimsottariDasa(h);
-		vd.options.SeedBody = VimsottariDasa.UserOptions.StartBodyType.Moon;
+		vd.Options.SeedBody = VimsottariDasa.UserOptions.StartBodyType.Moon;
 		PrintVimDasa(vd);
 	}
 }

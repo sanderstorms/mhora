@@ -20,6 +20,6 @@ namespace Mhora.Elements.Dasas.Nakshatra;
 
 public interface INakshatraYogaDasa : IDasa
 {
-	Body.BodyType lordOfYoga(Longitude   l);
+	Body.BodyType LordOfYoga(Longitude   l);
 	double    LengthOfDasa(Body.BodyType plt);
 }

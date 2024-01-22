@@ -98,29 +98,29 @@ public class ZodiacHouse : ICloneable
 
 	public int Normalize()
 	{
-		return Basics.NormalizeInc((int) _rasi, 1, 12);
+		return ((int) _rasi).NormalizeInc(1, 12);
 	}
 
 	public ZodiacHouse Add(int i)
 	{
-		var znum = Basics.NormalizeInc((int) _rasi + i - 1, 1, 12);
+		var znum = ((int) _rasi + i - 1).NormalizeInc(1, 12);
 		return new ZodiacHouse((Rasi) znum);
 	}
 
 	public ZodiacHouse AddReverse(int i)
 	{
-		var znum = Basics.NormalizeInc((int) _rasi - i + 1, 1, 12);
+		var znum = ((int) _rasi - i + 1).NormalizeInc(1, 12);
 		return new ZodiacHouse((Rasi) znum);
 	}
 
 	public int NumHousesBetweenReverse(ZodiacHouse zrel)
 	{
-		return Basics.NormalizeInc(14 - NumHousesBetween(zrel), 1, 12);
+		return (14 - NumHousesBetween(zrel)).NormalizeInc(1, 12);
 	}
 
 	public int NumHousesBetween(ZodiacHouse zrel)
 	{
-		var ret = Basics.NormalizeInc((int) zrel._rasi - (int) _rasi + 1, 1, 12);
+		var ret = ((int) zrel._rasi - (int) _rasi + 1).NormalizeInc(1, 12);
 		Trace.Assert(ret >= 1 && ret <= 12, "ZodiacHouse.numHousesBetween failed");
 		return ret;
 	}

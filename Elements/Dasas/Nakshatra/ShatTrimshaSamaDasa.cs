@@ -24,12 +24,12 @@ namespace Mhora.Elements.Dasas.Nakshatra;
 
 public class ShatTrimshaSamaDasa : NakshatraDasa, INakshatraDasa
 {
-	private readonly Horoscope h;
+	private readonly Horoscope _h;
 
-	public ShatTrimshaSamaDasa(Horoscope _h)
+	public ShatTrimshaSamaDasa(Horoscope h)
 	{
-		common = this;
-		h      = _h;
+		Common  = this;
+		this._h = h;
 	}
 
 	public override object GetOptions()
@@ -44,7 +44,7 @@ public class ShatTrimshaSamaDasa : NakshatraDasa, INakshatraDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		return _Dasa(h.GetPosition(Body.BodyType.Moon).Longitude, 1, cycle);
+		return _Dasa(_h.GetPosition(Body.BodyType.Moon).Longitude, 1, cycle);
 	}
 
 	public ArrayList AntarDasa(DasaEntry di)
@@ -103,11 +103,11 @@ public class ShatTrimshaSamaDasa : NakshatraDasa, INakshatraDasa
 			Body.BodyType.Venus,
 			Body.BodyType.Rahu
 		};
-		var nak_val  = (int) n;
-		var shr_val  = (int) Nakshatras.Nakshatra.Sravana;
-		var diff_val = Basics.NormalizeInc(nak_val - shr_val, (int) Nakshatras.Nakshatra.Aswini, (int) Nakshatras.Nakshatra.Revati);
-		var diff_off = diff_val % 8;
-		return lords[diff_off];
+		var nakVal  = (int) n;
+		var shrVal  = (int) Nakshatras.Nakshatra.Sravana;
+		var diffVal = (nakVal - shrVal).NormalizeInc((int) Nakshatras.Nakshatra.Aswini, (int) Nakshatras.Nakshatra.Revati);
+		var diffOff = diffVal % 8;
+		return lords[diffOff];
 	}
 
 	private Body.BodyType NextDasaLordHelper(Body.BodyType b)

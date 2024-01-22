@@ -27,36 +27,36 @@ namespace Mhora.Elements.Dasas.Nakshatra;
 // based on the yoga
 public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaDasa
 {
-	private readonly Horoscope      h;
-	private readonly VimsottariDasa vd;
-	private          UserOptions    options;
+	private readonly Horoscope      _h;
+	private readonly VimsottariDasa _vd;
+	private          UserOptions    _options;
 
-	public YogaVimsottariDasa(Horoscope _h)
+	public YogaVimsottariDasa(Horoscope h)
 	{
-		options    = new UserOptions();
-		common     = this;
-		yogaCommon = this;
-		h          = _h;
-		vd         = new VimsottariDasa(h);
+		_options    = new UserOptions();
+		Common     = this;
+		YogaCommon = this;
+		this._h    = h;
+		_vd         = new VimsottariDasa(this._h);
 	}
 
 	public override object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public override object SetOptions(object a)
 	{
-		options = (UserOptions) options.SetOptions(a);
+		_options = (UserOptions) _options.SetOptions(a);
 		RecalculateEvent?.Invoke();
 
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
-		var t = new Transit(h);
-		var l = t.LongitudeOfSunMoonYoga(h.Info.Jd);
+		var t = new Transit(_h);
+		var l = t.LongitudeOfSunMoonYoga(_h.Info.Jd);
 		return _YogaDasa(l, 1, cycle);
 	}
 
@@ -72,22 +72,22 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 
 	public double ParamAyus()
 	{
-		return vd.ParamAyus();
+		return _vd.ParamAyus();
 	}
 
 	public int NumberOfDasaItems()
 	{
-		return vd.NumberOfDasaItems();
+		return _vd.NumberOfDasaItems();
 	}
 
 	public DasaEntry NextDasaLord(DasaEntry di)
 	{
-		return vd.NextDasaLord(di);
+		return _vd.NextDasaLord(di);
 	}
 
 	public double LengthOfDasa(Body.BodyType plt)
 	{
-		return vd.LengthOfDasa(plt);
+		return _vd.LengthOfDasa(plt);
 	}
 
 	public Body.BodyType LordOfNakshatra(Nakshatras.Nakshatra n)
@@ -96,31 +96,31 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 		return Body.BodyType.Lagna;
 	}
 
-	public Body.BodyType lordOfYoga(Longitude l)
+	public Body.BodyType LordOfYoga(Longitude l)
 	{
 		return l.ToSunMoonYoga().getLord();
 	}
 
 	public class UserOptions : ICloneable
 	{
-		public bool bExpungeTravelled = true;
+		public bool BExpungeTravelled = true;
 
 		public UserOptions()
 		{
-			bExpungeTravelled = true;
+			BExpungeTravelled = true;
 		}
 
 		[PGNotVisible]
 		public bool UseYogaRemainder
 		{
-			get => bExpungeTravelled;
-			set => bExpungeTravelled = value;
+			get => BExpungeTravelled;
+			set => BExpungeTravelled = value;
 		}
 
 		public object Clone()
 		{
 			var options = new UserOptions();
-			options.bExpungeTravelled = bExpungeTravelled;
+			options.BExpungeTravelled = BExpungeTravelled;
 			return options;
 		}
 
@@ -129,7 +129,7 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 			if (b is UserOptions)
 			{
 				var uo = (UserOptions) b;
-				bExpungeTravelled = uo.bExpungeTravelled;
+				BExpungeTravelled = uo.BExpungeTravelled;
 			}
 
 			return Clone();

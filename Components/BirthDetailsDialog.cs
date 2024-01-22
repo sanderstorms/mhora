@@ -75,8 +75,8 @@ public partial class BirthDetailsDialog : Form
 		get
 		{
 			MhoraGlobalOptions.Instance.City      = City.Name;
-			MhoraGlobalOptions.Instance.Latitude  = new Angle(City.Latitude);
-			MhoraGlobalOptions.Instance.Longitude = new Angle(City.Longitude);
+			MhoraGlobalOptions.Instance.Latitude  = City.Latitude;
+			MhoraGlobalOptions.Instance.Longitude = City.Longitude;
 
 			var date   = dateTimePicker.Value;
 			var time   = timePicker.Value;
@@ -221,7 +221,7 @@ public partial class BirthDetailsDialog : Form
 
 		txtLongitude.Text = City.Longitude.ToString("0.0000");
 		txtLatitude.Text  = City.Latitude.ToString("0.0000");
-		var location = new LocationConverter.DmsLocation(City.Longitude, City.Latitude);
+		var location = new DmsLocation(City.Longitude, City.Latitude);
 		var str      = location.ToString().Split(',');
 
 		txtLongitude2.Text = str[0];

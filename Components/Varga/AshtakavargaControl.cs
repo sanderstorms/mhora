@@ -697,7 +697,7 @@ public class AshtakavargaControl : MhoraControl
 				var   iOuter = av.BodyToInt(bOuter);
 				var   iInner = av.BodyToInt(bInner);
 				var   zhBins = av.GetBindus(bOuter, bInner);
-				Brush br     = new SolidBrush(MhoraGlobalOptions.Instance.getBinduColor(bInner));
+				Brush br     = new SolidBrush(MhoraGlobalOptions.Instance.GetBinduColor(bInner));
 
 				foreach (var zh in zhBins)
 				{

@@ -236,7 +236,7 @@ public class PanchangaControl : MhoraControl
 		var h = (Horoscope) _h;
 
 		var li = new ListViewItem();
-		li.Text = "Results may be out of date. Click the Compute Button to recalculate the panchanga";
+		li.Text = "Results may be out of date. Click the Compute Button to Recalculate the panchanga";
 		mList.Items.Insert(0, li);
 		mList.Items.Insert(1, string.Empty);
 		bResultsInvalid = true;
@@ -368,25 +368,25 @@ public class PanchangaControl : MhoraControl
 	private string utTimeToString(double ut_event, double ut_sr, double sunrise)
 	{
 		var m   = utToMoment(ut_event);
-		var hms = new HMSInfo(m.Time ().TotalHours);
+		var hms = m.Time ();
 
 		if (ut_event >= ut_sr - sunrise / 24.0 + 1.0)
 		{
 			if (false == opts.LargeHours)
 			{
-				return string.Format("*{0:00}:{1:00}", hms.degree, hms.minute);
+				return string.Format("*{0:00}:{1:00}", hms.Hours, hms.Minutes);
 			}
 
-			return string.Format("{0:00}:{1:00}", hms.degree + 24, hms.minute);
+			return string.Format("{0:00}:{1:00}", hms.Hours + 24, hms.Minutes);
 		}
 
-		return string.Format("{0:00}:{1:00}", hms.degree, hms.minute);
+		return string.Format("{0:00}:{1:00}", hms.Hours, hms.Minutes);
 	}
 
 	private string timeToString(double time)
 	{
-		var hms = new HMSInfo(time);
-		return string.Format("{0:00}:{1:00}", hms.degree, hms.minute, hms.second);
+		var hms = TimeSpan.FromHours(time);
+		return string.Format("{0:00}:{1:00}", hms.Hours, hms.Minutes, hms.Seconds);
 	}
 
 	private void ComputeEntry(double ut, double[] geopos)

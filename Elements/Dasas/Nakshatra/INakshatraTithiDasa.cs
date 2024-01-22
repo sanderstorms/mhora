@@ -20,6 +20,6 @@ namespace Mhora.Elements.Dasas.Nakshatra;
 
 public interface INakshatraTithiDasa : IDasa
 {
-	Body.BodyType lordOfTithi(Longitude  l);
+	Body.BodyType LordOfTithi(Longitude  l);
 	double    LengthOfDasa(Body.BodyType plt); // Length of a maha dasa
 }

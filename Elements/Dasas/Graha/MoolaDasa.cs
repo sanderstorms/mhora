@@ -29,15 +29,15 @@ namespace Mhora.Elements.Dasas.Graha;
 
 public class MoolaDasa : Dasa, IDasa
 {
-	private readonly Horoscope      h;
-	private readonly VimsottariDasa vd;
-	private          UserOptions    options;
+	private readonly Horoscope      _h;
+	private readonly VimsottariDasa _vd;
+	private          UserOptions    _options;
 
-	public MoolaDasa(Horoscope _h)
+	public MoolaDasa(Horoscope h)
 	{
-		h       = _h;
-		options = new UserOptions(h);
-		vd      = new VimsottariDasa(h);
+		this._h = h;
+		_options = new UserOptions(this._h);
+		_vd      = new VimsottariDasa(this._h);
 	}
 
 	public double ParamAyus()
@@ -47,18 +47,18 @@ public class MoolaDasa : Dasa, IDasa
 
 	public void RecalculateOptions()
 	{
-		options.recalculate();
+		_options.Recalculate();
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
-		var cycle_start = ParamAyus() * cycle;
+		var cycleStart = ParamAyus() * cycle;
 		var curr        = 0.0;
 		var al          = new ArrayList(24);
-		foreach (Body.BodyType b in options.GrahaStrengths.grahas)
+		foreach (Body.BodyType b in _options.GrahaStrengths.grahas)
 		{
 			var dasaLength = LengthOfDasa(b);
-			al.Add(new DasaEntry(b, cycle_start + curr, dasaLength, 1, b.ToShortString()));
+			al.Add(new DasaEntry(b, cycleStart + curr, dasaLength, 1, b.ToShortString()));
 			curr += dasaLength;
 		}
 
@@ -66,8 +66,8 @@ public class MoolaDasa : Dasa, IDasa
 		for (var i = 0; i < numDasas; i++)
 		{
 			var de         = (DasaEntry) al[i];
-			var dasaLength = de.DasaLength - vd.LengthOfDasa(de.Graha);
-			al.Add(new DasaEntry(de.Graha, cycle_start + curr, dasaLength, 1, de.Graha.ToShortString()));
+			var dasaLength = de.DasaLength - _vd.LengthOfDasa(de.Graha);
+			al.Add(new DasaEntry(de.Graha, cycleStart + curr, dasaLength, 1, de.Graha.ToShortString()));
 			curr += dasaLength;
 		}
 
@@ -77,11 +77,11 @@ public class MoolaDasa : Dasa, IDasa
 	public ArrayList AntarDasa(DasaEntry pdi)
 	{
 		var al   = new ArrayList();
-		var curr = pdi.StartUT;
+		var curr = pdi.StartUt;
 
 		var bOrder = new ArrayList();
 		var bFound = false;
-		foreach (Body.BodyType b in options.GrahaStrengths.grahas)
+		foreach (Body.BodyType b in _options.GrahaStrengths.grahas)
 		{
 			if (b != pdi.Graha && bFound == false)
 			{
@@ -92,7 +92,7 @@ public class MoolaDasa : Dasa, IDasa
 			bOrder.Add(b);
 		}
 
-		foreach (Body.BodyType b in options.GrahaStrengths.grahas)
+		foreach (Body.BodyType b in _options.GrahaStrengths.grahas)
 		{
 			if (b == pdi.Graha)
 			{
@@ -105,7 +105,7 @@ public class MoolaDasa : Dasa, IDasa
 
 		foreach (Body.BodyType b in bOrder)
 		{
-			var dasaLength = vd.LengthOfDasa(b) / vd.ParamAyus() * pdi.DasaLength;
+			var dasaLength = _vd.LengthOfDasa(b) / _vd.ParamAyus() * pdi.DasaLength;
 			al.Add(new DasaEntry(b, curr, dasaLength, pdi.Level + 1, pdi.DasaName + " " + b.ToShortString()));
 			curr += dasaLength;
 		}
@@ -115,21 +115,21 @@ public class MoolaDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return string.Format("Moola Dasa seeded from {0}", options.SeedBody);
+		return string.Format("Moola Dasa seeded from {0}", _options.SeedBody);
 	}
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
 	{
 		var newOpts = (UserOptions) a;
-		options.CompareAndRecalculate(newOpts);
-		options = newOpts;
+		_options.CompareAndRecalculate(newOpts);
+		_options = newOpts;
 		RecalculateEvent();
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public double LengthOfDasa(Body.BodyType plt)
@@ -138,40 +138,40 @@ public class MoolaDasa : Dasa, IDasa
 
 		// Count to moola trikona - 1.
 		// Use Aqu / Sco as MT houses for Rahu / Ketu
-		var dp_plt = h.GetPosition(plt).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi));
-		var zh_plt = dp_plt.ZodiacHouse;
-		var zh_mt  = plt.GetMoolaTrikonaRasi();
+		var dpPlt = _h.GetPosition(plt).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi));
+		var zhPlt = dpPlt.ZodiacHouse;
+		var zhMt  = plt.GetMoolaTrikonaRasi();
 		if (plt == Body.BodyType.Rahu)
 		{
-			zh_mt.Sign = ZodiacHouse.Rasi.Aqu;
+			zhMt.Sign = ZodiacHouse.Rasi.Aqu;
 		}
 
 		if (plt == Body.BodyType.Ketu)
 		{
-			zh_mt.Sign = ZodiacHouse.Rasi.Sco;
+			zhMt.Sign = ZodiacHouse.Rasi.Sco;
 		}
 
-		var diff = zh_plt.NumHousesBetween(zh_mt);
+		var diff = zhPlt.NumHousesBetween(zhMt);
 		length = diff - 1;
 
 		// exaltation / debilitation correction
-		if (dp_plt.IsExaltedPhalita())
+		if (dpPlt.IsExaltedPhalita())
 		{
 			length += 1.0;
 		}
-		else if (dp_plt.IsDebilitatedPhalita())
+		else if (dpPlt.IsDebilitatedPhalita())
 		{
 			length -= 1.0;
 		}
 
 		// subtract this length from the vimsottari lengths
-		length = vd.LengthOfDasa(plt) - length;
+		length = _vd.LengthOfDasa(plt) - length;
 
 		// Zero length = full vimsottari length.
 		// If negative, make it positive
 		if (length == 0)
 		{
-			length = vd.LengthOfDasa(plt);
+			length = _vd.LengthOfDasa(plt);
 		}
 		else if (length < 0)
 		{
@@ -183,16 +183,16 @@ public class MoolaDasa : Dasa, IDasa
 
 	public class UserOptions : ICloneable
 	{
-		private readonly Horoscope h;
-		public           Division  dtype = new(Vargas.DivisionType.Rasi);
-		protected        Body.BodyType mSeedBody;
-		private          ArrayList std_div_pos;
+		private readonly Horoscope _h;
+		public           Division  Dtype = new(Vargas.DivisionType.Rasi);
+		protected        Body.BodyType MSeedBody;
+		private          ArrayList _stdDivPos;
 
-		public UserOptions(Horoscope _h)
+		public UserOptions(Horoscope h)
 		{
-			h           = _h;
-			std_div_pos = h.CalculateDivisionPositions(dtype);
-			mSeedBody   = Body.BodyType.Lagna;
+			this._h     = h;
+			_stdDivPos = this._h.CalculateDivisionPositions(Dtype);
+			MSeedBody   = Body.BodyType.Lagna;
 			CalculateRasiStrengths();
 			CalculateGrahaStrengths();
 		}
@@ -201,8 +201,8 @@ public class MoolaDasa : Dasa, IDasa
 		[PGDisplayName("Seed Body")]
 		public Body.BodyType SeedBody
 		{
-			get => mSeedBody;
-			set => mSeedBody = value;
+			get => MSeedBody;
+			set => MSeedBody = value;
 		}
 
 
@@ -225,10 +225,10 @@ public class MoolaDasa : Dasa, IDasa
 
 		public object Clone()
 		{
-			var uo = new UserOptions(h);
+			var uo = new UserOptions(_h);
 			uo.GrahaStrengths = (OrderedGrahas) GrahaStrengths.Clone();
 			uo.RasiStrengths  = new OrderedZodiacHouses[3];
-			uo.mSeedBody      = mSeedBody;
+			uo.MSeedBody      = MSeedBody;
 			for (var i = 0; i < 3; i++)
 			{
 				uo.RasiStrengths[i] = (OrderedZodiacHouses) RasiStrengths[i].Clone();
@@ -237,7 +237,7 @@ public class MoolaDasa : Dasa, IDasa
 			return uo;
 		}
 
-		public void recalculate()
+		public void Recalculate()
 		{
 			CalculateRasiStrengths();
 			CalculateGrahaStrengths();
@@ -274,23 +274,23 @@ public class MoolaDasa : Dasa, IDasa
 		public void CalculateRasiStrengths()
 		{
 			var zRet = new OrderedZodiacHouses[3];
-			var zh   = h.GetPosition(SeedBody).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse;
+			var zh   = _h.GetPosition(SeedBody).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse;
 
-			var zh_k = new ZodiacHouse.Rasi[4]
+			var zhK = new ZodiacHouse.Rasi[4]
 			{
 				zh.Add(1).Sign,
 				zh.Add(4).Sign,
 				zh.Add(7).Sign,
 				zh.Add(10).Sign
 			};
-			var zh_p = new ZodiacHouse.Rasi[4]
+			var zhP = new ZodiacHouse.Rasi[4]
 			{
 				zh.Add(2).Sign,
 				zh.Add(5).Sign,
 				zh.Add(8).Sign,
 				zh.Add(11).Sign
 			};
-			var zh_a = new ZodiacHouse.Rasi[4]
+			var zhA = new ZodiacHouse.Rasi[4]
 			{
 				zh.Add(3).Sign,
 				zh.Add(6).Sign,
@@ -298,28 +298,28 @@ public class MoolaDasa : Dasa, IDasa
 				zh.Add(12).Sign
 			};
 
-			var fs = new FindStronger(h, dtype, FindStronger.RulesMoolaDasaRasi(h));
-			zRet[0] = fs.getOrderedHouses(zh_k);
-			zRet[1] = fs.getOrderedHouses(zh_p);
-			zRet[2] = fs.getOrderedHouses(zh_a);
+			var fs = new FindStronger(_h, Dtype, FindStronger.RulesMoolaDasaRasi(_h));
+			zRet[0] = fs.GetOrderedHouses(zhK);
+			zRet[1] = fs.GetOrderedHouses(zhP);
+			zRet[2] = fs.GetOrderedHouses(zhA);
 
-			var zh_sat = h.GetPosition(Body.BodyType.Saturn).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse.Sign;
-			var zh_ket = h.GetPosition(Body.BodyType.Ketu).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse.Sign;
+			var zhSat = _h.GetPosition(Body.BodyType.Saturn).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse.Sign;
+			var zhKet = _h.GetPosition(Body.BodyType.Ketu).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse.Sign;
 
 			var bIsForward = zh.IsOdd();
-			if (zh_sat != zh_ket && zh_sat == zh.Sign)
+			if (zhSat != zhKet && zhSat == zh.Sign)
 			{
 				bIsForward = true;
 			}
-			else if (zh_sat != zh_ket && zh_ket == zh.Sign)
+			else if (zhSat != zhKet && zhKet == zh.Sign)
 			{
 				bIsForward = false;
 			}
-			else if (zh_sat == zh_ket && zh_sat == zh.Sign)
+			else if (zhSat == zhKet && zhSat == zh.Sign)
 			{
 				var rule = new ArrayList();
 				rule.Add(FindStronger.EGrahaStrength.Longitude);
-				var fs2 = new FindStronger(h, new Division(Vargas.DivisionType.Rasi), rule);
+				var fs2 = new FindStronger(_h, new Division(Vargas.DivisionType.Rasi), rule);
 				bIsForward = fs2.CmpGraha(Body.BodyType.Saturn, Body.BodyType.Ketu, false);
 			}
 
@@ -340,21 +340,21 @@ public class MoolaDasa : Dasa, IDasa
 
 		public void CalculateGrahaStrengths()
 		{
-			var fs_temp = new StrengthByConjunction(h, dtype);
-			var fs      = new FindStronger(h, dtype, FindStronger.RulesNaisargikaDasaGraha(h));
+			var fsTemp = new StrengthByConjunction(_h, Dtype);
+			var fs      = new FindStronger(_h, Dtype, FindStronger.RulesNaisargikaDasaGraha(_h));
 			GrahaStrengths = new OrderedGrahas();
 			foreach (var oz in RasiStrengths)
 			{
 				foreach (ZodiacHouse.Rasi zn in oz.houses)
 				{
-					var temp     = fs_temp.FindGrahasInHouse(zn);
-					var temp_arr = new Body.BodyType[temp.Count];
+					var temp     = fsTemp.FindGrahasInHouse(zn);
+					var tempArr = new Body.BodyType[temp.Count];
 					for (var i = 0; i < temp.Count; i++)
 					{
-						temp_arr[i] = (Body.BodyType) temp[i];
+						tempArr[i] = (Body.BodyType) temp[i];
 					}
 
-					var sorted = fs.getOrderedGrahas(temp_arr);
+					var sorted = fs.GetOrderedGrahas(tempArr);
 					foreach (var bn in sorted)
 					{
 						GrahaStrengths.grahas.Add(bn);

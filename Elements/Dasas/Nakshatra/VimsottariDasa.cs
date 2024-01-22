@@ -29,25 +29,25 @@ namespace Mhora.Elements.Dasas.Nakshatra;
 
 public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 {
-	public Horoscope   horoscope;
-	public UserOptions options;
+	public Horoscope   Horoscope;
+	public UserOptions Options;
 
 	public VimsottariDasa(Horoscope h)
 	{
-		common    = this;
-		options   = new UserOptions();
-		horoscope = h;
+		Common    = this;
+		Options   = new UserOptions();
+		Horoscope = h;
 
-		var fs_graha = new FindStronger(h, new Division(Vargas.DivisionType.BhavaPada), FindStronger.RulesVimsottariGraha(h));
-		var stronger = fs_graha.StrongerGraha(Body.BodyType.Moon, Body.BodyType.Lagna, false);
+		var fsGraha = new FindStronger(h, new Division(Vargas.DivisionType.BhavaPada), FindStronger.RulesVimsottariGraha(h));
+		var stronger = fsGraha.StrongerGraha(Body.BodyType.Moon, Body.BodyType.Lagna, false);
 
 		if (stronger == Body.BodyType.Lagna)
 		{
-			options.SeedBody = UserOptions.StartBodyType.Lagna;
+			Options.SeedBody = UserOptions.StartBodyType.Lagna;
 		}
 		else
 		{
-			options.SeedBody = UserOptions.StartBodyType.Moon;
+			Options.SeedBody = UserOptions.StartBodyType.Moon;
 		}
 
 		h.Changed += ChangedHoroscope;
@@ -55,22 +55,22 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 
 	public override object GetOptions()
 	{
-		return options.Clone();
+		return Options.Clone();
 	}
 
 	public override object SetOptions(object a)
 	{
 		var uo           = (UserOptions) a;
 		var bRecalculate = false;
-		if (options.SeedBody != uo.SeedBody)
+		if (Options.SeedBody != uo.SeedBody)
 		{
-			options.SeedBody = uo.SeedBody;
+			Options.SeedBody = uo.SeedBody;
 			bRecalculate     = true;
 		}
 
-		if (options.div != uo.div)
+		if (Options.Div != uo.Div)
 		{
-			options.div  = uo.div;
+			Options.Div  = uo.Div;
 			bRecalculate = true;
 		}
 
@@ -79,12 +79,12 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 			RecalculateEvent();
 		}
 
-		return options.Clone();
+		return Options.Clone();
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
-		return _Dasa(horoscope.GetPosition(options.start_graha).ExtrapolateLongitude(options.div), options.nakshatra_offset, cycle);
+		return _Dasa(Horoscope.GetPosition(Options.StartGraha).ExtrapolateLongitude(Options.Div), Options.NakshatraOffset, cycle);
 	}
 
 	public ArrayList AntarDasa(DasaEntry di)
@@ -94,7 +94,7 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 
 	public string Description()
 	{
-		return "Vimsottari Dasa Seeded from " + options.SeedBody;
+		return "Vimsottari Dasa Seeded from " + Options.SeedBody;
 	}
 
 	public double ParamAyus()
@@ -124,8 +124,8 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 
 	public new void DivisionChanged(Division div)
 	{
-		var uoNew = (UserOptions) options.Clone();
-		uoNew.div = (Division) div.Clone();
+		var uoNew = (UserOptions) Options.Clone();
+		uoNew.Div = (Division) div.Clone();
 		SetOptions(uoNew);
 	}
 
@@ -187,8 +187,8 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 			Body.BodyType.Jupiter,
 			Body.BodyType.Saturn
 		};
-		var nak_val = (int) n % 9;
-		return lords[nak_val];
+		var nakVal = (int) n % 9;
+		return lords[nakVal];
 	}
 
 	public class UserOptions : ICloneable
@@ -221,59 +221,59 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 			Gulika
 		}
 
-		public Division      div = new(Vargas.DivisionType.Rasi);
-		public int           nakshatra_offset;
-		public Body.BodyType     start_graha;
-		public StartBodyType user_start_graha;
+		public Division      Div = new(Vargas.DivisionType.Rasi);
+		public int           NakshatraOffset;
+		public Body.BodyType     StartGraha;
+		public StartBodyType UserStartGraha;
 
 
 		[PGDisplayName("Vargas")]
 		public Vargas.DivisionType Varga
 		{
-			get => div.MultipleDivisions[0].Varga;
-			set => div = new Division(value);
+			get => Div.MultipleDivisions[0].Varga;
+			set => Div = new Division(value);
 		}
 
 		[PGDisplayName("Seed Nakshatra")]
 		public StartBodyType SeedBody
 		{
-			get => user_start_graha;
+			get => UserStartGraha;
 			set
 			{
-				user_start_graha = value;
+				UserStartGraha = value;
 				switch (value)
 				{
 					case StartBodyType.Lagna:
-						start_graha      = Body.BodyType.Lagna;
-						nakshatra_offset = 1;
+						StartGraha      = Body.BodyType.Lagna;
+						NakshatraOffset = 1;
 						break;
 					case StartBodyType.Jupiter:
-						start_graha      = Body.BodyType.Jupiter;
-						nakshatra_offset = 1;
+						StartGraha      = Body.BodyType.Jupiter;
+						NakshatraOffset = 1;
 						break;
 					case StartBodyType.Moon:
-						start_graha      = Body.BodyType.Moon;
-						nakshatra_offset = 1;
+						StartGraha      = Body.BodyType.Moon;
+						NakshatraOffset = 1;
 						break;
 					case StartBodyType.Utpanna:
-						start_graha      = Body.BodyType.Moon;
-						nakshatra_offset = 5;
+						StartGraha      = Body.BodyType.Moon;
+						NakshatraOffset = 5;
 						break;
 					case StartBodyType.Kshema:
-						start_graha      = Body.BodyType.Moon;
-						nakshatra_offset = 4;
+						StartGraha      = Body.BodyType.Moon;
+						NakshatraOffset = 4;
 						break;
 					case StartBodyType.Aadhaana:
-						start_graha      = Body.BodyType.Moon;
-						nakshatra_offset = 8;
+						StartGraha      = Body.BodyType.Moon;
+						NakshatraOffset = 8;
 						break;
 					case StartBodyType.Maandi:
-						start_graha      = Body.BodyType.Maandi;
-						nakshatra_offset = 1;
+						StartGraha      = Body.BodyType.Maandi;
+						NakshatraOffset = 1;
 						break;
 					case StartBodyType.Gulika:
-						start_graha      = Body.BodyType.Gulika;
-						nakshatra_offset = 1;
+						StartGraha      = Body.BodyType.Gulika;
+						NakshatraOffset = 1;
 						break;
 				}
 			}
@@ -282,10 +282,10 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 		public object Clone()
 		{
 			var options = new UserOptions();
-			options.start_graha      = start_graha;
-			options.nakshatra_offset = nakshatra_offset;
+			options.StartGraha      = StartGraha;
+			options.NakshatraOffset = NakshatraOffset;
 			options.SeedBody         = SeedBody;
-			options.div              = (Division) div.Clone();
+			options.Div              = (Division) Div.Clone();
 			return options;
 		}
 	}

@@ -980,8 +980,8 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		if (PrintMode == false && dp.HasLongitude)
 		{
 			var   pLon = dc.GetBodyPosition(dp.Longitude);
-			var   pn   = new Pen(MhoraGlobalOptions.Instance.getBinduColor(dp.Name), (float) 0.01);
-			Brush br   = new SolidBrush(MhoraGlobalOptions.Instance.getBinduColor(dp.Name));
+			var   pn   = new Pen(MhoraGlobalOptions.Instance.GetBinduColor(dp.Name), (float) 0.01);
+			Brush br   = new SolidBrush(MhoraGlobalOptions.Instance.GetBinduColor(dp.Name));
 			g.FillEllipse(br, pLon.X - 2, pLon.Y - 2, 4, 4);
 			//g.DrawEllipse(pn, pLon.X-1, pLon.Y-1, 2, 2);
 			g.DrawEllipse(new Pen(Color.Gray), pLon.X - 2, pLon.Y - 2, 4, 4);
@@ -1086,7 +1086,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			return;
 		}
 
-		if (false == MhoraGlobalOptions.Instance.VargaShowSAVVarga && false == MhoraGlobalOptions.Instance.VargaShowSAVRasi)
+		if (false == MhoraGlobalOptions.Instance.VargaShowSavVarga && false == MhoraGlobalOptions.Instance.VargaShowSavRasi)
 		{
 			return;
 		}
@@ -1097,7 +1097,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		}
 
 		var   zh = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
-		Brush b  = new SolidBrush(MhoraGlobalOptions.Instance.VargaSAVColor);
+		Brush b  = new SolidBrush(MhoraGlobalOptions.Instance.VargaSavColor);
 		var   f  = MhoraGlobalOptions.Instance.GeneralFont;
 		for (var i = 1; i <= 12; i++)
 		{
@@ -1367,11 +1367,11 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void CalculateBindus()
 	{
-		if (MhoraGlobalOptions.Instance.VargaShowSAVVarga)
+		if (MhoraGlobalOptions.Instance.VargaShowSavVarga)
 		{
 			sav_bindus = new Ashtakavarga(h, options.Varga).GetSav();
 		}
-		else if (MhoraGlobalOptions.Instance.VargaShowSAVRasi)
+		else if (MhoraGlobalOptions.Instance.VargaShowSavRasi)
 		{
 			sav_bindus = new Ashtakavarga(h, new Division(Vargas.DivisionType.Rasi)).GetSav();
 		}
@@ -1707,7 +1707,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			var lRange  = new Longitude(dp.CuspHigher).Sub(lLower);
 			Trace.Assert(lOffset.Value <= lRange.Value, "Extrapolation internal error: Slice smaller than range. Weird.");
 
-			var newOffset = lOffset.Value / lRange.Value      * 30.0;
+			var newOffset = (double) (lOffset / lRange      * 30.0);
 			var newBase   = ((int) dp.ZodiacHouse.Sign - 1) * 30.0;
 			bp.Longitude = new Longitude(newOffset + newBase);
 		}

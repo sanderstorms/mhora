@@ -23,6 +23,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Mhora.Components.Property;
 using Mhora.Database.World;
+using Mhora.Elements;
 using Mhora.Util;
 using Newtonsoft.Json;
 using SqlNado.Query;
@@ -33,9 +34,8 @@ namespace Mhora.Database.Settings;
 ///     A class containing all required input from the user for a given chart
 ///     (e.g.) all the information contained in a .jhd file
 /// </summary>
-[Serializable]
 [JsonObject]
-public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
+public class HoraInfo : MhoraSerializableOptions, ICloneable
 {
 	public enum ChartType
 	{
@@ -52,32 +52,27 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		MudgalaHora
 	}
 
-	private const string CAT_TOB = "1: Birth Info";
+	private const string CatTob = "1: Birth Info";
 
-	private const string CAT_EVT = "2: Events";
+	private const string CatEvt = "2: Events";
 	private       double _altitude;
 	
 	private City   _city;
 	private string _country;
-	private Angle  _latitude  = Angle.Empty;
-	private Angle  _longitude = Angle.Empty;
+	private Angle  _latitude;
+	private Angle  _longitude;
 	private string _name;
 
 	//public double lon, lat, alt, tz;
-	public double          defaultYearCompression;
-	public double          defaultYearLength;
-	public ToDate.DateType defaultYearType = ToDate.DateType.FixedYear;
+	public double          DefaultYearCompression;
+	public double          DefaultYearLength;
+	public ToDate.DateType DefaultYearType = ToDate.DateType.FixedYear;
 
-	private UserEvent[] events;
+	private UserEvent[] _events;
 	public  EFileType   FileType;
 
 	private DateTime  _tob;
 	private ChartType _type;
-
-	protected HoraInfo(SerializationInfo info, StreamingContext context) : this()
-	{
-		Constructor(GetType(), info, context);
-	}
 
 	public HoraInfo()
 	{
@@ -88,7 +83,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		Altitude   = 0.0;
 		_type      = ChartType.Birth;
 		FileType   = EFileType.MudgalaHora;
-		events     = new UserEvent[0];
+		_events     = new UserEvent[0];
 	}
 
 	public HoraInfo(HoraInfo h)
@@ -99,9 +94,9 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		Longitude              = h.Longitude;
 		Latitude               = h.Latitude;
 		Altitude               = h.Altitude;
-		defaultYearCompression = h.defaultYearCompression;
-		defaultYearLength      = h.defaultYearLength;
-		defaultYearType        = h.defaultYearType;
+		DefaultYearCompression = h.DefaultYearCompression;
+		DefaultYearLength      = h.DefaultYearLength;
+		DefaultYearType        = h.DefaultYearType;
 	}
 
 	public object Clone()
@@ -115,7 +110,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		set => _type = value;
 	}
 
-	[Category(CAT_TOB)]
+	[Category(CatTob)]
 	[PropertyOrder(1)]
 	[PGDisplayName("Time of Birth")]
 	[Description("Date of Birth. Format is 'dd Mmm yyyy hh:mm:ss'\n Example 23 Mar 1979 23:11:00")]
@@ -128,7 +123,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		}
 	}
 
-	[Category(CAT_TOB)]
+	[Category(CatTob)]
 	[PropertyOrder(2)]
 	[Description("Latitude. Format is 'hh D mm:ss mm:ss'\n Example 23 N 24:00")]
 	public Angle Latitude
@@ -137,7 +132,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		set => _latitude = value;
 	}
 
-	[Category(CAT_TOB)]
+	[Category(CatTob)]
 	[PropertyOrder(3)]
 	[Description("Longitude. Format is 'hh D mm:ss mm:ss'\n Example 23 E 24:00")]
 	public Angle Longitude
@@ -146,7 +141,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		set => _longitude = value;
 	}
 
-	[Category(CAT_TOB)]
+	[Category(CatTob)]
 	[PropertyOrder(5)]
 	public double Altitude
 	{
@@ -154,7 +149,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		set => _altitude = value;
 	}
 
-	[Category(CAT_TOB)]
+	[Category(CatTob)]
 	[PropertyOrder(8)]
 	[PGDisplayName("Name")]
 	public string Name
@@ -163,13 +158,13 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 		set => _name = value ?? string.Empty;
 	}
 
-	[Category(CAT_EVT)]
+	[Category(CatEvt)]
 	[PropertyOrder(1)]
 	[Description("Events")]
 	public UserEvent[] Events
 	{
-		get => events;
-		set => events = value;
+		get => _events;
+		set => _events = value;
 	}
 
 	[JsonProperty]
@@ -220,12 +215,6 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable, ISerializable
 			return (_jd);
 		}
 	}
-
-	void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-	{
-		GetObjectData(GetType(), info, context);
-	}
-
 	public void Export(string filename)
 	{
 		FileType = EFileType.MudgalaHora;

@@ -24,13 +24,13 @@ namespace Mhora.Elements.Dasas.Rasi;
 
 public class ShoolaDasa : Dasa, IDasa
 {
-	private readonly Horoscope           h;
-	private readonly RasiDasaUserOptions options;
+	private readonly Horoscope           _h;
+	private readonly RasiDasaUserOptions _options;
 
-	public ShoolaDasa(Horoscope _h)
+	public ShoolaDasa(Horoscope h)
 	{
-		h       = _h;
-		options = new RasiDasaUserOptions(h, FindStronger.RulesNarayanaDasaRasi(h));
+		this._h       = h;
+		_options = new RasiDasaUserOptions(this._h, FindStronger.RulesNarayanaDasaRasi(this._h));
 	}
 
 	public double ParamAyus()
@@ -40,29 +40,29 @@ public class ShoolaDasa : Dasa, IDasa
 
 	public void RecalculateOptions()
 	{
-		options.recalculate();
+		_options.Recalculate();
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
 		var al      = new ArrayList(12);
-		var zh_seed = options.getSeed();
-		zh_seed.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_seed.Sign, zh_seed.Add(7).Sign);
+		var zhSeed = _options.GetSeed();
+		zhSeed.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed.Sign, zhSeed.Add(7).Sign);
 
-		var dasa_length_sum = 0.0;
-		var dasa_length     = 9.0;
+		var dasaLengthSum = 0.0;
+		var dasaLength     = 9.0;
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh_dasa = zh_seed.Add(i);
-			var di      = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
+			var zhDasa = zhSeed.Add(i);
+			var di      = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
 			al.Add(di);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
-		var cycle_length = cycle * ParamAyus();
+		var cycleLength = cycle * ParamAyus();
 		foreach (DasaEntry di in al)
 		{
-			di.StartUT += cycle_length;
+			di.StartUt += cycleLength;
 		}
 
 		return al;
@@ -72,18 +72,18 @@ public class ShoolaDasa : Dasa, IDasa
 	{
 		var al = new ArrayList(12);
 
-		var zh_first    = new ZodiacHouse(pdi.ZHouse);
-		var zh_stronger = zh_first.Add(1);
-		zh_stronger.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_first.Sign, zh_first.Add(7).Sign);
+		var zhFirst    = new ZodiacHouse(pdi.ZHouse);
+		var zhStronger = zhFirst.Add(1);
+		zhStronger.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhFirst.Sign, zhFirst.Add(7).Sign);
 
-		var dasa_start = pdi.StartUT;
+		var dasaStart = pdi.StartUt;
 
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh_dasa = zh_stronger.Add(i);
-			var di      = new DasaEntry(zh_dasa.Sign, dasa_start, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zh_dasa.Sign);
+			var zhDasa = zhStronger.Add(i);
+			var di      = new DasaEntry(zhDasa.Sign, dasaStart, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zhDasa.Sign);
 			al.Add(di);
-			dasa_start += pdi.DasaLength / 12.0;
+			dasaStart += pdi.DasaLength / 12.0;
 		}
 
 		return al;
@@ -91,25 +91,25 @@ public class ShoolaDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return "Shoola Dasa" + " seeded from " + options.SeedRasi;
+		return "Shoola Dasa" + " seeded from " + _options.SeedRasi;
 	}
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
 	{
 		var uo = (RasiDasaUserOptions) a;
-		options.CopyFrom(uo);
+		_options.CopyFrom(uo);
 		RecalculateEvent();
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public new void DivisionChanged(Division div)
 	{
-		var newOpts = (RasiDasaUserOptions) options.Clone();
+		var newOpts = (RasiDasaUserOptions) _options.Clone();
 		newOpts.Division = (Division) div.Clone();
 		SetOptions(newOpts);
 	}

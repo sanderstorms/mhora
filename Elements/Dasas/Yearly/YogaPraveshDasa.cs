@@ -25,11 +25,11 @@ namespace Mhora.Elements.Dasas.Yearly;
 
 public class YogaPraveshDasa : Dasa, IDasa
 {
-	private Horoscope h;
+	private Horoscope _h;
 
-	public YogaPraveshDasa(Horoscope _h)
+	public YogaPraveshDasa(Horoscope h)
 	{
-		h = _h;
+		this._h = h;
 	}
 
 	public object GetOptions()
@@ -54,10 +54,10 @@ public class YogaPraveshDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al          = new ArrayList(60);
-		var cycle_start = cycle * ParamAyus();
+		var cycleStart = cycle * ParamAyus();
 		for (var i = 0; i < 60; i++)
 		{
-			var start = cycle_start + i;
+			var start = cycleStart + i;
 			var di    = new DasaEntry(Body.BodyType.Other, start, 1.0, 1, "Yoga Pravesh Year");
 			al.Add(di);
 		}
@@ -81,7 +81,7 @@ public class YogaPraveshDasa : Dasa, IDasa
 		var       level = 0;
 
 		ArrayList al = null;
-		start = pdi.StartUT;
+		start = pdi.StartUt;
 		level = pdi.Level + 1;
 
 		switch (pdi.Level)
@@ -121,15 +121,15 @@ public class YogaPraveshDasa : Dasa, IDasa
 	{
 		if (pdi.Level == 2)
 		{
-			var l  = h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Sun.SwephBody());
+			var l  = _h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Sun.SwephBody());
 			var zh = l.ToZodiacHouse();
 			return zh.ToString();
 		}
 
 		if (pdi.Level == 3)
 		{
-			var lSun  = h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Sun.SwephBody());
-			var lMoon = h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Moon.SwephBody());
+			var lSun  = _h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Sun.SwephBody());
+			var lMoon = _h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Moon.SwephBody());
 			var l     = lMoon.Add(lSun);
 
 			// this seems wrong. Why should we need to go to the next yoga here?

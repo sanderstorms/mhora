@@ -103,7 +103,7 @@ public class MhoraControlContainer : UserControl
 			case BaseUserOptions.ViewType.KutaMatching:
 			{
 				var h2 = h;
-				foreach (var f in (MhoraGlobalOptions.mainControl).MdiChildren)
+				foreach (var f in (MhoraGlobalOptions.MainControl).MdiChildren)
 				{
 					if (f is MhoraChild)
 					{
@@ -244,9 +244,9 @@ public class MhoraControlContainer : UserControl
 				var sp_end   = h.CalculateSingleBodyPosition(ut_end.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
 				var lDiff    = sp_end.Longitude.Sub(sp_start.Longitude);
 				var diff     = lDiff.Value;
-				if (diff < 120.0)
+				if (diff < 120)
 				{
-					diff += 360.0;
+					diff += 360;
 				}
 
 				dc.DasaOptions.YearType   = ToDate.DateType.SolarYear;

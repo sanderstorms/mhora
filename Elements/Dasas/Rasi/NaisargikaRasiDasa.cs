@@ -25,13 +25,13 @@ namespace Mhora.Elements.Dasas.Rasi;
 
 public class NaisargikaRasiDasa : Dasa, IDasa
 {
-	private readonly Horoscope   h;
-	private readonly UserOptions options;
+	private readonly Horoscope   _h;
+	private readonly UserOptions _options;
 
-	public NaisargikaRasiDasa(Horoscope _h)
+	public NaisargikaRasiDasa(Horoscope h)
 	{
-		h       = _h;
-		options = new UserOptions();
+		this._h       = h;
+		_options = new UserOptions();
 	}
 
 	public void RecalculateOptions()
@@ -40,7 +40,7 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 
 	public double ParamAyus()
 	{
-		switch (options.ParamAyus)
+		switch (_options.ParamAyus)
 		{
 			case UserOptions.ParamAyusType.Long:   return 120.0;
 			case UserOptions.ParamAyusType.Middle: return 108.0;
@@ -65,7 +65,7 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 			9,
 			3
 		};
-		int[] short_length =
+		int[] shortLength =
 		{
 			9,
 			7,
@@ -73,29 +73,29 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 		};
 		var al = new ArrayList(9);
 
-		var    cycle_start = ParamAyus() * cycle;
+		var    cycleStart = ParamAyus() * cycle;
 		var    curr        = 0.0;
-		double dasa_length;
-		var    zlagna = h.GetPosition(Body.BodyType.Lagna).Longitude.ToZodiacHouse();
+		double dasaLength;
+		var    zlagna = _h.GetPosition(Body.BodyType.Lagna).Longitude.ToZodiacHouse();
 		for (var i = 0; i < 12; i++)
 		{
 			var zh = zlagna.Add(order[i]);
-			switch (options.ParamAyus)
+			switch (_options.ParamAyus)
 			{
 				case UserOptions.ParamAyusType.Long:
-					dasa_length = 10.0;
+					dasaLength = 10.0;
 					break;
 				case UserOptions.ParamAyusType.Middle:
-					dasa_length = 9.0;
+					dasaLength = 9.0;
 					break;
 				default:
 					var mod = (int) zh.Sign % 3;
-					dasa_length = short_length[mod];
+					dasaLength = shortLength[mod];
 					break;
 			}
 
-			al.Add(new DasaEntry(zh.Sign, cycle_start + curr, dasa_length, 1, zh.Sign.ToString()));
-			curr += dasa_length;
+			al.Add(new DasaEntry(zh.Sign, cycleStart + curr, dasaLength, 1, zh.Sign.ToString()));
+			curr += dasaLength;
 		}
 
 		return al;
@@ -113,15 +113,15 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
 	{
 		var uo = (UserOptions) a;
-		options.ParamAyus = uo.ParamAyus;
+		_options.ParamAyus = uo.ParamAyus;
 		RecalculateEvent();
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public class UserOptions : ICloneable

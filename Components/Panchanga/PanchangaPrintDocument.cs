@@ -180,19 +180,19 @@ public class PanchangaPrintDocument : PrintDocument
 	private string utTimeToString(double ut_event, double ut_sr, double sunrise)
 	{
 		var m   = utToMoment(ut_event);
-		var hms = new HMSInfo(m.Time ().TotalHours);
+		var hms = m.Time ();
 
 		if (ut_event >= ut_sr - sunrise / 24.0 + 1.0)
 		{
 			if (false == opts.LargeHours)
 			{
-				return string.Format("*{0}:{1:00}", hms.degree, hms.minute);
+				return string.Format("*{0}:{1:00}", hms.Hours, hms.Minutes);
 			}
 
-			return string.Format("{0:00}:{1:00}", hms.degree + 24, hms.minute);
+			return string.Format("{0:00}:{1:00}", hms.Hours + 24, hms.Minutes);
 		}
 
-		return string.Format("{0:00}:{1:00}", hms.degree, hms.minute);
+		return string.Format("{0:00}:{1:00}", hms.Hours, hms.Minutes);
 	}
 
 	private void PrintLagna(PrintPageEventArgs e)

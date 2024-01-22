@@ -115,7 +115,7 @@ public class VargaRectificationForm : Form
 	private void PopulateOptionsInit(Division dtype)
 	{
 		var dp       = h.GetPosition(mBody).ToDivisionPosition(dtypeRasi);
-		var foundLon = new Longitude(0);
+		var foundLon = new Longitude(0.0);
 		var bForward = true;
 		ut_lower  = h.TransitSearch(mBody, h.Info.DateOfBirth, false, new Longitude(dp.CuspLower), foundLon, ref bForward);
 		ut_higher = h.TransitSearch(mBody, h.Info.DateOfBirth, true, new Longitude(dp.CuspHigher), foundLon, ref bForward);
@@ -164,7 +164,7 @@ public class VargaRectificationForm : Form
 			while (true)
 			{
 				var m        = utToMoment(ut_curr);
-				var foundLon = new Longitude(0);
+				var foundLon = new Longitude(0.0);
 				var bForward = true;
 
 				//mhora.Log.Debug ("    Starting search at {0}", this.utToMoment(ut_curr));

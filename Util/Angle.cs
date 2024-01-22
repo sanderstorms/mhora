@@ -46,7 +46,7 @@ namespace Mhora.Util
 		/// <param name="degrees">The value of the angle in degrees.</param>
 		public Angle(int degrees)
 		{
-			Value = (decimal)degrees;
+			_value = (decimal)degrees;
 		}
 
 		/// <summary>
@@ -56,7 +56,7 @@ namespace Mhora.Util
 		/// <param name="degrees">The value of the angle in degrees.</param>
 		public Angle(decimal degrees)
 		{
-			Value = degrees;
+			_value = degrees;
 		}
 
 		/// <summary>
@@ -66,7 +66,7 @@ namespace Mhora.Util
 		/// <param name="degrees">The value of the angle in degrees.</param>
 		public Angle(double degrees)
 		{
-			Value = (decimal)degrees;
+			_value = (decimal)degrees;
 		}
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace Mhora.Util
 		/// <param name="arcsecond">The arcsecond value, e.g., 55.8 from the angle 9° 14' 55.8''.</param>
 		public Angle(int degrees, int arcminute, decimal arcsecond)
 		{
-			Value = ToDegrees(degrees, arcminute, arcsecond);
+			_value = ToDegrees(degrees, arcminute, arcsecond);
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ namespace Mhora.Util
 		/// <param name="arcsecond">The arcsecond value, e.g., 55.8 from the angle 9° 14' 55.8''.</param>
 		public Angle(int degrees, int arcminute, double arcsecond)
 		{
-			Value = ToDegrees(degrees, arcminute, (decimal)arcsecond);
+			_value = ToDegrees(degrees, arcminute, (decimal)arcsecond);
 		}
 		#endregion
 
@@ -146,7 +146,7 @@ namespace Mhora.Util
 		{
 			get
 			{
-				return ToRadians(Value);
+				return ToRadians(_value);
 			}
 		}
 
@@ -159,7 +159,7 @@ namespace Mhora.Util
 		/// </summary>
 		public decimal RadiansMultiplied(decimal multiplier)
 		{
-			return ToRadians(Value * multiplier);
+			return ToRadians(_value * multiplier);
 		}
 
 		/// <summary>
@@ -171,7 +171,7 @@ namespace Mhora.Util
 		/// </summary>
 		public decimal RadiansDivided(decimal divisor)
 		{
-			return ToRadians(Value / divisor);
+			return ToRadians(_value / divisor);
 		}
 
 		/// <summary>
@@ -206,7 +206,7 @@ namespace Mhora.Util
 		/// </summary>
 		public void Reduce()
 		{
-			Value = Reduce(this).Value;
+			_value = Reduce(this)._value;
 		}
 		#endregion
 
@@ -224,7 +224,7 @@ namespace Mhora.Util
 			if (obj is Angle)
 			{
 				Angle compare = obj as Angle;
-				returnValue = Value.Equals(compare.Value);
+				returnValue = _value.Equals(compare._value);
 			}
 
 			return returnValue;
@@ -236,7 +236,7 @@ namespace Mhora.Util
 		/// <returns>A 32-bit signed integer hash code.</returns>
 		public override int GetHashCode()
 		{
-			return Value.GetHashCode();
+			return _value.GetHashCode();
 		}
 		#endregion
 
@@ -248,7 +248,7 @@ namespace Mhora.Util
 		/// <returns>The converted object.</returns>
 		public static implicit operator decimal(Angle angle)
 		{
-			return angle.Value;
+			return angle._value;
 		}
 
 		/// <summary>
@@ -258,7 +258,7 @@ namespace Mhora.Util
 		/// <returns>The converted object.</returns>
 		public static implicit operator double(Angle angle)
 		{
-			return Convert.ToDouble(angle.Value);
+			return Convert.ToDouble(angle._value);
 		}
 
 		/// <summary>
@@ -291,7 +291,7 @@ namespace Mhora.Util
 		/// <returns>The result of the first Angle being added to the second Angle.</returns>
 		public static Angle operator +(Angle a, Angle b)
 		{
-			return (Angle)(a.Value + b.Value);
+			return (Angle)(a._value + b._value);
 		}
 
 		/// <summary>
@@ -302,7 +302,7 @@ namespace Mhora.Util
 		/// <returns>The result of the second Angle being subtracted from the first Angle.</returns>
 		public static Angle operator -(Angle a, Angle b)
 		{
-			return (Angle)(a.Value - b.Value);
+			return (Angle)(a._value - b._value);
 		}
 
 		/// <summary>
@@ -313,7 +313,7 @@ namespace Mhora.Util
 		/// <returns>The result of the first Angle being multiplied by the second Angle.</returns>
 		public static Angle operator *(Angle a, Angle b)
 		{
-			return (Angle)(a.Value * b.Value);
+			return (Angle)(a._value * b._value);
 		}
 
 		/// <summary>
@@ -324,7 +324,7 @@ namespace Mhora.Util
 		/// <returns>The result of the first Angle being divided by the second Angle.</returns>
 		public static Angle operator /(Angle a, Angle b)
 		{
-			return (Angle)(a.Value / b.Value);
+			return (Angle)(a._value / b._value);
 		}
 
 		/// <summary>
@@ -335,7 +335,7 @@ namespace Mhora.Util
 		/// <returns>The result of the First Angle mod the Second Angle.</returns>
 		public static Angle operator %(Angle a, Angle b)
 		{
-			return (Angle)(a.Value % b.Value);
+			return (Angle)(a._value % b._value);
 		}
 
 		/// <summary>
@@ -345,7 +345,7 @@ namespace Mhora.Util
 		/// <returns>The result of the Angle being incremented by 1 degree.</returns>
 		public static Angle operator ++(Angle a)
 		{
-			a.Value++;
+			a._value++;
 			return a;
 		}
 
@@ -356,7 +356,7 @@ namespace Mhora.Util
 		/// <returns>The result of the Angle being decremented by 1 degree.</returns>
 		public static Angle operator --(Angle a)
 		{
-			a.Value--;
+			a._value--;
 			return a;
 		}
 
@@ -376,7 +376,7 @@ namespace Mhora.Util
 			}
 			else if (((object)a) != null && ((object)b) != null)
 			{
-				returnValue = a.Value == b.Value;
+				returnValue = a._value == b._value;
 			}
 
 			return returnValue;
@@ -398,7 +398,7 @@ namespace Mhora.Util
 			}
 			else if (((object)a) != null && ((object)b) != null)
 			{
-				returnValue = a.Value != b.Value;
+				returnValue = a._value != b._value;
 			}
 
 			return returnValue;
@@ -412,7 +412,7 @@ namespace Mhora.Util
 		/// <returns>True if the first Angle is greater than the second Angle, False otherwise.</returns>
 		public static bool operator >(Angle a, Angle b)
 		{
-			return a.Value > b.Value;
+			return a._value > b._value;
 		}
 
 		/// <summary>
@@ -423,7 +423,7 @@ namespace Mhora.Util
 		/// <returns>True if the first Angle is greater than or equal to the second Angle, False otherwise.</returns>
 		public static bool operator >=(Angle a, Angle b)
 		{
-			return a.Value >= b.Value;
+			return a._value >= b._value;
 		}
 
 		/// <summary>
@@ -434,7 +434,7 @@ namespace Mhora.Util
 		/// <returns>True if the first Angle is less than the second Angle, False otherwise.</returns>
 		public static bool operator <(Angle a, Angle b)
 		{
-			return a.Value < b.Value;
+			return a._value < b._value;
 		}
 
 		/// <summary>
@@ -445,7 +445,7 @@ namespace Mhora.Util
 		/// <returns>True if the first Angle is less than or equal to the second Angle, False otherwise.</returns>
 		public static bool operator <=(Angle a, Angle b)
 		{
-			return a.Value <= b.Value;
+			return a._value <= b._value;
 		}
 
 		/// <summary>
@@ -455,13 +455,13 @@ namespace Mhora.Util
 		/// <returns>The result of the Angle being reversed.</returns>
 		public static Angle operator !(Angle a)
 		{
-			if (a.Value >= 0)
+			if (a._value >= 0)
 			{
-				a.Value += 180M;
+				a._value += 180M;
 			}
 			else
 			{
-				a.Value -= 180M;
+				a._value -= 180M;
 			}
 
 			return a;
@@ -687,11 +687,30 @@ namespace Mhora.Util
 		#endregion
 
 		#region Internal Members
+
 		/// <summary>
 		/// Represents the internal value of this type. This value is in degrees.
 		/// </summary>
+		private decimal _value;
 		[JsonProperty]
-		internal decimal Value { get; set; }
+		internal double Value
+		{
+			get => (double) _value;
+			set
+			{
+				while (value > 360)
+				{
+					value -= 360;
+				}
+
+				while (value < 0)
+				{
+					value += 360;
+				}
+
+				_value = (decimal) value;
+			}
+		}
 
 		internal static void NormalDirection(ref int degrees, ref int minutes, ref decimal seconds)
 		{
@@ -746,7 +765,7 @@ namespace Mhora.Util
 		/// <returns>The short format string representation of the value of this instance.</returns>
 		public string ToShortFormat()
 		{
-			return Value.ToString("0°.0000####", CultureInfo.InvariantCulture);
+			return _value.ToString("0°.0000####", CultureInfo.InvariantCulture);
 		}
 
 		/// <summary>
@@ -768,7 +787,7 @@ namespace Mhora.Util
 		/// </summary>
 		/// <param name="obj">The object to compare with this instance.</param>
 		/// <returns>A 32-bit signed integer that indicates whether this instance precedes,
-		/// follows, or appears in the same position as the value parameter. Value 
+		/// follows, or appears in the same position as the value parameter. _value 
 		/// Condition Less than zero: This instance precedes obj. Zero: This instance
 		/// has the same position as obj. Greater than zero: This instance
 		/// follows obj or obj is null.</returns>
@@ -778,7 +797,7 @@ namespace Mhora.Util
 
 			if (obj is Angle)
 			{
-				returnValue = Value.CompareTo(((Angle)obj).Value);
+				returnValue = _value.CompareTo(((Angle)obj)._value);
 			}
 
 			return returnValue;
@@ -799,11 +818,11 @@ namespace Mhora.Util
 
 			if (formatProvider != null)
 			{
-				returnValue = Value.ToString(format, formatProvider);
+				returnValue = _value.ToString(format, formatProvider);
 			}
 			else
 			{
-				returnValue = Value.ToString(format);
+				returnValue = _value.ToString(format);
 			}
 
 			return returnValue;
@@ -818,7 +837,7 @@ namespace Mhora.Util
 		/// </summary>
 		/// <param name="other">The angle to compare with this instance.</param>
 		/// <returns>A 32-bit signed integer that indicates whether this instance precedes,
-		/// follows, or appears in the same position as the value parameter. Value 
+		/// follows, or appears in the same position as the value parameter. _value 
 		/// Condition Less than zero: This instance precedes obj. Zero: This instance
 		/// has the same position as obj. Greater than zero: This instance
 		/// follows other or other is null.</returns>
@@ -828,7 +847,7 @@ namespace Mhora.Util
 
 			if (((object)other) != null)
 			{
-				returnValue = Value.CompareTo(other.Value);
+				returnValue = _value.CompareTo(other._value);
 			}
 			return returnValue;
 		}
@@ -847,7 +866,7 @@ namespace Mhora.Util
 
 			if (other != null)
 			{
-				returnValue = Value.Equals(other.Value);
+				returnValue = _value.Equals(other._value);
 			}
 
 			return returnValue;

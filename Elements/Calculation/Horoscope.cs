@@ -534,7 +534,7 @@ public class Horoscope : ICloneable
 	public void PopulateSunrisetCacheHelper(double ut, ref Time sr, ref Time ss, ref Time srUt)
 	{
 		var srflag = 0;
-		switch (Options.sunrisePosition)
+		switch (Options.SunrisePosition)
 		{
 			case HoroscopeOptions.SunrisePositionType.Lmt:
 				sr = 6.0  + LmtOffset * 24.0;
@@ -833,7 +833,7 @@ public class Horoscope : ICloneable
 
 	private void CalculateUpagrahasSingle(Body.BodyType b, double tjd)
 	{
-		var lon = new Longitude(0);
+		var lon = new Longitude(0.0);
 		lon.Value = this.Lagna(tjd);
 		var bp = new Position(this, b, Body.Type.Upagraha, lon, 0, 0, 0, 0, 0);
 		PositionList.Add(bp);
@@ -983,7 +983,7 @@ public class Horoscope : ICloneable
 
 		//mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
 
-		var istaGhati = Basics.NormalizeExc(Info.DateOfBirth.Time().TotalHours - Sunrise, 0.0, 24.0) * 2.5;
+		var istaGhati = (Info.DateOfBirth.Time().TotalHours - Sunrise).NormalizeExc(0.0, 24.0) * 2.5;
 		var glLon     = lonBase.Add(new Longitude(istaGhati        * 30.0));
 		var hlLon     = lonBase.Add(new Longitude(istaGhati * 30.0 / 2.5));
 		var blLon     = lonBase.Add(new Longitude(istaGhati * 30.0 / 5.0));
@@ -1056,7 +1056,7 @@ public class Horoscope : ICloneable
 		var muhurtaPos = new Longitude(HoursAfterSunrise() / (NextSunrise + 24.0 - Sunrise) * 360.0);
 
 		// add simple midpoints
-		AddOtherPosition("User Specified", Options.CustomBodyLongitude);
+		AddOtherPosition("User Specified", new Longitude(Options.CustomBodyLongitude.Value));
 		AddOtherPosition("Brighu Bindu", rahPos.Add(moonPos.Sub(rahPos).Value / 2.0));
 		AddOtherPosition("Muhurta Point", muhurtaPos);
 		AddOtherPosition("Ra-Ke m.p", rahPos.Add(90));
@@ -1383,7 +1383,7 @@ public class Horoscope : ICloneable
 			return b;
 		}
 
-		b.Longitude = b.Longitude.Add(new Longitude(30));
+		b.Longitude = b.Longitude.Add(new Longitude(30.0));
 		return b;
 	}
 
@@ -1451,7 +1451,7 @@ public class Horoscope : ICloneable
 		al.Add(SahamaDnHelper("Jadya", Body.BodyType.Mars, Body.BodyType.Saturn, Body.BodyType.Mercury));
 		al.Add(SahamaHelper("Vyapara", Body.BodyType.Mars, Body.BodyType.Saturn, Body.BodyType.Lagna));
 		al.Add(SahamaDnHelper("Satru", Body.BodyType.Mars, Body.BodyType.Saturn, Body.BodyType.Lagna));
-		al.Add(SahamaDnHelper("Jalapatana", new Longitude(105), Body.BodyType.Saturn, Body.BodyType.Lagna));
+		al.Add(SahamaDnHelper("Jalapatana", new Longitude(105.0), Body.BodyType.Saturn, Body.BodyType.Lagna));
 		al.Add(SahamaDnHelper("Bandhana", ((Position) al[0]).Longitude, Body.BodyType.Saturn, Body.BodyType.Lagna));
 		al.Add(SahamaDnHelper("Apamrityu", lonBase.Add(8.0 * 30.0), Body.BodyType.Mars, Body.BodyType.Lagna));
 		al.Add(SahamaHelper("Labha", lonBase.Add(11.0      * 30.0), LordOfZodiacHouse(zhLagna.Add(11), new Division(Vargas.DivisionType.Rasi)), Body.BodyType.Lagna));

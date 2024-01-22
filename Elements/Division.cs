@@ -166,7 +166,8 @@ public class Division : ICloneable
 
 		public SingleDivision(Vargas.DivisionType _dtype)
 		{
-			mDtype = _dtype;
+			mDtype    = _dtype;
+			mNumParts = _dtype.NumPartsInDivision();
 		}
 
 		public SingleDivision()

@@ -675,7 +675,7 @@ public class Position : ICloneable
 		var dp     = new DivisionPosition(Name, Type, dhouse, 0, 0, 0);
 		if (n == 12)
 		{
-			dp.RulerIndex = Basics.NormalizeInc(part, 1, 4);
+			dp.RulerIndex = part.NormalizeInc(1, 4);
 		}
 
 		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
@@ -697,7 +697,7 @@ public class Position : ICloneable
 			ruler = 17 - part;
 		}
 
-		dp.RulerIndex = Basics.NormalizeInc(ruler, 1, 4);
+		dp.RulerIndex = ruler.NormalizeInc(1, 4);
 		return dp;
 	}
 
@@ -760,7 +760,7 @@ public class Position : ICloneable
 				dp.RulerIndex = 25 - part;
 			}
 
-			dp.RulerIndex = Basics.NormalizeInc(dp.RulerIndex, 1, 12);
+			dp.RulerIndex = dp.RulerIndex.NormalizeInc(1, 12);
 		}
 
 		return PopulateRegularCusps(n, dp);
@@ -924,7 +924,7 @@ public class Position : ICloneable
 		var dhouse     = new ZodiacHouse(dhousename).Add(part);
 		var dp         = new DivisionPosition(Name, Type, dhouse, 0, 0, 0);
 		dp.Longitude   = dhouse.DivisionalLongitude(Longitude, 40);
-		dp.RulerIndex = Basics.NormalizeInc(part, 1, 12);
+		dp.RulerIndex = part.NormalizeInc(1, 12);
 		return PopulateRegularCusps(40, dp);
 	}
 
@@ -964,7 +964,7 @@ public class Position : ICloneable
 					break;
 			}
 
-			dp.RulerIndex = Basics.NormalizeInc(dp.RulerIndex, 1, 3);
+			dp.RulerIndex = dp.RulerIndex.NormalizeInc(1, 3);
 		}
 
 		return PopulateRegularCusps(n, dp);
@@ -1019,7 +1019,7 @@ public class Position : ICloneable
 				dp.RulerIndex = 151 - part;
 				break;
 			case 0:
-				dp.RulerIndex = Basics.NormalizeInc(75 + part, 1, 150);
+				dp.RulerIndex = (75 + part).NormalizeInc(1, 150);
 				break;
 		}
 
@@ -1131,7 +1131,7 @@ public class Position : ICloneable
 				dp.RulerIndex = 151 - part;
 				break;
 			case 0:
-				dp.RulerIndex = Basics.NormalizeInc(75 + part, 1, 150);
+				dp.RulerIndex = (75 + part).NormalizeInc(1, 150);
 				break;
 		}
 
@@ -1169,12 +1169,12 @@ public class Position : ICloneable
 	{
 		var              bp = (Position) Clone();
 		DivisionPosition dp = null;
-		for (var i = 0; i < d.MultipleDivisions.Length; i++)
-		{
-			dp           = bp.ToDivisionPosition(d.MultipleDivisions[i]);
-			bp.Longitude = bp.ExtrapolateLongitude(d.MultipleDivisions[i]);
-		}
 
+		foreach (var division in d.MultipleDivisions)
+		{
+			dp           = bp.ToDivisionPosition(division);
+			bp.Longitude = bp.ExtrapolateLongitude(division);
+		}
 		return dp;
 	}
 

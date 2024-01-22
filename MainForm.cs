@@ -72,7 +72,7 @@ namespace Mhora
 		{
 			base.OnLoad(e);
 			gOpts = MhoraGlobalOptions.ReadFromFile();
-			MhoraGlobalOptions.mainControl = this;
+			MhoraGlobalOptions.MainControl = this;
 			if (MhoraGlobalOptions.Instance.ShowSplashScreen)
 			{
 				var ss = new SplashScreen(typeof(MhoraSplash), SplashScreenStyles.TopMost);

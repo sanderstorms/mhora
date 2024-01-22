@@ -33,23 +33,23 @@ public class KalachakraDasa : Dasa, IDasa
 		ApasavyaMirrored
 	}
 
-	private readonly Horoscope     h;
-	private readonly ZodiacHouse[] mzhApasavya = new ZodiacHouse[24];
+	private readonly Horoscope     _h;
+	private readonly ZodiacHouse[] _mzhApasavya = new ZodiacHouse[24];
 
-	private readonly ZodiacHouse[] mzhSavya = new ZodiacHouse[24];
+	private readonly ZodiacHouse[] _mzhSavya = new ZodiacHouse[24];
 
-	public KalachakraDasa(Horoscope _h)
+	public KalachakraDasa(Horoscope h)
 	{
-		h = _h;
+		this._h = h;
 
 		var zAri = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
 		var zSag = new ZodiacHouse(ZodiacHouse.Rasi.Sag);
 		for (var i = 0; i < 12; i++)
 		{
-			mzhSavya[i] = zAri.Add(i + 1);
-			mzhSavya[i               + 12] = mzhSavya[i].LordsOtherSign();
-			mzhApasavya[i]                 = zSag.Add(i + 1);
-			mzhApasavya[i                               + 12] = mzhApasavya[i].LordsOtherSign();
+			_mzhSavya[i] = zAri.Add(i + 1);
+			_mzhSavya[i               + 12] = _mzhSavya[i].LordsOtherSign();
+			_mzhApasavya[i]                 = zSag.Add(i + 1);
+			_mzhApasavya[i                               + 12] = _mzhApasavya[i].LordsOtherSign();
 		}
 	}
 
@@ -61,29 +61,29 @@ public class KalachakraDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var dRasi = new Division(Vargas.DivisionType.Rasi);
-		var mLon  = h.GetPosition(Body.BodyType.Moon).ExtrapolateLongitude(dRasi);
+		var mLon  = _h.GetPosition(Body.BodyType.Moon).ExtrapolateLongitude(dRasi);
 
 		var           offset  = 0;
 		ZodiacHouse[] zhOrder = null;
-		initHelper(mLon, ref zhOrder, ref offset);
+		InitHelper(mLon, ref zhOrder, ref offset);
 
 		var al = new ArrayList();
 
-		double dasa_length_sum = 0;
+		double dasaLengthSum = 0;
 		for (var i = 0; i < 9; i++)
 		{
 			var zhCurr      = zhOrder[(int) Basics.NormalizeExcLower(offset + i, 0, 24)];
-			var dasa_length = DasaLength(zhCurr);
-			var de          = new DasaEntry(zhCurr.Sign, dasa_length_sum, dasa_length, 1, zhCurr.Sign.ToString());
+			var dasaLength = DasaLength(zhCurr);
+			var de          = new DasaEntry(zhCurr.Sign, dasaLengthSum, dasaLength, 1, zhCurr.Sign.ToString());
 			al.Add(de);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
-		var offsetLength = mLon.ToNakshatraPadaPercentage() / 100.0 * dasa_length_sum;
+		var offsetLength = mLon.ToNakshatraPadaPercentage() / 100.0 * dasaLengthSum;
 
 		foreach (DasaEntry de in al)
 		{
-			de.StartUT -= offsetLength;
+			de.StartUt -= offsetLength;
 		}
 
 		return al;
@@ -149,7 +149,7 @@ public class KalachakraDasa : Dasa, IDasa
 		}
 	}
 
-	private void initHelper(Longitude lon, ref ZodiacHouse[] mzhOrder, ref int offset)
+	private void InitHelper(Longitude lon, ref ZodiacHouse[] mzhOrder, ref int offset)
 	{
 		var grp  = NakshatraToGroup(lon.ToNakshatra());
 		var pada = lon.ToNakshatraPada();
@@ -158,10 +158,10 @@ public class KalachakraDasa : Dasa, IDasa
 		{
 			case GroupType.Savya:
 			case GroupType.SavyaMirrored:
-				mzhOrder = mzhSavya;
+				mzhOrder = _mzhSavya;
 				break;
 			default:
-				mzhOrder = mzhApasavya;
+				mzhOrder = _mzhApasavya;
 				break;
 		}
 

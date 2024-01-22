@@ -25,11 +25,11 @@ namespace Mhora.Elements.Dasas.Yearly;
 
 public class TattwaDasa : Dasa, IDasa
 {
-	private readonly Horoscope h;
+	private readonly Horoscope _h;
 
-	public TattwaDasa(Horoscope _h)
+	public TattwaDasa(Horoscope h)
 	{
-		h = _h;
+		this._h = h;
 	}
 
 	public double ParamAyus()
@@ -45,8 +45,8 @@ public class TattwaDasa : Dasa, IDasa
 	{
 		var al = new ArrayList();
 
-		var day_length = h.NextSunrise + 24.0 - h.Sunrise;
-		var day_sr     = Math.Floor(h.Info.Jd)  + h.Sunrise / 24.0;
+		var dayLength = _h.NextSunrise + 24.0 - _h.Sunrise;
+		var daySr     = Math.Floor(_h.Info.Jd)  + _h.Sunrise / 24.0;
 
 		return al;
 	}
@@ -82,7 +82,7 @@ public class TattwaDasa : Dasa, IDasa
 			Akasha
 		}
 
-		public Tattwa _startTattwa;
+		private Tattwa _startTattwa;
 
 		[PGDisplayName("Seed Tattwa")]
 		public Tattwa StartTattwa

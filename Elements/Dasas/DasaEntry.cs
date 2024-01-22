@@ -28,24 +28,24 @@ public class DasaEntry
 	private Body.BodyType    _graha;
 	private int              _level;
 	private string           _shortDesc;
-	private double           _startUT;
+	private double           _startUt;
 	private ZodiacHouse.Rasi _zodiacHouse;
 
-	public DasaEntry(Body.BodyType graha, double startUT, double dasaLength, int level, string name)
+	public DasaEntry(Body.BodyType graha, double startUt, double dasaLength, int level, string name)
 	{
 		_graha = graha;
-		Construct(startUT,dasaLength, level, name);
+		Construct(startUt,dasaLength, level, name);
 	}
 
-	public DasaEntry(ZodiacHouse.Rasi zh, double startUT, double dasaLength, int level, string name)
+	public DasaEntry(ZodiacHouse.Rasi zh, double startUt, double dasaLength, int level, string name)
 	{
 		_zodiacHouse = zh;
-		Construct(startUT, dasaLength, level, name);
+		Construct(startUt, dasaLength, level, name);
 	}
 
 	public DasaEntry()
 	{
-		_startUT     = _dasaLength = 0.0;
+		_startUt     = _dasaLength = 0.0;
 		_level       = 1;
 		_shortDesc   = "Jup";
 		_graha       = Body.BodyType.Jupiter;
@@ -64,10 +64,10 @@ public class DasaEntry
 		set => _level = value;
 	}
 
-	public double StartUT
+	public double StartUt
 	{
-		get => _startUT;
-		set => _startUT = value;
+		get => _startUt;
+		set => _startUt = value;
 	}
 
 	public double DasaLength
@@ -88,9 +88,9 @@ public class DasaEntry
 		set => _zodiacHouse = value;
 	}
 
-	private void Construct(double startUT, double dasaLength, int level, string shortDesc)
+	private void Construct(double startUt, double dasaLength, int level, string shortDesc)
 	{
-		_startUT    = startUT;
+		_startUt    = startUt;
 		_dasaLength = dasaLength;
 		_level      = level;
 		_shortDesc  = shortDesc;

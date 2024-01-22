@@ -22,13 +22,13 @@ namespace Mhora.Elements.Dasas.Rasi;
 
 public class NarayanaSamaDasa : NarayanaDasa, IDasa
 {
-	public NarayanaSamaDasa(Horoscope _h) : base(_h)
+	public NarayanaSamaDasa(Horoscope h) : base(h)
 	{
-		bSama = true;
+		BSama = true;
 	}
 
 	public new string Description()
 	{
-		return "Narayana Sama Dasa for " + options.Division + " seeded from " + options.SeedRasi;
+		return "Narayana Sama Dasa for " + Options.Division + " seeded from " + Options.SeedRasi;
 	}
 }

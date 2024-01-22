@@ -25,7 +25,7 @@ namespace Mhora.Elements
 
 		public static Longitude Add(this Longitude l, Longitude b)
 		{
-			return new Longitude(Basics.NormalizeExcLower(l.Value + b.Value, 0, 360));
+			return new Longitude((l.Value + b.Value).NormalizeExcLower(0, 360));
 		}
 
 		public static Longitude Add(this Longitude l, double b)
@@ -35,7 +35,7 @@ namespace Mhora.Elements
 
 		public static Longitude Sub(this Longitude l, Longitude b)
 		{
-			return new Longitude(Basics.NormalizeExcLower(l.Value - b.Value, 0, 360));
+			return new Longitude((l.Value - b.Value).NormalizeExcLower(0, 360));
 		}
 
 		public static Longitude Sub(this Longitude l, double b)

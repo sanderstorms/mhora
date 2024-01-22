@@ -56,7 +56,7 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 
 		if (arr.Length >= 3)
 		{
-			de.StartUT = double.Parse(arr[2]);
+			de.StartUt = double.Parse(arr[2]);
 		}
 
 		if (arr.Length >= 4)
@@ -81,6 +81,6 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 	{
 		Trace.Assert(destType == typeof(string) && value is DasaEntry, "DasaItem::ConvertTo 1");
 		var de = (DasaEntry) value;
-		return de.DasaName + "," + de.Level + "," + de.StartUT + "," + de.DasaLength + "," + (int) de.Graha + "," + (int) de.ZHouse;
+		return de.DasaName + "," + de.Level + "," + de.StartUt + "," + de.DasaLength + "," + (int) de.Graha + "," + (int) de.ZHouse;
 	}
 }

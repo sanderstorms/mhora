@@ -25,10 +25,10 @@ namespace Mhora.Elements.Dasas.Nakshatra;
 /// </summary>
 public abstract class NakshatraDasa : Dasa
 {
-	protected       INakshatraDasa       common;
-	protected       INakshatraKaranaDasa karanaCommon;
-	protected       INakshatraTithiDasa  tithiCommon;
-	protected       INakshatraYogaDasa   yogaCommon;
+	protected       INakshatraDasa       Common;
+	protected       INakshatraKaranaDasa KaranaCommon;
+	protected       INakshatraTithiDasa  TithiCommon;
+	protected       INakshatraYogaDasa   YogaCommon;
 	public abstract object               GetOptions();
 	public abstract object               SetOptions(object a);
 
@@ -39,17 +39,17 @@ public abstract class NakshatraDasa : Dasa
 	/// <returns></returns>
 	protected ArrayList _AntarDasa(DasaEntry pdi)
 	{
-		var numItems = common.NumberOfDasaItems();
+		var numItems = Common.NumberOfDasaItems();
 		var ditems   = new ArrayList(numItems);
-		var curr     = new DasaEntry(pdi.Graha, pdi.StartUT, 0, pdi.Level + 1, string.Empty);
+		var curr     = new DasaEntry(pdi.Graha, pdi.StartUt, 0, pdi.Level + 1, string.Empty);
 		for (var i = 0; i < numItems; i++)
 		{
-			var dlength = common.LengthOfDasa(curr.Graha) / common.ParamAyus() * pdi.DasaLength;
+			var dlength = Common.LengthOfDasa(curr.Graha) / Common.ParamAyus() * pdi.DasaLength;
 			var desc    = pdi.DasaName + " " + curr.Graha.ToShortString();
-			var di      = new DasaEntry(curr.Graha, curr.StartUT, dlength, curr.Level, desc);
+			var di      = new DasaEntry(curr.Graha, curr.StartUt, dlength, curr.Level, desc);
 			ditems.Add(di);
-			curr         = common.NextDasaLord(di);
-			curr.StartUT = di.StartUT + dlength;
+			curr         = Common.NextDasaLord(di);
+			curr.StartUt = di.StartUt + dlength;
 		}
 
 		return ditems;
@@ -64,15 +64,15 @@ public abstract class NakshatraDasa : Dasa
 	/// <returns></returns>
 	protected ArrayList _Dasa(Longitude lon, int offset, int cycle)
 	{
-		var ditems         = new ArrayList(common.NumberOfDasaItems());
+		var ditems         = new ArrayList(Common.NumberOfDasaItems());
 		var n              = lon.ToNakshatra().Add(offset);
-		var g              = common.LordOfNakshatra(n);
-		var perc_traversed = lon.PercentageOfNakshatra();
-		var start          = cycle * common.ParamAyus() - perc_traversed / 100.0 * common.LengthOfDasa(g);
+		var g              = Common.LordOfNakshatra(n);
+		var percTraversed = lon.PercentageOfNakshatra();
+		var start          = cycle * Common.ParamAyus() - percTraversed / 100.0 * Common.LengthOfDasa(g);
 		//System.mhora.Log.Debug ("{0} {1} {2}", common.LengthOfDasa(g), perc_traversed, start);
 
 		// Calculate a "seed" dasaItem, to make use of the AntarDasa function
-		var di = new DasaEntry(g, start, common.ParamAyus(), 0, string.Empty);
+		var di = new DasaEntry(g, start, Common.ParamAyus(), 0, string.Empty);
 		return _AntarDasa(di);
 	}
 
@@ -80,7 +80,7 @@ public abstract class NakshatraDasa : Dasa
 	{
 		//ArrayList ditems = new ArrayList(tithiCommon.numberOfDasaItems());
 		lon = lon.Add(new Longitude(cycle * (offset - 1) * 12.0));
-		var g = tithiCommon.lordOfTithi(lon);
+		var g = TithiCommon.LordOfTithi(lon);
 
 		var tithiOffset = lon.Value;
 		while (tithiOffset >= 12.0)
@@ -88,33 +88,33 @@ public abstract class NakshatraDasa : Dasa
 			tithiOffset -= 12.0;
 		}
 
-		var perc_traversed = tithiOffset / 12.0;
-		var start          = cycle * tithiCommon.ParamAyus() - perc_traversed * tithiCommon.LengthOfDasa(g);
-		var di             = new DasaEntry(g, start, tithiCommon.ParamAyus(), 0, string.Empty);
+		var percTraversed = tithiOffset / 12.0;
+		var start          = cycle * TithiCommon.ParamAyus() - percTraversed * TithiCommon.LengthOfDasa(g);
+		var di             = new DasaEntry(g, start, TithiCommon.ParamAyus(), 0, string.Empty);
 		return _AntarDasa(di);
 	}
 
 	protected ArrayList _YogaDasa(Longitude lon, int offset, int cycle)
 	{
 		lon = lon.Add(new Longitude(cycle * (offset - 1) * (360.0 / 27.0)));
-		var g = yogaCommon.lordOfYoga(lon);
+		var g = YogaCommon.LordOfYoga(lon);
 
 		var yogaOffset     = lon.ToSunMoonYogaOffset();
-		var perc_traversed = yogaOffset / (360.0 / 27.0);
-		var start          = cycle * common.ParamAyus() - perc_traversed * common.LengthOfDasa(g);
-		var di             = new DasaEntry(g, start, common.ParamAyus(), 0, string.Empty);
+		var percTraversed = yogaOffset / (360.0 / 27.0);
+		var start          = cycle * Common.ParamAyus() - percTraversed * Common.LengthOfDasa(g);
+		var di             = new DasaEntry(g, start, Common.ParamAyus(), 0, string.Empty);
 		return _AntarDasa(di);
 	}
 
 	protected ArrayList _KaranaDasa(Longitude lon, int offset, int cycle)
 	{
 		lon = lon.Add(new Longitude(cycle * (offset - 1) * (360.0 / 60.0)));
-		var g = karanaCommon.LordOfKarana(lon);
+		var g = KaranaCommon.LordOfKarana(lon);
 
 		var karanaOffset   = lon.ToKaranaOffset();
-		var perc_traversed = karanaOffset / (360.0 / 60.0);
-		var start          = cycle * common.ParamAyus() - perc_traversed * common.LengthOfDasa(g);
-		var di             = new DasaEntry(g, start, common.ParamAyus(), 0, string.Empty);
+		var percTraversed = karanaOffset / (360.0 / 60.0);
+		var start          = cycle * Common.ParamAyus() - percTraversed * Common.LengthOfDasa(g);
+		var di             = new DasaEntry(g, start, Common.ParamAyus(), 0, string.Empty);
 		return _AntarDasa(di);
 	}
 

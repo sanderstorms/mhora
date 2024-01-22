@@ -247,10 +247,10 @@ public class NavamsaControl : MhoraControl
 		var dist_sat = h.GetPosition(Body.BodyType.Saturn).Distance;
 		foreach (var b in bodies)
 		{
-			var   pn_b = new Pen(MhoraGlobalOptions.Instance.getBinduColor(b));
-			Brush br_b = new SolidBrush(MhoraGlobalOptions.Instance.getBinduColor(b));
+			var   pn_b = new Pen(MhoraGlobalOptions.Instance.GetBinduColor(b));
+			Brush br_b = new SolidBrush(MhoraGlobalOptions.Instance.GetBinduColor(b));
 			var   bp   = h.GetPosition(b);
-			ResetChakra(g, bp.Longitude.Value);
+			ResetChakra(g, bp.Longitude);
 			var chWidth = 2;
 			g.DrawEllipse(pn_black, 110 - chWidth, 0, 1, 1);
 			g.FillEllipse(br_b, 120     - chWidth, -chWidth, chWidth * 2, chWidth * 2);

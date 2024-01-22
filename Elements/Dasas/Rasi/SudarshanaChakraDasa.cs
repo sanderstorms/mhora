@@ -24,11 +24,11 @@ namespace Mhora.Elements.Dasas.Rasi;
 
 public class SudarshanaChakraDasa : Dasa, IDasa
 {
-	private readonly Horoscope h;
+	private readonly Horoscope _h;
 
-	public SudarshanaChakraDasa(Horoscope _h)
+	public SudarshanaChakraDasa(Horoscope h)
 	{
-		h = _h;
+		this._h = h;
 	}
 
 	public double ParamAyus()
@@ -59,7 +59,7 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 	{
 		var al    = new ArrayList(12);
 		var start = cycle * ParamAyus();
-		var lzh   = h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse;
+		var lzh   = _h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse;
 		for (var i = 1; i <= 12; i++)
 		{
 			var czh = lzh.Add(i);
@@ -73,7 +73,7 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 	public ArrayList AntarDasa(DasaEntry de)
 	{
 		var al     = new ArrayList(12);
-		var start  = de.StartUT;
+		var start  = de.StartUt;
 		var length = de.DasaLength / 12.0;
 		var zh     = new ZodiacHouse(de.ZHouse);
 		for (var i = 1; i <= 12; i++)

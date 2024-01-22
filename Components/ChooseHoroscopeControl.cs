@@ -102,7 +102,7 @@ public class ChooseHoroscopeControl : Form
 			return null;
 		}
 
-		var mc = MhoraGlobalOptions.mainControl;
+		var mc = MhoraGlobalOptions.MainControl;
 		foreach (var c in mc.MdiChildren)
 		{
 			if (c is MhoraChild)
@@ -124,7 +124,7 @@ public class ChooseHoroscopeControl : Form
 			return null;
 		}
 
-		var mc = MhoraGlobalOptions.mainControl;
+		var mc = MhoraGlobalOptions.MainControl;
 		foreach (var c in mc.MdiChildren)
 		{
 			if (c is MhoraChild)
@@ -142,7 +142,7 @@ public class ChooseHoroscopeControl : Form
 
 	private void ChooseHoroscopeControl_Load(object sender, EventArgs e)
 	{
-		var mc = MhoraGlobalOptions.mainControl;
+		var mc = MhoraGlobalOptions.MainControl;
 		foreach (var c in mc.MdiChildren)
 		{
 			if (c is MhoraChild)

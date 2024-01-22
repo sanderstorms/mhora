@@ -205,29 +205,29 @@ public static class Nakshatras
 
 	public static int Normalize(this Nakshatra value)
 	{
-		return Basics.NormalizeInc((int) value, 1, 27);
+		return ((int) value).NormalizeInc(1, 27);
 	}
 
 	public static Nakshatra Add(this Nakshatra value, int i)
 	{
-		var snum = Basics.NormalizeInc((int) value + i - 1, 1, 27);
+		var snum = ((int) value + i - 1).NormalizeInc(1, 27);
 		return (Nakshatra) snum;
 	}
 
 	public static Nakshatra AddReverse(this Nakshatra value, int i)
 	{
-		var snum = Basics.NormalizeInc((int) value - i + 1, 1, 27);
+		var snum = ((int) value - i + 1).NormalizeInc(1, 27);
 		return (Nakshatra) snum;
 	}
 
 	public static int Normalize(this Nakshatra28 value)
 	{
-		return Basics.NormalizeInc((int)value, 1, 28);
+		return ((int)value).NormalizeInc(1, 28);
 	}
 
 	public static Nakshatra28 Add(this Nakshatra28 value, int i)
 	{
-		var snum = Basics.NormalizeInc((int)value + i - 1, 1, 28);
+		var snum = ((int)value + i - 1).NormalizeInc(1, 28);
 		return (Nakshatra28) snum;
 	}
 }

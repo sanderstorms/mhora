@@ -22,11 +22,12 @@ using System.Runtime.Serialization;
 using Mhora.Components.Property;
 using Mhora.Elements;
 using Mhora.Util;
+using Newtonsoft.Json;
 
 namespace Mhora.Database.Settings;
 
-[Serializable]
-public class HoroscopeOptions : MhoraSerializableOptions, ICloneable, ISerializable
+[JsonObject]
+public class HoroscopeOptions : MhoraSerializableOptions, ICloneable
 {
 	public enum AyanamsaType
 	{
@@ -134,134 +135,128 @@ public class HoroscopeOptions : MhoraSerializableOptions, ICloneable, ISerializa
 		Lmt
 	}
 
-	protected const string              CAT_GENERAL  = "1: General Settings";
-	protected const string              CAT_GRAHA    = "2: Graha Settings";
-	protected const string              CAT_SUNRISE  = "3: Sunrise Settings";
-	protected const string              CAT_UPAGRAHA = "4: Upagraha Settings";
-	public          EGrahaPositionType  grahaPositionType;
-	private         AyanamsaType        mAyanamsa;
-	private         HMSInfo             mAyanamsaOffset;
-	private         EBhavaType          mBhavaType;
-	private         string              mEphemPath;
-	private         EMaandiType         mGulikaType;
-	private         EHoraType           mHoraType;
-	private         EHoraType           mKalaType;
-	private         EMaandiType         mMaandiType;
-	private         SunrisePositionType mSunrisePosition;
-	private         EUpagrahaType       mUpagrahaType;
-	private         Longitude           mUserLongitude;
-	public          ENodeType           nodeType;
+	protected const string              CatGeneral  = "1: General Settings";
+	protected const string              CatGraha    = "2: Graha Settings";
+	protected const string              CatSunrise  = "3: Sunrise Settings";
+	protected const string              CatUpagraha = "4: Upagraha Settings";
+	public          EGrahaPositionType  GrahaPositionType;
+	private         AyanamsaType        _mAyanamsa;
+	private         Angle               _mAyanamsaOffset;
+	private         EBhavaType          _mBhavaType;
+	private         string              _mEphemPath;
+	private         EMaandiType         _mGulikaType;
+	private         EHoraType           _mHoraType;
+	private         EHoraType           _mKalaType;
+	private         EMaandiType         _mMaandiType;
+	private         SunrisePositionType _mSunrisePosition;
+	private         EUpagrahaType       _mUpagrahaType;
+	private         Angle               _mUserLongitude;
+	private         ENodeType           _nodeType;
 
 	public HoroscopeOptions()
 	{
-		sunrisePosition   = SunrisePositionType.TrueDiscCenter;
-		mHoraType         = EHoraType.Lmt;
-		mKalaType         = EHoraType.Sunriset;
-		mBhavaType        = EBhavaType.Start;
-		grahaPositionType = EGrahaPositionType.True;
-		nodeType          = ENodeType.Mean;
+		SunrisePosition   = SunrisePositionType.TrueDiscCenter;
+		_mHoraType        = EHoraType.Lmt;
+		_mKalaType        = EHoraType.Sunriset;
+		_mBhavaType       = EBhavaType.Start;
+		GrahaPositionType = EGrahaPositionType.True;
+		_nodeType         = ENodeType.Mean;
 		Ayanamsa          = AyanamsaType.TrueCitra;
-		AyanamsaOffset    = new HMSInfo(0, 0, 0, HMSInfo.dir_type.EW);
-		mUserLongitude    = new Longitude(0);
+		AyanamsaOffset    = Angle.Empty;
+		_mUserLongitude   = Angle.Empty;
 		MaandiType        = EMaandiType.SaturnBegin;
 		GulikaType        = EMaandiType.SaturnMid;
 		UpagrahaType      = EUpagrahaType.Mid;
-		mEphemPath        = getExeDir() + "\\eph";
+		_mEphemPath       = GetExeDir() + "\\eph";
 	}
 
-	protected HoroscopeOptions(SerializationInfo info, StreamingContext context) : this()
-	{
-		Constructor(GetType(), info, context);
-	}
-
-
-	[Category(CAT_GENERAL)]
+	[Category(CatGeneral)]
 	[PropertyOrder(1)]
 	[PGDisplayName("Full Ephemeris Path")]
 	public string EphemerisPath
 	{
-		get => mEphemPath;
-		set => mEphemPath = value;
+		get => _mEphemPath;
+		set => _mEphemPath = value;
 	}
 
 	[PropertyOrder(2)]
-	[Category(CAT_GENERAL)]
+	[Category(CatGeneral)]
 	public AyanamsaType Ayanamsa
 	{
-		get => mAyanamsa;
-		set => mAyanamsa = value;
+		get => _mAyanamsa;
+		set => _mAyanamsa = value;
 	}
 
 	[PropertyOrder(4)]
-	[Category(CAT_GENERAL)]
+	[Category(CatGeneral)]
 	[PGDisplayName("Custom Longitude")]
-	public Longitude CustomBodyLongitude
+	public Angle CustomBodyLongitude
 	{
-		get => mUserLongitude;
-		set => mUserLongitude = value;
+		get => _mUserLongitude;
+		set => _mUserLongitude = value;
 	}
 
-	[Category(CAT_GENERAL)]
+	[Category(CatGeneral)]
 	[PropertyOrder(3)]
 	[PGDisplayName("Ayanamsa Offset")]
-	public HMSInfo AyanamsaOffset
+	public Angle AyanamsaOffset
 	{
-		get => mAyanamsaOffset;
-		set => mAyanamsaOffset = value;
+		get => _mAyanamsaOffset;
+		set => _mAyanamsaOffset = value;
 	}
 
-	[Category(CAT_UPAGRAHA)]
+	[Category(CatUpagraha)]
 	[PropertyOrder(1)]
 	[PGDisplayName("Upagraha")]
 	public EUpagrahaType UpagrahaType
 	{
-		get => mUpagrahaType;
-		set => mUpagrahaType = mUpagrahaType;
+		get => _mUpagrahaType;
+		set => _mUpagrahaType = _mUpagrahaType;
 	}
 
-	[Category(CAT_UPAGRAHA)]
+	[Category(CatUpagraha)]
 	[PropertyOrder(2)]
 	[PGDisplayName("Maandi")]
 	public EMaandiType MaandiType
 	{
-		get => mMaandiType;
-		set => mMaandiType = value;
+		get => _mMaandiType;
+		set => _mMaandiType = value;
 	}
 
-	[Category(CAT_UPAGRAHA)]
+	[Category(CatUpagraha)]
 	[PropertyOrder(3)]
 	[PGDisplayName("Gulika")]
 	public EMaandiType GulikaType
 	{
-		get => mGulikaType;
-		set => mGulikaType = value;
+		get => _mGulikaType;
+		set => _mGulikaType = value;
 	}
 
-	[Category(CAT_SUNRISE)]
+	[Category(CatSunrise)]
 	[PropertyOrder(1)]
 	[PGDisplayName("Sunrise")]
-	public SunrisePositionType sunrisePosition
+	public SunrisePositionType SunrisePosition
 	{
-		get => mSunrisePosition;
-		set => mSunrisePosition = value;
+		get => _mSunrisePosition;
+		set => _mSunrisePosition = value;
 	}
 
-	[Category(CAT_SUNRISE)]
+	[Category(CatSunrise)]
 	[PropertyOrder(2)]
 	[PGDisplayName("Hora")]
 	public EHoraType HoraType
 	{
-		get => mHoraType;
-		set => mHoraType = value;
+		get => _mHoraType;
+		set => _mHoraType = value;
 	}
 
-	[Category(CAT_SUNRISE)]
+	[Category(CatSunrise)]
 	[PropertyOrder(3)]
 	[PGDisplayName("Kala")]
 	public EHoraType KalaType
 	{
-		get => mKalaType;
-		set => mKalaType = value;
+		get => _mKalaType;
+		set => _mKalaType = value;
 	}
 
 	//public EGrahaPositionType GrahaPositionType
@@ -269,36 +264,36 @@ public class HoroscopeOptions : MhoraSerializableOptions, ICloneable, ISerializa
 	//	get { return grahaPositionType; }
 	//	set { grahaPositionType = value; }
 	//}
-	[Category(CAT_GRAHA)]
+	[Category(CatGraha)]
 	[PropertyOrder(1)]
 	[PGDisplayName("Rahu / Ketu")]
 	public ENodeType NodeType
 	{
-		get => nodeType;
-		set => nodeType = value;
+		get => _nodeType;
+		set => _nodeType = value;
 	}
 
-	[Category(CAT_GRAHA)]
+	[Category(CatGraha)]
 	[PropertyOrder(2)]
 	[PGDisplayName("Bhava")]
 	public EBhavaType BhavaType
 	{
-		get => mBhavaType;
-		set => mBhavaType = value;
+		get => _mBhavaType;
+		set => _mBhavaType = value;
 	}
 
 	public object Clone()
 	{
 		var o = new HoroscopeOptions();
-		o.sunrisePosition   = sunrisePosition;
-		o.grahaPositionType = grahaPositionType;
-		o.nodeType          = nodeType;
+		o.SunrisePosition   = SunrisePosition;
+		o.GrahaPositionType = GrahaPositionType;
+		o._nodeType          = _nodeType;
 		o.Ayanamsa          = Ayanamsa;
 		o.AyanamsaOffset    = AyanamsaOffset;
 		o.HoraType          = HoraType;
 		o.KalaType          = KalaType;
 		o.BhavaType         = BhavaType;
-		o.mUserLongitude    = mUserLongitude.Add(0);
+		o._mUserLongitude    = _mUserLongitude;
 		o.MaandiType        = MaandiType;
 		o.GulikaType        = GulikaType;
 		o.UpagrahaType      = UpagrahaType;
@@ -306,22 +301,17 @@ public class HoroscopeOptions : MhoraSerializableOptions, ICloneable, ISerializa
 		return o;
 	}
 
-	void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-	{
-		GetObjectData(GetType(), info, context);
-	}
-
 	public void Copy(HoroscopeOptions o)
 	{
-		sunrisePosition   = o.sunrisePosition;
-		grahaPositionType = o.grahaPositionType;
-		nodeType          = o.nodeType;
+		SunrisePosition   = o.SunrisePosition;
+		GrahaPositionType = o.GrahaPositionType;
+		_nodeType          = o._nodeType;
 		Ayanamsa          = o.Ayanamsa;
 		AyanamsaOffset    = o.AyanamsaOffset;
 		HoraType          = o.HoraType;
 		KalaType          = o.KalaType;
 		BhavaType         = o.BhavaType;
-		mUserLongitude    = o.mUserLongitude.Add(0);
+		_mUserLongitude    = o._mUserLongitude;
 		MaandiType        = o.MaandiType;
 		GulikaType        = o.GulikaType;
 		UpagrahaType      = o.UpagrahaType;

@@ -28,7 +28,7 @@ public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 
 	public AshtottariDasa(Horoscope horoscope)
 	{
-		common = this;
+		Common = this;
 		_h      = horoscope;
 	}
 

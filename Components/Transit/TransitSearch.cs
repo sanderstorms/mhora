@@ -545,11 +545,11 @@ public class TransitSearch : MhoraControl
 
 		if (Elements.Transit.CircLonLessThan(lon_expected, lon_prog))
 		{
-			dExpectedLon += lon_prog.Sub(lon_expected).Value;
+			dExpectedLon += lon_prog.Sub(lon_expected);
 		}
 		else
 		{
-			dExpectedLon -= lon_expected.Sub(lon_prog).Value;
+			dExpectedLon -= lon_expected.Sub(lon_prog);
 		}
 
 		var dp = h.GetPosition(opts.SearchBody).ToDivisionPosition(opts.Division);
@@ -597,14 +597,14 @@ public class TransitSearch : MhoraControl
 			var next_lon = r.GetLon(next_ut);
 
 
-			if (false == becomesDirect && next_lon.Sub(curr_lon).Value >= totalProgression)
+			if (false == becomesDirect && next_lon.Sub(curr_lon) >= totalProgression)
 			{
 				//mhora.Log.Debug ("1 Found {0} in {1}", totalProgression, next_lon.sub(curr_lon).value);
 				found_ut = r.GetTransitForward(curr_ut, curr_lon.Add(totalProgression));
 				break;
 			}
 
-			if (becomesDirect && curr_lon.Sub(next_lon).Value >= totalProgression)
+			if (becomesDirect && curr_lon.Sub(next_lon) >= totalProgression)
 			{
 				//mhora.Log.Debug ("2 Found {0} in {1}", totalProgression, curr_lon.sub(next_lon).value);
 				found_ut = r.GetTransitForward(curr_ut, curr_lon.Sub(totalProgression));
@@ -614,12 +614,12 @@ public class TransitSearch : MhoraControl
 			if (false == becomesDirect)
 			{
 				//mhora.Log.Debug ("Progression: {0} degrees gone in direct motion", next_lon.sub(curr_lon).value);
-				totalProgression -= next_lon.Sub(curr_lon).Value;
+				totalProgression -= next_lon.Sub(curr_lon);
 			}
 			else
 			{
 				//mhora.Log.Debug ("Progression: {0} degrees gone in retro motion", curr_lon.sub(next_lon).value);
-				totalProgression -= curr_lon.Sub(next_lon).Value;
+				totalProgression -= curr_lon.Sub(next_lon);
 			}
 
 			curr_ut = next_ut + 5.0;
@@ -793,7 +793,7 @@ public class TransitSearch : MhoraControl
 		var mcTransit = new MhoraChild(hTransit);
 		mcTransit.Name      = "Transit Chart";
 		mcTransit.Text      = "Transit Chart";
-		mcTransit.MdiParent = MhoraGlobalOptions.mainControl;
+		mcTransit.MdiParent = MhoraGlobalOptions.MainControl;
 		mcTransit.Show();
 	}
 
@@ -829,9 +829,9 @@ public class TransitSearch : MhoraControl
 			var ut_diff = hTransitNext.Info.Jd - hTransit.Info.Jd;
 			if (ut_diff > 0)
 			{
-				hTransit.Info.defaultYearCompression = 1;
-				hTransit.Info.defaultYearLength      = ut_diff;
-				hTransit.Info.defaultYearType        = ToDate.DateType.FixedYear;
+				hTransit.Info.DefaultYearCompression = 1;
+				hTransit.Info.DefaultYearLength      = ut_diff;
+				hTransit.Info.DefaultYearType        = ToDate.DateType.FixedYear;
 			}
 		}
 
@@ -858,9 +858,9 @@ public class TransitSearch : MhoraControl
 			var ut_diff = hTransit.Info.Jd - hTransitPrev.Info.Jd;
 			if (ut_diff > 0)
 			{
-				hTransit.Info.defaultYearCompression = 1;
-				hTransit.Info.defaultYearLength      = ut_diff;
-				hTransit.Info.defaultYearType        = ToDate.DateType.FixedYear;
+				hTransit.Info.DefaultYearCompression = 1;
+				hTransit.Info.DefaultYearLength      = ut_diff;
+				hTransit.Info.DefaultYearType        = ToDate.DateType.FixedYear;
 			}
 		}
 
@@ -1007,13 +1007,13 @@ public class TransitSearch : MhoraControl
 
 		if (bTransitForwardCusp)
 		{
-			opts.TransitPoint.Value = dp.CuspHigher;
+			opts.TransitPoint = (Longitude) dp.CuspHigher;
 			updateOptions();
 			bStartSearch_Click(sender, e);
 		}
 		else
 		{
-			opts.TransitPoint.Value = dp.CuspLower;
+			opts.TransitPoint = (Longitude) dp.CuspLower;
 			updateOptions();
 			bStartSearch_Click(sender, e);
 		}

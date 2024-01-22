@@ -29,39 +29,39 @@ namespace Mhora.Elements.Dasas.Nakshatra;
 // semantics here.
 public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTithiDasa
 {
-	private readonly AshtottariDasa ad;
-	private readonly Horoscope      h;
-	private          UserOptions    options;
+	private readonly AshtottariDasa _ad;
+	private readonly Horoscope      _h;
+	private          UserOptions    _options;
 
-	public TithiAshtottariDasa(Horoscope _h)
+	public TithiAshtottariDasa(Horoscope h)
 	{
-		options     = new UserOptions();
-		tithiCommon = this;
-		common      = this;
-		h           = _h;
-		ad          = new AshtottariDasa(h);
+		_options     = new UserOptions();
+		TithiCommon = this;
+		Common      = this;
+		this._h     = h;
+		_ad         = new AshtottariDasa(this._h);
 	}
 
 	public override object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public override object SetOptions(object a)
 	{
-		options = (UserOptions) options.SetOptions(a);
+		_options = (UserOptions) _options.SetOptions(a);
 		RecalculateEvent?.Invoke();
 
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
-		var mpos = h.GetPosition(Body.BodyType.Moon).Longitude;
-		var spos = h.GetPosition(Body.BodyType.Sun).Longitude;
+		var mpos = _h.GetPosition(Body.BodyType.Moon).Longitude;
+		var spos = _h.GetPosition(Body.BodyType.Sun).Longitude;
 
 		var tithi = mpos.Sub(spos);
-		if (options.UseTithiRemainder == false)
+		if (_options.UseTithiRemainder == false)
 		{
 			var offset = tithi.Value;
 			while (offset >= 12.0)
@@ -72,7 +72,7 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 			tithi = tithi.Sub(new Longitude(offset));
 		}
 
-		return _TithiDasa(tithi, options.TithiOffset, cycle);
+		return _TithiDasa(tithi, _options.TithiOffset, cycle);
 	}
 
 	public ArrayList AntarDasa(DasaEntry di)
@@ -82,27 +82,27 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 
 	public string Description()
 	{
-		return string.Format("({0}) Tithis Ashtottari Dasa", options.TithiOffset);
+		return string.Format("({0}) Tithis Ashtottari Dasa", _options.TithiOffset);
 	}
 
 	public double ParamAyus()
 	{
-		return ad.ParamAyus();
+		return _ad.ParamAyus();
 	}
 
 	public int NumberOfDasaItems()
 	{
-		return ad.NumberOfDasaItems();
+		return _ad.NumberOfDasaItems();
 	}
 
 	public DasaEntry NextDasaLord(DasaEntry di)
 	{
-		return ad.NextDasaLord(di);
+		return _ad.NextDasaLord(di);
 	}
 
 	public double LengthOfDasa(Body.BodyType plt)
 	{
-		return ad.LengthOfDasa(plt);
+		return _ad.LengthOfDasa(plt);
 	}
 
 	public Body.BodyType LordOfNakshatra(Nakshatras.Nakshatra n)
@@ -111,37 +111,37 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		return Body.BodyType.Sun;
 	}
 
-	public Body.BodyType lordOfTithi(Longitude l)
+	public Body.BodyType LordOfTithi(Longitude l)
 	{
 		return l.ToTithi().GetLord();
 	}
 
 	public class UserOptions : ICloneable
 	{
-		public bool bExpungeTravelled = true;
-		public int  mTithiOffset      = 1;
+		public bool BExpungeTravelled = true;
+		public int  MTithiOffset      = 1;
 
 		public UserOptions()
 		{
-			mTithiOffset      = 1;
-			bExpungeTravelled = true;
+			MTithiOffset      = 1;
+			BExpungeTravelled = true;
 		}
 
 		[PGNotVisible]
 		public bool UseTithiRemainder
 		{
-			get => bExpungeTravelled;
-			set => bExpungeTravelled = value;
+			get => BExpungeTravelled;
+			set => BExpungeTravelled = value;
 		}
 
 		public int TithiOffset
 		{
-			get => mTithiOffset;
+			get => MTithiOffset;
 			set
 			{
 				if (value >= 1 && value <= 30)
 				{
-					mTithiOffset = value;
+					MTithiOffset = value;
 				}
 			}
 		}
@@ -149,8 +149,8 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		public object Clone()
 		{
 			var options = new UserOptions();
-			options.mTithiOffset      = mTithiOffset;
-			options.bExpungeTravelled = bExpungeTravelled;
+			options.MTithiOffset      = MTithiOffset;
+			options.BExpungeTravelled = BExpungeTravelled;
 			return options;
 		}
 
@@ -159,8 +159,8 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 			if (b is UserOptions)
 			{
 				var uo = (UserOptions) b;
-				mTithiOffset      = uo.mTithiOffset;
-				bExpungeTravelled = uo.bExpungeTravelled;
+				MTithiOffset      = uo.MTithiOffset;
+				BExpungeTravelled = uo.BExpungeTravelled;
 			}
 
 			return Clone();

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using Mhora.Elements;
 using Mhora.Util;
@@ -705,7 +706,7 @@ public static class Vargas
 		var sRet = "D";
 		foreach (var dSingle in div.MultipleDivisions)
 		{
-			sRet = string.Format("{0}-{1}", sRet, NumPartsInDivision(dSingle));
+			sRet = string.Format("{0}-{1}", sRet, NumPartsInDivision(dSingle.Varga));
 		}
 
 		return sRet;
@@ -716,15 +717,15 @@ public static class Vargas
 		var parts = 1;
 		foreach (var dSingle in div.MultipleDivisions)
 		{
-			parts *= NumPartsInDivision(dSingle);
+			parts *= NumPartsInDivision(dSingle.Varga);
 		}
 
 		return parts;
 	}
 
-	public static int NumPartsInDivision(this Division.SingleDivision dSingle)
+	public static int NumPartsInDivision(this DivisionType varga)
 	{
-		switch (dSingle.Varga)
+		switch (varga)
 		{
 			case DivisionType.Rasi: return 1;
 			case DivisionType.Navamsa: return 9;
@@ -770,8 +771,9 @@ public static class Vargas
 			case DivisionType.BhavaPlacidus:
 			case DivisionType.BhavaRegiomontanus:
 			case DivisionType.BhavaSripati: return 1;
-			default: return dSingle.NumParts;
 		}
+
+		throw new Exception("Unknown varga type");
 	}
 
 	public static Division[] Shadvargas()

@@ -184,6 +184,8 @@
     <Compile Include="Util\CompilerService.cs" />
     <Compile Include="SwissEph\Helpers\GeoPosition.cs" />
     <Compile Include="SwissEph\Helpers\HorizontalCoordinates.cs" />
+    <Compile Include="Util\DmsLocation.cs" />
+    <Compile Include="Util\DmsPoint.cs" />
     <Compile Include="Util\Range.cs" />
     <Compile Include="SwissEph\Helpers\SunriseSunsetTimeCalcResult.cs" />
     <Compile Include="SwissEph\Helpers\SweApi.cs" />
@@ -261,7 +263,6 @@
     <Compile Include="Elements\CuspTransitSearch.cs" />
     <Compile Include="Util\Dll.cs" />
     <Compile Include="Util\EnumHelper.cs" />
-    <Compile Include="Util\LocationConverter.cs" />
     <Compile Include="Elements\NonLinearTransit.cs" />
     <Compile Include="Elements\Retrogression.cs" />
     <Compile Include="Util\SevenZip.cs" />
@@ -318,7 +319,6 @@
     <Compile Include="Elements\Ghataka\GhatakaTithi.cs" />
     <Compile Include="Components\Property\GlobalizedPropertiesWrapper.cs" />
     <Compile Include="Components\Property\GlobalizedPropertyDescriptor.cs" />
-    <Compile Include="Database\Settings\HMSInfo.cs" />
     <Compile Include="Components\Converter\HMSInfoConverter.cs" />
     <Compile Include="Database\Settings\HoraInfo.cs" />
     <Compile Include="Elements\Calculation\Horoscope.cs" />

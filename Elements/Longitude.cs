@@ -18,41 +18,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using Mhora.Components.Converter;
+using Mhora.Util;
 
 namespace Mhora.Elements;
 
 [Serializable]
 [TypeConverter(typeof(LongitudeConverter))]
-public class Longitude
+public class Longitude : DmsPoint
 {
-	private double _lon;
-
-	public Longitude(double lon)
+	public Longitude(double lon) : base(lon)
 	{
-		while (lon > 360.0)
-		{
-			lon -= 360.0;
-		}
-
-		while (lon < 0)
-		{
-			lon += 360.0;
-		}
-
-		_lon = lon;
-		//m_lon = Basics.NormalizeExc (0, 360, lon);
 	}
 
-	public double Value
+	public Longitude(decimal lon) : base((double) lon)
 	{
-		get => _lon;
-		set
-		{
-			Trace.Assert(value >= 0 && value <= 360);
-			_lon = value;
-		}
+
 	}
 
 	public override string ToString()

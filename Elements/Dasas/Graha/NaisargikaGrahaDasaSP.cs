@@ -22,15 +22,15 @@ using Mhora.Elements.Calculation;
 
 namespace Mhora.Elements.Dasas.Graha;
 
-public class NaisargikaGrahaDasaSP : Dasa, IDasa
+public class NaisargikaGrahaDasaSp : Dasa, IDasa
 {
-	private readonly UserOptions options;
-	private          Horoscope   h;
+	private readonly UserOptions _options;
+	private          Horoscope   _h;
 
-	public NaisargikaGrahaDasaSP(Horoscope _h)
+	public NaisargikaGrahaDasaSp(Horoscope h)
 	{
-		h       = _h;
-		options = new UserOptions();
+		this._h       = h;
+		_options = new UserOptions();
 	}
 
 	public double ParamAyus()
@@ -58,13 +58,13 @@ public class NaisargikaGrahaDasaSP : Dasa, IDasa
 			Body.BodyType.Saturn
 		};
 
-		var cycle_start = ParamAyus() * cycle;
+		var cycleStart = ParamAyus() * cycle;
 		var curr        = 0.0;
 		for (var i = 0; i < 3; i++)
 		{
 			foreach (var bn in order)
 			{
-				al.Add(new DasaEntry(bn, cycle_start + curr, 4.0, 1, bn.ToString()));
+				al.Add(new DasaEntry(bn, cycleStart + curr, 4.0, 1, bn.ToString()));
 				curr += 4.0;
 			}
 		}
@@ -84,7 +84,7 @@ public class NaisargikaGrahaDasaSP : Dasa, IDasa
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
@@ -92,7 +92,7 @@ public class NaisargikaGrahaDasaSP : Dasa, IDasa
 		var uo = (UserOptions) a;
 		RecalculateEvent?.Invoke();
 
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public class UserOptions : ICloneable

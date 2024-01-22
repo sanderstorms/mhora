@@ -25,20 +25,20 @@ namespace Mhora.Elements.Dasas.Rasi;
 
 public class LagnaKendradiRasiDasa : Dasa, IDasa
 {
-	private readonly Horoscope           h;
-	private readonly Division            m_dtype = new(Vargas.DivisionType.Rasi);
-	private readonly RasiDasaUserOptions options;
+	private readonly Horoscope           _h;
+	private readonly Division            _mDtype = new(Vargas.DivisionType.Rasi);
+	private readonly RasiDasaUserOptions _options;
 
-	public LagnaKendradiRasiDasa(Horoscope _h)
+	public LagnaKendradiRasiDasa(Horoscope h)
 	{
-		var fs_rasi = new FindStronger(h, m_dtype, FindStronger.RulesNarayanaDasaRasi(h));
-		h       = _h;
-		options = new RasiDasaUserOptions(h, FindStronger.RulesNarayanaDasaRasi(h));
+		var fsRasi = new FindStronger(this._h, _mDtype, FindStronger.RulesNarayanaDasaRasi(this._h));
+		this._h       = h;
+		_options = new RasiDasaUserOptions(this._h, FindStronger.RulesNarayanaDasaRasi(this._h));
 	}
 
 	public void RecalculateOptions()
 	{
-		options.recalculate();
+		_options.Recalculate();
 	}
 
 	public double ParamAyus()
@@ -64,15 +64,15 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 			9,
 			12
 		};
-		double dasa_length_sum = 0;
+		double dasaLengthSum = 0;
 
-		var zh_start = options.getSeed();
-		zh_start.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_start.Sign, zh_start.Add(7).Sign);
+		var zhStart = _options.GetSeed();
+		zhStart.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhStart.Sign, zhStart.Add(7).Sign);
 
-		var bIsZodiacal = isZodiacal();
+		var bIsZodiacal = IsZodiacal();
 		for (var i = 0; i < 12; i++)
 		{
-			var zh = zh_start.Add(1);
+			var zh = zhStart.Add(1);
 			if (bIsZodiacal)
 			{
 				zh = zh.Add(order[i]);
@@ -82,20 +82,20 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 				zh = zh.AddReverse(order[i]);
 			}
 
-			var    lord        = h.LordOfZodiacHouse(zh, m_dtype);
-			var    dp_lord     = h.GetPosition(lord).ToDivisionPosition(m_dtype);
-			double dasa_length = NarayanaDasaLength(zh, dp_lord);
-			var    de          = new DasaEntry(zh.Sign, dasa_length_sum, dasa_length, 1, zh.Sign.ToString());
+			var    lord        = _h.LordOfZodiacHouse(zh, _mDtype);
+			var    dpLord     = _h.GetPosition(lord).ToDivisionPosition(_mDtype);
+			double dasaLength = NarayanaDasaLength(zh, dpLord);
+			var    de          = new DasaEntry(zh.Sign, dasaLengthSum, dasaLength, 1, zh.Sign.ToString());
 			al.Add(de);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
 		for (var i = 0; i < 12; i++)
 		{
-			var de_first    = (DasaEntry) al[i];
-			var dasa_length = 12.0 - de_first.DasaLength;
-			var de          = new DasaEntry(de_first.ZHouse, dasa_length_sum, dasa_length, 1, de_first.DasaName);
-			dasa_length_sum += dasa_length;
+			var deFirst    = (DasaEntry) al[i];
+			var dasaLength = 12.0 - deFirst.DasaLength;
+			var de          = new DasaEntry(deFirst.ZHouse, dasaLengthSum, dasaLength, 1, deFirst.DasaName);
+			dasaLengthSum += dasaLength;
 			al.Add(de);
 		}
 
@@ -104,47 +104,47 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 
 	public ArrayList AntarDasa(DasaEntry pdi)
 	{
-		var nd = new NarayanaDasa(h);
-		nd.options = options;
+		var nd = new NarayanaDasa(_h);
+		nd.Options = _options;
 		return nd.AntarDasa(pdi);
 	}
 
 	public string Description()
 	{
-		return "Lagna Kendradi Rasi Dasa seeded from" + " seeded from " + options.SeedRasi;
+		return "Lagna Kendradi Rasi Dasa seeded from" + " seeded from " + _options.SeedRasi;
 	}
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
 	{
-		options.CopyFrom(a);
+		_options.CopyFrom(a);
 		RecalculateEvent();
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public new void DivisionChanged(Division div)
 	{
-		var newOpts = (RasiDasaUserOptions) options.Clone();
+		var newOpts = (RasiDasaUserOptions) _options.Clone();
 		newOpts.Division = (Division) div.Clone();
 		SetOptions(newOpts);
 	}
 
-	private bool isZodiacal()
+	private bool IsZodiacal()
 	{
-		var zh_start = options.getSeed();
-		zh_start.Sign = options.findStrongerRasi(options.SeventhStrengths, zh_start.Sign, zh_start.Add(7).Sign);
+		var zhStart = _options.GetSeed();
+		zhStart.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhStart.Sign, zhStart.Add(7).Sign);
 
-		var forward = zh_start.IsOdd();
-		if (options.saturnExceptionApplies(zh_start.Sign))
+		var forward = zhStart.IsOdd();
+		if (_options.SaturnExceptionApplies(zhStart.Sign))
 		{
 			return forward;
 		}
 
-		if (options.ketuExceptionApplies(zh_start.Sign))
+		if (_options.KetuExceptionApplies(zhStart.Sign))
 		{
 			forward = !forward;
 		}

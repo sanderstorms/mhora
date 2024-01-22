@@ -24,6 +24,7 @@ using System.Text.RegularExpressions;
 using Mhora.Database.Settings;
 using Mhora.Database.World;
 using Mhora.Elements.Hora;
+using Mhora.Util;
 using SqlNado.Query;
 
 namespace Mhora.Components.Jhora;
@@ -41,12 +42,12 @@ public class Jhd : IFileToHoraInfo
 	{
 		var  sr      = File.OpenText(_fname);
 		var  m       = ReadMomentLine(sr);
-		var  tz      = ReadHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
-		var  lon     = ReadHmsLineInfo(sr, true, HMSInfo.dir_type.EW);
-		var  lat     = ReadHmsLineInfo(sr, false, HMSInfo.dir_type.NS);
-		var  alt     = ReadHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
-		var  est     = ReadHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
-		var  dst     = ReadHmsLineInfo(sr, false, HMSInfo.dir_type.EW);
+		var  tz      = ReadHmsLineInfo(sr, true, true);
+		var  lon     = ReadHmsLineInfo(sr, true, true);
+		var  lat     = ReadHmsLineInfo(sr, false, false);
+		var  alt     = ReadHmsLineInfo(sr, false, true);
+		var  est     = ReadHmsLineInfo(sr, false, true);
+		var  dst     = ReadHmsLineInfo(sr, false, true);
 		var  i1      = ReadIntLine(sr);
 		var  i2      = ReadIntLine(sr);
 		var  cityName = sr.ReadLine();
@@ -99,32 +100,31 @@ public class Jhd : IFileToHoraInfo
 		return int.Parse(s);
 	}
 
-	private static void WriteHmsInfoLine(StreamWriter sw, HMSInfo hi)
+	private static void WriteHmsInfoLine(StreamWriter sw, DmsPoint hi)
 	{
-		string q;
-		if (hi.direction == HMSInfo.dir_type.NS && hi.degree >= 0)
+		string q = string.Empty;
+
+		if (hi.IsLongitude)
 		{
-			q = string.Empty;
-		}
-		else if (hi.direction == HMSInfo.dir_type.NS)
-		{
-			q = "-";
-		}
-		else if (hi.direction == HMSInfo.dir_type.EW && hi.degree >= 0)
-		{
-			q = "-";
+			if (hi >= 0.0)
+			{
+				q = "-";
+			}
 		}
 		else
 		{
-			q = string.Empty;
+			if (hi < 0.0)
+			{
+				q = "-";
+			}
 		}
 
-		var thour = hi.degree >= 0 ? hi.degree : -hi.degree;
-		var w     = q + thour + "." + NumToString(hi.minute) + NumToString(hi.second) + "00";
+		var thour = hi>= 0.0 ? hi : 0.0 - hi;
+		var w     = q + thour + "." + NumToString(hi.Arcminute) + NumToString((int) hi.Arcsecond) + "00";
 		sw.WriteLine(w);
 	}
 
-	private static HMSInfo ReadHmsLineInfo(StreamReader sr, bool negate, HMSInfo.dir_type dir)
+	private static DmsPoint ReadHmsLineInfo(StreamReader sr, bool negate, bool isLongitude)
 	{
 		int h = 0, m = 0, s = 0;
 		ReadHmsLine(sr, ref h, ref m, ref s);
@@ -133,7 +133,7 @@ public class Jhd : IFileToHoraInfo
 			h *= -1;
 		}
 
-		return new HMSInfo(h, m, s, dir);
+		return new DmsPoint(h, m, s, isLongitude);
 	}
 
 	private static void ReadHmsLine(StreamReader sr, ref int hour, ref int min, ref int sec)

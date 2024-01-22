@@ -87,13 +87,13 @@ public static class Karanas
 
 	public static Karana Add(this Karana value, int i)
 	{
-		var tnum = Basics.NormalizeInc((int) value + i - 1, 1, 60);
+		var tnum = ((int) value + i - 1).NormalizeInc(1, 60);
 		return (Karana) tnum;
 	}
 
 	public static Karana AddReverse(this Karana value, int i)
 	{
-		var tnum = Basics.NormalizeInc((int) value - i + 1, 1, 60);
+		var tnum = ((int) value - i + 1).NormalizeInc(1, 60);
 		return (Karana) tnum;
 	}
 
@@ -107,7 +107,7 @@ public static class Karanas
 			case Karana.Naga:        return Body.BodyType.Venus;
 			default:
 			{
-				var vn = Basics.NormalizeInc((int) value - 1, 1, 7);
+				var vn = ((int) value - 1).NormalizeInc(1, 7);
 				switch (vn)
 				{
 					case 1:  return Body.BodyType.Sun;

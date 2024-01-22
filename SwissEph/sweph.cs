@@ -126,7 +126,7 @@ public static partial class sweph
 
 		if (ret >= 0)
 		{
-			xx[0] += h.Options.AyanamsaOffset.toDouble();
+			xx[0] += h.Options.AyanamsaOffset;
 		}
 
 		return ret;
@@ -148,7 +148,7 @@ public static partial class sweph
 
 		if (ret >= 0)
 		{
-			xx[0] += h.Options.AyanamsaOffset.toDouble();
+			xx[0] += h.Options.AyanamsaOffset;
 		}
 
 		return ret;
@@ -712,7 +712,7 @@ public static partial class sweph
 			ret = SwephDll.Swe64.swe_houses_ex(tjd_ut, iflag, lat, lon, hsys, cusps, ascmc);
 		}
 
-		var lOffset = new Longitude(h.Options.AyanamsaOffset.toDouble());
+		var lOffset = h.Options.AyanamsaOffset;
 
 		// House cusps defined from 1 to 12 inclusive as per sweph docs
 		// Ascendants defined from 0 to 7 inclusive as per sweph docs

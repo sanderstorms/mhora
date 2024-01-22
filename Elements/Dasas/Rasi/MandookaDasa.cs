@@ -25,13 +25,13 @@ namespace Mhora.Elements.Dasas.Rasi;
 
 public class MandookaDasa : Dasa, IDasa
 {
-	private readonly Horoscope           h;
-	private readonly RasiDasaUserOptions options;
+	private readonly Horoscope           _h;
+	private readonly RasiDasaUserOptions _options;
 
-	public MandookaDasa(Horoscope _h)
+	public MandookaDasa(Horoscope h)
 	{
-		h       = _h;
-		options = new RasiDasaUserOptions(h, FindStronger.RulesNavamsaDasaRasi(h));
+		this._h       = h;
+		_options = new RasiDasaUserOptions(this._h, FindStronger.RulesNavamsaDasaRasi(this._h));
 	}
 
 	public double ParamAyus()
@@ -41,7 +41,7 @@ public class MandookaDasa : Dasa, IDasa
 
 	public void RecalculateOptions()
 	{
-		options.recalculate();
+		_options.Recalculate();
 	}
 
 	public ArrayList Dasa(int cycle)
@@ -62,47 +62,47 @@ public class MandookaDasa : Dasa, IDasa
 			12
 		};
 		var al      = new ArrayList(12);
-		var zh_seed = options.getSeed();
+		var zhSeed = _options.GetSeed();
 
-		if (zh_seed.IsOdd())
+		if (zhSeed.IsOdd())
 		{
-			zh_seed = zh_seed.Add(3);
+			zhSeed = zhSeed.Add(3);
 		}
 		else
 		{
-			zh_seed = zh_seed.AddReverse(3);
+			zhSeed = zhSeed.AddReverse(3);
 		}
 
 		var bDirZodiacal = true;
-		if (!zh_seed.IsOdd())
+		if (!zhSeed.IsOdd())
 		{
 			//zh_seed = zh_seed.AdarsaSign();
 			bDirZodiacal = false;
 		}
 
-		var dasa_length_sum = 0.0;
+		var dasaLengthSum = 0.0;
 		for (var i = 0; i < 12; i++)
 		{
-			ZodiacHouse zh_dasa = null;
+			ZodiacHouse zhDasa = null;
 			if (bDirZodiacal)
 			{
-				zh_dasa = zh_seed.Add(sequence[i]);
+				zhDasa = zhSeed.Add(sequence[i]);
 			}
 			else
 			{
-				zh_dasa = zh_seed.AddReverse(sequence[i]);
+				zhDasa = zhSeed.AddReverse(sequence[i]);
 			}
 
-			double dasa_length = DasaLength(zh_dasa);
-			var    di          = new DasaEntry(zh_dasa.Sign, dasa_length_sum, dasa_length, 1, zh_dasa.Sign.ToString());
+			double dasaLength = DasaLength(zhDasa);
+			var    di          = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
 			al.Add(di);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
-		var cycle_length = cycle * ParamAyus();
+		var cycleLength = cycle * ParamAyus();
 		foreach (DasaEntry di in al)
 		{
-			di.StartUT += cycle_length;
+			di.StartUt += cycleLength;
 		}
 
 		return al;
@@ -112,21 +112,21 @@ public class MandookaDasa : Dasa, IDasa
 	{
 		var al = new ArrayList(12);
 
-		var zh_first    = new ZodiacHouse(pdi.ZHouse);
-		var zh_stronger = zh_first.Add(1);
-		if (!zh_stronger.IsOdd())
+		var zhFirst    = new ZodiacHouse(pdi.ZHouse);
+		var zhStronger = zhFirst.Add(1);
+		if (!zhStronger.IsOdd())
 		{
-			zh_stronger = zh_stronger.AdarsaSign();
+			zhStronger = zhStronger.AdarsaSign();
 		}
 
-		var dasa_start = pdi.StartUT;
+		var dasaStart = pdi.StartUt;
 
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh_dasa = zh_stronger.Add(i);
-			var di      = new DasaEntry(zh_dasa.Sign, dasa_start, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zh_dasa.Sign);
+			var zhDasa = zhStronger.Add(i);
+			var di      = new DasaEntry(zhDasa.Sign, dasaStart, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zhDasa.Sign);
 			al.Add(di);
-			dasa_start += pdi.DasaLength / 12.0;
+			dasaStart += pdi.DasaLength / 12.0;
 		}
 
 		return al;
@@ -134,25 +134,25 @@ public class MandookaDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return "Mandooka Dasa (seeded from) " + options.Division.NumPartsInDivisionString();
+		return "Mandooka Dasa (seeded from) " + _options.Division.NumPartsInDivisionString();
 	}
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
 	{
 		var uo = (RasiDasaUserOptions) a;
-		options.CopyFrom(uo);
+		_options.CopyFrom(uo);
 		RecalculateEvent();
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public new void DivisionChanged(Division div)
 	{
-		var newOpts = (RasiDasaUserOptions) options.Clone();
+		var newOpts = (RasiDasaUserOptions) _options.Clone();
 		newOpts.Division = (Division) div.Clone();
 		SetOptions(newOpts);
 	}

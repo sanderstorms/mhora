@@ -23,11 +23,11 @@ namespace Mhora.Elements.Dasas.Yearly;
 
 public class TajakaDasa : Dasa, IDasa
 {
-	private Horoscope h;
+	private Horoscope _h;
 
-	public TajakaDasa(Horoscope _h)
+	public TajakaDasa(Horoscope h)
 	{
-		h = _h;
+		this._h = h;
 	}
 
 	public object GetOptions()
@@ -52,10 +52,10 @@ public class TajakaDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al          = new ArrayList(60);
-		var cycle_start = cycle * ParamAyus();
+		var cycleStart = cycle * ParamAyus();
 		for (var i = 0; i < 60; i++)
 		{
-			var start = cycle_start + i;
+			var start = cycleStart + i;
 			var di    = new DasaEntry(Body.BodyType.Other, start, 1.0, 1, "Tajaka Year");
 			al.Add(di);
 		}
@@ -82,7 +82,7 @@ public class TajakaDasa : Dasa, IDasa
 		var       level = 0;
 
 		var al = new ArrayList(12);
-		start  = pdi.StartUT;
+		start  = pdi.StartUt;
 		level  = pdi.Level + 1;
 		length = pdi.DasaLength / 12.0;
 		for (var i = 0; i < 12; i++)
