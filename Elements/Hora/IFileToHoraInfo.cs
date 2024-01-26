@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Database.Settings;
+
 namespace Mhora.Elements.Hora;
 
 /// <summary>
@@ -24,6 +26,6 @@ namespace Mhora.Elements.Hora;
 /// </summary>
 public interface IFileToHoraInfo
 {
-	HoraInfo toHoraInfo();
+	HoraInfo ToHoraInfo();
 	void     ToFile(HoraInfo hi);
 }

@@ -1,8 +1,8 @@
 ﻿namespace Mhora.Tables;
 
-public static class Tara
+public static class Taras
 {
-	public static readonly int[] specialIndices =
+	public static readonly int[] SpecialIndices =
 	{
 		1,
 		10,
@@ -17,7 +17,7 @@ public static class Tara
 		25
 	};
 
-	public static readonly string[] specialNames =
+	public static readonly string[] SpecialNames =
 	{
 		"Janma",
 		"Karma",

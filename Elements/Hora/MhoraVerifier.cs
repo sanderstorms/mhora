@@ -44,40 +44,39 @@ public class MhoraVerifier
 
 public class Base64Encoder
 {
-	private readonly int    blockCount;
-	private readonly int    length;
-	private readonly int    length2;
-	private readonly int    paddingCount;
-	private readonly byte[] source;
+	private readonly int    _blockCount;
+	private readonly int    _length;
+	private readonly int    _length2;
+	private readonly int    _paddingCount;
+	private readonly byte[] _source;
 
 	public Base64Encoder(byte[] input)
 	{
-		source = input;
-		length = input.Length;
-		if (length % 3 == 0)
+		_source = input;
+		_length = input.Length;
+		if (_length % 3 == 0)
 		{
-			paddingCount = 0;
-			blockCount   = length / 3;
+			_paddingCount = 0;
+			_blockCount   = _length / 3;
 		}
 		else
 		{
-			paddingCount = 3 - length % 3; //need to add padding
-			blockCount   = (length + paddingCount) / 3;
+			_paddingCount = 3 - _length % 3; //need to add padding
+			_blockCount   = (_length + _paddingCount) / 3;
 		}
 
-		length2 = length + paddingCount; //or blockCount *3
+		_length2 = _length + _paddingCount; //or blockCount *3
 	}
 
 	public char[] GetEncoded()
 	{
-		byte[] source2;
-		source2 = new byte[length2];
+		var source2 = new byte[_length2];
 		//copy data over insert padding
-		for (var x = 0; x < length2; x++)
+		for (var x = 0; x < _length2; x++)
 		{
-			if (x < length)
+			if (x < _length)
 			{
-				source2[x] = source[x];
+				source2[x] = _source[x];
 			}
 			else
 			{
@@ -87,9 +86,9 @@ public class Base64Encoder
 
 		byte b1,   b2,    b3;
 		byte temp, temp1, temp2, temp3, temp4;
-		var  buffer = new byte[blockCount * 4];
-		var  result = new char[blockCount * 4];
-		for (var x = 0; x < blockCount; x++)
+		var  buffer = new byte[_blockCount * 4];
+		var  result = new char[_blockCount * 4];
+		for (var x = 0; x < _blockCount; x++)
 		{
 			b1 = source2[x * 3];
 			b2 = source2[x * 3 + 1];
@@ -113,28 +112,28 @@ public class Base64Encoder
 			buffer[x * 4 + 3] = temp4;
 		}
 
-		for (var x = 0; x < blockCount * 4; x++)
+		for (var x = 0; x < _blockCount * 4; x++)
 		{
-			result[x] = sixbit2char(buffer[x]);
+			result[x] = Sixbit2Char(buffer[x]);
 		}
 
 		//covert last "A"s to "=", based on paddingCount
-		switch (paddingCount)
+		switch (_paddingCount)
 		{
 			case 0: break;
 			case 1:
-				result[blockCount * 4 - 1] = '=';
+				result[_blockCount * 4 - 1] = '=';
 				break;
 			case 2:
-				result[blockCount * 4 - 1] = '=';
-				result[blockCount * 4 - 2] = '=';
+				result[_blockCount * 4 - 1] = '=';
+				result[_blockCount * 4 - 2] = '=';
 				break;
 		}
 
 		return result;
 	}
 
-	private char sixbit2char(byte b)
+	private char Sixbit2Char(byte b)
 	{
 		var lookupTable = new char[64]
 		{
@@ -219,49 +218,49 @@ public class Base64Encoder
 /// </summary>
 public class Base64Decoder
 {
-	private readonly int    blockCount;
-	private readonly int    length;
-	private readonly int    length2;
-	private readonly int    paddingCount;
-	private readonly char[] source;
-	private          int    length3;
+	private readonly int    _blockCount;
+	private readonly int    _length;
+	private readonly int    _length2;
+	private readonly int    _paddingCount;
+	private readonly char[] _source;
+	private          int    _length3;
 
 	public Base64Decoder(char[] input)
 	{
 		var temp = 0;
-		source = input;
-		length = input.Length;
+		_source = input;
+		_length = input.Length;
 
 		//find how many padding are there
 		for (var x = 0; x < 2; x++)
 		{
-			if (input[length - x - 1] == '=')
+			if (input[_length - x - 1] == '=')
 			{
 				temp++;
 			}
 		}
 
-		paddingCount = temp;
+		_paddingCount = temp;
 		//calculate the blockCount;
 		//assuming all whitespace and carriage returns/newline were removed.
-		blockCount = length     / 4;
-		length2    = blockCount * 3;
+		_blockCount = _length     / 4;
+		_length2    = _blockCount * 3;
 	}
 
 	public byte[] GetDecoded()
 	{
-		var buffer  = new byte[length];  //first conversion result
-		var buffer2 = new byte[length2]; //decoded array with padding
+		var buffer  = new byte[_length];  //first conversion result
+		var buffer2 = new byte[_length2]; //decoded array with padding
 
-		for (var x = 0; x < length; x++)
+		for (var x = 0; x < _length; x++)
 		{
-			buffer[x] = char2sixbit(source[x]);
+			buffer[x] = Char2Sixbit(_source[x]);
 		}
 
 		byte b,     b1,    b2,    b3;
 		byte temp1, temp2, temp3, temp4;
 
-		for (var x = 0; x < blockCount; x++)
+		for (var x = 0; x < _blockCount; x++)
 		{
 			temp1 = buffer[x * 4];
 			temp2 = buffer[x * 4 + 1];
@@ -286,10 +285,10 @@ public class Base64Decoder
 		}
 
 		//remove paddings
-		length3 = length2 - paddingCount;
-		var result = new byte[length3];
+		_length3 = _length2 - _paddingCount;
+		var result = new byte[_length3];
 
-		for (var x = 0; x < length3; x++)
+		for (var x = 0; x < _length3; x++)
 		{
 			result[x] = buffer2[x];
 		}
@@ -297,7 +296,7 @@ public class Base64Decoder
 		return result;
 	}
 
-	private byte char2sixbit(char c)
+	private byte Char2Sixbit(char c)
 	{
 		var lookupTable = new char[64]
 		{

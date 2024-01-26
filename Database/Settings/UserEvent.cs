@@ -20,55 +20,50 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Runtime.Serialization;
-using Mhora.Database.Settings;
-using Mhora.Elements.Calculation;
+using Mhora.Elements.Hora;
+using Newtonsoft.Json;
 
-namespace Mhora.Elements.Hora;
+namespace Mhora.Database.Settings;
 
-[Serializable]
-public class UserEvent : MhoraSerializableOptions, ICloneable, ISerializable
+[JsonObject]
+public class UserEvent : MhoraSerializableOptions, ICloneable
 {
-	private string mEventDesc;
+	private string _mEventDesc;
 
-	private string mEventName;
-	private Moment mEventTime;
-	private bool   mWorkWithEvent;
-
-	protected UserEvent(SerializationInfo info, StreamingContext context) : this()
-	{
-		Constructor(GetType(), info, context);
-	}
+	private string _mEventName;
+	private DateTime _mEventTime;
+	private bool   _mWorkWithEvent;
 
 	public UserEvent()
 	{
 		EventName     = "Some Event";
-		EventTime     = new Moment();
+		EventTime     = DateTime.Now;
 		WorkWithEvent = true;
 	}
 
 	public string EventName
 	{
-		get => mEventName;
-		set => mEventName = value;
+		get => _mEventName;
+		set => _mEventName = value;
 	}
 
-	[Editor(typeof(UIStringTypeEditor), typeof(UITypeEditor))]
+	[Editor(typeof(UiStringTypeEditor), typeof(UITypeEditor))]
 	public string EventDesc
 	{
-		get => mEventDesc;
-		set => mEventDesc = value;
+		get => _mEventDesc;
+		set => _mEventDesc = value;
 	}
 
-	public Moment EventTime
+	public DateTime EventTime
 	{
-		get => mEventTime;
-		set => mEventTime = value;
+		get => _mEventTime;
+		set => _mEventTime = value;
 	}
 
 	public bool WorkWithEvent
 	{
-		get => mWorkWithEvent;
-		set => mWorkWithEvent = value;
+		get => _mWorkWithEvent;
+		set => _mWorkWithEvent = value;
 	}
 
 	public object Clone()
@@ -79,11 +74,6 @@ public class UserEvent : MhoraSerializableOptions, ICloneable, ISerializable
 		ue.WorkWithEvent = WorkWithEvent;
 		ue.EventDesc     = EventDesc;
 		return ue;
-	}
-
-	void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-	{
-		GetObjectData(GetType(), info, context);
 	}
 
 	public override string ToString()

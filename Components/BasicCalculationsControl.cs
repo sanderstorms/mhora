@@ -28,7 +28,7 @@ using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Dasas.Nakshatra;
 using Mhora.Tables;
-using Tithi = Mhora.Tables.Tithi;
+using mhora.Util;
 
 namespace Mhora.Components;
 
@@ -88,7 +88,7 @@ public class BasicCalculationsControl : MhoraControl
 		h.Changed                              += OnRecalculate;
 		MhoraGlobalOptions.DisplayPrefsChanged += OnRedisplay;
 		options                                =  new UserOptions();
-		options.DivisionType                   =  new Division(Basics.DivisionType.Rasi);
+		options.DivisionType                   =  new Division(Vargas.DivisionType.Rasi);
 	}
 
 	/// <summary>
@@ -98,10 +98,7 @@ public class BasicCalculationsControl : MhoraControl
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -377,7 +374,7 @@ public class BasicCalculationsControl : MhoraControl
 			str = "Shukla ";
 		}
 
-		return str + " " + Tithi.Name[t - 1];
+		return str + " " + Tithis.Name[t - 1];
 	}
 
 	private void RepopulateSpecialTaras()
@@ -388,17 +385,17 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Nakshatra (27)", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Nakshatra (28)", -1, HorizontalAlignment.Left);
 
-		var nmoon   = h.getPosition(Elements.Body.Name.Moon).longitude.toNakshatra();
-		var nmoon28 = h.getPosition(Elements.Body.Name.Moon).longitude.toNakshatra28();
-		for (var i = 0; i < Tara.specialIndices.Length; i++)
+		var nmoon   = h.GetPosition(Elements.Body.BodyType.Moon).Longitude.ToNakshatra();
+		var nmoon28 = h.GetPosition(Elements.Body.BodyType.Moon).Longitude.ToNakshatra28();
+		for (var i = 0; i < Taras.SpecialIndices.Length; i++)
 		{
-			var sn   = nmoon.add(Tara.specialIndices[i]);
-			var sn28 = nmoon28.add(Tara.specialIndices[i]);
+			var sn   = nmoon.Add(Taras.SpecialIndices[i]);
+			var sn28 = nmoon28.Add(Taras.SpecialIndices[i]);
 
 			var li = new ListViewItem();
-			li.Text = string.Format("{0:00}  {1} Tara", Tara.specialIndices[i], Tara.specialNames[i]);
-			li.SubItems.Add(sn.value.ToString());
-			li.SubItems.Add(sn28.value.ToString());
+			li.Text = string.Format("{0:00}  {1} Tara", Taras.SpecialIndices[i], Taras.SpecialNames[i]);
+			li.SubItems.Add(sn.ToString());
+			li.SubItems.Add(sn28.ToString());
 			mList.Items.Add(li);
 		}
 
@@ -410,25 +407,25 @@ public class BasicCalculationsControl : MhoraControl
 	{
 		mList.Clear();
 		mList.Columns.Add("Body", -1, HorizontalAlignment.Left);
-		mList.Columns.Add("Karaka", -1, HorizontalAlignment.Left);
+		mList.Columns.Add("Karakas", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Offset", -2, HorizontalAlignment.Left);
 
 		var al  = new ArrayList();
 		var max = 0;
 		if (vt == ViewType.ViewCharaKarakas)
 		{
-			max = (int) Elements.Body.Name.Rahu;
+			max = (int) Elements.Body.BodyType.Rahu;
 		}
 		else
 		{
-			max = (int) Elements.Body.Name.Saturn;
+			max = (int) Elements.Body.BodyType.Saturn;
 		}
 
 
-		for (var i = (int) Elements.Body.Name.Sun; i <= max; i++)
+		for (var i = (int) Elements.Body.BodyType.Sun; i <= max; i++)
 		{
-			var b   = (Body.Name) i;
-			var bp  = h.getPosition(b);
+			var b   = (Body.BodyType) i;
+			var bp  = h.GetPosition(b);
 			var bkc = new KarakaComparer(bp);
 			al.Add(bkc);
 		}
@@ -439,17 +436,17 @@ public class BasicCalculationsControl : MhoraControl
 		{
 			var li = new ListViewItem();
 			var bk = (KarakaComparer) al[i];
-			li.Text = Elements.Body.toString(bk.GetPosition.name);
+			li.Text = bk.GetPosition.Name.Name();
 			if (vt == ViewType.ViewCharaKarakas)
 			{
-				li.SubItems.Add(Karaka.karakas[i]);
+				li.SubItems.Add(Elements.Body.Karakas[i]);
 			}
 			else
 			{
-				li.SubItems.Add(Karaka.karakas7[i]);
+				li.SubItems.Add(Elements.Body.Karakas7[i]);
 			}
 
-			li.SubItems.Add(string.Format("{0:0.00}", bk.getOffset()));
+			li.SubItems.Add(string.Format("{0:0.00}", bk.GetOffset()));
 			mList.Items.Add(li);
 		}
 
@@ -459,14 +456,14 @@ public class BasicCalculationsControl : MhoraControl
 	}
 
 
-	private void Repopulate64NavamsaHelper(Body.Name b, string name, Position bp, Division div)
+	private void Repopulate64NavamsaHelper(Body.BodyType b, string name, Position bp, Division div)
 	{
-		var dp = bp.toDivisionPosition(div);
+		var dp = bp.ToDivisionPosition(div);
 		var li = new ListViewItem();
 		li.Text = b.ToString();
 		li.SubItems.Add(name);
-		li.SubItems.Add(dp.zodiac_house.value.ToString());
-		li.SubItems.Add(Elements.Body.toString(h.LordOfZodiacHouse(dp.zodiac_house, div)));
+		li.SubItems.Add(dp.ZodiacHouse.Sign.ToString());
+		li.SubItems.Add(h.LordOfZodiacHouse(dp.ZodiacHouse, div).Name());
 		mList.Items.Add(li);
 	}
 
@@ -482,17 +479,17 @@ public class BasicCalculationsControl : MhoraControl
 		foreach (DivisionPosition dp in al)
 		{
 			var desc = string.Empty;
-			if (dp.name == Elements.Body.Name.Other)
+			if (dp.Name == Elements.Body.BodyType.Other)
 			{
 				desc = dp.Description;
 			}
 			else
 			{
-				desc = dp.name.ToString();
+				desc = dp.Name.ToString();
 			}
 
 			var li = new ListViewItem(desc);
-			li.SubItems.Add(dp.zodiac_house.value.ToString());
+			li.SubItems.Add(dp.ZodiacHouse.Sign.ToString());
 			mList.Items.Add(li);
 		}
 
@@ -508,26 +505,26 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Rasi", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Lord", -2, HorizontalAlignment.Left);
 
-		Body.Name[] bodyReferences =
+		Body.BodyType[] bodyReferences =
 		{
-			Elements.Body.Name.Lagna,
-			Elements.Body.Name.Moon,
-			Elements.Body.Name.Sun
+			Elements.Body.BodyType.Lagna,
+			Elements.Body.BodyType.Moon,
+			Elements.Body.BodyType.Sun
 		};
 
 		foreach (var b in bodyReferences)
 		{
-			var bp    = (Position) h.getPosition(b).Clone();
-			var bpLon = bp.longitude.add(0);
+			var bp    = (Position) h.GetPosition(b).Clone();
+			var bpLon = bp.Longitude.Add(0);
 
-			bp.longitude = bpLon.add(30.0 / 9.0 * (64 - 1));
-			Repopulate64NavamsaHelper(b, "64th Navamsa", bp, new Division(Basics.DivisionType.Navamsa));
+			bp.Longitude = bpLon.Add(30.0 / 9.0 * (64 - 1));
+			Repopulate64NavamsaHelper(b, "64th Navamsa", bp, new Division(Vargas.DivisionType.Navamsa));
 
-			bp.longitude = bpLon.add(30.0 / 3.0 * (22 - 1));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana", bp, new Division(Basics.DivisionType.DrekkanaParasara));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana (Parivritti)", bp, new Division(Basics.DivisionType.DrekkanaParivrittitraya));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana (Somnath)", bp, new Division(Basics.DivisionType.DrekkanaSomnath));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana (Jagannath)", bp, new Division(Basics.DivisionType.DrekkanaJagannath));
+			bp.Longitude = bpLon.Add(30.0 / 3.0 * (22 - 1));
+			Repopulate64NavamsaHelper(b, "22nd Drekkana", bp, new Division(Vargas.DivisionType.DrekkanaParasara));
+			Repopulate64NavamsaHelper(b, "22nd Drekkana (Parivritti)", bp, new Division(Vargas.DivisionType.DrekkanaParivrittitraya));
+			Repopulate64NavamsaHelper(b, "22nd Drekkana (Somnath)", bp, new Division(Vargas.DivisionType.DrekkanaSomnath));
+			Repopulate64NavamsaHelper(b, "22nd Drekkana (Jagannath)", bp, new Division(Vargas.DivisionType.DrekkanaJagannath));
 		}
 
 		ColorAndFontRows(mList);
@@ -542,24 +539,24 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Alertness", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Mood", -2, HorizontalAlignment.Left);
 
-		for (var i = (int) Elements.Body.Name.Sun; i <= (int) Elements.Body.Name.Ketu; i++)
+		for (var i = (int) Elements.Body.BodyType.Sun; i <= (int) Elements.Body.BodyType.Ketu; i++)
 		{
-			var b  = (Body.Name) i;
+			var b  = (Body.BodyType) i;
 			var li = new ListViewItem();
-			li.Text = Elements.Body.toString(b);
-			var dp            = h.getPosition(b).toDivisionPosition(new Division(Basics.DivisionType.Panchamsa));
+			li.Text = b.Name();
+			var dp            = h.GetPosition(b).ToDivisionPosition(new Division(Vargas.DivisionType.Panchamsa));
 			var avastha_index = -1;
-			switch ((int) dp.zodiac_house.value % 2)
+			switch ((int) dp.ZodiacHouse.Sign % 2)
 			{
 				case 1:
-					avastha_index = dp.part;
+					avastha_index = dp.Part;
 					break;
 				case 0:
-					avastha_index = 6 - dp.part;
+					avastha_index = 6 - dp.Part;
 					break;
 			}
 
-			li.SubItems.Add(Tables.Varga.Avasthas[avastha_index - 1]);
+			li.SubItems.Add(Vargas.Avasthas[avastha_index - 1]);
 			mList.Items.Add(li);
 		}
 
@@ -574,44 +571,44 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Latta", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Aspected", -2, HorizontalAlignment.Left);
 
-		for (var i = (int) Elements.Body.Name.Sun; i <= (int) Elements.Body.Name.Rahu; i++)
+		for (var i = (int) Elements.Body.BodyType.Sun; i <= (int) Elements.Body.BodyType.Rahu; i++)
 		{
-			var b          = (Body.Name) i;
+			var b          = (Body.BodyType) i;
 			var dirForward = true;
 			if (i % 2 == 1)
 			{
 				dirForward = false;
 			}
 
-			var       bp = h.getPosition(b);
-			var       n  = bp.longitude.toNakshatra();
-			Nakshatra l  = null;
+			var       bp = h.GetPosition(b);
+			var       n  = bp.Longitude.ToNakshatra();
+            Nakshatras.Nakshatra l;
 
 			if (dirForward)
 			{
-				l = n.add(Karaka.latta_aspects[i]);
+				l = n.Add(Elements.Body.LattaAspects[i]);
 			}
 			else
 			{
-				l = n.addReverse(Karaka.latta_aspects[i]);
+				l = n.AddReverse(Elements.Body.LattaAspects[i]);
 			}
 
 			var nak_fmt = string.Empty;
-			foreach (var j in Karaka.tara_aspects[i])
+			foreach (var j in Nakshatras.TaraAspects[i])
 			{
-				var na = n.add(j);
+				var na = n.Add(j);
 				if (nak_fmt.Length > 0)
 				{
-					nak_fmt = string.Format("{0}, {1}-{2}", nak_fmt, j, na.value);
+					nak_fmt = string.Format("{0}, {1}-{2}", nak_fmt, j, na.Name());
 				}
 				else
 				{
-					nak_fmt = string.Format("{0}-{1}", j, na.value);
+					nak_fmt = string.Format("{0}-{1}", j, na.Name());
 				}
 			}
 
-			var li  = new ListViewItem(Elements.Body.toString(b));
-			var fmt = string.Format("{0:00}-{1}", Karaka.latta_aspects[i], l.value);
+			var li  = new ListViewItem(b.Name());
+			var fmt = string.Format("{0:00}-{1}", Elements.Body.LattaAspects[i], l);
 			li.SubItems.Add(fmt);
 			li.SubItems.Add(nak_fmt);
 			mList.Items.Add(li);
@@ -632,17 +629,17 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Distance (AU)", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("/ day", -1, HorizontalAlignment.Left);
 
-		for (var i = (int) Elements.Body.Name.Sun; i <= (int) Elements.Body.Name.Saturn; i++)
+		for (var i = (int) Elements.Body.BodyType.Sun; i <= (int) Elements.Body.BodyType.Saturn; i++)
 		{
-			var b  = (Body.Name) i;
-			var bp = h.getPosition(b);
-			var li = new ListViewItem(Elements.Body.toString(b));
-			li.SubItems.Add(bp.longitude.value.ToString());
-			li.SubItems.Add(bp.speed_longitude.ToString());
-			li.SubItems.Add(bp.latitude.ToString());
-			li.SubItems.Add(bp.speed_latitude.ToString());
-			li.SubItems.Add(bp.distance.ToString());
-			li.SubItems.Add(bp.speed_distance.ToString());
+			var b  = (Body.BodyType) i;
+			var bp = h.GetPosition(b);
+			var li = new ListViewItem(b.Name());
+			li.SubItems.Add(bp.Longitude.Value.ToString());
+			li.SubItems.Add(bp.SpeedLongitude.ToString());
+			li.SubItems.Add(bp.Latitude.ToString());
+			li.SubItems.Add(bp.SpeedLatitude.ToString());
+			li.SubItems.Add(bp.Distance.ToString());
+			li.SubItems.Add(bp.SpeedDistance.ToString());
 			mList.Items.Add(li);
 		}
 
@@ -655,19 +652,19 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Clear();
 		mList.Items.Clear();
 		mList.Columns.Add("Type", -1, HorizontalAlignment.Left);
-		mList.Columns.Add("Tithi", -1, HorizontalAlignment.Left);
+		mList.Columns.Add("Tithis", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("% Left", -1, HorizontalAlignment.Left);
 
-		var spos      = h.getPosition(Elements.Body.Name.Sun).longitude;
-		var mpos      = h.getPosition(Elements.Body.Name.Moon).longitude;
-		var baseTithi = mpos.sub(spos).value;
+		var spos      = h.GetPosition(Elements.Body.BodyType.Sun).Longitude;
+		var mpos      = h.GetPosition(Elements.Body.BodyType.Moon).Longitude;
+		var baseTithi = mpos.Sub(spos).Value;
 		for (var i = 1; i <= 12; i++)
 		{
-			var    spTithiVal = new Longitude(baseTithi * i).value;
+			var    spTithiVal = new Longitude(baseTithi * i).Value;
 			double tithi      = 0;
 			double perc       = 0;
 			var    li         = new ListViewItem();
-			var    s1         = string.Format("{0:00}  {1} Tithi", i, Tithi.specialNames[i]);
+			var    s1         = string.Format("{0:00}  {1} Tithis", i, Tithis.SpecialNames[i]);
 			li.Text = s1;
 			var s2 = getTithiName(spTithiVal, ref tithi, ref perc);
 			li.SubItems.Add(s2);
@@ -718,7 +715,7 @@ public class BasicCalculationsControl : MhoraControl
 				break;
 		}
 
-		var b = id.lordOfNakshatra(l.toNakshatra());
+		var b = id.LordOfNakshatra(l.ToNakshatra());
 		return b.ToString();
 	}
 
@@ -733,9 +730,9 @@ public class BasicCalculationsControl : MhoraControl
 		for (var i = 0; i < 12; i++)
 		{
 			var li = new ListViewItem();
-			li.Text = string.Format("{0}", (char) h.swephHouseSystem);
-			li.SubItems.Add(h.swephHouseCusps[i].value.ToString());
-			li.SubItems.Add(h.swephHouseCusps[i + 1].value.ToString());
+			li.Text = string.Format("{0}", (char) h.SwephHouseSystem);
+			li.SubItems.Add(h.SwephHouseCusps[i].Value.ToString());
+			li.SubItems.Add(h.SwephHouseCusps[i + 1].Value.ToString());
 			mList.Items.Add(li);
 		}
 
@@ -745,8 +742,8 @@ public class BasicCalculationsControl : MhoraControl
 
 	private string longitudeToString(Longitude lon)
 	{
-		var rasi    = lon.toZodiacHouse().value.ToString();
-		var offset  = lon.toZodiacHouseOffset();
+		var rasi    = lon.ToZodiacHouse().Sign.ToString();
+		var offset  = lon.ToZodiacHouseOffset();
 		var minutes = Math.Floor(offset);
 		offset = (offset - minutes) * 60.0;
 		var seconds = Math.Floor(offset);
@@ -765,16 +762,16 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Cusp End", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Rasi", -2, HorizontalAlignment.Left);
 
-		var lpos = h.getPosition(Elements.Body.Name.Lagna).longitude.add(0);
-		var bp   = new Position(h, Elements.Body.Name.Lagna, Elements.Body.Type.Lagna, lpos, 0, 0, 0, 0, 0);
+		var lpos = h.GetPosition(Elements.Body.BodyType.Lagna).Longitude.Add(0);
+		var bp   = new Position(h, Elements.Body.BodyType.Lagna, Elements.Body.Type.Lagna, lpos, 0, 0, 0, 0, 0);
 		for (var i = 0; i < 12; i++)
 		{
-			var dp = bp.toDivisionPosition(options.DivisionType);
+			var dp = bp.ToDivisionPosition(options.DivisionType);
 			var li = new ListViewItem();
-			li.Text = longitudeToString(new Longitude(dp.cusp_lower));
-			li.SubItems.Add(longitudeToString(new Longitude(dp.cusp_higher)));
-			li.SubItems.Add(dp.zodiac_house.value.ToString());
-			bp.longitude = new Longitude(dp.cusp_higher + 1);
+			li.Text = longitudeToString(new Longitude(dp.CuspLower));
+			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
+			li.SubItems.Add(dp.ZodiacHouse.Sign.ToString());
+			bp.Longitude = new Longitude(dp.CuspHigher + 1);
 			mList.Items.Add(li);
 		}
 
@@ -784,34 +781,34 @@ public class BasicCalculationsControl : MhoraControl
 
 	private string AmsaRuler(Position bp, DivisionPosition dp)
 	{
-		if (dp.ruler_index == 0)
+		if (dp.RulerIndex == 0)
 		{
 			return string.Empty;
 		}
 
-		var ri = dp.ruler_index - 1;
+		var ri = dp.RulerIndex - 1;
 
 		if (options.DivisionType.MultipleDivisions.Length == 1)
 		{
 			switch (options.DivisionType.MultipleDivisions[0].Varga)
 			{
-				case Basics.DivisionType.HoraParasara:     return Tables.Varga.Rulers.Hora[ri];
-				case Basics.DivisionType.DrekkanaParasara: return Tables.Varga.Rulers.Drekkana[ri];
-				case Basics.DivisionType.Chaturthamsa:     return Tables.Varga.Rulers.Chaturthamsa[ri];
-				case Basics.DivisionType.Saptamsa:         return Tables.Varga.Rulers.Saptamsa[ri];
-				case Basics.DivisionType.Navamsa:          return Tables.Varga.Rulers.Navamsa[ri];
-				case Basics.DivisionType.Dasamsa:          return Tables.Varga.Rulers.Dasamsa[ri];
-				case Basics.DivisionType.Dwadasamsa:       return Tables.Varga.Rulers.Dwadasamsa[ri];
-				case Basics.DivisionType.Shodasamsa:       return Tables.Varga.Rulers.Shodasamsa[ri];
-				case Basics.DivisionType.Vimsamsa:         return Tables.Varga.Rulers.Vimsamsa[ri];
-				case Basics.DivisionType.Chaturvimsamsa:   return Tables.Varga.Rulers.Chaturvimsamsa[ri];
-				case Basics.DivisionType.Nakshatramsa:     return Tables.Varga.Rulers.Nakshatramsa[ri];
-				case Basics.DivisionType.Trimsamsa:        return Tables.Varga.Rulers.Trimsamsa[ri];
-				case Basics.DivisionType.Khavedamsa:       return Tables.Varga.Rulers.Khavedamsa[ri];
-				case Basics.DivisionType.Akshavedamsa:     return Tables.Varga.Rulers.Akshavedamsa[ri];
-				case Basics.DivisionType.Shashtyamsa:      return Tables.Varga.Rulers.Shashtyamsa[ri];
-				case Basics.DivisionType.Nadiamsa:         return Tables.Varga.Rulers.NadiamsaCKN[ri];
-				case Basics.DivisionType.NadiamsaCKN:      return Tables.Varga.Rulers.NadiamsaCKN[ri];
+				case Vargas.DivisionType.HoraParasara:     return Vargas.Rulers.Hora[ri];
+				case Vargas.DivisionType.DrekkanaParasara: return Vargas.Rulers.Drekkana[ri];
+				case Vargas.DivisionType.Chaturthamsa:     return Vargas.Rulers.Chaturthamsa[ri];
+				case Vargas.DivisionType.Saptamsa:         return Vargas.Rulers.Saptamsa[ri];
+				case Vargas.DivisionType.Navamsa:          return Vargas.Rulers.Navamsa[ri];
+				case Vargas.DivisionType.Dasamsa:          return Vargas.Rulers.Dasamsa[ri];
+				case Vargas.DivisionType.Dwadasamsa:       return Vargas.Rulers.Dwadasamsa[ri];
+				case Vargas.DivisionType.Shodasamsa:       return Vargas.Rulers.Shodasamsa[ri];
+				case Vargas.DivisionType.Vimsamsa:         return Vargas.Rulers.Vimsamsa[ri];
+				case Vargas.DivisionType.Chaturvimsamsa:   return Vargas.Rulers.Chaturvimsamsa[ri];
+				case Vargas.DivisionType.Nakshatramsa:     return Vargas.Rulers.Nakshatramsa[ri];
+				case Vargas.DivisionType.Trimsamsa:        return Vargas.Rulers.Trimsamsa[ri];
+				case Vargas.DivisionType.Khavedamsa:       return Vargas.Rulers.Khavedamsa[ri];
+				case Vargas.DivisionType.Akshavedamsa:     return Vargas.Rulers.Akshavedamsa[ri];
+				case Vargas.DivisionType.Shashtyamsa:      return Vargas.Rulers.Shashtyamsa[ri];
+				case Vargas.DivisionType.Nadiamsa:         return Vargas.Rulers.NadiamsaCKN[ri];
+				case Vargas.DivisionType.NadiamsaCKN:      return Vargas.Rulers.NadiamsaCKN[ri];
 			}
 		}
 
@@ -820,14 +817,14 @@ public class BasicCalculationsControl : MhoraControl
 
 	private string GetBodyString(Position bp)
 	{
-		var dir = bp.speed_longitude >= 0.0 ? string.Empty : " (R)";
+		var dir = bp.SpeedLongitude >= 0.0 ? string.Empty : " (R)";
 
-		if (bp.name == Elements.Body.Name.Other || bp.name == Elements.Body.Name.MrityuPoint)
+		if (bp.Name == Elements.Body.BodyType.Other || bp.Name == Elements.Body.BodyType.MrityuPoint)
 		{
-			return bp.otherString + dir;
+			return bp.OtherString + dir;
 		}
 
-		return bp.name.ToString();
+		return bp.Name.ToString();
 	}
 
 	private bool CheckBodyForCurrentView(Position bp)
@@ -835,28 +832,28 @@ public class BasicCalculationsControl : MhoraControl
 		switch (vt)
 		{
 			case ViewType.ViewMrityuLongitudes:
-				if (bp.name == Elements.Body.Name.MrityuPoint)
+				if (bp.Name == Elements.Body.BodyType.MrityuPoint)
 				{
 					return true;
 				}
 
 				return false;
 			case ViewType.ViewOtherLongitudes:
-				if (bp.name == Elements.Body.Name.Other && bp.type != Elements.Body.Type.Sahama)
+				if (bp.Name == Elements.Body.BodyType.Other && bp.Type != Elements.Body.Type.Sahama)
 				{
 					return true;
 				}
 
 				return false;
 			case ViewType.ViewSahamaLongitudes:
-				if (bp.type == Elements.Body.Type.Sahama)
+				if (bp.Type == Elements.Body.Type.Sahama)
 				{
 					return true;
 				}
 
 				return false;
 			case ViewType.ViewBasicGrahas:
-				if (bp.name == Elements.Body.Name.MrityuPoint || bp.name == Elements.Body.Name.Other)
+				if (bp.Name == Elements.Body.BodyType.MrityuPoint || bp.Name == Elements.Body.BodyType.Other)
 				{
 					return false;
 				}
@@ -873,10 +870,10 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Items.Clear();
 
 		var al = new ArrayList();
-		for (var i = (int) Elements.Body.Name.Sun; i <= (int) Elements.Body.Name.Rahu; i++)
+		for (var i = (int) Elements.Body.BodyType.Sun; i <= (int) Elements.Body.BodyType.Rahu; i++)
 		{
-			var b   = (Body.Name) i;
-			var bp  = h.getPosition(b);
+			var b   = (Body.BodyType) i;
+			var bp  = h.GetPosition(b);
 			var bkc = new KarakaComparer(bp);
 			al.Add(bkc);
 		}
@@ -886,7 +883,7 @@ public class BasicCalculationsControl : MhoraControl
 		for (var i = 0; i < al.Count; i++)
 		{
 			var bk = (KarakaComparer) al[i];
-			karaka_indices[(int) bk.GetPosition.name] = i;
+			karaka_indices[(int) bk.GetPosition.Name] = i;
 		}
 
 
@@ -902,7 +899,7 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Cusp End", -2, HorizontalAlignment.Left);
 
 
-		foreach (Position bp in h.positionList)
+		foreach (Position bp in h.PositionList)
 		{
 			if (false == CheckBodyForCurrentView(bp))
 			{
@@ -912,22 +909,22 @@ public class BasicCalculationsControl : MhoraControl
 			var li = new ListViewItem();
 			li.Text = GetBodyString(bp);
 
-			if ((int) bp.name >= (int) Elements.Body.Name.Sun && (int) bp.name <= (int) Elements.Body.Name.Rahu)
+			if ((int) bp.Name >= (int) Elements.Body.BodyType.Sun && (int) bp.Name <= (int) Elements.Body.BodyType.Rahu)
 			{
-				li.Text = string.Format("{0}   {1}", li.Text, Karaka.karakas_s[karaka_indices[(int) bp.name]]);
+				li.Text = string.Format("{0}   {1}", li.Text, Elements.Body.KarakasS[karaka_indices[(int) bp.Name]]);
 			}
 
-			li.SubItems.Add(longitudeToString(bp.longitude));
-			li.SubItems.Add(bp.longitude.toNakshatra().value.ToString());
-			li.SubItems.Add(bp.longitude.toNakshatraPada().ToString());
-			li.SubItems.Add(getNakLord(bp.longitude));
+			li.SubItems.Add(longitudeToString(bp.Longitude));
+			li.SubItems.Add(bp.Longitude.ToNakshatra().ToString());
+			li.SubItems.Add(bp.Longitude.ToNakshatraPada().ToString());
+			li.SubItems.Add(getNakLord(bp.Longitude));
 
-			var dp = bp.toDivisionPosition(options.DivisionType);
-			li.SubItems.Add(dp.zodiac_house.value.ToString());
-			li.SubItems.Add(dp.part.ToString());
+			var dp = bp.ToDivisionPosition(options.DivisionType);
+			li.SubItems.Add(dp.ZodiacHouse.Sign.ToString());
+			li.SubItems.Add(dp.Part.ToString());
 			li.SubItems.Add(AmsaRuler(bp, dp));
-			li.SubItems.Add(longitudeToString(new Longitude(dp.cusp_lower)));
-			li.SubItems.Add(longitudeToString(new Longitude(dp.cusp_higher)));
+			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspLower)));
+			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
 
 			mList.Items.Add(li);
 		}
@@ -1230,7 +1227,7 @@ public class BasicCalculationsControl : MhoraControl
 		}
 
 		[PGDisplayName("Division Type")]
-		public Basics.DivisionType UIDivisionType
+		public Vargas.DivisionType UIDivisionType
 		{
 			get => DivisionType.MultipleDivisions[0].Varga;
 			set => DivisionType = new Division(value);

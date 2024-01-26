@@ -19,22 +19,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has larger number of grahas in kendras
-// Stronger graha is in such a rasi
+// Stronger Graha is in such a rasi
 public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
 {
 	public StrengthByKendraConjunction(Horoscope h, Division dtype) : base(h, dtype, true)
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		return stronger(h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value, h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value);
+		return Stronger(H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse.Sign, H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse.Sign);
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
-		var numa = value(za);
-		var numb = value(zb);
+		var numa = Value(za);
+		var numb = Value(zb);
 		if (numa > numb)
 		{
 			return true;
@@ -48,7 +48,7 @@ public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengt
 		throw new EqualStrength();
 	}
 
-	public int value(ZodiacHouse.Name _zh)
+	public int Value(ZodiacHouse.Rasi rasi)
 	{
 		var kendras = new int[4]
 		{
@@ -58,10 +58,10 @@ public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengt
 			10
 		};
 		var numGrahas = 0;
-		var zh        = new ZodiacHouse(_zh);
+		var zh        = new ZodiacHouse(rasi);
 		foreach (var i in kendras)
 		{
-			numGrahas += numGrahasInZodiacHouse(zh.add(i).value);
+			numGrahas += NumGrahasInZodiacHouse(zh.Add(i).Sign);
 		}
 
 		return numGrahas;

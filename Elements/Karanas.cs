@@ -17,13 +17,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 
-using Mhora.Tables;
-
 namespace Mhora.Elements;
 
-public class Karana
+public static class Karanas
 {
-	public enum Name
+	public enum Karana
 	{
 		Kimstughna = 1,
 		Bava1,
@@ -87,54 +85,38 @@ public class Karana
 		Naga
 	}
 
-	public Karana(Name _mValue)
+	public static Karana Add(this Karana value, int i)
 	{
-		value = (Name) Basics.normalize_inc(1, 60, (int) _mValue);
+		var tnum = ((int) value + i - 1).NormalizeInc(1, 60);
+		return (Karana) tnum;
 	}
 
-	public Name value
+	public static Karana AddReverse(this Karana value, int i)
 	{
-		get;
-		set;
+		var tnum = ((int) value - i + 1).NormalizeInc(1, 60);
+		return (Karana) tnum;
 	}
 
-	public Karana add(int i)
-	{
-		var tnum = Basics.normalize_inc(1, 60, (int) value + i - 1);
-		return new Karana((Name) tnum);
-	}
-
-	public Karana addReverse(int i)
-	{
-		var tnum = Basics.normalize_inc(1, 60, (int) value - i + 1);
-		return new Karana((Name) tnum);
-	}
-
-	public override string ToString()
-	{
-		return value.ToString();
-	}
-
-	public Body.Name getLord()
+	public static Body.BodyType GetLord(this Karana value)
 	{
 		switch (value)
 		{
-			case Name.Kimstughna:  return Body.Name.Moon;
-			case Name.Sakuna:      return Body.Name.Mars;
-			case Name.Chatushpada: return Body.Name.Sun;
-			case Name.Naga:        return Body.Name.Venus;
+			case Karana.Kimstughna:  return Body.BodyType.Moon;
+			case Karana.Sakuna:      return Body.BodyType.Mars;
+			case Karana.Chatushpada: return Body.BodyType.Sun;
+			case Karana.Naga:        return Body.BodyType.Venus;
 			default:
 			{
-				var vn = Basics.normalize_inc(1, 7, (int) value - 1);
+				var vn = ((int) value - 1).NormalizeInc(1, 7);
 				switch (vn)
 				{
-					case 1:  return Body.Name.Sun;
-					case 2:  return Body.Name.Moon;
-					case 3:  return Body.Name.Mars;
-					case 4:  return Body.Name.Mercury;
-					case 5:  return Body.Name.Jupiter;
-					case 6:  return Body.Name.Venus;
-					default: return Body.Name.Saturn;
+					case 1:  return Body.BodyType.Sun;
+					case 2:  return Body.BodyType.Moon;
+					case 3:  return Body.BodyType.Mars;
+					case 4:  return Body.BodyType.Mercury;
+					case 5:  return Body.BodyType.Jupiter;
+					case 6:  return Body.BodyType.Venus;
+					default: return Body.BodyType.Saturn;
 				}
 			}
 		}

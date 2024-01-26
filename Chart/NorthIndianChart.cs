@@ -26,72 +26,72 @@ namespace Mhora.Chart;
 
 public class NorthIndianChart : IDrawChart
 {
-	private const    int         xw = 200;
-	private const    int         yw = 200;
-	private const    int         xo = 0;
-	private const    int         yo = 0;
+	private const    int         Xw = 200;
+	private const    int         Yw = 200;
+	private const    int         Xo = 0;
+	private const    int         Yo = 0;
 	private readonly ZodiacHouse _lagna;
-	private readonly double      diagonal;
-	private readonly int         offset;
+	private readonly double      _diagonal;
+	private readonly int         _offset;
 
-	private readonly Pen pn_black;
-	private readonly int travel;
+	private readonly Pen _pnBlack;
+	private readonly int _travel;
 
 	public Point[] BodyOffset = new Point[12];
 
 	public NorthIndianChart(ZodiacHouse lagna)
 	{
 		_lagna   = lagna;
-		pn_black = new Pen(Color.Black, (float) 0.1);
-		diagonal = Math.Sqrt(xw * xw + yw * yw);
+		_pnBlack = new Pen(Color.Black, (float) 0.1);
+		_diagonal = Math.Sqrt(Xw * Xw + Yw * Yw);
 
-		var r  = diagonal / 2;
+		var r  = _diagonal / 2;
 		var r2 = r        / 6; //1/3 edge triangle
-		offset = (int) Math.Sqrt(r2 * r2 / 2);
+		_offset = (int) Math.Sqrt(r2 * r2 / 2);
 		var r3 = 2 * r2;
-		travel = (int) Math.Sqrt(r3 * r3 * 2);
+		_travel = (int) Math.Sqrt(r3 * r3 * 2);
 
-		var offset2 = 2 * offset;
-		BodyOffset[0].X = xw / 2 + offset2;
+		var offset2 = 2 * _offset;
+		BodyOffset[0].X = Xw / 2 + offset2;
 		BodyOffset[0].Y = offset2;
 
 		BodyOffset[3].X = offset2;
-		BodyOffset[3].Y = yw / 2 - offset2;
+		BodyOffset[3].Y = Yw / 2 - offset2;
 
-		BodyOffset[6].X = xw / 2 - offset2;
-		BodyOffset[6].Y = yw     - offset2;
+		BodyOffset[6].X = Xw / 2 - offset2;
+		BodyOffset[6].Y = Yw     - offset2;
 
-		BodyOffset[9].X = xw     - offset2;
-		BodyOffset[9].Y = yw / 2 + offset2;
+		BodyOffset[9].X = Xw     - offset2;
+		BodyOffset[9].Y = Yw / 2 + offset2;
 
-		BodyOffset[1].X = xw / 2 - offset;
-		BodyOffset[1].Y = offset;
+		BodyOffset[1].X = Xw / 2 - _offset;
+		BodyOffset[1].Y = _offset;
 
-		BodyOffset[2].X = offset;
-		BodyOffset[2].Y = offset;
+		BodyOffset[2].X = _offset;
+		BodyOffset[2].Y = _offset;
 
-		BodyOffset[4].X = offset;
-		BodyOffset[4].Y = yw / 2 + offset;
+		BodyOffset[4].X = _offset;
+		BodyOffset[4].Y = Yw / 2 + _offset;
 
-		BodyOffset[5].X = offset;
-		BodyOffset[5].Y = yw - offset;
+		BodyOffset[5].X = _offset;
+		BodyOffset[5].Y = Yw - _offset;
 
-		BodyOffset[7].X = xw / 2 + offset;
-		BodyOffset[7].Y = yw     - offset;
+		BodyOffset[7].X = Xw / 2 + _offset;
+		BodyOffset[7].Y = Yw     - _offset;
 
-		BodyOffset[8].X = xw - offset;
-		BodyOffset[8].Y = yw - offset;
+		BodyOffset[8].X = Xw - _offset;
+		BodyOffset[8].Y = Yw - _offset;
 
-		BodyOffset[10].X = xw     - offset;
-		BodyOffset[10].Y = yw / 2 - offset;
+		BodyOffset[10].X = Xw     - _offset;
+		BodyOffset[10].Y = Yw / 2 - _offset;
 
-		BodyOffset[11].X = xw - offset;
-		BodyOffset[11].Y = offset;
+		BodyOffset[11].X = Xw - _offset;
+		BodyOffset[11].Y = _offset;
 	}
 
 	public int GetLength()
 	{
-		return xw;
+		return Xw;
 	}
 
 	public bool SeparateGrahaHandling => true;
@@ -103,16 +103,16 @@ public class NorthIndianChart : IDrawChart
 
 	public void DrawOutline(Graphics g)
 	{
-		g.DrawLine(pn_black, xw, yw, 0, 0);
-		g.DrawLine(pn_black, 0, yw, xw, 0);
+		g.DrawLine(_pnBlack, Xw, Yw, 0, 0);
+		g.DrawLine(_pnBlack, 0, Yw, Xw, 0);
 
-		g.DrawLine(pn_black, xw    / 2, yw, xw, yw / 2);
-		g.DrawLine(pn_black, xw    / 2, 0, xw, yw  / 2);
-		g.DrawLine(pn_black, xw    / 2, 0, 0, yw   / 2);
-		g.DrawLine(pn_black, 0, yw / 2, xw         / 2, yw);
+		g.DrawLine(_pnBlack, Xw    / 2, Yw, Xw, Yw / 2);
+		g.DrawLine(_pnBlack, Xw    / 2, 0, Xw, Yw  / 2);
+		g.DrawLine(_pnBlack, Xw    / 2, 0, 0, Yw   / 2);
+		g.DrawLine(_pnBlack, 0, Yw / 2, Xw         / 2, Yw);
 
 		var fnt   = new Font("Arial", 4.75f);
-		var rashi = _lagna.value.Index();
+		var rashi = _lagna.Sign.Index();
 		for (var bhava = 1; bhava <= 12; bhava++)
 		{
 			var p = GetBhavaCentre(bhava);
@@ -184,7 +184,7 @@ public class NorthIndianChart : IDrawChart
 	public Point GetBodyTextPosition(Longitude l, Size itemSize)
 	{
 		var p     = GetBodyPosition(l);
-		var bhava = Bhava(l.toZodiacHouse());
+		var bhava = Bhava(l.ToZodiacHouse());
 
 		p.X -= itemSize.Width  / 2;
 		p.Y -= itemSize.Height / 2;
@@ -231,9 +231,9 @@ public class NorthIndianChart : IDrawChart
 	// Y = r * sine(angle)
 	public Point GetBodyPosition(Longitude l)
 	{
-		var dOffset = l.toZodiacHouseOffset();
-		var bhava   = Bhava(l.toZodiacHouse());
-		var factor  = (travel - 4) / 30.0;
+		var dOffset = l.ToZodiacHouseOffset();
+		var bhava   = Bhava(l.ToZodiacHouse());
+		var factor  = (_travel - 4) / 30.0;
 		var degrees = (int) (dOffset * factor);
 
 		var offset = BodyOffset[bhava - 1];
@@ -303,42 +303,42 @@ public class NorthIndianChart : IDrawChart
 
 		var pos1 = new[]
 		{
-			new Point(xw / 2 - 5, 5),
+			new Point(Xw / 2 - 5, 5),
 			new Point(8, 0),
 
 			new Point(0, 10),
-			new Point(5, yw / 2 - 5),
-			new Point(0, yw / 2 + 15),
+			new Point(5, Yw / 2 - 5),
+			new Point(0, Yw / 2 + 15),
 
-			new Point(xw / 2 - 20, yw - 8),
-			new Point(xw / 2 - 5, yw  - 15),
-			new Point(xw / 2 + 10, yw - 8),
+			new Point(Xw / 2 - 20, Yw - 8),
+			new Point(Xw / 2 - 5, Yw  - 15),
+			new Point(Xw / 2 + 10, Yw - 8),
 
-			new Point(xw - 10, yw     - 20),
-			new Point(xw - 20, yw / 2 - 5),
-			new Point(xw - 10, 10),
+			new Point(Xw - 10, Yw     - 20),
+			new Point(Xw - 20, Yw / 2 - 5),
+			new Point(Xw - 10, 10),
 
-			new Point(xw / 2 + 10, 0)
+			new Point(Xw / 2 + 10, 0)
 		};
 
 		var pos2 = new[]
 		{
-			new Point(xw / 4 - 5, yw / 4),
-			new Point(xw / 2 - 20, 0),
+			new Point(Xw / 4 - 5, Yw / 4),
+			new Point(Xw / 2 - 20, 0),
 
-			new Point(0, yw / 2 - 20),
-			new Point(xw    / 2 - 10, yw / 2 + 5),
-			new Point(0, yw     - 20),
+			new Point(0, Yw / 2 - 20),
+			new Point(Xw    / 2 - 10, Yw / 2 + 5),
+			new Point(0, Yw     - 20),
 
-			new Point(5, yw  - 8),
-			new Point(xw / 2 - 5, yw / 2 - 15),
-			new Point(xw     - 15, yw    - 8),
+			new Point(5, Yw  - 8),
+			new Point(Xw / 2 - 5, Yw / 2 - 15),
+			new Point(Xw     - 15, Yw    - 8),
 
-			new Point(xw - 10, yw / 2 + 10),
-			new Point(xw          / 2 + 5, yw / 2 - 5),
-			new Point(xw              - 0, yw / 2 - 5),
+			new Point(Xw - 10, Yw / 2 + 10),
+			new Point(Xw          / 2 + 5, Yw / 2 - 5),
+			new Point(Xw              - 0, Yw / 2 - 5),
 
-			new Point(xw - 20, 0)
+			new Point(Xw - 20, 0)
 		};
 
 
@@ -363,7 +363,7 @@ public class NorthIndianChart : IDrawChart
 
 	public int Bhava(ZodiacHouse zh)
 	{
-		var bhava = zh.value.Index() - _lagna.value.Index() + 1;
+		var bhava = zh.Sign.Index() - _lagna.Sign.Index() + 1;
 
 		if (bhava <= 0)
 		{
@@ -377,21 +377,21 @@ public class NorthIndianChart : IDrawChart
 	{
 		switch (bhava)
 		{
-			case 12: return new Point(xo + xw * 3 / 4, yo + yw * 1 / 10);
-			case 1:  return new Point(xo + xw * 2 / 4, yo + yw * 2 / 8);
-			case 2:  return new Point(xo + xw * 1 / 4, yo + yw * 1 / 10);
+			case 12: return new Point(Xo + Xw * 3 / 4, Yo + Yw * 1 / 10);
+			case 1:  return new Point(Xo + Xw * 2 / 4, Yo + Yw * 2 / 8);
+			case 2:  return new Point(Xo + Xw * 1 / 4, Yo + Yw * 1 / 10);
 
-			case 3: return new Point(xo + xw * 1 / 10, yo + yw * 1 / 4);
-			case 4: return new Point(xo + xw * 2 / 8, yo  + yw * 2 / 4);
-			case 5: return new Point(xo + xw * 1 / 10, yo + yw * 3 / 4);
+			case 3: return new Point(Xo + Xw * 1 / 10, Yo + Yw * 1 / 4);
+			case 4: return new Point(Xo + Xw * 2 / 8, Yo  + Yw * 2 / 4);
+			case 5: return new Point(Xo + Xw * 1 / 10, Yo + Yw * 3 / 4);
 
-			case 6: return new Point(xo + xw * 1 / 4, yo + yw * 9 / 10);
-			case 7: return new Point(xo + xw * 2 / 4, yo + yw * 6 / 8);
-			case 8: return new Point(xo + xw * 3 / 4, yo + yw * 9 / 10);
+			case 6: return new Point(Xo + Xw * 1 / 4, Yo + Yw * 9 / 10);
+			case 7: return new Point(Xo + Xw * 2 / 4, Yo + Yw * 6 / 8);
+			case 8: return new Point(Xo + Xw * 3 / 4, Yo + Yw * 9 / 10);
 
-			case 9:  return new Point(xo + xw * 9 / 10, yo + yw * 3 / 4);
-			case 10: return new Point(xo + xw * 6 / 8, yo  + yw * 2 / 4);
-			case 11: return new Point(xo + xw * 9 / 10, yo + yw * 1 / 4);
+			case 9:  return new Point(Xo + Xw * 9 / 10, Yo + Yw * 3 / 4);
+			case 10: return new Point(Xo + Xw * 6 / 8, Yo  + Yw * 2 / 4);
+			case 11: return new Point(Xo + Xw * 9 / 10, Yo + Yw * 1 / 4);
 		}
 
 		return new Point(0, 0);
@@ -451,10 +451,10 @@ public class NorthIndianChart : IDrawChart
 
 		var shift = new Point[4];
 
-		shift[0].Y = -offset; //Up
-		shift[1].X = -offset; //Left
-		shift[2].X = offset;  //Right
-		shift[3].X = -offset; //Down
+		shift[0].Y = -_offset; //Up
+		shift[1].X = -_offset; //Left
+		shift[2].X = _offset;  //Right
+		shift[3].X = -_offset; //Down
 
 		var shiftDirection = 0;
 

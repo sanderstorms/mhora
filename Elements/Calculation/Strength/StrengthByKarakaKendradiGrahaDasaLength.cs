@@ -21,18 +21,18 @@ using Mhora.Elements.Dasas.Graha;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger graha has longer length
-// Stronger rasi has a graha with longer length placed therein
+// Stronger Graha has longer length
+// Stronger rasi has a Graha with longer length placed therein
 public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
 {
 	public StrengthByKarakaKendradiGrahaDasaLength(Horoscope h, Division dtype) : base(h, dtype, false)
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		var a = value(m);
-		var b = value(n);
+		var a = Value(m);
+		var b = Value(n);
 		if (a > b)
 		{
 			return true;
@@ -46,10 +46,10 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 		throw new EqualStrength();
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
-		var a = value(za);
-		var b = value(zb);
+		var a = Value(za);
+		var b = Value(zb);
 		if (a > b)
 		{
 			return true;
@@ -63,24 +63,24 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 		throw new EqualStrength();
 	}
 
-	protected double value(ZodiacHouse.Name zh)
+	protected double Value(ZodiacHouse.Rasi zh)
 	{
 		double length = 0;
-		foreach (Position bp in h.positionList)
+		foreach (Position bp in H.PositionList)
 		{
-			if (bp.type == Body.Type.Graha)
+			if (bp.Type == Body.Type.Graha)
 			{
-				var dp = bp.toDivisionPosition(dtype);
-				length = Math.Max(length, KarakaKendradiGrahaDasa.LengthOfDasa(h, dtype, bp.name, dp));
+				var dp = bp.ToDivisionPosition(Dtype);
+				length = Math.Max(length, KarakaKendradiGrahaDasa.LengthOfDasa(H, Dtype, bp.Name, dp));
 			}
 		}
 
 		return length;
 	}
 
-	protected double value(Body.Name b)
+	protected double Value(Body.BodyType b)
 	{
-		var dp = h.getPosition(b).toDivisionPosition(dtype);
-		return KarakaKendradiGrahaDasa.LengthOfDasa(h, dtype, b, dp);
+		var dp = H.GetPosition(b).ToDivisionPosition(Dtype);
+		return KarakaKendradiGrahaDasa.LengthOfDasa(H, Dtype, b, dp);
 	}
 }

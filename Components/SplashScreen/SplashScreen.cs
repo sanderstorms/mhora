@@ -124,10 +124,7 @@ public class SplashScreen
 			// It could (in theory) be possible to call Close() before the window has been created
 			// on the thread - this flag prevents that happening
 			openWindowAllowed = false;
-			if (window != null)
-			{
-				window.Close(main, milliseconds);
-			}
+			window?.Close(main, milliseconds);
 		}
 	}
 
@@ -153,10 +150,7 @@ public class SplashScreen
 			}
 		}
 
-		if (window != null)
-		{
-			window.EnterMessagePump();
-		}
+		window?.EnterMessagePump();
 	}
 
 	/// <summary>
@@ -254,15 +248,9 @@ public class SplashScreen
 		{
 			lock (this)
 			{
-				if (main != null)
-				{
-					main.Activate();
-				}
+				main?.Activate();
 
-				if (form != null)
-				{
-					form.Invoke(new CloseDelegate(form.Close));
-				}
+				form?.Invoke(new CloseDelegate(form.Close));
 
 				form = null;
 			}

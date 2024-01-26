@@ -1,7 +1,6 @@
 using System;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
-using Mhora.Tables;
 
 namespace Mhora.Elements;
 
@@ -10,35 +9,35 @@ namespace Mhora.Elements;
 /// </summary>
 public class NonLinearTransit
 {
-	private readonly Body.Name b;
-	private readonly Horoscope h;
+	private readonly Body.BodyType _b;
+	private readonly Horoscope _h;
 
-	public NonLinearTransit(Horoscope _h, Body.Name _b)
+	public NonLinearTransit(Horoscope h, Body.BodyType b)
 	{
-		h = _h;
-		b = _b;
+		this._h       = h;
+		this._b = b;
 	}
 
-	public int BodyNameToSweph(Body.Name b)
+	public int BodyNameToSweph(Body.BodyType b)
 	{
 		switch (b)
 		{
-			case Body.Name.Sun:     return sweph.SE_SUN;
-			case Body.Name.Moon:    return sweph.SE_MOON;
-			case Body.Name.Mars:    return sweph.SE_MARS;
-			case Body.Name.Mercury: return sweph.SE_MERCURY;
-			case Body.Name.Jupiter: return sweph.SE_JUPITER;
-			case Body.Name.Venus:   return sweph.SE_VENUS;
-			case Body.Name.Saturn:  return sweph.SE_SATURN;
+			case Body.BodyType.Sun:     return sweph.SE_SUN;
+			case Body.BodyType.Moon:    return sweph.SE_MOON;
+			case Body.BodyType.Mars:    return sweph.SE_MARS;
+			case Body.BodyType.Mercury: return sweph.SE_MERCURY;
+			case Body.BodyType.Jupiter: return sweph.SE_JUPITER;
+			case Body.BodyType.Venus:   return sweph.SE_VENUS;
+			case Body.BodyType.Saturn:  return sweph.SE_SATURN;
 			default:                throw new Exception();
 		}
 	}
 
 	public Longitude GetLongitude(double ut, ref bool bForwardDir)
 	{
-		var swephBody = BodyNameToSweph(b);
-		var bp        = Basics.CalculateSingleBodyPosition(ut, swephBody, b, Body.Type.Other, h);
-		if (bp.speed_longitude >= 0)
+		var swephBody = BodyNameToSweph(_b);
+		var bp        = _h.CalculateSingleBodyPosition(ut, swephBody, _b, Body.Type.Other);
+		if (bp.SpeedLongitude >= 0)
 		{
 			bForwardDir = true;
 		}
@@ -47,54 +46,54 @@ public class NonLinearTransit
 			bForwardDir = false;
 		}
 
-		return bp.longitude;
+		return bp.Longitude;
 	}
 
-	public double BinarySearchNormal(double ut_start, double ut_end, Longitude lon_to_find)
+	public double BinarySearchNormal(double utStart, double utEnd, Longitude lonToFind)
 	{
 		var bDiscard = true;
 
-		if (Math.Abs(ut_end - ut_start) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
+		if (Math.Abs(utEnd - utStart) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
 		{
 			//mhora.Log.Debug ("BinarySearchNormal: Found {0} at {1}", lon_to_find, ut_start);
-			if (Transit.CircLonLessThan(GetLongitude(ut_start, ref bDiscard), lon_to_find))
+			if (Transit.CircLonLessThan(GetLongitude(utStart, ref bDiscard), lonToFind))
 			{
-				return ut_end;
+				return utEnd;
 			}
 
-			return ut_start;
+			return utStart;
 		}
 
-		var ut_middle = (ut_start + ut_end) / 2.0;
+		var utMiddle = (utStart + utEnd) / 2.0;
 
-		var lon = GetLongitude(ut_middle, ref bDiscard);
+		var lon = GetLongitude(utMiddle, ref bDiscard);
 		//mhora.Log.Debug ("BinarySearchNormal {0} Find:{1} {2} curr:{3}", b, lon_to_find.value, ut_middle, lon.value);
-		if (Transit.CircLonLessThan(lon, lon_to_find))
+		if (Transit.CircLonLessThan(lon, lonToFind))
 		{
-			return BinarySearchNormal(ut_middle, ut_end, lon_to_find);
+			return BinarySearchNormal(utMiddle, utEnd, lonToFind);
 		}
 
-		return BinarySearchNormal(ut_start, ut_middle, lon_to_find);
+		return BinarySearchNormal(utStart, utMiddle, lonToFind);
 	}
 
-	public double BinarySearchRetro(double ut_start, double ut_end, Longitude lon_to_find)
+	public double BinarySearchRetro(double utStart, double utEnd, Longitude lonToFind)
 	{
-		if (Math.Abs(ut_end - ut_start) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
+		if (Math.Abs(utEnd - utStart) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
 		{
 			//mhora.Log.Debug ("BinarySearchRetro: Found {0} at {1}", lon_to_find, ut_start);
-			return ut_start;
+			return utStart;
 		}
 
-		var ut_middle = (ut_start + ut_end) / 2.0;
+		var utMiddle = (utStart + utEnd) / 2.0;
 		var bDiscard  = true;
-		var lon       = GetLongitude(ut_middle, ref bDiscard);
+		var lon       = GetLongitude(utMiddle, ref bDiscard);
 		//mhora.Log.Debug ("BinarySearchRetro {0} Find:{1} {2} curr:{3}", b, lon_to_find.value, ut_middle, lon.value);
-		if (Transit.CircLonLessThan(lon, lon_to_find))
+		if (Transit.CircLonLessThan(lon, lonToFind))
 		{
-			return BinarySearchRetro(ut_start, ut_middle, lon_to_find);
+			return BinarySearchRetro(utStart, utMiddle, lonToFind);
 		}
 
-		return BinarySearchRetro(ut_middle, ut_end, lon_to_find);
+		return BinarySearchRetro(utMiddle, utEnd, lonToFind);
 	}
 
 	public double Forward(double ut, Longitude lonToFind)

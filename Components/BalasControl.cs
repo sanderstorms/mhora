@@ -49,10 +49,7 @@ public class BalasControl : MhoraControl
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -119,18 +116,17 @@ public class BalasControl : MhoraControl
 
 	public void Repopulate()
 	{
-		Body.Name[] grahas =
+		Body.BodyType[] grahas =
 		{
-			Body.Name.Sun,
-			Body.Name.Moon,
-			Body.Name.Mars,
-			Body.Name.Mercury,
-			Body.Name.Jupiter,
-			Body.Name.Venus,
-			Body.Name.Saturn
+			Body.BodyType.Sun,
+			Body.BodyType.Moon,
+			Body.BodyType.Mars,
+			Body.BodyType.Mercury,
+			Body.BodyType.Jupiter,
+			Body.BodyType.Venus,
+			Body.BodyType.Saturn
 		};
 		mList.Clear();
-		var sb = new ShadBalas(h);
 
 		mList.Columns.Add("Bala", 120, HorizontalAlignment.Left);
 		foreach (var b in grahas)
@@ -151,7 +147,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Uccha");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.ucchaBala(b)));
+				li.SubItems.Add(fmtBala(h.UcchaBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -160,7 +156,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Oja-Yugma");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.ojaYugmaRasyAmsaBala(b)));
+				li.SubItems.Add(fmtBala(h.OjaYugmaRasyAmsaBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -169,7 +165,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Kendra");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.kendraBala(b)));
+				li.SubItems.Add(fmtBala(h.KendraBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -178,7 +174,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Drekkana");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.drekkanaBala(b)));
+				li.SubItems.Add(fmtBala(h.DrekkanaBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -187,7 +183,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("Dik");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.digBala(b)));
+				li.SubItems.Add(fmtBala(h.DigBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -205,7 +201,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Nathonnatha");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.nathonnathaBala(b)));
+				li.SubItems.Add(fmtBala(h.NathonnathaBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -214,7 +210,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Paksha");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.pakshaBala(b)));
+				li.SubItems.Add(fmtBala(h.PakshaBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -223,7 +219,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Tribhaaga");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.tribhaagaBala(b)));
+				li.SubItems.Add(fmtBala(h.TribhaagaBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -232,7 +228,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Abda");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.abdaBala(b)));
+				li.SubItems.Add(fmtBala(h.AbdaBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -241,7 +237,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Masa");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.masaBala(b)));
+				li.SubItems.Add(fmtBala(h.MasaBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -250,7 +246,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Vara");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.varaBala(b)));
+				li.SubItems.Add(fmtBala(h.VaraBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -259,7 +255,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Hora");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.horaBala(b)));
+				li.SubItems.Add(fmtBala(h.HoraBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -268,7 +264,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("Naisargika");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(sb.naisargikaBala(b)));
+				li.SubItems.Add(fmtBala(h.NaisargikaBala(b)));
 			}
 
 			mList.Items.Add(li);

@@ -19,22 +19,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using Mhora.Components.Delegates;
 using Mhora.SwissEph;
-using Mhora.Tables;
 
 namespace Mhora.Elements.Calculation;
 
 public class Transit
 {
-	private readonly Body.Name b;
+	private readonly Body.BodyType b;
 	private readonly Horoscope h;
 
 	public Transit(Horoscope _h)
 	{
 		h = _h;
-		b = Body.Name.Other;
+		b = Body.BodyType.Other;
 	}
 
-	public Transit(Horoscope _h, Body.Name _b)
+	public Transit(Horoscope _h, Body.BodyType _b)
 	{
 		h = _h;
 		b = _b;
@@ -43,8 +42,8 @@ public class Transit
 
 	public Longitude LongitudeOfSun(double ut, ref bool bDirRetro)
 	{
-		var bp = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Name.Sun, Body.Type.Graha, h);
-		if (bp.speed_longitude >= 0)
+		var bp = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
+		if (bp.SpeedLongitude >= 0)
 		{
 			bDirRetro = false;
 		}
@@ -53,18 +52,18 @@ public class Transit
 			bDirRetro = true;
 		}
 
-		return bp.longitude;
+		return bp.Longitude;
 	}
 
 	public Longitude GenericLongitude(double ut, ref bool bDirRetro)
 	{
-		if (b == Body.Name.Lagna)
+		if (b == Body.BodyType.Lagna)
 		{
-			return new Longitude(sweph.Lagna(ut));
+			return new Longitude(h.Lagna(ut));
 		}
 
-		var bp = Basics.CalculateSingleBodyPosition(ut, sweph.BodyNameToSweph(b), b, Body.Type.Other, h);
-		if (bp.speed_longitude >= 0)
+		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
+		if (bp.SpeedLongitude >= 0)
 		{
 			bDirRetro = false;
 		}
@@ -73,7 +72,7 @@ public class Transit
 			bDirRetro = true;
 		}
 
-		return bp.longitude;
+		return bp.Longitude;
 	}
 
 	public Longitude LongitudeOfTithiDir(double ut, ref bool bDirRetro)
@@ -84,9 +83,9 @@ public class Transit
 
 	public Longitude LongitudeOfTithi(double ut)
 	{
-		var bp_sun  = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Name.Sun, Body.Type.Graha, h);
-		var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Name.Moon, Body.Type.Graha, h);
-		var rel     = bp_moon.longitude.sub(bp_sun.longitude);
+		var bp_sun  = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
+		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
+		var rel     = bp_moon.Longitude.Sub(bp_sun.Longitude);
 		return rel;
 	}
 
@@ -98,8 +97,8 @@ public class Transit
 
 	public Longitude LongitudeOfMoon(double ut)
 	{
-		var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Name.Moon, Body.Type.Graha, h);
-		return bp_moon.longitude.add(0);
+		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
+		return bp_moon.Longitude.Add(0);
 	}
 
 	public Longitude LongitudeOfSunMoonYogaDir(double ut, ref bool bDirRetro)
@@ -110,9 +109,9 @@ public class Transit
 
 	public Longitude LongitudeOfSunMoonYoga(double ut)
 	{
-		var bp_sun  = Basics.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Name.Sun, Body.Type.Graha, h);
-		var bp_moon = Basics.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Name.Moon, Body.Type.Graha, h);
-		var rel     = bp_moon.longitude.add(bp_sun.longitude);
+		var bp_sun  = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
+		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
+		var rel     = bp_moon.Longitude.Add(bp_sun.Longitude);
 		return rel;
 	}
 
@@ -125,17 +124,17 @@ public class Transit
 	{
 		var bounds = 40.0;
 
-		if (a.value > 360.0 - bounds && b.value < bounds)
+		if (a.Value > 360.0 - bounds && b.Value < bounds)
 		{
 			return true;
 		}
 
-		if (a.value < bounds && b.value > 360.0 - bounds)
+		if (a.Value < bounds && b.Value > 360.0 - bounds)
 		{
 			return false;
 		}
 
-		return a.value < b.value;
+		return a.Value < b.Value;
 	}
 
 	public double LinearSearch(double approx_ut, Longitude lon_to_find, ReturnLon func)
@@ -168,7 +167,7 @@ public class Transit
 		return LinearSearchBinary(ut_start, ut_middle, lon_to_find, func);
 	}
 
-	public double NonLinearSearch(double ut, Body.Name b, Longitude lon_to_find, ReturnLon func)
+	public double NonLinearSearch(double ut, Body.BodyType b, Longitude lon_to_find, ReturnLon func)
 	{
 		var rDir_start = false;
 		var rDir_end   = false;

@@ -26,10 +26,10 @@ public class StrengthByOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		var valm = value(m);
-		var valn = value(n);
+		var valm = Value(m);
+		var valn = Value(n);
 
 		if (valm > valn)
 		{
@@ -44,10 +44,10 @@ public class StrengthByOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
-		var vala = value(za);
-		var valb = value(zb);
+		var vala = Value(za);
+		var valb = Value(zb);
 
 		if (vala > valb)
 		{
@@ -62,30 +62,30 @@ public class StrengthByOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	public int value(ZodiacHouse.Name zn)
+	public int Value(ZodiacHouse.Rasi zn)
 	{
 		var ret = 0;
-		foreach (DivisionPosition dp in std_div_pos)
+		foreach (DivisionPosition dp in StdDivPos)
 		{
-			if (dp.type != Body.Type.Graha)
+			if (dp.Type != Body.Type.Graha)
 			{
 				continue;
 			}
 
-			if (dp.zodiac_house.value != zn)
+			if (dp.ZodiacHouse.Sign != zn)
 			{
 				continue;
 			}
 
-			ret += value(dp.name);
+			ret += Value(dp.Name);
 		}
 
 		return ret;
 	}
 
-	public int value(Body.Name b)
+	public int Value(Body.BodyType b)
 	{
-		if (h.getPosition(b).toDivisionPosition(dtype).isInOwnHouse())
+		if (H.GetPosition(b).ToDivisionPosition(Dtype).IsInOwnHouse())
 		{
 			return 1;
 		}

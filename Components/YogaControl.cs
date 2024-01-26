@@ -48,7 +48,7 @@ public class YogaControl : MhoraControl
 		// This call is required by the Windows Form Designer.
 		InitializeComponent();
 		h               = _h;
-		fy              = new FindYogas(h, new Division(Basics.DivisionType.Rasi));
+		fy              = new FindYogas(h, new Division(Vargas.DivisionType.Rasi));
 		mList.BackColor = MhoraGlobalOptions.Instance.ChakraBackgroundColor;
 		AddViewsToContextMenu(mContext);
 		h.Changed += OnRecalculate;
@@ -69,10 +69,7 @@ public class YogaControl : MhoraControl
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -172,7 +169,7 @@ public class YogaControl : MhoraControl
 
 	private void evaluateYoga(XmlYogaNode n)
 	{
-		var bRet = fy.evaluateYoga(n);
+		var bRet = fy.EvaluateYoga(n);
 		var li   = new ListViewItem();
 		li.Text = bRet.ToString();
 		li.SubItems.Add(n.yogaCat);

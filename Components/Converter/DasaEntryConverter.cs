@@ -42,36 +42,36 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 		Trace.Assert(value is string, "DasaEntryConverter::ConvertFrom 1");
 		var s = (string) value;
 
-		var de  = new DasaEntry(Body.Name.Lagna, 0.0, 0.0, 1, "None");
+		var de  = new DasaEntry(Body.BodyType.Lagna, 0.0, 0.0, 1, "None");
 		var arr = s.Split(',');
 		if (arr.Length >= 1)
 		{
-			de.shortDesc = arr[0];
+			de.DasaName = arr[0];
 		}
 
 		if (arr.Length >= 2)
 		{
-			de.level = int.Parse(arr[1]);
+			de.Level = int.Parse(arr[1]);
 		}
 
 		if (arr.Length >= 3)
 		{
-			de.startUT = double.Parse(arr[2]);
+			de.StartUt = double.Parse(arr[2]);
 		}
 
 		if (arr.Length >= 4)
 		{
-			de.dasaLength = double.Parse(arr[3]);
+			de.DasaLength = double.Parse(arr[3]);
 		}
 
 		if (arr.Length >= 5)
 		{
-			de.graha = (Body.Name) int.Parse(arr[4]);
+			de.Graha = (Body.BodyType) int.Parse(arr[4]);
 		}
 
 		if (arr.Length >= 6)
 		{
-			de.zodiacHouse = (ZodiacHouse.Name) int.Parse(arr[5]);
+			de.ZHouse = (ZodiacHouse.Rasi) int.Parse(arr[5]);
 		}
 
 		return de;
@@ -81,6 +81,6 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 	{
 		Trace.Assert(destType == typeof(string) && value is DasaEntry, "DasaItem::ConvertTo 1");
 		var de = (DasaEntry) value;
-		return de.shortDesc + "," + de.level + "," + de.startUT + "," + de.dasaLength + "," + (int) de.graha + "," + (int) de.zodiacHouse;
+		return de.DasaName + "," + de.Level + "," + de.StartUt + "," + de.DasaLength + "," + (int) de.Graha + "," + (int) de.ZHouse;
 	}
 }

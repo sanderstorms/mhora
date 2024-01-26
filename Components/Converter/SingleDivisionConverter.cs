@@ -38,7 +38,7 @@ internal class SingleDivisionConverter : ExpandableObjectConverter
 
 	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
 	{
-		return new Division.SingleDivision(Basics.DivisionType.Rasi);
+		return new Division.SingleDivision(Vargas.DivisionType.Rasi);
 	}
 
 	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
@@ -47,7 +47,7 @@ internal class SingleDivisionConverter : ExpandableObjectConverter
 		var dSingle = value as Division.SingleDivision;
 		if (dSingle == null)
 		{
-			return "Single Varga";
+			return "Single Vargas";
 		}
 
 		return dSingle.ToString();

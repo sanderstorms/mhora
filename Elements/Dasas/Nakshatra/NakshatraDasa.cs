@@ -17,7 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 
 namespace Mhora.Elements.Dasas.Nakshatra;
 
@@ -26,10 +25,10 @@ namespace Mhora.Elements.Dasas.Nakshatra;
 /// </summary>
 public abstract class NakshatraDasa : Dasa
 {
-	protected       INakshatraDasa       common;
-	protected       INakshatraKaranaDasa karanaCommon;
-	protected       INakshatraTithiDasa  tithiCommon;
-	protected       INakshatraYogaDasa   yogaCommon;
+	protected       INakshatraDasa       Common;
+	protected       INakshatraKaranaDasa KaranaCommon;
+	protected       INakshatraTithiDasa  TithiCommon;
+	protected       INakshatraYogaDasa   YogaCommon;
 	public abstract object               GetOptions();
 	public abstract object               SetOptions(object a);
 
@@ -40,17 +39,17 @@ public abstract class NakshatraDasa : Dasa
 	/// <returns></returns>
 	protected ArrayList _AntarDasa(DasaEntry pdi)
 	{
-		var numItems = common.numberOfDasaItems();
+		var numItems = Common.NumberOfDasaItems();
 		var ditems   = new ArrayList(numItems);
-		var curr     = new DasaEntry(pdi.graha, pdi.startUT, 0, pdi.level + 1, string.Empty);
+		var curr     = new DasaEntry(pdi.Graha, pdi.StartUt, 0, pdi.Level + 1, string.Empty);
 		for (var i = 0; i < numItems; i++)
 		{
-			var dlength = common.lengthOfDasa(curr.graha) / common.paramAyus() * pdi.dasaLength;
-			var desc    = pdi.shortDesc + " " + Body.toShortString(curr.graha);
-			var di      = new DasaEntry(curr.graha, curr.startUT, dlength, curr.level, desc);
+			var dlength = Common.LengthOfDasa(curr.Graha) / Common.ParamAyus() * pdi.DasaLength;
+			var desc    = pdi.DasaName + " " + curr.Graha.ToShortString();
+			var di      = new DasaEntry(curr.Graha, curr.StartUt, dlength, curr.Level, desc);
 			ditems.Add(di);
-			curr         = common.nextDasaLord(di);
-			curr.startUT = di.startUT + dlength;
+			curr         = Common.NextDasaLord(di);
+			curr.StartUt = di.StartUt + dlength;
 		}
 
 		return ditems;
@@ -65,61 +64,61 @@ public abstract class NakshatraDasa : Dasa
 	/// <returns></returns>
 	protected ArrayList _Dasa(Longitude lon, int offset, int cycle)
 	{
-		var ditems         = new ArrayList(common.numberOfDasaItems());
-		var n              = lon.toNakshatra().add(offset);
-		var g              = common.lordOfNakshatra(n);
-		var perc_traversed = lon.percentageOfNakshatra();
-		var start          = cycle * common.paramAyus() - perc_traversed / 100.0 * common.lengthOfDasa(g);
-		//System.mhora.Log.Debug ("{0} {1} {2}", common.lengthOfDasa(g), perc_traversed, start);
+		var ditems         = new ArrayList(Common.NumberOfDasaItems());
+		var n              = lon.ToNakshatra().Add(offset);
+		var g              = Common.LordOfNakshatra(n);
+		var percTraversed = lon.PercentageOfNakshatra();
+		var start          = cycle * Common.ParamAyus() - percTraversed / 100.0 * Common.LengthOfDasa(g);
+		//System.mhora.Log.Debug ("{0} {1} {2}", common.LengthOfDasa(g), perc_traversed, start);
 
 		// Calculate a "seed" dasaItem, to make use of the AntarDasa function
-		var di = new DasaEntry(g, start, common.paramAyus(), 0, string.Empty);
+		var di = new DasaEntry(g, start, Common.ParamAyus(), 0, string.Empty);
 		return _AntarDasa(di);
 	}
 
 	protected ArrayList _TithiDasa(Longitude lon, int offset, int cycle)
 	{
 		//ArrayList ditems = new ArrayList(tithiCommon.numberOfDasaItems());
-		lon = lon.add(new Longitude(cycle * (offset - 1) * 12.0));
-		var g = tithiCommon.lordOfTithi(lon);
+		lon = lon.Add(new Longitude(cycle * (offset - 1) * 12.0));
+		var g = TithiCommon.LordOfTithi(lon);
 
-		var tithiOffset = lon.value;
+		var tithiOffset = lon.Value;
 		while (tithiOffset >= 12.0)
 		{
 			tithiOffset -= 12.0;
 		}
 
-		var perc_traversed = tithiOffset / 12.0;
-		var start          = cycle * tithiCommon.paramAyus() - perc_traversed * tithiCommon.lengthOfDasa(g);
-		var di             = new DasaEntry(g, start, tithiCommon.paramAyus(), 0, string.Empty);
+		var percTraversed = tithiOffset / 12.0;
+		var start          = cycle * TithiCommon.ParamAyus() - percTraversed * TithiCommon.LengthOfDasa(g);
+		var di             = new DasaEntry(g, start, TithiCommon.ParamAyus(), 0, string.Empty);
 		return _AntarDasa(di);
 	}
 
 	protected ArrayList _YogaDasa(Longitude lon, int offset, int cycle)
 	{
-		lon = lon.add(new Longitude(cycle * (offset - 1) * (360.0 / 27.0)));
-		var g = yogaCommon.lordOfYoga(lon);
+		lon = lon.Add(new Longitude(cycle * (offset - 1) * (360.0 / 27.0)));
+		var g = YogaCommon.LordOfYoga(lon);
 
-		var yogaOffset     = lon.toSunMoonYogaOffset();
-		var perc_traversed = yogaOffset / (360.0 / 27.0);
-		var start          = cycle * common.paramAyus() - perc_traversed * common.lengthOfDasa(g);
-		var di             = new DasaEntry(g, start, common.paramAyus(), 0, string.Empty);
+		var yogaOffset     = lon.ToSunMoonYogaOffset();
+		var percTraversed = yogaOffset / (360.0 / 27.0);
+		var start          = cycle * Common.ParamAyus() - percTraversed * Common.LengthOfDasa(g);
+		var di             = new DasaEntry(g, start, Common.ParamAyus(), 0, string.Empty);
 		return _AntarDasa(di);
 	}
 
 	protected ArrayList _KaranaDasa(Longitude lon, int offset, int cycle)
 	{
-		lon = lon.add(new Longitude(cycle * (offset - 1) * (360.0 / 60.0)));
-		var g = karanaCommon.lordOfKarana(lon);
+		lon = lon.Add(new Longitude(cycle * (offset - 1) * (360.0 / 60.0)));
+		var g = KaranaCommon.LordOfKarana(lon);
 
-		var karanaOffset   = lon.toKaranaOffset();
-		var perc_traversed = karanaOffset / (360.0 / 60.0);
-		var start          = cycle * common.paramAyus() - perc_traversed * common.lengthOfDasa(g);
-		var di             = new DasaEntry(g, start, common.paramAyus(), 0, string.Empty);
+		var karanaOffset   = lon.ToKaranaOffset();
+		var percTraversed = karanaOffset / (360.0 / 60.0);
+		var start          = cycle * Common.ParamAyus() - percTraversed * Common.LengthOfDasa(g);
+		var di             = new DasaEntry(g, start, Common.ParamAyus(), 0, string.Empty);
 		return _AntarDasa(di);
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 }

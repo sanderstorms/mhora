@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Components.Property;
 using Mhora.Elements.Calculation;
 
@@ -26,22 +25,22 @@ namespace Mhora.Elements.Dasas.Rasi;
 
 public class NaisargikaRasiDasa : Dasa, IDasa
 {
-	private readonly Horoscope   h;
-	private readonly UserOptions options;
+	private readonly Horoscope   _h;
+	private readonly UserOptions _options;
 
-	public NaisargikaRasiDasa(Horoscope _h)
+	public NaisargikaRasiDasa(Horoscope h)
 	{
-		h       = _h;
-		options = new UserOptions();
+		this._h       = h;
+		_options = new UserOptions();
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
-		switch (options.ParamAyus)
+		switch (_options.ParamAyus)
 		{
 			case UserOptions.ParamAyusType.Long:   return 120.0;
 			case UserOptions.ParamAyusType.Middle: return 108.0;
@@ -66,7 +65,7 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 			9,
 			3
 		};
-		int[] short_length =
+		int[] shortLength =
 		{
 			9,
 			7,
@@ -74,29 +73,29 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 		};
 		var al = new ArrayList(9);
 
-		var    cycle_start = paramAyus() * cycle;
+		var    cycleStart = ParamAyus() * cycle;
 		var    curr        = 0.0;
-		double dasa_length;
-		var    zlagna = h.getPosition(Body.Name.Lagna).longitude.toZodiacHouse();
+		double dasaLength;
+		var    zlagna = _h.GetPosition(Body.BodyType.Lagna).Longitude.ToZodiacHouse();
 		for (var i = 0; i < 12; i++)
 		{
-			var zh = zlagna.add(order[i]);
-			switch (options.ParamAyus)
+			var zh = zlagna.Add(order[i]);
+			switch (_options.ParamAyus)
 			{
 				case UserOptions.ParamAyusType.Long:
-					dasa_length = 10.0;
+					dasaLength = 10.0;
 					break;
 				case UserOptions.ParamAyusType.Middle:
-					dasa_length = 9.0;
+					dasaLength = 9.0;
 					break;
 				default:
-					var mod = (int) zh.value % 3;
-					dasa_length = short_length[mod];
+					var mod = (int) zh.Sign % 3;
+					dasaLength = shortLength[mod];
 					break;
 			}
 
-			al.Add(new DasaEntry(zh.value, cycle_start + curr, dasa_length, 1, zh.value.ToString()));
-			curr += dasa_length;
+			al.Add(new DasaEntry(zh.Sign, cycleStart + curr, dasaLength, 1, zh.Sign.ToString()));
+			curr += dasaLength;
 		}
 
 		return al;
@@ -114,15 +113,15 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
 	{
 		var uo = (UserOptions) a;
-		options.ParamAyus = uo.ParamAyus;
+		_options.ParamAyus = uo.ParamAyus;
 		RecalculateEvent();
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public class UserOptions : ICloneable

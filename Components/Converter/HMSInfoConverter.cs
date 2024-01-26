@@ -21,7 +21,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-using Mhora.Elements.Hora;
+using Mhora.Database.Settings;
+using Mhora.Util;
 
 namespace Mhora.Components.Converter;
 
@@ -44,8 +45,8 @@ internal class HMSInfoConverter : ExpandableObjectConverter
 
 		int hour = 1, min = 1, sec = 1;
 
-		var dir  = HMSInfo.dir_type.NS;
-		var _arr = s.Split('.', ' ', ':');
+		bool isLongitude = false;
+		var _arr = s.Split('.', ' ', ':','\'');
 		var arr  = new ArrayList(_arr);
 
 		if (arr.Count >= 2)
@@ -69,11 +70,7 @@ internal class HMSInfoConverter : ExpandableObjectConverter
 
 			if (sdir == "W" || sdir == "w" || sdir == "E" || sdir == "e")
 			{
-				dir = HMSInfo.dir_type.EW;
-			}
-			else
-			{
-				dir = HMSInfo.dir_type.NS;
+				isLongitude = true;
 			}
 
 			if (int.TryParse((string) arr[2], out min) == false)
@@ -102,14 +99,14 @@ internal class HMSInfoConverter : ExpandableObjectConverter
 			sec = 30;
 		}
 
-		var hi = new HMSInfo(hour, min, sec, dir);
+		var hi = new DmsPoint(hour, min, sec, isLongitude);
 		return hi;
 	}
 
 	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
 	{
-		Trace.Assert(destType == typeof(string) && value is HMSInfo, "HMSInfo::ConvertTo 1");
-		var hi = (HMSInfo) value;
-		return hi.ToString();
+		Trace.Assert(destType == typeof(string) && value is DmsPoint, "HMSInfo::ConvertTo 1");
+		var hi = (DmsPoint) value;
+		return hi.String;
 	}
 }

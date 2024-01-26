@@ -24,87 +24,87 @@ public class KutaVihanga
 {
 	public enum EDominator
 	{
-		IEqual,
-		IMale,
-		IFemale
+		Equal,
+		Male,
+		Female
 	}
 
 	public enum EType
 	{
-		IBharandhaka,
-		IPingala,
-		ICrow,
-		ICock,
-		IPeacock
+		Bharandhaka,
+		Pingala,
+		Crow,
+		Cock,
+		Peacock
 	}
 
-	public static EDominator getDominator(Nakshatra m, Nakshatra n)
+	public static EDominator GetDominator(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
 	{
-		var em = getType(m);
-		var en = getType(n);
+		var em = GetType(m);
+		var en = GetType(n);
 
 		EType[] order =
 		{
-			EType.IPeacock,
-			EType.ICock,
-			EType.ICrow,
-			EType.IPingala
+			EType.Peacock,
+			EType.Cock,
+			EType.Crow,
+			EType.Pingala
 		};
 		if (em == en)
 		{
-			return EDominator.IEqual;
+			return EDominator.Equal;
 		}
 
 		for (var i = 0; i < order.Length; i++)
 		{
 			if (em == order[i])
 			{
-				return EDominator.IMale;
+				return EDominator.Male;
 			}
 
 			if (en == order[i])
 			{
-				return EDominator.IFemale;
+				return EDominator.Female;
 			}
 		}
 
-		return EDominator.IEqual;
+		return EDominator.Equal;
 	}
 
-	public static EType getType(Nakshatra n)
+	public static EType GetType(Nakshatras.Nakshatra n)
 	{
-		switch (n.value)
+		switch (n)
 		{
-			case Nakshatra.Name.Aswini:
-			case Nakshatra.Name.Bharani:
-			case Nakshatra.Name.Krittika:
-			case Nakshatra.Name.Rohini:
-			case Nakshatra.Name.Mrigarirsa: return EType.IBharandhaka;
-			case Nakshatra.Name.Aridra:
-			case Nakshatra.Name.Punarvasu:
-			case Nakshatra.Name.Pushya:
-			case Nakshatra.Name.Aslesha:
-			case Nakshatra.Name.Makha:
-			case Nakshatra.Name.PoorvaPhalguni: return EType.IPingala;
-			case Nakshatra.Name.UttaraPhalguni:
-			case Nakshatra.Name.Hasta:
-			case Nakshatra.Name.Chittra:
-			case Nakshatra.Name.Swati:
-			case Nakshatra.Name.Vishaka:
-			case Nakshatra.Name.Anuradha: return EType.ICrow;
-			case Nakshatra.Name.Jyestha:
-			case Nakshatra.Name.Moola:
-			case Nakshatra.Name.PoorvaShada:
-			case Nakshatra.Name.UttaraShada:
-			case Nakshatra.Name.Sravana: return EType.ICock;
-			case Nakshatra.Name.Dhanishta:
-			case Nakshatra.Name.Satabisha:
-			case Nakshatra.Name.PoorvaBhadra:
-			case Nakshatra.Name.UttaraBhadra:
-			case Nakshatra.Name.Revati: return EType.IPeacock;
+			case Nakshatras.Nakshatra.Aswini:
+			case Nakshatras.Nakshatra.Bharani:
+			case Nakshatras.Nakshatra.Krittika:
+			case Nakshatras.Nakshatra.Rohini:
+			case Nakshatras.Nakshatra.Mrigarirsa: return EType.Bharandhaka;
+			case Nakshatras.Nakshatra.Aridra:
+			case Nakshatras.Nakshatra.Punarvasu:
+			case Nakshatras.Nakshatra.Pushya:
+			case Nakshatras.Nakshatra.Aslesha:
+			case Nakshatras.Nakshatra.Makha:
+			case Nakshatras.Nakshatra.PoorvaPhalguni: return EType.Pingala;
+			case Nakshatras.Nakshatra.UttaraPhalguni:
+			case Nakshatras.Nakshatra.Hasta:
+			case Nakshatras.Nakshatra.Chittra:
+			case Nakshatras.Nakshatra.Swati:
+			case Nakshatras.Nakshatra.Vishaka:
+			case Nakshatras.Nakshatra.Anuradha: return EType.Crow;
+			case Nakshatras.Nakshatra.Jyestha:
+			case Nakshatras.Nakshatra.Moola:
+			case Nakshatras.Nakshatra.PoorvaShada:
+			case Nakshatras.Nakshatra.UttaraShada:
+			case Nakshatras.Nakshatra.Sravana: return EType.Cock;
+			case Nakshatras.Nakshatra.Dhanishta:
+			case Nakshatras.Nakshatra.Satabisha:
+			case Nakshatras.Nakshatra.PoorvaBhadra:
+			case Nakshatras.Nakshatra.UttaraBhadra:
+			case Nakshatras.Nakshatra.Revati: return EType.Peacock;
 		}
 
 		Debug.Assert(false, "KutaVibhanga::getType");
-		return EType.IBharandhaka;
+		return EType.Bharandhaka;
 	}
 }

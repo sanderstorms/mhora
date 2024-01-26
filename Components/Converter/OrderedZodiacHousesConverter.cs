@@ -52,40 +52,40 @@ internal class OrderedZodiacHousesConverter : ExpandableObjectConverter
 			switch (szh)
 			{
 				case "ari":
-					al.Add(ZodiacHouse.Name.Ari);
+					al.Add(ZodiacHouse.Rasi.Ari);
 					break;
 				case "tau":
-					al.Add(ZodiacHouse.Name.Tau);
+					al.Add(ZodiacHouse.Rasi.Tau);
 					break;
 				case "gem":
-					al.Add(ZodiacHouse.Name.Gem);
+					al.Add(ZodiacHouse.Rasi.Gem);
 					break;
 				case "can":
-					al.Add(ZodiacHouse.Name.Can);
+					al.Add(ZodiacHouse.Rasi.Can);
 					break;
 				case "leo":
-					al.Add(ZodiacHouse.Name.Leo);
+					al.Add(ZodiacHouse.Rasi.Leo);
 					break;
 				case "vir":
-					al.Add(ZodiacHouse.Name.Vir);
+					al.Add(ZodiacHouse.Rasi.Vir);
 					break;
 				case "lib":
-					al.Add(ZodiacHouse.Name.Lib);
+					al.Add(ZodiacHouse.Rasi.Lib);
 					break;
 				case "sco":
-					al.Add(ZodiacHouse.Name.Sco);
+					al.Add(ZodiacHouse.Rasi.Sco);
 					break;
 				case "sag":
-					al.Add(ZodiacHouse.Name.Sag);
+					al.Add(ZodiacHouse.Rasi.Sag);
 					break;
 				case "cap":
-					al.Add(ZodiacHouse.Name.Cap);
+					al.Add(ZodiacHouse.Rasi.Cap);
 					break;
 				case "aqu":
-					al.Add(ZodiacHouse.Name.Aqu);
+					al.Add(ZodiacHouse.Rasi.Aqu);
 					break;
 				case "pis":
-					al.Add(ZodiacHouse.Name.Pis);
+					al.Add(ZodiacHouse.Rasi.Pis);
 					break;
 			}
 		}

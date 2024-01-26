@@ -2,31 +2,54 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using Mhora.Database.Settings;
 using Mhora.Database.World;
-using Mhora.Elements;
-using Mhora.Elements.Calculation;
-using Mhora.Elements.Hora;
+using Mhora.Util;
 using SQLinq;
-using SqlNado;
 using SqlNado.Query;
-using TimeZone = mhora.Database.World.TimeZone;
+using TimeZone = Mhora.Database.World.TimeZone;
 
 namespace Mhora.Components;
 
 public partial class BirthDetailsDialog : Form
 {
+	private HoraInfo       _info;
 	private List<City>     _cities;
-	private List<Country>  _countries;
-	private SQLiteDatabase _db;
+
 	private bool           _manualEnter;
 	private List<State>    _states;
 	private TimeZone       _timeZone;
 
+	private static List<Country>  _countries;
+
 	public BirthDetailsDialog()
 	{
 		InitializeComponent();
+
+		if (_countries == null)
+		{
+			var countries = Query.From<Country>().SelectAll().ToString();
+			_countries = Application.WorldDb.Load<Country>(countries).ToList();
+			_countries.Sort();
+		}
+
+		comboBoxCountry.DataSource = _countries;
+	}
+
+	public BirthDetailsDialog(HoraInfo info) : this()
+	{
+		Info = info;
+	}
+
+
+	public string ChartName
+	{
+		get
+		{
+			return (txtName.Text);
+		}
 	}
 
 	public Country Country
@@ -47,18 +70,41 @@ public partial class BirthDetailsDialog : Form
 		private set;
 	}
 
-	public Horoscope Horoscope
+	public HoraInfo Info
 	{
 		get
 		{
-			MhoraGlobalOptions.Instance.Latitude  = new HMSInfo(City.Latitude);
-			MhoraGlobalOptions.Instance.Longitude = new HMSInfo(City.Longitude);
-			MhoraGlobalOptions.Instance.TimeZone  = new HMSInfo(Country.Timezones[0].gmtOffset / 3600.0);
+			MhoraGlobalOptions.Instance.City      = City.Name;
+			MhoraGlobalOptions.Instance.Latitude  = City.Latitude;
+			MhoraGlobalOptions.Instance.Longitude = City.Longitude;
 
-			var dateTime = dateTimePicker.Value;
-			var moment   = new Moment(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second);
-			var info     = new HoraInfo(moment, MhoraGlobalOptions.Instance.Latitude, MhoraGlobalOptions.Instance.Longitude, MhoraGlobalOptions.Instance.TimeZone);
-			return new Horoscope(info, new HoroscopeOptions());
+			var date   = dateTimePicker.Value;
+			var time   = timePicker.Value;
+			var moment = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
+
+			var info   = new HoraInfo()
+			{
+				DateOfBirth = moment,
+				Latitude    = MhoraGlobalOptions.Instance.Latitude,
+				Longitude   = MhoraGlobalOptions.Instance.Longitude,
+				City        = City,
+			};
+			return (info);
+		}
+		set
+		{
+			_info                = value;
+			dateTimePicker.Value = value.DateOfBirth;
+			timePicker.Value     = value.DateOfBirth;
+			var query  = Query.From<City>().Where(city => city.Id == value.City.Id).SelectAll();
+			var cities = Application.WorldDb.Load<City>(query.ToString()).ToArray();
+			if (cities.Length > 0)
+			{
+				comboBoxCountry.SelectedItem = _countries.Find(country => country.Id == cities[0].Country.Id);
+				comboBoxState.SelectedItem   = _states.Find(state => state.Id        == cities[0].StateId);
+				comboBoxCity.SelectedItem    = _cities.Find(city => city.Id          == cities[0].Id);
+			}
+
 		}
 	}
 
@@ -103,7 +149,7 @@ public partial class BirthDetailsDialog : Form
 		if (disposing && components != null)
 		{
 			components.Dispose();
-			_db?.Dispose();
+			Application.WorldDb?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -112,42 +158,46 @@ public partial class BirthDetailsDialog : Form
 	protected override void OnLoad(EventArgs e)
 	{
 		base.OnLoad(e);
-		timePicker.Value = DateTime.Now;
 
-		if (File.Exists("world.db"))
+		if (_info != null)
 		{
-			try
-			{
-				_db = new SQLiteDatabase("world.db");
-
-				var countries = Query.From<Country>().SelectAll().ToString();
-				_countries = _db.Load<Country>(countries).ToList();
-				_countries.Sort();
-
-				comboBoxCountry.DataSource = _countries;
-
-				var query  = Query.From<City>().Where(city => city.Name == "Maastricht").SelectAll();
-				var cities = _db.Load<City>(query.ToString()).ToArray();
-				if (cities.Length > 0)
-				{
-					comboBoxCountry.SelectedItem = _countries.Find(country => country.Id == cities[0].Country.Id);
-					comboBoxState.SelectedItem   = _states.Find(state => state.Id        == cities[0].StateId);
-					comboBoxCity.SelectedItem    = _cities.Find(city => city.Id          == cities[0].Id);
-				}
-			}
-			catch (Exception ex)
-			{
-				Application.Log.Exception(ex);
-			}
+			return;
 		}
+		timePicker.Value = DateTime.Now;
+		dateTimePicker.Value = DateTime.Now;
+
+        if (File.Exists("world.db"))
+        {
+            try
+            {
+                ThreadPool.QueueUserWorkItem (state =>
+                {
+                    var query  = Query.From<City>().Where(city => city.Name == "Maastricht").SelectAll();
+                    var cities = Application.WorldDb.Load<City>(query.ToString()).ToArray();
+                    if (cities.Length > 0)
+                    {
+                        Country = _countries.Find(country => country.Id == cities[0].Country.Id);
+                        Invoke(() => comboBoxCountry.SelectedItem = Country);
+                        State = _states.Find(state => state.Id == cities[0].StateId);
+                        Invoke(() => comboBoxState.SelectedItem = State);
+                        City = _cities.Find(city => city.Id == cities[0].Id);
+                        Invoke(() => comboBoxCity.SelectedItem = City);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Application.Log.Exception(ex);
+            }
+        }
 	}
 
-	private void OnCountrySelected(object sender, EventArgs e)
+    private void OnCountrySelected(object sender, EventArgs e)
 	{
 		Country = (Country) comboBoxCountry.SelectedItem;
 		var states = Query.From<State>().Where(state => state.CountryId == Country.Id).SelectAll().ToString();
 
-		_states = _db.Load<State>(states).ToList();
+		_states = Application.WorldDb.Load<State>(states).ToList();
 		_states.Sort();
 
 		comboBoxState.DataSource = _states;
@@ -158,9 +208,9 @@ public partial class BirthDetailsDialog : Form
 		State = (State) comboBoxState.SelectedItem;
 		var cities = Query.From<City>().Where(city => city.StateId == State.Id).SelectAll().ToString();
 
-		_cities = _db.Load<City>(cities).ToList();
+		_cities = Application.WorldDb.Load<City>(cities).ToList();
 		_cities.Sort();
-		_timeZone = TimeZone.TimeZones.FindId(Country.Timezones[0].zoneName);
+		_timeZone = Country.TimeZone;
 
 		comboBoxCity.DataSource = _cities;
 	}
@@ -171,7 +221,7 @@ public partial class BirthDetailsDialog : Form
 
 		txtLongitude.Text = City.Longitude.ToString("0.0000");
 		txtLatitude.Text  = City.Latitude.ToString("0.0000");
-		var location = new LocationConverter.DmsLocation(City.Longitude, City.Latitude);
+		var location = new DmsLocation(City.Longitude, City.Latitude);
 		var str      = location.ToString().Split(',');
 
 		txtLongitude2.Text = str[0];
@@ -197,7 +247,7 @@ public partial class BirthDetailsDialog : Form
 		var sql = query.ToSQL().ToQuery();
 
 		var cityQuery = Query.From<City>().Where(city => city.Name.StartsWith(comboBoxCity.Text) && city.CountryId == Country.Id).SelectAll();
-		var cities    = _db.Load<City>(sql).ToList();
+		var cities    = Application.WorldDb.Load<City>(sql).ToList();
 
 		_manualEnter             = true;
 		comboBoxCity.DataSource  = cities;
@@ -207,7 +257,7 @@ public partial class BirthDetailsDialog : Form
 
 	private void OnCityDropDown(object sender, EventArgs e)
 	{
-		if (_manualEnter == false)
+		if (_manualEnter)
 		{
 			comboBoxCity.AutoCompleteSource = AutoCompleteSource.ListItems;
 			comboBoxCity.AutoCompleteMode   = AutoCompleteMode.Suggest;

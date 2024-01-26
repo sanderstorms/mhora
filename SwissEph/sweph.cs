@@ -17,11 +17,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
-using System.Runtime.InteropServices;
 using System.Text;
+using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
-using Mhora.Elements.Hora;
+using mhora.Util;
 
 namespace Mhora.SwissEph;
 
@@ -31,119 +31,40 @@ namespace Mhora.SwissEph;
 ///     For documentation go to http://www.astro.ch and follow the
 ///     Swiss Ephemeris (for programmers) link.
 /// </summary>
-public class sweph
+public static partial class sweph
 {
-	public static int SEFLG_SWIEPH   = 2;
-	public static int SEFLG_TRUEPOS  = 16;
-	public static int SEFLG_SPEED    = 256;
-	public static int SEFLG_SIDEREAL = 64 * 1024;
-	public static int iflag          = SEFLG_SWIEPH | SEFLG_SPEED | SEFLG_SIDEREAL;
-
-	public static int SE_AYANAMSA_LAHIRI = 1;
-	public static int SE_AYANAMSA_RAMAN  = 3;
-	public static int ayanamsa           = SE_AYANAMSA_LAHIRI;
-
-	public static int SE_SUN       = 0;
-	public static int SE_MOON      = 1;
-	public static int SE_MERCURY   = 2;
-	public static int SE_VENUS     = 3;
-	public static int SE_MARS      = 4;
-	public static int SE_JUPITER   = 5;
-	public static int SE_SATURN    = 6;
-	public static int SE_MEAN_NODE = 10;
-	public static int SE_TRUE_NODE = 11;
-
-	public static int SE_CALC_RISE         = 1;
-	public static int SE_CALC_SET          = 2;
-	public static int SE_CALC_MTRANSIT     = 4;
-	public static int SE_CALC_ITRANSIT     = 8;
-	public static int SE_BIT_DISC_CENTER   = 256;
-	public static int SE_BIT_NO_REFRACTION = 512;
-
-	public static int SE_WK_MONDAY    = 0;
-	public static int SE_WK_TUESDAY   = 1;
-	public static int SE_WK_WEDNESDAY = 2;
-	public static int SE_WK_THURSDAY  = 3;
-	public static int SE_WK_FRIDAY    = 4;
-	public static int SE_WK_SATURDAY  = 5;
-	public static int SE_WK_SUNDAY    = 6;
-
-
-	private static Horoscope mCurrentLockHolder;
-	private static object    SwephLockObject;
-
-	public static void checkLock()
-	{
-		lock (SwephLockObject)
-		{
-			if (mCurrentLockHolder == null)
-			{
-				throw new Exception("Sweph: Unable to run. Sweph lock not obtained");
-			}
-		}
-	}
-
-	public static void obtainLock(Horoscope h)
-	{
-		if (SwephLockObject == null)
-		{
-			SwephLockObject = new object();
-		}
-
-		lock (SwephLockObject)
-		{
-			if (mCurrentLockHolder != null)
-			{
-				throw new Exception("Sweph: obtainLock failed. Sweph Lock still held");
-			}
-
-			//Debug.WriteLine("Sweph Lock obtained");
-			mCurrentLockHolder = h;
-			SetSidMode((int) h.options.Ayanamsa, 0.0, 0.0);
-		}
-	}
-
-	public static void releaseLock(Horoscope h)
-	{
-		if (mCurrentLockHolder == null)
-		{
-			throw new Exception("Sweph: releaseLock failed. Lock not held");
-		}
-
-		if (mCurrentLockHolder != h)
-		{
-			throw new Exception("Sweph: releaseLock failed. Not lock owner");
-		}
-
-		//Debug.WriteLine("Sweph Lock released");
-		mCurrentLockHolder = null;
-	}
-
-	public static int BodyNameToSweph(Body.Name b)
-	{
-		switch (b)
-		{
-			case Body.Name.Sun:     return SE_SUN;
-			case Body.Name.Moon:    return SE_MOON;
-			case Body.Name.Mars:    return SE_MARS;
-			case Body.Name.Mercury: return SE_MERCURY;
-			case Body.Name.Jupiter: return SE_JUPITER;
-			case Body.Name.Venus:   return SE_VENUS;
-			case Body.Name.Saturn:  return SE_SATURN;
-			case Body.Name.Lagna:   return SE_BIT_NO_REFRACTION;
-			default:                throw new Exception();
-		}
-	}
-
-	public static void SetPath(string path)
+	public static void Close()
 	{
 		if (IntPtr.Size == 4)
 		{
-			Swe32.swe_set_ephe_path(path);
+			SwephDll.Swe32.swe_close();
 		}
 		else
 		{
-			Swe64.swe_set_ephe_path(path);
+			SwephDll.Swe64.swe_close();
+		}
+	}
+
+
+	public static byte[] Version(byte[] buffer)
+	{
+		if (IntPtr.Size == 4)
+		{
+			return SwephDll.Swe32.swe_version(buffer);
+		}
+
+		return SwephDll.Swe64.swe_version(buffer);
+	}
+
+	public static void SetEphePath(string path)
+	{
+		if (IntPtr.Size == 4)
+		{
+			SwephDll.Swe32.swe_set_ephe_path(path);
+		}
+		else
+		{
+			SwephDll.Swe64.swe_set_ephe_path(path);
 		}
 	}
 
@@ -151,22 +72,21 @@ public class sweph
 	{
 		if (IntPtr.Size == 4)
 		{
-			return Swe32.swe_day_of_week(jd);
+			return SwephDll.Swe32.swe_day_of_week(jd);
 		}
 
-		return Swe64.swe_day_of_week(jd);
+		return SwephDll.Swe64.swe_day_of_week(jd);
 	}
 
 	public static void SetSidMode(int sid_mode, double t0, double ayan_t0)
 	{
-		checkLock();
 		if (IntPtr.Size == 4)
 		{
-			Swe32.xyz_swe_set_sid_mode(sid_mode, 0.0, 0.0);
+			SwephDll.Swe32.swe_set_sid_mode(sid_mode, 0.0, 0.0);
 		}
 		else
 		{
-			Swe64.xyz_swe_set_sid_mode(sid_mode, 0.0, 0.0);
+			SwephDll.Swe64.swe_set_sid_mode(sid_mode, 0.0, 0.0);
 		}
 	}
 
@@ -174,293 +94,705 @@ public class sweph
 	{
 		if (IntPtr.Size == 4)
 		{
-			return Swe32.xyz_swe_julday(year, month, day, hour, 1);
+			return SwephDll.Swe32.swe_julday(year, month, day, hour, SE_GREG_CAL);
 		}
 
-		return Swe64.xyz_swe_julday(year, month, day, hour, 1);
+		return SwephDll.Swe64.swe_julday(year, month, day, hour, SE_GREG_CAL);
 	}
 
 	public static double RevJul(double tjd, ref int year, ref int month, ref int day, ref double hour)
 	{
 		if (IntPtr.Size == 4)
 		{
-			return Swe32.xyz_swe_revjul(tjd, 1, ref year, ref month, ref day, ref hour);
+			return SwephDll.Swe32.swe_revjul(tjd, 1, ref year, ref month, ref day, ref hour);
 		}
 
-		return Swe64.xyz_swe_revjul(tjd, 1, ref year, ref month, ref day, ref hour);
+		return SwephDll.Swe64.swe_revjul(tjd, 1, ref year, ref month, ref day, ref hour);
 	}
 
-	public static int CalcUT(double tjd_ut, int ipl, int addFlags, double[] xx)
+	public static int CalcUT(this Horoscope h, double tjd_ut, int ipl, int addFlags, double[] xx, StringBuilder serr = null)
 	{
 		int ret;
-		var serr = new StringBuilder(256);
+		serr ??= new StringBuilder(256);
 
-		checkLock();
 		if (IntPtr.Size == 4)
 		{
-			ret = Swe32.xyz_swe_calc_ut(tjd_ut, ipl, iflag | addFlags, xx, serr);
+			ret = SwephDll.Swe32.swe_calc_ut(tjd_ut, ipl, h.Iflag | addFlags, xx, serr);
 		}
 		else
 		{
-			ret = Swe64.xyz_swe_calc_ut(tjd_ut, ipl, iflag | addFlags, xx, serr);
+			ret = SwephDll.Swe64.swe_calc_ut(tjd_ut, ipl, h.Iflag | addFlags, xx, serr);
 		}
 
 		if (ret >= 0)
 		{
-			xx[0] += mCurrentLockHolder.options.AyanamsaOffset.toDouble();
+			xx[0] += h.Options.AyanamsaOffset;
 		}
 
 		return ret;
 	}
 
-	public static int SolEclipseWhenGlob(double tjd_ut, double[] tret, bool forward)
-	{
-		var serr = new StringBuilder(256);
-
-		checkLock();
-		if (IntPtr.Size == 4)
-		{
-			return Swe32.xyz_swe_sol_eclipse_when_glob(tjd_ut, iflag, 0, tret, !forward, serr);
-		}
-
-		return Swe64.xyz_swe_sol_eclipse_when_glob(tjd_ut, iflag, 0, tret, !forward, serr);
-	}
-
-	public static int SolEclipseWhenLoc(HoraInfo hi, double tjd_ut, double[] tret, double[] attr, bool forward)
-	{
-		var serr = new StringBuilder(256);
-		var geopos = new double[3]
-		{
-			hi.lon.toDouble(),
-			hi.lat.toDouble(),
-			hi.alt
-		};
-
-		checkLock();
-		if (IntPtr.Size == 4)
-		{
-			return Swe32.xyz_swe_sol_eclipse_when_loc(tjd_ut, iflag, geopos, tret, attr, !forward, serr);
-		}
-
-		return Swe64.xyz_swe_sol_eclipse_when_loc(tjd_ut, iflag, geopos, tret, attr, !forward, serr);
-	}
-
-	public static void LunEclipseWhen(double tjd_ut, double[] tret, bool forward)
+	public static int Calc(this Horoscope h, double tjd_ut, int ipl, int addFlags, double[] xx)
 	{
 		int ret;
 		var serr = new StringBuilder(256);
 
-		checkLock();
 		if (IntPtr.Size == 4)
 		{
-			ret = Swe32.xyz_swe_lun_eclipse_when(tjd_ut, iflag, 0, tret, !forward, serr);
+			ret = SwephDll.Swe32.swe_calc(tjd_ut, ipl, h.Iflag | addFlags, xx, serr);
 		}
 		else
 		{
-			ret = Swe64.xyz_swe_lun_eclipse_when(tjd_ut, iflag, 0, tret, !forward, serr);
+			ret = SwephDll.Swe64.swe_calc(tjd_ut, ipl, h.Iflag | addFlags, xx, serr);
+		}
+
+		if (ret >= 0)
+		{
+			xx[0] += h.Options.AyanamsaOffset;
+		}
+
+		return ret;
+	}
+
+	/*****************************************************
+	**
+	**   CalculatorSwe   ---   calcJd
+	**
+	******************************************************/
+	public static double calcJd(double jd )
+	{
+		if (IntPtr.Size == 4)
+		{
+			return(jd + SwephDll.Swe32.swe_deltat( jd ));
+		}
+		return(jd + SwephDll.Swe64.swe_deltat( jd ));
+	}
+
+
+
+	public enum EventType { SOLAR_EVENT_SUNRISE, SOLAR_EVENT_SUNSET, SOLAR_EVENT_MIDNIGHT, SOLAR_EVENT_NOON };
+
+	/*****************************************************
+	 **
+	 **   CalculatorSwe   ---   calcNextSolarEvent
+	 **
+	 ******************************************************/
+	public static double CalcNextSolarEvent(EventType type, double jd, double lat, double lon)
+	{
+		StringBuilder err  = new StringBuilder();
+		var           rsmi = new double [3];
+		double        tret = 0;
+		int           flag = 0;
+		/*
+		int flag                                    = 0;
+		if ( ! config->ephem->sunrise_def ) flag    =  SE_BIT_DISC_CENTER;
+		if ( ! config->ephem->sunrise_refrac ) flag |= SE_BIT_NO_REFRACTION;
+		*/
+
+		//int event_flag = 0;
+		switch ( type )
+		{
+			case EventType.SOLAR_EVENT_SUNRISE:
+				flag |= SE_CALC_RISE;
+				break;
+			case EventType.SOLAR_EVENT_SUNSET:
+				flag |= SE_CALC_SET;
+				break;
+			case EventType.SOLAR_EVENT_NOON:
+				flag |= SE_CALC_ITRANSIT;
+				break;
+			case EventType.SOLAR_EVENT_MIDNIGHT:
+				flag |= SE_CALC_MTRANSIT;
+				break;
+		}
+
+		rsmi[0] = lon;
+		rsmi[1] = lat;
+		rsmi[2] = 0;
+
+		if (IntPtr.Size == 4)
+		{
+			SwephDll.Swe32.swe_rise_trans( calcJd( jd ), SE_SUN, string.Empty, 0, flag, rsmi, 0, 0, ref tret, err );
+		}
+		else
+		{
+			SwephDll.Swe64.swe_rise_trans( calcJd( jd ), SE_SUN, string.Empty, 0, flag, rsmi, 0, 0, ref tret, err );
+		}
+		return tret;
+	}
+
+
+
+	public static int SolEclipseWhenGlob(this Horoscope h, double tjd_ut, double[] tret, bool forward)
+	{
+		var serr = new StringBuilder(256);
+
+		if (IntPtr.Size == 4)
+		{
+			return SwephDll.Swe32.swe_sol_eclipse_when_glob(tjd_ut, h.Iflag, 0, tret, !forward, serr);
+		}
+
+		return SwephDll.Swe64.swe_sol_eclipse_when_glob(tjd_ut, h.Iflag, 0, tret, !forward, serr);
+	}
+
+	public static int SolEclipseWhenLoc(this Horoscope h, double tjd_ut, double[] tret, double[] attr, bool forward)
+	{
+		var serr = new StringBuilder(256);
+		var geopos = new double[3]
+		{
+			h.Info.Longitude,
+			h.Info.Latitude,
+			h.Info.Altitude
+		};
+
+		if (IntPtr.Size == 4)
+		{
+			return SwephDll.Swe32.swe_sol_eclipse_when_loc(tjd_ut, h.Iflag, geopos, tret, attr, !forward, serr);
+		}
+
+		return SwephDll.Swe64.swe_sol_eclipse_when_loc(tjd_ut, h.Iflag, geopos, tret, attr, !forward, serr);
+	}
+
+	public static void LunEclipseWhen(this Horoscope h, double tjd_ut, double[] tret, bool forward)
+	{
+		int ret;
+		var serr = new StringBuilder(256);
+
+		if (IntPtr.Size == 4)
+		{
+			ret = SwephDll.Swe32.swe_lun_eclipse_when(tjd_ut, h.Iflag, 0, tret, !forward, serr);
+		}
+		else
+		{
+			ret = SwephDll.Swe64.swe_lun_eclipse_when(tjd_ut, h.Iflag, 0, tret, !forward, serr);
 		}
 
 		if (ret < 0)
 		{
 			Application.Log.Debug("Sweph Error: {0}", serr);
-			throw new SwephException(serr.ToString());
+			throw new Exception(serr.ToString());
+		}
+	}
+
+	public struct aya_config
+	{
+		public double t0;
+		public double ayan_t0;
+
+		public aya_config(double t, double ayan)
+		{
+			t0      = t;
+			ayan_t0 = ayan;
+		}
+	}
+
+	public struct aya_init
+	{
+		public double t0;
+		public double ayan_t0;
+		public bool   t0_is_UT;
+	}
+
+	public static aya_init[] ayanamsa =
+	{
+		new()
+		{
+			t0       = 2433282.5,
+			ayan_t0  = 24.042044444,
+			t0_is_UT = false
+		}, /* 0: Fagan/Bradley (Default) */
+		/*{J1900, 360 - 337.53953},   * 1: Lahiri (Robert Hand) */
+		new()
+		{
+			t0       = 2435553.5,
+			ayan_t0  = 23.250182778 - 0.004660222,
+			t0_is_UT = false
+		},
+		/* 1: Lahiri (derived from: Indian
+		 * Astronomical Ephemeris 1989, p. 556;
+		 * the subtracted value is nutation) */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 333.58695,
+			t0_is_UT = false
+		}, /* 2: Robert DeLuce (Constellational Astrology ... p. 5 */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 338.98556,
+			t0_is_UT = false
+		}, /* 3: B.V. Raman (Robert Hand) */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 341.33904,
+			t0_is_UT = false
+		}, /* 4: Usha/Shashi (Robert Hand) */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 337.636111,
+			t0_is_UT = false
+		}, /* 5: Krishnamurti (Robert Hand) */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 333.0369024,
+			t0_is_UT = false
+		}, /* 6: Djwhal Khool; (Graham Dawson)
+		    *    Aquarius entered on 1 July 2117 */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 338.917778,
+			t0_is_UT = false
+		}, /* 7: Shri Yukteshwar; (David Cochrane) */
+		//{2412543.5, 20.91, TRUE},          /* 7: Shri Yukteshwar; (Holy Science, p. xx) */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 360 - 338.634444,
+			t0_is_UT = false
+		}, /* 8: J.N. Bhasin; (David Cochrane) */
+		/* 14 Sept. 2018: the following three ayanamshas have been wrong for
+		 * many years */
+		new()
+		{
+			t0       = 1684532.5,
+			ayan_t0  = -5.66667,
+			t0_is_UT = true
+		}, /* 9: Babylonian, Kugler 1 */
+		new()
+		{
+			t0       = 1684532.5,
+			ayan_t0  = -4.26667,
+			t0_is_UT = true
+		}, /*10: Babylonian, Kugler 2 */
+		new()
+		{
+			t0       = 1684532.5,
+			ayan_t0  = -3.41667,
+			t0_is_UT = true
+		}, /*11: Babylonian, Kugler 3 */
+		new()
+		{
+			t0       = 1684532.5,
+			ayan_t0  = -4.46667,
+			t0_is_UT = true
+		}, /*12: Babylonian, Huber */
+		/*{1684532.5, -4.56667, TRUE},         *12: Babylonian, Huber (Swisseph has been wrong for many years!) */
+		new()
+		{
+			t0       = 1673941,
+			ayan_t0  = -5.079167,
+			t0_is_UT = true
+		}, /*13: Babylonian, Mercier;
+		    *    eta Piscium culminates with zero point */
+		new()
+		{
+			t0       = 1684532.5,
+			ayan_t0  = -4.44088389,
+			t0_is_UT = true
+		}, /*14: t0 is defined by Aldebaran at 15 Taurus */
+		new()
+		{
+			t0       = 1674484,
+			ayan_t0  = -9.33333,
+			t0_is_UT = true
+		}, /*15: Hipparchos */
+		new()
+		{
+			t0       = 1927135.8747793,
+			ayan_t0  = 0,
+			t0_is_UT = true
+		}, /*16: Sassanian */
+		//{1746412.236, 0, FALSE},             /*17: Galactic Center at 0 Sagittarius */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*17: Galactic Center at 0 Sagittarius */
+		new()
+		{
+			t0       = J2000,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*18: J2000 */
+		new()
+		{
+			t0       = J1900,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*19: J1900 */
+		new()
+		{
+			t0       = B1950,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*20: B1950 */
+		new()
+		{
+			t0       = 1903396.8128654,
+			ayan_t0  = 0,
+			t0_is_UT = true
+		}, /*21: Suryasiddhanta, assuming
+	                                       ingress of mean Sun into Aries at point
+					       of mean equinox of date on
+					       21.3.499, near noon, Ujjain (75.7684565 E)
+	                                       = 7:30:31.57 UT = 12:33:36 LMT*/
+		new()
+		{
+			t0       = 1903396.8128654,
+			ayan_t0  = -0.21463395,
+			t0_is_UT = true
+		}, /*22: Suryasiddhanta, assuming
+					       ingress of mean Sun into Aries at
+					       true position of mean Sun at same epoch */
+		new()
+		{
+			t0       = 1903396.7895321,
+			ayan_t0  = 0,
+			t0_is_UT = true
+		}, /*23: Aryabhata, same date, but UT 6:56:55.57
+					       analogous 21 */
+		new()
+		{
+			t0       = 1903396.7895321,
+			ayan_t0  = -0.23763238,
+			t0_is_UT = true
+		}, /*24: Aryabhata, analogous 22 */
+		new()
+		{
+			t0       = 1903396.8128654,
+			ayan_t0  = -0.79167046,
+			t0_is_UT = true
+		}, /*25: SS, Revati/zePsc at polar long. 359°50'*/
+		new()
+		{
+			t0       = 1903396.8128654,
+			ayan_t0  = 2.11070444,
+			t0_is_UT = true
+		}, /*26: SS, Citra/Spica at polar long. 180° */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*27: True Citra (Spica exactly at 0 Libra) */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*28: True Revati (zeta Psc exactly at 29°50' Pisces) */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*29: True Pushya (delta Cnc exactly a 16 Cancer */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*30: R. Gil Brand; Galactic Center at golden section
+	                                       between 0 Sco and 0 Aqu; note: 0° Aqu/Leo is
+					       the symmetric axis of rulerships */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*31: Galactic Equator IAU 1958, i.e. galactic/ecliptic
+	                                       intersection point based on galactic coordinate system */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*32: Galactic Equator True, i.e. galactic/ecliptic
+	                                       intersection point based on the galactic pole as given in:
+					       Liu/Zhu/Zhang, „Reconsidering the galactic
+					       coordinate system“, A & A No. AA2010, Oct. 2010 */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*33: Galactic Equator Mula, i.e. galactic/ecliptic
+	                                       intersection point in the middle of lunar mansion Mula */
+		new()
+		{
+			t0       = 2451079.734892000,
+			ayan_t0  = 30,
+			t0_is_UT = false
+		}, /*34: Skydram/Galactic Alignment (R. Mardyks);
+	                                       autumn equinox aligned with Galactic Equator/Pole */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*35: Chandra Hari */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*36: Dhruva Galactic Centre Middle of Mula (Ernst Wilhelm) */
+		new()
+		{
+			t0       = 1911797.740782065,
+			ayan_t0  = 0,
+			t0_is_UT = true
+		}, /*37: Kali 3623 = 522 CE, Ujjain (75.7684565),
+		    *    based on Kali midnight and SS year length */
+		new()
+		{
+			t0       = 1721057.5,
+			ayan_t0  = -3.2,
+			t0_is_UT = true
+		}, /*38: Babylonian (Britton 2010) */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*39: Sunil Sheoran ("Vedic") */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		}, /*40: Galactic Center at 0 Capricon (Cochrane) */
+		new()
+		{
+			t0       = 2451544.5,
+			ayan_t0  = 25.0,
+			t0_is_UT = true
+		}, /*41: "Galactic Equatorial" (N.A. Fiorenza) */
+		new()
+		{
+			t0       = 1775845.5,
+			ayan_t0  = -2.9422,
+			t0_is_UT = true
+		}, /*42: Vettius Valens (Moon; derived from
+	                                           Holden 1995 p. 12 for epoch of Valens
+						   1 Jan. 150 CE julian) */
+		/*{2061539.789532065, 6.83333333, TRUE}, *41: Manjula's Laghumanasa, 10 March 932,
+		 *    12 PM LMT Ujjain (75.7684565 E),
+		 *    ayanamsha = 6°50' */
+		new()
+		{
+			t0       = 0,
+			ayan_t0  = 0,
+			t0_is_UT = false
+		} /*42: - */
+	};
+
+
+	public static aya_config[] aya_param =
+	{
+		new(2415020.0, 360 - 337.53953), // 1: Lahiri (Robert Hand) 
+		new(2415020.0, 360 - 338.98556), // 3: Raman (Robert Hand) 
+		new(2415020.0, 360 - 337.636111) // 5: Krishnamurti (Robert Hand) 
+	};
+
+	/*****************************************************
+	 **
+	 **   CalculatorSwe   ---   calcAyanamsa
+	 **
+	 ******************************************************/
+	public static void SetAyanamsa(HoroscopeOptions.AyanamsaType type)
+	{
+		var    aya     = ayanamsa[type.Index()];
+		double t0      = 0;
+		double ayan_t0 = 0;
+
+		if (type >= HoroscopeOptions.AyanamsaType.Lahiri && type <= HoroscopeOptions.AyanamsaType.Krishnamurti)
+		{
+			t0      = aya_param[(int) (type - 1)].t0;
+			ayan_t0 = aya_param[(int) (type - 1)].ayan_t0;
+		}
+
+		/*
+		if ( config->ephem->custom_aya_constant )
+		{
+			t = jd - t0;
+			double years   = t       /365.25;
+			double portion = years   /config->ephem->custom_aya_period;
+			double aya     = portion * 360;
+			//return red_deg( config->custom_ayan_t0 + 360 * ( jd - config->custom_t0 ) / ( config->custom_aya_period * 365.25 ));
+
+			// bugfix 6.0: forgot ayan_t0
+			//return red_deg( aya );
+			return red_deg( ayan_t0 + aya );
+		}
+		else
+		*/
+		{
+			if (t0 != 0)
+			{
+				if (IntPtr.Size == 4)
+				{
+					SwephDll.Swe32.swe_set_sid_mode(255, t0, ayan_t0);
+				}
+				else
+				{
+					SwephDll.Swe64.swe_set_sid_mode(255, aya.t0, aya.ayan_t0);
+				}
+			}
+			else
+			{
+				SetSidMode(type.Index(), 0.0, 0.0);
+			}
 		}
 	}
 
 	public static double GetAyanamsaUT(double tjd_ut)
 	{
-		checkLock();
 		if (IntPtr.Size == 4)
 		{
-			return Swe32.xyz_swe_get_ayanamsa_ut(tjd_ut);
+			return SwephDll.Swe32.swe_get_ayanamsa_ut(tjd_ut);
 		}
 
-		return Swe64.xyz_swe_get_ayanamsa_ut(tjd_ut);
+		return SwephDll.Swe64.swe_get_ayanamsa_ut(tjd_ut);
 	}
 
-	public static int Rise(double tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, double[] tret)
+	public static int Rise(this Horoscope h, double tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, ref double tret, StringBuilder serr = null)
+	{
+		serr ??= new StringBuilder(256);
+
+		if (IntPtr.Size == 4)
+		{
+			return SwephDll.Swe32.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, SE_CALC_RISE | rsflag, geopos, atpress, attemp, ref tret, serr);
+		}
+
+		return SwephDll.Swe64.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, SE_CALC_RISE | rsflag, geopos, atpress, attemp, ref tret, serr);
+	}
+
+	public static int Set(this Horoscope h, double tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, ref double tret)
 	{
 		var serr = new StringBuilder(256);
 
-		checkLock();
 		if (IntPtr.Size == 4)
 		{
-			return Swe32.xyz_swe_rise_trans(tjd_ut, ipl, string.Empty, iflag, SE_CALC_RISE | rsflag, geopos, atpress, attemp, tret, serr);
+			return SwephDll.Swe32.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, SE_CALC_SET | rsflag, geopos, atpress, attemp, ref tret, serr);
 		}
 
-		return Swe64.xyz_swe_rise_trans(tjd_ut, ipl, string.Empty, iflag, SE_CALC_RISE | rsflag, geopos, atpress, attemp, tret, serr);
+		return SwephDll.Swe64.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, SE_CALC_SET | rsflag, geopos, atpress, attemp, ref tret, serr);
 	}
 
-	public static int Set(double tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, double[] tret)
+	public static int Lmt(this Horoscope h, double tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, ref double tret)
 	{
 		var serr = new StringBuilder(256);
 
-		checkLock();
 		if (IntPtr.Size == 4)
 		{
-			return Swe32.xyz_swe_rise_trans(tjd_ut, ipl, string.Empty, iflag, SE_CALC_SET | rsflag, geopos, atpress, attemp, tret, serr);
+			return SwephDll.Swe32.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, rsflag, geopos, atpress, attemp, ref tret, serr);
 		}
 
-		return Swe64.xyz_swe_rise_trans(tjd_ut, ipl, string.Empty, iflag, SE_CALC_SET | rsflag, geopos, atpress, attemp, tret, serr);
-	}
-
-	public static int Lmt(double tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, double[] tret)
-	{
-		var serr = new StringBuilder(256);
-
-		checkLock();
-		if (IntPtr.Size == 4)
-		{
-			return Swe32.xyz_swe_rise_trans(tjd_ut, ipl, string.Empty, iflag, rsflag, geopos, atpress, attemp, tret, serr);
-		}
-
-		return Swe64.xyz_swe_rise_trans(tjd_ut, ipl, string.Empty, iflag, rsflag, geopos, atpress, attemp, tret, serr);
+		return SwephDll.Swe64.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, rsflag, geopos, atpress, attemp, ref tret, serr);
 	}
 
 
-	public static int HousesEx(double tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc)
+	public static int HousesEx(this Horoscope h, double tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc)
 	{
 		int ret;
-		checkLock();
 
 		if (IntPtr.Size == 4)
 		{
-			ret = Swe32.xyz_swe_houses_ex(tjd_ut, iflag, lat, lon, hsys, cusps, ascmc);
+			ret = SwephDll.Swe32.swe_houses_ex(tjd_ut, iflag, lat, lon, hsys, cusps, ascmc);
 		}
 		else
 		{
-			ret = Swe64.xyz_swe_houses_ex(tjd_ut, iflag, lat, lon, hsys, cusps, ascmc);
+			ret = SwephDll.Swe64.swe_houses_ex(tjd_ut, iflag, lat, lon, hsys, cusps, ascmc);
 		}
 
-		var lOffset = new Longitude(mCurrentLockHolder.options.AyanamsaOffset.toDouble());
+		var lOffset = h.Options.AyanamsaOffset;
 
 		// House cusps defined from 1 to 12 inclusive as per sweph docs
 		// Ascendants defined from 0 to 7 inclusive as per sweph docs
 		for (var i = 1; i <= 12; i++)
 		{
-			cusps[i] = new Longitude(cusps[i]).add(lOffset).value;
+			cusps[i] = new Longitude(cusps[i]).Add(lOffset).Value;
 		}
 
 		for (var i = 0; i <= 7; i++)
 		{
-			ascmc[i] = new Longitude(ascmc[i]).add(lOffset).value;
+			ascmc[i] = new Longitude(ascmc[i]).Add(lOffset).Value;
 		}
 
 		return ret;
 	}
 
-	public static double Lagna(double tjd_ut)
+	public static double Lagna(this Horoscope h, double tjd_ut)
 	{
-		checkLock();
-		var hi    = mCurrentLockHolder.info;
+		var hi    = h.Info;
 		var cusps = new double[13];
 		var ascmc = new double[10];
-		var ret   = HousesEx(tjd_ut, SEFLG_SIDEREAL, hi.lat.toDouble(), hi.lon.toDouble(), 'R', cusps, ascmc);
+		var ret   = h.HousesEx(tjd_ut, SEFLG_SIDEREAL, hi.Latitude, hi.Longitude, 'R', cusps, ascmc);
 		return ascmc[0];
 	}
 
-	private static class Swe64
+	/// <summary>
+	///     This function must be called before topocentric planet positions for a certain birth place can be computed.
+	///     It tells Swiss Ephemeris, what geographic position is to be used.
+	///     Geographic longitude geolon and latitude geolat must be in degrees, the altitude above sea must be in meters.
+	///     Neglecting the altitude can result in an error of about 2 arc seconds with the Moon and at an altitude 3000 m.
+	///     After calling swe_set_topo(), add SEFLG_TOPOCTR to h.iflag and call swe_calc() as with an ordinary computation.
+	/// </summary>
+	/// <remarks>
+	///     The parameters set by swe_set_topo() survive swe_close().
+	/// </remarks>
+	private static void SetTopo(double geolon, double geolat, double altitude)
 	{
-		[DllImport("swedll64", CharSet = CharSet.Ansi)]
-		public static extern void swe_set_ephe_path(string path);
+		if (IntPtr.Size == 4)
+		{
+			SwephDll.Swe32.swe_set_topo(geolon, geolat, altitude);
+		}
+		else
+		{
+			SwephDll.Swe64.swe_set_topo(geolon, geolat, altitude);
+		}
+	}
 
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_set_sid_mode")]
-		public static extern void xyz_swe_set_sid_mode(int sid_mode, double t0, double ayan_t0);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_julday")]
-		public static extern double xyz_swe_julday(int year, int month, int day, double hour, int gregflag);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_revjul")]
-		public static extern double xyz_swe_revjul(double tjd, int gregflag, ref int year, ref int month, ref int day, ref double hour);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_sol_eclipse_when_glob")]
-		public static extern int xyz_swe_sol_eclipse_when_glob(double tjd_ut, int iflag, int ifltype, double[] tret, bool backward, StringBuilder s);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_calc_ut")]
-		public static extern int xyz_swe_calc_ut(double tjd_ut, int ipl, int iflag, double[] xx, StringBuilder serr);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_sol_eclipse_when_loc")]
-		public static extern int xyz_swe_sol_eclipse_when_loc(double tjd_ut, int iflag, double[] geopos, double[] tret, double[] attr, bool backward, StringBuilder s);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_lun_eclipse_when")]
-		public static extern int xyz_swe_lun_eclipse_when(double tjd_ut, int iflag, int ifltype, double[] tret, bool backward, StringBuilder s);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_lun_occult_when_loc")]
-		public static extern int xyz_swe_lun_occult_when_loc(double tjd_ut, int ipl, ref string starname, int iflag, double[] geopos, double[] tret, double[] attr, bool backward, StringBuilder s);
-
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_get_ayanamsa_ut")]
-		public static extern double xyz_swe_get_ayanamsa_ut(double tjd_ut);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_rise_trans")]
-		public static extern int xyz_swe_rise_trans(double tjd_ut, int ipl, string starname, int epheflag, int rsmi, double[] geopos, double atpress, double attemp, double[] tret, StringBuilder serr);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_houses_ex")]
-		public static extern int xyz_swe_houses_ex(double tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_day_of_week")]
-		public static extern int swe_day_of_week(double jd);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_deltat")]
-		public static extern double swe_deltat(double tjd_et);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_set_tid_acc")]
-		public static extern void swe_set_tid_acc(double t_acc);
-
-		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_time_equ")]
-		public static extern int swe_time_equ(double tjd_et, ref double e, StringBuilder s);
+	/*****************************************************
+	 **
+	 **   CalculatorSwe   ---   calcSiderealTime
+	 **
+	 ******************************************************/
+	public static double CalcSiderealTime(double jd, double longitude )
+	{
+		if (IntPtr.Size == 4)
+		{
+			return SwephDll.Swe32.swe_sidtime( jd + longitude / 360 );
+		}
+		return SwephDll.Swe64.swe_sidtime( jd + longitude / 360 );
 	}
 
 
-	private static class Swe32
+	public static void Azalt(double   tjd_ut,    // UT
+	                         int      calc_flag, // SE_ECL2HOR or SE_EQU2HOR
+	                         double[] geopos,    // array of 3 doubles: geograph. long., lat., height
+	                         double   atpress,   // atmospheric pressure in mbar (hPa)
+	                         double   attemp,    // atmospheric temperature in degrees Celsius
+	                         double[] xin,       // array of 3 doubles: position of body in either ecliptical or equatorial coordinates, depending on calc_flag
+	                         double[] xaz) // return array of 3 doubles, containing azimuth, true altitude, apparent altitude;
+
 	{
-		[DllImport("swedll32", CharSet = CharSet.Ansi)]
-		public static extern void swe_set_ephe_path(string path);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_set_sid_mode")]
-		public static extern void xyz_swe_set_sid_mode(int sid_mode, double t0, double ayan_t0);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_julday")]
-		public static extern double xyz_swe_julday(int year, int month, int day, double hour, int gregflag);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_revjul")]
-		public static extern double xyz_swe_revjul(double tjd, int gregflag, ref int year, ref int month, ref int day, ref double hour);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_sol_eclipse_when_glob")]
-		public static extern int xyz_swe_sol_eclipse_when_glob(double tjd_ut, int iflag, int ifltype, double[] tret, bool backward, StringBuilder s);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_calc_ut")]
-		public static extern int xyz_swe_calc_ut(double tjd_ut, int ipl, int iflag, double[] xx, StringBuilder serr);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_sol_eclipse_when_loc")]
-		public static extern int xyz_swe_sol_eclipse_when_loc(double tjd_ut, int iflag, double[] geopos, double[] tret, double[] attr, bool backward, StringBuilder s);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_lun_eclipse_when")]
-		public static extern int xyz_swe_lun_eclipse_when(double tjd_ut, int iflag, int ifltype, double[] tret, bool backward, StringBuilder s);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_lun_occult_when_loc")]
-		public static extern int xyz_swe_lun_occult_when_loc(double tjd_ut, int ipl, ref string starname, int iflag, double[] geopos, double[] tret, double[] attr, bool backward, StringBuilder s);
-
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_get_ayanamsa_ut")]
-		public static extern double xyz_swe_get_ayanamsa_ut(double tjd_ut);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_rise_trans")]
-		public static extern int xyz_swe_rise_trans(double tjd_ut, int ipl, string starname, int epheflag, int rsmi, double[] geopos, double atpress, double attemp, double[] tret, StringBuilder serr);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_houses_ex")]
-		public static extern int xyz_swe_houses_ex(double tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_day_of_week")]
-		public static extern int swe_day_of_week(double jd);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_deltat")]
-		public static extern double swe_deltat(double tjd_et);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_set_tid_acc")]
-		public static extern void swe_set_tid_acc(double t_acc);
-
-		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_time_equ")]
-		public static extern int swe_time_equ(double tjd_et, ref double e, StringBuilder s);
+		if (IntPtr.Size == 4)
+		{
+			SwephDll.Swe32.swe_azalt(tjd_ut, calc_flag, geopos, atpress, attemp, xin, xaz);
+		}
+		else
+		{
+			SwephDll.Swe64.swe_azalt(tjd_ut, calc_flag, geopos, atpress, attemp, xin, xaz);
+		}
 	}
+
+
 }

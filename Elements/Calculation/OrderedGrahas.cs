@@ -43,9 +43,9 @@ public class OrderedGrahas : ICloneable
 	public override string ToString()
 	{
 		var s = string.Empty;
-		foreach (Body.Name bn in grahas)
+		foreach (Body.BodyType bn in grahas)
 		{
-			s += Body.toShortString(bn) + " ";
+			s += bn.ToShortString() + " ";
 		}
 
 		return s;

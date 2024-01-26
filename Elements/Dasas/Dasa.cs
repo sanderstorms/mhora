@@ -19,8 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
-using Mhora.Elements.Calculation;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Elements.Dasas;
@@ -33,25 +31,25 @@ public abstract class Dasa
 	{
 		var length = 0;
 
-		if (zh.isOddFooted())
+		if (zh.IsOddFooted())
 		{
-			length = zh.numHousesBetween(dp.zodiac_house);
+			length = zh.NumHousesBetween(dp.ZodiacHouse);
 		}
 		else
 		{
-			length = zh.numHousesBetweenReverse(dp.zodiac_house);
+			length = zh.NumHousesBetweenReverse(dp.ZodiacHouse);
 		}
 
-		if (dp.isExaltedPhalita())
+		if (dp.IsExaltedPhalita())
 		{
 			length++;
 		}
-		else if (dp.isDebilitatedPhalita())
+		else if (dp.IsDebilitatedPhalita())
 		{
 			length--;
 		}
 
-		length = Basics.normalize_inc(1, 12, length - 1);
+		length = (length - 1).NormalizeInc(1, 12);
 		return length;
 	}
 
@@ -64,27 +62,24 @@ public abstract class Dasa
 
 	public void OnChanged()
 	{
-		if (Changed != null)
-		{
-			Changed(this);
-		}
+		Changed?.Invoke(this);
 	}
 
-	public string EntryDescription(DasaEntry de, Moment start, Moment end)
+	public string EntryDescription(DasaEntry de, DateTime start, DateTime end)
 	{
 		return string.Empty;
 	}
 
-	public class Options : ICloneable
+	public class DasaOptions : ICloneable
 	{
-		private double _Compression;
-		private double _YearLength;
+		private double _compression;
+		private double _yearLength;
 
-		public Options()
+		public DasaOptions()
 		{
 			YearType     = ToDate.DateType.SolarYear;
-			_YearLength  = 360.0;
-			_Compression = 0.0;
+			_yearLength  = 360.0;
+			_compression = 0.0;
 		}
 
 		[PGDisplayName("Year Type")]
@@ -97,12 +92,12 @@ public abstract class Dasa
 		[PGDisplayName("Dasa Compression")]
 		public double Compression
 		{
-			get => _Compression;
+			get => _compression;
 			set
 			{
 				if (value >= 0.0)
 				{
-					_Compression = value;
+					_compression = value;
 				}
 			}
 		}
@@ -110,12 +105,12 @@ public abstract class Dasa
 		[PGDisplayName("Year Length")]
 		public double YearLength
 		{
-			get => _YearLength;
+			get => _yearLength;
 			set
 			{
 				if (value >= 0.0)
 				{
-					_YearLength = value;
+					_yearLength = value;
 				}
 			}
 		}
@@ -143,7 +138,7 @@ public abstract class Dasa
 
 		public object Clone()
 		{
-			var o = new Options();
+			var o = new DasaOptions();
 			o.YearLength    = YearLength;
 			o.YearType      = YearType;
 			o.Compression   = Compression;
@@ -153,7 +148,7 @@ public abstract class Dasa
 			return o;
 		}
 
-		public void Copy(Options o)
+		public void Copy(DasaOptions o)
 		{
 			YearLength    = o.YearLength;
 			YearType      = o.YearType;

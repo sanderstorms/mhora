@@ -25,8 +25,6 @@ using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Dasas;
-using Mhora.SwissEph;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Components.Dasa;
@@ -36,101 +34,101 @@ namespace Mhora.Components.Dasa;
 /// </summary>
 public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 {
-	private static readonly ToolTip tooltip_event = new();
+	private static readonly ToolTip TooltipEvent = new();
 
 	/// <summary>
 	///     Required designer variable.
 	/// </summary>
-	private readonly Container components = null;
+	private readonly Container _components = null;
 
-	private readonly IDasa  id;
-	private          Button bDasaOptions;
-	private          Button bDateOptions;
-	private          Button bGrahaStrengths;
-	private          Button bNextCycle;
-	private          Button bPrevCycle;
-	private          Button bRasiStrengths;
+	private readonly IDasa  _id;
+	private          Button _bDasaOptions;
+	private          Button _bDateOptions;
+	private          Button _bGrahaStrengths;
+	private          Button _bNextCycle;
+	private          Button _bPrevCycle;
+	private          Button _bRasiStrengths;
 
-	private ColumnHeader Dasa;
-	private ContextMenu  dasaContextMenu;
-	private Label        dasaInfo;
-	private ListView     dasaItemList;
-	private MenuItem     m3Parts;
-	private MenuItem     mCompressedTithiPraveshaFixed;
-	private MenuItem     mCompressedYogaPraveshaYoga;
-	private MenuItem     mCompressLunar;
-	private MenuItem     mCompressSolar;
-	private MenuItem     mCompressTithiPraveshaSolar;
-	private MenuItem     mCompressTithiPraveshaTithi;
-	private MenuItem     mCompressYoga;
-	private MenuItem     mCustomYears;
-	private MenuItem     mDateOptions;
-	private MenuItem     mEditDasas;
-	private MenuItem     mEntryChart;
-	private MenuItem     mEntryChartCompressed;
-	private MenuItem     mEntryDate;
-	private MenuItem     mEntrySunriseChart;
-	private MenuItem     menuItem1;
-	private MenuItem     menuItem2;
-	private MenuItem     menuItem3;
-	private MenuItem     menuItem4;
-	private MenuItem     menuItem5;
-	private MenuItem     menuItem6;
+	private ColumnHeader _dasa;
+	private ContextMenu  _dasaContextMenu;
+	private Label        _dasaInfo;
+	private ListView     _dasaItemList;
+	private MenuItem     _m3Parts;
+	private MenuItem     _mCompressedTithiPraveshaFixed;
+	private MenuItem     _mCompressedYogaPraveshaYoga;
+	private MenuItem     _mCompressLunar;
+	private MenuItem     _mCompressSolar;
+	private MenuItem     _mCompressTithiPraveshaSolar;
+	private MenuItem     _mCompressTithiPraveshaTithi;
+	private MenuItem     _mCompressYoga;
+	private MenuItem     _mCustomYears;
+	private MenuItem     _mDateOptions;
+	private MenuItem     _mEditDasas;
+	private MenuItem     _mEntryChart;
+	private MenuItem     _mEntryChartCompressed;
+	private MenuItem     _mEntryDate;
+	private MenuItem     _mEntrySunriseChart;
+	private MenuItem     _menuItem1;
+	private MenuItem     _menuItem2;
+	private MenuItem     _menuItem3;
+	private MenuItem     _menuItem4;
+	private MenuItem     _menuItem5;
+	private MenuItem     _menuItem6;
 
-	private EventUserOptions mEventOptionsCache;
-	private MenuItem         mFixedYears360;
-	private MenuItem         mFixedYears365;
+	private EventUserOptions _mEventOptionsCache;
+	private MenuItem         _mFixedYears360;
+	private MenuItem         _mFixedYears365;
 
-	private int min_cycle, max_cycle;
+	private int _minCycle, _maxCycle;
 
-	private MenuItem     mLocateEvent;
-	private MenuItem     mNextCycle;
-	private MenuItem     mNormalize;
-	private MenuItem     mOptions;
-	private MenuItem     mPreviousCycle;
-	private MenuItem     mReset;
-	private MenuItem     mResetParamAyus;
-	private MenuItem     mShowEvents;
-	private MenuItem     mSolarYears;
-	private MenuItem     mTithiYears;
-	private MenuItem     mTriBhagi40;
-	private MenuItem     mTribhagi80;
-	private ColumnHeader StartDate;
-	private ToDate       td;
+	private MenuItem     _mLocateEvent;
+	private MenuItem     _mNextCycle;
+	private MenuItem     _mNormalize;
+	private MenuItem     _mOptions;
+	private MenuItem     _mPreviousCycle;
+	private MenuItem     _mReset;
+	private MenuItem     _mResetParamAyus;
+	private MenuItem     _mShowEvents;
+	private MenuItem     _mSolarYears;
+	private MenuItem     _mTithiYears;
+	private MenuItem     _mTriBhagi40;
+	private MenuItem     _mTribhagi80;
+	private ColumnHeader _startDate;
+	private ToDate       _td;
 
 
-	public DasaControl(Horoscope _h, IDasa _id)
+	public DasaControl(Horoscope horoscope, IDasa id)
 	{
 		// This call is required by the Windows.Forms Form Designer.
 		InitializeComponent();
 
 		// TODO: Add any initialization after the InitForm call
-		h           = _h;
-		id          = _id;
-		DasaOptions = new Elements.Dasas.Dasa.Options();
+		h           = horoscope;
+		_id    = id;
+		DasaOptions = new Elements.Dasas.Dasa.DasaOptions();
 
-		if (h.info.defaultYearCompression != 0)
+		if (h.Info.DefaultYearCompression != 0)
 		{
-			DasaOptions.Compression = h.info.defaultYearCompression;
-			DasaOptions.YearLength  = h.info.defaultYearLength;
-			DasaOptions.YearType    = h.info.defaultYearType;
+			DasaOptions.Compression = h.Info.DefaultYearCompression;
+			DasaOptions.YearLength  = h.Info.DefaultYearLength;
+			DasaOptions.YearType    = h.Info.DefaultYearType;
 		}
 
 
 		SetDasaYearType();
-		//td = new ToDate (h.baseUT, mDasaOptions.YearLength, 0.0, h);
-		mShowEvents.Checked = MhoraGlobalOptions.Instance.DasaShowEvents;
+		//td = new ToDate (horoscope.info.Jd, mDasaOptions.YearLength, 0.0, horoscope);
+		_mShowEvents.Checked = MhoraGlobalOptions.Instance.DasaShowEvents;
 		ResetDisplayOptions(MhoraGlobalOptions.Instance);
 
-		var d = (Elements.Dasas.Dasa) id;
-		d.RecalculateEvent                     += recalculateEntries;
+		var d = (Elements.Dasas.Dasa) _id;
+		d.RecalculateEvent                     += RecalculateEntries;
 		MhoraGlobalOptions.DisplayPrefsChanged += ResetDisplayOptions;
-		h.Changed                              += OnRecalculate;
+		h.Changed                         += OnRecalculate;
 		SetDescriptionLabel();
 		d.Changed += OnDasaChanged;
-		if (dasaItemList.Items.Count >= 1)
+		if (_dasaItemList.Items.Count >= 1)
 		{
-			dasaItemList.Items[0].Selected = true;
+			_dasaItemList.Items[0].Selected = true;
 		}
 
 		VScroll = true;
@@ -139,15 +137,15 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		//this.LocateChartEvents();
 	}
 
-	public Elements.Dasas.Dasa.Options DasaOptions
+	public Elements.Dasas.Dasa.DasaOptions DasaOptions
 	{
 		get;
 	}
 
 	public object DasaSpecificOptions
 	{
-		get => id.GetOptions();
-		set => id.SetOptions(value);
+		get => _id.GetOptions();
+		set => _id.SetOptions(value);
 	}
 
 
@@ -158,38 +156,38 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			if (value)
 			{
 				h.Changed                          += OnRecalculate;
-				((Elements.Dasas.Dasa) id).Changed += OnDasaChanged;
+				((Elements.Dasas.Dasa) _id).Changed += OnDasaChanged;
 			}
 			else
 			{
 				h.Changed                          -= OnRecalculate;
-				((Elements.Dasas.Dasa) id).Changed += OnDasaChanged;
+				((Elements.Dasas.Dasa) _id).Changed += OnDasaChanged;
 			}
 		}
 	}
 
 	private void SetDescriptionLabel()
 	{
-		dasaInfo.Text = id.Description();
+		_dasaInfo.Text = _id.Description();
 
-		dasaInfo.Text += " (";
+		_dasaInfo.Text += " (";
 
 		if (DasaOptions.Compression > 0)
 		{
-			dasaInfo.Text += DasaOptions.Compression.ToString();
+			_dasaInfo.Text += DasaOptions.Compression.ToString();
 		}
 
 
-		dasaInfo.Text = string.Format("{0} {1:0.00} {2}", dasaInfo.Text, DasaOptions.YearLength, DasaOptions.YearType);
+		_dasaInfo.Text = string.Format("{0} {1:0.00} {2}", _dasaInfo.Text, DasaOptions.YearLength, DasaOptions.YearType);
 
-		dasaInfo.Text += " )";
+		_dasaInfo.Text += " )";
 	}
 
 	public void ResetDisplayOptions(object o)
 	{
-		dasaItemList.BackColor = MhoraGlobalOptions.Instance.DasaBackgroundColor;
-		dasaItemList.Font      = MhoraGlobalOptions.Instance.GeneralFont;
-		foreach (ListViewItem li in dasaItemList.Items)
+		_dasaItemList.BackColor = MhoraGlobalOptions.Instance.DasaBackgroundColor;
+		_dasaItemList.Font      = MhoraGlobalOptions.Instance.GeneralFont;
+		foreach (ListViewItem li in _dasaItemList.Items)
 		{
 			var di = (DasaItem) li;
 			li.BackColor = MhoraGlobalOptions.Instance.DasaBackgroundColor;
@@ -208,29 +206,27 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			}
 		}
 
-		dasaItemList.HoverSelection = MhoraGlobalOptions.Instance.DasaHoverSelect;
+		_dasaItemList.HoverSelection = MhoraGlobalOptions.Instance.DasaHoverSelect;
 		LocateChartEvents();
 	}
 
 	public void Reset()
 	{
-		id.recalculateOptions();
+		_id.RecalculateOptions();
 		SetDescriptionLabel();
-		dasaItemList.Items.Clear();
+		_dasaItemList.Items.Clear();
 		SetDasaYearType();
-		min_cycle = max_cycle = 0;
-		var compress          = DasaOptions.Compression == 0.0 ? 0.0 : DasaOptions.Compression / id.paramAyus();
+		_minCycle = _maxCycle = 0;
+		var compress          = DasaOptions.Compression == 0.0 ? 0.0 : DasaOptions.Compression / _id.ParamAyus();
 
-		sweph.obtainLock(h);
-		var a = id.Dasa(0);
+		var a = _id.Dasa(0);
 		foreach (DasaEntry de in a)
 		{
 			var di = new DasaItem(de);
-			di.populateListViewItemMembers(td, id);
-			dasaItemList.Items.Add(di);
+			di.PopulateListViewItemMembers(_td, _id);
+			_dasaItemList.Items.Add(di);
 		}
 
-		sweph.releaseLock(h);
 		LocateChartEvents();
 	}
 
@@ -252,10 +248,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			_components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -269,434 +262,434 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	/// </summary>
 	private void InitializeComponent()
 	{
-		this.dasaItemList                  = new System.Windows.Forms.ListView();
-		this.Dasa                          = new System.Windows.Forms.ColumnHeader();
-		this.StartDate                     = new System.Windows.Forms.ColumnHeader();
-		this.dasaContextMenu               = new System.Windows.Forms.ContextMenu();
-		this.mEntryChart                   = new System.Windows.Forms.MenuItem();
-		this.mEntrySunriseChart            = new System.Windows.Forms.MenuItem();
-		this.mEntryDate                    = new System.Windows.Forms.MenuItem();
-		this.mLocateEvent                  = new System.Windows.Forms.MenuItem();
-		this.mReset                        = new System.Windows.Forms.MenuItem();
-		this.m3Parts                       = new System.Windows.Forms.MenuItem();
-		this.mShowEvents                   = new System.Windows.Forms.MenuItem();
-		this.mOptions                      = new System.Windows.Forms.MenuItem();
-		this.mDateOptions                  = new System.Windows.Forms.MenuItem();
-		this.mPreviousCycle                = new System.Windows.Forms.MenuItem();
-		this.mNextCycle                    = new System.Windows.Forms.MenuItem();
-		this.menuItem3                     = new System.Windows.Forms.MenuItem();
-		this.mSolarYears                   = new System.Windows.Forms.MenuItem();
-		this.mTithiYears                   = new System.Windows.Forms.MenuItem();
-		this.mFixedYears360                = new System.Windows.Forms.MenuItem();
-		this.mFixedYears365                = new System.Windows.Forms.MenuItem();
-		this.mCustomYears                  = new System.Windows.Forms.MenuItem();
-		this.menuItem5                     = new System.Windows.Forms.MenuItem();
-		this.mTribhagi80                   = new System.Windows.Forms.MenuItem();
-		this.mTriBhagi40                   = new System.Windows.Forms.MenuItem();
-		this.mResetParamAyus               = new System.Windows.Forms.MenuItem();
-		this.menuItem6                     = new System.Windows.Forms.MenuItem();
-		this.mCompressSolar                = new System.Windows.Forms.MenuItem();
-		this.mCompressLunar                = new System.Windows.Forms.MenuItem();
-		this.mCompressYoga                 = new System.Windows.Forms.MenuItem();
-		this.mCompressTithiPraveshaTithi   = new System.Windows.Forms.MenuItem();
-		this.mCompressTithiPraveshaSolar   = new System.Windows.Forms.MenuItem();
-		this.mCompressedTithiPraveshaFixed = new System.Windows.Forms.MenuItem();
-		this.mCompressedYogaPraveshaYoga   = new System.Windows.Forms.MenuItem();
-		this.menuItem4                     = new System.Windows.Forms.MenuItem();
-		this.mEditDasas                    = new System.Windows.Forms.MenuItem();
-		this.mNormalize                    = new System.Windows.Forms.MenuItem();
-		this.menuItem1                     = new System.Windows.Forms.MenuItem();
-		this.menuItem2                     = new System.Windows.Forms.MenuItem();
-		this.dasaInfo                      = new System.Windows.Forms.Label();
-		this.bPrevCycle                    = new System.Windows.Forms.Button();
-		this.bNextCycle                    = new System.Windows.Forms.Button();
-		this.bDasaOptions                  = new System.Windows.Forms.Button();
-		this.bDateOptions                  = new System.Windows.Forms.Button();
-		this.bRasiStrengths                = new System.Windows.Forms.Button();
-		this.bGrahaStrengths               = new System.Windows.Forms.Button();
-		this.mEntryChartCompressed         = new System.Windows.Forms.MenuItem();
+		this._dasaItemList                  = new System.Windows.Forms.ListView();
+		this._dasa                          = new System.Windows.Forms.ColumnHeader();
+		this._startDate                     = new System.Windows.Forms.ColumnHeader();
+		this._dasaContextMenu               = new System.Windows.Forms.ContextMenu();
+		this._mEntryChart                   = new System.Windows.Forms.MenuItem();
+		this._mEntrySunriseChart            = new System.Windows.Forms.MenuItem();
+		this._mEntryDate                    = new System.Windows.Forms.MenuItem();
+		this._mLocateEvent                  = new System.Windows.Forms.MenuItem();
+		this._mReset                        = new System.Windows.Forms.MenuItem();
+		this._m3Parts                       = new System.Windows.Forms.MenuItem();
+		this._mShowEvents                   = new System.Windows.Forms.MenuItem();
+		this._mOptions                      = new System.Windows.Forms.MenuItem();
+		this._mDateOptions                  = new System.Windows.Forms.MenuItem();
+		this._mPreviousCycle                = new System.Windows.Forms.MenuItem();
+		this._mNextCycle                    = new System.Windows.Forms.MenuItem();
+		this._menuItem3                     = new System.Windows.Forms.MenuItem();
+		this._mSolarYears                   = new System.Windows.Forms.MenuItem();
+		this._mTithiYears                   = new System.Windows.Forms.MenuItem();
+		this._mFixedYears360                = new System.Windows.Forms.MenuItem();
+		this._mFixedYears365                = new System.Windows.Forms.MenuItem();
+		this._mCustomYears                  = new System.Windows.Forms.MenuItem();
+		this._menuItem5                     = new System.Windows.Forms.MenuItem();
+		this._mTribhagi80                   = new System.Windows.Forms.MenuItem();
+		this._mTriBhagi40                   = new System.Windows.Forms.MenuItem();
+		this._mResetParamAyus               = new System.Windows.Forms.MenuItem();
+		this._menuItem6                     = new System.Windows.Forms.MenuItem();
+		this._mCompressSolar                = new System.Windows.Forms.MenuItem();
+		this._mCompressLunar                = new System.Windows.Forms.MenuItem();
+		this._mCompressYoga                 = new System.Windows.Forms.MenuItem();
+		this._mCompressTithiPraveshaTithi   = new System.Windows.Forms.MenuItem();
+		this._mCompressTithiPraveshaSolar   = new System.Windows.Forms.MenuItem();
+		this._mCompressedTithiPraveshaFixed = new System.Windows.Forms.MenuItem();
+		this._mCompressedYogaPraveshaYoga   = new System.Windows.Forms.MenuItem();
+		this._menuItem4                     = new System.Windows.Forms.MenuItem();
+		this._mEditDasas                    = new System.Windows.Forms.MenuItem();
+		this._mNormalize                    = new System.Windows.Forms.MenuItem();
+		this._menuItem1                     = new System.Windows.Forms.MenuItem();
+		this._menuItem2                     = new System.Windows.Forms.MenuItem();
+		this._dasaInfo                      = new System.Windows.Forms.Label();
+		this._bPrevCycle                    = new System.Windows.Forms.Button();
+		this._bNextCycle                    = new System.Windows.Forms.Button();
+		this._bDasaOptions                  = new System.Windows.Forms.Button();
+		this._bDateOptions                  = new System.Windows.Forms.Button();
+		this._bRasiStrengths                = new System.Windows.Forms.Button();
+		this._bGrahaStrengths               = new System.Windows.Forms.Button();
+		this._mEntryChartCompressed         = new System.Windows.Forms.MenuItem();
 		this.SuspendLayout();
 		// 
 		// dasaItemList
 		// 
-		this.dasaItemList.AllowColumnReorder = true;
-		this.dasaItemList.AllowDrop          = true;
-		this.dasaItemList.Anchor             = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-		this.dasaItemList.BackColor          = System.Drawing.Color.Lavender;
-		this.dasaItemList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[]
+		this._dasaItemList.AllowColumnReorder = true;
+		this._dasaItemList.AllowDrop          = true;
+		this._dasaItemList.Anchor             = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+		this._dasaItemList.BackColor          = System.Drawing.Color.Lavender;
+		this._dasaItemList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[]
 		{
-			this.Dasa,
-			this.StartDate
+			this._dasa,
+			this._startDate
 		});
-		this.dasaItemList.ContextMenu          =  this.dasaContextMenu;
-		this.dasaItemList.Font                 =  new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
-		this.dasaItemList.ForeColor            =  System.Drawing.Color.Black;
-		this.dasaItemList.FullRowSelect        =  true;
-		this.dasaItemList.HideSelection        =  false;
-		this.dasaItemList.HoverSelection       =  true;
-		this.dasaItemList.Location             =  new System.Drawing.Point(8, 40);
-		this.dasaItemList.MultiSelect          =  false;
-		this.dasaItemList.Name                 =  "dasaItemList";
-		this.dasaItemList.Size                 =  new System.Drawing.Size(424, 264);
-		this.dasaItemList.TabIndex             =  0;
-		this.dasaItemList.View                 =  System.Windows.Forms.View.Details;
-		this.dasaItemList.MouseDown            += new System.Windows.Forms.MouseEventHandler(this.dasaItemList_MouseDown);
-		this.dasaItemList.Click                += new System.EventHandler(this.dasaItemList_Click);
-		this.dasaItemList.MouseUp              += new System.Windows.Forms.MouseEventHandler(this.dasaItemList_MouseUp);
-		this.dasaItemList.DragDrop             += new System.Windows.Forms.DragEventHandler(this.dasaItemList_DragDrop);
-		this.dasaItemList.MouseEnter           += new System.EventHandler(this.dasaItemList_MouseEnter);
-		this.dasaItemList.DragEnter            += new System.Windows.Forms.DragEventHandler(this.dasaItemList_DragEnter);
-		this.dasaItemList.MouseMove            += new System.Windows.Forms.MouseEventHandler(this.dasaItemList_MouseMove);
-		this.dasaItemList.SelectedIndexChanged += new System.EventHandler(this.dasaItemList_SelectedIndexChanged);
+		this._dasaItemList.ContextMenu          =  this._dasaContextMenu;
+		this._dasaItemList.Font                 =  new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
+		this._dasaItemList.ForeColor            =  System.Drawing.Color.Black;
+		this._dasaItemList.FullRowSelect        =  true;
+		this._dasaItemList.HideSelection        =  false;
+		this._dasaItemList.HoverSelection       =  true;
+		this._dasaItemList.Location             =  new System.Drawing.Point(8, 40);
+		this._dasaItemList.MultiSelect          =  false;
+		this._dasaItemList.Name                 =  "_dasaItemList";
+		this._dasaItemList.Size                 =  new System.Drawing.Size(424, 264);
+		this._dasaItemList.TabIndex             =  0;
+		this._dasaItemList.View                 =  System.Windows.Forms.View.Details;
+		this._dasaItemList.MouseDown            += new System.Windows.Forms.MouseEventHandler(this.dasaItemList_MouseDown);
+		this._dasaItemList.Click                += new System.EventHandler(this.dasaItemList_Click);
+		this._dasaItemList.MouseUp              += new System.Windows.Forms.MouseEventHandler(this.dasaItemList_MouseUp);
+		this._dasaItemList.DragDrop             += new System.Windows.Forms.DragEventHandler(this.dasaItemList_DragDrop);
+		this._dasaItemList.MouseEnter           += new System.EventHandler(this.dasaItemList_MouseEnter);
+		this._dasaItemList.DragEnter            += new System.Windows.Forms.DragEventHandler(this.dasaItemList_DragEnter);
+		this._dasaItemList.MouseMove            += new System.Windows.Forms.MouseEventHandler(this.dasaItemList_MouseMove);
+		this._dasaItemList.SelectedIndexChanged += new System.EventHandler(this.dasaItemList_SelectedIndexChanged);
 		// 
 		// Dasa
 		// 
-		this.Dasa.Text  = "Dasa";
-		this.Dasa.Width = 150;
+		this._dasa.Text  = "Dasa";
+		this._dasa.Width = 150;
 		// 
 		// StartDate
 		// 
-		this.StartDate.Text  = "Dates";
-		this.StartDate.Width = 500;
+		this._startDate.Text  = "Dates";
+		this._startDate.Width = 500;
 		// 
 		// dasaContextMenu
 		// 
-		this.dasaContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
+		this._dasaContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
 		{
-			this.mEntryChart,
-			this.mEntryChartCompressed,
-			this.mEntrySunriseChart,
-			this.mEntryDate,
-			this.mLocateEvent,
-			this.mReset,
-			this.m3Parts,
-			this.mShowEvents,
-			this.mOptions,
-			this.mDateOptions,
-			this.mPreviousCycle,
-			this.mNextCycle,
-			this.menuItem3,
-			this.menuItem4,
-			this.menuItem1,
-			this.menuItem2
+			this._mEntryChart,
+			this._mEntryChartCompressed,
+			this._mEntrySunriseChart,
+			this._mEntryDate,
+			this._mLocateEvent,
+			this._mReset,
+			this._m3Parts,
+			this._mShowEvents,
+			this._mOptions,
+			this._mDateOptions,
+			this._mPreviousCycle,
+			this._mNextCycle,
+			this._menuItem3,
+			this._menuItem4,
+			this._menuItem1,
+			this._menuItem2
 		});
-		this.dasaContextMenu.Popup += new System.EventHandler(this.dasaContextMenu_Popup);
+		this._dasaContextMenu.Popup += new System.EventHandler(this.dasaContextMenu_Popup);
 		// 
 		// mEntryChart
 		// 
-		this.mEntryChart.Index =  0;
-		this.mEntryChart.Text  =  "&Entry Chart";
-		this.mEntryChart.Click += new System.EventHandler(this.mEntryChart_Click);
+		this._mEntryChart.Index =  0;
+		this._mEntryChart.Text  =  "&Entry Chart";
+		this._mEntryChart.Click += new System.EventHandler(this.mEntryChart_Click);
 		// 
 		// mEntrySunriseChart
 		// 
-		this.mEntrySunriseChart.Index =  2;
-		this.mEntrySunriseChart.Text  =  "Entry &Sunrise Chart";
-		this.mEntrySunriseChart.Click += new System.EventHandler(this.mEntrySunriseChart_Click);
+		this._mEntrySunriseChart.Index =  2;
+		this._mEntrySunriseChart.Text  =  "Entry &Sunrise Chart";
+		this._mEntrySunriseChart.Click += new System.EventHandler(this.mEntrySunriseChart_Click);
 		// 
 		// mEntryDate
 		// 
-		this.mEntryDate.Index =  3;
-		this.mEntryDate.Text  =  "Copy Entry Date";
-		this.mEntryDate.Click += new System.EventHandler(this.mEntryDate_Click);
+		this._mEntryDate.Index =  3;
+		this._mEntryDate.Text  =  "Copy Entry Date";
+		this._mEntryDate.Click += new System.EventHandler(this.mEntryDate_Click);
 		// 
 		// mLocateEvent
 		// 
-		this.mLocateEvent.Index =  4;
-		this.mLocateEvent.Text  =  "Locate An Event";
-		this.mLocateEvent.Click += new System.EventHandler(this.mLocateEvent_Click);
+		this._mLocateEvent.Index =  4;
+		this._mLocateEvent.Text  =  "Locate An Event";
+		this._mLocateEvent.Click += new System.EventHandler(this.mLocateEvent_Click);
 		// 
 		// mReset
 		// 
-		this.mReset.Index =  5;
-		this.mReset.Text  =  "&Reset";
-		this.mReset.Click += new System.EventHandler(this.mReset_Click);
+		this._mReset.Index =  5;
+		this._mReset.Text  =  "&Reset";
+		this._mReset.Click += new System.EventHandler(this.mReset_Click);
 		// 
 		// m3Parts
 		// 
-		this.m3Parts.Index =  6;
-		this.m3Parts.Text  =  "3 Parts";
-		this.m3Parts.Click += new System.EventHandler(this.m3Parts_Click);
+		this._m3Parts.Index =  6;
+		this._m3Parts.Text  =  "3 Parts";
+		this._m3Parts.Click += new System.EventHandler(this.m3Parts_Click);
 		// 
 		// mShowEvents
 		// 
-		this.mShowEvents.Checked =  true;
-		this.mShowEvents.Index   =  7;
-		this.mShowEvents.Text    =  "Show Events";
-		this.mShowEvents.Click   += new System.EventHandler(this.mShowEvents_Click);
+		this._mShowEvents.Checked =  true;
+		this._mShowEvents.Index   =  7;
+		this._mShowEvents.Text    =  "Show Events";
+		this._mShowEvents.Click   += new System.EventHandler(this.mShowEvents_Click);
 		// 
 		// mOptions
 		// 
-		this.mOptions.Index   =  8;
-		this.mOptions.Text    =  "Dasa &Options";
-		this.mOptions.Visible =  false;
-		this.mOptions.Click   += new System.EventHandler(this.mOptions_Click);
+		this._mOptions.Index   =  8;
+		this._mOptions.Text    =  "Dasa &Options";
+		this._mOptions.Visible =  false;
+		this._mOptions.Click   += new System.EventHandler(this.mOptions_Click);
 		// 
 		// mDateOptions
 		// 
-		this.mDateOptions.Index   =  9;
-		this.mDateOptions.Text    =  "&Date Options";
-		this.mDateOptions.Visible =  false;
-		this.mDateOptions.Click   += new System.EventHandler(this.mDateOptions_Click);
+		this._mDateOptions.Index   =  9;
+		this._mDateOptions.Text    =  "&Date Options";
+		this._mDateOptions.Visible =  false;
+		this._mDateOptions.Click   += new System.EventHandler(this.mDateOptions_Click);
 		// 
 		// mPreviousCycle
 		// 
-		this.mPreviousCycle.Index   =  10;
-		this.mPreviousCycle.Text    =  "&Previous Cycle";
-		this.mPreviousCycle.Visible =  false;
-		this.mPreviousCycle.Click   += new System.EventHandler(this.mPreviousCycle_Click);
+		this._mPreviousCycle.Index   =  10;
+		this._mPreviousCycle.Text    =  "&Previous Cycle";
+		this._mPreviousCycle.Visible =  false;
+		this._mPreviousCycle.Click   += new System.EventHandler(this.mPreviousCycle_Click);
 		// 
 		// mNextCycle
 		// 
-		this.mNextCycle.Index   =  11;
-		this.mNextCycle.Text    =  "&Next Cycle";
-		this.mNextCycle.Visible =  false;
-		this.mNextCycle.Click   += new System.EventHandler(this.mNextCycle_Click);
+		this._mNextCycle.Index   =  11;
+		this._mNextCycle.Text    =  "&Next Cycle";
+		this._mNextCycle.Visible =  false;
+		this._mNextCycle.Click   += new System.EventHandler(this.mNextCycle_Click);
 		// 
 		// menuItem3
 		// 
-		this.menuItem3.Index = 12;
-		this.menuItem3.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
+		this._menuItem3.Index = 12;
+		this._menuItem3.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
 		{
-			this.mSolarYears,
-			this.mTithiYears,
-			this.mFixedYears360,
-			this.mFixedYears365,
-			this.mCustomYears,
-			this.menuItem5,
-			this.mTribhagi80,
-			this.mTriBhagi40,
-			this.mResetParamAyus,
-			this.menuItem6,
-			this.mCompressSolar,
-			this.mCompressLunar,
-			this.mCompressYoga,
-			this.mCompressTithiPraveshaTithi,
-			this.mCompressTithiPraveshaSolar,
-			this.mCompressedTithiPraveshaFixed,
-			this.mCompressedYogaPraveshaYoga
+			this._mSolarYears,
+			this._mTithiYears,
+			this._mFixedYears360,
+			this._mFixedYears365,
+			this._mCustomYears,
+			this._menuItem5,
+			this._mTribhagi80,
+			this._mTriBhagi40,
+			this._mResetParamAyus,
+			this._menuItem6,
+			this._mCompressSolar,
+			this._mCompressLunar,
+			this._mCompressYoga,
+			this._mCompressTithiPraveshaTithi,
+			this._mCompressTithiPraveshaSolar,
+			this._mCompressedTithiPraveshaFixed,
+			this._mCompressedYogaPraveshaYoga
 		});
-		this.menuItem3.Text = "Year Options";
+		this._menuItem3.Text = "Year Options";
 		// 
 		// mSolarYears
 		// 
-		this.mSolarYears.Index =  0;
-		this.mSolarYears.Text  =  "&Solar Years (360 degrees)";
-		this.mSolarYears.Click += new System.EventHandler(this.mSolarYears_Click);
+		this._mSolarYears.Index =  0;
+		this._mSolarYears.Text  =  "&Solar Years (360 degrees)";
+		this._mSolarYears.Click += new System.EventHandler(this.mSolarYears_Click);
 		// 
 		// mTithiYears
 		// 
-		this.mTithiYears.Index =  1;
-		this.mTithiYears.Text  =  "&Tithi Years (360 tithis)";
-		this.mTithiYears.Click += new System.EventHandler(this.mTithiYears_Click);
+		this._mTithiYears.Index =  1;
+		this._mTithiYears.Text  =  "&Tithis Years (360 tithis)";
+		this._mTithiYears.Click += new System.EventHandler(this.mTithiYears_Click);
 		// 
 		// mFixedYears360
 		// 
-		this.mFixedYears360.Index =  2;
-		this.mFixedYears360.Text  =  "Savana Years (360 days)";
-		this.mFixedYears360.Click += new System.EventHandler(this.mFixedYears360_Click);
+		this._mFixedYears360.Index =  2;
+		this._mFixedYears360.Text  =  "Savana Years (360 days)";
+		this._mFixedYears360.Click += new System.EventHandler(this.mFixedYears360_Click);
 		// 
 		// mFixedYears365
 		// 
-		this.mFixedYears365.Index =  3;
-		this.mFixedYears365.Text  =  "~ Solar Year (365.2425 days)";
-		this.mFixedYears365.Click += new System.EventHandler(this.mFixedYears365_Click);
+		this._mFixedYears365.Index =  3;
+		this._mFixedYears365.Text  =  "~ Solar Year (365.2425 days)";
+		this._mFixedYears365.Click += new System.EventHandler(this.mFixedYears365_Click);
 		// 
 		// mCustomYears
 		// 
-		this.mCustomYears.Index =  4;
-		this.mCustomYears.Text  =  "&Custom Years";
-		this.mCustomYears.Click += new System.EventHandler(this.mCustomYears_Click);
+		this._mCustomYears.Index =  4;
+		this._mCustomYears.Text  =  "&Custom Years";
+		this._mCustomYears.Click += new System.EventHandler(this.mCustomYears_Click);
 		// 
 		// menuItem5
 		// 
-		this.menuItem5.Index = 5;
-		this.menuItem5.Text  = "-";
+		this._menuItem5.Index = 5;
+		this._menuItem5.Text  = "-";
 		// 
 		// mTribhagi80
 		// 
-		this.mTribhagi80.Index =  6;
-		this.mTribhagi80.Text  =  "Tribhagi ParamAyus (80 Years)";
-		this.mTribhagi80.Click += new System.EventHandler(this.mTribhagi80_Click);
+		this._mTribhagi80.Index =  6;
+		this._mTribhagi80.Text  =  "Tribhagi ParamAyus (80 Years)";
+		this._mTribhagi80.Click += new System.EventHandler(this.mTribhagi80_Click);
 		// 
 		// mTriBhagi40
 		// 
-		this.mTriBhagi40.Index =  7;
-		this.mTriBhagi40.Text  =  "Tribhagi ParamAyus (40 Years)";
-		this.mTriBhagi40.Click += new System.EventHandler(this.mTriBhagi40_Click);
+		this._mTriBhagi40.Index =  7;
+		this._mTriBhagi40.Text  =  "Tribhagi ParamAyus (40 Years)";
+		this._mTriBhagi40.Click += new System.EventHandler(this.mTriBhagi40_Click);
 		// 
 		// mResetParamAyus
 		// 
-		this.mResetParamAyus.Index =  8;
-		this.mResetParamAyus.Text  =  "Regular ParamAyus";
-		this.mResetParamAyus.Click += new System.EventHandler(this.mResetParamAyus_Click);
+		this._mResetParamAyus.Index =  8;
+		this._mResetParamAyus.Text  =  "Regular ParamAyus";
+		this._mResetParamAyus.Click += new System.EventHandler(this.mResetParamAyus_Click);
 		// 
 		// menuItem6
 		// 
-		this.menuItem6.Index = 9;
-		this.menuItem6.Text  = "-";
+		this._menuItem6.Index = 9;
+		this._menuItem6.Text  = "-";
 		// 
 		// mCompressSolar
 		// 
-		this.mCompressSolar.Index =  10;
-		this.mCompressSolar.Text  =  "Compress to Solar Year";
-		this.mCompressSolar.Click += new System.EventHandler(this.mCompressSolar_Click);
+		this._mCompressSolar.Index =  10;
+		this._mCompressSolar.Text  =  "Compress to Solar Year";
+		this._mCompressSolar.Click += new System.EventHandler(this.mCompressSolar_Click);
 		// 
 		// mCompressLunar
 		// 
-		this.mCompressLunar.Index =  11;
-		this.mCompressLunar.Text  =  "Compress to Tithi Year";
-		this.mCompressLunar.Click += new System.EventHandler(this.mCompressLunar_Click);
+		this._mCompressLunar.Index =  11;
+		this._mCompressLunar.Text  =  "Compress to Tithis Year";
+		this._mCompressLunar.Click += new System.EventHandler(this.mCompressLunar_Click);
 		// 
 		// mCompressYoga
 		// 
-		this.mCompressYoga.Index =  12;
-		this.mCompressYoga.Text  =  "Compress to Yoga Year";
-		this.mCompressYoga.Click += new System.EventHandler(this.mCompressYoga_Click);
+		this._mCompressYoga.Index =  12;
+		this._mCompressYoga.Text  =  "Compress to Yoga Year";
+		this._mCompressYoga.Click += new System.EventHandler(this.mCompressYoga_Click);
 		// 
 		// mCompressTithiPraveshaTithi
 		// 
-		this.mCompressTithiPraveshaTithi.Index =  13;
-		this.mCompressTithiPraveshaTithi.Text  =  "Compress to Tithi Pravesha Year (Tithi)";
-		this.mCompressTithiPraveshaTithi.Click += new System.EventHandler(this.mCompressTithiPraveshaTithi_Click);
+		this._mCompressTithiPraveshaTithi.Index =  13;
+		this._mCompressTithiPraveshaTithi.Text  =  "Compress to Tithis Pravesha Year (Tithis)";
+		this._mCompressTithiPraveshaTithi.Click += new System.EventHandler(this.mCompressTithiPraveshaTithi_Click);
 		// 
 		// mCompressTithiPraveshaSolar
 		// 
-		this.mCompressTithiPraveshaSolar.Index =  14;
-		this.mCompressTithiPraveshaSolar.Text  =  "Compress to Tithi Pravesha Year (Solar)";
-		this.mCompressTithiPraveshaSolar.Click += new System.EventHandler(this.mCompressTithiPraveshaSolar_Click);
+		this._mCompressTithiPraveshaSolar.Index =  14;
+		this._mCompressTithiPraveshaSolar.Text  =  "Compress to Tithis Pravesha Year (Solar)";
+		this._mCompressTithiPraveshaSolar.Click += new System.EventHandler(this.mCompressTithiPraveshaSolar_Click);
 		// 
 		// mCompressedTithiPraveshaFixed
 		// 
-		this.mCompressedTithiPraveshaFixed.Index =  15;
-		this.mCompressedTithiPraveshaFixed.Text  =  "Compress to Tithi Pravesha Year (Fixed)";
-		this.mCompressedTithiPraveshaFixed.Click += new System.EventHandler(this.mCompressedTithiPraveshaFixed_Click);
+		this._mCompressedTithiPraveshaFixed.Index =  15;
+		this._mCompressedTithiPraveshaFixed.Text  =  "Compress to Tithis Pravesha Year (Fixed)";
+		this._mCompressedTithiPraveshaFixed.Click += new System.EventHandler(this.mCompressedTithiPraveshaFixed_Click);
 		// 
 		// mCompressedYogaPraveshaYoga
 		// 
-		this.mCompressedYogaPraveshaYoga.Index =  16;
-		this.mCompressedYogaPraveshaYoga.Text  =  "Compress to Yoga Pravesha Year (Yoga)";
-		this.mCompressedYogaPraveshaYoga.Click += new System.EventHandler(this.mCompressedYogaPraveshaYoga_Click);
+		this._mCompressedYogaPraveshaYoga.Index =  16;
+		this._mCompressedYogaPraveshaYoga.Text  =  "Compress to Yoga Pravesha Year (Yoga)";
+		this._mCompressedYogaPraveshaYoga.Click += new System.EventHandler(this.mCompressedYogaPraveshaYoga_Click);
 		// 
 		// menuItem4
 		// 
-		this.menuItem4.Index = 13;
-		this.menuItem4.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
+		this._menuItem4.Index = 13;
+		this._menuItem4.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
 		{
-			this.mEditDasas,
-			this.mNormalize
+			this._mEditDasas,
+			this._mNormalize
 		});
-		this.menuItem4.Text = "Advanced";
+		this._menuItem4.Text = "Advanced";
 		// 
 		// mEditDasas
 		// 
-		this.mEditDasas.Index =  0;
-		this.mEditDasas.Text  =  "Edit Dasas";
-		this.mEditDasas.Click += new System.EventHandler(this.mEditDasas_Click);
+		this._mEditDasas.Index =  0;
+		this._mEditDasas.Text  =  "Edit Dasas";
+		this._mEditDasas.Click += new System.EventHandler(this.mEditDasas_Click);
 		// 
 		// mNormalize
 		// 
-		this.mNormalize.Index =  1;
-		this.mNormalize.Text  =  "Normalize Dates";
-		this.mNormalize.Click += new System.EventHandler(this.menuItem5_Click);
+		this._mNormalize.Index =  1;
+		this._mNormalize.Text  =  "Normalize Dates";
+		this._mNormalize.Click += new System.EventHandler(this.menuItem5_Click);
 		// 
 		// menuItem1
 		// 
-		this.menuItem1.Index = 14;
-		this.menuItem1.Text  = "-";
+		this._menuItem1.Index = 14;
+		this._menuItem1.Text  = "-";
 		// 
 		// menuItem2
 		// 
-		this.menuItem2.Index = 15;
-		this.menuItem2.Text  = "-";
+		this._menuItem2.Index = 15;
+		this._menuItem2.Text  = "-";
 		// 
 		// dasaInfo
 		// 
-		this.dasaInfo.Anchor    =  ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-		this.dasaInfo.Location  =  new System.Drawing.Point(184, 8);
-		this.dasaInfo.Name      =  "dasaInfo";
-		this.dasaInfo.Size      =  new System.Drawing.Size(232, 23);
-		this.dasaInfo.TabIndex  =  1;
-		this.dasaInfo.TextAlign =  System.Drawing.ContentAlignment.MiddleLeft;
-		this.dasaInfo.Click     += new System.EventHandler(this.dasaInfo_Click);
+		this._dasaInfo.Anchor    =  ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+		this._dasaInfo.Location  =  new System.Drawing.Point(184, 8);
+		this._dasaInfo.Name      =  "_dasaInfo";
+		this._dasaInfo.Size      =  new System.Drawing.Size(232, 23);
+		this._dasaInfo.TabIndex  =  1;
+		this._dasaInfo.TextAlign =  System.Drawing.ContentAlignment.MiddleLeft;
+		this._dasaInfo.Click     += new System.EventHandler(this.dasaInfo_Click);
 		// 
 		// bPrevCycle
 		// 
-		this.bPrevCycle.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
-		this.bPrevCycle.Location =  new System.Drawing.Point(8, 8);
-		this.bPrevCycle.Name     =  "bPrevCycle";
-		this.bPrevCycle.Size     =  new System.Drawing.Size(24, 23);
-		this.bPrevCycle.TabIndex =  2;
-		this.bPrevCycle.Text     =  "<";
-		this.bPrevCycle.Click    += new System.EventHandler(this.bPrevCycle_Click);
+		this._bPrevCycle.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
+		this._bPrevCycle.Location =  new System.Drawing.Point(8, 8);
+		this._bPrevCycle.Name     =  "_bPrevCycle";
+		this._bPrevCycle.Size     =  new System.Drawing.Size(24, 23);
+		this._bPrevCycle.TabIndex =  2;
+		this._bPrevCycle.Text     =  "<";
+		this._bPrevCycle.Click    += new System.EventHandler(this.bPrevCycle_Click);
 		// 
 		// bNextCycle
 		// 
-		this.bNextCycle.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
-		this.bNextCycle.Location =  new System.Drawing.Point(32, 8);
-		this.bNextCycle.Name     =  "bNextCycle";
-		this.bNextCycle.Size     =  new System.Drawing.Size(24, 23);
-		this.bNextCycle.TabIndex =  3;
-		this.bNextCycle.Text     =  ">";
-		this.bNextCycle.Click    += new System.EventHandler(this.bNextCycle_Click);
+		this._bNextCycle.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
+		this._bNextCycle.Location =  new System.Drawing.Point(32, 8);
+		this._bNextCycle.Name     =  "_bNextCycle";
+		this._bNextCycle.Size     =  new System.Drawing.Size(24, 23);
+		this._bNextCycle.TabIndex =  3;
+		this._bNextCycle.Text     =  ">";
+		this._bNextCycle.Click    += new System.EventHandler(this.bNextCycle_Click);
 		// 
 		// bDasaOptions
 		// 
-		this.bDasaOptions.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
-		this.bDasaOptions.Location =  new System.Drawing.Point(64, 8);
-		this.bDasaOptions.Name     =  "bDasaOptions";
-		this.bDasaOptions.Size     =  new System.Drawing.Size(40, 23);
-		this.bDasaOptions.TabIndex =  4;
-		this.bDasaOptions.Text     =  "Opts";
-		this.bDasaOptions.Click    += new System.EventHandler(this.bDasaOptions_Click);
+		this._bDasaOptions.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
+		this._bDasaOptions.Location =  new System.Drawing.Point(64, 8);
+		this._bDasaOptions.Name     =  "_bDasaOptions";
+		this._bDasaOptions.Size     =  new System.Drawing.Size(40, 23);
+		this._bDasaOptions.TabIndex =  4;
+		this._bDasaOptions.Text     =  "Opts";
+		this._bDasaOptions.Click    += new System.EventHandler(this.bDasaOptions_Click);
 		// 
 		// bDateOptions
 		// 
-		this.bDateOptions.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
-		this.bDateOptions.Location =  new System.Drawing.Point(104, 8);
-		this.bDateOptions.Name     =  "bDateOptions";
-		this.bDateOptions.Size     =  new System.Drawing.Size(24, 23);
-		this.bDateOptions.TabIndex =  5;
-		this.bDateOptions.Text     =  "Yr";
-		this.bDateOptions.Click    += new System.EventHandler(this.bDateOptions_Click);
+		this._bDateOptions.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
+		this._bDateOptions.Location =  new System.Drawing.Point(104, 8);
+		this._bDateOptions.Name     =  "_bDateOptions";
+		this._bDateOptions.Size     =  new System.Drawing.Size(24, 23);
+		this._bDateOptions.TabIndex =  5;
+		this._bDateOptions.Text     =  "Yr";
+		this._bDateOptions.Click    += new System.EventHandler(this.bDateOptions_Click);
 		// 
 		// bRasiStrengths
 		// 
-		this.bRasiStrengths.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
-		this.bRasiStrengths.Location =  new System.Drawing.Point(128, 8);
-		this.bRasiStrengths.Name     =  "bRasiStrengths";
-		this.bRasiStrengths.Size     =  new System.Drawing.Size(24, 23);
-		this.bRasiStrengths.TabIndex =  6;
-		this.bRasiStrengths.Text     =  "R";
-		this.bRasiStrengths.Click    += new System.EventHandler(this.bRasiStrengths_Click);
+		this._bRasiStrengths.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
+		this._bRasiStrengths.Location =  new System.Drawing.Point(128, 8);
+		this._bRasiStrengths.Name     =  "_bRasiStrengths";
+		this._bRasiStrengths.Size     =  new System.Drawing.Size(24, 23);
+		this._bRasiStrengths.TabIndex =  6;
+		this._bRasiStrengths.Text     =  "R";
+		this._bRasiStrengths.Click    += new System.EventHandler(this.bRasiStrengths_Click);
 		// 
 		// bGrahaStrengths
 		// 
-		this.bGrahaStrengths.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
-		this.bGrahaStrengths.Location =  new System.Drawing.Point(152, 8);
-		this.bGrahaStrengths.Name     =  "bGrahaStrengths";
-		this.bGrahaStrengths.Size     =  new System.Drawing.Size(24, 23);
-		this.bGrahaStrengths.TabIndex =  7;
-		this.bGrahaStrengths.Text     =  "G";
-		this.bGrahaStrengths.Click    += new System.EventHandler(this.bGrahaStrengths_Click);
+		this._bGrahaStrengths.Font     =  new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
+		this._bGrahaStrengths.Location =  new System.Drawing.Point(152, 8);
+		this._bGrahaStrengths.Name     =  "_bGrahaStrengths";
+		this._bGrahaStrengths.Size     =  new System.Drawing.Size(24, 23);
+		this._bGrahaStrengths.TabIndex =  7;
+		this._bGrahaStrengths.Text     =  "G";
+		this._bGrahaStrengths.Click    += new System.EventHandler(this.bGrahaStrengths_Click);
 		// 
 		// mEntryChartCompressed
 		// 
-		this.mEntryChartCompressed.Index =  1;
-		this.mEntryChartCompressed.Text  =  "Entry Chart (&Compressed)";
-		this.mEntryChartCompressed.Click += new System.EventHandler(this.mEntryChartCompressed_Click);
+		this._mEntryChartCompressed.Index =  1;
+		this._mEntryChartCompressed.Text  =  "Entry Chart (&Compressed)";
+		this._mEntryChartCompressed.Click += new System.EventHandler(this.mEntryChartCompressed_Click);
 		// 
 		// DasaControl
 		// 
 		this.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-		this.Controls.Add(this.bGrahaStrengths);
-		this.Controls.Add(this.bRasiStrengths);
-		this.Controls.Add(this.bDateOptions);
-		this.Controls.Add(this.bDasaOptions);
-		this.Controls.Add(this.bNextCycle);
-		this.Controls.Add(this.bPrevCycle);
-		this.Controls.Add(this.dasaInfo);
-		this.Controls.Add(this.dasaItemList);
+		this.Controls.Add(this._bGrahaStrengths);
+		this.Controls.Add(this._bRasiStrengths);
+		this.Controls.Add(this._bDateOptions);
+		this.Controls.Add(this._bDasaOptions);
+		this.Controls.Add(this._bNextCycle);
+		this.Controls.Add(this._bPrevCycle);
+		this.Controls.Add(this._dasaInfo);
+		this.Controls.Add(this._dasaItemList);
 		this.Name =  "DasaControl";
 		this.Size =  new System.Drawing.Size(440, 312);
 		this.Load += new System.EventHandler(this.DasaControl_Load);
@@ -707,115 +700,106 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mEntryChart_Click(object sender, EventArgs e)
 	{
-		if (dasaItemList.SelectedItems.Count == 0)
+		if (_dasaItemList.SelectedItems.Count == 0)
 		{
 			return;
 		}
 
 		var h2 = (Horoscope) h.Clone();
-		var di = (DasaItem) dasaItemList.SelectedItems[0];
+		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		sweph.obtainLock(h);
-		var m = td.AddYears(di.entry.startUT);
-		h2.info.tob = m;
-		sweph.releaseLock(h);
+		var m = _td.AddYears(di.Entry.StartUt);
+		h2.Info.DateOfBirth = m;
 
 		var mchild = (MhoraChild) ParentForm;
-		var mcont  = (MhoraContainer) ParentForm.ParentForm;
+		var mcont  = (MainForm) ParentForm.ParentForm;
 
-		mcont.AddChild(h2, mchild.Name + ": Dasa Entry - (" + di.entry.shortDesc + ") " + id.Description());
+		mcont.AddChild(h2, mchild.Name + ": Dasa Entry - (" + di.Entry.DasaName + ") " + _id.Description());
 	}
 
 
 	private void mEntryChartCompressed_Click(object sender, EventArgs e)
 	{
-		if (dasaItemList.SelectedItems.Count == 0)
+		if (_dasaItemList.SelectedItems.Count == 0)
 		{
 			return;
 		}
 
 		var h2 = (Horoscope) h.Clone();
-		var di = (DasaItem) dasaItemList.SelectedItems[0];
+		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		sweph.obtainLock(h);
-		var m    = td.AddYears(di.entry.startUT);
-		var mEnd = td.AddYears(di.entry.startUT + di.entry.dasaLength);
+		var m    = _td.AddYears(di.Entry.StartUt);
+		var mEnd = _td.AddYears(di.Entry.StartUt + di.Entry.DasaLength);
 
-		var ut_diff = mEnd.toUniversalTime() - m.toUniversalTime();
-		h2.info.tob = m;
-		sweph.releaseLock(h);
+		var utDiff = mEnd.ToUniversalTime() - m.ToUniversalTime();
+		h2.Info.DateOfBirth = m;
 
-
-		h2.info.defaultYearCompression = 1;
-		h2.info.defaultYearLength      = ut_diff;
-		h2.info.defaultYearType        = ToDate.DateType.FixedYear;
+		h2.Info.DefaultYearCompression = 1;
+		h2.Info.DefaultYearLength      = utDiff.TotalHours;
+		h2.Info.DefaultYearType        = ToDate.DateType.FixedYear;
 
 		var mchild = (MhoraChild) ParentForm;
-		var mcont  = (MhoraContainer) ParentForm.ParentForm;
+		var mcont  = (MainForm) ParentForm.ParentForm;
 
-		mcont.AddChild(h2, mchild.Name + ": Dasa Entry - (" + di.entry.shortDesc + ") " + id.Description());
+		mcont.AddChild(h2, mchild.Name + ": Dasa Entry - (" + di.Entry.DasaName + ") " + _id.Description());
 	}
 
 
 	private void mEntrySunriseChart_Click(object sender, EventArgs e)
 	{
-		if (dasaItemList.SelectedItems.Count == 0)
+		if (_dasaItemList.SelectedItems.Count == 0)
 		{
 			return;
 		}
 
 		var h2 = (Horoscope) h.Clone();
-		var di = (DasaItem) dasaItemList.SelectedItems[0];
+		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		sweph.obtainLock(h);
-		var m = td.AddYears(di.entry.startUT);
-		sweph.releaseLock(h);
-		h2.info.tob = m;
+		var m = _td.AddYears(di.Entry.StartUt);
+		h2.Info.DateOfBirth = m;
 
 		h2.OnChanged();
 
 		// if done once, get something usually 2+ minutes off. 
 		// don't know why this is.
-		var offsetSunrise = h2.hoursAfterSunrise() / 24.0;
-		m           = new Moment(h2.baseUT - offsetSunrise, h2);
-		h2.info.tob = m;
+		var offsetSunrise = h2.HoursAfterSunrise() / 24.0;
+		m                   = h2.Moment(h2.Info.Jd - offsetSunrise);
+		h2.Info.DateOfBirth = m;
 		h2.OnChanged();
 
 		// so do it a second time, getting sunrise + 1 second.
-		offsetSunrise = h2.hoursAfterSunrise() / 24.0;
-		m             = new Moment(h2.baseUT - offsetSunrise + 1.0 / (24.0 * 60.0 * 60.0), h2);
-		h2.info.tob   = m;
+		offsetSunrise       = h2.HoursAfterSunrise() / 24.0;
+		m                   = h2.Moment(h2.Info.Jd - offsetSunrise + 1.0 / (24.0 * 60.0 * 60.0));
+		h2.Info.DateOfBirth = m;
 		h2.OnChanged();
 
 		var mchild = (MhoraChild) ParentForm;
-		var mcont  = (MhoraContainer) ParentForm.ParentForm;
+		var mcont  = (MainForm) ParentForm.ParentForm;
 
-		mcont.AddChild(h2, mchild.Name + ": Dasa Entry Sunrise - (" + di.entry.shortDesc + ") " + id.Description());
+		mcont.AddChild(h2, mchild.Name + ": Dasa Entry Sunrise - (" + di.Entry.DasaName + ") " + _id.Description());
 	}
 
 
 	private void mEntryDate_Click(object sender, EventArgs e)
 	{
-		if (dasaItemList.SelectedItems.Count == 0)
+		if (_dasaItemList.SelectedItems.Count == 0)
 		{
 			return;
 		}
 
-		var di = (DasaItem) dasaItemList.SelectedItems[0];
-		sweph.obtainLock(h);
-		var m = td.AddYears(di.entry.startUT);
-		sweph.releaseLock(h);
+		var di = (DasaItem) _dasaItemList.SelectedItems[0];
+		var m = _td.AddYears(di.Entry.StartUt);
 		Clipboard.SetDataObject(m.ToString(), true);
 	}
 
 	private void SplitDasa()
 	{
-		if (dasaItemList.SelectedItems.Count == 0)
+		if (_dasaItemList.SelectedItems.Count == 0)
 		{
 			return;
 		}
 
-		SplitDasa((DasaItem) dasaItemList.SelectedItems[0]);
+		SplitDasa((DasaItem) _dasaItemList.SelectedItems[0]);
 	}
 
 	private void SplitDasa(DasaItem di)
@@ -823,17 +807,17 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		//Trace.Assert(dasaItemList.SelectedItems.Count >= 1, "dasaItemList::doubleclick");
 		var index = di.Index + 1;
 
-		var action_inserting = true;
+		var actionInserting = true;
 
 
-		dasaItemList.BeginUpdate();
-		while (index < dasaItemList.Items.Count)
+		_dasaItemList.BeginUpdate();
+		while (index < _dasaItemList.Items.Count)
 		{
-			var tdi = (DasaItem) dasaItemList.Items[index];
-			if (tdi.entry.level > di.entry.level)
+			var tdi = (DasaItem) _dasaItemList.Items[index];
+			if (tdi.Entry.Level > di.Entry.Level)
 			{
-				action_inserting = false;
-				dasaItemList.Items.Remove(tdi);
+				actionInserting = false;
+				_dasaItemList.Items.Remove(tdi);
 			}
 			else
 			{
@@ -841,45 +825,43 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			}
 		}
 
-		if (action_inserting == false)
+		if (actionInserting == false)
 		{
-			dasaItemList.EndUpdate();
+			_dasaItemList.EndUpdate();
 			return;
 		}
 
-		var a        = id.AntarDasa(di.entry);
-		var compress = DasaOptions.Compression == 0.0 ? 0.0 : DasaOptions.Compression / id.paramAyus();
+		var a        = _id.AntarDasa(di.Entry);
+		var compress = DasaOptions.Compression == 0.0 ? 0.0 : DasaOptions.Compression / _id.ParamAyus();
 
-		sweph.obtainLock(h);
 		foreach (DasaEntry de in a)
 		{
 			var pdi = new DasaItem(de);
-			pdi.populateListViewItemMembers(td, id);
-			dasaItemList.Items.Insert(index, pdi);
+			pdi.PopulateListViewItemMembers(_td, _id);
+			_dasaItemList.Items.Insert(index, pdi);
 			index = index + 1;
 		}
 
-		sweph.releaseLock(h);
-		dasaItemList.EndUpdate();
+		_dasaItemList.EndUpdate();
 		//this.dasaItemList.Items[index-1].Selected = true;
 	}
 
 	protected override void copyToClipboard()
 	{
 		var iMaxDescLength = 0;
-		for (var i = 0; i < dasaItemList.Items.Count; i++)
+		for (var i = 0; i < _dasaItemList.Items.Count; i++)
 		{
-			iMaxDescLength = Math.Max(dasaItemList.Items[i].Text.Length, iMaxDescLength);
+			iMaxDescLength = Math.Max(_dasaItemList.Items[i].Text.Length, iMaxDescLength);
 		}
 
 		iMaxDescLength += 2;
 
-		var s = dasaInfo.Text + "\r\n\r\n";
-		for (var i = 0; i < dasaItemList.Items.Count; i++)
+		var s = _dasaInfo.Text + "\r\n\r\n";
+		for (var i = 0; i < _dasaItemList.Items.Count; i++)
 		{
-			var li         = dasaItemList.Items[i];
+			var li         = _dasaItemList.Items[i];
 			var di         = (DasaItem) li;
-			var levelSpace = di.entry.level * 2;
+			var levelSpace = di.Entry.Level * 2;
 			s += li.Text.PadRight(iMaxDescLength + levelSpace, ' ');
 
 			for (var j = 1; j < li.SubItems.Count; j++)
@@ -893,67 +875,59 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		Clipboard.SetDataObject(s);
 	}
 
-	private void recalculateEntries()
+	private void RecalculateEntries()
 	{
 		SetDescriptionLabel();
-		dasaItemList.Items.Clear();
+		_dasaItemList.Items.Clear();
 		var a = new ArrayList();
-		for (var i = min_cycle; i <= max_cycle; i++)
+		for (var i = _minCycle; i <= _maxCycle; i++)
 		{
-			var b = id.Dasa(i);
+			var b = _id.Dasa(i);
 			a.AddRange(b);
 		}
 
-		sweph.obtainLock(h);
 		foreach (DasaEntry de in a)
 		{
 			var di = new DasaItem(de);
-			di.populateListViewItemMembers(td, id);
-			dasaItemList.Items.Add(di);
+			di.PopulateListViewItemMembers(_td, _id);
+			_dasaItemList.Items.Add(di);
 		}
 
-		sweph.releaseLock(h);
 		LocateChartEvents();
 	}
 
 	private void mOptions_Click(object sender, EventArgs e)
 	{
 		//object wrapper = new GlobalizedPropertiesWrapper(id.GetOptions());
-		var f = new MhoraOptions(id.GetOptions(), id.SetOptions);
+		var f = new MhoraOptions(_id.GetOptions(), _id.SetOptions);
 		f.pGrid.ExpandAllGridItems();
 		f.ShowDialog();
 	}
 
 	private void mPreviousCycle_Click(object sender, EventArgs e)
 	{
-		min_cycle--;
-		var a = id.Dasa(min_cycle);
+		_minCycle--;
+		var a = _id.Dasa(_minCycle);
 		var i = 0;
-		sweph.obtainLock(h);
 		foreach (DasaEntry de in a)
 		{
 			var di = new DasaItem(de);
-			di.populateListViewItemMembers(td, id);
-			dasaItemList.Items.Insert(i, di);
+			di.PopulateListViewItemMembers(_td, _id);
+			_dasaItemList.Items.Insert(i, di);
 			i++;
 		}
-
-		sweph.releaseLock(h);
 	}
 
 	private void mNextCycle_Click(object sender, EventArgs e)
 	{
-		max_cycle++;
-		var a = id.Dasa(max_cycle);
-		sweph.obtainLock(h);
+		_maxCycle++;
+		var a = _id.Dasa(_maxCycle);
 		foreach (DasaEntry de in a)
 		{
 			var di = new DasaItem(de);
-			di.populateListViewItemMembers(td, id);
-			dasaItemList.Items.Add(di);
+			di.PopulateListViewItemMembers(_td, _id);
+			_dasaItemList.Items.Add(di);
 		}
-
-		sweph.releaseLock(h);
 	}
 
 	private void mReset_Click(object sender, EventArgs e)
@@ -976,28 +950,28 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void DasaControl_Load(object sender, EventArgs e)
 	{
-		AddViewsToContextMenu(dasaContextMenu);
+		AddViewsToContextMenu(_dasaContextMenu);
 	}
 
 	private void SetDasaYearType()
 	{
-		var compress = DasaOptions.Compression == 0.0 ? 0.0 : DasaOptions.Compression / id.paramAyus();
+		var compress = DasaOptions.Compression == 0.0 ? 0.0 : DasaOptions.Compression / _id.ParamAyus();
 		if (DasaOptions.YearType == ToDate.DateType.FixedYear) // ||
 			//mDasaOptions.YearType == ToDate.DateType.TithiYear)
 		{
-			td = new ToDate(h.baseUT, DasaOptions.YearLength, compress, h);
+			_td = new ToDate(h.Info.Jd, DasaOptions.YearLength, compress, h);
 		}
 		else
 		{
-			td = new ToDate(h.baseUT, DasaOptions.YearType, DasaOptions.YearLength, compress, h);
+			_td = new ToDate(h.Info.Jd, DasaOptions.YearType, DasaOptions.YearLength, compress, h);
 		}
 
-		td.SetOffset(DasaOptions.OffsetDays + DasaOptions.OffsetHours / 24.0 + DasaOptions.OffsetMinutes / (24.0 * 60.0));
+		_td.SetOffset(DasaOptions.OffsetDays + DasaOptions.OffsetHours / 24.0 + DasaOptions.OffsetMinutes / (24.0 * 60.0));
 	}
 
 	private object SetDasaOptions(object o)
 	{
-		var opts = (Elements.Dasas.Dasa.Options) o;
+		var opts = (Elements.Dasas.Dasa.DasaOptions) o;
 		DasaOptions.Copy(opts);
 		SetDasaYearType();
 		Reset();
@@ -1012,14 +986,14 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void dasaItemList_MouseMove(object sender, MouseEventArgs e)
 	{
-		var di = (DasaItem) dasaItemList.GetItemAt(e.X, e.Y);
+		var di = (DasaItem) _dasaItemList.GetItemAt(e.X, e.Y);
 		if (di == null)
 		{
 			return;
 		}
 
-		tooltip_event.SetToolTip(dasaItemList, di.EventDesc);
-		tooltip_event.InitialDelay = 0;
+		TooltipEvent.SetToolTip(_dasaItemList, di.EventDesc);
+		TooltipEvent.InitialDelay = 0;
 
 		if (MhoraGlobalOptions.Instance.DasaMoveSelect)
 		{
@@ -1067,7 +1041,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			SplitDasa();
 		}
 
-		var li = dasaItemList.GetItemAt(e.X, e.Y);
+		var li = _dasaItemList.GetItemAt(e.X, e.Y);
 		//mhora.Log.Debug ("MouseMove Click: {0} {1}", e.Y, li != null ? li.Value : -1);
 		if (li != null)
 		{
@@ -1208,10 +1182,9 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	private void mCompressTithiPraveshaTithi_Click(object sender, EventArgs e)
 	{
 		DasaOptions.YearType = ToDate.DateType.TithiYear;
-		var td_pravesh = new ToDate(h.baseUT, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
-		var td_tithi   = new ToDate(h.baseUT, ToDate.DateType.TithiYear, 360.0, 0, h);
-		sweph.obtainLock(h);
-		if (td_tithi.AddYears(1).toUniversalTime() + 15.0 < td_pravesh.AddYears(1).toUniversalTime())
+		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
+		var tdTithi   = new ToDate(h.Info.Jd, ToDate.DateType.TithiYear, 360.0, 0, h);
+		if (tdTithi.AddYears(1).UniversalTime() + 15.0 < tdPravesh.AddYears(1).UniversalTime())
 		{
 			DasaOptions.YearLength = 390;
 		}
@@ -1219,31 +1192,26 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		{
 			DasaOptions.YearLength = 360;
 		}
-
-		sweph.releaseLock(h);
 		DasaOptions.Compression = 1;
 		SetDasaYearType();
 		Reset();
 	}
 
-	public void compressToYogaPraveshaYearYoga()
+	public void CompressToYogaPraveshaYearYoga()
 	{
 		DasaOptions.YearType = ToDate.DateType.YogaYear;
-		var td_pravesh = new ToDate(h.baseUT, ToDate.DateType.YogaPraveshYear, 360.0, 0, h);
-		var td_yoga    = new ToDate(h.baseUT, ToDate.DateType.YogaYear, 324.0, 0, h);
-		sweph.obtainLock(h);
-		var    date_to_surpass = td_pravesh.AddYears(1).toUniversalTime() - 5;
-		var    date_current    = td_yoga.AddYears(0).toUniversalTime();
+		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.YogaPraveshYear, 360.0, 0, h);
+		var tdYoga    = new ToDate(h.Info.Jd, ToDate.DateType.YogaYear, 324.0, 0, h);
+		var    dateToSurpass = tdPravesh.AddYears(1).UniversalTime() - 5;
+		var    dateCurrent    = tdYoga.AddYears(0).UniversalTime();
 		double months          = 0;
-		while (date_current < date_to_surpass)
+		while (dateCurrent < dateToSurpass)
 		{
-			Application.Log.Debug("{0} > {1}", new Moment(date_current, h), new Moment(date_to_surpass, h));
+			Application.Log.Debug("{0} > {1}", h.Moment(dateCurrent), h.Moment(dateToSurpass));
 
 			months++;
-			date_current = td_yoga.AddYears(months / 12.0).toUniversalTime();
+			dateCurrent = tdYoga.AddYears(months / 12.0).UniversalTime();
 		}
-
-		sweph.releaseLock(h);
 		DasaOptions.Compression = 1;
 		DasaOptions.YearLength  = (int) months * 27;
 		SetDasaYearType();
@@ -1252,19 +1220,18 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mCompressedYogaPraveshaYoga_Click(object sender, EventArgs e)
 	{
-		compressToYogaPraveshaYearYoga();
+		CompressToYogaPraveshaYearYoga();
 	}
 
 	private void mCompressTithiPraveshaSolar_Click(object sender, EventArgs e)
 	{
-		var td_pravesh = new ToDate(h.baseUT, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
-		sweph.obtainLock(h);
-		var ut_start = td_pravesh.AddYears(0).toUniversalTime();
-		var ut_end   = td_pravesh.AddYears(1).toUniversalTime();
-		var sp_start = Basics.CalculateSingleBodyPosition(ut_start, sweph.BodyNameToSweph(Body.Name.Sun), Body.Name.Sun, Body.Type.Graha, h);
-		var sp_end   = Basics.CalculateSingleBodyPosition(ut_end, sweph.BodyNameToSweph(Body.Name.Sun), Body.Name.Sun, Body.Type.Graha, h);
-		var lDiff    = sp_end.longitude.sub(sp_start.longitude);
-		var diff     = lDiff.value;
+		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
+		var utStart = tdPravesh.AddYears(0).ToUniversalTime();
+		var utEnd   = tdPravesh.AddYears(1).ToUniversalTime();
+		var spStart = h.CalculateSingleBodyPosition(utStart.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
+		var spEnd   = h.CalculateSingleBodyPosition(utEnd.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
+		var lDiff    = spEnd.Longitude.Sub(spStart.Longitude);
+		var diff     = lDiff.Value;
 		if (diff < 120.0)
 		{
 			diff += 360.0;
@@ -1272,18 +1239,15 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 		DasaOptions.YearType   = ToDate.DateType.SolarYear;
 		DasaOptions.YearLength = diff;
-		sweph.releaseLock(h);
 		DasaOptions.Compression = 1;
 		Reset();
 	}
 
 	private void mCompressedTithiPraveshaFixed_Click(object sender, EventArgs e)
 	{
-		var td_pravesh = new ToDate(h.baseUT, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
-		sweph.obtainLock(h);
+		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 		DasaOptions.YearType   = ToDate.DateType.FixedYear;
-		DasaOptions.YearLength = td_pravesh.AddYears(1).toUniversalTime() - td_pravesh.AddYears(0).toUniversalTime();
-		sweph.releaseLock(h);
+		DasaOptions.YearLength = tdPravesh.AddYears(1).UniversalTime() - tdPravesh.AddYears(0).UniversalTime();
 		Reset();
 	}
 
@@ -1321,17 +1285,14 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	public object SetDasasOptions(object a)
 	{
-		dasaItemList.Items.Clear();
+		_dasaItemList.Items.Clear();
 		var al = ((DasaEntriesWrapper) a).Entries;
-		sweph.obtainLock(h);
 		for (var i = 0; i < al.Length; i++)
 		{
 			var di = new DasaItem(al[i]);
-			di.populateListViewItemMembers(td, id);
-			dasaItemList.Items.Add(di);
+			di.PopulateListViewItemMembers(_td, _id);
+			_dasaItemList.Items.Add(di);
 		}
-
-		sweph.releaseLock(h);
 		LocateChartEvents();
 		return a;
 	}
@@ -1346,64 +1307,61 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void menuItem5_Click(object sender, EventArgs e)
 	{
-		var al    = new DasaEntry[dasaItemList.Items.Count];
-		var am    = new DasaItem[dasaItemList.Items.Count];
+		var al    = new DasaEntry[_dasaItemList.Items.Count];
+		var am    = new DasaItem[_dasaItemList.Items.Count];
 		var start = 0.0;
-		if (dasaItemList.Items.Count >= 1)
+		if (_dasaItemList.Items.Count >= 1)
 		{
-			start = ((DasaItem) dasaItemList.Items[0]).entry.startUT;
+			start = ((DasaItem) _dasaItemList.Items[0]).Entry.StartUt;
 		}
 
-		for (var i = 0; i < dasaItemList.Items.Count; i++)
+		for (var i = 0; i < _dasaItemList.Items.Count; i++)
 		{
-			var di = (DasaItem) dasaItemList.Items[i];
-			al[i] = di.entry;
-			if (al[i].level == 1)
+			var di = (DasaItem) _dasaItemList.Items[i];
+			al[i] = di.Entry;
+			if (al[i].Level == 1)
 			{
-				al[i].startUT =  start;
-				start         += al[i].dasaLength;
+				al[i].StartUt =  start;
+				start         += al[i].DasaLength;
 			}
 
 			am[i] = new DasaItem(al[i]);
 		}
 
-		dasaItemList.Items.Clear();
-		sweph.obtainLock(h);
+		_dasaItemList.Items.Clear();
 		for (var i = 0; i < am.Length; i++)
 		{
-			am[i].populateListViewItemMembers(td, id);
-			dasaItemList.Items.Add(am[i]);
+			am[i].PopulateListViewItemMembers(_td, _id);
+			_dasaItemList.Items.Add(am[i]);
 		}
-
-		sweph.releaseLock(h);
 	}
 
 	private void mDasaDown_Click(object sender, EventArgs e)
 	{
-		if (dasaItemList.SelectedItems.Count == 0)
+		if (_dasaItemList.SelectedItems.Count == 0)
 		{
 			return;
 		}
 
 		var h2 = (Horoscope) h.Clone();
-		var di = (DasaItem) dasaItemList.SelectedItems[0];
+		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		var m = td.AddYears(di.entry.startUT);
-		h2.info.tob = m;
+		var m = _td.AddYears(di.Entry.StartUt);
+		h2.Info.DateOfBirth = m;
 
 		var mchild = (MhoraChild) ParentForm;
-		var mcont  = (MhoraContainer) ParentForm.ParentForm;
+		var mcont  = (MainForm) ParentForm.ParentForm;
 
-		mcont.AddChild(h2, mchild.Name + ": Dasa Entry Chart - (((" + di.entry.shortDesc + "))) " + id.Description());
+		mcont.AddChild(h2, mchild.Name + ": Dasa Entry Chart - (((" + di.Entry.DasaName + "))) " + _id.Description());
 	}
 
 	private void mEditDasas_Click(object sender, EventArgs e)
 	{
-		var al = new DasaEntry[dasaItemList.Items.Count];
-		for (var i = 0; i < dasaItemList.Items.Count; i++)
+		var al = new DasaEntry[_dasaItemList.Items.Count];
+		for (var i = 0; i < _dasaItemList.Items.Count; i++)
 		{
-			var di = (DasaItem) dasaItemList.Items[i];
-			al[i] = di.entry;
+			var di = (DasaItem) _dasaItemList.Items[i];
+			al[i] = di.Entry;
 		}
 
 		var dw = new DasaEntriesWrapper(al);
@@ -1418,48 +1376,45 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	}
 
 
-	private void ExpandEvent(Moment m, int levels, string eventDesc)
+	private void ExpandEvent(DateTime m, int levels, string eventDesc)
 	{
-		var ut_m = m.toUniversalTime(h);
-		for (var i = 0; i < dasaItemList.Items.Count; i++)
+		var utM = h.UniversalTime(m);
+		for (var i = 0; i < _dasaItemList.Items.Count; i++)
 		{
-			var di = (DasaItem) dasaItemList.Items[i];
+			var di = (DasaItem) _dasaItemList.Items[i];
 
-			sweph.obtainLock(h);
-			var m_start = td.AddYears(di.entry.startUT);
-			var m_end   = td.AddYears(di.entry.startUT + di.entry.dasaLength);
-			sweph.releaseLock(h);
+			var mStart = _td.AddYears(di.Entry.StartUt);
+			var mEnd   = _td.AddYears(di.Entry.StartUt + di.Entry.DasaLength);
 
-
-			var ut_start = m_start.toUniversalTime(h);
-			var ut_end   = m_end.toUniversalTime(h);
+			var utStart = h.UniversalTime(mStart);
+			var utEnd   = h.UniversalTime(mEnd);
 
 
-			if (ut_m >= ut_start && ut_m < ut_end)
+			if (utM >= utStart && utM < utEnd)
 			{
-				Application.Log.Debug("Found: Looking for {0} between {1} and {2}", m, m_start, m_end);
+				Application.Log.Debug("Found: Looking for {0} between {1} and {2}", m, mStart, mEnd);
 
-				if (levels > di.entry.level)
+				if (levels > di.Entry.Level)
 				{
-					if (i == dasaItemList.Items.Count - 1)
+					if (i == _dasaItemList.Items.Count - 1)
 					{
-						dasaItemList.SelectedItems.Clear();
-						dasaItemList.Items[i].Selected = true;
-						SplitDasa((DasaItem) dasaItemList.Items[i]);
+						_dasaItemList.SelectedItems.Clear();
+						_dasaItemList.Items[i].Selected = true;
+						SplitDasa((DasaItem) _dasaItemList.Items[i]);
 					}
 
-					if (i < dasaItemList.Items.Count - 1)
+					if (i < _dasaItemList.Items.Count - 1)
 					{
-						var di_next = (DasaItem) dasaItemList.Items[i + 1];
-						if (di_next.entry.level == di.entry.level)
+						var diNext = (DasaItem) _dasaItemList.Items[i + 1];
+						if (diNext.Entry.Level == di.Entry.Level)
 						{
-							dasaItemList.SelectedItems.Clear();
-							dasaItemList.Items[i].Selected = true;
-							SplitDasa((DasaItem) dasaItemList.Items[i]);
+							_dasaItemList.SelectedItems.Clear();
+							_dasaItemList.Items[i].Selected = true;
+							SplitDasa((DasaItem) _dasaItemList.Items[i]);
 						}
 					}
 				}
-				else if (levels == di.entry.level)
+				else if (levels == di.Entry.Level)
 				{
 					foreach (ListViewItem.ListViewSubItem si in di.SubItems)
 					{
@@ -1472,22 +1427,22 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		}
 	}
 
-	public object LocateEvent(object _euo)
+	public object LocateEvent(object euo)
 	{
-		var euo = (EventUserOptions) _euo;
-		mEventOptionsCache = euo;
-		ExpandEvent(euo.EventDate, euo.Depth, "Event: " + euo.EventDate);
-		return _euo;
+		var options = (EventUserOptions) euo;
+		_mEventOptionsCache = options;
+		ExpandEvent(options.EventDate, options.Depth, "Event: " + options.EventDate);
+		return euo;
 	}
 
 	public void LocateChartEvents()
 	{
-		if (mShowEvents.Checked == false)
+		if (_mShowEvents.Checked == false)
 		{
 			return;
 		}
 
-		foreach (var ue in h.info.Events)
+		foreach (var ue in h.Info.Events)
 		{
 			if (ue.WorkWithEvent)
 			{
@@ -1498,13 +1453,13 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mLocateEvent_Click(object sender, EventArgs e)
 	{
-		if (mEventOptionsCache == null)
+		if (_mEventOptionsCache == null)
 		{
 			var dtNow = DateTime.Now;
-			mEventOptionsCache = new EventUserOptions(new Moment(dtNow.Year, dtNow.Month, dtNow.Day, dtNow.Hour + dtNow.Minute / 60.0 + dtNow.Second / 3600.0));
+			_mEventOptionsCache = new EventUserOptions(dtNow);
 		}
 
-		new MhoraOptions(mEventOptionsCache, LocateEvent).ShowDialog();
+		new MhoraOptions(_mEventOptionsCache, LocateEvent).ShowDialog();
 	}
 
 
@@ -1530,7 +1485,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 				return;
 			}
 
-			id.DivisionChanged(div);
+			_id.DivisionChanged(div);
 		}
 	}
 
@@ -1540,28 +1495,28 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mShowEvents_Click(object sender, EventArgs e)
 	{
-		mShowEvents.Checked = !mShowEvents.Checked;
+		_mShowEvents.Checked = !_mShowEvents.Checked;
 	}
 
 	private void m3Parts_Click(object sender, EventArgs e)
 	{
-		if (dasaItemList.SelectedItems.Count == 0)
+		if (_dasaItemList.SelectedItems.Count == 0)
 		{
 			return;
 		}
 
-		var di = (DasaItem) dasaItemList.SelectedItems[0];
-		var de = di.entry;
+		var di = (DasaItem) _dasaItemList.SelectedItems[0];
+		var de = di.Entry;
 
-		var form = new Dasa3Parts(h, de, td);
+		var form = new Dasa3Parts(h, de, _td);
 		form.Show();
 	}
 
 	private class DasaEntriesWrapper
 	{
-		public DasaEntriesWrapper(DasaEntry[] _al)
+		public DasaEntriesWrapper(DasaEntry[] al)
 		{
-			Entries = _al;
+			Entries = al;
 		}
 
 		public DasaEntry[] Entries
@@ -1573,13 +1528,13 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private class EventUserOptions : ICloneable
 	{
-		public EventUserOptions(Moment _m)
+		public EventUserOptions(DateTime m)
 		{
-			EventDate = (Moment) _m.Clone();
+			EventDate = m;
 			Depth     = 2;
 		}
 
-		public Moment EventDate
+		public DateTime EventDate
 		{
 			get;
 		}

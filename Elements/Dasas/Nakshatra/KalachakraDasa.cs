@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
 
@@ -34,57 +33,57 @@ public class KalachakraDasa : Dasa, IDasa
 		ApasavyaMirrored
 	}
 
-	private readonly Horoscope     h;
-	private readonly ZodiacHouse[] mzhApasavya = new ZodiacHouse[24];
+	private readonly Horoscope     _h;
+	private readonly ZodiacHouse[] _mzhApasavya = new ZodiacHouse[24];
 
-	private readonly ZodiacHouse[] mzhSavya = new ZodiacHouse[24];
+	private readonly ZodiacHouse[] _mzhSavya = new ZodiacHouse[24];
 
-	public KalachakraDasa(Horoscope _h)
+	public KalachakraDasa(Horoscope h)
 	{
-		h = _h;
+		this._h = h;
 
-		var zAri = new ZodiacHouse(ZodiacHouse.Name.Ari);
-		var zSag = new ZodiacHouse(ZodiacHouse.Name.Sag);
+		var zAri = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
+		var zSag = new ZodiacHouse(ZodiacHouse.Rasi.Sag);
 		for (var i = 0; i < 12; i++)
 		{
-			mzhSavya[i] = zAri.add(i + 1);
-			mzhSavya[i               + 12] = mzhSavya[i].LordsOtherSign();
-			mzhApasavya[i]                 = zSag.add(i + 1);
-			mzhApasavya[i                               + 12] = mzhApasavya[i].LordsOtherSign();
+			_mzhSavya[i] = zAri.Add(i + 1);
+			_mzhSavya[i               + 12] = _mzhSavya[i].LordsOtherSign();
+			_mzhApasavya[i]                 = zSag.Add(i + 1);
+			_mzhApasavya[i                               + 12] = _mzhApasavya[i].LordsOtherSign();
 		}
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 144;
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
-		var dRasi = new Division(Basics.DivisionType.Rasi);
-		var mLon  = h.getPosition(Body.Name.Moon).extrapolateLongitude(dRasi);
+		var dRasi = new Division(Vargas.DivisionType.Rasi);
+		var mLon  = _h.GetPosition(Body.BodyType.Moon).ExtrapolateLongitude(dRasi);
 
 		var           offset  = 0;
 		ZodiacHouse[] zhOrder = null;
-		initHelper(mLon, ref zhOrder, ref offset);
+		InitHelper(mLon, ref zhOrder, ref offset);
 
 		var al = new ArrayList();
 
-		double dasa_length_sum = 0;
+		double dasaLengthSum = 0;
 		for (var i = 0; i < 9; i++)
 		{
-			var zhCurr      = zhOrder[(int) Basics.normalize_exc_lower(0, 24, offset + i)];
-			var dasa_length = DasaLength(zhCurr);
-			var de          = new DasaEntry(zhCurr.value, dasa_length_sum, dasa_length, 1, zhCurr.value.ToString());
+			var zhCurr      = zhOrder[(int) Basics.NormalizeExcLower(offset + i, 0, 24)];
+			var dasaLength = DasaLength(zhCurr);
+			var de          = new DasaEntry(zhCurr.Sign, dasaLengthSum, dasaLength, 1, zhCurr.Sign.ToString());
 			al.Add(de);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
-		var offsetLength = mLon.toNakshatraPadaPercentage() / 100.0 * dasa_length_sum;
+		var offsetLength = mLon.ToNakshatraPadaPercentage() / 100.0 * dasaLengthSum;
 
 		foreach (DasaEntry de in al)
 		{
-			de.startUT -= offsetLength;
+			de.StartUt -= offsetLength;
 		}
 
 		return al;
@@ -110,36 +109,36 @@ public class KalachakraDasa : Dasa, IDasa
 		return o;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
-	public GroupType NakshatraToGroup(Elements.Nakshatra n)
+	public GroupType NakshatraToGroup(Nakshatras.Nakshatra n)
 	{
-		switch (n.value)
+		switch (n)
 		{
-			case Elements.Nakshatra.Name.Aswini:
-			case Elements.Nakshatra.Name.Krittika:
-			case Elements.Nakshatra.Name.Punarvasu:
-			case Elements.Nakshatra.Name.Aslesha:
-			case Elements.Nakshatra.Name.Hasta:
-			case Elements.Nakshatra.Name.Swati:
-			case Elements.Nakshatra.Name.Moola:
-			case Elements.Nakshatra.Name.UttaraShada:
-			case Elements.Nakshatra.Name.PoorvaBhadra: return GroupType.Savya;
-			case Elements.Nakshatra.Name.Bharani:
-			case Elements.Nakshatra.Name.Pushya:
-			case Elements.Nakshatra.Name.Chittra:
-			case Elements.Nakshatra.Name.PoorvaShada:
-			case Elements.Nakshatra.Name.Revati: return GroupType.SavyaMirrored;
-			case Elements.Nakshatra.Name.Rohini:
-			case Elements.Nakshatra.Name.Makha:
-			case Elements.Nakshatra.Name.Vishaka:
-			case Elements.Nakshatra.Name.Sravana: return GroupType.Apasavya;
+			case Nakshatras.Nakshatra.Aswini:
+			case Nakshatras.Nakshatra.Krittika:
+			case Nakshatras.Nakshatra.Punarvasu:
+			case Nakshatras.Nakshatra.Aslesha:
+			case Nakshatras.Nakshatra.Hasta:
+			case Nakshatras.Nakshatra.Swati:
+			case Nakshatras.Nakshatra.Moola:
+			case Nakshatras.Nakshatra.UttaraShada:
+			case Nakshatras.Nakshatra.PoorvaBhadra: return GroupType.Savya;
+			case Nakshatras.Nakshatra.Bharani:
+			case Nakshatras.Nakshatra.Pushya:
+			case Nakshatras.Nakshatra.Chittra:
+			case Nakshatras.Nakshatra.PoorvaShada:
+			case Nakshatras.Nakshatra.Revati: return GroupType.SavyaMirrored;
+			case Nakshatras.Nakshatra.Rohini:
+			case Nakshatras.Nakshatra.Makha:
+			case Nakshatras.Nakshatra.Vishaka:
+			case Nakshatras.Nakshatra.Sravana: return GroupType.Apasavya;
 			default: return GroupType.ApasavyaMirrored;
 		}
 
-		switch ((int) n.value % 6)
+		switch ((int) n % 6)
 		{
 			case 1:  return GroupType.Savya;
 			case 2:  return GroupType.SavyaMirrored;
@@ -150,19 +149,19 @@ public class KalachakraDasa : Dasa, IDasa
 		}
 	}
 
-	private void initHelper(Longitude lon, ref ZodiacHouse[] mzhOrder, ref int offset)
+	private void InitHelper(Longitude lon, ref ZodiacHouse[] mzhOrder, ref int offset)
 	{
-		var grp  = NakshatraToGroup(lon.toNakshatra());
-		var pada = lon.toNakshatraPada();
+		var grp  = NakshatraToGroup(lon.ToNakshatra());
+		var pada = lon.ToNakshatraPada();
 
 		switch (grp)
 		{
 			case GroupType.Savya:
 			case GroupType.SavyaMirrored:
-				mzhOrder = mzhSavya;
+				mzhOrder = _mzhSavya;
 				break;
 			default:
-				mzhOrder = mzhApasavya;
+				mzhOrder = _mzhApasavya;
 				break;
 		}
 
@@ -177,25 +176,25 @@ public class KalachakraDasa : Dasa, IDasa
 				break;
 		}
 
-		offset = (int) Basics.normalize_exc_lower(0, 24, (pada - 1) * 9 + offset);
+		offset = (int) Basics.NormalizeExcLower((pada - 1) * 9 + offset, 0, 24);
 	}
 
 	public double DasaLength(ZodiacHouse zh)
 	{
-		switch (zh.value)
+		switch (zh.Sign)
 		{
-			case ZodiacHouse.Name.Ari:
-			case ZodiacHouse.Name.Sco: return 7;
-			case ZodiacHouse.Name.Tau:
-			case ZodiacHouse.Name.Lib: return 16;
-			case ZodiacHouse.Name.Gem:
-			case ZodiacHouse.Name.Vir: return 9;
-			case ZodiacHouse.Name.Can: return 21;
-			case ZodiacHouse.Name.Leo: return 5;
-			case ZodiacHouse.Name.Sag:
-			case ZodiacHouse.Name.Pis: return 10;
-			case ZodiacHouse.Name.Cap:
-			case ZodiacHouse.Name.Aqu: return 4;
+			case ZodiacHouse.Rasi.Ari:
+			case ZodiacHouse.Rasi.Sco: return 7;
+			case ZodiacHouse.Rasi.Tau:
+			case ZodiacHouse.Rasi.Lib: return 16;
+			case ZodiacHouse.Rasi.Gem:
+			case ZodiacHouse.Rasi.Vir: return 9;
+			case ZodiacHouse.Rasi.Can: return 21;
+			case ZodiacHouse.Rasi.Leo: return 5;
+			case ZodiacHouse.Rasi.Sag:
+			case ZodiacHouse.Rasi.Pis: return 10;
+			case ZodiacHouse.Rasi.Cap:
+			case ZodiacHouse.Rasi.Aqu: return 4;
 			default: throw new Exception("KalachakraDasa::DasaLength");
 		}
 	}

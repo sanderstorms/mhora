@@ -11,7 +11,7 @@ namespace Mhora.Database.World;
 [SQLiteTable(Name = "countries")]
 public class Country : SQLiteBaseObject, IComparable
 {
-	private List<TimeZone> _timeZone;
+	private List<TzInfo> _timeZone;
 
 	private Dictionary<string, string> _translations;
 
@@ -132,17 +132,17 @@ public class Country : SQLiteBaseObject, IComparable
 	}
 
 	[SQLiteColumn(Ignore = true)]
-	public List<TimeZone> Timezones
+	private List<TzInfo> Timezones
 	{
 		get
 		{
 			try
 			{
-				_timeZone ??= JsonConvert.DeserializeObject<List<TimeZone>>(TimeZonesJson);
+				_timeZone ??= JsonConvert.DeserializeObject<List<TzInfo>>(TimeZonesJson);
 			}
 			catch (Exception e)
 			{
-				_timeZone ??= new List<TimeZone>();
+				_timeZone ??= new List<TzInfo>();
 			}
 
 			return _timeZone;
@@ -150,18 +150,11 @@ public class Country : SQLiteBaseObject, IComparable
 	}
 
 	[SQLiteColumn(Ignore = true)]
-	public TimeZoneInfo TimeZoneInfo
+	public TimeZone TimeZone
 	{
 		get
 		{
-			try
-			{
-				return TimeZoneInfo.FindSystemTimeZoneById(Timezones[0].zoneName);
-			}
-			catch (Exception e)
-			{
-				return null;
-			}
+			return TimeZone.TimeZones.FindId(Timezones[0].zoneName);
 		}
 	}
 
@@ -203,7 +196,7 @@ public class Country : SQLiteBaseObject, IComparable
 		return $"{Name} ({Region?.Name})";
 	}
 
-	public class TimeZone
+	private class TzInfo
 	{
 		public string zoneName      { get; set; }
 		public int    gmtOffset     { get; set; }

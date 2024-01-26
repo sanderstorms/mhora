@@ -94,10 +94,7 @@ public class NavamsaControl : MhoraControl
 		h.Changed                              -= onRecalculate;
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -190,18 +187,18 @@ public class NavamsaControl : MhoraControl
 		g.DrawEllipse(pn_grey, -105, -105, 210, 210);
 		g.DrawEllipse(pn_grey, -115, -115, 230, 230);
 
-		var bodies = new Body.Name[10]
+		var bodies = new Body.BodyType[10]
 		{
-			Body.Name.Lagna,
-			Body.Name.Sun,
-			Body.Name.Moon,
-			Body.Name.Mars,
-			Body.Name.Mercury,
-			Body.Name.Jupiter,
-			Body.Name.Venus,
-			Body.Name.Saturn,
-			Body.Name.Rahu,
-			Body.Name.Ketu
+			Body.BodyType.Lagna,
+			Body.BodyType.Sun,
+			Body.BodyType.Moon,
+			Body.BodyType.Mars,
+			Body.BodyType.Mercury,
+			Body.BodyType.Jupiter,
+			Body.BodyType.Venus,
+			Body.BodyType.Saturn,
+			Body.BodyType.Rahu,
+			Body.BodyType.Ketu
 		};
 
 		for (var i = 0; i < 12; i++)
@@ -213,7 +210,7 @@ public class NavamsaControl : MhoraControl
 		for (var i = 0; i < 12; i++)
 		{
 			ResetChakra(g, i * 30 + 15);
-			var z  = (ZodiacHouse.Name) (i + 1);
+			var z  = (ZodiacHouse.Rasi) (i + 1);
 			var sz = g.MeasureString(z.ToString(), f);
 			g.DrawString(z.ToString(), f, Brushes.Gray, 40 - sz.Width, 0);
 		}
@@ -247,13 +244,13 @@ public class NavamsaControl : MhoraControl
 			g.DrawLine(p, 105, 0, 115, 0);
 		}
 
-		var dist_sat = h.getPosition(Body.Name.Saturn).distance;
+		var dist_sat = h.GetPosition(Body.BodyType.Saturn).Distance;
 		foreach (var b in bodies)
 		{
-			var   pn_b = new Pen(MhoraGlobalOptions.Instance.getBinduColor(b));
-			Brush br_b = new SolidBrush(MhoraGlobalOptions.Instance.getBinduColor(b));
-			var   bp   = h.getPosition(b);
-			ResetChakra(g, bp.longitude.value);
+			var   pn_b = new Pen(MhoraGlobalOptions.Instance.GetBinduColor(b));
+			Brush br_b = new SolidBrush(MhoraGlobalOptions.Instance.GetBinduColor(b));
+			var   bp   = h.GetPosition(b);
+			ResetChakra(g, bp.Longitude);
 			var chWidth = 2;
 			g.DrawEllipse(pn_black, 110 - chWidth, 0, 1, 1);
 			g.FillEllipse(br_b, 120     - chWidth, -chWidth, chWidth * 2, chWidth * 2);
@@ -262,13 +259,13 @@ public class NavamsaControl : MhoraControl
 			g.DrawString(b.ToString(), f, Brushes.Black, 125, -sz.Height / 2);
 
 			// current position with distance
-			var dist = (int) (bp.distance / dist_sat * (105 - 40 - chWidth * 2));
+			var dist = (int) (bp.Distance / dist_sat * (105 - 40 - chWidth * 2));
 			g.FillEllipse(br_b, 40    + dist - chWidth, -chWidth, chWidth * 2, chWidth * 2);
 			g.DrawEllipse(pn_grey, 40 + dist - chWidth, -chWidth, chWidth * 2, chWidth * 2);
 
 			// speed
-			var dspSize = bp.speed_longitude / 360.0 * 12000.0;
-			if (bp.speed_longitude < 0)
+			var dspSize = bp.SpeedLongitude / 360.0 * 12000.0;
+			if (bp.SpeedLongitude < 0)
 			{
 				dspSize *= 2.0;
 			}
@@ -279,7 +276,7 @@ public class NavamsaControl : MhoraControl
 				spSize = 40;
 			}
 
-			if (bp.speed_longitude > 0)
+			if (bp.SpeedLongitude > 0)
 			{
 				g.DrawLine(pn_lgrey, 40 + dist, -chWidth, 40 + dist, -spSize);
 			}

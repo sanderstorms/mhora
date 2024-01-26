@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Diagnostics;
-using Mhora.Tables;
 using mhora.Util;
 
 namespace Mhora.Elements;
@@ -28,7 +27,7 @@ namespace Mhora.Elements;
 /// </summary>
 public class ZodiacHouse : ICloneable
 {
-	public enum Name
+	public enum Rasi
 	{
 		Ari = 1,
 		Tau = 2,
@@ -51,67 +50,77 @@ public class ZodiacHouse : ICloneable
 		RisesWithBoth
 	}
 
-	public static Name[] AllNames =
+	public static Rasi[] AllNames =
 	{
-		Name.Ari,
-		Name.Tau,
-		Name.Gem,
-		Name.Can,
-		Name.Leo,
-		Name.Vir,
-		Name.Lib,
-		Name.Sco,
-		Name.Sag,
-		Name.Cap,
-		Name.Aqu,
-		Name.Pis
+		Rasi.Ari,
+		Rasi.Tau,
+		Rasi.Gem,
+		Rasi.Can,
+		Rasi.Leo,
+		Rasi.Vir,
+		Rasi.Lib,
+		Rasi.Sco,
+		Rasi.Sag,
+		Rasi.Cap,
+		Rasi.Aqu,
+		Rasi.Pis
 	};
 
-	public ZodiacHouse(Name zhouse) { value = zhouse; }
 
-	public Name value
+	private Rasi _rasi;
+	public ZodiacHouse(Rasi sign)
 	{
-		get;
-		set;
+		_rasi = sign;
 	}
 
-	public Longitude Origin => new((value.Index() - 1) * 30.0);
+	public static implicit operator Rasi(ZodiacHouse zh)
+	{
+		return (zh._rasi);
+	}
+
+	public Rasi Sign
+	{
+		get => (_rasi);
+		set => _rasi = value;
+	}
+
+	public Longitude Origin => new((_rasi.Index() - 1) * 30.0);
 
 	public object Clone()
 	{
-		return new ZodiacHouse(value);
+		return new ZodiacHouse(_rasi);
 	}
 
 	public override string ToString()
 	{
-		return value.ToString();
+		return _rasi.ToString();
 	}
 
-	public int normalize()
+	public int Normalize()
 	{
-		return Basics.normalize_inc(1, 12, (int) value);
+		return ((int) _rasi).NormalizeInc(1, 12);
 	}
 
-	public ZodiacHouse add(int i)
+	public ZodiacHouse Add(int i)
 	{
-		var znum = Basics.normalize_inc(1, 12, (int) value + i - 1);
-		return new ZodiacHouse((Name) znum);
+		var znum = ((int) _rasi + i - 1).NormalizeInc(1, 12);
+		return new ZodiacHouse((Rasi) znum);
 	}
 
-	public ZodiacHouse addReverse(int i)
+	public ZodiacHouse AddReverse(int i)
 	{
-		var znum = Basics.normalize_inc(1, 12, (int) value - i + 1);
-		return new ZodiacHouse((Name) znum);
+		var znum = ((int) _rasi - i + 1).NormalizeInc(1, 12);
+		return new ZodiacHouse((Rasi) znum);
 	}
 
-	public int numHousesBetweenReverse(ZodiacHouse zrel)
+	public int NumHousesBetweenReverse(ZodiacHouse zrel)
 	{
-		return Basics.normalize_inc(1, 12, 14 - numHousesBetween(zrel));
+		return (14 - NumHousesBetween(zrel)).NormalizeInc(1, 12);
 	}
 
-	public int numHousesBetween(ZodiacHouse zrel)
+	public int NumHousesBetween(ZodiacHouse zrel)
 	{
-		var ret = Basics.normalize_inc(1, 12, (int) zrel.value - (int) value + 1);
+		var ret = ((int) zrel._rasi - (int) _rasi + 1).NormalizeInc(1, 12);
 		Trace.Assert(ret >= 1 && ret <= 12, "ZodiacHouse.numHousesBetween failed");
 		return ret;
 	}
@@ -120,30 +129,30 @@ public class ZodiacHouse : ICloneable
 	{
 		var houseBase = Origin;
 		var div       = 30.0            / nrOfDivisions;
-		var offset    = longitude.value % div;
+		var offset    = longitude.Value % div;
 
-		return new Longitude(houseBase.value + offset * nrOfDivisions);
+		return new Longitude(houseBase.Value + offset * nrOfDivisions);
 	}
 
-	public bool isDaySign()
+	public bool IsDaySign()
 	{
-		switch (value)
+		switch (_rasi)
 		{
-			case Name.Ari:
-			case Name.Tau:
-			case Name.Gem:
-			case Name.Can: return false;
+			case Rasi.Ari:
+			case Rasi.Tau:
+			case Rasi.Gem:
+			case Rasi.Can: return false;
 
-			case Name.Leo:
-			case Name.Vir:
-			case Name.Lib:
-			case Name.Sco: return true;
+			case Rasi.Leo:
+			case Rasi.Vir:
+			case Rasi.Lib:
+			case Rasi.Sco: return true;
 
-			case Name.Sag:
-			case Name.Cap: return false;
+			case Rasi.Sag:
+			case Rasi.Cap: return false;
 
-			case Name.Aqu:
-			case Name.Pis: return true;
+			case Rasi.Aqu:
+			case Rasi.Pis: return true;
 
 			default:
 				Trace.Assert(false, "isDaySign internal error");
@@ -151,23 +160,23 @@ public class ZodiacHouse : ICloneable
 		}
 	}
 
-	public bool isOdd()
+	public bool IsOdd()
 	{
-		switch (value)
+		switch (_rasi)
 		{
-			case Name.Ari:
-			case Name.Gem:
-			case Name.Leo:
-			case Name.Lib:
-			case Name.Sag:
-			case Name.Aqu: return true;
+			case Rasi.Ari:
+			case Rasi.Gem:
+			case Rasi.Leo:
+			case Rasi.Lib:
+			case Rasi.Sag:
+			case Rasi.Aqu: return true;
 
-			case Name.Tau:
-			case Name.Can:
-			case Name.Vir:
-			case Name.Sco:
-			case Name.Cap:
-			case Name.Pis: return false;
+			case Rasi.Tau:
+			case Rasi.Can:
+			case Rasi.Vir:
+			case Rasi.Sco:
+			case Rasi.Cap:
+			case Rasi.Pis: return false;
 
 			default:
 				Trace.Assert(false, "isOdd internal error");
@@ -175,22 +184,22 @@ public class ZodiacHouse : ICloneable
 		}
 	}
 
-	public bool isOddFooted()
+	public bool IsOddFooted()
 	{
-		switch (value)
+		switch (_rasi)
 		{
-			case Name.Ari: return true;
-			case Name.Tau: return true;
-			case Name.Gem: return true;
-			case Name.Can: return false;
-			case Name.Leo: return false;
-			case Name.Vir: return false;
-			case Name.Lib: return true;
-			case Name.Sco: return true;
-			case Name.Sag: return true;
-			case Name.Cap: return false;
-			case Name.Aqu: return false;
-			case Name.Pis: return false;
+			case Rasi.Ari: return true;
+			case Rasi.Tau: return true;
+			case Rasi.Gem: return true;
+			case Rasi.Can: return false;
+			case Rasi.Leo: return false;
+			case Rasi.Vir: return false;
+			case Rasi.Lib: return true;
+			case Rasi.Sco: return true;
+			case Rasi.Sag: return true;
+			case Rasi.Cap: return false;
+			case Rasi.Aqu: return false;
+			case Rasi.Pis: return false;
 		}
 
 		Trace.Assert(false, "ZOdiacHouse::isOddFooted");
@@ -199,20 +208,20 @@ public class ZodiacHouse : ICloneable
 
 	public bool RasiDristi(ZodiacHouse b)
 	{
-		var ma = (int) value   % 3;
-		var mb = (int) b.value % 3;
+		var ma = (int) _rasi   % 3;
+		var mb = (int) b._rasi % 3;
 
 		switch (ma)
 		{
 			case 1:
-				if (mb == 2 && add(2).value != b.value)
+				if (mb == 2 && Add(2)._rasi != b._rasi)
 				{
 					return true;
 				}
 
 				return false;
 			case 2:
-				if (mb == 1 && addReverse(2).value != b.value)
+				if (mb == 1 && AddReverse(2)._rasi != b._rasi)
 				{
 					return true;
 				}
@@ -233,63 +242,63 @@ public class ZodiacHouse : ICloneable
 
 	public RiseType RisesWith()
 	{
-		switch (value)
+		switch (_rasi)
 		{
-			case Name.Ari:
-			case Name.Tau:
-			case Name.Can:
-			case Name.Sag:
-			case Name.Cap: return RiseType.RisesWithFoot;
-			case Name.Gem:
-			case Name.Leo:
-			case Name.Vir:
-			case Name.Lib:
-			case Name.Sco:
-			case Name.Aqu: return RiseType.RisesWithHead;
+			case Rasi.Ari:
+			case Rasi.Tau:
+			case Rasi.Can:
+			case Rasi.Sag:
+			case Rasi.Cap: return RiseType.RisesWithFoot;
+			case Rasi.Gem:
+			case Rasi.Leo:
+			case Rasi.Vir:
+			case Rasi.Lib:
+			case Rasi.Sco:
+			case Rasi.Aqu: return RiseType.RisesWithHead;
 			default: return RiseType.RisesWithBoth;
 		}
 	}
 
 	public ZodiacHouse LordsOtherSign()
 	{
-		var ret = Name.Ari;
-		switch (value)
+		var ret = Rasi.Ari;
+		switch (_rasi)
 		{
-			case Name.Ari:
-				ret = Name.Sco;
+			case Rasi.Ari:
+				ret = Rasi.Sco;
 				break;
-			case Name.Tau:
-				ret = Name.Lib;
+			case Rasi.Tau:
+				ret = Rasi.Lib;
 				break;
-			case Name.Gem:
-				ret = Name.Vir;
+			case Rasi.Gem:
+				ret = Rasi.Vir;
 				break;
-			case Name.Can:
-				ret = Name.Can;
+			case Rasi.Can:
+				ret = Rasi.Can;
 				break;
-			case Name.Leo:
-				ret = Name.Leo;
+			case Rasi.Leo:
+				ret = Rasi.Leo;
 				break;
-			case Name.Vir:
-				ret = Name.Gem;
+			case Rasi.Vir:
+				ret = Rasi.Gem;
 				break;
-			case Name.Lib:
-				ret = Name.Tau;
+			case Rasi.Lib:
+				ret = Rasi.Tau;
 				break;
-			case Name.Sco:
-				ret = Name.Ari;
+			case Rasi.Sco:
+				ret = Rasi.Ari;
 				break;
-			case Name.Sag:
-				ret = Name.Pis;
+			case Rasi.Sag:
+				ret = Rasi.Pis;
 				break;
-			case Name.Cap:
-				ret = Name.Aqu;
+			case Rasi.Cap:
+				ret = Rasi.Aqu;
 				break;
-			case Name.Aqu:
-				ret = Name.Cap;
+			case Rasi.Aqu:
+				ret = Rasi.Cap;
 				break;
-			case Name.Pis:
-				ret = Name.Sag;
+			case Rasi.Pis:
+				ret = Rasi.Sag;
 				break;
 			default:
 				Debug.Assert(false, "ZodiacHouse::KalachakraMirrorSign");
@@ -301,44 +310,44 @@ public class ZodiacHouse : ICloneable
 
 	public ZodiacHouse AdarsaSign()
 	{
-		var ret = Name.Ari;
-		switch (value)
+		var ret = Rasi.Ari;
+		switch (_rasi)
 		{
-			case Name.Ari:
-				ret = Name.Sco;
+			case Rasi.Ari:
+				ret = Rasi.Sco;
 				break;
-			case Name.Tau:
-				ret = Name.Lib;
+			case Rasi.Tau:
+				ret = Rasi.Lib;
 				break;
-			case Name.Gem:
-				ret = Name.Vir;
+			case Rasi.Gem:
+				ret = Rasi.Vir;
 				break;
-			case Name.Can:
-				ret = Name.Aqu;
+			case Rasi.Can:
+				ret = Rasi.Aqu;
 				break;
-			case Name.Leo:
-				ret = Name.Cap;
+			case Rasi.Leo:
+				ret = Rasi.Cap;
 				break;
-			case Name.Vir:
-				ret = Name.Gem;
+			case Rasi.Vir:
+				ret = Rasi.Gem;
 				break;
-			case Name.Lib:
-				ret = Name.Tau;
+			case Rasi.Lib:
+				ret = Rasi.Tau;
 				break;
-			case Name.Sco:
-				ret = Name.Ari;
+			case Rasi.Sco:
+				ret = Rasi.Ari;
 				break;
-			case Name.Sag:
-				ret = Name.Pis;
+			case Rasi.Sag:
+				ret = Rasi.Pis;
 				break;
-			case Name.Cap:
-				ret = Name.Leo;
+			case Rasi.Cap:
+				ret = Rasi.Leo;
 				break;
-			case Name.Aqu:
-				ret = Name.Can;
+			case Rasi.Aqu:
+				ret = Rasi.Can;
 				break;
-			case Name.Pis:
-				ret = Name.Sag;
+			case Rasi.Pis:
+				ret = Rasi.Sag;
 				break;
 			default:
 				Debug.Assert(false, "ZodiacHouse::AdarsaSign");
@@ -350,44 +359,44 @@ public class ZodiacHouse : ICloneable
 
 	public ZodiacHouse AbhimukhaSign()
 	{
-		var ret = Name.Ari;
-		switch (value)
+		var ret = Rasi.Ari;
+		switch (_rasi)
 		{
-			case Name.Ari:
-				ret = Name.Sco;
+			case Rasi.Ari:
+				ret = Rasi.Sco;
 				break;
-			case Name.Tau:
-				ret = Name.Lib;
+			case Rasi.Tau:
+				ret = Rasi.Lib;
 				break;
-			case Name.Gem:
-				ret = Name.Sag;
+			case Rasi.Gem:
+				ret = Rasi.Sag;
 				break;
-			case Name.Can:
-				ret = Name.Aqu;
+			case Rasi.Can:
+				ret = Rasi.Aqu;
 				break;
-			case Name.Leo:
-				ret = Name.Cap;
+			case Rasi.Leo:
+				ret = Rasi.Cap;
 				break;
-			case Name.Vir:
-				ret = Name.Pis;
+			case Rasi.Vir:
+				ret = Rasi.Pis;
 				break;
-			case Name.Lib:
-				ret = Name.Tau;
+			case Rasi.Lib:
+				ret = Rasi.Tau;
 				break;
-			case Name.Sco:
-				ret = Name.Ari;
+			case Rasi.Sco:
+				ret = Rasi.Ari;
 				break;
-			case Name.Sag:
-				ret = Name.Gem;
+			case Rasi.Sag:
+				ret = Rasi.Gem;
 				break;
-			case Name.Cap:
-				ret = Name.Leo;
+			case Rasi.Cap:
+				ret = Rasi.Leo;
 				break;
-			case Name.Aqu:
-				ret = Name.Can;
+			case Rasi.Aqu:
+				ret = Rasi.Can;
 				break;
-			case Name.Pis:
-				ret = Name.Vir;
+			case Rasi.Pis:
+				ret = Rasi.Vir;
 				break;
 			default:
 				Debug.Assert(false, "ZodiacHouse::AbhimukhaSign");
@@ -397,22 +406,22 @@ public class ZodiacHouse : ICloneable
 		return new ZodiacHouse(ret);
 	}
 
-	public static string ToShortString(Name z)
+	public static string ToShortString(Rasi z)
 	{
 		switch (z)
 		{
-			case Name.Ari: return "Ar";
-			case Name.Tau: return "Ta";
-			case Name.Gem: return "Ge";
-			case Name.Can: return "Cn";
-			case Name.Leo: return "Le";
-			case Name.Vir: return "Vi";
-			case Name.Lib: return "Li";
-			case Name.Sco: return "Sc";
-			case Name.Sag: return "Sg";
-			case Name.Cap: return "Cp";
-			case Name.Aqu: return "Aq";
-			case Name.Pis: return "Pi";
+			case Rasi.Ari: return "Ar";
+			case Rasi.Tau: return "Ta";
+			case Rasi.Gem: return "Ge";
+			case Rasi.Can: return "Cn";
+			case Rasi.Leo: return "Le";
+			case Rasi.Vir: return "Vi";
+			case Rasi.Lib: return "Li";
+			case Rasi.Sco: return "Sc";
+			case Rasi.Sag: return "Sg";
+			case Rasi.Cap: return "Cp";
+			case Rasi.Aqu: return "Aq";
+			case Rasi.Pis: return "Pi";
 			default:       return string.Empty;
 		}
 	}

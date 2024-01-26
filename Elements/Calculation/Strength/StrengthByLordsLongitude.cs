@@ -25,12 +25,12 @@ public class StrengthByLordsLongitude : BaseStrength, IStrengthRasi
 	{
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
 		var lora = GetStrengthLord(za);
 		var lorb = GetStrengthLord(zb);
-		var offa = karakaLongitude(lora);
-		var offb = karakaLongitude(lorb);
+		var offa = KarakaLongitude(lora);
+		var offb = KarakaLongitude(lorb);
 		if (offa > offb)
 		{
 			return true;

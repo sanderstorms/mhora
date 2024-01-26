@@ -20,104 +20,99 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml.Serialization;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Components.Varga;
 using Mhora.Elements;
-using Mhora.Elements.Hora;
+using Mhora.Util;
+using Newtonsoft.Json;
 
 namespace Mhora.Database.Settings;
 
 /// <summary>
 ///     Summary description for GlobalOptions.
 /// </summary>
-[XmlRoot("MhoraOptions")]
-[Serializable]
-public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
+[JsonObject]
+public class MhoraGlobalOptions : MhoraSerializableOptions
 {
-	protected const string CAT_GENERAL   = "1: General Settings";
-	protected const string CAT_LOCATION  = "2: Default Location";
-	protected const string CAT_LF_GEN    = "3: Look and Feel";
-	protected const string CAT_LF_DASA   = "3: Look and Feel: Dasa";
-	protected const string CAT_LF_DIV    = "4: Look and Feel: Vargas";
-	protected const string CAT_LF_TABLE  = "5: Look and Feel: Tabular Charts";
-	protected const string CAT_LF_CHAKRA = "6: Look and Feel: Chakras";
+	protected const string CatGeneral   = "1: General Settings";
+	protected const string CatLocation  = "2: Default Location";
+	protected const string CatLfGen    = "3: Look and Feel";
+	protected const string CatLfDasa   = "3: Look and Feel: Dasa";
+	protected const string CatLfDiv    = "4: Look and Feel: Vargas";
+	protected const string CatLfTable  = "5: Look and Feel: Tabular Charts";
+	protected const string CatLfChakra = "6: Look and Feel: Chakras";
 
-	protected const string CAT_LF_BINDUS = "7: Look and Feel: Bindus";
+	protected const string CatLfBindus = "7: Look and Feel: Bindus";
 
 	//[NonSerialized]	public static object Reference = null;
 	[NonSerialized]
-	public static object mainControl;
+	public static MainForm MainControl;
 
 	public static MhoraGlobalOptions Instance;
 
 	// Dasa Control
-	private bool bDasaHoverSelect;
-	private bool bDasaMoveSelect;
-	private bool bDasaShowEvents;
-	private bool bVargaShowDob;
-	private bool bVargaShowSAVRasi;
-	private bool bVargaShowSAVVarga;
+	private bool _bDasaHoverSelect;
+	private bool _bDasaMoveSelect;
+	private bool _bDasaShowEvents;
+	private bool _bVargaShowDob;
+	private bool _bVargaShowSavRasi;
+	private bool _bVargaShowSavVarga;
 
-	// Varga charts
-	private bool bVargaSquare;
+	// Vargas charts
+	private bool _bVargaSquare;
 
 	// Form Widths
 	public Size GrahaStrengthsFormSize = new(0, 0);
 
 	public  HoroscopeOptions HOptions;
-	private bool             mbSavePrefsOnExit;
+	private bool             _mbSavePrefsOnExit;
 
 	// General
-	private bool  mbShowSplashScreeen;
-	private Color mcBodyJupiter;
-	private Color mcBodyKetu;
+	private bool  _mbShowSplashScreeen;
+	private Color _mcBodyJupiter;
+	private Color _mcBodyKetu;
 
 	// Body Colors
-	private Color mcBodyLagna;
-	private Color mcBodyMars;
-	private Color mcBodyMercury;
-	private Color mcBodyMoon;
-	private Color mcBodyOther;
-	private Color mcBodyRahu;
-	private Color mcBodySaturn;
-	private Color mcBodySun;
-	private Color mcBodyVenus;
-
+	private Color _mcBodyLagna;
+	private Color _mcBodyMars;
+	private Color _mcBodyMercury;
+	private Color _mcBodyMoon;
+	private Color _mcBodyOther;
+	private Color _mcBodyRahu;
+	private Color _mcBodySaturn;
+	private Color _mcBodySun;
+	private Color _mcBodyVenus;
 	// Chakra Displays
-	private Color                                   mcChakraBackground;
-	private Color                                   mcDasaBackColor;
-	private Color                                   mcDasaDateColor;
-	private Color                                   mcDasaHighlightColor;
-	private Color                                   mcDasaPeriodColor;
-	private DivisionalChart.UserOptions.EChartStyle mChartStyle;
+	private Color _mcChakraBackground;
+	private Color _mcDasaBackColor;
+	private Color _mcDasaDateColor;
+	private Color _mcDasaHighlightColor;
+	private Color _mcDasaPeriodColor;
+
+	private DivisionalChart.UserOptions.EChartStyle _mChartStyle;
 
 	// Tabular Displays
-	private Color mcTableBackground;
-	private Color mcTableForeground;
-	private Color mcTableInterleaveFirst;
-	private Color mcTableInterleaveSecond;
-	private Color mcVargaBackground;
-	private Color mcVargaGraha;
-	private Color mcVargaLagna;
-	private Color mcVargaSAV;
-	private Color mcVargaSecondary;
-	private Color mcVargaSpecialLagna;
-	private Font  mfFixedWidth;
+	private Color _mcTableBackground;
+	private Color _mcTableForeground;
+	private Color _mcTableInterleaveFirst;
+	private Color _mcTableInterleaveSecond;
+	private Color _mcVargaBackground;
+	private Color _mcVargaGraha;
+	private Color _mcVargaLagna;
+	private Color _mcVargaSav;
+	private Color _mcVargaSecondary;
+	private Color _mcVargaSpecialLagna;
+	private Font  _mfFixedWidth;
 
 	// General Font families
-	private Font mfGeneral;
-	private Font mfVarga;
-	private int  miDasaShowEventsLevel;
+	private Font _mfGeneral;
+	private Font _mfVarga;
+	private int  _miDasaShowEventsLevel;
 
-	private HMSInfo         mLat;
-	private HMSInfo         mLon;
-	private string          msNotesExtension;
-	private HMSInfo         mTz;
+	private Angle           _mLat;
+	private Angle           _mLon;
+	private string          _msNotesExtension;
 	public  Size            RasiStrengthsFormSize = new(0, 0);
 	public  StrengthOptions SOptions;
 	public  Size            VargaRectificationFormSize = new(0, 0);
@@ -126,465 +121,447 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 	{
 		HOptions = new HoroscopeOptions();
 		SOptions = new StrengthOptions();
-		mLat     = new HMSInfo(47, 40, 27, HMSInfo.dir_type.NS);
-		mLon     = new HMSInfo(-122, 7, 13, HMSInfo.dir_type.EW);
-		mTz      = new HMSInfo(-7, 0, 0, HMSInfo.dir_type.EW);
 
-		mfFixedWidth = new Font("Courier New", 10);
-		mfGeneral    = new Font("Microsoft Sans Serif", 10);
+		_mfFixedWidth = new Font("Courier New", 10);
+		_mfGeneral    = new Font("Microsoft Sans Serif", 10);
 
-		bDasaHoverSelect      = false;
-		bDasaMoveSelect       = true;
-		bDasaShowEvents       = true;
-		miDasaShowEventsLevel = 2;
-		mcDasaBackColor       = Color.Lavender;
-		mcDasaDateColor       = Color.DarkRed;
-		mcDasaPeriodColor     = Color.DarkBlue;
-		mcDasaHighlightColor  = Color.White;
+		_bDasaHoverSelect      = false;
+		_bDasaMoveSelect       = true;
+		_bDasaShowEvents       = true;
+		_miDasaShowEventsLevel = 2;
+		_mcDasaBackColor       = Color.Lavender;
+		_mcDasaDateColor       = Color.DarkRed;
+		_mcDasaPeriodColor     = Color.DarkBlue;
+		_mcDasaHighlightColor  = Color.White;
 
-		mbShowSplashScreeen = true;
-		mbSavePrefsOnExit   = true;
-		msNotesExtension    = "txt";
+		_mbShowSplashScreeen = true;
+		_mbSavePrefsOnExit   = true;
+		_msNotesExtension    = "txt";
 
-		mcBodyLagna   = Color.BlanchedAlmond;
-		mcBodySun     = Color.Orange;
-		mcBodyMoon    = Color.LightSkyBlue;
-		mcBodyMars    = Color.Red;
-		mcBodyMercury = Color.Green;
-		mcBodyJupiter = Color.Yellow;
-		mcBodyVenus   = Color.Violet;
-		mcBodySaturn  = Color.DarkBlue;
-		mcBodyRahu    = Color.LightBlue;
-		mcBodyKetu    = Color.LightPink;
-		mcBodyOther   = Color.Black;
+		_mcBodyLagna   = Color.BlanchedAlmond;
+		_mcBodySun     = Color.Orange;
+		_mcBodyMoon    = Color.LightSkyBlue;
+		_mcBodyMars    = Color.Red;
+		_mcBodyMercury = Color.Green;
+		_mcBodyJupiter = Color.Yellow;
+		_mcBodyVenus   = Color.Violet;
+		_mcBodySaturn  = Color.DarkBlue;
+		_mcBodyRahu    = Color.LightBlue;
+		_mcBodyKetu    = Color.LightPink;
+		_mcBodyOther   = Color.Black;
 
-		mcVargaBackground   = Color.AliceBlue;
-		mcVargaSecondary    = Color.CadetBlue;
-		mcVargaGraha        = Color.DarkRed;
-		mcVargaLagna        = Color.DarkViolet;
-		mcVargaSAV          = Color.Gainsboro;
-		mcVargaSpecialLagna = Color.Gray;
-		mChartStyle         = DivisionalChart.UserOptions.EChartStyle.SouthIndian;
-		mfVarga             = new Font("Times New Roman", 7);
-		bVargaSquare        = true;
-		bVargaShowDob       = true;
-		bVargaShowSAVVarga  = true;
-		bVargaShowSAVRasi   = false;
+		_mcVargaBackground   = Color.AliceBlue;
+		_mcVargaSecondary    = Color.CadetBlue;
+		_mcVargaGraha        = Color.DarkRed;
+		_mcVargaLagna        = Color.DarkViolet;
+		_mcVargaSav          = Color.Gainsboro;
+		_mcVargaSpecialLagna = Color.Gray;
+		_mChartStyle         = DivisionalChart.UserOptions.EChartStyle.SouthIndian;
+		_mfVarga             = new Font("Times New Roman", 7);
+		_bVargaSquare        = true;
+		_bVargaShowDob       = true;
+		_bVargaShowSavVarga  = true;
+		_bVargaShowSavRasi   = false;
 
-		mcTableBackground       = Color.Lavender;
-		mcTableForeground       = Color.Black;
-		mcTableInterleaveFirst  = Color.AliceBlue;
-		mcTableInterleaveSecond = Color.Lavender;
+		_mcTableBackground       = Color.Lavender;
+		_mcTableForeground       = Color.Black;
+		_mcTableInterleaveFirst  = Color.AliceBlue;
+		_mcTableInterleaveSecond = Color.Lavender;
 
-		mcChakraBackground = Color.AliceBlue;
+		_mcChakraBackground = Color.AliceBlue;
 	}
 
-	protected MhoraGlobalOptions(SerializationInfo info, StreamingContext context) : this()
-	{
-		Constructor(GetType(), info, context);
-	}
-
-
-	[Category(CAT_GENERAL)]
+	[Category(CatGeneral)]
 	[PropertyOrder(1)]
 	[PGDisplayName("Show splash screen")]
 	public bool ShowSplashScreen
 	{
-		get => mbShowSplashScreeen;
-		set => mbShowSplashScreeen = value;
+		get => _mbShowSplashScreeen;
+		set => _mbShowSplashScreeen = value;
 	}
 
-	[Category(CAT_GENERAL)]
+	[Category(CatGeneral)]
 	[PropertyOrder(2)]
 	[PGDisplayName("Save Preferences on Exit")]
 	public bool SavePrefsOnExit
 	{
-		get => mbSavePrefsOnExit;
-		set => mbSavePrefsOnExit = value;
+		get => _mbSavePrefsOnExit;
+		set => _mbSavePrefsOnExit = value;
 	}
 
-	[Category(CAT_GENERAL)]
+	[Category(CatGeneral)]
 	[PropertyOrder(3)]
 	[PGDisplayName("Notes file type")]
 	public string ChartNotesFileExtension
 	{
-		get => msNotesExtension;
-		set => msNotesExtension = value;
+		get => _msNotesExtension;
+		set => _msNotesExtension = value;
 	}
 
-	[Category(CAT_GENERAL)]
+	[Category(CatGeneral)]
 	[PropertyOrder(4)]
 	[PGDisplayName("Yogas file name")]
-	public string YogasFileName => getExeDir() + "\\" + "yogas.mhr";
+	public string YogasFileName => GetExeDir() + "\\" + "yogas.mhr";
+
+	public string City
+	{
+		get;
+		set;
+	} = "Maastricht";
 
 	[PropertyOrder(1)]
-	[Category(CAT_LOCATION)]
-	public HMSInfo Latitude
+	[Category(CatLocation)]
+	public Angle Latitude
 	{
-		get => mLat;
-		set => mLat = value;
+		get => _mLat;
+		set => _mLat = value;
 	}
 
 	[PropertyOrder(2)]
-	[Category(CAT_LOCATION)]
-	public HMSInfo Longitude
+	[Category(CatLocation)]
+	public Angle Longitude
 	{
-		get => mLon;
-		set => mLon = value;
+		get => _mLon;
+		set => _mLon = value;
 	}
 
-	[PropertyOrder(3)]
-	[Category(CAT_LOCATION)]
-	[PGDisplayName("Time zone")]
-	public HMSInfo TimeZone
-	{
-		get => mTz;
-		set => mTz = value;
-	}
-
-
-	[Category(CAT_LF_GEN)]
+	[Category(CatLfGen)]
 	[PGDisplayName("Font")]
 	public Font GeneralFont
 	{
-		get => mfGeneral;
-		set => mfGeneral = value;
+		get => _mfGeneral;
+		set => _mfGeneral = value;
 	}
 
-	[Category(CAT_LF_GEN)]
+	[Category(CatLfGen)]
 	[PGDisplayName("Fixed width font")]
 	public Font FixedWidthFont
 	{
-		get => mfFixedWidth;
-		set => mfFixedWidth = value;
+		get => _mfFixedWidth;
+		set => _mfFixedWidth = value;
 	}
 
 	[PropertyOrder(1)]
-	[Category(CAT_LF_DASA)]
+	[Category(CatLfDasa)]
 	[PGDisplayName("Select by Mouse Hover")]
 	public bool DasaHoverSelect
 	{
-		get => bDasaHoverSelect;
-		set => bDasaHoverSelect = value;
+		get => _bDasaHoverSelect;
+		set => _bDasaHoverSelect = value;
 	}
 
 	[PropertyOrder(1)]
-	[Category(CAT_LF_DASA)]
+	[Category(CatLfDasa)]
 	[PGDisplayName("Select by Mouse Move")]
 	public bool DasaMoveSelect
 	{
-		get => bDasaMoveSelect;
-		set => bDasaMoveSelect = value;
+		get => _bDasaMoveSelect;
+		set => _bDasaMoveSelect = value;
 	}
 
 	[PropertyOrder(2)]
-	[Category(CAT_LF_DASA)]
+	[Category(CatLfDasa)]
 	[PGDisplayName("Show Events")]
 	public bool DasaShowEvents
 	{
-		get => bDasaShowEvents;
-		set => bDasaShowEvents = value;
+		get => _bDasaShowEvents;
+		set => _bDasaShowEvents = value;
 	}
 
 	[PropertyOrder(3)]
-	[Category(CAT_LF_DASA)]
+	[Category(CatLfDasa)]
 	[PGDisplayName("Show Events Level")]
 	public int DasaEventsLevel
 	{
-		get => miDasaShowEventsLevel;
-		set => miDasaShowEventsLevel = value;
+		get => _miDasaShowEventsLevel;
+		set => _miDasaShowEventsLevel = value;
 	}
 
 	[PropertyOrder(4)]
-	[Category(CAT_LF_DASA)]
+	[Category(CatLfDasa)]
 	[PGDisplayName("Period foreground color")]
 	public Color DasaPeriodColor
 	{
-		get => mcDasaPeriodColor;
-		set => mcDasaPeriodColor = value;
+		get => _mcDasaPeriodColor;
+		set => _mcDasaPeriodColor = value;
 	}
 
 	[PropertyOrder(5)]
-	[Category(CAT_LF_DASA)]
+	[Category(CatLfDasa)]
 	[PGDisplayName("Date foreground color")]
 	public Color DasaDateColor
 	{
-		get => mcDasaDateColor;
-		set => mcDasaDateColor = value;
+		get => _mcDasaDateColor;
+		set => _mcDasaDateColor = value;
 	}
 
 	[PropertyOrder(6)]
-	[Category(CAT_LF_DASA)]
+	[Category(CatLfDasa)]
 	[PGDisplayName("Background colour")]
 	public Color DasaBackgroundColor
 	{
-		get => mcDasaBackColor;
-		set => mcDasaBackColor = value;
+		get => _mcDasaBackColor;
+		set => _mcDasaBackColor = value;
 	}
 
 	[PropertyOrder(7)]
-	[Category(CAT_LF_DASA)]
+	[Category(CatLfDasa)]
 	[PGDisplayName("Item highlight color")]
 	public Color DasaHighlightColor
 	{
-		get => mcDasaHighlightColor;
-		set => mcDasaHighlightColor = value;
+		get => _mcDasaHighlightColor;
+		set => _mcDasaHighlightColor = value;
 	}
 
 	[PropertyOrder(1)]
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PGDisplayName("Display style")]
 	public DivisionalChart.UserOptions.EChartStyle VargaStyle
 	{
-		get => mChartStyle;
-		set => mChartStyle = value;
+		get => _mChartStyle;
+		set => _mChartStyle = value;
 	}
 
 	[PropertyOrder(2)]
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PGDisplayName("Maintain square proportions")]
 	public bool VargaChartIsSquare
 	{
-		get => bVargaSquare;
-		set => bVargaSquare = value;
+		get => _bVargaSquare;
+		set => _bVargaSquare = value;
 	}
 
 	[PropertyOrder(3)]
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PGDisplayName("Show time of birth")]
 	public bool VargaShowDob
 	{
-		get => bVargaShowDob;
-		set => bVargaShowDob = value;
+		get => _bVargaShowDob;
+		set => _bVargaShowDob = value;
 	}
 
 	[PropertyOrder(4)]
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PGDisplayName("Show rasi's SAV bindus")]
-	public bool VargaShowSAVRasi
+	public bool VargaShowSavRasi
 	{
-		get => bVargaShowSAVRasi;
-		set => bVargaShowSAVRasi = value;
+		get => _bVargaShowSavRasi;
+		set => _bVargaShowSavRasi = value;
 	}
 
 	[PropertyOrder(5)]
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PGDisplayName("Show varga's SAV bindus")]
-	public bool VargaShowSAVVarga
+	public bool VargaShowSavVarga
 	{
-		get => bVargaShowSAVVarga;
-		set => bVargaShowSAVVarga = value;
+		get => _bVargaShowSavVarga;
+		set => _bVargaShowSavVarga = value;
 	}
 
 	[PropertyOrder(6)]
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PGDisplayName("Background colour")]
 	public Color VargaBackgroundColor
 	{
-		get => mcVargaBackground;
-		set => mcVargaBackground = value;
+		get => _mcVargaBackground;
+		set => _mcVargaBackground = value;
 	}
 
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PropertyOrder(7)]
 	[PGDisplayName("Graha foreground colour")]
 	public Color VargaGrahaColor
 	{
-		get => mcVargaGraha;
-		set => mcVargaGraha = value;
+		get => _mcVargaGraha;
+		set => _mcVargaGraha = value;
 	}
 
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PropertyOrder(8)]
 	[PGDisplayName("Secondary foreground colour")]
 	public Color VargaSecondaryColor
 	{
-		get => mcVargaSecondary;
-		set => mcVargaSecondary = value;
+		get => _mcVargaSecondary;
+		set => _mcVargaSecondary = value;
 	}
 
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PropertyOrder(9)]
 	[PGDisplayName("Lagna foreground colour")]
 	public Color VargaLagnaColor
 	{
-		get => mcVargaLagna;
-		set => mcVargaLagna = value;
+		get => _mcVargaLagna;
+		set => _mcVargaLagna = value;
 	}
 
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PropertyOrder(10)]
 	[PGDisplayName("Special lagna foreground colour")]
 	public Color VargaSpecialLagnaColor
 	{
-		get => mcVargaSpecialLagna;
-		set => mcVargaSpecialLagna = value;
+		get => _mcVargaSpecialLagna;
+		set => _mcVargaSpecialLagna = value;
 	}
 
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PropertyOrder(11)]
 	[PGDisplayName("SAV foreground colour")]
-	public Color VargaSAVColor
+	public Color VargaSavColor
 	{
-		get => mcVargaSAV;
-		set => mcVargaSAV = value;
+		get => _mcVargaSav;
+		set => _mcVargaSav = value;
 	}
 
-	[Category(CAT_LF_DIV)]
+	[Category(CatLfDiv)]
 	[PropertyOrder(12)]
 	[PGDisplayName("Font")]
 	public Font VargaFont
 	{
-		get => mfVarga;
-		set => mfVarga = value;
+		get => _mfVarga;
+		set => _mfVarga = value;
 	}
 
-	[Category(CAT_LF_BINDUS)]
+	[Category(CatLfBindus)]
 	[PropertyOrder(1)]
 	[PGDisplayName("Lagna")]
 	public Color BindusLagnaColor
 	{
-		get => mcBodyLagna;
-		set => mcBodyLagna = value;
+		get => _mcBodyLagna;
+		set => _mcBodyLagna = value;
 	}
 
-	[Category(CAT_LF_BINDUS)]
+	[Category(CatLfBindus)]
 	[PropertyOrder(2)]
 	[PGDisplayName("Sun")]
 	public Color BindusSunColor
 	{
-		get => mcBodySun;
-		set => mcBodySun = value;
+		get => _mcBodySun;
+		set => _mcBodySun = value;
 	}
 
-	[Category(CAT_LF_BINDUS)]
+	[Category(CatLfBindus)]
 	[PropertyOrder(3)]
 	[PGDisplayName("Moon")]
 	public Color BindusMoonColor
 	{
-		get => mcBodyMoon;
-		set => mcBodyMoon = value;
+		get => _mcBodyMoon;
+		set => _mcBodyMoon = value;
 	}
 
-	[Category(CAT_LF_BINDUS)]
+	[Category(CatLfBindus)]
 	[PropertyOrder(4)]
 	[PGDisplayName("Mars")]
 	public Color BindusMarsColor
 	{
-		get => mcBodyMars;
-		set => mcBodyMars = value;
+		get => _mcBodyMars;
+		set => _mcBodyMars = value;
 	}
 
-	[Category(CAT_LF_BINDUS)]
+	[Category(CatLfBindus)]
 	[PropertyOrder(5)]
 	[PGDisplayName("Mercury")]
 	public Color BindusMercuryColor
 	{
-		get => mcBodyMercury;
-		set => mcBodyMercury = value;
+		get => _mcBodyMercury;
+		set => _mcBodyMercury = value;
 	}
 
-	[Category(CAT_LF_BINDUS)]
+	[Category(CatLfBindus)]
 	[PropertyOrder(6)]
 	[PGDisplayName("Jupiter")]
 	public Color BindusJupiterColor
 	{
-		get => mcBodyJupiter;
-		set => mcBodyJupiter = value;
+		get => _mcBodyJupiter;
+		set => _mcBodyJupiter = value;
 	}
 
-	[Category(CAT_LF_BINDUS)]
+	[Category(CatLfBindus)]
 	[PropertyOrder(7)]
 	[PGDisplayName("Venus")]
 	public Color BindusVenusColor
 	{
-		get => mcBodyVenus;
-		set => mcBodyVenus = value;
+		get => _mcBodyVenus;
+		set => _mcBodyVenus = value;
 	}
 
-	[Category(CAT_LF_BINDUS)]
+	[Category(CatLfBindus)]
 	[PropertyOrder(8)]
 	[PGDisplayName("Saturn")]
 	public Color BindusSaturnColor
 	{
-		get => mcBodySaturn;
-		set => mcBodySaturn = value;
+		get => _mcBodySaturn;
+		set => _mcBodySaturn = value;
 	}
 
-	[Category(CAT_LF_BINDUS)]
+	[Category(CatLfBindus)]
 	[PropertyOrder(9)]
 	[PGDisplayName("Rahu")]
 	public Color BindusRahuColor
 	{
-		get => mcBodyRahu;
-		set => mcBodyRahu = value;
+		get => _mcBodyRahu;
+		set => _mcBodyRahu = value;
 	}
 
-	[Category(CAT_LF_BINDUS)]
+	[Category(CatLfBindus)]
 	[PropertyOrder(10)]
 	[PGDisplayName("Ketu")]
 	public Color BindusKetuColor
 	{
-		get => mcBodyKetu;
-		set => mcBodyKetu = value;
+		get => _mcBodyKetu;
+		set => _mcBodyKetu = value;
 	}
 
-	[Category(CAT_LF_BINDUS)]
+	[Category(CatLfBindus)]
 	[PropertyOrder(11)]
 	[PGDisplayName("Other")]
 	public Color BindusOtherColor
 	{
-		get => mcBodyOther;
-		set => mcBodyOther = value;
+		get => _mcBodyOther;
+		set => _mcBodyOther = value;
 	}
 
-	[Category(CAT_LF_TABLE)]
+	[Category(CatLfTable)]
 	[PropertyOrder(1)]
 	[PGDisplayName("Background colour")]
 	public Color TableBackgroundColor
 	{
-		get => mcTableBackground;
-		set => mcTableBackground = value;
+		get => _mcTableBackground;
+		set => _mcTableBackground = value;
 	}
 
-	[Category(CAT_LF_TABLE)]
+	[Category(CatLfTable)]
 	[PropertyOrder(2)]
 	[PGDisplayName("Foreground colour")]
 	public Color TableForegroundColor
 	{
-		get => mcTableForeground;
-		set => mcTableForeground = value;
+		get => _mcTableForeground;
+		set => _mcTableForeground = value;
 	}
 
-	[Category(CAT_LF_TABLE)]
+	[Category(CatLfTable)]
 	[PropertyOrder(3)]
 	[PGDisplayName("Interleave colour (odd)")]
 	public Color TableOddRowColor
 	{
-		get => mcTableInterleaveFirst;
-		set => mcTableInterleaveFirst = value;
+		get => _mcTableInterleaveFirst;
+		set => _mcTableInterleaveFirst = value;
 	}
 
-	[Category(CAT_LF_TABLE)]
+	[Category(CatLfTable)]
 	[PropertyOrder(4)]
 	[PGDisplayName("Interleave colour (even)")]
 	public Color TableEvenRowColor
 	{
-		get => mcTableInterleaveSecond;
-		set => mcTableInterleaveSecond = value;
+		get => _mcTableInterleaveSecond;
+		set => _mcTableInterleaveSecond = value;
 	}
 
-	[Category(CAT_LF_CHAKRA)]
+	[Category(CatLfChakra)]
 	[PGDisplayName("Background colour")]
 	public Color ChakraBackgroundColor
 	{
-		get => mcChakraBackground;
-		set => mcChakraBackground = value;
-	}
-
-	void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-	{
-		GetObjectData(GetType(), info, context);
+		get => _mcChakraBackground;
+		set => _mcChakraBackground = value;
 	}
 
 	public static event EvtChanged DisplayPrefsChanged;
@@ -606,77 +583,92 @@ public class MhoraGlobalOptions : MhoraSerializableOptions, ISerializable
 		return new Font(f.FontFamily, f.SizeInPoints + i);
 	}
 
-	private void addToFontSizes(int i)
+	private void AddToFontSizes(int i)
 	{
-		mfFixedWidth = AddToFontSizesHelper(mfFixedWidth, i);
-		mfGeneral    = AddToFontSizesHelper(mfGeneral, i);
-		mfVarga      = AddToFontSizesHelper(mfVarga, i);
+		_mfFixedWidth = AddToFontSizesHelper(_mfFixedWidth, i);
+		_mfGeneral    = AddToFontSizesHelper(_mfGeneral, i);
+		_mfVarga      = AddToFontSizesHelper(_mfVarga, i);
 	}
 
 	public void IncreaseFontSize()
 	{
-		addToFontSizes(1);
+		AddToFontSizes(1);
 	}
 
 	public void DecreaseFontSize()
 	{
-		addToFontSizes(-1);
+		AddToFontSizes(-1);
 	}
 
-	public Color getBinduColor(Body.Name b)
+	public Color GetBinduColor(Body.BodyType b)
 	{
 		switch (b)
 		{
-			case Body.Name.Lagna:   return mcBodyLagna;
-			case Body.Name.Sun:     return mcBodySun;
-			case Body.Name.Moon:    return mcBodyMoon;
-			case Body.Name.Mars:    return mcBodyMars;
-			case Body.Name.Mercury: return mcBodyMercury;
-			case Body.Name.Jupiter: return mcBodyJupiter;
-			case Body.Name.Venus:   return mcBodyVenus;
-			case Body.Name.Saturn:  return mcBodySaturn;
-			case Body.Name.Rahu:    return mcBodyRahu;
-			case Body.Name.Ketu:    return mcBodyKetu;
-			default:                return mcBodyOther;
+			case Body.BodyType.Lagna:   return _mcBodyLagna;
+			case Body.BodyType.Sun:     return _mcBodySun;
+			case Body.BodyType.Moon:    return _mcBodyMoon;
+			case Body.BodyType.Mars:    return _mcBodyMars;
+			case Body.BodyType.Mercury: return _mcBodyMercury;
+			case Body.BodyType.Jupiter: return _mcBodyJupiter;
+			case Body.BodyType.Venus:   return _mcBodyVenus;
+			case Body.BodyType.Saturn:  return _mcBodySaturn;
+			case Body.BodyType.Rahu:    return _mcBodyRahu;
+			case Body.BodyType.Ketu:    return _mcBodyKetu;
+			default:                return _mcBodyOther;
 		}
 	}
 
 
 	public static MhoraGlobalOptions ReadFromFile()
 	{
-		var gOpts = new MhoraGlobalOptions();
-		try
+		var filename = GetOptsFilename();
+		if (File.Exists(filename))
 		{
-			using (var sOut = new FileStream(getOptsFilename(), FileMode.Open, FileAccess.Read))
+			try
 			{
-				var formatter = new BinaryFormatter
+				using (StreamReader sr = new StreamReader(filename))
 				{
-					AssemblyFormat = FormatterAssemblyStyle.Simple
-				};
-				gOpts = (MhoraGlobalOptions) formatter.Deserialize(sOut);
-				sOut.Close();
+					var serializer = new JsonSerializer();
+					try
+					{
+						var options = (MhoraGlobalOptions) serializer.Deserialize(sr, typeof(MhoraGlobalOptions));
+						Instance = options;
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine(e);
+					}
+				}
+			}
+			catch
+			{
+				Application.Log.Debug("MHora: Unable to read user preferences", "GlobalOptions");
 			}
 		}
-		catch
-		{
-			Application.Log.Debug("MHora: Unable to read user preferences", "GlobalOptions");
-		}
 
-		Instance = gOpts;
-		return gOpts;
+		return Instance ??=new MhoraGlobalOptions() ;
 	}
 
 	public void SaveToFile()
 	{
-		Application.Log.Debug("Saving Preferences to {0}", getOptsFilename());
+		var filename = GetOptsFilename();
+		Application.Log.Debug("Saving Preferences to {0}", filename);
 		try
 		{
-			using (var sOut = new FileStream(getOptsFilename(), FileMode.OpenOrCreate, FileAccess.Write))
+			JsonSerializer serializer = new JsonSerializer
 			{
-				var formatter = new BinaryFormatter();
-				formatter.Serialize(sOut, this);
-				sOut.Close();
+				NullValueHandling = NullValueHandling.Ignore,
+			};
+
+			using (StreamWriter sw = new StreamWriter(filename))
+			{
+				using (JsonWriter writer = new JsonTextWriter(sw))
+				{
+					writer.Formatting = Formatting.Indented;
+					serializer.Serialize(sw, this);
+				}
 			}
+			
 		}
 		catch (Exception e)
 		{

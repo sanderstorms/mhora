@@ -31,8 +31,6 @@ using Mhora.Elements.Dasas.Graha;
 using Mhora.Elements.Dasas.Nakshatra;
 using Mhora.Elements.Dasas.Rasi;
 using Mhora.Elements.Dasas.Yearly;
-using Mhora.SwissEph;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -105,7 +103,7 @@ public class MhoraControlContainer : UserControl
 			case BaseUserOptions.ViewType.KutaMatching:
 			{
 				var h2 = h;
-				foreach (var f in ((MhoraContainer) MhoraGlobalOptions.mainControl).MdiChildren)
+				foreach (var f in (MhoraGlobalOptions.MainControl).MdiChildren)
 				{
 					if (f is MhoraChild)
 					{
@@ -195,7 +193,7 @@ public class MhoraControlContainer : UserControl
 			case BaseUserOptions.ViewType.DasaYogaPraveshVimsottariCompressedYoga:
 			{
 				var dc = new DasaControl(h, new YogaVimsottariDasa(h));
-				dc.compressToYogaPraveshaYearYoga();
+				dc.CompressToYogaPraveshaYearYoga();
 				mc = dc;
 			}
 				break;
@@ -203,15 +201,13 @@ public class MhoraControlContainer : UserControl
 			{
 				var dc = new DasaControl(h, new TithiAshtottariDasa(h));
 				dc.DasaOptions.YearType = ToDate.DateType.TithiYear;
-				var td_pravesh = new ToDate(h.baseUT, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
-				var td_tithi   = new ToDate(h.baseUT, ToDate.DateType.TithiYear, 360.0, 0, h);
-				sweph.obtainLock(h);
-				if (td_tithi.AddYears(1).toUniversalTime() + 15.0 < td_pravesh.AddYears(1).toUniversalTime())
+				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
+				var td_tithi   = new ToDate(h.Info.Jd, ToDate.DateType.TithiYear, 360.0, 0, h);
+				if (td_tithi.AddYears(1).UniversalTime() + 15.0 < td_pravesh.AddYears(1).UniversalTime())
 				{
 					dc.DasaOptions.YearLength = 390;
 				}
 
-				sweph.releaseLock(h);
 				dc.DasaOptions.Compression = 1;
 
 				var tuo = (TithiAshtottariDasa.UserOptions) dc.DasaSpecificOptions;
@@ -225,11 +221,9 @@ public class MhoraControlContainer : UserControl
 			case BaseUserOptions.ViewType.DasaTithiPraveshAshtottariCompressedFixed:
 			{
 				var dc         = new DasaControl(h, new TithiAshtottariDasa(h));
-				var td_pravesh = new ToDate(h.baseUT, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
-				sweph.obtainLock(h);
+				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 				dc.DasaOptions.YearType   = ToDate.DateType.FixedYear;
-				dc.DasaOptions.YearLength = td_pravesh.AddYears(1).toUniversalTime() - td_pravesh.AddYears(0).toUniversalTime();
-				sweph.releaseLock(h);
+				dc.DasaOptions.YearLength = td_pravesh.AddYears(1).UniversalTime() - td_pravesh.AddYears(0).UniversalTime();
 
 				var tuo = (TithiAshtottariDasa.UserOptions) dc.DasaSpecificOptions;
 				tuo.UseTithiRemainder      = true;
@@ -243,22 +237,20 @@ public class MhoraControlContainer : UserControl
 			case BaseUserOptions.ViewType.DasaTithiPraveshAshtottariCompressedSolar:
 			{
 				var dc         = new DasaControl(h, new TithiAshtottariDasa(h));
-				var td_pravesh = new ToDate(h.baseUT, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
-				sweph.obtainLock(h);
-				var ut_start = td_pravesh.AddYears(0).toUniversalTime();
-				var ut_end   = td_pravesh.AddYears(1).toUniversalTime();
-				var sp_start = Basics.CalculateSingleBodyPosition(ut_start, sweph.BodyNameToSweph(Body.Name.Sun), Body.Name.Sun, Body.Type.Graha, h);
-				var sp_end   = Basics.CalculateSingleBodyPosition(ut_end, sweph.BodyNameToSweph(Body.Name.Sun), Body.Name.Sun, Body.Type.Graha, h);
-				var lDiff    = sp_end.longitude.sub(sp_start.longitude);
-				var diff     = lDiff.value;
-				if (diff < 120.0)
+				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
+				var ut_start = td_pravesh.AddYears(0).ToUniversalTime();
+				var ut_end   = td_pravesh.AddYears(1).ToUniversalTime();
+				var sp_start = h.CalculateSingleBodyPosition(ut_start.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
+				var sp_end   = h.CalculateSingleBodyPosition(ut_end.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
+				var lDiff    = sp_end.Longitude.Sub(sp_start.Longitude);
+				var diff     = lDiff.Value;
+				if (diff < 120)
 				{
-					diff += 360.0;
+					diff += 360;
 				}
 
 				dc.DasaOptions.YearType   = ToDate.DateType.SolarYear;
 				dc.DasaOptions.YearLength = diff;
-				sweph.releaseLock(h);
 
 				var tuo = (TithiAshtottariDasa.UserOptions) dc.DasaSpecificOptions;
 				tuo.UseTithiRemainder  = true;
@@ -373,10 +365,7 @@ public class MhoraControlContainer : UserControl
 		}
 
 		mc.Dock = DockStyle.Fill;
-		if (null != Control)
-		{
-			Control.Dispose();
-		}
+		Control?.Dispose();
 
 		Control = mc;
 	}
@@ -395,10 +384,7 @@ public class MhoraControlContainer : UserControl
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);

@@ -20,50 +20,50 @@ namespace Mhora.Elements.Ghataka;
 
 public class GhatakaTithi
 {
-	public static bool checkTithi(ZodiacHouse janmaRasi, Tithi t)
+	public static bool CheckTithi(ZodiacHouse janmaRasi, Tithis.Tithi t)
 	{
-		var ja = janmaRasi.value;
-		var gh = Tables.Tithi.NandaType.Nanda;
+		var ja = janmaRasi.Sign;
+		var gh = Tithis.NandaType.Nanda;
 		switch (ja)
 		{
-			case ZodiacHouse.Name.Ari:
-				gh = Tables.Tithi.NandaType.Nanda;
+			case ZodiacHouse.Rasi.Ari:
+				gh = Tithis.NandaType.Nanda;
 				break;
-			case ZodiacHouse.Name.Tau:
-				gh = Tables.Tithi.NandaType.Purna;
+			case ZodiacHouse.Rasi.Tau:
+				gh = Tithis.NandaType.Purna;
 				break;
-			case ZodiacHouse.Name.Gem:
-				gh = Tables.Tithi.NandaType.Bhadra;
+			case ZodiacHouse.Rasi.Gem:
+				gh = Tithis.NandaType.Bhadra;
 				break;
-			case ZodiacHouse.Name.Can:
-				gh = Tables.Tithi.NandaType.Bhadra;
+			case ZodiacHouse.Rasi.Can:
+				gh = Tithis.NandaType.Bhadra;
 				break;
-			case ZodiacHouse.Name.Leo:
-				gh = Tables.Tithi.NandaType.Jaya;
+			case ZodiacHouse.Rasi.Leo:
+				gh = Tithis.NandaType.Jaya;
 				break;
-			case ZodiacHouse.Name.Vir:
-				gh = Tables.Tithi.NandaType.Purna;
+			case ZodiacHouse.Rasi.Vir:
+				gh = Tithis.NandaType.Purna;
 				break;
-			case ZodiacHouse.Name.Lib:
-				gh = Tables.Tithi.NandaType.Rikta;
+			case ZodiacHouse.Rasi.Lib:
+				gh = Tithis.NandaType.Rikta;
 				break;
-			case ZodiacHouse.Name.Sco:
-				gh = Tables.Tithi.NandaType.Nanda;
+			case ZodiacHouse.Rasi.Sco:
+				gh = Tithis.NandaType.Nanda;
 				break;
-			case ZodiacHouse.Name.Sag:
-				gh = Tables.Tithi.NandaType.Jaya;
+			case ZodiacHouse.Rasi.Sag:
+				gh = Tithis.NandaType.Jaya;
 				break;
-			case ZodiacHouse.Name.Cap:
-				gh = Tables.Tithi.NandaType.Rikta;
+			case ZodiacHouse.Rasi.Cap:
+				gh = Tithis.NandaType.Rikta;
 				break;
-			case ZodiacHouse.Name.Aqu:
-				gh = Tables.Tithi.NandaType.Jaya;
+			case ZodiacHouse.Rasi.Aqu:
+				gh = Tithis.NandaType.Jaya;
 				break;
-			case ZodiacHouse.Name.Pis:
-				gh = Tables.Tithi.NandaType.Purna;
+			case ZodiacHouse.Rasi.Pis:
+				gh = Tithis.NandaType.Purna;
 				break;
 		}
 
-		return t.toNandaType() == gh;
+		return t.ToNandaType() == gh;
 	}
 }

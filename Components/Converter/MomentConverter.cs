@@ -21,7 +21,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-using Mhora.Elements.Calculation;
+using Mhora.Util;
 
 namespace Mhora.Components.Converter;
 
@@ -60,7 +60,7 @@ internal class MomentConverter : ExpandableObjectConverter
 			}
 
 			day   = int.Parse((string) arr[0]);
-			month = Moment.FromStringMonth((string) arr[1]);
+			month = ((string) arr[1]).FromStringMonth ();
 			year  = int.Parse((string) arr[2]);
 			hour  = int.Parse((string) arr[3]);
 			min   = int.Parse((string) arr[4]);
@@ -83,7 +83,7 @@ internal class MomentConverter : ExpandableObjectConverter
 			sec = 30;
 		}
 
-		var m = new Moment(year, month, day, hour, min, sec);
+		var m = new DateTime(year, month, day, hour, min, sec);
 		return m;
 	}
 
@@ -91,7 +91,7 @@ internal class MomentConverter : ExpandableObjectConverter
 	{
 		Application.Log.Debug("Foo: destType is {0}", destType);
 		// Trace.Assert (destType == typeof(string) && value is Moment, "MomentConverter::ConvertTo 1");
-		var m = (Moment) value;
+		var m = (DateTime) value;
 		return m.ToString();
 	}
 }

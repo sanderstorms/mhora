@@ -29,60 +29,60 @@ public class Ashtakavarga
 {
 	public enum EKakshya
 	{
-		EKRegular,
-		EKStandard
+		EkRegular,
+		EkStandard
 	}
 
-	private readonly Division  dtype;
-	private readonly Horoscope h;
+	private readonly Division  _dtype;
+	private readonly Horoscope _h;
 
-	private Body.Name[] avBodies;
+	private Body.BodyType[] _avBodies;
 
-	public Ashtakavarga(Horoscope _h, Division _dtype)
+	public Ashtakavarga(Horoscope h, Division dtype)
 	{
-		h     = _h;
-		dtype = _dtype;
-		avBodies = new[]
+		_h           = h;
+		_dtype = dtype;
+		_avBodies = new[]
 		{
-			Body.Name.Sun,
-			Body.Name.Moon,
-			Body.Name.Mars,
-			Body.Name.Mercury,
-			Body.Name.Jupiter,
-			Body.Name.Venus,
-			Body.Name.Saturn,
-			Body.Name.Lagna
+			Body.BodyType.Sun,
+			Body.BodyType.Moon,
+			Body.BodyType.Mars,
+			Body.BodyType.Mercury,
+			Body.BodyType.Jupiter,
+			Body.BodyType.Venus,
+			Body.BodyType.Saturn,
+			Body.BodyType.Lagna
 		};
 	}
 
-	public void setKakshyaType(EKakshya k)
+	public void SetKakshyaType(EKakshya k)
 	{
 		switch (k)
 		{
-			case EKakshya.EKStandard:
-				avBodies = new[]
+			case EKakshya.EkStandard:
+				_avBodies = new[]
 				{
-					Body.Name.Sun,
-					Body.Name.Moon,
-					Body.Name.Mars,
-					Body.Name.Mercury,
-					Body.Name.Jupiter,
-					Body.Name.Venus,
-					Body.Name.Saturn,
-					Body.Name.Lagna
+					Body.BodyType.Sun,
+					Body.BodyType.Moon,
+					Body.BodyType.Mars,
+					Body.BodyType.Mercury,
+					Body.BodyType.Jupiter,
+					Body.BodyType.Venus,
+					Body.BodyType.Saturn,
+					Body.BodyType.Lagna
 				};
 				break;
-			case EKakshya.EKRegular:
-				avBodies = new[]
+			case EKakshya.EkRegular:
+				_avBodies = new[]
 				{
-					Body.Name.Saturn,
-					Body.Name.Jupiter,
-					Body.Name.Mars,
-					Body.Name.Sun,
-					Body.Name.Venus,
-					Body.Name.Mercury,
-					Body.Name.Moon,
-					Body.Name.Lagna
+					Body.BodyType.Saturn,
+					Body.BodyType.Jupiter,
+					Body.BodyType.Mars,
+					Body.BodyType.Sun,
+					Body.BodyType.Venus,
+					Body.BodyType.Mercury,
+					Body.BodyType.Moon,
+					Body.BodyType.Lagna
 				};
 				break;
 		}
@@ -730,30 +730,30 @@ public class Ashtakavarga
 		return bindus;
 	}
 
-	public int BodyToInt(Body.Name b)
+	public int BodyToInt(Body.BodyType b)
 	{
 		switch (b)
 		{
-			case Body.Name.Sun:     return 0;
-			case Body.Name.Moon:    return 1;
-			case Body.Name.Mars:    return 2;
-			case Body.Name.Mercury: return 3;
-			case Body.Name.Jupiter: return 4;
-			case Body.Name.Venus:   return 5;
-			case Body.Name.Saturn:  return 6;
-			case Body.Name.Lagna:   return 7;
+			case Body.BodyType.Sun:     return 0;
+			case Body.BodyType.Moon:    return 1;
+			case Body.BodyType.Mars:    return 2;
+			case Body.BodyType.Mercury: return 3;
+			case Body.BodyType.Jupiter: return 4;
+			case Body.BodyType.Venus:   return 5;
+			case Body.BodyType.Saturn:  return 6;
+			case Body.BodyType.Lagna:   return 7;
 			default:
 				Trace.Assert(false, "Ashtakavarga:BodyToInt");
 				return 0;
 		}
 	}
 
-	public Body.Name[] getBodies()
+	public Body.BodyType[] GetBodies()
 	{
-		return avBodies;
+		return _avBodies;
 	}
 
-	public int[] getPav(Body.Name m)
+	public int[] GetPav(Body.BodyType m)
 	{
 		var ret = new int[12]
 		{
@@ -770,9 +770,9 @@ public class Ashtakavarga
 			0,
 			0
 		};
-		foreach (var inner in getBodies())
+		foreach (var inner in GetBodies())
 		{
-			foreach (var zh in getBindus(m, inner))
+			foreach (var zh in GetBindus(m, inner))
 			{
 				ret[(int) zh - 1]++;
 			}
@@ -781,7 +781,7 @@ public class Ashtakavarga
 		return ret;
 	}
 
-	public int[] getSavRao()
+	public int[] GetSavRao()
 	{
 		var sav = new int[12]
 		{
@@ -799,20 +799,20 @@ public class Ashtakavarga
 			0
 		};
 
-		var zl = h.getPosition(Body.Name.Lagna).toDivisionPosition(dtype).zodiac_house;
+		var zl = _h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
 
-		foreach (var b in getBodies())
+		foreach (var b in GetBodies())
 		{
-			var pav = getPav(b);
+			var pav = GetPav(b);
 			Debug.Assert(pav.Length == 12, "Internal error: Pav didn't have 12 entries");
 
-			var zb = h.getPosition(b).toDivisionPosition(dtype).zodiac_house;
+			var zb = _h.GetPosition(b).ToDivisionPosition(_dtype).ZodiacHouse;
 
 			for (var i = 0; i < 12; i++)
 			{
-				var zi   = new ZodiacHouse((ZodiacHouse.Name) i + 1);
-				var rasi = zb.numHousesBetween(zi);
-				rasi          =  (int) zl.add(rasi).value;
+				var zi   = new ZodiacHouse((ZodiacHouse.Rasi) i + 1);
+				var rasi = zb.NumHousesBetween(zi);
+				rasi          =  (int) zl.Add(rasi).Sign;
 				sav[rasi - 1] += pav[i];
 			}
 		}
@@ -820,7 +820,7 @@ public class Ashtakavarga
 		return sav;
 	}
 
-	public int[] getSav()
+	public int[] GetSav()
 	{
 		var sav = new int[12]
 		{
@@ -837,15 +837,15 @@ public class Ashtakavarga
 			0,
 			0
 		};
-		foreach (var b in getBodies())
+		foreach (var b in GetBodies())
 		{
 			// Lagna's bindus are not included in SAV
-			if (b == Body.Name.Lagna)
+			if (b == Body.BodyType.Lagna)
 			{
 				continue;
 			}
 
-			var pav = getPav(b);
+			var pav = GetPav(b);
 			Debug.Assert(pav.Length == 12, "Internal error: Pav didn't have 12 entries");
 			for (var i = 0; i < 12; i++)
 			{
@@ -856,7 +856,7 @@ public class Ashtakavarga
 		return sav;
 	}
 
-	public ZodiacHouse.Name[] getBindus(Body.Name m, Body.Name n)
+	public ZodiacHouse.Rasi[] GetBindus(Body.BodyType m, Body.BodyType n)
 	{
 		var allBindus = new int[8][][];
 		allBindus[0] = BindusSun();
@@ -870,12 +870,12 @@ public class Ashtakavarga
 
 		var al = new ArrayList();
 
-		var zh = h.getPosition(n).toDivisionPosition(dtype).zodiac_house;
+		var zh = _h.GetPosition(n).ToDivisionPosition(_dtype).ZodiacHouse;
 		foreach (var i in allBindus[BodyToInt(m)][BodyToInt(n)])
 		{
-			al.Add(zh.add(i).value);
+			al.Add(zh.Add(i).Sign);
 		}
 
-		return (ZodiacHouse.Name[]) al.ToArray(typeof(ZodiacHouse.Name));
+		return (ZodiacHouse.Rasi[]) al.ToArray(typeof(ZodiacHouse.Rasi));
 	}
 }

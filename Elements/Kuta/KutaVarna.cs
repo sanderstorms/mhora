@@ -24,49 +24,49 @@ public class KutaVarna
 {
 	public enum EType
 	{
-		IBrahmana,
-		IKshatriya,
-		IVaishya,
-		ISudra,
-		IAnuloma,
-		IPratiloma
+		Brahmana,
+		Kshatriya,
+		Vaishya,
+		Sudra,
+		Anuloma,
+		Pratiloma
 	}
 
-	public static int getMaxScore()
+	public static int GetMaxScore()
 	{
 		return 2;
 	}
 
-	public static int getScore(Nakshatra m, Nakshatra f)
+	public static int GetScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra f)
 	{
-		var em = getType(m);
-		var ef = getType(f);
+		var em = GetType(m);
+		var ef = GetType(f);
 		if (em == ef)
 		{
 			return 2;
 		}
 
-		if (em == EType.IBrahmana && (ef == EType.IKshatriya || ef == EType.IVaishya || ef == EType.ISudra))
+		if (em == EType.Brahmana && (ef == EType.Kshatriya || ef == EType.Vaishya || ef == EType.Sudra))
 		{
 			return 1;
 		}
 
-		if (em == EType.IKshatriya && (ef == EType.IVaishya || ef == EType.ISudra))
+		if (em == EType.Kshatriya && (ef == EType.Vaishya || ef == EType.Sudra))
 		{
 			return 1;
 		}
 
-		if (em == EType.IVaishya && ef == EType.ISudra)
+		if (em == EType.Vaishya && ef == EType.Sudra)
 		{
 			return 1;
 		}
 
-		if (em == EType.IAnuloma && ef != EType.IPratiloma)
+		if (em == EType.Anuloma && ef != EType.Pratiloma)
 		{
 			return 1;
 		}
 
-		if (ef == EType.IAnuloma && em != EType.IAnuloma)
+		if (ef == EType.Anuloma && em != EType.Anuloma)
 		{
 			return 1;
 		}
@@ -74,20 +74,20 @@ public class KutaVarna
 		return 0;
 	}
 
-	public static EType getType(Nakshatra n)
+	public static EType GetType(Nakshatras.Nakshatra n)
 	{
-		switch ((int) n.value % 6)
+		switch ((int) n % 6)
 		{
-			case 1: return EType.IBrahmana;
-			case 2: return EType.IKshatriya;
-			case 3: return EType.IVaishya;
-			case 4: return EType.ISudra;
-			case 5: return EType.IAnuloma;
-			case 0: return EType.IPratiloma;
-			case 6: return EType.IPratiloma;
+			case 1: return EType.Brahmana;
+			case 2: return EType.Kshatriya;
+			case 3: return EType.Vaishya;
+			case 4: return EType.Sudra;
+			case 5: return EType.Anuloma;
+			case 0: return EType.Pratiloma;
+			case 6: return EType.Pratiloma;
 		}
 
 		Debug.Assert(false, "KutaVarna::getType");
-		return EType.IAnuloma;
+		return EType.Anuloma;
 	}
 }

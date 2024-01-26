@@ -18,54 +18,53 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Elements.Dasas.Graha;
 
-public class NaisargikaGrahaDasaSP : Dasa, IDasa
+public class NaisargikaGrahaDasaSp : Dasa, IDasa
 {
-	private readonly UserOptions options;
-	private          Horoscope   h;
+	private readonly UserOptions _options;
+	private          Horoscope   _h;
 
-	public NaisargikaGrahaDasaSP(Horoscope _h)
+	public NaisargikaGrahaDasaSp(Horoscope h)
 	{
-		h       = _h;
-		options = new UserOptions();
+		this._h       = h;
+		_options = new UserOptions();
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 108.0;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
 		var al = new ArrayList(36);
-		Body.Name[] order =
+		Body.BodyType[] order =
 		{
-			Body.Name.Moon,
-			Body.Name.Mercury,
-			Body.Name.Mars,
-			Body.Name.Venus,
-			Body.Name.Jupiter,
-			Body.Name.Sun,
-			Body.Name.Ketu,
-			Body.Name.Rahu,
-			Body.Name.Saturn
+			Body.BodyType.Moon,
+			Body.BodyType.Mercury,
+			Body.BodyType.Mars,
+			Body.BodyType.Venus,
+			Body.BodyType.Jupiter,
+			Body.BodyType.Sun,
+			Body.BodyType.Ketu,
+			Body.BodyType.Rahu,
+			Body.BodyType.Saturn
 		};
 
-		var cycle_start = paramAyus() * cycle;
+		var cycleStart = ParamAyus() * cycle;
 		var curr        = 0.0;
 		for (var i = 0; i < 3; i++)
 		{
 			foreach (var bn in order)
 			{
-				al.Add(new DasaEntry(bn, cycle_start + curr, 4.0, 1, bn.ToString()));
+				al.Add(new DasaEntry(bn, cycleStart + curr, 4.0, 1, bn.ToString()));
 				curr += 4.0;
 			}
 		}
@@ -85,18 +84,15 @@ public class NaisargikaGrahaDasaSP : Dasa, IDasa
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
 	{
 		var uo = (UserOptions) a;
-		if (RecalculateEvent != null)
-		{
-			RecalculateEvent();
-		}
+		RecalculateEvent?.Invoke();
 
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public class UserOptions : ICloneable

@@ -16,21 +16,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
-using Mhora.SwissEph;
-using Mhora.Tables;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.Yearly;
 
 public class KaranaPraveshDasa : Dasa, IDasa
 {
-	private Horoscope h;
+	private Horoscope _h;
 
-	public KaranaPraveshDasa(Horoscope _h)
+	public KaranaPraveshDasa(Horoscope h)
 	{
-		h = _h;
+		this._h = h;
 	}
 
 	public object GetOptions()
@@ -43,11 +42,11 @@ public class KaranaPraveshDasa : Dasa, IDasa
 		return new object();
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 60.0;
 	}
@@ -55,32 +54,32 @@ public class KaranaPraveshDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al          = new ArrayList(60);
-		var cycle_start = cycle * paramAyus();
+		var cycleStart = cycle * ParamAyus();
 		for (var i = 0; i < 60; i++)
 		{
-			var start = cycle_start + i;
-			var di    = new DasaEntry(Body.Name.Other, start, 1.0, 1, "Karana Pravesh Year");
+			var start = cycleStart + i;
+			var di    = new DasaEntry(Body.BodyType.Other, start, 1.0, 1, "Karana Pravesh Year");
 			al.Add(di);
 		}
 
 		return al;
 	}
 
-	public new string EntryDescription(DasaEntry pdi, Moment start, Moment end)
+	public new string EntryDescription(DasaEntry pdi, DateTime start, DateTime end)
 	{
-		if (pdi.level == 2)
+		if (pdi.Level == 2)
 		{
-			var l  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Sun));
-			var zh = l.toZodiacHouse();
+			var l  = _h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Sun.SwephBody());
+			var zh = l.ToZodiacHouse();
 			return zh.ToString();
 		}
 
-		if (pdi.level == 3)
+		if (pdi.Level == 3)
 		{
-			var lSun  = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Sun));
-			var lMoon = Basics.CalculateBodyLongitude(start.toUniversalTime(), sweph.BodyNameToSweph(Body.Name.Moon));
-			var l     = lMoon.sub(lSun);
-			var k     = l.toKarana();
+			var lSun  = _h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Sun.SwephBody());
+			var lMoon = _h.CalculateBodyLongitude(start.UniversalTime(), Body.BodyType.Moon.SwephBody());
+			var l     = lMoon.Sub(lSun);
+			var k     = l.ToKarana();
 			return k.ToString();
 		}
 
@@ -92,30 +91,29 @@ public class KaranaPraveshDasa : Dasa, IDasa
 		string[] desc =
 		{
 			"  Month: ",
-			"    Tithi: "
+			"    Tithis: "
 		};
-		if (pdi.level == 3)
+		if (pdi.Level == 3)
 		{
 			return new ArrayList();
 		}
 
-		ArrayList al;
 		double    start = 0.0, length = 0.0;
 		var       level = 0;
 
-		al    = null;
-		start = pdi.startUT;
-		level = pdi.level + 1;
+		ArrayList al = null;
+		start = pdi.StartUt;
+		level = pdi.Level + 1;
 
-		switch (pdi.level)
+		switch (pdi.Level)
 		{
 			case 1:
 				al     = new ArrayList(13);
-				length = pdi.dasaLength / 13.0;
+				length = pdi.DasaLength / 13.0;
 				//mhora.Log.Debug("AD length is {0}", length);
 				for (var i = 0; i < 13; i++)
 				{
-					var di = new DasaEntry(Body.Name.Other, start, length, level, desc[level - 2]);
+					var di = new DasaEntry(Body.BodyType.Other, start, length, level, desc[level - 2]);
 					al.Add(di);
 					start += length;
 				}
@@ -123,11 +121,11 @@ public class KaranaPraveshDasa : Dasa, IDasa
 				return al;
 			case 2:
 				al     = new ArrayList(60);
-				length = pdi.dasaLength / 60.0;
+				length = pdi.DasaLength / 60.0;
 				//mhora.Log.Debug("PD length is {0}", length);
 				for (var i = 0; i < 60; i++)
 				{
-					var di = new DasaEntry(Body.Name.Other, start, length, level, desc[level - 2]);
+					var di = new DasaEntry(Body.BodyType.Other, start, length, level, desc[level - 2]);
 					//mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
 					al.Add(di);
 					start += length;

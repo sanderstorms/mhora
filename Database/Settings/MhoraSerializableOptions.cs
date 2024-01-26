@@ -26,41 +26,14 @@ using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Hora;
+using Newtonsoft.Json;
 
 namespace Mhora.Database.Settings;
 
 [Serializable]
 public class MhoraSerializableOptions
 {
-	protected void Constructor(Type ty, SerializationInfo info, StreamingContext context)
-	{
-		var mi = FormatterServices.GetSerializableMembers(ty, context);
-		for (var i = 0; i < mi.Length; i++)
-		{
-			var fi = (FieldInfo) mi[i];
-			//mhora.Log.Debug ("User Preferences: Reading {0}", fi);
-			try
-			{
-				fi.SetValue(this, info.GetValue(fi.Name, fi.FieldType));
-			}
-			catch
-			{
-				//mhora.Log.Debug ("    Not found");
-			}
-		}
-	}
-
-	protected void GetObjectData(Type ty, SerializationInfo info, StreamingContext context)
-	{
-		var mi = FormatterServices.GetSerializableMembers(ty, context);
-		for (var i = 0; i < mi.Length; i++)
-		{
-			//mhora.Log.Debug ("User Preferences: Writing {0}", mi[i].Type);
-			info.AddValue(mi[i].Name, ((FieldInfo) mi[i]).GetValue(this));
-		}
-	}
-
-	public static string getExeDir()
+	public static string GetExeDir()
 	{
 		var oLocal   = Process.GetCurrentProcess();
 		var oMain    = oLocal.MainModule;
@@ -74,26 +47,26 @@ public class MhoraSerializableOptions
 		return fileName;
 	}
 
-	public static string getOptsFilename()
+	public static string GetOptsFilename()
 	{
-		var fileName = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\MhoraOptions.xml";
+		var fileName = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\MhoraOptions.json";
 		//Debug.WriteLine( string.Format("Options stored at {0}", fileName), "GlobalOptions");
 		return fileName;
 	}
 }
 
-[Serializable]
-public class StrengthOptions : MhoraSerializableOptions, ISerializable, ICloneable
+[JsonObject]
+public class StrengthOptions : MhoraSerializableOptions, ICloneable
 {
-	private FindStronger.EGrahaStrength[] mColord;
-	private FindStronger.EGrahaStrength[] mKarakaKendradiGrahaDasaColord;
-	private FindStronger.EGrahaStrength[] mKarakaKendradiGrahaDasaGraha;
-	private FindStronger.ERasiStrength[]  mKarakaKendradiGrahaDasaRasi;
-	private FindStronger.ERasiStrength[]  mMoolaDasaRasi;
-	private FindStronger.EGrahaStrength[] mNaisargikaDasaGraha;
-	private FindStronger.ERasiStrength[]  mNaisargikaDasaRasi;
-	private FindStronger.ERasiStrength[]  mNarayanaDasaRasi;
-	private FindStronger.ERasiStrength[]  mNavamsaDasaRasi;
+	private FindStronger.EGrahaStrength[] _mColord;
+	private FindStronger.EGrahaStrength[] _mKarakaKendradiGrahaDasaColord;
+	private FindStronger.EGrahaStrength[] _mKarakaKendradiGrahaDasaGraha;
+	private FindStronger.ERasiStrength[]  _mKarakaKendradiGrahaDasaRasi;
+	private FindStronger.ERasiStrength[]  _mMoolaDasaRasi;
+	private FindStronger.EGrahaStrength[] _mNaisargikaDasaGraha;
+	private FindStronger.ERasiStrength[]  _mNaisargikaDasaRasi;
+	private FindStronger.ERasiStrength[]  _mNarayanaDasaRasi;
+	private FindStronger.ERasiStrength[]  _mNavamsaDasaRasi;
 
 
 	public StrengthOptions()
@@ -194,83 +167,78 @@ public class StrengthOptions : MhoraSerializableOptions, ISerializable, ICloneab
 		};
 	}
 
-	protected StrengthOptions(SerializationInfo info, StreamingContext context) : this()
-	{
-		Constructor(GetType(), info, context);
-	}
-
 	[Category("Co-Lord Strengths")]
 	[PGDisplayName("Graha Strength")]
 	public FindStronger.EGrahaStrength[] Colord
 	{
-		get => mColord;
-		set => mColord = value;
+		get => _mColord;
+		set => _mColord = value;
 	}
 
 	[Category("Naisargika Dasa Strengths")]
 	[PGDisplayName("Graha Strengths")]
 	public FindStronger.EGrahaStrength[] NaisargikaDasaGraha
 	{
-		get => mNaisargikaDasaGraha;
-		set => mNaisargikaDasaGraha = value;
+		get => _mNaisargikaDasaGraha;
+		set => _mNaisargikaDasaGraha = value;
 	}
 
 	[Category("Naisargika Dasa Strengths")]
 	[PGDisplayName("Rasi Strengths")]
 	public FindStronger.ERasiStrength[] NaisargikaDasaRasi
 	{
-		get => mNaisargikaDasaRasi;
-		set => mNaisargikaDasaRasi = value;
+		get => _mNaisargikaDasaRasi;
+		set => _mNaisargikaDasaRasi = value;
 	}
 
 	[Category("Navamsa Dasa Strengths")]
 	[PGDisplayName("Rasi Strengths")]
 	public FindStronger.ERasiStrength[] NavamsaDasaRasi
 	{
-		get => mNavamsaDasaRasi;
-		set => mNavamsaDasaRasi = value;
+		get => _mNavamsaDasaRasi;
+		set => _mNavamsaDasaRasi = value;
 	}
 
 	[Category("Moola Dasa Strengths")]
 	[PGDisplayName("Rasi Strengths")]
 	public FindStronger.ERasiStrength[] MoolaDasaRasi
 	{
-		get => mMoolaDasaRasi;
-		set => mMoolaDasaRasi = value;
+		get => _mMoolaDasaRasi;
+		set => _mMoolaDasaRasi = value;
 	}
 
 	[Category("Narayana Dasa Strengths")]
 	[PGDisplayName("Rasi Strengths")]
 	public FindStronger.ERasiStrength[] NarayanaDasaRasi
 	{
-		get => mNarayanaDasaRasi;
-		set => mNarayanaDasaRasi = value;
+		get => _mNarayanaDasaRasi;
+		set => _mNarayanaDasaRasi = value;
 	}
 
-	[Category("Karaka Kendradi Graha Dasa")]
+	[Category("Karakas Kendradi Graha Dasa")]
 	[PGDisplayName("Rasi Strengths")]
 	public FindStronger.ERasiStrength[] KarakaKendradiGrahaDasaRasi
 	{
-		get => mKarakaKendradiGrahaDasaRasi;
-		set => mKarakaKendradiGrahaDasaRasi = value;
+		get => _mKarakaKendradiGrahaDasaRasi;
+		set => _mKarakaKendradiGrahaDasaRasi = value;
 	}
 
-	[Category("Karaka Kendradi Graha Dasa")]
+	[Category("Karakas Kendradi Graha Dasa")]
 	[PGDisplayName("Graha Strengths")]
 	public FindStronger.EGrahaStrength[] KarakaKendradiGrahaDasaGraha
 	{
-		get => mKarakaKendradiGrahaDasaGraha;
-		set => mKarakaKendradiGrahaDasaGraha = value;
+		get => _mKarakaKendradiGrahaDasaGraha;
+		set => _mKarakaKendradiGrahaDasaGraha = value;
 	}
 
 	[PGNotVisible]
-	[Category("Karaka Kendradi Graha Dasa")]
+	[Category("Karakas Kendradi Graha Dasa")]
 	[PGDisplayName("CoLord Strengths")]
 	[TypeConverter(typeof(MhoraArrayConverter))]
 	public FindStronger.EGrahaStrength[] KarakaKendradiGrahaDasaColord
 	{
-		get => mKarakaKendradiGrahaDasaColord;
-		set => mKarakaKendradiGrahaDasaColord = value;
+		get => _mKarakaKendradiGrahaDasaColord;
+		set => _mKarakaKendradiGrahaDasaColord = value;
 	}
 
 	public object Clone()
@@ -283,11 +251,6 @@ public class StrengthOptions : MhoraSerializableOptions, ISerializable, ICloneab
 		opts.NarayanaDasaRasi    = (FindStronger.ERasiStrength[]) NarayanaDasaRasi.Clone();
 		opts.NaisargikaDasaRasi  = (FindStronger.ERasiStrength[]) NaisargikaDasaRasi.Clone();
 		return opts;
-	}
-
-	void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-	{
-		GetObjectData(GetType(), info, context);
 	}
 
 	public object Copy(object o)

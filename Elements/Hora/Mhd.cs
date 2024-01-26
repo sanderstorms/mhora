@@ -20,6 +20,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
+using Mhora.Database.Settings;
 
 namespace Mhora.Elements.Hora;
 
@@ -29,20 +30,19 @@ namespace Mhora.Elements.Hora;
 /// </summary>
 public class Mhd : IFileToHoraInfo
 {
-	private readonly string fname;
+	private readonly string _fname;
 
 	public Mhd(string fileName)
 	{
-		fname = fileName;
+		_fname = fileName;
 	}
 
-	public HoraInfo toHoraInfo()
+	public HoraInfo ToHoraInfo()
 	{
 		try
 		{
-			var        hi = new HoraInfo();
-			FileStream sOut;
-			sOut = new FileStream(fname, FileMode.Open, FileAccess.Read);
+			var hi        = new HoraInfo();
+			var sOut      = new FileStream(_fname, FileMode.Open, FileAccess.Read);
 			var formatter = new BinaryFormatter();
 			formatter.AssemblyFormat = FormatterAssemblyStyle.Simple;
 			hi                       = (HoraInfo) formatter.Deserialize(sOut);
@@ -58,7 +58,7 @@ public class Mhd : IFileToHoraInfo
 
 	public void ToFile(HoraInfo hi)
 	{
-		var sOut      = new FileStream(fname, FileMode.OpenOrCreate, FileAccess.Write);
+		var sOut      = new FileStream(_fname, FileMode.OpenOrCreate, FileAccess.Write);
 		var formatter = new BinaryFormatter();
 		formatter.Serialize(sOut, hi);
 		sOut.Close();

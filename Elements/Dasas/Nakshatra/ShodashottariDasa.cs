@@ -18,20 +18,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using System.Diagnostics;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
-using Mhora.Tables;
 
 namespace Mhora.Elements.Dasas.Nakshatra;
 
 public class ShodashottariDasa : NakshatraDasa, INakshatraDasa
 {
-	private readonly Horoscope h;
+	private readonly Horoscope _h;
 
-	public ShodashottariDasa(Horoscope _h)
+	public ShodashottariDasa(Horoscope h)
 	{
-		common = this;
-		h      = _h;
+		Common  = this;
+		this._h = h;
 	}
 
 	public override object GetOptions()
@@ -46,7 +44,7 @@ public class ShodashottariDasa : NakshatraDasa, INakshatraDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		return _Dasa(h.getPosition(Body.Name.Moon).longitude, 1, cycle);
+		return _Dasa(_h.GetPosition(Body.BodyType.Moon).Longitude, 1, cycle);
 	}
 
 	public ArrayList AntarDasa(DasaEntry di)
@@ -59,74 +57,74 @@ public class ShodashottariDasa : NakshatraDasa, INakshatraDasa
 		return "Shodashottari Dasa";
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 116.0;
 	}
 
-	public int numberOfDasaItems()
+	public int NumberOfDasaItems()
 	{
 		return 8;
 	}
 
-	public DasaEntry nextDasaLord(DasaEntry di)
+	public DasaEntry NextDasaLord(DasaEntry di)
 	{
-		return new DasaEntry(nextDasaLordHelper(di.graha), 0, 0, di.level, string.Empty);
+		return new DasaEntry(NextDasaLordHelper(di.Graha), 0, 0, di.Level, string.Empty);
 	}
 
-	public double lengthOfDasa(Body.Name plt)
+	public double LengthOfDasa(Body.BodyType plt)
 	{
 		switch (plt)
 		{
-			case Body.Name.Sun:     return 11;
-			case Body.Name.Mars:    return 12;
-			case Body.Name.Jupiter: return 13;
-			case Body.Name.Saturn:  return 14;
-			case Body.Name.Ketu:    return 15;
-			case Body.Name.Moon:    return 16;
-			case Body.Name.Mercury: return 17;
-			case Body.Name.Venus:   return 18;
+			case Body.BodyType.Sun:     return 11;
+			case Body.BodyType.Mars:    return 12;
+			case Body.BodyType.Jupiter: return 13;
+			case Body.BodyType.Saturn:  return 14;
+			case Body.BodyType.Ketu:    return 15;
+			case Body.BodyType.Moon:    return 16;
+			case Body.BodyType.Mercury: return 17;
+			case Body.BodyType.Venus:   return 18;
 		}
 
-		Trace.Assert(false, "Shodashottari::lengthOfDasa");
+		Trace.Assert(false, "Shodashottari::LengthOfDasa");
 		return 0;
 	}
 
-	public Body.Name lordOfNakshatra(Elements.Nakshatra n)
+	public Body.BodyType LordOfNakshatra(Nakshatras.Nakshatra n)
 	{
-		var lords = new Body.Name[8]
+		var lords = new Body.BodyType[8]
 		{
-			Body.Name.Sun,
-			Body.Name.Mars,
-			Body.Name.Jupiter,
-			Body.Name.Saturn,
-			Body.Name.Ketu,
-			Body.Name.Moon,
-			Body.Name.Mercury,
-			Body.Name.Venus
+			Body.BodyType.Sun,
+			Body.BodyType.Mars,
+			Body.BodyType.Jupiter,
+			Body.BodyType.Saturn,
+			Body.BodyType.Ketu,
+			Body.BodyType.Moon,
+			Body.BodyType.Mercury,
+			Body.BodyType.Venus
 		};
-		var nak_val  = (int) n.value;
-		var pus_val  = (int) Elements.Nakshatra.Name.Pushya;
-		var diff_val = Basics.normalize_inc((int) Elements.Nakshatra.Name.Aswini, (int) Elements.Nakshatra.Name.Revati, nak_val - pus_val);
-		var diff_off = diff_val % 8;
-		return lords[diff_off];
+		var nakVal  = (int) n;
+		var pusVal  = (int) Nakshatras.Nakshatra.Pushya;
+		var diffVal = (nakVal - pusVal).NormalizeInc((int) Nakshatras.Nakshatra.Aswini, (int) Nakshatras.Nakshatra.Revati);
+		var diffOff = diffVal % 8;
+		return lords[diffOff];
 	}
 
-	private Body.Name nextDasaLordHelper(Body.Name b)
+	private Body.BodyType NextDasaLordHelper(Body.BodyType b)
 	{
 		switch (b)
 		{
-			case Body.Name.Sun:     return Body.Name.Mars;
-			case Body.Name.Mars:    return Body.Name.Jupiter;
-			case Body.Name.Jupiter: return Body.Name.Saturn;
-			case Body.Name.Saturn:  return Body.Name.Ketu;
-			case Body.Name.Ketu:    return Body.Name.Moon;
-			case Body.Name.Moon:    return Body.Name.Mercury;
-			case Body.Name.Mercury: return Body.Name.Venus;
-			case Body.Name.Venus:   return Body.Name.Sun;
+			case Body.BodyType.Sun:     return Body.BodyType.Mars;
+			case Body.BodyType.Mars:    return Body.BodyType.Jupiter;
+			case Body.BodyType.Jupiter: return Body.BodyType.Saturn;
+			case Body.BodyType.Saturn:  return Body.BodyType.Ketu;
+			case Body.BodyType.Ketu:    return Body.BodyType.Moon;
+			case Body.BodyType.Moon:    return Body.BodyType.Mercury;
+			case Body.BodyType.Mercury: return Body.BodyType.Venus;
+			case Body.BodyType.Venus:   return Body.BodyType.Sun;
 		}
 
-		Trace.Assert(false, "ShodashottariDasa::nextDasaLord");
-		return Body.Name.Lagna;
+		Trace.Assert(false, "ShodashottariDasa::NextDasaLord");
+		return Body.BodyType.Lagna;
 	}
 }

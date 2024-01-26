@@ -21,7 +21,6 @@ using System.ComponentModel;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.Tables;
 
 namespace Mhora.Components.Transit;
@@ -36,12 +35,11 @@ public class TransitSearchOptions : ICloneable
 
 	public TransitSearchOptions()
 	{
-		var dt = DateTime.Now;
-		StartDate    = new Moment(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
-		SearchBody   = Body.Name.Sun;
+		StartDate    = DateTime.Now;
+		SearchBody   = Body.BodyType.Sun;
 		TransitPoint = new Longitude(0.0);
 		Forward      = true;
-		Division     = new Division(Basics.DivisionType.Rasi);
+		Division     = new Division(Vargas.DivisionType.Rasi);
 	}
 
 
@@ -54,8 +52,8 @@ public class TransitSearchOptions : ICloneable
 
 	[Category("Transit Search")]
 	[PropertyOrder(1)]
-	[PGDisplayName("In Varga")]
-	public Basics.DivisionType UIDivision
+	[PGDisplayName("In Vargas")]
+	public Vargas.DivisionType UIDivision
 	{
 		get => Division.MultipleDivisions[0].Varga;
 		set => Division = new Division(value);
@@ -98,7 +96,7 @@ public class TransitSearchOptions : ICloneable
 	[Category("Transit Search")]
 	[PropertyOrder(3)]
 	[PGDisplayName("Date")]
-	public Moment StartDate
+	public DateTime StartDate
 	{
 		get;
 		set;
@@ -107,7 +105,7 @@ public class TransitSearchOptions : ICloneable
 	[Category("Transit Search")]
 	[PropertyOrder(4)]
 	[PGDisplayName("When Body")]
-	public Body.Name SearchBody
+	public Body.BodyType SearchBody
 	{
 		get;
 		set;
@@ -137,7 +135,7 @@ public class TransitSearchOptions : ICloneable
 	{
 		// TODO:  Add TransitSearchOptions.Clone implementation
 		var ret = new TransitSearchOptions();
-		ret.StartDate    = (Moment) StartDate.Clone();
+		ret.StartDate    = StartDate;
 		ret.Forward      = Forward;
 		ret.SearchBody   = SearchBody;
 		ret.TransitPoint = TransitPoint;
@@ -147,7 +145,7 @@ public class TransitSearchOptions : ICloneable
 	public object CopyFrom(object o)
 	{
 		var nopt = (TransitSearchOptions) o;
-		StartDate    = (Moment) nopt.StartDate.Clone();
+		StartDate    = nopt.StartDate;
 		Forward      = nopt.Forward;
 		SearchBody   = nopt.SearchBody;
 		TransitPoint = nopt.TransitPoint;

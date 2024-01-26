@@ -17,19 +17,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
-using Mhora.Tables;
 
 namespace Mhora.Elements.Dasas.Rasi;
 
 public class TrikonaDasa : Dasa, IDasa
 {
-	private readonly Horoscope   h;
-	private readonly UserOptions options;
+	private readonly Horoscope   _h;
+	private readonly UserOptions _options;
 
-	private readonly int[] order =
+	private readonly int[] _order =
 	{
 		1,
 		5,
@@ -45,18 +43,18 @@ public class TrikonaDasa : Dasa, IDasa
 		12
 	};
 
-	public TrikonaDasa(Horoscope _h)
+	public TrikonaDasa(Horoscope h)
 	{
-		h       = _h;
-		options = new UserOptions(h, FindStronger.RulesNavamsaDasaRasi(h));
+		this._h       = h;
+		_options = new UserOptions(this._h, FindStronger.RulesNavamsaDasaRasi(this._h));
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
-		options.recalculate();
+		_options.Recalculate();
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 144;
 	}
@@ -64,51 +62,51 @@ public class TrikonaDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al      = new ArrayList(12);
-		var zh_seed = options.getSeed();
-		if (options.TrikonaStrengths.houses.Count >= 1)
+		var zhSeed = _options.GetSeed();
+		if (_options.TrikonaStrengths.houses.Count >= 1)
 		{
-			zh_seed.value = (ZodiacHouse.Name) options.TrikonaStrengths.houses[0];
+			zhSeed.Sign = (ZodiacHouse.Rasi) _options.TrikonaStrengths.houses[0];
 		}
 
-		zh_seed.value = options.findStrongerRasi(options.SeventhStrengths, zh_seed.value, zh_seed.add(7).value);
+		zhSeed.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed.Sign, zhSeed.Add(7).Sign);
 
-		var bIsZodiacal = zh_seed.isOdd();
+		var bIsZodiacal = zhSeed.IsOdd();
 
-		var dasa_length_sum = 0.0;
+		var dasaLengthSum = 0.0;
 		for (var i = 0; i < 12; i++)
 		{
-			ZodiacHouse zh_dasa = null;
+			ZodiacHouse zhDasa = null;
 			if (bIsZodiacal)
 			{
-				zh_dasa = zh_seed.add(order[i]);
+				zhDasa = zhSeed.Add(_order[i]);
 			}
 			else
 			{
-				zh_dasa = zh_seed.addReverse(order[i]);
+				zhDasa = zhSeed.AddReverse(_order[i]);
 			}
 
-			double dasa_length = NarayanaDasaLength(zh_dasa, getLordsPosition(zh_dasa));
+			double dasaLength = NarayanaDasaLength(zhDasa, GetLordsPosition(zhDasa));
 
 
-			var di = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var di = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
 			al.Add(di);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
 		for (var i = 0; i < 12; i++)
 		{
 			var df          = (DasaEntry) al[i];
-			var dasa_length = 12.0 - df.dasaLength;
-			var di          = new DasaEntry(df.zodiacHouse, dasa_length_sum, dasa_length, 1, df.shortDesc);
+			var dasaLength = 12.0 - df.DasaLength;
+			var di          = new DasaEntry(df.ZHouse, dasaLengthSum, dasaLength, 1, df.DasaName);
 			al.Add(di);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
 
-		var cycle_length = cycle * paramAyus();
+		var cycleLength = cycle * ParamAyus();
 		foreach (DasaEntry di in al)
 		{
-			di.startUT += cycle_length;
+			di.StartUt += cycleLength;
 		}
 
 		return al;
@@ -116,114 +114,114 @@ public class TrikonaDasa : Dasa, IDasa
 
 	public ArrayList AntarDasa(DasaEntry pdi)
 	{
-		var nd = new NarayanaDasa(h);
-		nd.options = options;
+		var nd = new NarayanaDasa(_h);
+		nd.Options = _options;
 		return nd.AntarDasa(pdi);
 	}
 
 	public string Description()
 	{
-		return "Trikona Dasa seeded from " + options.SeedRasi;
+		return "Trikona Dasa seeded from " + _options.SeedRasi;
 	}
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
 	{
 		var uo = (UserOptions) a;
-		options.CopyFrom(uo);
+		_options.CopyFrom(uo);
 		RecalculateEvent();
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public new void DivisionChanged(Division div)
 	{
-		var newOpts = (UserOptions) options.Clone();
+		var newOpts = (UserOptions) _options.Clone();
 		newOpts.Division = (Division) div.Clone();
 		SetOptions(newOpts);
 	}
 
-	public DivisionPosition getLordsPosition(ZodiacHouse zh)
+	public DivisionPosition GetLordsPosition(ZodiacHouse zh)
 	{
-		Body.Name b;
-		if (zh.value == ZodiacHouse.Name.Sco)
+		Body.BodyType b;
+		if (zh.Sign == ZodiacHouse.Rasi.Sco)
 		{
-			b = options.ColordSco;
+			b = _options.ColordSco;
 		}
-		else if (zh.value == ZodiacHouse.Name.Aqu)
+		else if (zh.Sign == ZodiacHouse.Rasi.Aqu)
 		{
-			b = options.ColordAqu;
+			b = _options.ColordAqu;
 		}
 		else
 		{
-			b = Basics.SimpleLordOfZodiacHouse(zh.value);
+			b = zh.Sign.SimpleLordOfZodiacHouse();
 		}
 
-		return h.getPosition(b).toDivisionPosition(options.Division);
+		return _h.GetPosition(b).ToDivisionPosition(_options.Division);
 	}
 
 	private class UserOptions : RasiDasaUserOptions
 	{
-		protected OrderedZodiacHouses mTrikonaStrengths;
+		protected OrderedZodiacHouses MTrikonaStrengths;
 
-		public UserOptions(Horoscope _h, ArrayList _rules) : base(_h, _rules)
+		public UserOptions(Horoscope h, ArrayList rules) : base(h, rules)
 		{
-			calculateTrikonaStrengths();
+			CalculateTrikonaStrengths();
 		}
 
 		public OrderedZodiacHouses TrikonaStrengths
 		{
-			get => mTrikonaStrengths;
-			set => mTrikonaStrengths = value;
+			get => MTrikonaStrengths;
+			set => MTrikonaStrengths = value;
 		}
 
-		private void calculateTrikonaStrengths()
+		private void CalculateTrikonaStrengths()
 		{
-			var zh = getSeed();
-			var zh_t = new ZodiacHouse.Name[3]
+			var zh = GetSeed();
+			var zhT = new ZodiacHouse.Rasi[3]
 			{
-				zh.add(1).value,
-				zh.add(5).value,
-				zh.add(9).value
+				zh.Add(1).Sign,
+				zh.Add(5).Sign,
+				zh.Add(9).Sign
 			};
-			var fs = new FindStronger(h, Division, mRules);
-			mTrikonaStrengths = fs.getOrderedHouses(zh_t);
+			var fs = new FindStronger(H, Division, MRules);
+			MTrikonaStrengths = fs.GetOrderedHouses(zhT);
 		}
 
 		public override object Clone()
 		{
-			var uo = new UserOptions(h, mRules);
+			var uo = new UserOptions(H, MRules);
 			CopyFromNoClone(this);
-			uo.mTrikonaStrengths = (OrderedZodiacHouses) mTrikonaStrengths.Clone();
+			uo.MTrikonaStrengths = (OrderedZodiacHouses) MTrikonaStrengths.Clone();
 			return uo;
 		}
 
-		public override object CopyFrom(object _uo)
+		public override object CopyFrom(object userOptions)
 		{
-			var uo = (UserOptions) _uo;
+			var uo = (UserOptions) userOptions;
 			if (Division != uo.Division || ColordAqu != uo.ColordAqu || ColordSco != uo.ColordSco)
 			{
-				calculateTrikonaStrengths();
-				calculateSeed();
-				calculateExceptions();
-				calculateSeventhStrengths();
-				calculateCoLords();
+				CalculateTrikonaStrengths();
+				CalculateSeed();
+				CalculateExceptions();
+				CalculateSeventhStrengths();
+				CalculateCoLords();
 			}
 
-			base.CopyFromNoClone(_uo);
+			base.CopyFromNoClone(userOptions);
 			return Clone();
 		}
 
-		public new void recalculate()
+		public new void Recalculate()
 		{
-			calculateTrikonaStrengths();
-			calculateSeed();
-			calculateExceptions();
-			calculateSeventhStrengths();
-			calculateCoLords();
+			CalculateTrikonaStrengths();
+			CalculateSeed();
+			CalculateExceptions();
+			CalculateSeventhStrengths();
+			CalculateCoLords();
 		}
 	}
 }

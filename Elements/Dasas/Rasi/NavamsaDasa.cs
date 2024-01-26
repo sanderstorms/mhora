@@ -17,7 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
@@ -26,49 +25,49 @@ namespace Mhora.Elements.Dasas.Rasi;
 
 public class NavamsaDasa : Dasa, IDasa
 {
-	private readonly Horoscope           h;
-	private readonly RasiDasaUserOptions options;
+	private readonly Horoscope           _h;
+	private readonly RasiDasaUserOptions _options;
 
-	public NavamsaDasa(Horoscope _h)
+	public NavamsaDasa(Horoscope h)
 	{
-		h       = _h;
-		options = new RasiDasaUserOptions(h, FindStronger.RulesNavamsaDasaRasi(h));
+		this._h       = h;
+		_options = new RasiDasaUserOptions(this._h, FindStronger.RulesNavamsaDasaRasi(this._h));
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 108;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
-		options.recalculate();
+		_options.Recalculate();
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
 		var al      = new ArrayList(12);
-		var zh_seed = h.getPosition(Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
+		var zhSeed = _h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse;
 
-		if (!zh_seed.isOdd())
+		if (!zhSeed.IsOdd())
 		{
-			zh_seed = zh_seed.AdarsaSign();
+			zhSeed = zhSeed.AdarsaSign();
 		}
 
-		var dasa_length_sum = 0.0;
-		var dasa_length     = 9.0;
+		var dasaLengthSum = 0.0;
+		var dasaLength     = 9.0;
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh_dasa = zh_seed.add(i);
-			var di      = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var zhDasa = zhSeed.Add(i);
+			var di      = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
 			al.Add(di);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
-		var cycle_length = cycle * paramAyus();
+		var cycleLength = cycle * ParamAyus();
 		foreach (DasaEntry di in al)
 		{
-			di.startUT += cycle_length;
+			di.StartUt += cycleLength;
 		}
 
 		return al;
@@ -78,21 +77,21 @@ public class NavamsaDasa : Dasa, IDasa
 	{
 		var al = new ArrayList(12);
 
-		var zh_first    = new ZodiacHouse(pdi.zodiacHouse);
-		var zh_stronger = zh_first.add(1);
-		if (!zh_stronger.isOdd())
+		var zhFirst    = new ZodiacHouse(pdi.ZHouse);
+		var zhStronger = zhFirst.Add(1);
+		if (!zhStronger.IsOdd())
 		{
-			zh_stronger = zh_stronger.AdarsaSign();
+			zhStronger = zhStronger.AdarsaSign();
 		}
 
-		var dasa_start = pdi.startUT;
+		var dasaStart = pdi.StartUt;
 
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh_dasa = zh_stronger.add(i);
-			var di      = new DasaEntry(zh_dasa.value, dasa_start, pdi.dasaLength / 12.0, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.value);
+			var zhDasa = zhStronger.Add(i);
+			var di      = new DasaEntry(zhDasa.Sign, dasaStart, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zhDasa.Sign);
 			al.Add(di);
-			dasa_start += pdi.dasaLength / 12.0;
+			dasaStart += pdi.DasaLength / 12.0;
 		}
 
 		return al;
@@ -105,20 +104,20 @@ public class NavamsaDasa : Dasa, IDasa
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
 	{
 		var uo = (RasiDasaUserOptions) a;
-		options.CopyFrom(uo);
+		_options.CopyFrom(uo);
 		RecalculateEvent();
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public new void DivisionChanged(Division div)
 	{
-		var newOpts = (RasiDasaUserOptions) options.Clone();
+		var newOpts = (RasiDasaUserOptions) _options.Clone();
 		newOpts.Division = (Division) div.Clone();
 		SetOptions(newOpts);
 	}

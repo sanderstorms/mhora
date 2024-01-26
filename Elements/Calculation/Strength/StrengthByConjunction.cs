@@ -19,22 +19,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has larger number of grahas
-// Stronger graha is in such a rasi
+// Stronger Graha is in such a rasi
 public class StrengthByConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
 {
 	public StrengthByConjunction(Horoscope h, Division dtype) : base(h, dtype, true)
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		return stronger(h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value, h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value);
+		return Stronger(H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse.Sign, H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse.Sign);
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
-		var numa = numGrahasInZodiacHouse(za);
-		var numb = numGrahasInZodiacHouse(zb);
+		var numa = NumGrahasInZodiacHouse(za);
+		var numb = NumGrahasInZodiacHouse(zb);
 		if (numa > numb)
 		{
 			return true;

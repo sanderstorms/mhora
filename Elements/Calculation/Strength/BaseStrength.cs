@@ -17,52 +17,51 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Tables;
 
 namespace Mhora.Elements.Calculation.Strength;
 
 public abstract class BaseStrength
 {
-	protected bool      bUseSimpleLords;
-	protected Division  dtype;
-	protected Horoscope h;
-	protected ArrayList std_div_pos;
-	protected ArrayList std_grahas;
+	protected bool      BUseSimpleLords;
+	protected Division  Dtype;
+	protected Horoscope H;
+	protected ArrayList StdDivPos;
+	protected ArrayList StdGrahas;
 
-	protected BaseStrength(Horoscope _h, Division _dtype, bool _bUseSimpleLords)
+	protected BaseStrength(Horoscope h, Division dtype, bool bUseSimpleLords)
 	{
-		h               = _h;
-		dtype           = _dtype;
-		bUseSimpleLords = _bUseSimpleLords;
-		std_div_pos     = h.CalculateDivisionPositions(dtype);
+		H               = h;
+		Dtype           = dtype;
+		BUseSimpleLords = bUseSimpleLords;
+		StdDivPos     = H.CalculateDivisionPositions(Dtype);
 	}
 
-	protected Body.Name GetStrengthLord(ZodiacHouse.Name zh)
+	protected Body.BodyType GetStrengthLord(ZodiacHouse.Rasi zh)
 	{
-		if (bUseSimpleLords)
+		if (BUseSimpleLords)
 		{
-			return Basics.SimpleLordOfZodiacHouse(zh);
+			return zh.SimpleLordOfZodiacHouse();
 		}
 
-		return h.LordOfZodiacHouse(new ZodiacHouse(zh), dtype);
+		return H.LordOfZodiacHouse(new ZodiacHouse(zh), Dtype);
 	}
 
-	protected Body.Name GetStrengthLord(ZodiacHouse zh)
+	protected Body.BodyType GetStrengthLord(ZodiacHouse zh)
 	{
-		return GetStrengthLord(zh.value);
+		return GetStrengthLord(zh.Sign);
 	}
 
-	protected int numGrahasInZodiacHouse(ZodiacHouse.Name zh)
+	protected int NumGrahasInZodiacHouse(ZodiacHouse.Rasi zh)
 	{
 		var num = 0;
-		foreach (DivisionPosition dp in std_div_pos)
+		foreach (DivisionPosition dp in StdDivPos)
 		{
-			if (dp.type != Body.Type.Graha)
+			if (dp.Type != Body.Type.Graha)
 			{
 				continue;
 			}
 
-			if (dp.zodiac_house.value == zh)
+			if (dp.ZodiacHouse.Sign == zh)
 			{
 				num = num + 1;
 			}
@@ -71,10 +70,10 @@ public abstract class BaseStrength
 		return num;
 	}
 
-	protected double karakaLongitude(Body.Name b)
+	protected double KarakaLongitude(Body.BodyType b)
 	{
-		var lon = h.getPosition(b).longitude.toZodiacHouseOffset();
-		if (b == Body.Name.Rahu || b == Body.Name.Ketu)
+		var lon = H.GetPosition(b).Longitude.ToZodiacHouseOffset();
+		if (b == Body.BodyType.Rahu || b == Body.BodyType.Ketu)
 		{
 			lon = 30.0 - lon;
 		}
@@ -82,24 +81,24 @@ public abstract class BaseStrength
 		return lon;
 	}
 
-	protected Body.Name findAtmaKaraka()
+	protected Body.BodyType FindAtmaKaraka()
 	{
-		Body.Name[] karakaBodies =
+		Body.BodyType[] karakaBodies =
 		{
-			Body.Name.Sun,
-			Body.Name.Moon,
-			Body.Name.Mars,
-			Body.Name.Mercury,
-			Body.Name.Jupiter,
-			Body.Name.Venus,
-			Body.Name.Saturn,
-			Body.Name.Rahu
+			Body.BodyType.Sun,
+			Body.BodyType.Moon,
+			Body.BodyType.Mars,
+			Body.BodyType.Mercury,
+			Body.BodyType.Jupiter,
+			Body.BodyType.Venus,
+			Body.BodyType.Saturn,
+			Body.BodyType.Rahu
 		};
 		var lon = 0.0;
-		var ret = Body.Name.Sun;
+		var ret = Body.BodyType.Sun;
 		foreach (var bn in karakaBodies)
 		{
-			var offset = karakaLongitude(bn);
+			var offset = KarakaLongitude(bn);
 			if (offset > lon)
 			{
 				lon = offset;
@@ -111,14 +110,14 @@ public abstract class BaseStrength
 		return ret;
 	}
 
-	public ArrayList findGrahasInHouse(ZodiacHouse.Name zh)
+	public ArrayList FindGrahasInHouse(ZodiacHouse.Rasi zh)
 	{
 		var ret = new ArrayList();
-		foreach (DivisionPosition dp in std_div_pos)
+		foreach (DivisionPosition dp in StdDivPos)
 		{
-			if (dp.type == Body.Type.Graha && dp.zodiac_house.value == zh)
+			if (dp.Type == Body.Type.Graha && dp.ZodiacHouse.Sign == zh)
 			{
-				ret.Add(dp.name);
+				ret.Add(dp.Name);
 			}
 		}
 

@@ -91,10 +91,7 @@ public class MhoraChild : Form
 	{
 		if (disposing)
 		{
-			if (components != null)
-			{
-				components.Dispose();
-			}
+			components?.Dispose();
 		}
 
 		base.Dispose(disposing);
@@ -337,7 +334,7 @@ public class MhoraChild : Form
 		MhoraControlContainer c_div_rasi = new MhoraControlContainer(div_rasi);
 
 		DivisionalChart div_nav = new DivisionalChart(h);
-		div_nav.options.Division = Basics.DivisionType.Navamsa;
+		div_nav.options.Division = Vargas.DivisionType.Navamsa;
 		MhoraControlContainer c_div_nav = new MhoraControlContainer(div_nav);
 
 
@@ -393,8 +390,15 @@ public class MhoraChild : Form
 
 	public void menuShowDobOptions()
 	{
-		var f = new MhoraOptions(h.info.Clone(), h.UpdateHoraInfo);
-		f.ShowDialog();
+		using (var birthDetails = new BirthDetailsDialog(h.Info))
+		{
+			if (birthDetails.ShowDialog() == DialogResult.OK)
+			{
+				Refresh();
+			}
+		}
+		//var f = new MhoraOptions(h.info.Clone(), h.UpdateHoraInfo);
+		//f.ShowDialog();
 	}
 
 	private void menuDobOptions_Click(object sender, EventArgs e)
@@ -412,13 +416,13 @@ public class MhoraChild : Form
 
 		try
 		{
-			if (h.info.FileType == HoraInfo.EFileType.JagannathaHora)
+			if (h.Info.FileType == HoraInfo.EFileType.JagannathaHora)
 			{
-				new Jhd(mJhdFileName).ToFile(h.info);
+				new Jhd(mJhdFileName).ToFile(h.Info);
 			}
 			else
 			{
-				new Mhd(mJhdFileName).ToFile(h.info);
+				new Mhd(mJhdFileName).ToFile(h.Info);
 			}
 		}
 		catch (ArgumentNullException)
@@ -452,13 +456,12 @@ public class MhoraChild : Form
 		{
 			if (sparts[sparts.Length - 1] == "jhd")
 			{
-				h.info.FileType = HoraInfo.EFileType.JagannathaHora;
-				new Jhd(ofd.FileName).ToFile(h.info);
+				h.Info.FileType = HoraInfo.EFileType.JagannathaHora;
+				new Jhd(ofd.FileName).ToFile(h.Info);
 			}
 			else
 			{
-				h.info.FileType = HoraInfo.EFileType.MudgalaHora;
-				new Mhd(ofd.FileName).ToFile(h.info);
+				h.Info.Export (ofd.FileName);
 			}
 
 			mJhdFileName = ofd.FileName;
@@ -504,7 +507,7 @@ public class MhoraChild : Form
 		var c_div_rasi = new MhoraControlContainer(div_rasi);
 
 		var div_nav = new DivisionalChart(h);
-		div_nav.options.Varga = new Division(Basics.DivisionType.Navamsa);
+		div_nav.options.Varga = new Division(Vargas.DivisionType.Navamsa);
 		div_nav.SetOptions(div_nav.options);
 		var c_div_nav = new MhoraControlContainer(div_nav);
 
@@ -543,7 +546,7 @@ public class MhoraChild : Form
 		var c_div_rasi = new MhoraControlContainer(div_rasi);
 
 		var div_nav = new DivisionalChart(h);
-		div_nav.options.Varga = new Division(Basics.DivisionType.Navamsa);
+		div_nav.options.Varga = new Division(Vargas.DivisionType.Navamsa);
 		div_nav.SetOptions(div_nav.options);
 		var c_div_nav = new MhoraControlContainer(div_nav);
 
@@ -584,7 +587,7 @@ public class MhoraChild : Form
 		var c_div_rasi = new MhoraControlContainer(div_rasi);
 
 		var div_nav = new DivisionalChart(h);
-		div_nav.options.Varga = new Division(Basics.DivisionType.Navamsa);
+		div_nav.options.Varga = new Division(Vargas.DivisionType.Navamsa);
 		div_nav.SetOptions(div_nav.options);
 		var c_div_nav = new MhoraControlContainer(div_nav);
 
@@ -622,34 +625,34 @@ public class MhoraChild : Form
 	public object SetCalcOptions(object o)
 	{
 		var ho = (HoroscopeOptions) o;
-		h.options.Copy(ho);
+		h.Options.Copy(ho);
 		h.OnChanged();
-		return h.options.Clone();
+		return h.Options.Clone();
 	}
 
 	public object SetStrengthOptions(object o)
 	{
 		var so = (StrengthOptions) o;
-		h.strength_options.Copy(so);
+		h.StrengthOptions.Copy(so);
 		h.OnChanged();
-		return h.strength_options.Clone();
+		return h.StrengthOptions.Clone();
 	}
 
 	private void menuCalcOpts_Click(object sender, EventArgs e)
 	{
-		var f = new MhoraOptions(h.options, SetCalcOptions);
+		var f = new MhoraOptions(h.Options, SetCalcOptions);
 		f.ShowDialog();
 	}
 
 
 	private void menuStrengthOpts_Click(object sender, EventArgs e)
 	{
-		if (h.strength_options == null)
+		if (h.StrengthOptions == null)
 		{
-			h.strength_options = (StrengthOptions) MhoraGlobalOptions.Instance.SOptions.Clone();
+			h.StrengthOptions = (StrengthOptions) MhoraGlobalOptions.Instance.SOptions.Clone();
 		}
 
-		var f = new MhoraOptions(h.strength_options, SetStrengthOptions);
+		var f = new MhoraOptions(h.StrengthOptions, SetStrengthOptions);
 		f.ShowDialog();
 	}
 
@@ -664,27 +667,27 @@ public class MhoraChild : Form
 		var c_d1 = new MhoraControlContainer(d1);
 
 		var d2 = new DivisionalChart(h);
-		d2.options.Varga = new Division(Basics.DivisionType.DrekkanaParasara);
+		d2.options.Varga = new Division(Vargas.DivisionType.DrekkanaParasara);
 		d2.SetOptions(d2.options);
 		var c_d2 = new MhoraControlContainer(d2);
 
 		var d3 = new DivisionalChart(h);
-		d3.options.Varga = new Division(Basics.DivisionType.Navamsa);
+		d3.options.Varga = new Division(Vargas.DivisionType.Navamsa);
 		d3.SetOptions(d3.options);
 		var c_d3 = new MhoraControlContainer(d3);
 
 		var d4 = new DivisionalChart(h);
-		d4.options.Varga = new Division(Basics.DivisionType.Saptamsa);
+		d4.options.Varga = new Division(Vargas.DivisionType.Saptamsa);
 		d4.SetOptions(d4.options);
 		var c_d4 = new MhoraControlContainer(d4);
 
 		var d5 = new DivisionalChart(h);
-		d5.options.Varga = new Division(Basics.DivisionType.Dasamsa);
+		d5.options.Varga = new Division(Vargas.DivisionType.Dasamsa);
 		d5.SetOptions(d5.options);
 		var c_d5 = new MhoraControlContainer(d5);
 
 		var d6 = new DivisionalChart(h);
-		d6.options.Varga = new Division(Basics.DivisionType.Vimsamsa);
+		d6.options.Varga = new Division(Vargas.DivisionType.Vimsamsa);
 		d6.SetOptions(d6.options);
 		var c_d6 = new MhoraControlContainer(d6);
 
@@ -728,14 +731,14 @@ public class MhoraChild : Form
 
 	public object OnCalcOptsChanged(object o)
 	{
-		h.options.Copy((HoroscopeOptions) o);
+		h.Options.Copy((HoroscopeOptions) o);
 		h.OnChanged();
-		return h.options.Clone();
+		return h.Options.Clone();
 	}
 
 	private void menuEditCalcOpts_Click(object sender, EventArgs e)
 	{
-		new MhoraOptions(h.options, OnCalcOptsChanged).ShowDialog();
+		new MhoraOptions(h.Options, OnCalcOptsChanged).ShowDialog();
 	}
 
 	public void menuPrint()
@@ -810,6 +813,6 @@ public class MhoraChild : Form
 	private void menuItemEvalYogas_Click(object sender, EventArgs e)
 	{
 		//this.evaluateYogas();
-		//FindYogas.Test(h, new Division(Basics.DivisionType.Rasi));
+		//FindYogas.Test(h, new Division(Vargas.DivisionType.Rasi));
 	}
 }

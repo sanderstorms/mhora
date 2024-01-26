@@ -19,24 +19,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has its Lord in its house
-// Stronger graha is in its own house
+// Stronger Graha is in its own house
 public class StrengthByLordInOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
 {
 	public StrengthByLordInOwnHouse(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		var zm = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
-		var zn = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
-		return stronger(zm, zn);
+		var zm = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		var zn = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		return Stronger(zm, zn);
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
-		var a = value(za);
-		var b = value(zb);
+		var a = Value(za);
+		var b = Value(zb);
 		if (a > b)
 		{
 			return true;
@@ -50,15 +50,15 @@ public class StrengthByLordInOwnHouse : BaseStrength, IStrengthRasi, IStrengthGr
 		throw new EqualStrength();
 	}
 
-	protected int value(ZodiacHouse.Name _zh)
+	protected int Value(ZodiacHouse.Rasi rasi)
 	{
 		var ret = 0;
 
-		var zh = new ZodiacHouse(_zh);
+		var zh = new ZodiacHouse(rasi);
 		var bl = GetStrengthLord(zh);
-		var pl = h.getPosition(bl).toDivisionPosition(dtype);
-		var pj = h.getPosition(Body.Name.Jupiter).toDivisionPosition(dtype);
-		var pm = h.getPosition(Body.Name.Mercury).toDivisionPosition(dtype);
+		var pl = H.GetPosition(bl).ToDivisionPosition(Dtype);
+		var pj = H.GetPosition(Body.BodyType.Jupiter).ToDivisionPosition(Dtype);
+		var pm = H.GetPosition(Body.BodyType.Mercury).ToDivisionPosition(Dtype);
 
 		if (pl.GrahaDristi(zh))
 		{

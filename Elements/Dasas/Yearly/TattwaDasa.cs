@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Components.Property;
 using Mhora.Elements.Calculation;
 
@@ -26,19 +25,19 @@ namespace Mhora.Elements.Dasas.Yearly;
 
 public class TattwaDasa : Dasa, IDasa
 {
-	private readonly Horoscope h;
+	private readonly Horoscope _h;
 
-	public TattwaDasa(Horoscope _h)
+	public TattwaDasa(Horoscope h)
 	{
-		h = _h;
+		this._h = h;
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 1.0 / 24.0 / 60.0;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
@@ -46,8 +45,8 @@ public class TattwaDasa : Dasa, IDasa
 	{
 		var al = new ArrayList();
 
-		var day_length = h.next_sunrise + 24.0 - h.sunrise;
-		var day_sr     = Math.Floor(h.baseUT)  + h.sunrise / 24.0;
+		var dayLength = _h.NextSunrise + 24.0 - _h.Sunrise;
+		var daySr     = Math.Floor(_h.Info.Jd)  + _h.Sunrise / 24.0;
 
 		return al;
 	}
@@ -83,7 +82,7 @@ public class TattwaDasa : Dasa, IDasa
 			Akasha
 		}
 
-		public Tattwa _startTattwa;
+		private Tattwa _startTattwa;
 
 		[PGDisplayName("Seed Tattwa")]
 		public Tattwa StartTattwa

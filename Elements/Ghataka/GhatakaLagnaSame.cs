@@ -20,50 +20,50 @@ namespace Mhora.Elements.Ghataka;
 
 public class GhatakaLagnaSame
 {
-	public static bool checkLagna(ZodiacHouse janma, ZodiacHouse same)
+	public static bool CheckLagna(ZodiacHouse janma, ZodiacHouse same)
 	{
-		var ja = janma.value;
-		var gh = ZodiacHouse.Name.Ari;
+		var ja = janma.Sign;
+		var gh = ZodiacHouse.Rasi.Ari;
 		switch (ja)
 		{
-			case ZodiacHouse.Name.Ari:
-				gh = ZodiacHouse.Name.Ari;
+			case ZodiacHouse.Rasi.Ari:
+				gh = ZodiacHouse.Rasi.Ari;
 				break;
-			case ZodiacHouse.Name.Tau:
-				gh = ZodiacHouse.Name.Tau;
+			case ZodiacHouse.Rasi.Tau:
+				gh = ZodiacHouse.Rasi.Tau;
 				break;
-			case ZodiacHouse.Name.Gem:
-				gh = ZodiacHouse.Name.Can;
+			case ZodiacHouse.Rasi.Gem:
+				gh = ZodiacHouse.Rasi.Can;
 				break;
-			case ZodiacHouse.Name.Can:
-				gh = ZodiacHouse.Name.Lib;
+			case ZodiacHouse.Rasi.Can:
+				gh = ZodiacHouse.Rasi.Lib;
 				break;
-			case ZodiacHouse.Name.Leo:
-				gh = ZodiacHouse.Name.Cap;
+			case ZodiacHouse.Rasi.Leo:
+				gh = ZodiacHouse.Rasi.Cap;
 				break;
-			case ZodiacHouse.Name.Vir:
-				gh = ZodiacHouse.Name.Pis;
+			case ZodiacHouse.Rasi.Vir:
+				gh = ZodiacHouse.Rasi.Pis;
 				break;
-			case ZodiacHouse.Name.Lib:
-				gh = ZodiacHouse.Name.Vir;
+			case ZodiacHouse.Rasi.Lib:
+				gh = ZodiacHouse.Rasi.Vir;
 				break;
-			case ZodiacHouse.Name.Sco:
-				gh = ZodiacHouse.Name.Sco;
+			case ZodiacHouse.Rasi.Sco:
+				gh = ZodiacHouse.Rasi.Sco;
 				break;
-			case ZodiacHouse.Name.Sag:
-				gh = ZodiacHouse.Name.Sag;
+			case ZodiacHouse.Rasi.Sag:
+				gh = ZodiacHouse.Rasi.Sag;
 				break;
-			case ZodiacHouse.Name.Cap:
-				gh = ZodiacHouse.Name.Aqu;
+			case ZodiacHouse.Rasi.Cap:
+				gh = ZodiacHouse.Rasi.Aqu;
 				break;
-			case ZodiacHouse.Name.Aqu:
-				gh = ZodiacHouse.Name.Gem;
+			case ZodiacHouse.Rasi.Aqu:
+				gh = ZodiacHouse.Rasi.Gem;
 				break;
-			case ZodiacHouse.Name.Pis:
-				gh = ZodiacHouse.Name.Leo;
+			case ZodiacHouse.Rasi.Pis:
+				gh = ZodiacHouse.Rasi.Leo;
 				break;
 		}
 
-		return same.value == gh;
+		return same.Sign == gh;
 	}
 }

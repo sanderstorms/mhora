@@ -22,4 +22,8 @@ namespace Mhora.Elements.Calculation.Strength;
 
 public class EqualStrength : Exception
 {
+	public EqualStrength()
+	{
+
+	}
 }

@@ -24,86 +24,86 @@ public class KutaNakshatraYoni
 {
 	public enum ESex
 	{
-		IMale,
-		IFemale
+		Male,
+		Female
 	}
 
 	public enum EType
 	{
-		IHorse,
-		IElephant,
-		ISheep,
-		ISerpent,
-		IDog,
-		ICat,
-		IRat,
-		ICow,
-		IBuffalo,
-		ITiger,
-		IHare,
-		IMonkey,
-		ILion,
-		IMongoose
+		Horse,
+		Elephant,
+		Sheep,
+		Serpent,
+		Dog,
+		Cat,
+		Rat,
+		Cow,
+		Buffalo,
+		Tiger,
+		Hare,
+		Monkey,
+		Lion,
+		Mongoose
 	}
 
-	public static ESex getSex(Nakshatra n)
+	public static ESex GetSex(Nakshatras.Nakshatra n)
 	{
-		switch (n.value)
+		switch (n)
 		{
-			case Nakshatra.Name.Aswini:
-			case Nakshatra.Name.Bharani:
-			case Nakshatra.Name.Pushya:
-			case Nakshatra.Name.Rohini:
-			case Nakshatra.Name.Moola:
-			case Nakshatra.Name.Aslesha:
-			case Nakshatra.Name.Makha:
-			case Nakshatra.Name.UttaraPhalguni:
-			case Nakshatra.Name.Swati:
-			case Nakshatra.Name.Vishaka:
-			case Nakshatra.Name.Jyestha:
-			case Nakshatra.Name.PoorvaShada:
-			case Nakshatra.Name.PoorvaBhadra:
-			case Nakshatra.Name.UttaraShada: return ESex.IMale;
+			case Nakshatras.Nakshatra.Aswini:
+			case Nakshatras.Nakshatra.Bharani:
+			case Nakshatras.Nakshatra.Pushya:
+			case Nakshatras.Nakshatra.Rohini:
+			case Nakshatras.Nakshatra.Moola:
+			case Nakshatras.Nakshatra.Aslesha:
+			case Nakshatras.Nakshatra.Makha:
+			case Nakshatras.Nakshatra.UttaraPhalguni:
+			case Nakshatras.Nakshatra.Swati:
+			case Nakshatras.Nakshatra.Vishaka:
+			case Nakshatras.Nakshatra.Jyestha:
+			case Nakshatras.Nakshatra.PoorvaShada:
+			case Nakshatras.Nakshatra.PoorvaBhadra:
+			case Nakshatras.Nakshatra.UttaraShada: return ESex.Male;
 		}
 
-		return ESex.IFemale;
+		return ESex.Female;
 	}
 
-	public static EType getType(Nakshatra n)
+	public static EType GetType(Nakshatras.Nakshatra n)
 	{
-		switch (n.value)
+		switch (n)
 		{
-			case Nakshatra.Name.Aswini:
-			case Nakshatra.Name.Satabisha: return EType.IHorse;
-			case Nakshatra.Name.Bharani:
-			case Nakshatra.Name.Revati: return EType.IElephant;
-			case Nakshatra.Name.Pushya:
-			case Nakshatra.Name.Krittika: return EType.ISheep;
-			case Nakshatra.Name.Rohini:
-			case Nakshatra.Name.Mrigarirsa: return EType.ISerpent;
-			case Nakshatra.Name.Moola:
-			case Nakshatra.Name.Aridra: return EType.IDog;
-			case Nakshatra.Name.Aslesha:
-			case Nakshatra.Name.Punarvasu: return EType.ICat;
-			case Nakshatra.Name.Makha:
-			case Nakshatra.Name.PoorvaPhalguni: return EType.IRat;
-			case Nakshatra.Name.UttaraPhalguni:
-			case Nakshatra.Name.UttaraBhadra: return EType.ICow;
-			case Nakshatra.Name.Swati:
-			case Nakshatra.Name.Hasta: return EType.IBuffalo;
-			case Nakshatra.Name.Vishaka:
-			case Nakshatra.Name.Chittra: return EType.ITiger;
-			case Nakshatra.Name.Jyestha:
-			case Nakshatra.Name.Anuradha: return EType.IHare;
-			case Nakshatra.Name.PoorvaShada:
-			case Nakshatra.Name.Sravana: return EType.IMonkey;
-			case Nakshatra.Name.PoorvaBhadra:
-			case Nakshatra.Name.Dhanishta: return EType.ILion;
-			case Nakshatra.Name.UttaraShada: return EType.IMongoose;
+			case Nakshatras.Nakshatra.Aswini:
+			case Nakshatras.Nakshatra.Satabisha: return EType.Horse;
+			case Nakshatras.Nakshatra.Bharani:
+			case Nakshatras.Nakshatra.Revati: return EType.Elephant;
+			case Nakshatras.Nakshatra.Pushya:
+			case Nakshatras.Nakshatra.Krittika: return EType.Sheep;
+			case Nakshatras.Nakshatra.Rohini:
+			case Nakshatras.Nakshatra.Mrigarirsa: return EType.Serpent;
+			case Nakshatras.Nakshatra.Moola:
+			case Nakshatras.Nakshatra.Aridra: return EType.Dog;
+			case Nakshatras.Nakshatra.Aslesha:
+			case Nakshatras.Nakshatra.Punarvasu: return EType.Cat;
+			case Nakshatras.Nakshatra.Makha:
+			case Nakshatras.Nakshatra.PoorvaPhalguni: return EType.Rat;
+			case Nakshatras.Nakshatra.UttaraPhalguni:
+			case Nakshatras.Nakshatra.UttaraBhadra: return EType.Cow;
+			case Nakshatras.Nakshatra.Swati:
+			case Nakshatras.Nakshatra.Hasta: return EType.Buffalo;
+			case Nakshatras.Nakshatra.Vishaka:
+			case Nakshatras.Nakshatra.Chittra: return EType.Tiger;
+			case Nakshatras.Nakshatra.Jyestha:
+			case Nakshatras.Nakshatra.Anuradha: return EType.Hare;
+			case Nakshatras.Nakshatra.PoorvaShada:
+			case Nakshatras.Nakshatra.Sravana: return EType.Monkey;
+			case Nakshatras.Nakshatra.PoorvaBhadra:
+			case Nakshatras.Nakshatra.Dhanishta: return EType.Lion;
+			case Nakshatras.Nakshatra.UttaraShada: return EType.Mongoose;
 		}
 
 
 		Debug.Assert(false, "KutaNakshatraYoni::getType");
-		return EType.IHorse;
+		return EType.Horse;
 	}
 }

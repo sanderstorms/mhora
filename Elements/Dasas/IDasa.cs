@@ -16,23 +16,23 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using System;
 using System.Collections;
 using Mhora.Components.Dasa;
-using Mhora.Elements.Calculation;
 
 namespace Mhora.Elements.Dasas;
 
 /// <summary>
 ///     Interface implemented by all IDasa functions. At the moment the method of
-///     implementation for any level below AntarDasa is assumed to be the same.
+///     implementation for any Level below AntarDasa is assumed to be the same.
 /// </summary>
 public interface IDasa : IUpdateable
 {
-	double    paramAyus();
+	double    ParamAyus();
 	ArrayList Dasa(int                   cycle);
 	ArrayList AntarDasa(DasaEntry        pdi);
-	string    EntryDescription(DasaEntry de, Moment start, Moment end);
+	string    EntryDescription(DasaEntry de, DateTime start, DateTime end);
 	string    Description();
 	void      DivisionChanged(Division d);
-	void      recalculateOptions();
+	void      RecalculateOptions();
 }

@@ -19,27 +19,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has more conjunctions/rasi drishtis of Jupiter, Mercury and Lord
-// Stronger graha is in such a rasi
+// Stronger Graha is in such a rasi
 public class StrengthByAspectsRasi : BaseStrength, IStrengthRasi, IStrengthGraha
 {
 	public StrengthByAspectsRasi(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
 	{
 	}
 
-	public bool stronger(Body.Name m, Body.Name n)
+	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		var zm = h.getPosition(m).toDivisionPosition(dtype).zodiac_house.value;
-		var zn = h.getPosition(n).toDivisionPosition(dtype).zodiac_house.value;
-		return stronger(zm, zn);
+		var zm = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		var zn = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		return Stronger(zm, zn);
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
-		var zj = h.getPosition(Body.Name.Jupiter).toDivisionPosition(dtype).zodiac_house;
-		var zm = h.getPosition(Body.Name.Mercury).toDivisionPosition(dtype).zodiac_house;
+		var zj = H.GetPosition(Body.BodyType.Jupiter).ToDivisionPosition(Dtype).ZodiacHouse;
+		var zm = H.GetPosition(Body.BodyType.Mercury).ToDivisionPosition(Dtype).ZodiacHouse;
 
-		var a = value(zj, zm, za);
-		var b = value(zj, zm, zb);
+		var a = Value(zj, zm, za);
+		var b = Value(zj, zm, zb);
 		if (a > b)
 		{
 			return true;
@@ -53,25 +53,25 @@ public class StrengthByAspectsRasi : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	protected int value(ZodiacHouse zj, ZodiacHouse zm, ZodiacHouse.Name zx)
+	protected int Value(ZodiacHouse zj, ZodiacHouse zm, ZodiacHouse.Rasi zx)
 	{
 		var ret = 0;
 		var zh  = new ZodiacHouse(zx);
 
 		var bl = GetStrengthLord(zx);
-		var zl = h.getPosition(bl).toDivisionPosition(dtype).zodiac_house;
+		var zl = H.GetPosition(bl).ToDivisionPosition(Dtype).ZodiacHouse;
 
-		if (zj.RasiDristi(zh) || zj.value == zh.value)
+		if (zj.RasiDristi(zh) || zj.Sign == zh.Sign)
 		{
 			ret++;
 		}
 
-		if (zm.RasiDristi(zh) || zm.value == zh.value)
+		if (zm.RasiDristi(zh) || zm.Sign == zh.Sign)
 		{
 			ret++;
 		}
 
-		if (zl.RasiDristi(zh) || zl.value == zh.value)
+		if (zl.RasiDristi(zh) || zl.Sign == zh.Sign)
 		{
 			ret++;
 		}

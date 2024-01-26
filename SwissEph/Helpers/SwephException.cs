@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 
-namespace Mhora.SwissEph;
+namespace Mhora.SwissEph.Helpers;
 
 /// <summary>
 ///     Errors found withitn the unmanaged Swiss Ephemeris Library

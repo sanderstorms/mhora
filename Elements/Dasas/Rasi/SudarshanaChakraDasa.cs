@@ -17,7 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
 
@@ -25,14 +24,14 @@ namespace Mhora.Elements.Dasas.Rasi;
 
 public class SudarshanaChakraDasa : Dasa, IDasa
 {
-	private readonly Horoscope h;
+	private readonly Horoscope _h;
 
-	public SudarshanaChakraDasa(Horoscope _h)
+	public SudarshanaChakraDasa(Horoscope h)
 	{
-		h = _h;
+		this._h = h;
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 12;
 	}
@@ -52,19 +51,19 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 		return o;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
 		var al    = new ArrayList(12);
-		var start = cycle * paramAyus();
-		var lzh   = h.getPosition(Body.Name.Lagna).toDivisionPosition(new Division(Basics.DivisionType.Rasi)).zodiac_house;
+		var start = cycle * ParamAyus();
+		var lzh   = _h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse;
 		for (var i = 1; i <= 12; i++)
 		{
-			var czh = lzh.add(i);
-			al.Add(new DasaEntry(czh.value, start, 1, 1, czh.value.ToString()));
+			var czh = lzh.Add(i);
+			al.Add(new DasaEntry(czh.Sign, start, 1, 1, czh.Sign.ToString()));
 			start += 1;
 		}
 
@@ -74,13 +73,13 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 	public ArrayList AntarDasa(DasaEntry de)
 	{
 		var al     = new ArrayList(12);
-		var start  = de.StartUT;
+		var start  = de.StartUt;
 		var length = de.DasaLength / 12.0;
-		var zh     = new ZodiacHouse(de.zodiacHouse);
+		var zh     = new ZodiacHouse(de.ZHouse);
 		for (var i = 1; i <= 12; i++)
 		{
-			var czh = zh.add(i);
-			al.Add(new DasaEntry(czh.value, start, length, de.level + 1, de.shortDesc + " " + czh.value));
+			var czh = zh.Add(i);
+			al.Add(new DasaEntry(czh.Sign, start, length, de.Level + 1, de.DasaName + " " + czh.Sign));
 			start += length;
 		}
 

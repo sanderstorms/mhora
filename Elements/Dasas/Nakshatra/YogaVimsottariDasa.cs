@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Components.Delegates;
 using Mhora.Elements.Calculation;
 
@@ -28,39 +27,36 @@ namespace Mhora.Elements.Dasas.Nakshatra;
 // based on the yoga
 public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaDasa
 {
-	private readonly Horoscope      h;
-	private readonly VimsottariDasa vd;
-	private          UserOptions    options;
+	private readonly Horoscope      _h;
+	private readonly VimsottariDasa _vd;
+	private          UserOptions    _options;
 
-	public YogaVimsottariDasa(Horoscope _h)
+	public YogaVimsottariDasa(Horoscope h)
 	{
-		options    = new UserOptions();
-		common     = this;
-		yogaCommon = this;
-		h          = _h;
-		vd         = new VimsottariDasa(h);
+		_options    = new UserOptions();
+		Common     = this;
+		YogaCommon = this;
+		this._h    = h;
+		_vd         = new VimsottariDasa(this._h);
 	}
 
 	public override object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public override object SetOptions(object a)
 	{
-		options = (UserOptions) options.SetOptions(a);
-		if (RecalculateEvent != null)
-		{
-			RecalculateEvent();
-		}
+		_options = (UserOptions) _options.SetOptions(a);
+		RecalculateEvent?.Invoke();
 
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
-		var t = new Elements.Transit(h);
-		var l = t.LongitudeOfSunMoonYoga(h.baseUT);
+		var t = new Transit(_h);
+		var l = t.LongitudeOfSunMoonYoga(_h.Info.Jd);
 		return _YogaDasa(l, 1, cycle);
 	}
 
@@ -74,57 +70,57 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 		return "Yoga Vimsottari Dasa";
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
-		return vd.paramAyus();
+		return _vd.ParamAyus();
 	}
 
-	public int numberOfDasaItems()
+	public int NumberOfDasaItems()
 	{
-		return vd.numberOfDasaItems();
+		return _vd.NumberOfDasaItems();
 	}
 
-	public DasaEntry nextDasaLord(DasaEntry di)
+	public DasaEntry NextDasaLord(DasaEntry di)
 	{
-		return vd.nextDasaLord(di);
+		return _vd.NextDasaLord(di);
 	}
 
-	public double lengthOfDasa(Body.Name plt)
+	public double LengthOfDasa(Body.BodyType plt)
 	{
-		return vd.lengthOfDasa(plt);
+		return _vd.LengthOfDasa(plt);
 	}
 
-	public Body.Name lordOfNakshatra(Elements.Nakshatra n)
+	public Body.BodyType LordOfNakshatra(Nakshatras.Nakshatra n)
 	{
 		throw new Exception();
-		return Body.Name.Lagna;
+		return Body.BodyType.Lagna;
 	}
 
-	public Body.Name lordOfYoga(Longitude l)
+	public Body.BodyType LordOfYoga(Longitude l)
 	{
-		return l.toSunMoonYoga().getLord();
+		return l.ToSunMoonYoga().getLord();
 	}
 
 	public class UserOptions : ICloneable
 	{
-		public bool bExpungeTravelled = true;
+		public bool BExpungeTravelled = true;
 
 		public UserOptions()
 		{
-			bExpungeTravelled = true;
+			BExpungeTravelled = true;
 		}
 
 		[PGNotVisible]
 		public bool UseYogaRemainder
 		{
-			get => bExpungeTravelled;
-			set => bExpungeTravelled = value;
+			get => BExpungeTravelled;
+			set => BExpungeTravelled = value;
 		}
 
 		public object Clone()
 		{
 			var options = new UserOptions();
-			options.bExpungeTravelled = bExpungeTravelled;
+			options.BExpungeTravelled = BExpungeTravelled;
 			return options;
 		}
 
@@ -133,7 +129,7 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 			if (b is UserOptions)
 			{
 				var uo = (UserOptions) b;
-				bExpungeTravelled = uo.bExpungeTravelled;
+				BExpungeTravelled = uo.BExpungeTravelled;
 			}
 
 			return Clone();

@@ -19,24 +19,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has its lord in a house of different oddity
-// Stronger graha in such a rasi
+// Stronger Graha in such a rasi
 public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStrengthGraha
 {
 	public StrengthByLordInDifferentOddity(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
 	{
 	}
 
-	public bool stronger(Body.Name ba, Body.Name bb)
+	public bool Stronger(Body.BodyType ba, Body.BodyType bb)
 	{
-		var za = h.getPosition(ba).toDivisionPosition(dtype).zodiac_house.value;
-		var zb = h.getPosition(bb).toDivisionPosition(dtype).zodiac_house.value;
-		return stronger(za, zb);
+		var za = H.GetPosition(ba).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		var zb = H.GetPosition(bb).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		return Stronger(za, zb);
 	}
 
-	public bool stronger(ZodiacHouse.Name za, ZodiacHouse.Name zb)
+	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
 	{
-		var a = oddityValueForZodiacHouse(za);
-		var b = oddityValueForZodiacHouse(zb);
+		var a = OddityValueForZodiacHouse(za);
+		var b = OddityValueForZodiacHouse(zb);
 		if (a > b)
 		{
 			return true;
@@ -50,15 +50,15 @@ public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStr
 		throw new EqualStrength();
 	}
 
-	protected int oddityValueForZodiacHouse(ZodiacHouse.Name zh)
+	protected int OddityValueForZodiacHouse(ZodiacHouse.Rasi zh)
 	{
 		var lname  = GetStrengthLord(zh);
-		var lbpos  = h.getPosition(lname);
-		var ldpos  = h.CalculateDivisionPosition(lbpos, dtype);
-		var zh_lor = ldpos.zodiac_house;
+		var lbpos  = H.GetPosition(lname);
+		var ldpos  = H.CalculateDivisionPosition(lbpos, Dtype);
+		var zhLor = ldpos.ZodiacHouse;
 
 		//System.mhora.Log.Debug("   DiffOddity {0} {1} {2}", zh.ToString(), zh_lor.value.ToString(), (int)zh %2==(int)zh_lor.value%2);
-		if ((int) zh % 2 == (int) zh_lor.value % 2)
+		if ((int) zh % 2 == (int) zhLor.Sign % 2)
 		{
 			return 0;
 		}

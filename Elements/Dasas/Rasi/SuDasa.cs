@@ -17,19 +17,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
-using Mhora.Components.Dasa;
 using Mhora.Database.Settings;
 using Mhora.Elements.Calculation;
-using Mhora.Tables;
 
 namespace Mhora.Elements.Dasas.Rasi;
 
 public class SuDasa : Dasa, IDasa
 {
-	private readonly Horoscope           h;
-	private readonly RasiDasaUserOptions options;
+	private readonly Horoscope           _h;
+	private readonly RasiDasaUserOptions _options;
 
-	private readonly int[] order =
+	private readonly int[] _order =
 	{
 		0,
 		1,
@@ -46,79 +44,79 @@ public class SuDasa : Dasa, IDasa
 		12
 	};
 
-	public SuDasa(Horoscope _h)
+	public SuDasa(Horoscope h)
 	{
-		h       = _h;
-		options = new RasiDasaUserOptions(h, FindStronger.RulesNarayanaDasaRasi(h));
+		this._h       = h;
+		_options = new RasiDasaUserOptions(this._h, FindStronger.RulesNarayanaDasaRasi(this._h));
 	}
 
 	public new void DivisionChanged(Division div)
 	{
-		var newOpts = (RasiDasaUserOptions) options.Clone();
+		var newOpts = (RasiDasaUserOptions) _options.Clone();
 		newOpts.Division = (Division) div.Clone();
 		SetOptions(newOpts);
 	}
 
-	public double paramAyus()
+	public double ParamAyus()
 	{
 		return 144;
 	}
 
-	public void recalculateOptions()
+	public void RecalculateOptions()
 	{
-		options.recalculate();
+		_options.Recalculate();
 	}
 
 	public ArrayList Dasa(int cycle)
 	{
 		var al      = new ArrayList();
-		var bp_sl   = h.getPosition(Body.Name.SreeLagna);
-		var zh_seed = bp_sl.toDivisionPosition(options.Division).zodiac_house;
-		zh_seed.value = options.findStrongerRasi(options.SeventhStrengths, zh_seed.value, zh_seed.add(7).value);
+		var bpSl   = _h.GetPosition(Body.BodyType.SreeLagna);
+		var zhSeed = bpSl.ToDivisionPosition(_options.Division).ZodiacHouse;
+		zhSeed.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed.Sign, zhSeed.Add(7).Sign);
 
-		var bIsForward = zh_seed.isOdd();
+		var bIsForward = zhSeed.IsOdd();
 
-		var dasa_length_sum = 0.0;
+		var dasaLengthSum = 0.0;
 		for (var i = 1; i <= 12; i++)
 		{
-			ZodiacHouse zh_dasa = null;
+			ZodiacHouse zhDasa = null;
 			if (bIsForward)
 			{
-				zh_dasa = zh_seed.add(order[i]);
+				zhDasa = zhSeed.Add(_order[i]);
 			}
 			else
 			{
-				zh_dasa = zh_seed.addReverse(order[i]);
+				zhDasa = zhSeed.AddReverse(_order[i]);
 			}
 
-			var    bl          = GetLord(zh_dasa);
-			var    dp          = h.getPosition(bl).toDivisionPosition(options.Division);
-			double dasa_length = NarayanaDasaLength(zh_dasa, dp);
-			var    di          = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, 1, zh_dasa.value.ToString());
+			var    bl          = GetLord(zhDasa);
+			var    dp          = _h.GetPosition(bl).ToDivisionPosition(_options.Division);
+			double dasaLength = NarayanaDasaLength(zhDasa, dp);
+			var    di          = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
 			al.Add(di);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
 		for (var i = 0; i < 12; i++)
 		{
-			var di_first    = (DasaEntry) al[i];
-			var dasa_length = 12.0 - di_first.dasaLength;
-			var di          = new DasaEntry(di_first.zodiacHouse, dasa_length_sum, dasa_length, 1, di_first.zodiacHouse.ToString());
+			var diFirst    = (DasaEntry) al[i];
+			var dasaLength = 12.0 - diFirst.DasaLength;
+			var di          = new DasaEntry(diFirst.ZHouse, dasaLengthSum, dasaLength, 1, diFirst.ZHouse.ToString());
 			al.Add(di);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
-		var cycle_length  = cycle                                        * paramAyus();
-		var offset_length = bp_sl.longitude.toZodiacHouseOffset() / 30.0 * ((DasaEntry) al[0]).dasaLength;
+		var cycleLength  = cycle                                        * ParamAyus();
+		var offsetLength = bpSl.Longitude.ToZodiacHouseOffset() / 30.0 * ((DasaEntry) al[0]).DasaLength;
 
 		//mhora.Log.Debug ("Completed {0}, going back {1} of {2} years", bp_sl.longitude.toZodiacHouseOffset() / 30.0,
-		//	offset_length, ((DasaEntry)al[0]).dasaLength);
+		//	offset_length, ((DasaEntry)al[0]).DasaLength);
 
-		cycle_length -= offset_length;
+		cycleLength -= offsetLength;
 
 		foreach (DasaEntry di in al)
 		{
-			di.startUT += cycle_length;
+			di.StartUt += cycleLength;
 		}
 
 		return al;
@@ -127,18 +125,18 @@ public class SuDasa : Dasa, IDasa
 	public ArrayList AntarDasa(DasaEntry pdi)
 	{
 		var al      = new ArrayList();
-		var zh_seed = new ZodiacHouse(pdi.zodiacHouse);
+		var zhSeed = new ZodiacHouse(pdi.ZHouse);
 
-		var dasa_length     = pdi.dasaLength / 12.0;
-		var dasa_length_sum = pdi.startUT;
+		var dasaLength     = pdi.DasaLength / 12.0;
+		var dasaLengthSum = pdi.StartUt;
 		for (var i = 1; i <= 12; i++)
 		{
-			ZodiacHouse zh_dasa = null;
-			zh_dasa = zh_seed.addReverse(order[i]);
+			ZodiacHouse zhDasa = null;
+			zhDasa = zhSeed.AddReverse(_order[i]);
 
-			var di = new DasaEntry(zh_dasa.value, dasa_length_sum, dasa_length, pdi.level + 1, pdi.shortDesc + " " + zh_dasa.value);
+			var di = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, pdi.Level + 1, pdi.DasaName + " " + zhDasa.Sign);
 			al.Add(di);
-			dasa_length_sum += dasa_length;
+			dasaLengthSum += dasaLength;
 		}
 
 		return al;
@@ -151,24 +149,24 @@ public class SuDasa : Dasa, IDasa
 
 	public object GetOptions()
 	{
-		return options.Clone();
+		return _options.Clone();
 	}
 
 	public object SetOptions(object a)
 	{
 		var uo = (RasiDasaUserOptions) a;
-		options.CopyFrom(uo);
+		_options.CopyFrom(uo);
 		RecalculateEvent();
-		return options.Clone();
+		return _options.Clone();
 	}
 
-	private Body.Name GetLord(ZodiacHouse zh)
+	private Body.BodyType GetLord(ZodiacHouse zh)
 	{
-		switch (zh.value)
+		switch (zh.Sign)
 		{
-			case ZodiacHouse.Name.Aqu: return options.ColordAqu;
-			case ZodiacHouse.Name.Sco: return options.ColordSco;
-			default:                   return Basics.SimpleLordOfZodiacHouse(zh.value);
+			case ZodiacHouse.Rasi.Aqu: return _options.ColordAqu;
+			case ZodiacHouse.Rasi.Sco: return _options.ColordSco;
+			default:                   return zh.Sign.SimpleLordOfZodiacHouse();
 		}
 	}
 }
