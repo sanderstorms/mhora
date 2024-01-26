@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,9 +24,8 @@ namespace Mhora
 		public MainForm()
 		{
 			InitializeComponent();
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
+			Text = Application.ActiveAssembly.GetCustomAttribute<AssemblyTitleAttribute>().Title + " " + Application.VersionString;
+			//Text       = Application.VersionString;
 			childCount = 0;
 
 			CreateHandle();

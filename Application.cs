@@ -26,6 +26,7 @@ internal static class Application
 	internal static Assembly      ActiveAssembly => Running ? Assembly.GetEntryAssembly() : Assembly.GetExecutingAssembly();
 	internal static string        WorkingDir     => _workingDir ??= Path.GetDirectoryName(ActiveAssembly.Location);
 	internal static Version       Version        => Assembly.GetExecutingAssembly().GetName().Version;
+
 	internal static LoggingModule Log            => _log ??= new LoggingModule();
 
 	internal static string VersionString
@@ -40,24 +41,24 @@ internal static class Application
 				{
 					versionString += " (beta)";
 				}
-					break;
+				break;
 
 				case 1:
 				{
 					versionString += " (release candidate)";
 				}
-					break;
+				break;
 
 				case 2:
 				{
 				}
-					break;
+				break;
 
 				default:
 				{
 					versionString += " (?)";
 				}
-					break;
+				break;
 			}
 
 			return versionString;

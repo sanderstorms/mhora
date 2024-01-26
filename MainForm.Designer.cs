@@ -395,7 +395,7 @@ namespace Mhora
 			this.IsMdiContainer = true;
 			this.Menu = this.MdiMenu;
 			this.Name = "MainForm";
-			this.Text = "Mudgala Hora 0.2";
+			this.Text = "Mudgala Hora 0.3";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MhoraContainer_Closing);
 			this.ResumeLayout(false);
