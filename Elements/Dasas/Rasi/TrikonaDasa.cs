@@ -65,17 +65,17 @@ public class TrikonaDasa : Dasa, IDasa
 		var zhSeed = _options.GetSeed();
 		if (_options.TrikonaStrengths.houses.Count >= 1)
 		{
-			zhSeed.Sign = (ZodiacHouse.Rasi) _options.TrikonaStrengths.houses[0];
+			zhSeed = (ZodiacHouse) _options.TrikonaStrengths.houses[0];
 		}
 
-		zhSeed.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed.Sign, zhSeed.Add(7).Sign);
+		zhSeed = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed, zhSeed.Add(7));
 
 		var bIsZodiacal = zhSeed.IsOdd();
 
 		var dasaLengthSum = 0.0;
 		for (var i = 0; i < 12; i++)
 		{
-			ZodiacHouse zhDasa = null;
+			ZodiacHouse zhDasa;
 			if (bIsZodiacal)
 			{
 				zhDasa = zhSeed.Add(_order[i]);
@@ -88,7 +88,7 @@ public class TrikonaDasa : Dasa, IDasa
 			double dasaLength = NarayanaDasaLength(zhDasa, GetLordsPosition(zhDasa));
 
 
-			var di = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
+			var di = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
 			dasaLengthSum += dasaLength;
 		}
@@ -121,7 +121,7 @@ public class TrikonaDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return "Trikona Dasa seeded from " + _options.SeedRasi;
+		return "Trikona Dasa seeded from " + _options.SeedZodiacHouse;
 	}
 
 	public object GetOptions()
@@ -147,17 +147,17 @@ public class TrikonaDasa : Dasa, IDasa
 	public DivisionPosition GetLordsPosition(ZodiacHouse zh)
 	{
 		Body.BodyType b;
-		if (zh.Sign == ZodiacHouse.Rasi.Sco)
+		if (zh == ZodiacHouse.Sco)
 		{
 			b = _options.ColordSco;
 		}
-		else if (zh.Sign == ZodiacHouse.Rasi.Aqu)
+		else if (zh == ZodiacHouse.Aqu)
 		{
 			b = _options.ColordAqu;
 		}
 		else
 		{
-			b = zh.Sign.SimpleLordOfZodiacHouse();
+			b = zh.SimpleLordOfZodiacHouse();
 		}
 
 		return _h.GetPosition(b).ToDivisionPosition(_options.Division);
@@ -181,11 +181,11 @@ public class TrikonaDasa : Dasa, IDasa
 		private void CalculateTrikonaStrengths()
 		{
 			var zh = GetSeed();
-			var zhT = new ZodiacHouse.Rasi[3]
+			var zhT = new ZodiacHouse[3]
 			{
-				zh.Add(1).Sign,
-				zh.Add(5).Sign,
-				zh.Add(9).Sign
+				zh.Add(1),
+				zh.Add(5),
+				zh.Add(9)
 			};
 			var fs = new FindStronger(H, Division, MRules);
 			MTrikonaStrengths = fs.GetOrderedHouses(zhT);

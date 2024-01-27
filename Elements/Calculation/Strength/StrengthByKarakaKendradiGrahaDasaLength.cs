@@ -46,7 +46,7 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 		throw new EqualStrength();
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var a = Value(za);
 		var b = Value(zb);
@@ -63,7 +63,7 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 		throw new EqualStrength();
 	}
 
-	protected double Value(ZodiacHouse.Rasi zh)
+	protected double Value(ZodiacHouse zh)
 	{
 		double length = 0;
 		foreach (Position bp in H.PositionList)

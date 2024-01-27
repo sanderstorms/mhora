@@ -36,22 +36,17 @@ public abstract class BaseStrength
 		StdDivPos     = H.CalculateDivisionPositions(Dtype);
 	}
 
-	protected Body.BodyType GetStrengthLord(ZodiacHouse.Rasi zh)
+	protected Body.BodyType GetStrengthLord(ZodiacHouse zh)
 	{
 		if (BUseSimpleLords)
 		{
 			return zh.SimpleLordOfZodiacHouse();
 		}
 
-		return H.LordOfZodiacHouse(new ZodiacHouse(zh), Dtype);
+		return H.LordOfZodiacHouse(zh, Dtype);
 	}
 
-	protected Body.BodyType GetStrengthLord(ZodiacHouse zh)
-	{
-		return GetStrengthLord(zh.Sign);
-	}
-
-	protected int NumGrahasInZodiacHouse(ZodiacHouse.Rasi zh)
+	protected int NumGrahasInZodiacHouse(ZodiacHouse zh)
 	{
 		var num = 0;
 		foreach (DivisionPosition dp in StdDivPos)
@@ -61,7 +56,7 @@ public abstract class BaseStrength
 				continue;
 			}
 
-			if (dp.ZodiacHouse.Sign == zh)
+			if (dp.ZodiacHouse == zh)
 			{
 				num = num + 1;
 			}
@@ -110,12 +105,12 @@ public abstract class BaseStrength
 		return ret;
 	}
 
-	public ArrayList FindGrahasInHouse(ZodiacHouse.Rasi zh)
+	public ArrayList FindGrahasInHouse(ZodiacHouse zh)
 	{
 		var ret = new ArrayList();
 		foreach (DivisionPosition dp in StdDivPos)
 		{
-			if (dp.Type == Body.Type.Graha && dp.ZodiacHouse.Sign == zh)
+			if (dp.Type == Body.Type.Graha && dp.ZodiacHouse == zh)
 			{
 				ret.Add(dp.Name);
 			}

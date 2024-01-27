@@ -28,12 +28,12 @@ public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
 
 	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		var za = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
-		var zb = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		var za = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse;
+		var zb = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse;
 		return Stronger(za, zb);
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		int[] vals =
 		{
@@ -56,7 +56,7 @@ public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	public int NaturalValueForRasi(ZodiacHouse.Rasi zha)
+	public int NaturalValueForRasi(ZodiacHouse zha)
 	{
 		int[] vals =
 		{

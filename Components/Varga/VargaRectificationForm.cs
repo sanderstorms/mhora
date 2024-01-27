@@ -69,7 +69,7 @@ public class VargaRectificationForm : Form
 	private          UserOptions          opts;
 	private          double               ut_higher;
 	private          double               ut_lower;
-	private          ZodiacHouse.Rasi[][] zhCusps;
+	private          ZodiacHouse[][] zhCusps;
 	private          int                  zoomHeight;
 	private          int                  zoomWidth;
 
@@ -139,7 +139,7 @@ public class VargaRectificationForm : Form
 	private void PopulateCache()
 	{
 		momentCusps = new double[opts.Divisions.Length][];
-		zhCusps     = new ZodiacHouse.Rasi[opts.Divisions.Length][];
+		zhCusps     = new ZodiacHouse[opts.Divisions.Length][];
 		for (var i = 0; i < opts.Divisions.Length; i++)
 		{
 			var dtype = opts.Divisions[i];
@@ -179,7 +179,7 @@ public class VargaRectificationForm : Form
 					//	mhora.Log.Debug ("{0}: {1} at {2}",
 					//		dtype, foundLon, this.utToMoment(ut_curr));
 					al.Add(ut_curr);
-					zal.Add(dp.ZodiacHouse.Sign);
+					zal.Add(dp.ZodiacHouse);
 				}
 				else if (ut_curr > ut_higher)
 				{
@@ -192,7 +192,7 @@ public class VargaRectificationForm : Form
 			}
 
 			momentCusps[i] = (double[]) al.ToArray(typeof(double));
-			zhCusps[i]     = (ZodiacHouse.Rasi[]) zal.ToArray(typeof(ZodiacHouse.Rasi));
+			zhCusps[i]     = (ZodiacHouse[]) zal.ToArray(typeof(ZodiacHouse));
 		}
 
 
@@ -408,7 +408,7 @@ public class VargaRectificationForm : Form
 
 				//(float)((ut_curr-ut_lower)/(ut_higher/ut_lower)*bar_width);
 				var m = utToMoment(ut_curr);
-				s  = string.Format("{0} {1}", m.ToTimeString(menuDisplaySeconds.Checked), ZodiacHouse.ToShortString(zhCusps[iVarga][j]));
+				s  = string.Format("{0} {1}", m.ToTimeString(menuDisplaySeconds.Checked), Rasis.ToShortString(zhCusps[iVarga][j]));
 				sz = g.MeasureString(s, f_time);
 				if (old_x_offset + sz.Width < x_offset)
 				{

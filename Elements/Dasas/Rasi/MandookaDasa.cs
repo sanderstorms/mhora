@@ -83,7 +83,7 @@ public class MandookaDasa : Dasa, IDasa
 		var dasaLengthSum = 0.0;
 		for (var i = 0; i < 12; i++)
 		{
-			ZodiacHouse zhDasa = null;
+			ZodiacHouse zhDasa;
 			if (bDirZodiacal)
 			{
 				zhDasa = zhSeed.Add(sequence[i]);
@@ -94,7 +94,7 @@ public class MandookaDasa : Dasa, IDasa
 			}
 
 			double dasaLength = DasaLength(zhDasa);
-			var    di          = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
+			var    di          = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
 			dasaLengthSum += dasaLength;
 		}
@@ -112,7 +112,7 @@ public class MandookaDasa : Dasa, IDasa
 	{
 		var al = new ArrayList(12);
 
-		var zhFirst    = new ZodiacHouse(pdi.ZHouse);
+		var zhFirst    = pdi.ZHouse;
 		var zhStronger = zhFirst.Add(1);
 		if (!zhStronger.IsOdd())
 		{
@@ -124,7 +124,7 @@ public class MandookaDasa : Dasa, IDasa
 		for (var i = 1; i <= 12; i++)
 		{
 			var zhDasa = zhStronger.Add(i);
-			var di      = new DasaEntry(zhDasa.Sign, dasaStart, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zhDasa.Sign);
+			var di      = new DasaEntry(zhDasa, dasaStart, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zhDasa);
 			al.Add(di);
 			dasaStart += pdi.DasaLength / 12.0;
 		}
@@ -159,7 +159,7 @@ public class MandookaDasa : Dasa, IDasa
 
 	public int DasaLength(ZodiacHouse zh)
 	{
-		switch ((int) zh.Sign % 3)
+		switch ((int) zh % 3)
 		{
 			case 1:  return 7;
 			case 2:  return 8;

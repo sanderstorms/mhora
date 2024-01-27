@@ -72,14 +72,14 @@ public class SuDasa : Dasa, IDasa
 		var al      = new ArrayList();
 		var bpSl   = _h.GetPosition(Body.BodyType.SreeLagna);
 		var zhSeed = bpSl.ToDivisionPosition(_options.Division).ZodiacHouse;
-		zhSeed.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed.Sign, zhSeed.Add(7).Sign);
+		zhSeed = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed, zhSeed.Add(7));
 
 		var bIsForward = zhSeed.IsOdd();
 
 		var dasaLengthSum = 0.0;
 		for (var i = 1; i <= 12; i++)
 		{
-			ZodiacHouse zhDasa = null;
+			ZodiacHouse zhDasa;
 			if (bIsForward)
 			{
 				zhDasa = zhSeed.Add(_order[i]);
@@ -92,7 +92,7 @@ public class SuDasa : Dasa, IDasa
 			var    bl          = GetLord(zhDasa);
 			var    dp          = _h.GetPosition(bl).ToDivisionPosition(_options.Division);
 			double dasaLength = NarayanaDasaLength(zhDasa, dp);
-			var    di          = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
+			var    di          = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
 			dasaLengthSum += dasaLength;
 		}
@@ -125,16 +125,16 @@ public class SuDasa : Dasa, IDasa
 	public ArrayList AntarDasa(DasaEntry pdi)
 	{
 		var al      = new ArrayList();
-		var zhSeed = new ZodiacHouse(pdi.ZHouse);
+		var zhSeed = pdi.ZHouse;
 
 		var dasaLength     = pdi.DasaLength / 12.0;
 		var dasaLengthSum = pdi.StartUt;
 		for (var i = 1; i <= 12; i++)
 		{
-			ZodiacHouse zhDasa = null;
+			ZodiacHouse zhDasa;
 			zhDasa = zhSeed.AddReverse(_order[i]);
 
-			var di = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, pdi.Level + 1, pdi.DasaName + " " + zhDasa.Sign);
+			var di = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, pdi.Level + 1, pdi.DasaName + " " + zhDasa);
 			al.Add(di);
 			dasaLengthSum += dasaLength;
 		}
@@ -162,11 +162,11 @@ public class SuDasa : Dasa, IDasa
 
 	private Body.BodyType GetLord(ZodiacHouse zh)
 	{
-		switch (zh.Sign)
+		switch (zh)
 		{
-			case ZodiacHouse.Rasi.Aqu: return _options.ColordAqu;
-			case ZodiacHouse.Rasi.Sco: return _options.ColordSco;
-			default:                   return zh.Sign.SimpleLordOfZodiacHouse();
+			case ZodiacHouse.Aqu: return _options.ColordAqu;
+			case ZodiacHouse.Sco: return _options.ColordSco;
+			default:                   return zh.SimpleLordOfZodiacHouse();
 		}
 	}
 }

@@ -321,7 +321,7 @@ namespace Mhora
 		{
 			var info = new Jhd(fileName).ToHoraInfo();
 			var h = new Horoscope(info, new HoroscopeOptions());
-			if (h.GetPosition(Body.BodyType.Ketu).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse.Sign == h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse.Sign)
+			if (h.GetPosition(Body.BodyType.Ketu).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse == h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse)
 			{
 				return true;
 			}

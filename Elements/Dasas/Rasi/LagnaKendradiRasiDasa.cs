@@ -67,7 +67,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 		double dasaLengthSum = 0;
 
 		var zhStart = _options.GetSeed();
-		zhStart.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhStart.Sign, zhStart.Add(7).Sign);
+		zhStart = _options.FindStrongerRasi(_options.SeventhStrengths, zhStart, zhStart.Add(7));
 
 		var bIsZodiacal = IsZodiacal();
 		for (var i = 0; i < 12; i++)
@@ -85,7 +85,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 			var    lord        = _h.LordOfZodiacHouse(zh, _mDtype);
 			var    dpLord     = _h.GetPosition(lord).ToDivisionPosition(_mDtype);
 			double dasaLength = NarayanaDasaLength(zh, dpLord);
-			var    de          = new DasaEntry(zh.Sign, dasaLengthSum, dasaLength, 1, zh.Sign.ToString());
+			var    de          = new DasaEntry(zh, dasaLengthSum, dasaLength, 1, zh.ToString());
 			al.Add(de);
 			dasaLengthSum += dasaLength;
 		}
@@ -111,7 +111,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return "Lagna Kendradi Rasi Dasa seeded from" + " seeded from " + _options.SeedRasi;
+		return "Lagna Kendradi Rasi Dasa seeded from" + " seeded from " + _options.SeedZodiacHouse;
 	}
 
 	public object GetOptions()
@@ -136,15 +136,15 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 	private bool IsZodiacal()
 	{
 		var zhStart = _options.GetSeed();
-		zhStart.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhStart.Sign, zhStart.Add(7).Sign);
+		zhStart = _options.FindStrongerRasi(_options.SeventhStrengths, zhStart, zhStart.Add(7));
 
 		var forward = zhStart.IsOdd();
-		if (_options.SaturnExceptionApplies(zhStart.Sign))
+		if (_options.SaturnExceptionApplies(zhStart))
 		{
 			return forward;
 		}
 
-		if (_options.KetuExceptionApplies(zhStart.Sign))
+		if (_options.KetuExceptionApplies(zhStart))
 		{
 			forward = !forward;
 		}

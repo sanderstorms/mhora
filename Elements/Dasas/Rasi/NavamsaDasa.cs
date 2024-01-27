@@ -59,7 +59,7 @@ public class NavamsaDasa : Dasa, IDasa
 		for (var i = 1; i <= 12; i++)
 		{
 			var zhDasa = zhSeed.Add(i);
-			var di      = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
+			var di      = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
 			dasaLengthSum += dasaLength;
 		}
@@ -77,7 +77,7 @@ public class NavamsaDasa : Dasa, IDasa
 	{
 		var al = new ArrayList(12);
 
-		var zhFirst    = new ZodiacHouse(pdi.ZHouse);
+		var zhFirst    = pdi.ZHouse;
 		var zhStronger = zhFirst.Add(1);
 		if (!zhStronger.IsOdd())
 		{
@@ -89,7 +89,7 @@ public class NavamsaDasa : Dasa, IDasa
 		for (var i = 1; i <= 12; i++)
 		{
 			var zhDasa = zhStronger.Add(i);
-			var di      = new DasaEntry(zhDasa.Sign, dasaStart, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zhDasa.Sign);
+			var di      = new DasaEntry(zhDasa, dasaStart, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zhDasa);
 			al.Add(di);
 			dasaStart += pdi.DasaLength / 12.0;
 		}

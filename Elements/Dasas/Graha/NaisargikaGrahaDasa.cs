@@ -79,7 +79,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 	{
 		var orderedAntar = new OrderedGrahas();
 		var lzh          = _h.GetPosition(pdi.Graha).ToDivisionPosition(_options.Dtype).ZodiacHouse;
-		var kendraStart = (int) Basics.NormalizeExcLower((int) lzh.Sign % 3, 0, 3);
+		var kendraStart = (int) Basics.NormalizeExcLower((int) lzh % 3, 0, 3);
 		for (var i = kendraStart; i <= 2; i++)
 		{
 			foreach (Body.BodyType b in _options.GrahaStrengths[i].grahas)
@@ -374,7 +374,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 				for (var j = 0; j < newOpts.RasiStrengths[i].houses.Count; j++)
 				{
-					if ((ZodiacHouse.Rasi) newOpts.RasiStrengths[i].houses[j] != (ZodiacHouse.Rasi) RasiStrengths[i].houses[j])
+					if ((ZodiacHouse) newOpts.RasiStrengths[i].houses[j] != (ZodiacHouse) RasiStrengths[i].houses[j])
 					{
 						newOpts.CalculateGrahaStrengths();
 						return;
@@ -386,7 +386,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 		public void CalculateRasiStrengths()
 		{
 			var fs = new FindStronger(_h, Dtype, FindStronger.RulesNaisargikaDasaRasi(_h));
-			RasiStrengths = fs.ResultsZodiacKendras(_h.CalculateDivisionPosition(_h.GetPosition(Body.BodyType.Lagna), Dtype).ZodiacHouse.Sign);
+			RasiStrengths = fs.ResultsZodiacKendras(_h.CalculateDivisionPosition(_h.GetPosition(Body.BodyType.Lagna), Dtype).ZodiacHouse);
 		}
 
 		public void CalculateGrahaStrengths()
@@ -398,7 +398,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 			{
 				GrahaStrengths[i] = new OrderedGrahas();
 				var oz = RasiStrengths[i];
-				foreach (ZodiacHouse.Rasi zn in oz.houses)
+				foreach (ZodiacHouse zn in oz.houses)
 				{
 					var temp     = fsTemp.FindGrahasInHouse(zn);
 					var tempArr = new Body.BodyType[temp.Count];

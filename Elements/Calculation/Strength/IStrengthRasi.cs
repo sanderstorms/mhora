@@ -20,5 +20,5 @@ namespace Mhora.Elements.Calculation.Strength;
 
 public interface IStrengthRasi
 {
-	bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb);
+	bool Stronger(ZodiacHouse za, ZodiacHouse zb);
 }

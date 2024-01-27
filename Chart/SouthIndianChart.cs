@@ -20,6 +20,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using Mhora.Elements;
+using mhora.Util;
 
 namespace Mhora.Chart;
 
@@ -59,32 +60,32 @@ public class SouthIndianChart : IDrawChart
 
 	public Point GetBodyPosition(Longitude l)
 	{
-		var zh      = l.ToZodiacHouse().Sign;
+		var zh      = l.ToZodiacHouse();
 		var dOffset = l.ToZodiacHouseOffset();
 		var iOff    = (int) (dOffset / 30.0 * (Xw / 4));
 		var pBase   = GetZhouseOffset(l.ToZodiacHouse());
-		switch (zh)
+		switch ((ZodiacHouse)zh)
 		{
-			case ZodiacHouse.Rasi.Ari:
-			case ZodiacHouse.Rasi.Tau:
-			case ZodiacHouse.Rasi.Gem:
+			case ZodiacHouse.Ari:
+			case ZodiacHouse.Tau:
+			case ZodiacHouse.Gem:
 				pBase.X += iOff;
 				break;
-			case ZodiacHouse.Rasi.Can:
-			case ZodiacHouse.Rasi.Leo:
-			case ZodiacHouse.Rasi.Vir:
+			case ZodiacHouse.Can:
+			case ZodiacHouse.Leo:
+			case ZodiacHouse.Vir:
 				pBase.X += Xw / 4;
 				pBase.Y += iOff;
 				break;
-			case ZodiacHouse.Rasi.Lib:
-			case ZodiacHouse.Rasi.Sco:
-			case ZodiacHouse.Rasi.Sag:
+			case ZodiacHouse.Lib:
+			case ZodiacHouse.Sco:
+			case ZodiacHouse.Sag:
 				pBase.X += Xw / 4 - iOff;
 				pBase.Y += Xw / 4;
 				break;
-			case ZodiacHouse.Rasi.Cap:
-			case ZodiacHouse.Rasi.Aqu:
-			case ZodiacHouse.Rasi.Pis:
+			case ZodiacHouse.Cap:
+			case ZodiacHouse.Aqu:
+			case ZodiacHouse.Pis:
 				pBase.Y += Xw / 4 - iOff;
 				break;
 		}
@@ -192,7 +193,7 @@ public class SouthIndianChart : IDrawChart
 
 	private Point GetZhouseOffset(ZodiacHouse zh)
 	{
-		switch ((int) zh.Sign)
+		switch (zh.Index())
 		{
 			case 1:  return new Point(Xo + Xw     / 4, Yo + 0);
 			case 2:  return new Point(Xo + Xw * 2 / 4, Yo + 0);

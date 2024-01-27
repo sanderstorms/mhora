@@ -48,7 +48,7 @@ public class KutaBhutaNakshatra
 			return 1;
 		}
 
-		if ((a == EType.Fire && b == EType.Air) || (a == EType.Air && b == EType.Fire))
+		if (a == EType.Fire && b == EType.Air || a == EType.Air && b == EType.Fire)
 		{
 			return 1;
 		}

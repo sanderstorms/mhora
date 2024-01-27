@@ -45,7 +45,7 @@ public class DasaItem : ListViewItem
 		Construct(new DasaEntry(graha, startUt, dasaLength, level, shortDesc));
 	}
 
-	public DasaItem(ZodiacHouse.Rasi zodiacHouse, double startUt, double dasaLength, int level, string shortDesc)
+	public DasaItem(ZodiacHouse zodiacHouse, double startUt, double dasaLength, int level, string shortDesc)
 	{
 		Construct(new DasaEntry(zodiacHouse, startUt, dasaLength, level, shortDesc));
 	}

@@ -43,7 +43,7 @@ public class OrderedZodiacHouses : ICloneable
 	public override string ToString()
 	{
 		var s     = string.Empty;
-		var names = (ZodiacHouse.Rasi[]) houses.ToArray(typeof(ZodiacHouse.Rasi));
+		var names = (ZodiacHouse[]) houses.ToArray(typeof(ZodiacHouse));
 		foreach (var zn in names)
 		{
 			s += zn + " ";

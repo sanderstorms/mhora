@@ -20,46 +20,46 @@ namespace Mhora.Elements.Ghataka;
 
 public class GhatakaDay
 {
-	public static bool CheckDay(ZodiacHouse janmaRasi, Tables.Hora.Weekday wd)
+	public static bool CheckDay(ZodiacHouse janmaZodiacHouse, Tables.Hora.Weekday wd)
 	{
-		var ja = janmaRasi.Sign;
+		var ja = janmaZodiacHouse;
 		var gh = Tables.Hora.Weekday.Sunday;
 		switch (ja)
 		{
-			case ZodiacHouse.Rasi.Ari:
+			case ZodiacHouse.Ari:
 				gh = Tables.Hora.Weekday.Sunday;
 				break;
-			case ZodiacHouse.Rasi.Tau:
+			case ZodiacHouse.Tau:
 				gh = Tables.Hora.Weekday.Saturday;
 				break;
-			case ZodiacHouse.Rasi.Gem:
+			case ZodiacHouse.Gem:
 				gh = Tables.Hora.Weekday.Monday;
 				break;
-			case ZodiacHouse.Rasi.Can:
+			case ZodiacHouse.Can:
 				gh = Tables.Hora.Weekday.Wednesday;
 				break;
-			case ZodiacHouse.Rasi.Leo:
+			case ZodiacHouse.Leo:
 				gh = Tables.Hora.Weekday.Saturday;
 				break;
-			case ZodiacHouse.Rasi.Vir:
+			case ZodiacHouse.Vir:
 				gh = Tables.Hora.Weekday.Saturday;
 				break;
-			case ZodiacHouse.Rasi.Lib:
+			case ZodiacHouse.Lib:
 				gh = Tables.Hora.Weekday.Thursday;
 				break;
-			case ZodiacHouse.Rasi.Sco:
+			case ZodiacHouse.Sco:
 				gh = Tables.Hora.Weekday.Friday;
 				break;
-			case ZodiacHouse.Rasi.Sag:
+			case ZodiacHouse.Sag:
 				gh = Tables.Hora.Weekday.Friday;
 				break;
-			case ZodiacHouse.Rasi.Cap:
+			case ZodiacHouse.Cap:
 				gh = Tables.Hora.Weekday.Tuesday;
 				break;
-			case ZodiacHouse.Rasi.Aqu:
+			case ZodiacHouse.Aqu:
 				gh = Tables.Hora.Weekday.Thursday;
 				break;
-			case ZodiacHouse.Rasi.Pis:
+			case ZodiacHouse.Pis:
 				gh = Tables.Hora.Weekday.Friday;
 				break;
 		}

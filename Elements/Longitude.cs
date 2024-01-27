@@ -39,7 +39,7 @@ public class Longitude : DmsPoint
 	public override string ToString()
 	{
 		var lon     = this;
-		var rasi    = lon.ToZodiacHouse().Sign.ToString();
+		var rasi    = lon.ToZodiacHouse().ToString();
 		var offset  = lon.ToZodiacHouseOffset();
 		var minutes = Math.Floor(offset);
 		offset = (offset - minutes) * 60.0;

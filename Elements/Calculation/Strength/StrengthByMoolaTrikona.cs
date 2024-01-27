@@ -44,7 +44,7 @@ public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGrah
 		throw new EqualStrength();
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var vala = Value(za);
 		var valb = Value(zb);
@@ -62,7 +62,7 @@ public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGrah
 		throw new EqualStrength();
 	}
 
-	public int Value(ZodiacHouse.Rasi zn)
+	public int Value(ZodiacHouse zn)
 	{
 		var ret = 0;
 		foreach (DivisionPosition dp in StdDivPos)
@@ -72,7 +72,7 @@ public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGrah
 				continue;
 			}
 
-			if (dp.ZodiacHouse.Sign != zn)
+			if (dp.ZodiacHouse != zn)
 			{
 				continue;
 			}

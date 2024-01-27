@@ -22,48 +22,48 @@ public class GhatakaLagnaSame
 {
 	public static bool CheckLagna(ZodiacHouse janma, ZodiacHouse same)
 	{
-		var ja = janma.Sign;
-		var gh = ZodiacHouse.Rasi.Ari;
+		var ja = janma;
+		var gh = ZodiacHouse.Ari;
 		switch (ja)
 		{
-			case ZodiacHouse.Rasi.Ari:
-				gh = ZodiacHouse.Rasi.Ari;
+			case ZodiacHouse.Ari:
+				gh = ZodiacHouse.Ari;
 				break;
-			case ZodiacHouse.Rasi.Tau:
-				gh = ZodiacHouse.Rasi.Tau;
+			case ZodiacHouse.Tau:
+				gh = ZodiacHouse.Tau;
 				break;
-			case ZodiacHouse.Rasi.Gem:
-				gh = ZodiacHouse.Rasi.Can;
+			case ZodiacHouse.Gem:
+				gh = ZodiacHouse.Can;
 				break;
-			case ZodiacHouse.Rasi.Can:
-				gh = ZodiacHouse.Rasi.Lib;
+			case ZodiacHouse.Can:
+				gh = ZodiacHouse.Lib;
 				break;
-			case ZodiacHouse.Rasi.Leo:
-				gh = ZodiacHouse.Rasi.Cap;
+			case ZodiacHouse.Leo:
+				gh = ZodiacHouse.Cap;
 				break;
-			case ZodiacHouse.Rasi.Vir:
-				gh = ZodiacHouse.Rasi.Pis;
+			case ZodiacHouse.Vir:
+				gh = ZodiacHouse.Pis;
 				break;
-			case ZodiacHouse.Rasi.Lib:
-				gh = ZodiacHouse.Rasi.Vir;
+			case ZodiacHouse.Lib:
+				gh = ZodiacHouse.Vir;
 				break;
-			case ZodiacHouse.Rasi.Sco:
-				gh = ZodiacHouse.Rasi.Sco;
+			case ZodiacHouse.Sco:
+				gh = ZodiacHouse.Sco;
 				break;
-			case ZodiacHouse.Rasi.Sag:
-				gh = ZodiacHouse.Rasi.Sag;
+			case ZodiacHouse.Sag:
+				gh = ZodiacHouse.Sag;
 				break;
-			case ZodiacHouse.Rasi.Cap:
-				gh = ZodiacHouse.Rasi.Aqu;
+			case ZodiacHouse.Cap:
+				gh = ZodiacHouse.Aqu;
 				break;
-			case ZodiacHouse.Rasi.Aqu:
-				gh = ZodiacHouse.Rasi.Gem;
+			case ZodiacHouse.Aqu:
+				gh = ZodiacHouse.Gem;
 				break;
-			case ZodiacHouse.Rasi.Pis:
-				gh = ZodiacHouse.Rasi.Leo;
+			case ZodiacHouse.Pis:
+				gh = ZodiacHouse.Leo;
 				break;
 		}
 
-		return same.Sign == gh;
+		return same == gh;
 	}
 }

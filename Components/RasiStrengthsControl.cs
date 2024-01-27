@@ -201,9 +201,9 @@ public class RasiStrengthsControl : Form
 
 	private void InitializeComboBoxes()
 	{
-		for (var i = (int) ZodiacHouse.Rasi.Ari; i <= (int) ZodiacHouse.Rasi.Pis; i++)
+		for (var i = (int) ZodiacHouse.Ari; i <= (int) ZodiacHouse.Pis; i++)
 		{
-			var s = string.Format("{0}", ((ZodiacHouse.Rasi) i).ToString());
+			var s = string.Format("{0}", ((ZodiacHouse) i).ToString());
 			cbRasi1.Items.Add(s);
 			cbRasi2.Items.Add(s);
 		}
@@ -245,8 +245,8 @@ public class RasiStrengthsControl : Form
 			cbRasi2.SelectedIndex = 0;
 		}
 
-		var z1 = (ZodiacHouse.Rasi) cbRasi1.SelectedIndex + 1;
-		var z2 = (ZodiacHouse.Rasi) cbRasi2.SelectedIndex + 1;
+		var z1 = (ZodiacHouse) cbRasi1.SelectedIndex + 1;
+		var z2 = (ZodiacHouse) cbRasi2.SelectedIndex + 1;
 
 		var al = GetRules();
 		for (var i = 0; i < al.Count; i++)

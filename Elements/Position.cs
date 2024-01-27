@@ -132,10 +132,10 @@ public class Position : ICloneable
 	/// <returns>The DivisionPosition the body falls into</returns>
 	private DivisionPosition ToRegularDivisionPosition(int n)
 	{
-		var zhouse    = Longitude.ToZodiacHouse().Sign.Index();
+		var zhouse   = Longitude.ToZodiacHouse().Index();
 		var numParts = (zhouse - 1) * n + PartOfZodiacHouse(n);
-		var divHouse = new ZodiacHouse(ZodiacHouse.Rasi.Ari).Add(numParts);
-		var dp        = new DivisionPosition(Name, Type, divHouse, 0, 0, 0);
+		var divHouse = ZodiacHouse.Ari.Add(numParts);
+		var dp       = new DivisionPosition(Name, Type, divHouse, 0, 0, 0);
 		PopulateRegularCusps(n, dp);
 
 		if (n > 1)
@@ -152,7 +152,7 @@ public class Position : ICloneable
 
 	private DivisionPosition ToRegularDivisionPositionFromCurrentHouseOddEven(int n)
 	{
-		var zhouse    = (int) Longitude.ToZodiacHouse().Sign;
+		var zhouse    = (int) Longitude.ToZodiacHouse();
 		var numParts = PartOfZodiacHouse(n);
 		var divHouse = Longitude.ToZodiacHouse().Add(numParts);
 		var dp        = new DivisionPosition(Name, Type, divHouse, 0, 0, 0);
@@ -170,7 +170,7 @@ public class Position : ICloneable
 		{
 			if (Longitude.Sub(cusps[i]).Value <= cusps[i + 1].Sub(cusps[i]).Value)
 			{
-				return new DivisionPosition(Name, Type, new ZodiacHouse((ZodiacHouse.Rasi) i + 1), cusps[i].Value, cusps[i + 1].Value, 1);
+				return new DivisionPosition(Name, Type, (ZodiacHouse) i + 1, cusps[i].Value, cusps[i + 1].Value, 1);
 			}
 		}
 
@@ -240,7 +240,7 @@ public class Position : ICloneable
 
 	private bool HoraSunDayNight()
 	{
-		var sign = (int) Longitude.ToZodiacHouse().Sign;
+		var sign = (int) Longitude.ToZodiacHouse();
 		var part = PartOfZodiacHouse(2);
 		if (Longitude.ToZodiacHouse().IsDaySign())
 		{
@@ -262,7 +262,7 @@ public class Position : ICloneable
 
 	private bool HoraSunOddEven()
 	{
-		var sign = (int) Longitude.ToZodiacHouse().Sign;
+		var sign = (int) Longitude.ToZodiacHouse();
 		var part = PartOfZodiacHouse(2);
 		var mod  = sign % 2;
 		switch (mod)
@@ -320,14 +320,14 @@ public class Position : ICloneable
 		};
 
 		ZodiacHouse zh;
-		var         sign = (int) Longitude.ToZodiacHouse().Sign;
+		var        sign = (int) Longitude.ToZodiacHouse();
 		if (HoraSunOddEven())
 		{
-			zh = new ZodiacHouse((ZodiacHouse.Rasi) daySigns[sign]);
+			zh = (ZodiacHouse) daySigns[sign];
 		}
 		else
 		{
-			zh = new ZodiacHouse((ZodiacHouse.Rasi) nightSigns[sign]);
+			zh = (ZodiacHouse) nightSigns[sign];
 		}
 
 		var dp = new DivisionPosition(Name, Type, zh, 0, 0, 0);
@@ -340,7 +340,7 @@ public class Position : ICloneable
 	{
 		var zh = Longitude.ToZodiacHouse();
 
-		Application.Log.Debug("{2} in {3}: OddEven is {0}, DayNight is {1}", HoraSunOddEven(), HoraSunDayNight(), Name, zh.Sign);
+		Application.Log.Debug("{2} in {3}: OddEven is {0}, DayNight is {1}", HoraSunOddEven(), HoraSunDayNight(), Name, zh);
 
 		if (HoraSunDayNight() && false == HoraSunOddEven())
 		{
@@ -351,7 +351,7 @@ public class Position : ICloneable
 			zh = zh.Add(7);
 		}
 
-		Application.Log.Debug("{0} ends in {1}", Name, zh.Sign);
+		Application.Log.Debug("{0} ends in {1}", Name, zh);
 
 		var dp = new DivisionPosition(Name, Type, zh, 0, 0, 0);
 		dp.Longitude = zh.DivisionalLongitude(Longitude, 2);
@@ -362,15 +362,15 @@ public class Position : ICloneable
 	private DivisionPosition ToDivisionPositionHoraParasara()
 	{
 		ZodiacHouse zh;
-		var         rulerIndex = 0;
+		var        rulerIndex = 0;
 		if (HoraSunOddEven())
 		{
-			zh          = new ZodiacHouse(ZodiacHouse.Rasi.Leo);
+			zh         = ZodiacHouse.Leo;
 			rulerIndex = 1;
 		}
 		else
 		{
-			zh          = new ZodiacHouse(ZodiacHouse.Rasi.Can);
+			zh         = ZodiacHouse.Can;
 			rulerIndex = 2;
 		}
 
@@ -397,7 +397,7 @@ public class Position : ICloneable
 		PopulateRegularCusps(n, dp);
 		if (n == 3)
 		{
-			var rulerIndex = (int) dp.ZodiacHouse.Sign % 3;
+			var rulerIndex = (int) dp.ZodiacHouse % 3;
 			if (rulerIndex == 0)
 			{
 				rulerIndex = 3;
@@ -414,7 +414,7 @@ public class Position : ICloneable
 		var         zh = Longitude.ToZodiacHouse();
 		ZodiacHouse zhm;
 		ZodiacHouse dhouse;
-		var         mod = (int) Longitude.ToZodiacHouse().Sign % 3;
+		var         mod = (int) Longitude.ToZodiacHouse() % 3;
 		// Find moveable sign in trines
 		switch (mod)
 		{
@@ -451,10 +451,10 @@ public class Position : ICloneable
 
 	private DivisionPosition ToDivisionPositionDrekkanaSomnath()
 	{
-		var mod  = (int) Longitude.ToZodiacHouse().Sign % 2;
+		var mod  = (int) Longitude.ToZodiacHouse() % 2;
 		var part = PartOfZodiacHouse(3);
 		var zh   = Longitude.ToZodiacHouse();
-		var p    = (int) zh.Sign;
+		var p    = (int) zh;
 
 		if (mod == 0)
 		{
@@ -464,7 +464,7 @@ public class Position : ICloneable
 		p = (p - 1) / 2;
 		var numDone = p * 3;
 
-		var         zh1 = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
+		var        zh1 = ZodiacHouse.Ari;
 		ZodiacHouse zh2;
 		if (mod == 1)
 		{
@@ -505,9 +505,9 @@ public class Position : ICloneable
 
 	private DivisionPosition ToDivisionPositionShashthamsa(int n)
 	{
-		var mod     = (int) Longitude.ToZodiacHouse().Sign % 2;
-		var dhousen = mod % 2 == 1 ? ZodiacHouse.Rasi.Ari : ZodiacHouse.Rasi.Lib;
-		var dhouse  = new ZodiacHouse(dhousen).Add(PartOfZodiacHouse(n));
+		var mod     = (int) Longitude.ToZodiacHouse() % 2;
+		var dhousen = mod % 2 == 1 ? ZodiacHouse.Ari : ZodiacHouse.Lib;
+		var dhouse  = dhousen.Add(PartOfZodiacHouse(n));
 		var dp      = new DivisionPosition(Name, Type, dhouse, 0, 0, 0);
 		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
 		return PopulateRegularCusps(n, dp);
@@ -545,7 +545,7 @@ public class Position : ICloneable
 	{
 		var part = PartOfZodiacHouse(9);
 		var dp   = ToRegularDivisionPosition(9);
-		switch ((int) Longitude.ToZodiacHouse().Sign % 3)
+		switch ((int) Longitude.ToZodiacHouse() % 3)
 		{
 			case 1:
 				dp.RulerIndex = part;
@@ -568,18 +568,18 @@ public class Position : ICloneable
 
 	private DivisionPosition ToDivisionPositionAshtamsaRaman()
 	{
-		ZodiacHouse zstart = null;
-		switch ((int) Longitude.ToZodiacHouse().Sign % 3)
+		ZodiacHouse zstart;
+		switch ((int) Longitude.ToZodiacHouse() % 3)
 		{
 			case 1:
-				zstart = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
+				zstart = ZodiacHouse.Ari;
 				break;
 			case 2:
-				zstart = new ZodiacHouse(ZodiacHouse.Rasi.Leo);
+				zstart = ZodiacHouse.Leo;
 				break;
 			case 0:
 			default:
-				zstart = new ZodiacHouse(ZodiacHouse.Rasi.Sag);
+				zstart = ZodiacHouse.Sag;
 				break;
 		}
 
@@ -591,26 +591,26 @@ public class Position : ICloneable
 
 	private DivisionPosition ToDivisionPositionPanchamsa()
 	{
-		var offsetOdd = new ZodiacHouse.Rasi[5]
+		var offsetOdd = new []
 		{
-			ZodiacHouse.Rasi.Ari,
-			ZodiacHouse.Rasi.Aqu,
-			ZodiacHouse.Rasi.Sag,
-			ZodiacHouse.Rasi.Gem,
-			ZodiacHouse.Rasi.Lib
+			ZodiacHouse.Ari,
+			ZodiacHouse.Aqu,
+			ZodiacHouse.Sag,
+			ZodiacHouse.Gem,
+			ZodiacHouse.Lib
 		};
-		var offsetEven = new ZodiacHouse.Rasi[5]
+		var offsetEven = new []
 		{
-			ZodiacHouse.Rasi.Tau,
-			ZodiacHouse.Rasi.Vir,
-			ZodiacHouse.Rasi.Pis,
-			ZodiacHouse.Rasi.Cap,
-			ZodiacHouse.Rasi.Sco
+			ZodiacHouse.Tau,
+			ZodiacHouse.Vir,
+			ZodiacHouse.Pis,
+			ZodiacHouse.Cap,
+			ZodiacHouse.Sco
 		};
 		var part   = PartOfZodiacHouse(5);
-		var mod    = (int) Longitude.ToZodiacHouse().Sign % 2;
+		var mod    = (int) Longitude.ToZodiacHouse() % 2;
 		var dhouse = mod % 2 == 1 ? offsetOdd[part - 1] : offsetEven[part - 1];
-		var zh     = new ZodiacHouse(dhouse);
+		var zh     = dhouse;
 		var dp     = new DivisionPosition(Name, Type, zh, 0, 0, 0);
 		dp.Longitude = zh.DivisionalLongitude(Longitude, 5);
 		return PopulateRegularCusps(5, dp);
@@ -618,7 +618,7 @@ public class Position : ICloneable
 
 	private DivisionPosition ToDivisionPositionRudramsa()
 	{
-		var zari   = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
+		var zari   = ZodiacHouse.Ari;
 		var zhouse = Longitude.ToZodiacHouse();
 		var diff   = zari.NumHousesBetween(zhouse);
 		var zstart = zari.AddReverse(diff);
@@ -647,7 +647,7 @@ public class Position : ICloneable
 			1
 		};
 		var zhouse = Longitude.ToZodiacHouse();
-		var dhouse = zhouse.Add(offset[(int) zhouse.Sign % 2]);
+		var dhouse = zhouse.Add(offset[(int) zhouse % 2]);
 		var part   = PartOfZodiacHouse(n);
 		dhouse = dhouse.Add(part);
 		var dp = new DivisionPosition(Name, Type, dhouse, 0, 0, 0);
@@ -703,23 +703,23 @@ public class Position : ICloneable
 
 	private DivisionPosition ToDivisionPositionVimsamsa(int n)
 	{
-		var              mod = (int) Longitude.ToZodiacHouse().Sign % 3;
-		ZodiacHouse.Rasi dhousename;
+		var              mod = (int) Longitude.ToZodiacHouse() % 3;
+		ZodiacHouse dhousename;
 		switch (mod)
 		{
 			case 1:
-				dhousename = ZodiacHouse.Rasi.Ari;
+				dhousename = ZodiacHouse.Ari;
 				break;
 			case 2:
-				dhousename = ZodiacHouse.Rasi.Sag;
+				dhousename = ZodiacHouse.Sag;
 				break;
 			default:
-				dhousename = ZodiacHouse.Rasi.Leo;
+				dhousename = ZodiacHouse.Leo;
 				break;
 		}
 
 		var part   = PartOfZodiacHouse(n);
-		var dhouse = new ZodiacHouse(dhousename).Add(part);
+		var dhouse = dhousename.Add(part);
 		var dp     = new DivisionPosition(Name, Type, dhouse, 0, 0, 0);
 		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
 		return PopulateRegularCusps(n, dp);
@@ -743,10 +743,10 @@ public class Position : ICloneable
 
 	private DivisionPosition ToDivisionPositionChaturvimsamsa(int n)
 	{
-		var mod        = (int) Longitude.ToZodiacHouse().Sign % 2;
-		var dhousename = mod % 2 == 1 ? ZodiacHouse.Rasi.Leo : ZodiacHouse.Rasi.Can;
+		var mod        = (int) Longitude.ToZodiacHouse() % 2;
+		var dhousename = mod % 2 == 1 ? ZodiacHouse.Leo : ZodiacHouse.Can;
 		var part       = PartOfZodiacHouse(n);
-		var dhouse     = new ZodiacHouse(dhousename).Add(part);
+		var dhouse     = dhousename.Add(part);
 		var dp         = new DivisionPosition(Name, Type, dhouse, 0, 0, 0);
 		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
 		if (n == 24)
@@ -768,26 +768,26 @@ public class Position : ICloneable
 
 	private DivisionPosition ToDivisionPositionNakshatramsa(int n)
 	{
-		var              mod = (int) Longitude.ToZodiacHouse().Sign % 4;
-		ZodiacHouse.Rasi dhousename;
+		var              mod = (int) Longitude.ToZodiacHouse() % 4;
+		ZodiacHouse dhousename;
 		switch (mod)
 		{
 			case 1:
-				dhousename = ZodiacHouse.Rasi.Ari;
+				dhousename = ZodiacHouse.Ari;
 				break;
 			case 2:
-				dhousename = ZodiacHouse.Rasi.Can;
+				dhousename = ZodiacHouse.Can;
 				break;
 			case 3:
-				dhousename = ZodiacHouse.Rasi.Lib;
+				dhousename = ZodiacHouse.Lib;
 				break;
 			default:
-				dhousename = ZodiacHouse.Rasi.Cap;
+				dhousename = ZodiacHouse.Cap;
 				break;
 		}
 
 		var part   = PartOfZodiacHouse(n);
-		var dhouse = new ZodiacHouse(dhousename).Add(part);
+		var dhouse = dhousename.Add(part);
 		var dp     = new DivisionPosition(Name, Type, dhouse, 0, 0, 0);
 		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
 		return PopulateRegularCusps(n, dp);
@@ -812,7 +812,7 @@ public class Position : ICloneable
 
 	private DivisionPosition ToDivisionPositionTrimsamsa()
 	{
-		var         mod = (int) Longitude.ToZodiacHouse().Sign % 2;
+		var         mod = (int) Longitude.ToZodiacHouse() % 2;
 		var         off = Longitude.ToZodiacHouseOffset();
 		ZodiacHouse dhouse;
 		double      cuspLower  = 0;
@@ -823,86 +823,86 @@ public class Position : ICloneable
 		{
 			if (off <= 5)
 			{
-				dhouse      = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
+				dhouse     = ZodiacHouse.Ari;
 				cuspLower  = 0.0;
 				cuspHigher = 5.0;
 				rulerIndex = 1;
-				part        = 1;
+				part       = 1;
 			}
 			else if (off <= 10)
 			{
-				dhouse      = new ZodiacHouse(ZodiacHouse.Rasi.Aqu);
+				dhouse     = ZodiacHouse.Aqu;
 				cuspLower  = 5.01;
 				cuspHigher = 10.0;
 				rulerIndex = 2;
-				part        = 2;
+				part       = 2;
 			}
 			else if (off <= 18)
 			{
-				dhouse      = new ZodiacHouse(ZodiacHouse.Rasi.Sag);
+				dhouse     = ZodiacHouse.Sag;
 				cuspLower  = 10.01;
 				cuspHigher = 18.0;
 				rulerIndex = 3;
-				part        = 3;
+				part       = 3;
 			}
 			else if (off <= 25)
 			{
-				dhouse      = new ZodiacHouse(ZodiacHouse.Rasi.Gem);
+				dhouse     = ZodiacHouse.Gem;
 				cuspLower  = 18.01;
 				cuspHigher = 25.0;
 				rulerIndex = 4;
-				part        = 4;
+				part       = 4;
 			}
 			else
 			{
-				dhouse      = new ZodiacHouse(ZodiacHouse.Rasi.Lib);
+				dhouse     = ZodiacHouse.Lib;
 				cuspLower  = 25.01;
 				cuspHigher = 30.0;
 				rulerIndex = 5;
-				part        = 5;
+				part       = 5;
 			}
 		}
 		else
 		{
 			if (off <= 5)
 			{
-				dhouse      = new ZodiacHouse(ZodiacHouse.Rasi.Tau);
+				dhouse     = ZodiacHouse.Tau;
 				cuspLower  = 0.0;
 				cuspHigher = 5.0;
 				rulerIndex = 5;
-				part        = 1;
+				part       = 1;
 			}
 			else if (off <= 12)
 			{
-				dhouse      = new ZodiacHouse(ZodiacHouse.Rasi.Vir);
+				dhouse     = ZodiacHouse.Vir;
 				cuspLower  = 5.01;
 				cuspHigher = 12.0;
 				rulerIndex = 4;
-				part        = 2;
+				part       = 2;
 			}
 			else if (off <= 20)
 			{
-				dhouse      = new ZodiacHouse(ZodiacHouse.Rasi.Pis);
+				dhouse     = ZodiacHouse.Pis;
 				cuspLower  = 12.01;
 				cuspHigher = 20.0;
 				rulerIndex = 3;
-				part        = 3;
+				part       = 3;
 			}
 			else if (off <= 25)
 			{
-				dhouse      = new ZodiacHouse(ZodiacHouse.Rasi.Cap);
+				dhouse     = ZodiacHouse.Cap;
 				cuspLower  = 20.01;
 				cuspHigher = 25.0;
 				rulerIndex = 2;
-				part        = 4;
+				part       = 4;
 			}
 			else
 			{
-				dhouse      = new ZodiacHouse(ZodiacHouse.Rasi.Sco);
+				dhouse     = ZodiacHouse.Sco;
 				cuspLower  = 25.01;
 				cuspHigher = 30.0;
 				rulerIndex = 1;
-				part        = 5;
+				part       = 5;
 			}
 		}
 
@@ -918,10 +918,10 @@ public class Position : ICloneable
 
 	private DivisionPosition ToDivisionPositionKhavedamsa()
 	{
-		var mod        = (int) Longitude.ToZodiacHouse().Sign % 2;
-		var dhousename = mod % 2 == 1 ? ZodiacHouse.Rasi.Ari : ZodiacHouse.Rasi.Lib;
+		var mod        = (int) Longitude.ToZodiacHouse() % 2;
+		var dhousename = mod % 2 == 1 ? ZodiacHouse.Ari : ZodiacHouse.Lib;
 		var part       = PartOfZodiacHouse(40);
-		var dhouse     = new ZodiacHouse(dhousename).Add(part);
+		var dhouse     = dhousename.Add(part);
 		var dp         = new DivisionPosition(Name, Type, dhouse, 0, 0, 0);
 		dp.Longitude   = dhouse.DivisionalLongitude(Longitude, 40);
 		dp.RulerIndex = part.NormalizeInc(1, 12);
@@ -930,28 +930,28 @@ public class Position : ICloneable
 
 	private DivisionPosition ToDivisionPositionAkshavedamsa(int n)
 	{
-		var              mod = (int) Longitude.ToZodiacHouse().Sign % 3;
-		ZodiacHouse.Rasi dhousename;
+		var              mod = (int) Longitude.ToZodiacHouse() % 3;
+		ZodiacHouse dhousename;
 		switch (mod)
 		{
 			case 1:
-				dhousename = ZodiacHouse.Rasi.Ari;
+				dhousename = ZodiacHouse.Ari;
 				break;
 			case 2:
-				dhousename = ZodiacHouse.Rasi.Leo;
+				dhousename = ZodiacHouse.Leo;
 				break;
 			default:
-				dhousename = ZodiacHouse.Rasi.Sag;
+				dhousename = ZodiacHouse.Sag;
 				break;
 		}
 
 		var part   = PartOfZodiacHouse(n);
-		var dhouse = new ZodiacHouse(dhousename).Add(part);
+		var dhouse = dhousename.Add(part);
 		var dp     = new DivisionPosition(Name, Type, dhouse, 0, 0, 0);
 		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
 		if (n == 45)
 		{
-			switch ((int) Longitude.ToZodiacHouse().Sign % 3)
+			switch ((int) Longitude.ToZodiacHouse() % 3)
 			{
 				case 1:
 					dp.RulerIndex = part;
@@ -992,9 +992,9 @@ public class Position : ICloneable
 	private DivisionPosition ToDivisionPositionNadiamsa()
 	{
 #if DND
-			ZodiacHouse zhouse = m_lon.toZodiacHouse();
+			Rasis.Rasi zhouse = m_lon.toZodiacHouse();
 			int part = partOfZodiacHouse(150);
-			ZodiacHouse dhouse = null;
+			Rasis.Rasi dhouse = null;
 			switch ((int)zhouse.value % 3)
 			{
 				case 1:	dhouse = zhouse.add(part); break;
@@ -1010,7 +1010,7 @@ public class Position : ICloneable
 		var dhouse = zhouse.Add(part);
 		var dp     = new DivisionPosition(Name, Type, dhouse, 0, 0, 0);
 		dp.Longitude = dhouse.DivisionalLongitude(Longitude, 150);
-		switch ((int) Longitude.ToZodiacHouse().Sign % 3)
+		switch ((int) Longitude.ToZodiacHouse() % 3)
 		{
 			case 1:
 				dp.RulerIndex = part;
@@ -1104,8 +1104,8 @@ public class Position : ICloneable
 		part++;
 
 #if DND
-			ZodiacHouse zhouse = m_lon.toZodiacHouse();
-			ZodiacHouse dhouse = null;
+			Rasis.Rasi zhouse = m_lon.toZodiacHouse();
+			Rasis.Rasi dhouse = null;
 			switch ((int)zhouse.value % 3)
 			{
 				case 1:	dhouse = zhouse.add(part); break;
@@ -1122,7 +1122,7 @@ public class Position : ICloneable
 		var dp     = new DivisionPosition(Name, Type, dhouse, 0, 0, 0);
 		dp.Longitude = dhouse.DivisionalLongitude(Longitude, 150);
 
-		switch ((int) Longitude.ToZodiacHouse().Sign % 3)
+		switch ((int) Longitude.ToZodiacHouse() % 3)
 		{
 			case 1:
 				dp.RulerIndex = part;
@@ -1245,7 +1245,7 @@ public class Position : ICloneable
 		}
 
 		Trace.Assert(false, "DivisionPosition Error");
-		return new DivisionPosition(Name, Type, new ZodiacHouse(ZodiacHouse.Rasi.Ari), 0, 0, 0);
+		return new DivisionPosition(Name, Type, ZodiacHouse.Ari, 0, 0, 0);
 	}
 
 	public Longitude ExtrapolateLongitude(Division d)
@@ -1267,7 +1267,7 @@ public class Position : ICloneable
 		Trace.Assert(lOffset.Value <= lRange.Value, "Extrapolation internal error: Slice smaller than range. Weird.");
 
 		var newOffset = lOffset.Value / lRange.Value      * 30.0;
-		var newBase   = ((int) dp.ZodiacHouse.Sign - 1) * 30.0;
+		var newBase   = ((int) dp.ZodiacHouse - 1) * 30.0;
 		return new Longitude(newOffset + newBase);
 	}
 }

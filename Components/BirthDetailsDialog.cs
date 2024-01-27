@@ -48,7 +48,7 @@ public partial class BirthDetailsDialog : Form
 	{
 		get
 		{
-			return (txtName.Text);
+			return txtName.Text;
 		}
 	}
 
@@ -89,7 +89,7 @@ public partial class BirthDetailsDialog : Form
 				Longitude   = MhoraGlobalOptions.Instance.Longitude,
 				City        = City,
 			};
-			return (info);
+			return info;
 		}
 		set
 		{

@@ -45,7 +45,7 @@ public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		Body.BodyType[] karakaBodies =
 		{
@@ -64,11 +64,11 @@ public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 		{
 			var div    = H.GetPosition(bn).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi));
 			var offset = KarakaLongitude(bn);
-			if (div.ZodiacHouse.Sign == za && offset > lona)
+			if (div.ZodiacHouse == za && offset > lona)
 			{
 				lona = offset;
 			}
-			else if (div.ZodiacHouse.Sign == zb && offset > lonb)
+			else if (div.ZodiacHouse == zb && offset > lonb)
 			{
 				lonb = offset;
 			}

@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System.Collections;
 using System.Diagnostics;
 using Mhora.Elements.Calculation;
+using mhora.Util;
 
 namespace Mhora.Elements;
 
@@ -799,7 +800,7 @@ public class Ashtakavarga
 			0
 		};
 
-		var zl = _h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
+		var zl = (ZodiacHouse) _h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
 
 		foreach (var b in GetBodies())
 		{
@@ -810,9 +811,9 @@ public class Ashtakavarga
 
 			for (var i = 0; i < 12; i++)
 			{
-				var zi   = new ZodiacHouse((ZodiacHouse.Rasi) i + 1);
+				var zi   = (ZodiacHouse) i + 1;
 				var rasi = zb.NumHousesBetween(zi);
-				rasi          =  (int) zl.Add(rasi).Sign;
+				rasi          =  zl.Add(rasi).Index();
 				sav[rasi - 1] += pav[i];
 			}
 		}
@@ -856,7 +857,7 @@ public class Ashtakavarga
 		return sav;
 	}
 
-	public ZodiacHouse.Rasi[] GetBindus(Body.BodyType m, Body.BodyType n)
+	public ZodiacHouse[] GetBindus(Body.BodyType m, Body.BodyType n)
 	{
 		var allBindus = new int[8][][];
 		allBindus[0] = BindusSun();
@@ -870,12 +871,12 @@ public class Ashtakavarga
 
 		var al = new ArrayList();
 
-		var zh = _h.GetPosition(n).ToDivisionPosition(_dtype).ZodiacHouse;
+		var zh = (ZodiacHouse) _h.GetPosition(n).ToDivisionPosition(_dtype).ZodiacHouse;
 		foreach (var i in allBindus[BodyToInt(m)][BodyToInt(n)])
 		{
-			al.Add(zh.Add(i).Sign);
+			al.Add(zh.Add(i));
 		}
 
-		return (ZodiacHouse.Rasi[]) al.ToArray(typeof(ZodiacHouse.Rasi));
+		return (ZodiacHouse[]) al.ToArray(typeof(ZodiacHouse));
 	}
 }

@@ -462,7 +462,7 @@ public class BasicCalculationsControl : MhoraControl
 		var li = new ListViewItem();
 		li.Text = b.ToString();
 		li.SubItems.Add(name);
-		li.SubItems.Add(dp.ZodiacHouse.Sign.ToString());
+		li.SubItems.Add(dp.ZodiacHouse.ToString());
 		li.SubItems.Add(h.LordOfZodiacHouse(dp.ZodiacHouse, div).Name());
 		mList.Items.Add(li);
 	}
@@ -489,7 +489,7 @@ public class BasicCalculationsControl : MhoraControl
 			}
 
 			var li = new ListViewItem(desc);
-			li.SubItems.Add(dp.ZodiacHouse.Sign.ToString());
+			li.SubItems.Add(dp.ZodiacHouse.ToString());
 			mList.Items.Add(li);
 		}
 
@@ -546,7 +546,7 @@ public class BasicCalculationsControl : MhoraControl
 			li.Text = b.Name();
 			var dp            = h.GetPosition(b).ToDivisionPosition(new Division(Vargas.DivisionType.Panchamsa));
 			var avastha_index = -1;
-			switch ((int) dp.ZodiacHouse.Sign % 2)
+			switch (dp.ZodiacHouse.Index() % 2)
 			{
 				case 1:
 					avastha_index = dp.Part;
@@ -742,7 +742,7 @@ public class BasicCalculationsControl : MhoraControl
 
 	private string longitudeToString(Longitude lon)
 	{
-		var rasi    = lon.ToZodiacHouse().Sign.ToString();
+		var rasi    = lon.ToZodiacHouse().ToString();
 		var offset  = lon.ToZodiacHouseOffset();
 		var minutes = Math.Floor(offset);
 		offset = (offset - minutes) * 60.0;
@@ -770,7 +770,7 @@ public class BasicCalculationsControl : MhoraControl
 			var li = new ListViewItem();
 			li.Text = longitudeToString(new Longitude(dp.CuspLower));
 			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
-			li.SubItems.Add(dp.ZodiacHouse.Sign.ToString());
+			li.SubItems.Add(dp.ZodiacHouse.ToString());
 			bp.Longitude = new Longitude(dp.CuspHigher + 1);
 			mList.Items.Add(li);
 		}
@@ -920,7 +920,7 @@ public class BasicCalculationsControl : MhoraControl
 			li.SubItems.Add(getNakLord(bp.Longitude));
 
 			var dp = bp.ToDivisionPosition(options.DivisionType);
-			li.SubItems.Add(dp.ZodiacHouse.Sign.ToString());
+			li.SubItems.Add(dp.ZodiacHouse.ToString());
 			li.SubItems.Add(dp.Part.ToString());
 			li.SubItems.Add(AmsaRuler(bp, dp));
 			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspLower)));

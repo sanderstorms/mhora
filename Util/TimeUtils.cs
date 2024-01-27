@@ -54,7 +54,7 @@ public static class TimeUtils
 			+ Math.Floor(30.6 * u1 + 0.000001)
 			+ dateTime.Day + dateTime.Time().TotalHours / 24.0 - 63.5;
 
-		return (jd);
+		return jd;
 	}
 
 	public static DateTime UtcDateTime(this double jd)

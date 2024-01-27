@@ -183,7 +183,7 @@ namespace Mhora.Util
 		{
 			get
 			{
-				return (Degrees * 60M) + Arcminute + (Arcsecond / 60M);
+				return Degrees * 60M + Arcminute + Arcsecond / 60M;
 			}
 		}
 
@@ -197,7 +197,7 @@ namespace Mhora.Util
 		{
 			get
 			{
-				return (Degrees * 3600M) + (Arcminute * 60M) + Arcsecond;
+				return Degrees * 3600M + Arcminute * 60M + Arcsecond;
 			}
 		}
 
@@ -370,11 +370,11 @@ namespace Mhora.Util
 		{
 			bool returnValue = false;
 
-			if (((object)a) == null && ((object)b) == null)
+			if ((object)a == null && (object)b == null)
 			{
 				returnValue = true;
 			}
-			else if (((object)a) != null && ((object)b) != null)
+			else if ((object)a != null && (object)b != null)
 			{
 				returnValue = a._value == b._value;
 			}
@@ -392,11 +392,11 @@ namespace Mhora.Util
 		{
 			bool returnValue = true;
 
-			if (((object)a) == null && ((object)b) == null)
+			if ((object)a == null && (object)b == null)
 			{
 				returnValue = false;
 			}
-			else if (((object)a) != null && ((object)b) != null)
+			else if ((object)a != null && (object)b != null)
 			{
 				returnValue = a._value != b._value;
 			}
@@ -501,7 +501,7 @@ namespace Mhora.Util
 			//
 			// 15 degrees per hour
 			//
-			returnValue = degrees + (arcminute / 60M) + (arcsecond / 3600M);
+			returnValue = degrees + arcminute / 60M + arcsecond / 3600M;
 
 			return returnValue;
 		}
@@ -536,7 +536,7 @@ namespace Mhora.Util
 			//
 			// Factor = pi / 180 
 			//
-			returnValue = (degrees * (decimal) Math.PI) / 180M;
+			returnValue = degrees * (decimal) Math.PI / 180M;
 
 			return returnValue;
 		}
@@ -626,7 +626,7 @@ namespace Mhora.Util
 				secondsDecimal = totalMinutes - Math.Floor(totalMinutes);
 			}
 
-			returnValue = Convert.ToDecimal((secondsDecimal) * 60);
+			returnValue = Convert.ToDecimal(secondsDecimal * 60);
 
 			return returnValue;
 		}
@@ -640,7 +640,7 @@ namespace Mhora.Util
 		{
 			Angle returnValue = Empty;
 
-			returnValue = new Angle((decimal)angle - (Math.Floor((decimal)angle / 360.0M) * 360.0M));
+			returnValue = new Angle((decimal)angle - Math.Floor((decimal)angle / 360.0M) * 360.0M);
 
 			return returnValue;
 		}
@@ -845,7 +845,7 @@ namespace Mhora.Util
 		{
 			int returnValue = 1;
 
-			if (((object)other) != null)
+			if ((object)other != null)
 			{
 				returnValue = _value.CompareTo(other._value);
 			}

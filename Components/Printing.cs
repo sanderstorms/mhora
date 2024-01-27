@@ -204,7 +204,7 @@ public class MhoraPrintDocument : PrintDocument
 		}
 		else
 		{
-			s = string.Format("{0} {1}", ZodiacHouse.ToShortString(deAntar.ZHouse), td.AddYears(deAntar.StartUt).ToDateString());
+			s = string.Format("{0} {1}", Rasis.ToShortString(deAntar.ZHouse), td.AddYears(deAntar.StartUt).ToDateString());
 		}
 
 		return s;

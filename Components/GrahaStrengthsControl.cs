@@ -342,8 +342,8 @@ public class GrahaStrengthsControl : Form
 
 	private void populateColordLabel()
 	{
-		var lAqu = h.LordOfZodiacHouse(new ZodiacHouse(ZodiacHouse.Rasi.Aqu), options.Division);
-		var lSco = h.LordOfZodiacHouse(new ZodiacHouse(ZodiacHouse.Rasi.Sco), options.Division);
+		var lAqu = h.LordOfZodiacHouse((ZodiacHouse.Aqu), options.Division);
+		var lSco = h.LordOfZodiacHouse((ZodiacHouse.Sco), options.Division);
 		lColords.Text = string.Format("{0} and {1} are the stronger co-lords", lSco, lAqu);
 	}
 

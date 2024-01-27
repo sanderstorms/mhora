@@ -29,6 +29,6 @@ public class NarayanaSamaDasa : NarayanaDasa, IDasa
 
 	public new string Description()
 	{
-		return "Narayana Sama Dasa for " + Options.Division + " seeded from " + Options.SeedRasi;
+		return "Narayana Sama Dasa for " + Options.Division + " seeded from " + Options.SeedZodiacHouse;
 	}
 }

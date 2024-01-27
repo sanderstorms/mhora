@@ -64,7 +64,7 @@ public class Dasa3Parts : Form
 	{
 		var start = _td.AddYears(_de.StartUt);
 		var end   = _td.AddYears(_de.StartUt + _de.DasaLength);
-		var zh = new ZodiacHouse(_de.ZHouse);
+		var zh = (_de.ZHouse);
 		if ((int) _de.ZHouse != 0)
 		{
 			_txtDesc.Text = string.Format("{0} - {1} to {2}", zh, start, end);

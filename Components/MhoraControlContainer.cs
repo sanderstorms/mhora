@@ -103,7 +103,7 @@ public class MhoraControlContainer : UserControl
 			case BaseUserOptions.ViewType.KutaMatching:
 			{
 				var h2 = h;
-				foreach (var f in (MhoraGlobalOptions.MainControl).MdiChildren)
+				foreach (var f in MhoraGlobalOptions.MainControl.MdiChildren)
 				{
 					if (f is MhoraChild)
 					{

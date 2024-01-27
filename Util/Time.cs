@@ -18,17 +18,17 @@ namespace Mhora.Util
 
 		public static implicit operator TimeSpan(Time time)
 		{
-			return (time._timeSpan);
+			return time._timeSpan;
 		}
 
 		public static implicit operator Time(TimeSpan timeSpan)
 		{
-			return (new Time(timeSpan));
+			return new Time(timeSpan);
 		}
 
 		public static implicit operator double(Time time)
 		{
-			return (time._timeSpan.TotalHours);
+			return time._timeSpan.TotalHours;
 		}
 
 		public static implicit operator Time(double hours)
@@ -43,12 +43,12 @@ namespace Mhora.Util
 
 		public int CompareTo(TimeSpan other)
 		{
-			return (_timeSpan.CompareTo(other));
+			return _timeSpan.CompareTo(other);
 		}
 
 		public bool Equals(TimeSpan other)
 		{
-			return (_timeSpan.Equals(other));
+			return _timeSpan.Equals(other);
 		}
     }
 }

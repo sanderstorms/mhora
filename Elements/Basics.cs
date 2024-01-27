@@ -102,39 +102,39 @@ public static class Basics
 
 	public static ZodiacHouse GetMoolaTrikonaRasi(this Body.BodyType b)
 	{
-		var z = ZodiacHouse.Rasi.Ari;
+		var z = ZodiacHouse.Ari;
 		switch (b)
 		{
 			case Body.BodyType.Sun:
-				z = ZodiacHouse.Rasi.Leo;
+				z = ZodiacHouse.Leo;
 				break;
 			case Body.BodyType.Moon:
-				z = ZodiacHouse.Rasi.Tau;
+				z = ZodiacHouse.Tau;
 				break;
 			case Body.BodyType.Mars:
-				z = ZodiacHouse.Rasi.Ari;
+				z = ZodiacHouse.Ari;
 				break;
 			case Body.BodyType.Mercury:
-				z = ZodiacHouse.Rasi.Vir;
+				z = ZodiacHouse.Vir;
 				break;
 			case Body.BodyType.Jupiter:
-				z = ZodiacHouse.Rasi.Sag;
+				z = ZodiacHouse.Sag;
 				break;
 			case Body.BodyType.Venus:
-				z = ZodiacHouse.Rasi.Lib;
+				z = ZodiacHouse.Lib;
 				break;
 			case Body.BodyType.Saturn:
-				z = ZodiacHouse.Rasi.Aqu;
+				z = ZodiacHouse.Aqu;
 				break;
 			case Body.BodyType.Rahu:
-				z = ZodiacHouse.Rasi.Vir;
+				z = ZodiacHouse.Vir;
 				break;
 			case Body.BodyType.Ketu:
-				z = ZodiacHouse.Rasi.Pis;
+				z = ZodiacHouse.Pis;
 				break;
 		}
 
-		return new ZodiacHouse(z);
+		return (z);
 	}
 
 
@@ -145,22 +145,22 @@ public static class Basics
 	/// </summary>
 	/// <param name="zh">The House whose lord should be returned</param>
 	/// <returns>The lord of zh</returns>
-	public static Body.BodyType SimpleLordOfZodiacHouse(this ZodiacHouse.Rasi zh)
+	public static Body.BodyType SimpleLordOfZodiacHouse(this ZodiacHouse zh)
 	{
 		switch (zh)
 		{
-			case ZodiacHouse.Rasi.Ari: return Body.BodyType.Mars;
-			case ZodiacHouse.Rasi.Tau: return Body.BodyType.Venus;
-			case ZodiacHouse.Rasi.Gem: return Body.BodyType.Mercury;
-			case ZodiacHouse.Rasi.Can: return Body.BodyType.Moon;
-			case ZodiacHouse.Rasi.Leo: return Body.BodyType.Sun;
-			case ZodiacHouse.Rasi.Vir: return Body.BodyType.Mercury;
-			case ZodiacHouse.Rasi.Lib: return Body.BodyType.Venus;
-			case ZodiacHouse.Rasi.Sco: return Body.BodyType.Mars;
-			case ZodiacHouse.Rasi.Sag: return Body.BodyType.Jupiter;
-			case ZodiacHouse.Rasi.Cap: return Body.BodyType.Saturn;
-			case ZodiacHouse.Rasi.Aqu: return Body.BodyType.Saturn;
-			case ZodiacHouse.Rasi.Pis: return Body.BodyType.Jupiter;
+			case ZodiacHouse.Ari: return Body.BodyType.Mars;
+			case ZodiacHouse.Tau: return Body.BodyType.Venus;
+			case ZodiacHouse.Gem: return Body.BodyType.Mercury;
+			case ZodiacHouse.Can: return Body.BodyType.Moon;
+			case ZodiacHouse.Leo: return Body.BodyType.Sun;
+			case ZodiacHouse.Vir: return Body.BodyType.Mercury;
+			case ZodiacHouse.Lib: return Body.BodyType.Venus;
+			case ZodiacHouse.Sco: return Body.BodyType.Mars;
+			case ZodiacHouse.Sag: return Body.BodyType.Jupiter;
+			case ZodiacHouse.Cap: return Body.BodyType.Saturn;
+			case ZodiacHouse.Aqu: return Body.BodyType.Saturn;
+			case ZodiacHouse.Pis: return Body.BodyType.Jupiter;
 		}
 
 		Trace.Assert(false, string.Format("Basics.SimpleLordOfZodiacHouse for {0} failed", (int) zh));

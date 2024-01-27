@@ -210,7 +210,7 @@ public class NavamsaControl : MhoraControl
 		for (var i = 0; i < 12; i++)
 		{
 			ResetChakra(g, i * 30 + 15);
-			var z  = (ZodiacHouse.Rasi) (i + 1);
+			var z  = (ZodiacHouse) (i + 1);
 			var sz = g.MeasureString(z.ToString(), f);
 			g.DrawString(z.ToString(), f, Brushes.Gray, 40 - sz.Width, 0);
 		}

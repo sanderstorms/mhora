@@ -25,7 +25,7 @@ public class StrengthByLordIsAtmaKaraka : BaseStrength, IStrengthRasi
 	{
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var lora = GetStrengthLord(za);
 		var lorb = GetStrengthLord(zb);

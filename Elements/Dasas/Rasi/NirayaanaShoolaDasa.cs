@@ -48,14 +48,14 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 	{
 		var al      = new ArrayList();
 		var zhSeed = _options.GetSeed().Add(2);
-		zhSeed.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed.Sign, zhSeed.Add(7).Sign);
+		zhSeed = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed, zhSeed.Add(7));
 
 		var bIsForward = zhSeed.IsOdd();
 
 		var dasaLengthSum = 0.0;
 		for (var i = 1; i <= 12; i++)
 		{
-			ZodiacHouse zhDasa = null;
+			ZodiacHouse zhDasa;
 			if (bIsForward)
 			{
 				zhDasa = zhSeed.Add(i);
@@ -66,7 +66,7 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 			}
 
 			var dasaLength = GetDasaLength(zhDasa);
-			var di          = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
+			var di          = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
 			dasaLengthSum += dasaLength;
 		}
@@ -89,7 +89,7 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return "Niryaana Shoola Dasa" + " seeded from " + _options.SeedRasi;
+		return "Niryaana Shoola Dasa" + " seeded from " + _options.SeedZodiacHouse;
 	}
 
 	public object GetOptions()
@@ -114,7 +114,7 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 
 	public double GetDasaLength(ZodiacHouse zh)
 	{
-		switch ((int) zh.Sign % 3)
+		switch ((int) zh % 3)
 		{
 			case 1:  return 7.0;
 			case 2:  return 8.0;

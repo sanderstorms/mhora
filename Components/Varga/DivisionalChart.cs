@@ -30,6 +30,7 @@ using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
+using mhora.Util;
 using Mhora.Util;
 
 namespace Mhora.Components.Varga;
@@ -862,7 +863,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void DrawItems(Graphics g, bool large)
 	{
-		var signs = Enum.GetValues(typeof(ZodiacHouse.Rasi)).OfType<ZodiacHouse.Rasi>();
+		var signs = Enum.GetValues(typeof(ZodiacHouse)).OfType<ZodiacHouse>();
 		foreach (var sign in signs)
 		{
 			var graha  = 1;
@@ -1096,7 +1097,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			return;
 		}
 
-		var   zh = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
+		var   zh = ZodiacHouse.Ari;
 		Brush b  = new SolidBrush(MhoraGlobalOptions.Instance.VargaSavColor);
 		var   f  = MhoraGlobalOptions.Instance.GeneralFont;
 		for (var i = 1; i <= 12; i++)
@@ -1128,7 +1129,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 #if DDD
 			foreach (ZodiacHouse.Type _zh in ZodiacHouse.AllNames)
 			{
-				ZodiacHouse zh = new ZodiacHouse(_zh);
+				ZodiacHouse zh = (_zh);
 				for (int i = 1; i<9; i++)
 				{
 					DivisionPosition dp = new DivisionPosition(Body.Type.Jupiter,
@@ -1307,13 +1308,13 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 
 		/*
-		ZodiacHouse zh = new ZodiacHouse(ZodiacHouse.Type.Sco);
+		ZodiacHouse zh = (ZodiacHouse.Type.Sco);
 		for (int i=1; i<9; i++)
 		    AddItem(g, zh, i, new D, true);
 
 		for (int i=1; i<=12; i++)
 		{
-		    ZodiacHouse zh = new ZodiacHouse((ZodiacHouse.Type)i);
+		    ZodiacHouse zh = ((ZodiacHouse.Type)i);
 		    AddItem (g, zh, 9, zh.value.ToString());
 		}
 		*/
@@ -1708,7 +1709,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			Trace.Assert(lOffset.Value <= lRange.Value, "Extrapolation internal error: Slice smaller than range. Weird.");
 
 			var newOffset = (double) (lOffset / lRange      * 30.0);
-			var newBase   = ((int) dp.ZodiacHouse.Sign - 1) * 30.0;
+			var newBase   = (dp.ZodiacHouse.Index() - 1) * 30.0;
 			bp.Longitude = new Longitude(newOffset + newBase);
 		}
 

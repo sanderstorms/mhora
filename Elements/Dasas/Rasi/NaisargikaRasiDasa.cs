@@ -89,12 +89,12 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 					dasaLength = 9.0;
 					break;
 				default:
-					var mod = (int) zh.Sign % 3;
+					var mod = (int) zh % 3;
 					dasaLength = shortLength[mod];
 					break;
 			}
 
-			al.Add(new DasaEntry(zh.Sign, cycleStart + curr, dasaLength, 1, zh.Sign.ToString()));
+			al.Add(new DasaEntry(zh, cycleStart + curr, dasaLength, 1, zh.ToString()));
 			curr += dasaLength;
 		}
 

@@ -24,8 +24,8 @@ namespace Mhora.Chart;
 public interface IDrawChart
 {
 	bool  SeparateGrahaHandling { get; }
-	Point GetBodyPosition(Longitude       l);
-	Point GetBodyTextPosition(Longitude   l,  Size itemSize);
+	Point GetBodyPosition(Longitude      l);
+	Point GetBodyTextPosition(Longitude  l,  Size itemSize);
 	Point GetSingleItemOffset(ZodiacHouse zh, Size itemSize);
 	Point GetItemOffset(ZodiacHouse       zh, Size itemSize, int n);
 	Point GetSmallItemOffset(ZodiacHouse  zh, Size itemSize, int n);

@@ -185,19 +185,19 @@ namespace Mhora.Elements
 		public static ZodiacHouse ToZodiacHouse(this Longitude l)
 		{
 			var znum = (int) (Math.Floor(l.Value / 30.0) + 1.0);
-			return new ZodiacHouse((ZodiacHouse.Rasi) znum);
+			return (ZodiacHouse) znum;
 		}
 
 		public static double ToZodiacHouseBase(this Longitude l)
 		{
-			var znum = l.ToZodiacHouse().Sign.Index ();
+			var znum = l.ToZodiacHouse().Index ();
 			var cusp = (znum - 1) * 30.0;
 			return cusp;
 		}
 
 		public static double ToZodiacHouseOffset(this Longitude l)
 		{
-			var znum = l.ToZodiacHouse().Sign.Index ();
+			var znum = l.ToZodiacHouse().Index ();
 			var cusp = (znum - 1) * 30.0;
 			var ret  = l.Value - cusp;
 			Trace.Assert(ret >= 0.0 && ret <= 30.0);

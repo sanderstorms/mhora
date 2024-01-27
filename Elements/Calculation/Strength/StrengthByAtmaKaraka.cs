@@ -42,7 +42,7 @@ public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var ala = FindGrahasInHouse(za);
 		var alb = FindGrahasInHouse(zb);

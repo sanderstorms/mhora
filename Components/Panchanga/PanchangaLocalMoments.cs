@@ -31,7 +31,7 @@ public class PanchangaLocalMoments
 	public double[]         kalas_ut;
 	public int              karana_index_end;
 	public int              karana_index_start;
-	public ZodiacHouse.Rasi lagna_zh;
+	public ZodiacHouse lagna_zh;
 	public ArrayList        lagnas_ut = new();
 	public int              nakshatra_index_end;
 	public int              nakshatra_index_start;

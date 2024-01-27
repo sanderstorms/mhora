@@ -107,6 +107,16 @@ public static class Body
 		Other
 	}
 
+	public enum Relationship
+	{
+		BitterEnemy = -2,
+		Enemy       = -1,
+		Neutral     =  0,
+		Friend      =  1,
+		BestFriend  =  2,
+	}
+
+
 	public static readonly string[] Karakas =
 	{
 		"Atma",
@@ -275,4 +285,190 @@ public static class Body
 		Trace.Assert(false, "Basics.Body.toShortString");
 		return "   ";
 	}
+
+	public static bool IsFriend(this BodyType graha, BodyType other)
+	{
+		switch (graha)
+		{
+			case BodyType.Sun:
+				switch (other)
+				{
+					case BodyType.Moon:
+					case BodyType.Mars:
+					case BodyType.Jupiter:
+						return true;
+				}
+				break;
+			case BodyType.Moon:
+				switch (other)
+				{
+					case BodyType.Moon:
+					case BodyType.Mercury:
+						return true;
+				}
+				break;
+			case BodyType.Mars:
+				switch (other)
+				{
+					case BodyType.Sun:
+					case BodyType.Moon:
+					case BodyType.Jupiter:
+					case BodyType.Ketu:
+						return true;
+				}
+				break;
+
+			case BodyType.Mercury:
+				switch (other)
+				{
+					case BodyType.Sun:
+					case BodyType.Venus:
+						return true;
+				}
+				break;
+
+			case BodyType.Jupiter:
+				switch (other)
+				{
+					case BodyType.Sun:
+					case BodyType.Moon:
+					case BodyType.Mars:
+					case BodyType.Rahu:
+						return true;
+				}
+				break;
+
+			case BodyType.Venus:
+				switch (other)
+				{
+					case BodyType.Saturn:
+					case BodyType.Rahu:
+					case BodyType.Ketu:
+						return true;
+				}
+				break;
+
+			case BodyType.Saturn:
+				switch (other)
+				{
+					case BodyType.Mercury:
+					case BodyType.Venus:
+					case BodyType.Rahu:
+						return true;
+				}
+				break;
+
+			case BodyType.Rahu:
+				switch (other)
+				{
+					case BodyType.Jupiter:
+					case BodyType.Venus:
+					case BodyType.Saturn:
+					case BodyType.Ketu:
+						return true;
+				}
+				break;
+
+			case BodyType.Ketu:
+				switch (other)
+				{
+					case BodyType.Mars:
+					case BodyType.Jupiter:
+					case BodyType.Venus:
+						return true;
+				}
+				break;
+		}
+		return false;
+	}
+
+	public static bool IsEnemy(this BodyType graha, BodyType other)
+	{
+		switch (graha)
+		{
+			case BodyType.Sun:
+				switch (other)
+				{
+					case BodyType.Venus:
+					case BodyType.Saturn:
+					case BodyType.Rahu:
+					case BodyType.Ketu:
+						return true;
+				}
+				break;
+			case BodyType.Moon:
+				switch (other)
+				{
+					case BodyType.Rahu:
+					case BodyType.Ketu:
+						return true;
+				}
+				break;
+			case BodyType.Mars:
+				switch (other)
+				{
+					case BodyType.Mercury:
+					case BodyType.Rahu:
+						return true;
+				}
+				break;
+
+			case BodyType.Mercury:
+				switch (other)
+				{
+					case BodyType.Moon:
+						return true;
+				}
+				break;
+
+			case BodyType.Jupiter:
+				switch (other)
+				{
+					case BodyType.Mercury:
+					case BodyType.Venus:
+						return true;
+				}
+				break;
+
+			case BodyType.Venus:
+				switch (other)
+				{
+					case BodyType.Sun:
+					case BodyType.Moon:
+						return true;
+				}
+				break;
+
+			case BodyType.Saturn:
+				switch (other)
+				{
+					case BodyType.Sun:
+					case BodyType.Moon:
+					case BodyType.Mars:
+					case BodyType.Ketu:
+						return true;
+				}
+				break;
+
+			case BodyType.Rahu:
+				switch (other)
+				{
+					case BodyType.Sun:
+					case BodyType.Moon:
+					case BodyType.Mars:
+						return true;
+				}
+				break;
+
+			case BodyType.Ketu:
+				switch (other)
+				{
+					case BodyType.Moon:
+						return true;
+				}
+				break;
+		}
+		return false;
+	}
+
 }

@@ -45,7 +45,7 @@ public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStreng
 		throw new EqualStrength();
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var a = Value(za);
 		var b = Value(zb);
@@ -62,16 +62,16 @@ public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStreng
 		throw new EqualStrength();
 	}
 
-	protected int Value(ZodiacHouse.Rasi zh)
+	protected int Value(ZodiacHouse zh)
 	{
 		var bl = GetStrengthLord(zh);
 		var pl = H.GetPosition(bl).ToDivisionPosition(Dtype);
-		return Dasa.NarayanaDasaLength(new ZodiacHouse(zh), pl);
+		return Dasa.NarayanaDasaLength((zh), pl);
 	}
 
 	protected int Value(Body.BodyType bm)
 	{
-		var zm = H.GetPosition(bm).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		var zm = H.GetPosition(bm).ToDivisionPosition(Dtype).ZodiacHouse;
 		return Value(zm);
 	}
 }

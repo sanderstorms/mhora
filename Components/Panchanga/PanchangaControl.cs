@@ -432,7 +432,7 @@ public class PanchangaControl : MhoraControl
 			li = new ListViewItem();
 			var bp_lagna_sr = h.CalculateSingleBodyPosition(ut_sr, Body.BodyType.Lagna.SwephBody(), Body.BodyType.Lagna, Body.Type.Lagna);
 			var dp_lagna_sr = bp_lagna_sr.ToDivisionPosition(new Division(Vargas.DivisionType.Rasi));
-			local.lagna_zh = dp_lagna_sr.ZodiacHouse.Sign;
+			local.lagna_zh = dp_lagna_sr.ZodiacHouse;
 
 			var bp_lagna_base = new Longitude(bp_lagna_sr.Longitude.ToZodiacHouseBase());
 			var ut_transit    = ut_sr;
@@ -441,7 +441,7 @@ public class PanchangaControl : MhoraControl
 				var r = new Retrogression(h, Body.BodyType.Lagna);
 				ut_transit = r.GetLagnaTransitForward(ut_transit, bp_lagna_base.Add(i * 30.0));
 
-				var pmi = new PanchangaMomentInfo(ut_transit, (int) bp_lagna_sr.Longitude.ToZodiacHouse().Add(i + 1).Sign);
+				var pmi = new PanchangaMomentInfo(ut_transit, bp_lagna_sr.Longitude.ToZodiacHouse().Add(i + 1).Index());
 				local.lagnas_ut.Add(pmi);
 			}
 		}
@@ -754,13 +754,13 @@ public class PanchangaControl : MhoraControl
 		if (opts.CalcLagnaCusps)
 		{
 			var sLagna = "    ";
-			var zBase  = new ZodiacHouse(local.lagna_zh);
+			var zBase  = (local.lagna_zh);
 			for (var i = 0; i < 12; i++)
 			{
 				var pmi   = (PanchangaMomentInfo) local.lagnas_ut[i];
-				var zCurr = new ZodiacHouse((ZodiacHouse.Rasi) pmi.info);
+				var zCurr = (ZodiacHouse) pmi.info;
 				zCurr  = zCurr.Add(12);
-				sLagna = string.Format("{0}{1} Lagna until {2}. ", sLagna, zCurr.Sign, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
+				sLagna = string.Format("{0}{1} Lagna until {2}. ", sLagna, zCurr, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 				if (opts.OneEntryPerLine || i % 4 == 3)
 				{
 					mList.Items.Add(sLagna);

@@ -204,8 +204,8 @@ public class PanchangaPrintDocument : PrintDocument
 
 		for (var j = 1; j <= 12; j++)
 		{
-			var zh = new ZodiacHouse((ZodiacHouse.Rasi) j);
-			g.DrawString(zh.Sign.ToString(), f, b, day_offset + 100 + (int) zh.Sign * time_width, 0);
+			var zh = (ZodiacHouse) j;
+			g.DrawString(zh.ToString(), f, b, day_offset + 100 + zh.Index() * time_width, 0);
 		}
 
 		g.TranslateTransform(0, f.Height);
@@ -221,16 +221,16 @@ public class PanchangaPrintDocument : PrintDocument
 			{
 				var pmi = (PanchangaMomentInfo) local.lagnas_ut[j];
 				//Moment m_lagna = new Moment(pmi.ut, h);
-				var zh = new ZodiacHouse((ZodiacHouse.Rasi) pmi.info);
+				var zh = (ZodiacHouse) pmi.info;
 				zh = zh.Add(12);
 				var _f = f;
 
-				if (local.lagna_zh == zh.Sign)
+				if (local.lagna_zh == zh)
 				{
 					_f = f_u;
 				}
 
-				g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), _f, b, day_offset + 100 + (int) zh.Sign * time_width, 0);
+				g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), _f, b, day_offset + 100 + zh.Index() * time_width, 0);
 			}
 
 			local_index = ++i;

@@ -97,7 +97,7 @@ public class NarayanaDasa : Dasa, IDasa
 		var backward = true;
 
 		int[] order;
-		switch ((int) Options.SeedRasi % 3)
+		switch ((int) Options.SeedZodiacHouse % 3)
 		{
 			case 1:
 				order = orderMoveable;
@@ -111,19 +111,19 @@ public class NarayanaDasa : Dasa, IDasa
 		}
 
 		var zhSeed = Options.GetSeed();
-		zhSeed.Sign = Options.FindStrongerRasi(Options.SeventhStrengths, zhSeed.Sign, zhSeed.Add(7).Sign);
+		zhSeed = Options.FindStrongerRasi(Options.SeventhStrengths, zhSeed, zhSeed.Add(7));
 
 		if (zhSeed.Add(9).IsOddFooted())
 		{
 			backward = false;
 		}
 
-		if (Options.SaturnExceptionApplies(zhSeed.Sign))
+		if (Options.SaturnExceptionApplies(zhSeed))
 		{
 			order    = orderMoveable;
 			backward = false;
 		}
-		else if (Options.KetuExceptionApplies(zhSeed.Sign))
+		else if (Options.KetuExceptionApplies(zhSeed))
 		{
 			backward = !backward;
 		}
@@ -146,7 +146,7 @@ public class NarayanaDasa : Dasa, IDasa
 			var    dlordDpos  = _h.CalculateDivisionPosition(_h.GetPosition(dasaLord), Options.Division);
 			double dasaLength = DasaLength(zhDasa, dlordDpos);
 
-			var di = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
+			var di = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
 			dasaLengthSum += dasaLength;
 		}
@@ -175,15 +175,15 @@ public class NarayanaDasa : Dasa, IDasa
 	{
 		var al = new ArrayList(12);
 
-		var zhFirst    = new ZodiacHouse(pdi.ZHouse);
+		var zhFirst    = pdi.ZHouse;
 		var zhStronger = zhFirst.Add(1);
-		zhStronger.Sign = Options.FindStrongerRasi(Options.SeventhStrengths, zhStronger.Sign, zhStronger.Add(7).Sign);
+		zhStronger = Options.FindStrongerRasi(Options.SeventhStrengths, zhStronger, zhStronger.Add(7));
 
 		var b        = GetLord(zhStronger);
 		var dp       = _h.CalculateDivisionPosition(_h.GetPosition(b), Options.Division);
 		var first    = dp.ZodiacHouse;
 		var backward = false;
-		if ((int) first.Sign % 2 == 0)
+		if ((int) first % 2 == 0)
 		{
 			backward = true;
 		}
@@ -201,7 +201,7 @@ public class NarayanaDasa : Dasa, IDasa
 				zhDasa = first.AddReverse(i);
 			}
 
-			var di = new DasaEntry(zhDasa.Sign, dasaStart, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zhDasa.Sign);
+			var di = new DasaEntry(zhDasa, dasaStart, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zhDasa);
 			al.Add(di);
 			dasaStart += pdi.DasaLength / 12.0;
 		}
@@ -211,7 +211,7 @@ public class NarayanaDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return "Narayana Dasa for " + Options.Division + " seeded from " + Options.SeedRasi;
+		return "Narayana Dasa for " + Options.Division + " seeded from " + Options.SeedZodiacHouse;
 	}
 
 	public object GetOptions()
@@ -235,11 +235,11 @@ public class NarayanaDasa : Dasa, IDasa
 
 	private Body.BodyType GetLord(ZodiacHouse zh)
 	{
-		switch (zh.Sign)
+		switch (zh)
 		{
-			case ZodiacHouse.Rasi.Aqu: return Options.ColordAqu;
-			case ZodiacHouse.Rasi.Sco: return Options.ColordSco;
-			default:                   return zh.Sign.SimpleLordOfZodiacHouse();
+			case ZodiacHouse.Aqu: return Options.ColordAqu;
+			case ZodiacHouse.Sco: return Options.ColordSco;
+			default:                   return zh.SimpleLordOfZodiacHouse();
 		}
 	}
 

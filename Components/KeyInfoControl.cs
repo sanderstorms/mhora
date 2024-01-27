@@ -211,7 +211,7 @@ public class KeyInfoControl : MhoraControl
 			mList.Items.Add(li);
 		}
 		{
-			var hms_sset = (TimeSpan)(h.Sunset);
+			var hms_sset = (TimeSpan)h.Sunset;
 			li = new ListViewItem("Sunset");
 			var fmt = string.Format("{0:00}:{1:00}:{2:00}", hms_sset.Hours, hms_sset.Minutes, hms_sset.Seconds);
 			li.SubItems.Add(fmt);

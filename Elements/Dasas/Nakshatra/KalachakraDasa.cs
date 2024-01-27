@@ -33,7 +33,7 @@ public class KalachakraDasa : Dasa, IDasa
 		ApasavyaMirrored
 	}
 
-	private readonly Horoscope     _h;
+	private readonly Horoscope    _h;
 	private readonly ZodiacHouse[] _mzhApasavya = new ZodiacHouse[24];
 
 	private readonly ZodiacHouse[] _mzhSavya = new ZodiacHouse[24];
@@ -42,8 +42,8 @@ public class KalachakraDasa : Dasa, IDasa
 	{
 		this._h = h;
 
-		var zAri = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
-		var zSag = new ZodiacHouse(ZodiacHouse.Rasi.Sag);
+		var zAri = ZodiacHouse.Ari;
+		var zSag = ZodiacHouse.Sag;
 		for (var i = 0; i < 12; i++)
 		{
 			_mzhSavya[i] = zAri.Add(i + 1);
@@ -63,7 +63,7 @@ public class KalachakraDasa : Dasa, IDasa
 		var dRasi = new Division(Vargas.DivisionType.Rasi);
 		var mLon  = _h.GetPosition(Body.BodyType.Moon).ExtrapolateLongitude(dRasi);
 
-		var           offset  = 0;
+		var          offset  = 0;
 		ZodiacHouse[] zhOrder = null;
 		InitHelper(mLon, ref zhOrder, ref offset);
 
@@ -74,7 +74,7 @@ public class KalachakraDasa : Dasa, IDasa
 		{
 			var zhCurr      = zhOrder[(int) Basics.NormalizeExcLower(offset + i, 0, 24)];
 			var dasaLength = DasaLength(zhCurr);
-			var de          = new DasaEntry(zhCurr.Sign, dasaLengthSum, dasaLength, 1, zhCurr.Sign.ToString());
+			var de          = new DasaEntry(zhCurr, dasaLengthSum, dasaLength, 1, zhCurr.ToString());
 			al.Add(de);
 			dasaLengthSum += dasaLength;
 		}
@@ -181,20 +181,20 @@ public class KalachakraDasa : Dasa, IDasa
 
 	public double DasaLength(ZodiacHouse zh)
 	{
-		switch (zh.Sign)
+		switch (zh)
 		{
-			case ZodiacHouse.Rasi.Ari:
-			case ZodiacHouse.Rasi.Sco: return 7;
-			case ZodiacHouse.Rasi.Tau:
-			case ZodiacHouse.Rasi.Lib: return 16;
-			case ZodiacHouse.Rasi.Gem:
-			case ZodiacHouse.Rasi.Vir: return 9;
-			case ZodiacHouse.Rasi.Can: return 21;
-			case ZodiacHouse.Rasi.Leo: return 5;
-			case ZodiacHouse.Rasi.Sag:
-			case ZodiacHouse.Rasi.Pis: return 10;
-			case ZodiacHouse.Rasi.Cap:
-			case ZodiacHouse.Rasi.Aqu: return 4;
+			case ZodiacHouse.Ari:
+			case ZodiacHouse.Sco: return 7;
+			case ZodiacHouse.Tau:
+			case ZodiacHouse.Lib: return 16;
+			case ZodiacHouse.Gem:
+			case ZodiacHouse.Vir: return 9;
+			case ZodiacHouse.Can: return 21;
+			case ZodiacHouse.Leo: return 5;
+			case ZodiacHouse.Sag:
+			case ZodiacHouse.Pis: return 10;
+			case ZodiacHouse.Cap:
+			case ZodiacHouse.Aqu: return 4;
 			default: throw new Exception("KalachakraDasa::DasaLength");
 		}
 	}

@@ -61,9 +61,9 @@ public class DrigDasa : Dasa, IDasa
 		for (var i = 0; i < 12; i++)
 		{
 			var zhDasa = (ZodiacHouse) alOrder[i];
-			var dp      = _h.CalculateDivisionPosition(_h.GetPosition(GetLord(zhDasa)), new Division(Vargas.DivisionType.Rasi));
+			var dp     = _h.CalculateDivisionPosition(_h.GetPosition(GetLord(zhDasa)), new Division(Vargas.DivisionType.Rasi));
 			dasaLength = NarayanaDasaLength(zhDasa, dp);
-			var di = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
+			var di = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
 			dasaLengthSum += dasaLength;
 		}
@@ -81,7 +81,7 @@ public class DrigDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return "Drig Dasa" + " seeded from " + _options.SeedRasi;
+		return "Drig Dasa" + " seeded from " + _options.SeedZodiacHouse;
 	}
 
 	public object GetOptions()
@@ -105,11 +105,11 @@ public class DrigDasa : Dasa, IDasa
 
 	private Body.BodyType GetLord(ZodiacHouse zh)
 	{
-		switch (zh.Sign)
+		switch (zh)
 		{
-			case ZodiacHouse.Rasi.Aqu: return _options.ColordAqu;
-			case ZodiacHouse.Rasi.Sco: return _options.ColordSco;
-			default:                   return zh.Sign.SimpleLordOfZodiacHouse();
+			case ZodiacHouse.Aqu: return _options.ColordAqu;
+			case ZodiacHouse.Sco: return _options.ColordSco;
+			default:                   return zh.SimpleLordOfZodiacHouse();
 		}
 	}
 
@@ -140,7 +140,7 @@ public class DrigDasa : Dasa, IDasa
 		}
 
 		int[] order;
-		switch ((int) zh.Sign % 3)
+		switch ((int) zh % 3)
 		{
 			case 1:
 				order = orderMoveable;

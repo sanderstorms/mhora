@@ -212,7 +212,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 				_jd = UtcTob.UniversalTime();
 				//_jd += GetLmtOffset(_jd);
 			}
-			return (_jd);
+			return _jd;
 		}
 	}
 	public void Export(string filename)
@@ -247,7 +247,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 			{
 				Console.WriteLine(e);
 			}
-			return (new HoraInfo());
+			return new HoraInfo();
 		}
 	}
 }

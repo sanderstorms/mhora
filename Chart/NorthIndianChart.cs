@@ -112,7 +112,7 @@ public class NorthIndianChart : IDrawChart
 		g.DrawLine(_pnBlack, 0, Yw / 2, Xw         / 2, Yw);
 
 		var fnt   = new Font("Arial", 4.75f);
-		var rashi = _lagna.Sign.Index();
+		var rashi = _lagna.Index();
 		for (var bhava = 1; bhava <= 12; bhava++)
 		{
 			var p = GetBhavaCentre(bhava);
@@ -363,7 +363,7 @@ public class NorthIndianChart : IDrawChart
 
 	public int Bhava(ZodiacHouse zh)
 	{
-		var bhava = zh.Sign.Index() - _lagna.Sign.Index() + 1;
+		var bhava = zh.Index() - _lagna.Index() + 1;
 
 		if (bhava <= 0)
 		{

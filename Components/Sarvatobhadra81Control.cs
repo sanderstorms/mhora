@@ -216,11 +216,11 @@ public class Sarvatobhadra81Control : MhoraControl
 		var f_sanskrit = new Font("Sanskrit 99", MhoraGlobalOptions.Instance.GeneralFont.SizeInPoints                                      + 5);
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh     = new ZodiacHouse(ZodiacHouse.Rasi.Ari).Add(i);
+			var zh     = ZodiacHouse.Ari.Add(i);
 			var pxBase = GetCellInRectangle(5, 11, i);
 			var pxOff  = GetItemOffsetCenter();
 			var px     = new Point(pxBase.X + pxOff.X, pxBase.Y + pxOff.Y);
-			var s      = zh.Sign.ToString();
+			var s      = zh.ToString();
 			var sz     = g.MeasureString(s, f);
 			g.DrawString(s, f, Brushes.Purple, px.X - sz.Width / 2, px.Y - sz.Height / 2);
 		}

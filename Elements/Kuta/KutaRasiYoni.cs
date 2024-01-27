@@ -30,15 +30,15 @@ public class KutaRasiYoni
 
 	public static EType GetType(ZodiacHouse z)
 	{
-		switch (z.Sign)
+		switch (z)
 		{
-			case ZodiacHouse.Rasi.Cap:
-			case ZodiacHouse.Rasi.Pis: return EType.Pakshi;
-			case ZodiacHouse.Rasi.Can:
-			case ZodiacHouse.Rasi.Sco: return EType.Reptile;
-			case ZodiacHouse.Rasi.Ari:
-			case ZodiacHouse.Rasi.Tau:
-			case ZodiacHouse.Rasi.Leo: return EType.Pasu;
+			case ZodiacHouse.Cap:
+			case ZodiacHouse.Pis: return EType.Pakshi;
+			case ZodiacHouse.Can:
+			case ZodiacHouse.Sco: return EType.Reptile;
+			case ZodiacHouse.Ari:
+			case ZodiacHouse.Tau:
+			case ZodiacHouse.Leo: return EType.Pasu;
 		}
 
 		return EType.Nara;

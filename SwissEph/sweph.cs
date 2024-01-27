@@ -163,9 +163,9 @@ public static partial class sweph
 	{
 		if (IntPtr.Size == 4)
 		{
-			return(jd + SwephDll.Swe32.swe_deltat( jd ));
+			return jd + SwephDll.Swe32.swe_deltat( jd );
 		}
-		return(jd + SwephDll.Swe64.swe_deltat( jd ));
+		return jd + SwephDll.Swe64.swe_deltat( jd );
 	}
 
 

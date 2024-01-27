@@ -31,7 +31,7 @@ public class StrengthByFirst : BaseStrength, IStrengthRasi, IStrengthGraha
 		return true;
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		return true;
 	}

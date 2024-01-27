@@ -28,10 +28,10 @@ public class StrengthByConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
 
 	public bool Stronger(Body.BodyType m, Body.BodyType n)
 	{
-		return Stronger(H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse.Sign, H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse.Sign);
+		return Stronger(H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse, H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse);
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var numa = NumGrahasInZodiacHouse(za);
 		var numb = NumGrahasInZodiacHouse(zb);

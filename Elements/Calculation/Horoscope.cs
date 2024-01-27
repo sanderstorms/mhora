@@ -178,17 +178,12 @@ public class Horoscope : ICloneable
 
 	public Body.BodyType LordOfZodiacHouse(ZodiacHouse zh, Division dtype)
 	{
-		return LordOfZodiacHouse(zh.Sign, dtype);
-	}
-
-	public Body.BodyType LordOfZodiacHouse(ZodiacHouse.Rasi zh, Division dtype)
-	{
 		var fsColord = new FindStronger(this, dtype, FindStronger.RulesStrongerCoLord(this));
 
 		switch (zh)
 		{
-			case ZodiacHouse.Rasi.Aqu: return fsColord.StrongerGraha(Body.BodyType.Rahu, Body.BodyType.Saturn, true);
-			case ZodiacHouse.Rasi.Sco: return fsColord.StrongerGraha(Body.BodyType.Ketu, Body.BodyType.Mars, true);
+			case ZodiacHouse.Aqu: return fsColord.StrongerGraha(Body.BodyType.Rahu, Body.BodyType.Saturn, true);
+			case ZodiacHouse.Sco: return fsColord.StrongerGraha(Body.BodyType.Ketu, Body.BodyType.Mars, true);
 			default:                   return zh.SimpleLordOfZodiacHouse();
 		}
 	}
@@ -253,72 +248,72 @@ public class Horoscope : ICloneable
 		{
 			new object[]
 			{
-				ZodiacHouse.Rasi.Ari,
+				ZodiacHouse.Ari,
 				Body.BodyType.Mars
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Tau,
+				ZodiacHouse.Tau,
 				Body.BodyType.Venus
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Gem,
+				ZodiacHouse.Gem,
 				Body.BodyType.Mercury
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Can,
+				ZodiacHouse.Can,
 				Body.BodyType.Moon
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Leo,
+				ZodiacHouse.Leo,
 				Body.BodyType.Sun
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Vir,
+				ZodiacHouse.Vir,
 				Body.BodyType.Mercury
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Lib,
+				ZodiacHouse.Lib,
 				Body.BodyType.Venus
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Sco,
+				ZodiacHouse.Sco,
 				Body.BodyType.Mars
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Sag,
+				ZodiacHouse.Sag,
 				Body.BodyType.Jupiter
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Cap,
+				ZodiacHouse.Cap,
 				Body.BodyType.Saturn
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Aqu,
+				ZodiacHouse.Aqu,
 				Body.BodyType.Saturn
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Pis,
+				ZodiacHouse.Pis,
 				Body.BodyType.Jupiter
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Sco,
+				ZodiacHouse.Sco,
 				Body.BodyType.Ketu
 			},
 			new object[]
 			{
-				ZodiacHouse.Rasi.Aqu,
+				ZodiacHouse.Aqu,
 				Body.BodyType.Rahu
 			}
 		};
@@ -326,7 +321,7 @@ public class Horoscope : ICloneable
 
 		for (var i = 0; i < parameters.Length; i++)
 		{
-			al.Add(CalculateGrahaArudhaDivisionPosition((Body.BodyType) parameters[i][1], new ZodiacHouse((ZodiacHouse.Rasi) parameters[i][0]), dtype));
+			al.Add(CalculateGrahaArudhaDivisionPosition((Body.BodyType) parameters[i][1], ((ZodiacHouse) parameters[i][0]), dtype));
 		}
 
 		return al;
@@ -334,12 +329,12 @@ public class Horoscope : ICloneable
 
 	public ArrayList CalculateVarnadaDivisionPositions(Division dtype)
 	{
-		var al     = new ArrayList(12);
-		var zhL  = GetPosition(Body.BodyType.Lagna).ToDivisionPosition(dtype).ZodiacHouse;
-		var zhHl = GetPosition(Body.BodyType.HoraLagna).ToDivisionPosition(dtype).ZodiacHouse;
+		var al   = new ArrayList(12);
+		var zhL  = (ZodiacHouse) GetPosition(Body.BodyType.Lagna).ToDivisionPosition(dtype).ZodiacHouse;
+		var zhHl = (ZodiacHouse) GetPosition(Body.BodyType.HoraLagna).ToDivisionPosition(dtype).ZodiacHouse;
 
-		var zhAri = new ZodiacHouse(ZodiacHouse.Rasi.Ari);
-		var zhPis = new ZodiacHouse(ZodiacHouse.Rasi.Pis);
+		var zhAri = ZodiacHouse.Ari;
+		var zhPis = ZodiacHouse.Pis;
 		for (var i = 1; i <= 12; i++)
 		{
 			zhL  = zhL.Add(i);
@@ -374,7 +369,7 @@ public class Horoscope : ICloneable
 				sum = Math.Max(iL, iHl) - Math.Min(iL, iHl);
 			}
 
-			ZodiacHouse zhV = null;
+			ZodiacHouse zhV;
 			if (zhL.IsOdd())
 			{
 				zhV = zhAri.Add(sum);
@@ -438,13 +433,13 @@ public class Horoscope : ICloneable
 			var           zlagna     = CalculateDivisionPosition(GetPosition(Body.BodyType.Lagna), d).ZodiacHouse;
 			var           zh         = zlagna.Add(j);
 			var bnWeaker   = Body.BodyType.Other;
-			var           bnStronger = zh.Sign.SimpleLordOfZodiacHouse();
-			if (zh.Sign == ZodiacHouse.Rasi.Aqu)
+			var           bnStronger = zh.SimpleLordOfZodiacHouse();
+			if (zh == ZodiacHouse.Aqu)
 			{
 				bnStronger = fsColord.StrongerGraha(Body.BodyType.Rahu, Body.BodyType.Saturn, true);
 				bnWeaker   = fsColord.WeakerGraha(Body.BodyType.Rahu, Body.BodyType.Saturn, true);
 			}
-			else if (zh.Sign == ZodiacHouse.Rasi.Sco)
+			else if (zh == ZodiacHouse.Sco)
 			{
 				bnStronger = fsColord.StrongerGraha(Body.BodyType.Ketu, Body.BodyType.Mars, true);
 				bnWeaker   = fsColord.WeakerGraha(Body.BodyType.Ketu, Body.BodyType.Mars, true);
@@ -452,10 +447,10 @@ public class Horoscope : ICloneable
 
 			first = CalculateArudhaDivisionPosition(zh, bnStronger, bnlist[j], d, Body.Type.BhavaArudha);
 			arudhaDivList.Add(first);
-			if (zh.Sign == ZodiacHouse.Rasi.Aqu || zh.Sign == ZodiacHouse.Rasi.Sco)
+			if (zh == ZodiacHouse.Aqu || zh == ZodiacHouse.Sco)
 			{
 				second = CalculateArudhaDivisionPosition(zh, bnWeaker, bnlist[j], d, Body.Type.BhavaArudhaSecondary);
-				if (first.ZodiacHouse.Sign != second.ZodiacHouse.Sign)
+				if (first.ZodiacHouse != second.ZodiacHouse)
 				{
 					arudhaDivList.Add(second);
 				}
@@ -1023,7 +1018,7 @@ public class Horoscope : ICloneable
 
 		offset *= 60.0 * 60.0 / 6.0;
 		Longitude ppos = null;
-		switch ((int) spos.ToZodiacHouse().Sign % 3)
+		switch ((int) spos.ToZodiacHouse() % 3)
 		{
 			case 1:
 				ppos = spos.Add(offset);

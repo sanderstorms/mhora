@@ -28,12 +28,12 @@ public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStr
 
 	public bool Stronger(Body.BodyType ba, Body.BodyType bb)
 	{
-		var za = H.GetPosition(ba).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
-		var zb = H.GetPosition(bb).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		var za = H.GetPosition(ba).ToDivisionPosition(Dtype).ZodiacHouse;
+		var zb = H.GetPosition(bb).ToDivisionPosition(Dtype).ZodiacHouse;
 		return Stronger(za, zb);
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var a = OddityValueForZodiacHouse(za);
 		var b = OddityValueForZodiacHouse(zb);
@@ -50,7 +50,7 @@ public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStr
 		throw new EqualStrength();
 	}
 
-	protected int OddityValueForZodiacHouse(ZodiacHouse.Rasi zh)
+	protected int OddityValueForZodiacHouse(ZodiacHouse zh)
 	{
 		var lname  = GetStrengthLord(zh);
 		var lbpos  = H.GetPosition(lname);
@@ -58,7 +58,7 @@ public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStr
 		var zhLor = ldpos.ZodiacHouse;
 
 		//System.mhora.Log.Debug("   DiffOddity {0} {1} {2}", zh.ToString(), zh_lor.value.ToString(), (int)zh %2==(int)zh_lor.value%2);
-		if ((int) zh % 2 == (int) zhLor.Sign % 2)
+		if ((int) zh % 2 == (int) zhLor % 2)
 		{
 			return 0;
 		}

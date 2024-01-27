@@ -20,47 +20,47 @@ namespace Mhora.Elements.Ghataka;
 
 public class GhatakaStar
 {
-	public static bool CheckStar(ZodiacHouse janmaRasi, Nakshatras.Nakshatra nak)
+	public static bool CheckStar(ZodiacHouse janmaZodiacHouse, Nakshatras.Nakshatra nak)
 	{
-		var ja = janmaRasi.Sign;
+		var ja = janmaZodiacHouse;
 		var gh = Nakshatras.Nakshatra.Aswini;
 		switch (ja)
 		{
-			case ZodiacHouse.Rasi.Ari:
+			case ZodiacHouse.Ari:
 				gh = Nakshatras.Nakshatra.Makha;
 				break;
-			case ZodiacHouse.Rasi.Tau:
+			case ZodiacHouse.Tau:
 				gh = Nakshatras.Nakshatra.Hasta;
 				break;
-			case ZodiacHouse.Rasi.Gem:
+			case ZodiacHouse.Gem:
 				gh = Nakshatras.Nakshatra.Swati;
 				break;
-			case ZodiacHouse.Rasi.Can:
+			case ZodiacHouse.Can:
 				gh = Nakshatras.Nakshatra.Anuradha;
 				break;
-			case ZodiacHouse.Rasi.Leo:
+			case ZodiacHouse.Leo:
 				gh = Nakshatras.Nakshatra.Moola;
 				break;
-			case ZodiacHouse.Rasi.Vir:
+			case ZodiacHouse.Vir:
 				gh = Nakshatras.Nakshatra.Sravana;
 				break;
-			case ZodiacHouse.Rasi.Lib:
+			case ZodiacHouse.Lib:
 				gh = Nakshatras.Nakshatra.Satabisha;
 				break;
-			case ZodiacHouse.Rasi.Sco:
+			case ZodiacHouse.Sco:
 				gh = Nakshatras.Nakshatra.Revati;
 				break;
 			// FIXME dveja nakshatra?????
-			case ZodiacHouse.Rasi.Sag:
+			case ZodiacHouse.Sag:
 				gh = Nakshatras.Nakshatra.Revati;
 				break;
-			case ZodiacHouse.Rasi.Cap:
+			case ZodiacHouse.Cap:
 				gh = Nakshatras.Nakshatra.Rohini;
 				break;
-			case ZodiacHouse.Rasi.Aqu:
+			case ZodiacHouse.Aqu:
 				gh = Nakshatras.Nakshatra.Aridra;
 				break;
-			case ZodiacHouse.Rasi.Pis:
+			case ZodiacHouse.Pis:
 				gh = Nakshatras.Nakshatra.Aslesha;
 				break;
 		}

@@ -47,14 +47,14 @@ public class ShoolaDasa : Dasa, IDasa
 	{
 		var al      = new ArrayList(12);
 		var zhSeed = _options.GetSeed();
-		zhSeed.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed.Sign, zhSeed.Add(7).Sign);
+		zhSeed = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed, zhSeed.Add(7));
 
 		var dasaLengthSum = 0.0;
 		var dasaLength     = 9.0;
 		for (var i = 1; i <= 12; i++)
 		{
 			var zhDasa = zhSeed.Add(i);
-			var di      = new DasaEntry(zhDasa.Sign, dasaLengthSum, dasaLength, 1, zhDasa.Sign.ToString());
+			var di      = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
 			dasaLengthSum += dasaLength;
 		}
@@ -72,16 +72,16 @@ public class ShoolaDasa : Dasa, IDasa
 	{
 		var al = new ArrayList(12);
 
-		var zhFirst    = new ZodiacHouse(pdi.ZHouse);
+		var zhFirst    = pdi.ZHouse;
 		var zhStronger = zhFirst.Add(1);
-		zhStronger.Sign = _options.FindStrongerRasi(_options.SeventhStrengths, zhFirst.Sign, zhFirst.Add(7).Sign);
+		zhStronger = _options.FindStrongerRasi(_options.SeventhStrengths, zhFirst, zhFirst.Add(7));
 
 		var dasaStart = pdi.StartUt;
 
 		for (var i = 1; i <= 12; i++)
 		{
 			var zhDasa = zhStronger.Add(i);
-			var di      = new DasaEntry(zhDasa.Sign, dasaStart, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zhDasa.Sign);
+			var di      = new DasaEntry(zhDasa, dasaStart, pdi.DasaLength / 12.0, pdi.Level + 1, pdi.DasaName + " " + zhDasa);
 			al.Add(di);
 			dasaStart += pdi.DasaLength / 12.0;
 		}
@@ -91,7 +91,7 @@ public class ShoolaDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return "Shoola Dasa" + " seeded from " + _options.SeedRasi;
+		return "Shoola Dasa" + " seeded from " + _options.SeedZodiacHouse;
 	}
 
 	public object GetOptions()

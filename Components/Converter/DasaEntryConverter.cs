@@ -71,7 +71,7 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 
 		if (arr.Length >= 6)
 		{
-			de.ZHouse = (ZodiacHouse.Rasi) int.Parse(arr[5]);
+			de.ZHouse = (ZodiacHouse) int.Parse(arr[5]);
 		}
 
 		return de;

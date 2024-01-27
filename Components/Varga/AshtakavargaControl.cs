@@ -29,6 +29,7 @@ using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
+using mhora.Util;
 
 namespace Mhora.Components.Varga;
 
@@ -372,7 +373,7 @@ public class AshtakavargaControl : MhoraControl
 				for (var z = 0; z < 12; z++)
 				{
 					var f  = fBig;
-					var zh = (int) h.GetPosition(bin_body[off]).ToDivisionPosition(userOptions.VargaType).ZodiacHouse.Sign;
+					var zh = h.GetPosition(bin_body[off]).ToDivisionPosition(userOptions.VargaType).ZodiacHouse.Index();
 					if (z == zh - 1)
 					{
 						f = fBigBold;
@@ -381,7 +382,7 @@ public class AshtakavargaControl : MhoraControl
 					var str     = bin[z].ToString();
 					var strSize = g.MeasureString(str, fBig);
 
-					var p = dc.GetSingleItemOffset(new ZodiacHouse((ZodiacHouse.Rasi) z + 1), Size.Round(strSize));
+					var p = dc.GetSingleItemOffset(((ZodiacHouse) z + 1), Size.Round(strSize));
 					g.DrawString(str, f, b_black, p);
 				}
 
@@ -483,14 +484,14 @@ public class AshtakavargaControl : MhoraControl
 		switch (userOptions.ChartStyle)
 		{
 			case EChartStyle.SouthIndian:
-				if ((0 <= rotTotal && rotTotal < 90) || (270 <= rotTotal && rotTotal < 360))
+				if (0 <= rotTotal && rotTotal < 90 || 270 <= rotTotal && rotTotal < 360)
 				{
 					return true;
 				}
 
 				return false;
 			case EChartStyle.EastIndian:
-				if ((0 <= rotTotal && rotTotal < 105) || (285 <= rotTotal && rotTotal < 360))
+				if (0 <= rotTotal && rotTotal < 105 || 285 <= rotTotal && rotTotal < 360)
 				{
 					return true;
 				}
@@ -549,7 +550,7 @@ public class AshtakavargaControl : MhoraControl
 
 		for (var i = 0; i < 12; i++)
 		{
-			var zh   = new ZodiacHouse((ZodiacHouse.Rasi) i + 1);
+			var zh   = ((ZodiacHouse) i + 1);
 			var str  = inner_bindus[i].ToString();
 			var size = g.MeasureString(str, fBig);
 			var p    = dc.GetSingleItemOffset(zh, Size.Round(size));
