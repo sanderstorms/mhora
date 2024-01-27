@@ -145,7 +145,7 @@ public class VargaRectificationForm : Form
 			var dtype = opts.Divisions[i];
 			var al    = new ArrayList();
 			var zal   = new ArrayList();
-			//mhora.Log.Debug ("Calculating cusps for {0} between {1} and {2}", 
+			//Mhora.Log.Debug ("Calculating cusps for {0} between {1} and {2}", 
 			//	dtype, this.utToMoment(ut_lower), this.utToMoment(ut_higher));
 			var ut_curr = ut_lower - 1.0 / (24.0 * 60.0);
 
@@ -155,7 +155,7 @@ public class VargaRectificationForm : Form
 
 			var dp = bp.ToDivisionPosition(dtype);
 
-			//mhora.Log.Debug ("Longitude at {0} is {1} as is in varga rasi {2}",
+			//Mhora.Log.Debug ("Longitude at {0} is {1} as is in varga rasi {2}",
 			//	this.utToMoment(ut_curr), bp.longitude, dp.zodiac_house.value);
 
 			//bp.longitude = new Longitude(dp.cusp_lower - 0.2);
@@ -167,7 +167,7 @@ public class VargaRectificationForm : Form
 				var foundLon = new Longitude(0.0);
 				var bForward = true;
 
-				//mhora.Log.Debug ("    Starting search at {0}", this.utToMoment(ut_curr));
+				//Mhora.Log.Debug ("    Starting search at {0}", this.utToMoment(ut_curr));
 
 				ut_curr = h.TransitSearch(mBody, utToMoment(ut_curr), true, new Longitude(dp.CuspHigher), foundLon, ref bForward);
 
@@ -176,14 +176,14 @@ public class VargaRectificationForm : Form
 
 				if (ut_curr >= ut_lower && ut_curr <= ut_higher + 1.0 / (24.0 * 60.0 * 60.0) * 5.0)
 				{
-					//	mhora.Log.Debug ("{0}: {1} at {2}",
+					//	Mhora.Log.Debug ("{0}: {1} at {2}",
 					//		dtype, foundLon, this.utToMoment(ut_curr));
 					al.Add(ut_curr);
 					zal.Add(dp.ZodiacHouse);
 				}
 				else if (ut_curr > ut_higher)
 				{
-					//	mhora.Log.Debug ("- {0}: {1} at {2}",
+					//	Mhora.Log.Debug ("- {0}: {1} at {2}",
 					//		dtype, foundLon, this.utToMoment(ut_curr));						
 					break;
 				}
@@ -200,7 +200,7 @@ public class VargaRectificationForm : Form
 		//{
 		//	for (int j=0; j<momentCusps[i].Length; j++)
 		//	{
-		//		mhora.Log.Debug ("Cusp for {0} at {1}", opts.Divisions[i], momentCusps[i][j]);
+		//		Mhora.Log.Debug ("Cusp for {0} at {1}", opts.Divisions[i], momentCusps[i][j]);
 		//	}
 		//}
 	}
@@ -403,12 +403,12 @@ public class VargaRectificationForm : Form
 			{
 				var ut_curr = momentCusps[iVarga][j];
 				var perc    = (ut_curr - ut_lower) / (ut_higher - ut_lower) * 100.0;
-				//mhora.Log.Debug ("Vargas {0}, perc {1}", opts.Divisions[iVarga], perc);
+				//Mhora.Log.Debug ("Vargas {0}, perc {1}", opts.Divisions[iVarga], perc);
 				x_offset = (float) ((ut_curr - ut_lower) / (ut_higher - ut_lower) * bar_width) + vname_width;
 
 				//(float)((ut_curr-ut_lower)/(ut_higher/ut_lower)*bar_width);
 				var m = utToMoment(ut_curr);
-				s  = string.Format("{0} {1}", m.ToTimeString(menuDisplaySeconds.Checked), Rasis.ToShortString(zhCusps[iVarga][j]));
+				s  = string.Format("{0} {1}", m.ToTimeString(menuDisplaySeconds.Checked), zhCusps[iVarga][j].ToShortString());
 				sz = g.MeasureString(s, f_time);
 				if (old_x_offset + sz.Width < x_offset)
 				{
@@ -503,7 +503,7 @@ public class VargaRectificationForm : Form
 		bmpBuffer = null;
 		Invalidate();
 
-		//mhora.Log.Debug ("Click at {0}. Width at {1}. Percentage is {2}", 
+		//Mhora.Log.Debug ("Click at {0}. Width at {1}. Percentage is {2}", 
 		//	click_width, bar_width, perc);
 	}
 

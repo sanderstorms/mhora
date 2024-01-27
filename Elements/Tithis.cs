@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using mhora.Util;
-using Mhora.Util;
+﻿using Mhora.Util;
 
 namespace Mhora.Elements;
 
@@ -15,99 +13,6 @@ public static class Tithis
 		Purna
 	}
 
-	[TypeConverter(typeof(EnumDescConverter))]
-	public enum Tithi
-	{
-		[Description("Shukla Pratipada")]
-		ShuklaPratipada = 1,
-
-		[Description("Shukla Dvitiya")]
-		ShuklaDvitiya,
-
-		[Description("Shukla Tritiya")]
-		ShuklaTritiya,
-
-		[Description("Shukla Chaturti")]
-		ShuklaChaturti,
-
-		[Description("Shukla Panchami")]
-		ShuklaPanchami,
-
-		[Description("Shukla Shashti")]
-		ShuklaShashti,
-
-		[Description("Shukla Saptami")]
-		ShuklaSaptami,
-
-		[Description("Shukla Ashtami")]
-		ShuklaAshtami,
-
-		[Description("Shukla Navami")]
-		ShuklaNavami,
-
-		[Description("Shukla Dashami")]
-		ShuklaDasami,
-
-		[Description("Shukla Ekadasi")]
-		ShuklaEkadasi,
-
-		[Description("Shukla Dwadasi")]
-		ShuklaDvadasi,
-
-		[Description("Shukla Trayodasi")]
-		ShuklaTrayodasi,
-
-		[Description("Shukla Chaturdasi")]
-		ShuklaChaturdasi,
-
-		[Description("Paurnami")]
-		Paurnami,
-
-		[Description("Krishna Pratipada")]
-		KrishnaPratipada,
-
-		[Description("Krishna Dvitiya")]
-		KrishnaDvitiya,
-
-		[Description("Krishna Tritiya")]
-		KrishnaTritiya,
-
-		[Description("Krishna Chaturti")]
-		KrishnaChaturti,
-
-		[Description("Krishna Panchami")]
-		KrishnaPanchami,
-
-		[Description("Krishna Shashti")]
-		KrishnaShashti,
-
-		[Description("Krishna Saptami")]
-		KrishnaSaptami,
-
-		[Description("Krishna Ashtami")]
-		KrishnaAshtami,
-
-		[Description("Krishna Navami")]
-		KrishnaNavami,
-
-		[Description("Krishna Dashami")]
-		KrishnaDasami,
-
-		[Description("Krishna Ekadasi")]
-		KrishnaEkadasi,
-
-		[Description("Krishna Dwadasi")]
-		KrishnaDvadasi,
-
-		[Description("Krishna Trayodasi")]
-		KrishnaTrayodasi,
-
-		[Description("Krishna Chaturdasi")]
-		KrishnaChaturdasi,
-
-		[Description("Amavasya")]
-		Amavasya
-	}
 
 	public static Tithi ToTithi(this int index)
 	{
@@ -158,7 +63,7 @@ public static class Tithis
 		// 1 based index starting with prathama
 		var t = tithi.Index();
 
-		//mhora.Log.Debug ("Looking for lord of tithi {0}", t);
+		//Mhora.Log.Debug ("Looking for lord of tithi {0}", t);
 		// check for new moon and full moon 
 		if (t == 30)
 		{

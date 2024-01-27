@@ -55,7 +55,7 @@ public class NonLinearTransit
 
 		if (Math.Abs(utEnd - utStart) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
 		{
-			//mhora.Log.Debug ("BinarySearchNormal: Found {0} at {1}", lon_to_find, ut_start);
+			//Mhora.Log.Debug ("BinarySearchNormal: Found {0} at {1}", lon_to_find, ut_start);
 			if (Transit.CircLonLessThan(GetLongitude(utStart, ref bDiscard), lonToFind))
 			{
 				return utEnd;
@@ -67,7 +67,7 @@ public class NonLinearTransit
 		var utMiddle = (utStart + utEnd) / 2.0;
 
 		var lon = GetLongitude(utMiddle, ref bDiscard);
-		//mhora.Log.Debug ("BinarySearchNormal {0} Find:{1} {2} curr:{3}", b, lon_to_find.value, ut_middle, lon.value);
+		//Mhora.Log.Debug ("BinarySearchNormal {0} Find:{1} {2} curr:{3}", b, lon_to_find.value, ut_middle, lon.value);
 		if (Transit.CircLonLessThan(lon, lonToFind))
 		{
 			return BinarySearchNormal(utMiddle, utEnd, lonToFind);
@@ -80,14 +80,14 @@ public class NonLinearTransit
 	{
 		if (Math.Abs(utEnd - utStart) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
 		{
-			//mhora.Log.Debug ("BinarySearchRetro: Found {0} at {1}", lon_to_find, ut_start);
+			//Mhora.Log.Debug ("BinarySearchRetro: Found {0} at {1}", lon_to_find, ut_start);
 			return utStart;
 		}
 
 		var utMiddle = (utStart + utEnd) / 2.0;
 		var bDiscard  = true;
 		var lon       = GetLongitude(utMiddle, ref bDiscard);
-		//mhora.Log.Debug ("BinarySearchRetro {0} Find:{1} {2} curr:{3}", b, lon_to_find.value, ut_middle, lon.value);
+		//Mhora.Log.Debug ("BinarySearchRetro {0} Find:{1} {2} curr:{3}", b, lon_to_find.value, ut_middle, lon.value);
 		if (Transit.CircLonLessThan(lon, lonToFind))
 		{
 			return BinarySearchRetro(utStart, utMiddle, lonToFind);
@@ -107,27 +107,27 @@ public class NonLinearTransit
 			{
 				if (Transit.CircLonLessThan(lStart, lonToFind) && Transit.CircLonLessThan(lonToFind, lEnd))
 				{
-					//mhora.Log.Debug("2: (N) +1.0. {0} Curr:{1} Start:{2} End:{3}", b, lonToFind.value, lStart.value, lEnd.value);
+					//Mhora.Log.Debug("2: (N) +1.0. {0} Curr:{1} Start:{2} End:{3}", b, lonToFind.value, lStart.value, lEnd.value);
 					return BinarySearchNormal(ut, ut + 1.0, lonToFind);
 				}
 
-				//mhora.Log.Debug("1: (N) +1.0. {0} Find:{1} Start:{2} End:{3}", b, lonToFind.value, lStart.value, lEnd.value);
+				//Mhora.Log.Debug("1: (N) +1.0. {0} Find:{1} Start:{2} End:{3}", b, lonToFind.value, lStart.value, lEnd.value);
 				ut += 10.0;
 			}
 			else if (bForwardStart == false && bForwardEnd == false)
 			{
 				if (Transit.CircLonLessThan(lEnd, lonToFind) && Transit.CircLonLessThan(lonToFind, lStart))
 				{
-					//mhora.Log.Debug("2: (R) +1.0. {0} Curr:{1} Start:{2} End:{3}", b, lonToFind.value, lStart.value, lEnd.value);
+					//Mhora.Log.Debug("2: (R) +1.0. {0} Curr:{1} Start:{2} End:{3}", b, lonToFind.value, lStart.value, lEnd.value);
 					return BinarySearchRetro(ut, ut + 1.0, lonToFind);
 				}
 
-				//mhora.Log.Debug("1: (R) +1.0. {0} Find:{1} Start:{2} End:{3}", b, lonToFind.value, lStart.value, lEnd.value);
+				//Mhora.Log.Debug("1: (R) +1.0. {0} Find:{1} Start:{2} End:{3}", b, lonToFind.value, lStart.value, lEnd.value);
 				ut += 10.0;
 			}
 			else
 			{
-				//mhora.Log.Debug ("Retrograde Cusp date at {0}. Skipping for now.", ut);
+				//Mhora.Log.Debug ("Retrograde Cusp date at {0}. Skipping for now.", ut);
 				ut += 10.0;
 			}
 		}

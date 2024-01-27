@@ -171,7 +171,9 @@
     <Compile Include="Elements\Bhavas.cs" />
     <Compile Include="Elements\Calculations.cs" />
     <Compile Include="Elements\Bhava.cs" />
-    <Compile Include="Elements\Rasis.cs" />
+    <Compile Include="Elements\Karana.cs" />
+    <Compile Include="Elements\ZodiacHouses.cs" />
+    <Compile Include="Elements\Tithi.cs" />
     <Compile Include="Elements\Yoga\Conditions.cs" />
     <Compile Include="Elements\Yoga\Graha.cs" />
     <Compile Include="Elements\Yoga\Rasi.cs" />

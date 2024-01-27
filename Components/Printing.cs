@@ -27,7 +27,6 @@ using Mhora.Elements.Dasas;
 using Mhora.Elements.Dasas.Nakshatra;
 using Mhora.Elements.Dasas.Rasi;
 using Mhora.Tables;
-using mhora.Util;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -204,7 +203,7 @@ public class MhoraPrintDocument : PrintDocument
 		}
 		else
 		{
-			s = string.Format("{0} {1}", Rasis.ToShortString(deAntar.ZHouse), td.AddYears(deAntar.StartUt).ToDateString());
+			s = string.Format("{0} {1}", deAntar.ZHouse.ToShortString(), td.AddYears(deAntar.StartUt).ToDateString());
 		}
 
 		return s;

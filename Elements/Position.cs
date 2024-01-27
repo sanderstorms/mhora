@@ -21,7 +21,7 @@ using System.Collections;
 using System.Diagnostics;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
-using mhora.Util;
+using Mhora.Util;
 
 namespace Mhora.Elements;
 
@@ -51,7 +51,7 @@ public class Position : ICloneable
 		Name            = aname;
 		Type            = atype;
 		H               = h;
-		//mhora.Log.Debug ("{0} {1} {2}", aname.ToString(), lon.value, splon);
+		//Mhora.Log.Debug ("{0} {1} {2}", aname.ToString(), lon.value, splon);
 	}
 
 	public Longitude Longitude
@@ -116,7 +116,7 @@ public class Position : ICloneable
 		dp.Part        =  part;
 
 		//if (dp.type == BodyType.Type.Graha || dp.type == BodyType.Type.Lagna)
-		//mhora.Log.Debug ("D: {0} {1} {2} {3} {4} {5}", 
+		//Mhora.Log.Debug ("D: {0} {1} {2} {3} {4} {5}", 
 		//	n, dp.name, cusp_length,
 		//	dp.cusp_lower, m_lon.value, dp.cusp_higher);
 
@@ -186,7 +186,7 @@ public class Position : ICloneable
 		{
 			if (Longitude.Sub(cusps[i]).Value < cusps[i + 1].Sub(cusps[i]).Value)
 			{
-				//mhora.Log.Debug ("Found {4} - {0} in cusp {3} between {1} and {2}", this.m_lon.value,
+				//Mhora.Log.Debug ("Found {4} - {0} in cusp {3} between {1} and {2}", this.m_lon.value,
 				//	cusps[i].value, cusps[i+1].value, i+1, this.name.ToString());
 
 				return new DivisionPosition(Name, Type, zlagna.Add(i + 1), cusps[i].Value, cusps[i + 1].Value, 1);

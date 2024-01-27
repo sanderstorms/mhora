@@ -496,7 +496,7 @@ public class TransitSearch : MhoraControl
 		var r = new Retrogression(h, opts.SearchBody);
 
 		var start_lon = r.GetLon(h.Info.Jd);
-		//mhora.Log.Debug ("Real start lon is {0}", start_lon);
+		//Mhora.Log.Debug ("Real start lon is {0}", start_lon);
 		var curr_julday = h.Info.Jd;
 		var t           = new Elements.Transit(h, opts.SearchBody);
 		while (totalProgression >= 360.0)
@@ -510,7 +510,7 @@ public class TransitSearch : MhoraControl
 
 		//bool bDiscard = true;
 		//Longitude got_lon = t.GenericLongitude(curr_julday, ref bDiscard);
-		//mhora.Log.Debug ("Found Progressed Sun at {0}+{1}={2}={3}", 
+		//Mhora.Log.Debug ("Found Progressed Sun at {0}+{1}={2}={3}", 
 		//	start_lon.value, new Longitude(totalProgressionOrig).value,
 		//	got_lon.value, got_lon.sub(start_lon.add(totalProgressionOrig)).value
 		//	);
@@ -532,13 +532,13 @@ public class TransitSearch : MhoraControl
 		var julday_ut = h.UniversalTime(opts.StartDate);
 		var ut_diff   = julday_ut - h.Info.Jd;
 
-		//mhora.Log.Debug ("Expected ut_diff is {0}", ut_diff);
+		//Mhora.Log.Debug ("Expected ut_diff is {0}", ut_diff);
 		var bDummy = true;
 		var t         = new Elements.Transit(h);
 		var lon_start = t.LongitudeOfSun(h.Info.Jd, ref bDummy);
 		var lon_prog  = t.LongitudeOfSun(julday_ut, ref bDummy);
 
-		//mhora.Log.Debug ("Progression lons are {0} and {1}", lon_start, lon_prog);
+		//Mhora.Log.Debug ("Progression lons are {0} and {1}", lon_start, lon_prog);
 
 		var dExpectedLon = ut_diff * 360.0 / 365.2425;
 		var lon_expected = lon_start.Add(dExpectedLon);
@@ -554,11 +554,11 @@ public class TransitSearch : MhoraControl
 
 		var dp = h.GetPosition(opts.SearchBody).ToDivisionPosition(opts.Division);
 
-		//mhora.Log.Debug ("Sun progress {0} degrees in elapsed time", dExpectedLon);
+		//Mhora.Log.Debug ("Sun progress {0} degrees in elapsed time", dExpectedLon);
 
 		var ret = dExpectedLon / 360.0 * (30.0 / opts.Division.NumPartsInDivision());
 		//(dp.cusp_higher - dp.cusp_lower);
-		//mhora.Log.Debug ("Progressing by {0} degrees", ret);
+		//Mhora.Log.Debug ("Progressing by {0} degrees", ret);
 		return ret;
 	}
 
@@ -584,7 +584,7 @@ public class TransitSearch : MhoraControl
 		var totalProgression     = GetProgressionDegree();
 		var totalProgressionOrig = totalProgression;
 
-		//mhora.Log.Debug ("Total Progression is {0}", totalProgression);
+		//Mhora.Log.Debug ("Total Progression is {0}", totalProgression);
 		var becomesDirect = false;
 		var    r        = new Retrogression(h, opts.SearchBody);
 		var    curr_ut  = h.Info.Jd;
@@ -599,26 +599,26 @@ public class TransitSearch : MhoraControl
 
 			if (false == becomesDirect && next_lon.Sub(curr_lon) >= totalProgression)
 			{
-				//mhora.Log.Debug ("1 Found {0} in {1}", totalProgression, next_lon.sub(curr_lon).value);
+				//Mhora.Log.Debug ("1 Found {0} in {1}", totalProgression, next_lon.sub(curr_lon).value);
 				found_ut = r.GetTransitForward(curr_ut, curr_lon.Add(totalProgression));
 				break;
 			}
 
 			if (becomesDirect && curr_lon.Sub(next_lon) >= totalProgression)
 			{
-				//mhora.Log.Debug ("2 Found {0} in {1}", totalProgression, curr_lon.sub(next_lon).value);
+				//Mhora.Log.Debug ("2 Found {0} in {1}", totalProgression, curr_lon.sub(next_lon).value);
 				found_ut = r.GetTransitForward(curr_ut, curr_lon.Sub(totalProgression));
 				break;
 			}
 
 			if (false == becomesDirect)
 			{
-				//mhora.Log.Debug ("Progression: {0} degrees gone in direct motion", next_lon.sub(curr_lon).value);
+				//Mhora.Log.Debug ("Progression: {0} degrees gone in direct motion", next_lon.sub(curr_lon).value);
 				totalProgression -= next_lon.Sub(curr_lon);
 			}
 			else
 			{
-				//mhora.Log.Debug ("Progression: {0} degrees gone in retro motion", curr_lon.sub(next_lon).value);
+				//Mhora.Log.Debug ("Progression: {0} degrees gone in retro motion", curr_lon.sub(next_lon).value);
 				totalProgression -= curr_lon.Sub(next_lon);
 			}
 

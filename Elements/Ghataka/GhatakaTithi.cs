@@ -20,7 +20,7 @@ namespace Mhora.Elements.Ghataka;
 
 public class GhatakaTithi
 {
-	public static bool CheckTithi(ZodiacHouse janmaZodiacHouse, Tithis.Tithi t)
+	public static bool CheckTithi(ZodiacHouse janmaZodiacHouse, Tithi t)
 	{
 		var ja = janmaZodiacHouse;
 		var gh = Tithis.NandaType.Nanda;

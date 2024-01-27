@@ -1000,7 +1000,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			di.Selected = true;
 		}
 
-		//mhora.Log.Debug ("MouseMove: {0} {1}", e.Y, li != null ? li.Value : -1);
+		//Mhora.Log.Debug ("MouseMove: {0} {1}", e.Y, li != null ? li.Value : -1);
 		//if (li != null)
 		//	li.Selected = true;
 	}
@@ -1012,7 +1012,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void dasaItemList_MouseEnter(object sender, EventArgs e)
 	{
-		//mhora.Log.Debug ("Mouse Enter");
+		//Mhora.Log.Debug ("Mouse Enter");
 		//this.dasaItemList.Focus();
 		//this.dasaItemList.Items[0].Selected = true;
 	}
@@ -1042,7 +1042,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		}
 
 		var li = _dasaItemList.GetItemAt(e.X, e.Y);
-		//mhora.Log.Debug ("MouseMove Click: {0} {1}", e.Y, li != null ? li.Value : -1);
+		//Mhora.Log.Debug ("MouseMove Click: {0} {1}", e.Y, li != null ? li.Value : -1);
 		if (li != null)
 		{
 			li.Selected = true;

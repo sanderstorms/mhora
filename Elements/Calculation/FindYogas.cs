@@ -121,14 +121,14 @@ public class FindYogas
 	{
 		RootNode = new Node(null, rule, _dtype);
 
-		//mhora.Log.Debug ("");
-		//mhora.Log.Debug ("Evaluating yoga .{0}.", rule);
+		//Mhora.Log.Debug ("");
+		//Mhora.Log.Debug ("Evaluating yoga .{0}.", rule);
 		GenerateSimpleParseTree();
 		ExpandSimpleNodes();
 		var bRet = ReduceTree();
 
-		//mhora.Log.Debug ("Final: {0} = {1}", bRet, rule);
-		//mhora.Log.Debug ("");
+		//Mhora.Log.Debug ("Final: {0} = {1}", bRet, rule);
+		//Mhora.Log.Debug ("");
 		return bRet;
 	}
 
@@ -342,7 +342,7 @@ public class FindYogas
 
 	public bool ReduceTree(Node n)
 	{
-		//mhora.Log.Debug ("Enter ReduceTree {0} {1}", n.type, n.term);
+		//Mhora.Log.Debug ("Enter ReduceTree {0} {1}", n.type, n.term);
 		var bRet = false;
 		switch (n.Type)
 		{
@@ -381,7 +381,7 @@ public class FindYogas
 		}
 
 	reduceTreeDone:
-		//mhora.Log.Debug ("Exit ReduceTree {0} {1} {2}", n.type, n.term, bRet);
+		//Mhora.Log.Debug ("Exit ReduceTree {0} {1} {2}", n.type, n.term, bRet);
 		return bRet;
 	}
 
@@ -405,7 +405,7 @@ public class FindYogas
 		{
 			n.Dtype = StringToDivision(mDiv.Groups[1].Value);
 			text    = text.Replace(mDiv.Groups[1].Value, string.Empty);
-			//				mhora.Log.Debug ("Match. Replaced {0}. Text now {1}", 
+			//				Mhora.Log.Debug ("Match. Replaced {0}. Text now {1}", 
 			//					mDiv.Groups[1].Value, text);
 		}
 
@@ -414,7 +414,7 @@ public class FindYogas
 		{
 			n.Type = Node.EType.Single;
 			n.Term = text;
-			//mhora.Log.Debug ("Need to evaluate simple node {0}", text);
+			//Mhora.Log.Debug ("Need to evaluate simple node {0}", text);
 			return;
 		}
 
@@ -459,7 +459,7 @@ public class FindYogas
 			}
 		}
 
-		//mhora.Log.Debug ("Need to evaluate complex node {0}", text);
+		//Mhora.Log.Debug ("Need to evaluate complex node {0}", text);
 	}
 
 	public void GenerateSimpleParseTree()
@@ -800,7 +800,7 @@ public class FindYogas
 			sNew += ">";
 		}
 
-		//mhora.Log.Debug ("{0} evals to {1}", sTerm, sNew);
+		//Mhora.Log.Debug ("{0} evals to {1}", sTerm, sNew);
 		return sNew;
 	}
 
@@ -808,7 +808,7 @@ public class FindYogas
 	{
 		while (true)
 		{
-			//mhora.Log.Debug ("Simplifying basic term: .{0}.", sTerm);		
+			//Mhora.Log.Debug ("Simplifying basic term: .{0}.", sTerm);		
 			var m = Regex.Match(sTerm, "<[^<>]*>");
 
 			// No terms found. Nothing to do.
@@ -831,7 +831,7 @@ public class FindYogas
 			// Found a term, evaluated it. Nothing happened. Done.
 			var newInner = ReplaceBasicNodeTerm(d, sInner);
 
-			//mhora.Log.Debug ("{0} && {1}", newInner.Length, m.Value.Length);
+			//Mhora.Log.Debug ("{0} && {1}", newInner.Length, m.Value.Length);
 
 			if (newInner == m.Value.ToLower())
 			{
@@ -862,7 +862,7 @@ public class FindYogas
 		n.Term = TrimWhitespace(sNew);
 
 		//cats = this.trimWhitespace(cats);
-		//mhora.Log.Debug ("Cats = {0}", cats);
+		//Mhora.Log.Debug ("Cats = {0}", cats);
 	}
 
 	public void ExpandSimpleNode(Queue q, Node n)
@@ -873,7 +873,7 @@ public class FindYogas
 
 		var eLogic = Node.EType.Or;
 
-		//mhora.Log.Debug ("Inner logic: n.term is {0}", n.term);
+		//Mhora.Log.Debug ("Inner logic: n.term is {0}", n.term);
 		if (n.Term[0] == '&' && n.Term[1] == '&')
 		{
 			eLogic = Node.EType.And;
@@ -883,7 +883,7 @@ public class FindYogas
 		{
 			n.Term = TrimWhitespace(n.Term.Substring(2, n.Term.Length - 2));
 		}
-		//mhora.Log.Debug ("Inner logic: n.term is now {0}", n.term);
+		//Mhora.Log.Debug ("Inner logic: n.term is now {0}", n.term);
 
 		// find num Vals etc
 		var simpleTerms         = n.Term.Split(' ');
@@ -905,7 +905,7 @@ public class FindYogas
 			}
 		}
 
-		//mhora.Log.Debug ("Exp: {0} requires {1} exps", n.term, numExps);
+		//Mhora.Log.Debug ("Exp: {0} requires {1} exps", n.term, numExps);
 
 		// done
 		if (numExps <= 1)
@@ -972,7 +972,7 @@ public class FindYogas
 		{
 			var nChild = new Node(n, TrimWhitespace(sNew[i]), n.Dtype);
 			n.AddChild(nChild);
-			//mhora.Log.Debug ("sNew[{0}]: {1}", i, sNew[i]);
+			//Mhora.Log.Debug ("sNew[{0}]: {1}", i, sNew[i]);
 		}
 	}
 

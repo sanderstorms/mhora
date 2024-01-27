@@ -110,7 +110,7 @@ public class TithiPraveshDasa : Dasa, IDasa
 			case 1:
 				al     = new ArrayList(13);
 				length = pdi.DasaLength / 13.0;
-				//mhora.Log.Debug("AD length is {0}", length);
+				//Mhora.Log.Debug("AD length is {0}", length);
 				for (var i = 0; i < 13; i++)
 				{
 					var di = new DasaEntry(Body.BodyType.Other, start, length, level, desc[level - 2]);
@@ -122,11 +122,11 @@ public class TithiPraveshDasa : Dasa, IDasa
 			case 2:
 				al     = new ArrayList(30);
 				length = pdi.DasaLength / 30.0;
-				//mhora.Log.Debug("PD length is {0}", length);
+				//Mhora.Log.Debug("PD length is {0}", length);
 				for (var i = 0; i < 30; i++)
 				{
 					var di = new DasaEntry(Body.BodyType.Other, start, length, level, desc[level - 2]);
-					//mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
+					//Mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
 					al.Add(di);
 					start += length;
 				}

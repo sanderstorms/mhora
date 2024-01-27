@@ -89,7 +89,7 @@ public class NakshatraPraveshDasa : Dasa, IDasa
 			case 1:
 				al     = new ArrayList(13);
 				length = pdi.DasaLength / 13.0;
-				//mhora.Log.Debug("AD length is {0}", length);
+				//Mhora.Log.Debug("AD length is {0}", length);
 				for (var i = 0; i < 15; i++)
 				{
 					var di = new DasaEntry(Body.BodyType.Other, start, length, level, desc[level - 2]);
@@ -101,11 +101,11 @@ public class NakshatraPraveshDasa : Dasa, IDasa
 			case 2:
 				al     = new ArrayList(27);
 				length = pdi.DasaLength / 27.0;
-				//mhora.Log.Debug("PD length is {0}", length);
+				//Mhora.Log.Debug("PD length is {0}", length);
 				for (var i = 0; i < 27; i++)
 				{
 					var di = new DasaEntry(Body.BodyType.Other, start, length, level, desc[level - 2]);
-					//mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
+					//Mhora.Log.Debug ("PD: Starg {0}, length {1}", start, length);
 					al.Add(di);
 					start += length;
 				}

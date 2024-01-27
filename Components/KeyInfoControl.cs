@@ -25,7 +25,7 @@ using Mhora.Elements.Calculation;
 using Mhora.Elements.Dasas.Nakshatra;
 using Mhora.SwissEph;
 using Mhora.Tables;
-using mhora.Util;
+using Mhora.Util;
 
 namespace Mhora.Components;
 

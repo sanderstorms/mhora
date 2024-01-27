@@ -27,7 +27,6 @@ using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
-using mhora.Util;
 using Mhora.Util;
 using Retrogression = Mhora.Elements.Retrogression;
 
@@ -634,7 +633,7 @@ public class PanchangaControl : MhoraControl
 			if (local.karana_index_start == local.karana_index_end && local.karana_index_start >= 0)
 			{
 				var pmi = (PanchangaMomentInfo) globals.karanas_ut[local.karana_index_start];
-				var k   = (Karanas.Karana) pmi.info;
+				var k   = (Karana) pmi.info;
 				mList.Items.Add(string.Format("{0} karana - full.", k));
 			}
 			else
@@ -647,7 +646,7 @@ public class PanchangaControl : MhoraControl
 					}
 
 					var pmi = (PanchangaMomentInfo) globals.karanas_ut[i];
-					var k   = ((Karanas.Karana) pmi.info).AddReverse(2);
+					var k   = ((Karana) pmi.info).AddReverse(2);
 					s_karana += string.Format("{0} karana until {1}", k, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 
 					if (opts.OneEntryPerLine)

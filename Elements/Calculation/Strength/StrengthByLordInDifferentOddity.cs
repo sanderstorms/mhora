@@ -57,7 +57,7 @@ public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStr
 		var ldpos  = H.CalculateDivisionPosition(lbpos, Dtype);
 		var zhLor = ldpos.ZodiacHouse;
 
-		//System.mhora.Log.Debug("   DiffOddity {0} {1} {2}", zh.ToString(), zh_lor.value.ToString(), (int)zh %2==(int)zh_lor.value%2);
+		//System.Mhora.Log.Debug("   DiffOddity {0} {1} {2}", zh.ToString(), zh_lor.value.ToString(), (int)zh %2==(int)zh_lor.value%2);
 		if ((int) zh % 2 == (int) zhLor % 2)
 		{
 			return 0;

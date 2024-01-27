@@ -69,7 +69,7 @@ public abstract class NakshatraDasa : Dasa
 		var g              = Common.LordOfNakshatra(n);
 		var percTraversed = lon.PercentageOfNakshatra();
 		var start          = cycle * Common.ParamAyus() - percTraversed / 100.0 * Common.LengthOfDasa(g);
-		//System.mhora.Log.Debug ("{0} {1} {2}", common.LengthOfDasa(g), perc_traversed, start);
+		//System.Mhora.Log.Debug ("{0} {1} {2}", common.LengthOfDasa(g), perc_traversed, start);
 
 		// Calculate a "seed" dasaItem, to make use of the AntarDasa function
 		var di = new DasaEntry(g, start, Common.ParamAyus(), 0, string.Empty);

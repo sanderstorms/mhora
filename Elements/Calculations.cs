@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Mhora.Elements.Calculation;
-using mhora.Util;
+using Mhora.Util;
 
 namespace Mhora.Elements
 {
@@ -63,7 +63,7 @@ namespace Mhora.Elements
 			return l.Value - l.ToSunMoonYogaBase();
 		}
 
-		public static Tithis.Tithi ToTithi(this Longitude l)
+		public static Tithi ToTithi(this Longitude l)
 		{
 			var tIndex = (int) (Math.Floor(l.Value / (360.0 / 30.0)) + 1);
 			var t      = tIndex.ToTithi();
@@ -83,10 +83,10 @@ namespace Mhora.Elements
 		}
 
 
-		public static Karanas.Karana ToKarana(this Longitude l)
+		public static Karana ToKarana(this Longitude l)
 		{
 			var kIndex = (int) (Math.Floor(l.Value / (360.0 / 60.0)) + 1);
-			var k      = (Karanas.Karana) kIndex;
+			var k      = (Karana) kIndex;
 			return k;
 		}
 

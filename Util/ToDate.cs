@@ -104,7 +104,7 @@ public class ToDate
 		years  = (years - Math.Floor(years)) * numDays;
 		tDays   = years;
 
-		//mhora.Log.Debug ("Searching for {0} {1} {2}", tYears, tMonths, tDays);
+		//Mhora.Log.Debug ("Searching for {0} {1} {2}", tYears, tMonths, tDays);
 		lon = _spos - soff;
 		l   = new Longitude(lon);
 		jd  = t.LinearSearch(_h.Info.Jd + tYears * 365.2425, l, t.LongitudeOfSun);
@@ -150,9 +150,9 @@ public class ToDate
 		switch (_type)
 		{
 			case DateType.FixedYear:
-				//mhora.Log.Debug("Finding {0} fixed years of length {1}", years, yearLength);
+				//Mhora.Log.Debug("Finding {0} fixed years of length {1}", years, yearLength);
 				jd = _baseUt + years * _yearLength;
-				//mhora.Log.Debug("tz = {0}", (h.info.tz.toDouble()) / 24.0);
+				//Mhora.Log.Debug("tz = {0}", (h.info.tz.toDouble()) / 24.0);
 				jd += _offset;
 				sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
 				return new DateTime(year, month, day).AddHours(dhour);
@@ -193,7 +193,7 @@ public class ToDate
 				jd =  _h.Info.Jd;
 				var tithiBase = new Longitude(_mpos - _spos);
 				var days       = years * _yearLength;
-				//mhora.Log.Debug("Find {0} tithi days", days);
+				//Mhora.Log.Debug("Find {0} tithi days", days);
 				while (days >= 30 * 12.0)
 				{
 					jd   =  t.LinearSearch(jd + 29.52916 * 12.0, tithiBase, t.LongitudeOfTithiDir);
@@ -201,7 +201,7 @@ public class ToDate
 				}
 
 				tithiBase = tithiBase.Add(new Longitude(days * 12.0));
-				//mhora.Log.Debug ("Searching from {0} for {1}", t.LongitudeOfTithiDir(jd+days*28.0/30.0), tithi_base);
+				//Mhora.Log.Debug ("Searching from {0} for {1}", t.LongitudeOfTithiDir(jd+days*28.0/30.0), tithi_base);
 				jd =  t.LinearSearch(jd + days * 28.0 / 30.0, tithiBase, t.LongitudeOfTithiDir);
 				jd += _h.Info.DstOffset.TotalDays;
 				jd += _offset;
@@ -213,7 +213,7 @@ public class ToDate
 				jd =  _h.Info.Jd;
 				var yogaBase = new Longitude(_mpos + _spos);
 				var yogaDays  = years * _yearLength;
-				//mhora.Log.Debug ("Find {0} yoga days", yogaDays);
+				//Mhora.Log.Debug ("Find {0} yoga days", yogaDays);
 				while (yogaDays >= 27 * 12)
 				{
 					jd       =  t.LinearSearch(jd + 305, yogaBase, t.LongitudeOfSunMoonYogaDir);
@@ -242,7 +242,7 @@ public class ToDate
 				newBaseut =  _h.Info.Jd;
 				var tithi = t.LongitudeOfTithi(newBaseut);
 				l = tithi.Add(new Longitude(lon));
-				//mhora.Log.Debug("{0} {1} {2}", 354.35, 354.35*yearLength/360.0, yearLength);
+				//Mhora.Log.Debug("{0} {1} {2}", 354.35, 354.35*yearLength/360.0, yearLength);
 				var tyearApprox = 354.35 * _yearLength / 360.0; /*357.93765*/
 				var lapp         = t.LongitudeOfTithi(newBaseut + years * tyearApprox).Value;
 				jd =  t.LinearSearch(newBaseut + years * tyearApprox, l, t.LongitudeOfTithiDir);

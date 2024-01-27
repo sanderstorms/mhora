@@ -109,7 +109,7 @@ public class SuDasa : Dasa, IDasa
 		var cycleLength  = cycle                                        * ParamAyus();
 		var offsetLength = bpSl.Longitude.ToZodiacHouseOffset() / 30.0 * ((DasaEntry) al[0]).DasaLength;
 
-		//mhora.Log.Debug ("Completed {0}, going back {1} of {2} years", bp_sl.longitude.toZodiacHouseOffset() / 30.0,
+		//Mhora.Log.Debug ("Completed {0}, going back {1} of {2} years", bp_sl.longitude.toZodiacHouseOffset() / 30.0,
 		//	offset_length, ((DasaEntry)al[0]).DasaLength);
 
 		cycleLength -= offsetLength;

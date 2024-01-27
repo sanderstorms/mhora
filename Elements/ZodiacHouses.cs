@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
-using mhora.Util;
+using Mhora.Util;
 
 namespace Mhora.Elements;
 
-public static class Rasis
+public static class ZodiacHouses
 {
 	public enum RiseType
 	{
@@ -278,14 +278,16 @@ public static class Rasis
 			case ZodiacHouse.Tau:
 			case ZodiacHouse.Can:
 			case ZodiacHouse.Sag:
-			case ZodiacHouse.Cap: return Rasis.RiseType.RisesWithFoot;
+			case ZodiacHouse.Cap: 
+				return RiseType.RisesWithFoot;
 			case ZodiacHouse.Gem:
 			case ZodiacHouse.Leo:
 			case ZodiacHouse.Vir:
 			case ZodiacHouse.Lib:
 			case ZodiacHouse.Sco:
-			case ZodiacHouse.Aqu: return Rasis.RiseType.RisesWithHead;
-			default: return Rasis.RiseType.RisesWithBoth;
+			case ZodiacHouse.Aqu: 
+				return RiseType.RisesWithHead;
+			default: return RiseType.RisesWithBoth;
 		}
 	}
 

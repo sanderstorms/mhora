@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
-using mhora.Util;
+using Mhora.Util;
 
 namespace Mhora.Elements.Yoga
 {
@@ -178,7 +178,7 @@ namespace Mhora.Elements.Yoga
 			else
 			{
 				var lagna = Find(Body.BodyType.Lagna, _varga);
-				var bhava = _dp.ZodiacHouse.Index() - lagna.Rasi.ZodiacHouse.Index() + 1;
+				var bhava = _dp.ZodiacHouse.Index() - ((ZodiacHouse) lagna.Rasi).Index() + 1;
 
 				if (bhava <= 0)
 				{
@@ -213,7 +213,7 @@ namespace Mhora.Elements.Yoga
 				Conditions |= Conditions.KarakaPlanet;
 			}
 
-			var lord = Basics.SimpleLordOfZodiacHouse(_dp.ZodiacHouse);
+			var lord = _dp.ZodiacHouse.SimpleLordOfZodiacHouse();
 			HouseLord = Find(lord, _varga);
 
 			foreach (var graha in _grahas [_varga])

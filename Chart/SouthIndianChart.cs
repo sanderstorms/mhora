@@ -20,7 +20,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using Mhora.Elements;
-using mhora.Util;
+using Mhora.Util;
 
 namespace Mhora.Chart;
 

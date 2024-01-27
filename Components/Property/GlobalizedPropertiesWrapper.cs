@@ -112,11 +112,11 @@ public class GlobalizedPropertiesWrapper : ICustomTypeDescriptor
 			}
 			//retProps.Add (new GlobalizedPropertyDescriptor(oProp));
 
-			//mhora.Log.Debug ("Enumerating property {0}", oProp.DisplayName);
+			//Mhora.Log.Debug ("Enumerating property {0}", oProp.DisplayName);
 			//PGDisplayName invisible = (PGDisplayName)oProp.Attributes[typeof(PGNotVisible)];
 			//if (invisible == null)
 			//else
-			//	mhora.Log.Debug ("Property {0} is invisible", oProp.DisplayName);
+			//	Mhora.Log.Debug ("Property {0} is invisible", oProp.DisplayName);
 		}
 
 		orderedProperties.Sort();
@@ -148,7 +148,7 @@ public class GlobalizedPropertiesWrapper : ICustomTypeDescriptor
 		}
 
 		return true;
-		//	mhora.Log.Debug ("Property {0} is invisible", prop.DisplayName);
+		//	Mhora.Log.Debug ("Property {0} is invisible", prop.DisplayName);
 		//return true;
 	}
 }

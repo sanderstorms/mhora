@@ -26,7 +26,6 @@ using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
-using mhora.Util;
 using Mhora.Util;
 
 namespace Mhora.Components.Panchanga;
@@ -309,7 +308,7 @@ public class PanchangaPrintDocument : PrintDocument
 				for (var j = 0; j < numKaranas; j++)
 				{
 					var pmi         = (PanchangaMomentInfo) globals.karanas_ut[local.karana_index_start + 1 + j];
-					var k           = (Karanas.Karana) pmi.info;
+					var k           = (Karana) pmi.info;
 					var mKarana     = h.Moment(pmi.ut);
 					var jRow        = (int) Math.Floor((decimal) j / 2);
 					var name_offset = karana_name_1_offset;

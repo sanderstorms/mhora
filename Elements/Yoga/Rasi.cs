@@ -15,7 +15,10 @@ namespace Mhora.Elements.Yoga
 			Grahas = new List<Graha>();
 		}
 
-		public ZodiacHouse ZodiacHouse => _zh;
+		public static implicit operator ZodiacHouse(Rasi rasi)
+		{
+			return (rasi._zh);
+		}
 
 		public static Rasi Find(ZodiacHouse zh)
 		{

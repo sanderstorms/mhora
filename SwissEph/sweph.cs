@@ -21,7 +21,7 @@ using System.Text;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
-using mhora.Util;
+using Mhora.Util;
 
 namespace Mhora.SwissEph;
 

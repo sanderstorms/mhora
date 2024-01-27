@@ -434,7 +434,7 @@ public class FindStronger
 		{
 			for (var j = 0; j < length - 1; j++)
 			{
-				//System.mhora.Log.Debug ("Comparing {0} and {1}", i, j);
+				//System.Mhora.Log.Debug ("Comparing {0} and {1}", i, j);
 				if (false == CmpRasi(rasis[j], rasis[j + 1], false))
 				{
 					var temp = rasis[j];
@@ -511,10 +511,10 @@ public class FindStronger
 		var bFound = true;
 		winner = 0;
 
-		//System.mhora.Log.Debug("Rasi: {0} {1}", za.ToString(), zb.ToString());
+		//System.Mhora.Log.Debug("Rasi: {0} {1}", za.ToString(), zb.ToString());
 		foreach (ERasiStrength s in _rules)
 		{
-			//System.mhora.Log.Debug("Rasi::{0}", s);
+			//System.Mhora.Log.Debug("Rasi::{0}", s);
 			switch (s)
 			{
 				case ERasiStrength.Conjunction:
@@ -761,7 +761,7 @@ public class FindStronger
 		winner = 0;
 		foreach (EGrahaStrength s in _rules)
 		{
-			//mhora.Log.Debug("Trying {0}. Curr is {1}", s, winner);
+			//Mhora.Log.Debug("Trying {0}. Curr is {1}", s, winner);
 			switch (s)
 			{
 				case EGrahaStrength.Conjunction:

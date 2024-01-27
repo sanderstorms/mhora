@@ -24,7 +24,6 @@ using Mhora.Components.Delegates;
 using Mhora.Database.Settings;
 using Mhora.SwissEph;
 using Mhora.Tables;
-using mhora.Util;
 using Mhora.Util;
 
 namespace Mhora.Elements.Calculation;
@@ -490,7 +489,7 @@ public class Horoscope : ICloneable
 		var lmtOffset2 = lmtNoon2 - (midnightUt + 12.0 / 24.0);
 
 		var retLmtOffset = (lmtOffset1 + lmtOffset2) / 2.0;
-		//mhora.Log.Debug("LMT: {0}, {1}", lmt_offset_1, lmt_offset_2);
+		//Mhora.Log.Debug("LMT: {0}, {1}", lmt_offset_1, lmt_offset_2);
 
 		return retLmtOffset;
 #if DND
@@ -786,7 +785,7 @@ public class Horoscope : ICloneable
 		//{
 		//	Moment m1 = new Moment(cusps[j], this);
 		//	Moment m2 = new Moment(cusps[j+1], this);
-		//	mhora.Log.Debug ("Seeing if dob is between {0} and {1}", m1, m2);
+		//	Mhora.Log.Debug ("Seeing if dob is between {0} and {1}", m1, m2);
 		//}
 		for (j = 0; j < 23; j++)
 		{
@@ -796,7 +795,7 @@ public class Horoscope : ICloneable
 			}
 		}
 
-		//mhora.Log.Debug ("Found hora in the {0}th hora", j);
+		//Mhora.Log.Debug ("Found hora in the {0}th hora", j);
 		i += j;
 		while (i >= 7)
 		{
@@ -976,7 +975,7 @@ public class Horoscope : ICloneable
 		var lonBase = new Longitude(bpMoon.ExtrapolateLongitude(new Division(Vargas.DivisionType.Navamsa)).ToZodiacHouseBase());
 		lonBase = lonBase.Add(bpMoon.Longitude.ToZodiacHouseOffset());
 
-		//mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
+		//Mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
 
 		var istaGhati = (Info.DateOfBirth.Time().TotalHours - Sunrise).NormalizeExc(0.0, 24.0) * 2.5;
 		var glLon     = lonBase.Add(new Longitude(istaGhati        * 30.0));
