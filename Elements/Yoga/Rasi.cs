@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Mhora.Elements.Calculation;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Yoga
 {

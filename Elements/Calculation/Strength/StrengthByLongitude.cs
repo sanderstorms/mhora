@@ -16,7 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using Mhora.Tables;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Calculation.Strength;
 
@@ -28,7 +28,7 @@ public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
 		var lonm = KarakaLongitude(m);
 		var lonn = KarakaLongitude(n);
@@ -47,22 +47,22 @@ public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 
 	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
-		Body.BodyType[] karakaBodies =
+		Body[] karakaBodies =
 		{
-			Body.BodyType.Sun,
-			Body.BodyType.Moon,
-			Body.BodyType.Mars,
-			Body.BodyType.Mercury,
-			Body.BodyType.Jupiter,
-			Body.BodyType.Venus,
-			Body.BodyType.Saturn,
-			Body.BodyType.Rahu
+			Body.Sun,
+			Body.Moon,
+			Body.Mars,
+			Body.Mercury,
+			Body.Jupiter,
+			Body.Venus,
+			Body.Saturn,
+			Body.Rahu
 		};
 
 		double lona = 0.0, lonb = 0.0;
 		foreach (var bn in karakaBodies)
 		{
-			var div    = H.GetPosition(bn).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi));
+			var div    = H.GetPosition(bn).ToDivisionPosition(new Division(DivisionType.Rasi));
 			var offset = KarakaLongitude(bn);
 			if (div.ZodiacHouse == za && offset > lona)
 			{

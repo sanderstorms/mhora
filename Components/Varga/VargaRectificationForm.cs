@@ -22,8 +22,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
@@ -40,11 +40,11 @@ public class VargaRectificationForm : Form
 	/// </summary>
 	private readonly Container components = null;
 
-	private readonly Division          dtypeRasi = new(Vargas.DivisionType.Rasi);
+	private readonly Division          dtypeRasi = new(DivisionType.Rasi);
 
 	private readonly Horoscope h;
 	private readonly int       half_tick_height = 3;
-	private readonly Body.BodyType mBody            = Body.BodyType.Lagna;
+	private readonly Body mBody            = Body.Lagna;
 	private readonly DateTime  mOriginal;
 	private readonly int       unit_height = 30;
 
@@ -149,7 +149,7 @@ public class VargaRectificationForm : Form
 			//	dtype, this.utToMoment(ut_lower), this.utToMoment(ut_higher));
 			var ut_curr = ut_lower - 1.0 / (24.0 * 60.0);
 
-			var bp = h.CalculateSingleBodyPosition(ut_curr, mBody.SwephBody(), mBody, Body.Type.Graha);
+			var bp = h.CalculateSingleBodyPosition(ut_curr, mBody.SwephBody(), mBody, BodyType.Graha);
 			//BodyPosition bp = (BodyPosition)h.getPosition(mBody).Clone();
 			//DivisionPosition dp = bp.toDivisionPosition(this.dtypeRasi);
 
@@ -610,7 +610,7 @@ public class VargaRectificationForm : Form
 		var divs_shod = Vargas.Shodasavargas();
 		var divs      = new Division[divs_shod.Length + 1];
 		divs_shod.CopyTo(divs, 0);
-		divs[divs_shod.Length] = new Division(Vargas.DivisionType.NadiamsaCKN);
+		divs[divs_shod.Length] = new Division(DivisionType.NadiamsaCKN);
 		opts.Divisions         = divs;
 		PopulateCache();
 		bmpBuffer = null;
@@ -631,12 +631,12 @@ public class VargaRectificationForm : Form
 			StartTime = _start;
 			EndTime   = _end;
 
-			if (dtype.MultipleDivisions.Length == 1 && dtype.MultipleDivisions[0].Varga != Vargas.DivisionType.Rasi && dtype.MultipleDivisions[0].Varga != Vargas.DivisionType.Navamsa)
+			if (dtype.MultipleDivisions.Length == 1 && dtype.MultipleDivisions[0].Varga != DivisionType.Rasi && dtype.MultipleDivisions[0].Varga != DivisionType.Navamsa)
 			{
 				Divisions = new[]
 				{
-					new Division(Vargas.DivisionType.Rasi),
-					new Division(Vargas.DivisionType.Navamsa),
+					new Division(DivisionType.Rasi),
+					new Division(DivisionType.Navamsa),
 					dtype
 				};
 			}
@@ -644,9 +644,9 @@ public class VargaRectificationForm : Form
 			{
 				Divisions = new[]
 				{
-					new Division(Vargas.DivisionType.Rasi),
-					new Division(Vargas.DivisionType.Saptamsa),
-					new Division(Vargas.DivisionType.Navamsa)
+					new Division(DivisionType.Rasi),
+					new Division(DivisionType.Saptamsa),
+					new Division(DivisionType.Navamsa)
 				};
 			}
 		}
@@ -663,13 +663,13 @@ public class VargaRectificationForm : Form
 			set;
 		} =
 		{
-			new(Vargas.DivisionType.Rasi),
-			new(Vargas.DivisionType.DrekkanaParasara),
-			new(Vargas.DivisionType.Navamsa),
-			new(Vargas.DivisionType.Saptamsa),
-			new(Vargas.DivisionType.Dasamsa),
-			new(Vargas.DivisionType.Dwadasamsa),
-			new(Vargas.DivisionType.Shodasamsa)
+			new(DivisionType.Rasi),
+			new(DivisionType.DrekkanaParasara),
+			new(DivisionType.Navamsa),
+			new(DivisionType.Saptamsa),
+			new(DivisionType.Dasamsa),
+			new(DivisionType.Dwadasamsa),
+			new(DivisionType.Shodasamsa)
 		};
 
 		public DateTime StartTime

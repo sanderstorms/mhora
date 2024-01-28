@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using Mhora.Components.Converter;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Calculation;
 

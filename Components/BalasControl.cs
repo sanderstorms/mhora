@@ -20,6 +20,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 
@@ -116,15 +117,15 @@ public class BalasControl : MhoraControl
 
 	public void Repopulate()
 	{
-		Body.BodyType[] grahas =
+		Body[] grahas =
 		{
-			Body.BodyType.Sun,
-			Body.BodyType.Moon,
-			Body.BodyType.Mars,
-			Body.BodyType.Mercury,
-			Body.BodyType.Jupiter,
-			Body.BodyType.Venus,
-			Body.BodyType.Saturn
+			Body.Sun,
+			Body.Moon,
+			Body.Mars,
+			Body.Mercury,
+			Body.Jupiter,
+			Body.Venus,
+			Body.Saturn
 		};
 		mList.Clear();
 

@@ -1,23 +1,22 @@
 ﻿using System.Collections.Generic;
-using Mhora.Elements.Calculation;
-using Mhora.Tables;
+using Mhora.Definitions;
 using Mhora.Util;
 
 namespace Mhora.Elements.Yoga
 {
 	public class Graha
 	{
-		private static readonly Dictionary<Vargas.DivisionType, List <Graha>> _grahas = new();
+		private static readonly Dictionary<DivisionType, List <Graha>> _grahas = new();
 
-		private readonly Body.BodyType       _body;
-		private readonly Vargas.DivisionType _varga;
+		private readonly Body       _body;
+		private readonly DivisionType _varga;
 
 		private Bhava               _bhava;
 		private Rasi                _rasi;
 		private DivisionPosition    _dp;
 		private Position            _position;
 
-		protected Graha(Body.BodyType body, Vargas.DivisionType varga)
+		protected Graha(Body body, DivisionType varga)
 		{
 			_body  = body;
 			_varga = varga;
@@ -27,7 +26,7 @@ namespace Mhora.Elements.Yoga
 			Conjunct   = new List<Graha>();
 		}
 
-		public static Graha Find(Body.BodyType body, Vargas.DivisionType varga)
+		public static Graha Find(Body body, DivisionType varga)
 		{
 			List<Graha> grahas = null;
 
@@ -47,11 +46,11 @@ namespace Mhora.Elements.Yoga
 			return graha;
 		}
 
-		public static Dictionary<Vargas.DivisionType, List <Graha>> Grahas => _grahas;
+		public static Dictionary<DivisionType, List <Graha>> Grahas => _grahas;
 
-		public Body.BodyType       BodyType => _body;
+		public Body       BodyType => _body;
 		public Rasi                Rasi     => _rasi;
-		public Vargas.DivisionType Varga    => _varga;
+		public DivisionType Varga    => _varga;
 
 		public Conditions Conditions { get; private set; }
 
@@ -119,49 +118,49 @@ namespace Mhora.Elements.Yoga
 			return false;
 		}
 
-		public Body.Relationship Relationship(Graha graha)
+		public Relation Relationship(Graha graha)
 		{
 			if (_body.IsFriend(graha._body))
 			{
 				if (IsTemporalEnemy(graha))
 				{
-					return Body.Relationship.Neutral;
+					return Relation.Neutral;
 				}
 
 				if (IsTemporalFriend(graha))
 				{
-					return Body.Relationship.BestFriend;
+					return Relation.BestFriend;
 				}
 
-				return Body.Relationship.Friend;
+				return Relation.Friend;
 			}
 
 			if (_body.IsEnemy(graha._body))
 			{
 				if (IsTemporalEnemy(graha))
 				{
-					return Body.Relationship.BitterEnemy;
+					return Relation.BitterEnemy;
 				}
 
 				if (IsTemporalFriend(graha))
 				{
-					return Body.Relationship.Neutral;
+					return Relation.Neutral;
 				}
 
-				return Body.Relationship.Enemy;
+				return Relation.Enemy;
 			}
 
 			if (IsTemporalEnemy(graha))
 			{
-				return Body.Relationship.Enemy;
+				return Relation.Enemy;
 			}
 
 			if (IsTemporalFriend(graha))
 			{
-				return Body.Relationship.Friend;
+				return Relation.Friend;
 			}
 
-			return Body.Relationship.Neutral;
+			return Relation.Neutral;
 		}
 
 		public void Examine(Horoscope h, Division varga)
@@ -171,13 +170,13 @@ namespace Mhora.Elements.Yoga
 
 			_rasi = Rasi.Find(_dp.ZodiacHouse);
 
-			if (_body == Body.BodyType.Lagna)
+			if (_body == Body.Lagna)
 			{
 				_bhava = Bhava.LagnaBhava;
 			}
 			else
 			{
-				var lagna = Find(Body.BodyType.Lagna, _varga);
+				var lagna = Find(Body.Lagna, _varga);
 				var bhava = _dp.ZodiacHouse.Index() - ((ZodiacHouse) lagna.Rasi).Index() + 1;
 
 				if (bhava <= 0)

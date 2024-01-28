@@ -21,7 +21,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
-using Mhora.Elements.Calculation;
+using Mhora.Elements;
 
 namespace Mhora.Components.Jhora;
 

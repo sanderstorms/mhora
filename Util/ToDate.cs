@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Diagnostics;
 using Mhora.Components.Delegates;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Transit = Mhora.Elements.Transit;
 
@@ -65,8 +65,8 @@ public class ToDate
 		_yearLength  = yearLength;
 		_compression = compression;
 		_h           = h;
-		_spos             = _h.GetPosition(Body.BodyType.Sun).Longitude.Value;
-		_mpos             = _h.GetPosition(Body.BodyType.Moon).Longitude.Value;
+		_spos             = _h.GetPosition(Body.Sun).Longitude.Value;
+		_mpos             = _h.GetPosition(Body.Moon).Longitude.Value;
 	}
 
 	public void SetOffset(double offset)
@@ -93,7 +93,7 @@ public class ToDate
 
 		Debug.Assert(y >= 0, "pravesh years only work in the future");
 		t       = new Transit(_h);
-		soff    = _h.GetPosition(Body.BodyType.Sun).Longitude.ToZodiacHouseOffset();
+		soff    = _h.GetPosition(Body.Sun).Longitude.ToZodiacHouseOffset();
 		years  = y;
 		tYears  = 0;
 		tMonths = 0;

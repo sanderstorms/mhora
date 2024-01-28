@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements.Calculation.Strength;
 using Mhora.Util;
 
@@ -350,24 +351,24 @@ public class FindStronger
 	}
 
 
-	public Body.BodyType[] GetOrderedGrahas()
+	public Body[] GetOrderedGrahas()
 	{
-		Body.BodyType[] grahas =
+		Body[] grahas =
 		{
-			Body.BodyType.Sun,
-			Body.BodyType.Moon,
-			Body.BodyType.Mars,
-			Body.BodyType.Mercury,
-			Body.BodyType.Jupiter,
-			Body.BodyType.Venus,
-			Body.BodyType.Saturn,
-			Body.BodyType.Rahu,
-			Body.BodyType.Ketu
+			Body.Sun,
+			Body.Moon,
+			Body.Mars,
+			Body.Mercury,
+			Body.Jupiter,
+			Body.Venus,
+			Body.Saturn,
+			Body.Rahu,
+			Body.Ketu
 		};
 		return GetOrderedGrahas(grahas);
 	}
 
-	public Body.BodyType[] GetOrderedGrahas(Body.BodyType[] grahas)
+	public Body[] GetOrderedGrahas(Body[] grahas)
 	{
 		if (grahas.Length <= 1)
 		{
@@ -463,13 +464,13 @@ public class FindStronger
 		return StrongerRasi(za, zb, bSimpleLord, ref winner);
 	}
 
-	public Body.BodyType StrongerGraha(Body.BodyType m, Body.BodyType n, bool bSimpleLord)
+	public Body StrongerGraha(Body m, Body n, bool bSimpleLord)
 	{
 		var winner = 0;
 		return StrongerGraha(m, n, bSimpleLord, ref winner);
 	}
 
-	public Body.BodyType StrongerGraha(Body.BodyType m, Body.BodyType n, bool bSimpleLord, ref int winner)
+	public Body StrongerGraha(Body m, Body n, bool bSimpleLord, ref int winner)
 	{
 		if (CmpGraha(m, n, bSimpleLord, ref winner))
 		{
@@ -489,7 +490,7 @@ public class FindStronger
 		return za;
 	}
 
-	public Body.BodyType WeakerGraha(Body.BodyType m, Body.BodyType n, bool bSimpleLord)
+	public Body WeakerGraha(Body m, Body n, bool bSimpleLord)
 	{
 		if (CmpGraha(m, n, bSimpleLord))
 		{
@@ -748,13 +749,13 @@ public class FindStronger
 		return true;
 	}
 
-	public bool CmpGraha(Body.BodyType m, Body.BodyType n, bool bSimpleLord)
+	public bool CmpGraha(Body m, Body n, bool bSimpleLord)
 	{
 		var winner = 0;
 		return CmpGraha(m, n, bSimpleLord, ref winner);
 	}
 
-	public bool CmpGraha(Body.BodyType m, Body.BodyType n, bool bSimpleLord, ref int winner)
+	public bool CmpGraha(Body m, Body n, bool bSimpleLord, ref int winner)
 	{
 		var bRet   = false;
 		var bFound = true;

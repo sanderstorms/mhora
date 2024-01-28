@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.ComponentModel;
 using Mhora.Components.Converter;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Dasas;
 
@@ -25,13 +26,13 @@ namespace Mhora.Elements.Dasas;
 public class DasaEntry
 {
 	private double           _dasaLength; // 1 year = 360 days = 360 degrees is used internally!!!!
-	private Body.BodyType    _graha;
+	private Body    _graha;
 	private int              _level;
 	private string           _shortDesc;
 	private double           _startUt;
 	private ZodiacHouse _zodiacHouse;
 
-	public DasaEntry(Body.BodyType graha, double startUt, double dasaLength, int level, string name)
+	public DasaEntry(Body graha, double startUt, double dasaLength, int level, string name)
 	{
 		_graha = graha;
 		Construct(startUt,dasaLength, level, name);
@@ -48,7 +49,7 @@ public class DasaEntry
 		_startUt     = _dasaLength = 0.0;
 		_level       = 1;
 		_shortDesc   = "Jup";
-		_graha       = Body.BodyType.Jupiter;
+		_graha       = Body.Jupiter;
 		_zodiacHouse = ZodiacHouse.Ari;
 	}
 
@@ -76,7 +77,7 @@ public class DasaEntry
 		set => _dasaLength = value;
 	}
 
-	public Body.BodyType Graha
+	public Body Graha
 	{
 		get => _graha;
 		set => _graha = value;

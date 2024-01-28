@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 using Mhora.Util;
 
@@ -102,10 +103,10 @@ namespace Mhora.Elements
 			return l.Value - l.ToKaranaBase();
 		}
 
-		public static Nakshatras.Nakshatra ToNakshatra(this Longitude l)
+		public static Nakshatra ToNakshatra(this Longitude l)
 		{
 			var snum = (int) (Math.Floor(l.Value / (360.0 / 27.0)) + 1.0);
-			return (Nakshatras.Nakshatra) snum;
+			return (Nakshatra) snum;
 		}
 
 		public static double ToNakshatraBase(this Longitude l)
@@ -115,19 +116,19 @@ namespace Mhora.Elements
 			return cusp;
 		}
 
-		public static Nakshatras.Nakshatra28 ToNakshatra28(this Longitude l)
+		public static Nakshatra28 ToNakshatra28(this Longitude l)
 		{
 			var snum = (int) (Math.Floor(l.Value / (360.0 / 27.0)) + 1.0);
 
-			var ret = (Nakshatras.Nakshatra28) snum;
-			if (snum >= (int) Nakshatras.Nakshatra28.Abhijit)
+			var ret = (Nakshatra28) snum;
+			if (snum >= (int) Nakshatra28.Abhijit)
 			{
 				ret = ret.Add(2);
 			}
 
 			if (l.Value >= 270 + (6.0 + 40.0 / 60.0) && l.Value <= 270 + (10.0 + 53.0 / 60.0 + 20.0 / 3600.0))
 			{
-				ret = Nakshatras.Nakshatra28.Abhijit;
+				ret = Nakshatra28.Abhijit;
 			}
 
 			return ret;

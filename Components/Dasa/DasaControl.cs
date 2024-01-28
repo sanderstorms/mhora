@@ -22,8 +22,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.Elements.Dasas;
 using Mhora.Util;
 
@@ -1228,8 +1228,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 		var utStart = tdPravesh.AddYears(0).ToUniversalTime();
 		var utEnd   = tdPravesh.AddYears(1).ToUniversalTime();
-		var spStart = h.CalculateSingleBodyPosition(utStart.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
-		var spEnd   = h.CalculateSingleBodyPosition(utEnd.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
+		var spStart = h.CalculateSingleBodyPosition(utStart.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
+		var spEnd   = h.CalculateSingleBodyPosition(utEnd.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
 		var lDiff    = spEnd.Longitude.Sub(spStart.Longitude);
 		var diff     = lDiff.Value;
 		if (diff < 120.0)

@@ -23,6 +23,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Mhora.Components.Delegates;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
@@ -429,15 +430,15 @@ public class PanchangaControl : MhoraControl
 		if (opts.CalcLagnaCusps)
 		{
 			li = new ListViewItem();
-			var bp_lagna_sr = h.CalculateSingleBodyPosition(ut_sr, Body.BodyType.Lagna.SwephBody(), Body.BodyType.Lagna, Body.Type.Lagna);
-			var dp_lagna_sr = bp_lagna_sr.ToDivisionPosition(new Division(Vargas.DivisionType.Rasi));
+			var bp_lagna_sr = h.CalculateSingleBodyPosition(ut_sr, Body.Lagna.SwephBody(), Body.Lagna, BodyType.Lagna);
+			var dp_lagna_sr = bp_lagna_sr.ToDivisionPosition(new Division(DivisionType.Rasi));
 			local.lagna_zh = dp_lagna_sr.ZodiacHouse;
 
 			var bp_lagna_base = new Longitude(bp_lagna_sr.Longitude.ToZodiacHouseBase());
 			var ut_transit    = ut_sr;
 			for (var i = 1; i <= 12; i++)
 			{
-				var r = new Retrogression(h, Body.BodyType.Lagna);
+				var r = new Retrogression(h, Body.Lagna);
 				ut_transit = r.GetLagnaTransitForward(ut_transit, bp_lagna_base.Add(i * 30.0));
 
 				var pmi = new PanchangaMomentInfo(ut_transit, bp_lagna_sr.Longitude.ToZodiacHouse().Add(i + 1).Index());
@@ -513,7 +514,7 @@ public class PanchangaControl : MhoraControl
 		if (opts.CalcNakCusps)
 		{
 			var bDiscard = true;
-			var t        = new Elements.Transit(h, Body.BodyType.Moon);
+			var t        = new Elements.Transit(h, Body.Moon);
 			var nak_start = t.GenericLongitude(ut_sr, ref bDiscard).ToNakshatra();
 			var nak_end   = t.GenericLongitude(ut_sr + 1.0, ref bDiscard).ToNakshatra();
 
@@ -717,7 +718,7 @@ public class PanchangaControl : MhoraControl
 			if (local.nakshatra_index_start == local.nakshatra_index_end && local.nakshatra_index_start >= 0)
 			{
 				var pmi = (PanchangaMomentInfo) globals.nakshatras_ut[local.nakshatra_index_start];
-				var n   = (Nakshatras.Nakshatra) pmi.info;
+				var n   = (Nakshatra) pmi.info;
 				mList.Items.Add(string.Format("{0} - full.", n.Name()));
 			}
 			else
@@ -730,7 +731,7 @@ public class PanchangaControl : MhoraControl
 					}
 
 					var pmi = (PanchangaMomentInfo) globals.nakshatras_ut[i];
-					var n   = ((Nakshatras.Nakshatra) pmi.info).AddReverse(2);
+					var n   = ((Nakshatra) pmi.info).AddReverse(2);
 					s_nak += string.Format("{0} until {1}", n.Name(), utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 					if (opts.OneEntryPerLine)
 					{

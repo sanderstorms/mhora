@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has its lord in a house of different oddity
@@ -26,7 +28,7 @@ public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStr
 	{
 	}
 
-	public bool Stronger(Body.BodyType ba, Body.BodyType bb)
+	public bool Stronger(Body ba, Body bb)
 	{
 		var za = H.GetPosition(ba).ToDivisionPosition(Dtype).ZodiacHouse;
 		var zb = H.GetPosition(bb).ToDivisionPosition(Dtype).ZodiacHouse;

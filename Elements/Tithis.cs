@@ -1,4 +1,5 @@
-﻿using Mhora.Util;
+﻿using Mhora.Definitions;
+using Mhora.Util;
 
 namespace Mhora.Elements;
 
@@ -58,7 +59,7 @@ public static class Tithis
 		return NandaType.Nanda;
 	}
 
-	public static Body.BodyType GetLord(this Tithi tithi)
+	public static Body GetLord(this Tithi tithi)
 	{
 		// 1 based index starting with prathama
 		var t = tithi.Index();
@@ -67,12 +68,12 @@ public static class Tithis
 		// check for new moon and full moon 
 		if (t == 30)
 		{
-			return Body.BodyType.Rahu;
+			return Body.Rahu;
 		}
 
 		if (t == 15)
 		{
-			return Body.BodyType.Saturn;
+			return Body.Saturn;
 		}
 
 		// coalesce pakshas
@@ -84,22 +85,22 @@ public static class Tithis
 		switch (t)
 		{
 			case 1:
-			case 9: return Body.BodyType.Sun;
+			case 9: return Body.Sun;
 			case 2:
-			case 10: return Body.BodyType.Moon;
+			case 10: return Body.Moon;
 			case 3:
-			case 11: return Body.BodyType.Mars;
+			case 11: return Body.Mars;
 			case 4:
-			case 12: return Body.BodyType.Mercury;
+			case 12: return Body.Mercury;
 			case 5:
-			case 13: return Body.BodyType.Jupiter;
+			case 13: return Body.Jupiter;
 			case 6:
-			case 14: return Body.BodyType.Venus;
-			case 7: return Body.BodyType.Saturn;
-			case 8: return Body.BodyType.Rahu;
+			case 14: return Body.Venus;
+			case 7: return Body.Saturn;
+			case 8: return Body.Rahu;
 		}
 
-		return Body.BodyType.Sun;
+		return Body.Sun;
 	}
 
 	public static Tithi Add(this Tithi tithi, int i)

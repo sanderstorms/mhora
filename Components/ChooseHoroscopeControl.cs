@@ -20,7 +20,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using Mhora.Database.Settings;
-using Mhora.Elements.Calculation;
+using Mhora.Elements;
 
 namespace Mhora.Components;
 

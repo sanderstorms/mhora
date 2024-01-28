@@ -1,22 +1,22 @@
 using System;
 using Mhora.Components.Delegates;
-using Mhora.Elements.Calculation;
+using Mhora.Definitions;
 using Mhora.SwissEph;
 
 namespace Mhora.Elements;
 
 public class Transit
 {
-	private readonly Body.BodyType _b;
+	private readonly Body _b;
 	private readonly Horoscope _h;
 
 	public Transit(Horoscope h)
 	{
 		_h = h;
-		_b = Body.BodyType.Other;
+		_b = Body.Other;
 	}
 
-	public Transit(Horoscope h, Body.BodyType b)
+	public Transit(Horoscope h, Body b)
 	{
 		_h = h;
 		_b = b;
@@ -25,7 +25,7 @@ public class Transit
 
 	public Longitude LongitudeOfSun(double ut, ref bool bDirRetro)
 	{
-		var bp = _h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
+		var bp = _h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
 		if (bp.SpeedLongitude >= 0)
 		{
 			bDirRetro = false;
@@ -40,12 +40,12 @@ public class Transit
 
 	public Longitude GenericLongitude(double ut, ref bool bDirRetro)
 	{
-		if (_b == Body.BodyType.Lagna)
+		if (_b == Body.Lagna)
 		{
 			return new Longitude(_h.Lagna(ut));
 		}
 
-		var bp = _h.CalculateSingleBodyPosition(ut, _b.SwephBody(), _b, Body.Type.Other);
+		var bp = _h.CalculateSingleBodyPosition(ut, _b.SwephBody(), _b, BodyType.Other);
 		if (bp.SpeedLongitude >= 0)
 		{
 			bDirRetro = false;
@@ -66,8 +66,8 @@ public class Transit
 
 	public Longitude LongitudeOfTithi(double ut)
 	{
-		var bpSun  = _h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
-		var bpMoon = _h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
+		var bpSun  = _h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
+		var bpMoon = _h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
 		var rel     = bpMoon.Longitude.Sub(bpSun.Longitude);
 		return rel;
 	}
@@ -80,7 +80,7 @@ public class Transit
 
 	public Longitude LongitudeOfMoon(double ut)
 	{
-		var bpMoon = _h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
+		var bpMoon = _h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
 		return bpMoon.Longitude.Add(0);
 	}
 
@@ -92,8 +92,8 @@ public class Transit
 
 	public Longitude LongitudeOfSunMoonYoga(double ut)
 	{
-		var bpSun  = _h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
-		var bpMoon = _h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
+		var bpSun  = _h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
+		var bpMoon = _h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
 		var rel     = bpMoon.Longitude.Add(bpSun.Longitude);
 		return rel;
 	}
@@ -150,7 +150,7 @@ public class Transit
 		return LinearSearchBinary(utStart, utMiddle, lonToFind, func);
 	}
 
-	public double NonLinearSearch(double ut, Body.BodyType b, Longitude lonToFind, ReturnLon func)
+	public double NonLinearSearch(double ut, Body b, Longitude lonToFind, ReturnLon func)
 	{
 		var rDirStart = false;
 		var rDirEnd   = false;

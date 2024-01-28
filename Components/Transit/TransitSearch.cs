@@ -21,8 +21,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using Mhora.Components.Property;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
@@ -461,13 +461,13 @@ public class TransitSearch : MhoraControl
 		}
 	}
 
-	private double DirectSpeed(Body.BodyType b)
+	private double DirectSpeed(Body b)
 	{
 		switch (b)
 		{
-			case Body.BodyType.Sun:   return 365.2425;
-			case Body.BodyType.Moon:  return 28.0;
-			case Body.BodyType.Lagna: return 1.0;
+			case Body.Sun:   return 365.2425;
+			case Body.Moon:  return 28.0;
+			case Body.Lagna: return 1.0;
 		}
 
 		return 0.0;
@@ -475,7 +475,7 @@ public class TransitSearch : MhoraControl
 
 	private void DirectProgression()
 	{
-		if (opts.SearchBody != Body.BodyType.Sun && opts.SearchBody != Body.BodyType.Moon) // &&
+		if (opts.SearchBody != Body.Sun && opts.SearchBody != Body.Moon) // &&
 			//opts.SearchBody != Body.Type.Lagna)
 		{
 			return;
@@ -564,7 +564,7 @@ public class TransitSearch : MhoraControl
 
 	private void bProgression_Click(object sender, EventArgs e)
 	{
-		if ((int) opts.SearchBody <= (int) Body.BodyType.Moon || (int) opts.SearchBody > (int) Body.BodyType.Saturn)
+		if ((int) opts.SearchBody <= (int) Body.Moon || (int) opts.SearchBody > (int) Body.Saturn)
 		{
 			DirectProgression();
 			return;
@@ -658,7 +658,7 @@ public class TransitSearch : MhoraControl
 
 	private void bRetroCusp_Click(object sender, EventArgs e)
 	{
-		if ((int) opts.SearchBody <= (int) Body.BodyType.Moon || (int) opts.SearchBody > (int) Body.BodyType.Saturn)
+		if ((int) opts.SearchBody <= (int) Body.Moon || (int) opts.SearchBody > (int) Body.Saturn)
 		{
 			return;
 		}
@@ -891,7 +891,7 @@ public class TransitSearch : MhoraControl
 
 	private void bSolarNewYear_Click(object sender, EventArgs e)
 	{
-		opts.SearchBody         = Body.BodyType.Sun;
+		opts.SearchBody         = Body.Sun;
 		opts.TransitPoint.Value = 0;
 		updateOptions();
 		bStartSearch_Click(sender, e);
@@ -932,7 +932,7 @@ public class TransitSearch : MhoraControl
 
 	private void bVargaChange_Click(object sender, EventArgs e)
 	{
-		if (opts.SearchBody == Body.BodyType.Sun || opts.SearchBody == Body.BodyType.Moon || opts.SearchBody == Body.BodyType.Lagna)
+		if (opts.SearchBody == Body.Sun || opts.SearchBody == Body.Moon || opts.SearchBody == Body.Lagna)
 		{
 			if (opts.Forward)
 			{

@@ -16,52 +16,54 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Ghataka;
 
 public class GhatakaStar
 {
-	public static bool CheckStar(ZodiacHouse janmaZodiacHouse, Nakshatras.Nakshatra nak)
+	public static bool CheckStar(ZodiacHouse janmaZodiacHouse, Nakshatra nak)
 	{
 		var ja = janmaZodiacHouse;
-		var gh = Nakshatras.Nakshatra.Aswini;
+		var gh = Nakshatra.Aswini;
 		switch (ja)
 		{
 			case ZodiacHouse.Ari:
-				gh = Nakshatras.Nakshatra.Makha;
+				gh = Nakshatra.Makha;
 				break;
 			case ZodiacHouse.Tau:
-				gh = Nakshatras.Nakshatra.Hasta;
+				gh = Nakshatra.Hasta;
 				break;
 			case ZodiacHouse.Gem:
-				gh = Nakshatras.Nakshatra.Swati;
+				gh = Nakshatra.Swati;
 				break;
 			case ZodiacHouse.Can:
-				gh = Nakshatras.Nakshatra.Anuradha;
+				gh = Nakshatra.Anuradha;
 				break;
 			case ZodiacHouse.Leo:
-				gh = Nakshatras.Nakshatra.Moola;
+				gh = Nakshatra.Moola;
 				break;
 			case ZodiacHouse.Vir:
-				gh = Nakshatras.Nakshatra.Sravana;
+				gh = Nakshatra.Sravana;
 				break;
 			case ZodiacHouse.Lib:
-				gh = Nakshatras.Nakshatra.Satabisha;
+				gh = Nakshatra.Satabisha;
 				break;
 			case ZodiacHouse.Sco:
-				gh = Nakshatras.Nakshatra.Revati;
+				gh = Nakshatra.Revati;
 				break;
 			// FIXME dveja nakshatra?????
 			case ZodiacHouse.Sag:
-				gh = Nakshatras.Nakshatra.Revati;
+				gh = Nakshatra.Revati;
 				break;
 			case ZodiacHouse.Cap:
-				gh = Nakshatras.Nakshatra.Rohini;
+				gh = Nakshatra.Rohini;
 				break;
 			case ZodiacHouse.Aqu:
-				gh = Nakshatras.Nakshatra.Aridra;
+				gh = Nakshatra.Aridra;
 				break;
 			case ZodiacHouse.Pis:
-				gh = Nakshatras.Nakshatra.Aslesha;
+				gh = Nakshatra.Aslesha;
 				break;
 		}
 

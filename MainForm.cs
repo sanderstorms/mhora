@@ -10,11 +10,10 @@ using Mhora.Components;
 using Mhora.Components.Jhora;
 using Mhora.Components.SplashScreen;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.Elements.Hora;
 using Mhora.SwissEph;
-using Mhora.Tables;
 
 namespace Mhora
 {
@@ -321,7 +320,7 @@ namespace Mhora
 		{
 			var info = new Jhd(fileName).ToHoraInfo();
 			var h = new Horoscope(info, new HoroscopeOptions());
-			if (h.GetPosition(Body.BodyType.Ketu).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse == h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(new Division(Vargas.DivisionType.Rasi)).ZodiacHouse)
+			if (h.GetPosition(Body.Ketu).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse == h.GetPosition(Body.Lagna).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse)
 			{
 				return true;
 			}

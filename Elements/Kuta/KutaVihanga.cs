@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Diagnostics;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Kuta;
 
@@ -38,7 +39,7 @@ public class KutaVihanga
 		Peacock
 	}
 
-	public static EDominator GetDominator(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
+	public static EDominator GetDominator(Nakshatra m, Nakshatra n)
 	{
 		var em = GetType(m);
 		var en = GetType(n);
@@ -71,37 +72,37 @@ public class KutaVihanga
 		return EDominator.Equal;
 	}
 
-	public static EType GetType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatra n)
 	{
 		switch (n)
 		{
-			case Nakshatras.Nakshatra.Aswini:
-			case Nakshatras.Nakshatra.Bharani:
-			case Nakshatras.Nakshatra.Krittika:
-			case Nakshatras.Nakshatra.Rohini:
-			case Nakshatras.Nakshatra.Mrigarirsa: return EType.Bharandhaka;
-			case Nakshatras.Nakshatra.Aridra:
-			case Nakshatras.Nakshatra.Punarvasu:
-			case Nakshatras.Nakshatra.Pushya:
-			case Nakshatras.Nakshatra.Aslesha:
-			case Nakshatras.Nakshatra.Makha:
-			case Nakshatras.Nakshatra.PoorvaPhalguni: return EType.Pingala;
-			case Nakshatras.Nakshatra.UttaraPhalguni:
-			case Nakshatras.Nakshatra.Hasta:
-			case Nakshatras.Nakshatra.Chittra:
-			case Nakshatras.Nakshatra.Swati:
-			case Nakshatras.Nakshatra.Vishaka:
-			case Nakshatras.Nakshatra.Anuradha: return EType.Crow;
-			case Nakshatras.Nakshatra.Jyestha:
-			case Nakshatras.Nakshatra.Moola:
-			case Nakshatras.Nakshatra.PoorvaShada:
-			case Nakshatras.Nakshatra.UttaraShada:
-			case Nakshatras.Nakshatra.Sravana: return EType.Cock;
-			case Nakshatras.Nakshatra.Dhanishta:
-			case Nakshatras.Nakshatra.Satabisha:
-			case Nakshatras.Nakshatra.PoorvaBhadra:
-			case Nakshatras.Nakshatra.UttaraBhadra:
-			case Nakshatras.Nakshatra.Revati: return EType.Peacock;
+			case Nakshatra.Aswini:
+			case Nakshatra.Bharani:
+			case Nakshatra.Krittika:
+			case Nakshatra.Rohini:
+			case Nakshatra.Mrigarirsa: return EType.Bharandhaka;
+			case Nakshatra.Aridra:
+			case Nakshatra.Punarvasu:
+			case Nakshatra.Pushya:
+			case Nakshatra.Aslesha:
+			case Nakshatra.Makha:
+			case Nakshatra.PoorvaPhalguni: return EType.Pingala;
+			case Nakshatra.UttaraPhalguni:
+			case Nakshatra.Hasta:
+			case Nakshatra.Chittra:
+			case Nakshatra.Swati:
+			case Nakshatra.Vishaka:
+			case Nakshatra.Anuradha: return EType.Crow;
+			case Nakshatra.Jyestha:
+			case Nakshatra.Moola:
+			case Nakshatra.PoorvaShada:
+			case Nakshatra.UttaraShada:
+			case Nakshatra.Sravana: return EType.Cock;
+			case Nakshatra.Dhanishta:
+			case Nakshatra.Satabisha:
+			case Nakshatra.PoorvaBhadra:
+			case Nakshatra.UttaraBhadra:
+			case Nakshatra.Revati: return EType.Peacock;
 		}
 
 		Debug.Assert(false, "KutaVibhanga::getType");

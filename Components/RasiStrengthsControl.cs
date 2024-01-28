@@ -24,9 +24,9 @@ using System.Windows.Forms;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -314,7 +314,7 @@ public class RasiStrengthsControl : Form
 	{
 		public UserOptions()
 		{
-			Division = new Division(Vargas.DivisionType.Rasi);
+			Division = new Division(DivisionType.Rasi);
 		}
 
 		[PGNotVisible]
@@ -325,7 +325,7 @@ public class RasiStrengthsControl : Form
 		}
 
 		[PGDisplayName("Vargas")]
-		public Vargas.DivisionType UIDivision
+		public DivisionType UIDivision
 		{
 			get => Division.MultipleDivisions[0].Varga;
 			set => Division = new Division(value);

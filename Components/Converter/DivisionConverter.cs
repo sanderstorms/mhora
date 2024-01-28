@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Tables;
 
 namespace Mhora.Components.Converter;
 
@@ -38,7 +38,7 @@ internal class DivisionConverter : ExpandableObjectConverter
 
 	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
 	{
-		return new Division(Vargas.DivisionType.Rasi);
+		return new Division(DivisionType.Rasi);
 	}
 
 	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)

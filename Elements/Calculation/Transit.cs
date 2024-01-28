@@ -18,22 +18,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using Mhora.Components.Delegates;
+using Mhora.Definitions;
 using Mhora.SwissEph;
 
 namespace Mhora.Elements.Calculation;
 
 public class Transit
 {
-	private readonly Body.BodyType b;
+	private readonly Body b;
 	private readonly Horoscope h;
 
 	public Transit(Horoscope _h)
 	{
 		h = _h;
-		b = Body.BodyType.Other;
+		b = Body.Other;
 	}
 
-	public Transit(Horoscope _h, Body.BodyType _b)
+	public Transit(Horoscope _h, Body _b)
 	{
 		h = _h;
 		b = _b;
@@ -42,7 +43,7 @@ public class Transit
 
 	public Longitude LongitudeOfSun(double ut, ref bool bDirRetro)
 	{
-		var bp = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
+		var bp = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
 		if (bp.SpeedLongitude >= 0)
 		{
 			bDirRetro = false;
@@ -57,12 +58,12 @@ public class Transit
 
 	public Longitude GenericLongitude(double ut, ref bool bDirRetro)
 	{
-		if (b == Body.BodyType.Lagna)
+		if (b == Body.Lagna)
 		{
 			return new Longitude(h.Lagna(ut));
 		}
 
-		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, Body.Type.Other);
+		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, BodyType.Other);
 		if (bp.SpeedLongitude >= 0)
 		{
 			bDirRetro = false;
@@ -83,8 +84,8 @@ public class Transit
 
 	public Longitude LongitudeOfTithi(double ut)
 	{
-		var bp_sun  = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
-		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
+		var bp_sun  = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
+		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
 		var rel     = bp_moon.Longitude.Sub(bp_sun.Longitude);
 		return rel;
 	}
@@ -97,7 +98,7 @@ public class Transit
 
 	public Longitude LongitudeOfMoon(double ut)
 	{
-		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
+		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
 		return bp_moon.Longitude.Add(0);
 	}
 
@@ -109,8 +110,8 @@ public class Transit
 
 	public Longitude LongitudeOfSunMoonYoga(double ut)
 	{
-		var bp_sun  = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha);
-		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha);
+		var bp_sun  = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
+		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
 		var rel     = bp_moon.Longitude.Add(bp_sun.Longitude);
 		return rel;
 	}
@@ -167,7 +168,7 @@ public class Transit
 		return LinearSearchBinary(ut_start, ut_middle, lon_to_find, func);
 	}
 
-	public double NonLinearSearch(double ut, Body.BodyType b, Longitude lon_to_find, ReturnLon func)
+	public double NonLinearSearch(double ut, Body b, Longitude lon_to_find, ReturnLon func)
 	{
 		var rDir_start = false;
 		var rDir_end   = false;

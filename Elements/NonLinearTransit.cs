@@ -1,5 +1,5 @@
 using System;
-using Mhora.Elements.Calculation;
+using Mhora.Definitions;
 using Mhora.SwissEph;
 
 namespace Mhora.Elements;
@@ -9,26 +9,26 @@ namespace Mhora.Elements;
 /// </summary>
 public class NonLinearTransit
 {
-	private readonly Body.BodyType _b;
+	private readonly Body _b;
 	private readonly Horoscope _h;
 
-	public NonLinearTransit(Horoscope h, Body.BodyType b)
+	public NonLinearTransit(Horoscope h, Body b)
 	{
 		this._h       = h;
 		this._b = b;
 	}
 
-	public int BodyNameToSweph(Body.BodyType b)
+	public int BodyNameToSweph(Body b)
 	{
 		switch (b)
 		{
-			case Body.BodyType.Sun:     return sweph.SE_SUN;
-			case Body.BodyType.Moon:    return sweph.SE_MOON;
-			case Body.BodyType.Mars:    return sweph.SE_MARS;
-			case Body.BodyType.Mercury: return sweph.SE_MERCURY;
-			case Body.BodyType.Jupiter: return sweph.SE_JUPITER;
-			case Body.BodyType.Venus:   return sweph.SE_VENUS;
-			case Body.BodyType.Saturn:  return sweph.SE_SATURN;
+			case Body.Sun:     return sweph.SE_SUN;
+			case Body.Moon:    return sweph.SE_MOON;
+			case Body.Mars:    return sweph.SE_MARS;
+			case Body.Mercury: return sweph.SE_MERCURY;
+			case Body.Jupiter: return sweph.SE_JUPITER;
+			case Body.Venus:   return sweph.SE_VENUS;
+			case Body.Saturn:  return sweph.SE_SATURN;
 			default:                throw new Exception();
 		}
 	}
@@ -36,7 +36,7 @@ public class NonLinearTransit
 	public Longitude GetLongitude(double ut, ref bool bForwardDir)
 	{
 		var swephBody = BodyNameToSweph(_b);
-		var bp        = _h.CalculateSingleBodyPosition(ut, swephBody, _b, Body.Type.Other);
+		var bp        = _h.CalculateSingleBodyPosition(ut, swephBody, _b, BodyType.Other);
 		if (bp.SpeedLongitude >= 0)
 		{
 			bForwardDir = true;

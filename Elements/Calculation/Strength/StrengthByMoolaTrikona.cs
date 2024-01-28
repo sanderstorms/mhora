@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has more planets in moola trikona
@@ -26,7 +28,7 @@ public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGrah
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
 		var valm = Value(m);
 		var valn = Value(n);
@@ -67,7 +69,7 @@ public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGrah
 		var ret = 0;
 		foreach (DivisionPosition dp in StdDivPos)
 		{
-			if (dp.Type != Body.Type.Graha)
+			if (dp.BodyType != BodyType.Graha)
 			{
 				continue;
 			}
@@ -83,7 +85,7 @@ public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGrah
 		return ret;
 	}
 
-	public int Value(Body.BodyType b)
+	public int Value(Body b)
 	{
 		if (H.GetPosition(b).ToDivisionPosition(Dtype).IsInMoolaTrikona())
 		{

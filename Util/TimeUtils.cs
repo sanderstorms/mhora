@@ -1,5 +1,5 @@
 ﻿using System;
-using Mhora.Elements.Calculation;
+using Mhora.Elements;
 using Mhora.SwissEph;
 
 namespace Mhora.Util;

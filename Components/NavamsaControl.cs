@@ -23,8 +23,8 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Mhora.Chart;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 
 namespace Mhora.Components;
 
@@ -187,18 +187,18 @@ public class NavamsaControl : MhoraControl
 		g.DrawEllipse(pn_grey, -105, -105, 210, 210);
 		g.DrawEllipse(pn_grey, -115, -115, 230, 230);
 
-		var bodies = new Body.BodyType[10]
+		var bodies = new Body[10]
 		{
-			Body.BodyType.Lagna,
-			Body.BodyType.Sun,
-			Body.BodyType.Moon,
-			Body.BodyType.Mars,
-			Body.BodyType.Mercury,
-			Body.BodyType.Jupiter,
-			Body.BodyType.Venus,
-			Body.BodyType.Saturn,
-			Body.BodyType.Rahu,
-			Body.BodyType.Ketu
+			Body.Lagna,
+			Body.Sun,
+			Body.Moon,
+			Body.Mars,
+			Body.Mercury,
+			Body.Jupiter,
+			Body.Venus,
+			Body.Saturn,
+			Body.Rahu,
+			Body.Ketu
 		};
 
 		for (var i = 0; i < 12; i++)
@@ -244,7 +244,7 @@ public class NavamsaControl : MhoraControl
 			g.DrawLine(p, 105, 0, 115, 0);
 		}
 
-		var dist_sat = h.GetPosition(Body.BodyType.Saturn).Distance;
+		var dist_sat = h.GetPosition(Body.Saturn).Distance;
 		foreach (var b in bodies)
 		{
 			var   pn_b = new Pen(MhoraGlobalOptions.Instance.GetBinduColor(b));

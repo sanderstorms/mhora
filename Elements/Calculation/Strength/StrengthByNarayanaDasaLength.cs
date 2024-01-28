@@ -16,6 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
 using Mhora.Elements.Dasas;
 
 namespace Mhora.Elements.Calculation.Strength;
@@ -28,7 +29,7 @@ public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStreng
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
 		var a = Value(m);
 		var b = Value(n);
@@ -69,7 +70,7 @@ public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStreng
 		return Dasa.NarayanaDasaLength((zh), pl);
 	}
 
-	protected int Value(Body.BodyType bm)
+	protected int Value(Body bm)
 	{
 		var zm = H.GetPosition(bm).ToDivisionPosition(Dtype).ZodiacHouse;
 		return Value(zm);

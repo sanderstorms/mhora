@@ -24,8 +24,8 @@ using Mhora.Components.Panchanga;
 using Mhora.Components.Transit;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
-using Mhora.Elements.Calculation;
-using Mhora.Elements.Dasas.Yearly;
+using Mhora.Elements;
+using Mhora.Elements.Dasas.YearlyDasa;
 using Mhora.Util;
 
 namespace Mhora.Components.Jhora;

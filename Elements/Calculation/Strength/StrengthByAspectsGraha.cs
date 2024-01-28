@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has more Graha drishtis of Jupiter, Mercury and Lord
@@ -26,7 +28,7 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
 		var a = Value(m);
 		var b = Value(n);
@@ -65,8 +67,8 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		var val = 0;
 		var bl  = GetStrengthLord(zodiacHouse);
 		var dl  = H.GetPosition(bl).ToDivisionPosition(Dtype);
-		var dj  = H.GetPosition(Body.BodyType.Jupiter).ToDivisionPosition(Dtype);
-		var dm  = H.GetPosition(Body.BodyType.Mercury).ToDivisionPosition(Dtype);
+		var dj  = H.GetPosition(Body.Jupiter).ToDivisionPosition(Dtype);
+		var dm  = H.GetPosition(Body.Mercury).ToDivisionPosition(Dtype);
 
 		var zh = (zodiacHouse);
 		if (dl.GrahaDristi(zh) || dl.ZodiacHouse == zodiacHouse)
@@ -87,7 +89,7 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		return val;
 	}
 
-	protected int Value(Body.BodyType bm)
+	protected int Value(Body bm)
 	{
 		return Value(H.GetPosition(bm).ToDivisionPosition(Dtype).ZodiacHouse);
 	}

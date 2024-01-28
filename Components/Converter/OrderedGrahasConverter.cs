@@ -21,7 +21,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-using Mhora.Elements;
+using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 
 namespace Mhora.Components.Converter;
@@ -52,34 +52,34 @@ internal class OrderedGrahasConverter : ExpandableObjectConverter
 			switch (szh)
 			{
 				case "as":
-					al.Add(Body.BodyType.Lagna);
+					al.Add(Body.Lagna);
 					break;
 				case "su":
-					al.Add(Body.BodyType.Sun);
+					al.Add(Body.Sun);
 					break;
 				case "mo":
-					al.Add(Body.BodyType.Moon);
+					al.Add(Body.Moon);
 					break;
 				case "ma":
-					al.Add(Body.BodyType.Mars);
+					al.Add(Body.Mars);
 					break;
 				case "me":
-					al.Add(Body.BodyType.Mercury);
+					al.Add(Body.Mercury);
 					break;
 				case "ju":
-					al.Add(Body.BodyType.Jupiter);
+					al.Add(Body.Jupiter);
 					break;
 				case "ve":
-					al.Add(Body.BodyType.Venus);
+					al.Add(Body.Venus);
 					break;
 				case "sa":
-					al.Add(Body.BodyType.Saturn);
+					al.Add(Body.Saturn);
 					break;
 				case "ra":
-					al.Add(Body.BodyType.Rahu);
+					al.Add(Body.Rahu);
 					break;
 				case "ke":
-					al.Add(Body.BodyType.Ketu);
+					al.Add(Body.Ketu);
 					break;
 			}
 		}

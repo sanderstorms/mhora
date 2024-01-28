@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has its Lord in its house
@@ -26,7 +28,7 @@ public class StrengthByLordInOwnHouse : BaseStrength, IStrengthRasi, IStrengthGr
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
 		var zm = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse;
 		var zn = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse;
@@ -57,8 +59,8 @@ public class StrengthByLordInOwnHouse : BaseStrength, IStrengthRasi, IStrengthGr
 		var zh = (zodiacHouse);
 		var bl = GetStrengthLord(zh);
 		var pl = H.GetPosition(bl).ToDivisionPosition(Dtype);
-		var pj = H.GetPosition(Body.BodyType.Jupiter).ToDivisionPosition(Dtype);
-		var pm = H.GetPosition(Body.BodyType.Mercury).ToDivisionPosition(Dtype);
+		var pj = H.GetPosition(Body.Jupiter).ToDivisionPosition(Dtype);
+		var pm = H.GetPosition(Body.Mercury).ToDivisionPosition(Dtype);
 
 		if (pl.GrahaDristi(zh))
 		{

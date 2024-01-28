@@ -25,12 +25,12 @@ using Mhora.Components.Panchanga;
 using Mhora.Components.Transit;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
-using Mhora.Elements.Dasas.Graha;
-using Mhora.Elements.Dasas.Nakshatra;
-using Mhora.Elements.Dasas.Rasi;
-using Mhora.Elements.Dasas.Yearly;
+using Mhora.Elements.Dasas.GrahaDasa;
+using Mhora.Elements.Dasas.NakshatraDasa;
+using Mhora.Elements.Dasas.RasiDasa;
+using Mhora.Elements.Dasas.YearlyDasa;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -240,8 +240,8 @@ public class MhoraControlContainer : UserControl
 				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 				var ut_start = td_pravesh.AddYears(0).ToUniversalTime();
 				var ut_end   = td_pravesh.AddYears(1).ToUniversalTime();
-				var sp_start = h.CalculateSingleBodyPosition(ut_start.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
-				var sp_end   = h.CalculateSingleBodyPosition(ut_end.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
+				var sp_start = h.CalculateSingleBodyPosition(ut_start.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
+				var sp_end   = h.CalculateSingleBodyPosition(ut_end.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
 				var lDiff    = sp_end.Longitude.Sub(sp_start.Longitude);
 				var diff     = lDiff.Value;
 				if (diff < 120)

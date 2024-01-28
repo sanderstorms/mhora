@@ -21,17 +21,17 @@ using System.Collections;
 using System.ComponentModel;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
+using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
-using Mhora.Tables;
 
 namespace Mhora.Database.Settings;
 
 public class RasiDasaUserOptions : ICloneable
 {
 	protected Horoscope             H;
-	protected Body.BodyType             MCoLordAqu;
-	protected Body.BodyType             MCoLordSco;
+	protected Body             MCoLordAqu;
+	protected Body             MCoLordSco;
 	protected Division              MDtype;
 	protected OrderedZodiacHouses   MKetuExceptions;
 	protected ArrayList             MRules;
@@ -47,7 +47,7 @@ public class RasiDasaUserOptions : ICloneable
 		MSeventhStrengths = new OrderedZodiacHouses[6];
 		MSaturnExceptions = new OrderedZodiacHouses();
 		MKetuExceptions   = new OrderedZodiacHouses();
-		MDtype            = new Division(Vargas.DivisionType.Rasi);
+		MDtype            = new Division(DivisionType.Rasi);
 
 		CalculateCoLords();
 		CalculateExceptions();
@@ -63,7 +63,7 @@ public class RasiDasaUserOptions : ICloneable
 	}
 
 	[PGDisplayName("Division")]
-	public Vargas.DivisionType UiVarga
+	public DivisionType UiVarga
 	{
 		get => MDtype.MultipleDivisions[0].Varga;
 		set => MDtype = new Division(value);
@@ -89,7 +89,7 @@ public class RasiDasaUserOptions : ICloneable
 
 	[PropertyOrder(101)]
 	[PGDisplayName("Lord of Aquarius")]
-	public Body.BodyType ColordAqu
+	public Body ColordAqu
 	{
 		get => MCoLordAqu;
 		set => MCoLordAqu = value;
@@ -97,7 +97,7 @@ public class RasiDasaUserOptions : ICloneable
 
 	[PropertyOrder(102)]
 	[PGDisplayName("Lord of Scorpio")]
-	public Body.BodyType ColordSco
+	public Body ColordSco
 	{
 		get => MCoLordSco;
 		set => MCoLordSco = value;
@@ -207,15 +207,15 @@ public class RasiDasaUserOptions : ICloneable
 
 	public void CalculateSeed()
 	{
-		MSeed      = H.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(Division).ZodiacHouse;
+		MSeed      = H.GetPosition(Body.Lagna).ToDivisionPosition(Division).ZodiacHouse;
 		MSeedHouse = 1;
 	}
 
 	public void CalculateCoLords()
 	{
 		var fs = new FindStronger(H, MDtype, FindStronger.RulesStrongerCoLord(H));
-		MCoLordAqu = fs.StrongerGraha(Body.BodyType.Saturn, Body.BodyType.Rahu, true);
-		MCoLordSco = fs.StrongerGraha(Body.BodyType.Mars, Body.BodyType.Ketu, true);
+		MCoLordAqu = fs.StrongerGraha(Body.Saturn, Body.Rahu, true);
+		MCoLordSco = fs.StrongerGraha(Body.Mars, Body.Ketu, true);
 	}
 
 	public void CalculateExceptions()
@@ -223,8 +223,8 @@ public class RasiDasaUserOptions : ICloneable
 		KetuExceptions.houses.Clear();
 		SaturnExceptions.houses.Clear();
 
-		var zhKetu = H.GetPosition(Body.BodyType.Ketu).ToDivisionPosition(Division).ZodiacHouse;
-		var zhSat  = H.GetPosition(Body.BodyType.Saturn).ToDivisionPosition(Division).ZodiacHouse;
+		var zhKetu = H.GetPosition(Body.Ketu).ToDivisionPosition(Division).ZodiacHouse;
+		var zhSat  = H.GetPosition(Body.Saturn).ToDivisionPosition(Division).ZodiacHouse;
 
 		if (zhKetu != zhSat)
 		{
@@ -236,8 +236,8 @@ public class RasiDasaUserOptions : ICloneable
 			var rule = new ArrayList();
 			rule.Add(FindStronger.EGrahaStrength.Longitude);
 			var fs = new FindStronger(H, Division, rule);
-			var b  = fs.StrongerGraha(Body.BodyType.Saturn, Body.BodyType.Ketu, false);
-			if (b == Body.BodyType.Ketu)
+			var b  = fs.StrongerGraha(Body.Saturn, Body.Ketu, false);
+			if (b == Body.Ketu)
 			{
 				MKetuExceptions.houses.Add(zhKetu);
 			}

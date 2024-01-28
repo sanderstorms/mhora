@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using Mhora.Elements.Calculation;
+using Mhora.Elements;
 using Mhora.Util;
 
 namespace Mhora.SwissEph.Helpers;

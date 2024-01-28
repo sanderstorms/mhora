@@ -24,6 +24,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using Mhora.Components.Converter;
 using Mhora.Components.Property;
+using Mhora.Definitions;
 using Mhora.Tables;
 
 namespace Mhora.Elements;
@@ -34,7 +35,7 @@ public class Division : ICloneable
 {
 	private SingleDivision[] mMultipleDivisions;
 
-	public Division(Vargas.DivisionType _dtype)
+	public Division(DivisionType _dtype)
 	{
 		mMultipleDivisions = new[]
 		{
@@ -54,7 +55,7 @@ public class Division : ICloneable
 	{
 		mMultipleDivisions = new[]
 		{
-			new SingleDivision(Vargas.DivisionType.Rasi)
+			new SingleDivision(DivisionType.Rasi)
 		};
 	}
 
@@ -155,16 +156,16 @@ public class Division : ICloneable
 	[TypeConverter(typeof(SingleDivisionConverter))]
 	public class SingleDivision : ICloneable
 	{
-		private Vargas.DivisionType mDtype;
+		private DivisionType mDtype;
 		private int                 mNumParts;
 
-		public SingleDivision(Vargas.DivisionType _dtype, int _numParts)
+		public SingleDivision(DivisionType _dtype, int _numParts)
 		{
 			mDtype    = _dtype;
 			mNumParts = _numParts;
 		}
 
-		public SingleDivision(Vargas.DivisionType _dtype)
+		public SingleDivision(DivisionType _dtype)
 		{
 			mDtype    = _dtype;
 			mNumParts = _dtype.NumPartsInDivision();
@@ -172,11 +173,11 @@ public class Division : ICloneable
 
 		public SingleDivision()
 		{
-			mDtype    = Vargas.DivisionType.Rasi;
+			mDtype    = DivisionType.Rasi;
 			mNumParts = 1;
 		}
 
-		public Vargas.DivisionType Varga
+		public DivisionType Varga
 		{
 			get => mDtype;
 			set => mDtype = value;

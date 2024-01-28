@@ -26,8 +26,8 @@ using Mhora.Chart;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.Tables;
 using Mhora.Util;
 
@@ -58,7 +58,7 @@ public class AshtakavargaControl : MhoraControl
 
 
 	private readonly IContainer          components = null;
-	private readonly Body.BodyType[]         innerBodies;
+	private readonly Body[]         innerBodies;
 	private readonly AshtakavargaOptions userOptions;
 
 	private Ashtakavarga  av;
@@ -82,7 +82,7 @@ public class AshtakavargaControl : MhoraControl
 	private MenuItem    menuPavSun;
 	private MenuItem    menuPavVenus;
 	private MenuItem    menuSav;
-	private Body.BodyType[] outerBodies;
+	private Body[] outerBodies;
 
 	public bool PrintMode = false;
 
@@ -97,19 +97,19 @@ public class AshtakavargaControl : MhoraControl
 		av                                     =  new Ashtakavarga(h, userOptions.VargaType);
 		outerBodies = new[]
 		{
-			Body.BodyType.Sun,
-			Body.BodyType.Moon,
-			Body.BodyType.Mars,
-			Body.BodyType.Mercury,
-			Body.BodyType.Jupiter,
-			Body.BodyType.Venus,
-			Body.BodyType.Saturn,
-			Body.BodyType.Lagna
+			Body.Sun,
+			Body.Moon,
+			Body.Mars,
+			Body.Mercury,
+			Body.Jupiter,
+			Body.Venus,
+			Body.Saturn,
+			Body.Lagna
 		};
 
 		b_black = new SolidBrush(Color.Black);
 
-		innerBodies = (Body.BodyType[]) outerBodies.Clone();
+		innerBodies = (Body[]) outerBodies.Clone();
 		resetContextMenuChecks(menuSav);
 		onRedisplay(MhoraGlobalOptions.Instance);
 	}
@@ -291,7 +291,7 @@ public class AshtakavargaControl : MhoraControl
 			g.Clear(BackColor);
 		}
 
-		var        lagna  = h.GetPosition(Body.BodyType.Lagna).Longitude.ToZodiacHouse();
+		var        lagna  = h.GetPosition(Body.Lagna).Longitude.ToZodiacHouse();
 		var        offset = 5;
 		var        size   = Math.Min(bmpBuffer.Width, bmpBuffer.Height) / 3 - 10;
 		IDrawChart dc     = null;
@@ -309,17 +309,17 @@ public class AshtakavargaControl : MhoraControl
 				break;
 		}
 
-		Body.BodyType[] bin_body =
+		Body[] bin_body =
 		{
-			Body.BodyType.Lagna,
-			Body.BodyType.Lagna,
-			Body.BodyType.Sun,
-			Body.BodyType.Moon,
-			Body.BodyType.Mars,
-			Body.BodyType.Mercury,
-			Body.BodyType.Jupiter,
-			Body.BodyType.Venus,
-			Body.BodyType.Saturn
+			Body.Lagna,
+			Body.Lagna,
+			Body.Sun,
+			Body.Moon,
+			Body.Mars,
+			Body.Mercury,
+			Body.Jupiter,
+			Body.Venus,
+			Body.Saturn
 		};
 		var bins = new int[9][];
 
@@ -332,25 +332,25 @@ public class AshtakavargaControl : MhoraControl
 			bins[0] = av.GetSavRao();
 		}
 
-		bins[1] = av.GetPav(Body.BodyType.Lagna);
-		bins[2] = av.GetPav(Body.BodyType.Sun);
-		bins[3] = av.GetPav(Body.BodyType.Moon);
-		bins[4] = av.GetPav(Body.BodyType.Mars);
-		bins[5] = av.GetPav(Body.BodyType.Mercury);
-		bins[6] = av.GetPav(Body.BodyType.Jupiter);
-		bins[7] = av.GetPav(Body.BodyType.Venus);
-		bins[8] = av.GetPav(Body.BodyType.Saturn);
+		bins[1] = av.GetPav(Body.Lagna);
+		bins[2] = av.GetPav(Body.Sun);
+		bins[3] = av.GetPav(Body.Moon);
+		bins[4] = av.GetPav(Body.Mars);
+		bins[5] = av.GetPav(Body.Mercury);
+		bins[6] = av.GetPav(Body.Jupiter);
+		bins[7] = av.GetPav(Body.Venus);
+		bins[8] = av.GetPav(Body.Saturn);
 
 		var strs = new string[9];
 		strs[0] = "SAV";
-		strs[1] = Body.BodyType.Lagna.Name();
-		strs[2] = Body.BodyType.Sun.Name();
-		strs[3] = Body.BodyType.Moon.Name();
-		strs[4] = Body.BodyType.Mars.Name();
-		strs[5] = Body.BodyType.Mercury.Name();
-		strs[6] = Body.BodyType.Jupiter.Name();
-		strs[7] = Body.BodyType.Venus.Name();
-		strs[8] = Body.BodyType.Saturn.Name();
+		strs[1] = Body.Lagna.Name();
+		strs[2] = Body.Sun.Name();
+		strs[3] = Body.Moon.Name();
+		strs[4] = Body.Mars.Name();
+		strs[5] = Body.Mercury.Name();
+		strs[6] = Body.Jupiter.Name();
+		strs[7] = Body.Venus.Name();
+		strs[8] = Body.Saturn.Name();
 
 		Brush b_background = new SolidBrush(MhoraGlobalOptions.Instance.ChakraBackgroundColor);
 		for (var i = 0; i < 3; i++)
@@ -504,7 +504,7 @@ public class AshtakavargaControl : MhoraControl
 
 	private void DrawChanchaInner(Graphics g)
 	{
-		var        lagna = h.GetPosition(Body.BodyType.Lagna).Longitude.ToZodiacHouse();
+		var        lagna = h.GetPosition(Body.Lagna).Longitude.ToZodiacHouse();
 		IDrawChart dc    = null;
 		switch (userOptions.ChartStyle)
 		{
@@ -728,14 +728,14 @@ public class AshtakavargaControl : MhoraControl
 	{
 		outerBodies = new[]
 		{
-			Body.BodyType.Sun,
-			Body.BodyType.Moon,
-			Body.BodyType.Mars,
-			Body.BodyType.Mercury,
-			Body.BodyType.Jupiter,
-			Body.BodyType.Venus,
-			Body.BodyType.Saturn,
-			Body.BodyType.Lagna
+			Body.Sun,
+			Body.Moon,
+			Body.Mars,
+			Body.Mercury,
+			Body.Jupiter,
+			Body.Venus,
+			Body.Saturn,
+			Body.Lagna
 		};
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
@@ -747,7 +747,7 @@ public class AshtakavargaControl : MhoraControl
 	{
 		outerBodies = new[]
 		{
-			Body.BodyType.Sun
+			Body.Sun
 		};
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
@@ -759,7 +759,7 @@ public class AshtakavargaControl : MhoraControl
 	{
 		outerBodies = new[]
 		{
-			Body.BodyType.Moon
+			Body.Moon
 		};
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
@@ -771,7 +771,7 @@ public class AshtakavargaControl : MhoraControl
 	{
 		outerBodies = new[]
 		{
-			Body.BodyType.Jupiter
+			Body.Jupiter
 		};
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
@@ -783,7 +783,7 @@ public class AshtakavargaControl : MhoraControl
 	{
 		outerBodies = new[]
 		{
-			Body.BodyType.Mars
+			Body.Mars
 		};
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
@@ -795,7 +795,7 @@ public class AshtakavargaControl : MhoraControl
 	{
 		outerBodies = new[]
 		{
-			Body.BodyType.Mercury
+			Body.Mercury
 		};
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
@@ -807,7 +807,7 @@ public class AshtakavargaControl : MhoraControl
 	{
 		outerBodies = new[]
 		{
-			Body.BodyType.Venus
+			Body.Venus
 		};
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
@@ -819,7 +819,7 @@ public class AshtakavargaControl : MhoraControl
 	{
 		outerBodies = new[]
 		{
-			Body.BodyType.Saturn
+			Body.Saturn
 		};
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
@@ -831,7 +831,7 @@ public class AshtakavargaControl : MhoraControl
 	{
 		outerBodies = new[]
 		{
-			Body.BodyType.Lagna
+			Body.Lagna
 		};
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
@@ -925,7 +925,7 @@ public class AshtakavargaControl : MhoraControl
 	{
 		public AshtakavargaOptions()
 		{
-			VargaType  = new Division(Vargas.DivisionType.Rasi);
+			VargaType  = new Division(DivisionType.Rasi);
 			ChartStyle = (EChartStyle) MhoraGlobalOptions.Instance.VargaStyle;
 		}
 
@@ -937,7 +937,7 @@ public class AshtakavargaControl : MhoraControl
 		}
 
 		[PGDisplayName("Vargas Type")]
-		public Vargas.DivisionType UIVargaType
+		public DivisionType UIVargaType
 		{
 			get => VargaType.MultipleDivisions[0].Varga;
 			set => VargaType = new Division(value);

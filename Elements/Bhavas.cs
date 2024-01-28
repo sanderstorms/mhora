@@ -1,4 +1,5 @@
 ﻿using System;
+using Mhora.Definitions;
 
 namespace Mhora.Elements
 {
@@ -290,98 +291,98 @@ namespace Mhora.Elements
 			return false;
 		}
 
-		public static bool IsKaraka(this Bhava bhava, Body.BodyType graha)
+		public static bool IsKaraka(this Bhava bhava, Body graha)
 		{
 			switch (bhava)
 			{
 				case Bhava.LagnaBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Sun:
+						case Body.Sun:
 							return true;
 					}
 					break;
 				case Bhava.DhanaBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Jupiter:
+						case Body.Jupiter:
 							return true;
 					}
 					break;
 				case Bhava.SahajaBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Mars:
+						case Body.Mars:
 							return true;
 					}
 					break;
 				case Bhava.SukhaBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Moon:
-						case Body.BodyType.Mercury:
+						case Body.Moon:
+						case Body.Mercury:
 							return true;
 					}
 					break;
 				case Bhava.PutraBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Jupiter:
+						case Body.Jupiter:
 							return true;
 					}
 					break;
 				case Bhava.ShatruBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Mars:
-						case Body.BodyType.Saturn:
-						case Body.BodyType.Ketu:
+						case Body.Mars:
+						case Body.Saturn:
+						case Body.Ketu:
 							return true;
 					}
 					break;
 				case Bhava.JayaBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Venus:
+						case Body.Venus:
 							return true;
 					}
 					break;
 				case Bhava.MrtyuBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Saturn:
+						case Body.Saturn:
 							return true;
 					}
 					break;
 				case Bhava.DharmaBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Jupiter:
+						case Body.Jupiter:
 							return true;
 					}
 					break;
 				case Bhava.KarmaBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Jupiter:
-						case Body.BodyType.Sun:
-						case Body.BodyType.Mercury:
-						case Body.BodyType.Saturn:
+						case Body.Jupiter:
+						case Body.Sun:
+						case Body.Mercury:
+						case Body.Saturn:
 							return true;
 					}
 					break;
 				case Bhava.LabhaBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Jupiter:
+						case Body.Jupiter:
 							return true;
 					}
 					break;
 				case Bhava.VyayaBhava:
 					switch (graha)
 					{
-						case Body.BodyType.Saturn:
-						case Body.BodyType.Rahu:
+						case Body.Saturn:
+						case Body.Rahu:
 							return true;
 					}
 					break;

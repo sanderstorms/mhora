@@ -22,6 +22,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
@@ -330,7 +331,7 @@ public class PanchangaPrintDocument : PrintDocument
 				for (var j = 0; j < numNaks; j++)
 				{
 					var pmi  = (PanchangaMomentInfo) globals.nakshatras_ut[local.nakshatra_index_start + 1 + j];
-					var n    = (Nakshatras.Nakshatra) pmi.info;
+					var n    = (Nakshatra) pmi.info;
 					var mNak = h.Moment(pmi.ut);
 					g.DrawString(n.Name(), f, b, nak_name_offset, j                                            * f.Height);
 					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, nak_time_offset, j * f.Height);

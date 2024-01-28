@@ -22,7 +22,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Mhora.Components.Property;
-using Mhora.Tables;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Calculation;
 /*
@@ -69,7 +69,7 @@ public class FindYogas
 	{
 		this._h       = h;
 		_dtype  = dtype;
-		_zhLagna = this._h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
+		_zhLagna = this._h.GetPosition(Body.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
 	}
 
 	public static void Test(Horoscope h, Division dtype)
@@ -230,7 +230,7 @@ public class FindYogas
 
 		cats = TrimWhitespace(cats);
 
-		Body.BodyType        b1,   b2, b3;
+		Body        b1,   b2, b3;
 		ZodiacHouse zh1,  zh2, zh;
 		int              hse1, hse2;
 
@@ -313,9 +313,9 @@ public class FindYogas
 				b2   = StringToBody(simpleVals[6]);
 				zh   = (ZodiacHouse) _h.GetPosition(b1).ToDivisionPosition(evalDiv).ZodiacHouse;
 				zh1  = zh.Add(hse1);
-				for (var i = (int) Body.BodyType.Sun; i <= (int) Body.BodyType.Lagna; i++)
+				for (var i = (int) Body.Sun; i <= (int) Body.Lagna; i++)
 				{
-					var bExc = (Body.BodyType) i;
+					var bExc = (Body) i;
 					if (bExc != b2 && _h.GetPosition(bExc).ToDivisionPosition(evalDiv).ZodiacHouse == zh1)
 					{
 						return true;
@@ -480,43 +480,43 @@ public class FindYogas
 	}
 
 
-	public Body.BodyType StringToBody(string s)
+	public Body StringToBody(string s)
 	{
 		switch (s)
 		{
 			case "su":
-			case "sun": return Body.BodyType.Sun;
+			case "sun": return Body.Sun;
 			case "mo":
 			case "moo":
-			case "moon": return Body.BodyType.Moon;
+			case "moon": return Body.Moon;
 			case "ma":
 			case "mar":
-			case "mars": return Body.BodyType.Mars;
+			case "mars": return Body.Mars;
 			case "me":
 			case "mer":
-			case "mercury": return Body.BodyType.Mercury;
+			case "mercury": return Body.Mercury;
 			case "ju":
 			case "jup":
-			case "jupiter": return Body.BodyType.Jupiter;
+			case "jupiter": return Body.Jupiter;
 			case "ve":
 			case "ven":
-			case "venus": return Body.BodyType.Venus;
+			case "venus": return Body.Venus;
 			case "sa":
 			case "sat":
-			case "saturn": return Body.BodyType.Saturn;
+			case "saturn": return Body.Saturn;
 			case "ra":
 			case "rah":
-			case "rahu": return Body.BodyType.Rahu;
+			case "rahu": return Body.Rahu;
 			case "ke":
 			case "ket":
-			case "ketu": return Body.BodyType.Ketu;
+			case "ketu": return Body.Ketu;
 			case "la":
 			case "lag":
 			case "lagna":
-			case "asc": return Body.BodyType.Lagna;
+			case "asc": return Body.Lagna;
 			default:
 				MessageBox.Show("Unknown body: " + s + GetRuleName());
-				return Body.BodyType.Other;
+				return Body.Other;
 		}
 	}
 
@@ -525,22 +525,22 @@ public class FindYogas
 		// trim trailing @
 		s = s.Substring(0, s.Length - 1);
 
-		Vargas.DivisionType dtype;
+		DivisionType dtype;
 		switch (s)
 		{
 			case "rasi":
 			case "d-1":
 			case "d1":
-				dtype = Vargas.DivisionType.Rasi;
+				dtype = DivisionType.Rasi;
 				break;
 			case "navamsa":
 			case "d-9":
 			case "d9":
-				dtype = Vargas.DivisionType.Navamsa;
+				dtype = DivisionType.Navamsa;
 				break;
 			default:
 				MessageBox.Show("Unknown division: " + s + GetRuleName());
-				dtype = Vargas.DivisionType.Rasi;
+				dtype = DivisionType.Rasi;
 				break;
 		}
 
@@ -645,7 +645,7 @@ public class FindYogas
 	{
 		var              tempVal = 0;
 		ZodiacHouse zh;
-		Body.BodyType        b;
+		Body        b;
 		switch (cat)
 		{
 			case "rasi:":

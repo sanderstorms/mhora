@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Diagnostics;
+using Mhora.Definitions;
 
 namespace Mhora.Elements;
 
@@ -45,7 +46,7 @@ public class KarakaComparer : IComparable
 	public double GetOffset()
 	{
 		var off = GetPosition.Longitude.ToZodiacHouseOffset();
-		if (GetPosition.Name == Body.BodyType.Rahu)
+		if (GetPosition.Name == Body.Rahu)
 		{
 			off = 30.0 - off;
 		}

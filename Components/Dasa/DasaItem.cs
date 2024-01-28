@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Windows.Forms;
 using Mhora.Database.Settings;
-using Mhora.Elements;
+using Mhora.Definitions;
 using Mhora.Elements.Dasas;
 using Mhora.Util;
 
@@ -40,7 +40,7 @@ public class DasaItem : ListViewItem
 		Entry = entry;
 	}
 
-	public DasaItem(Body.BodyType graha, double startUt, double dasaLength, int level, string shortDesc)
+	public DasaItem(Body graha, double startUt, double dasaLength, int level, string shortDesc)
 	{
 		Construct(new DasaEntry(graha, startUt, dasaLength, level, shortDesc));
 	}

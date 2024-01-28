@@ -17,6 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements;
 
 public static class Karanas
@@ -33,26 +35,26 @@ public static class Karanas
 		return (Karana) tnum;
 	}
 
-	public static Body.BodyType GetLord(this Karana value)
+	public static Body GetLord(this Karana value)
 	{
 		switch (value)
 		{
-			case Karana.Kimstughna:  return Body.BodyType.Moon;
-			case Karana.Sakuna:      return Body.BodyType.Mars;
-			case Karana.Chatushpada: return Body.BodyType.Sun;
-			case Karana.Naga:        return Body.BodyType.Venus;
+			case Karana.Kimstughna:  return Body.Moon;
+			case Karana.Sakuna:      return Body.Mars;
+			case Karana.Chatushpada: return Body.Sun;
+			case Karana.Naga:        return Body.Venus;
 			default:
 			{
 				var vn = ((int) value - 1).NormalizeInc(1, 7);
 				switch (vn)
 				{
-					case 1:  return Body.BodyType.Sun;
-					case 2:  return Body.BodyType.Moon;
-					case 3:  return Body.BodyType.Mars;
-					case 4:  return Body.BodyType.Mercury;
-					case 5:  return Body.BodyType.Jupiter;
-					case 6:  return Body.BodyType.Venus;
-					default: return Body.BodyType.Saturn;
+					case 1:  return Body.Sun;
+					case 2:  return Body.Moon;
+					case 3:  return Body.Mars;
+					case 4:  return Body.Mercury;
+					case 5:  return Body.Jupiter;
+					case 6:  return Body.Venus;
+					default: return Body.Saturn;
 				}
 			}
 		}
