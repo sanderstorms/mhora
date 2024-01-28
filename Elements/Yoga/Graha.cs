@@ -287,6 +287,21 @@ namespace Mhora.Elements.Yoga
 		public List<Graha>  MutualAspect { get; }
 		public List<Graha>  Conjunct     { get; }
 
+		public bool IsStrong()
+		{
+			if (IsDebilitated)
+			{
+				return (false);
+			}
+
+			if (IsExalted || IsMoolTrikona || IsInOwnHouse)
+			{
+				return (true);
+			}
+
+			return (false);
+		}
+
 		//Planets placed in 2nd, 3rd, 4th, 10th, 11th & 12th from a planet act as its Temporary Friend
 		public bool IsTemporalFriend(Graha graha)
 		{

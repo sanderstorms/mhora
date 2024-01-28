@@ -605,16 +605,11 @@ namespace Mhora.Elements.Yoga
 			var ninthRashi = Rashi.Find(Bhava.DharmaBhava, varga);
 			var ninthLord = ninthRashi.ZodiacHouse.LordOfSign();
 			graha = Graha.Find(ninthLord, varga);
-			if (graha.IsDebilitated)
-			{
-				return (false);
-			}
 
-			if (graha.IsExalted || graha.IsMoolTrikona || graha.IsInOwnHouse)
+			if (graha.IsStrong())
 			{
 				return (true);
 			}
-
 			return (false);
 		}
 	}
