@@ -13,8 +13,6 @@ namespace Mhora.Elements.Yoga
 		private readonly DivisionPosition _dp;
 		private readonly Rashi            _rashi;
 
-		private Bhava _bhava;
-
 		protected Graha(DivisionPosition dp, DivisionType varga)
 		{
 			_dp    = dp;
@@ -26,6 +24,7 @@ namespace Mhora.Elements.Yoga
 			MutualAspect = new List<Graha>();
 			Conjunct     = new List<Graha>();
 			RashiDrishti = new List<Graha>();
+			Ownership    = new List<Rashi>();
 		}
 
 
@@ -71,6 +70,22 @@ namespace Mhora.Elements.Yoga
 		{
 			var grahas = Grahas(varga);
 			return grahas.Find(graha => graha._dp.Body == body);
+		}
+
+		public bool Owns(Rashi rashi)
+		{
+			if (rashi.ZodiacHouse.LordOfSign() == Body)
+			{
+				return (true);
+			}
+
+			if (Body == Body.Rahu)
+				return (rashi.ZodiacHouse == ZodiacHouse.Aqu);
+
+			if (Body == Body.Ketu)
+				return (rashi.ZodiacHouse == ZodiacHouse.Sco);
+
+			return (false);
 		}
 
 		public bool IsBenefic
@@ -133,9 +148,47 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
+
+		public bool IsFunctionalBenefic
+		{
+			get
+			{
+				if (IsFunctionalMalefic)
+				{
+					return (false);
+				}
+
+				foreach (var rashi in Ownership)
+				{
+					if (rashi.Bhava.IsTrikona())
+					{
+						return (true);
+					}
+				}
+
+				return (false);
+			}
+		}
+
+		public bool IsFunctionalMalefic
+		{
+			get
+			{
+				foreach (var rashi in Ownership)
+				{
+					if (rashi.Bhava.IsDushtana())
+					{
+						return (true);
+					}
+				}
+
+				return (false);
+			}
+		}
+
 		public BodyType     BodyType => _dp.BodyType;
 		public Body         Body     => _dp.Body;
-		public Bhava        Bhava    => _bhava;
+		public Bhava        Bhava    => Rasi.Bhava;
 		public Rashi        Rasi     => _rashi;
 		public DivisionType Varga    => _varga;
 
@@ -218,40 +271,17 @@ namespace Mhora.Elements.Yoga
 		public Graha Exchange  { get; private set; }
 
 
+		public List<Rashi>  Ownership    { get; }
 		public List<Graha>  RashiDrishti { get; }
 		public List <Graha> AspectFrom   { get; }
 		public List<Graha>  AspectTo     { get; }
 		public List<Graha>  MutualAspect { get; }
 		public List<Graha>  Conjunct     { get; }
 
-		public int HousesTo(Graha graha)
-		{
-			var bhava = graha._bhava.Index() - _bhava.Index() + 1;
-
-			if (bhava <= 0)
-			{
-				bhava = 12 + bhava;
-			}
-
-			return bhava;
-		}
-
-		public int HousesFrom(Graha graha)
-		{
-			var bhava = _bhava.Index() - graha._bhava.Index()  + 1;
-
-			if (bhava <= 0)
-			{
-				bhava = 12 + bhava;
-			}
-
-			return bhava;
-		}
-
 		//Planets placed in 2nd, 3rd, 4th, 10th, 11th & 12th from a planet act as its Temporary Friend
 		public bool IsTemporalFriend(Graha graha)
 		{
-			switch (HousesTo(graha))
+			switch (Bhava.HousesTo(graha.Bhava))
 			{
 				case 2:
 				case 3:
@@ -267,7 +297,7 @@ namespace Mhora.Elements.Yoga
 		//Planets placed in 1st, 5th, 6th, 7th, 8th, 9th from a planet act as a Temporary Enemy
 		public bool IsTemporalEnemy(Graha graha)
 		{
-			switch (HousesTo(graha))
+			switch (Bhava.HousesTo(graha.Bhava))
 			{
 				case 1:
 				case 5:
@@ -327,23 +357,6 @@ namespace Mhora.Elements.Yoga
 
 		private void Examine()
 		{
-			if (_dp.Body == Body.Lagna)
-			{
-				_bhava = Bhava.LagnaBhava;
-			}
-			else
-			{
-				var lagna = Find(Body.Lagna, _varga);
-				var bhava = _dp.ZodiacHouse.Index() - lagna.Rasi.ZodiacHouse.Index() + 1;
-
-				if (bhava <= 0)
-				{
-					bhava = 12 + bhava;
-				}
-
-				_bhava = (Bhava) bhava;
-			}
-
 			if (_dp.IsDebilitatedPhalita())
 			{
 				Conditions |= Conditions.Debilitated;
@@ -364,9 +377,17 @@ namespace Mhora.Elements.Yoga
 				Conditions |= Conditions.OwnHouse;
 			}
 
-			if (_bhava.IsKaraka(_dp.Body))
+			if (Bhava.IsKaraka(_dp.Body))
 			{
 				Conditions |= Conditions.KarakaPlanet;
+			}
+
+			foreach (var rashi in Rashi.Rashis(_varga))
+			{
+				if (Owns(rashi))
+				{
+					Ownership.Add(rashi);
+				}
 			}
 
 			foreach (var graha in _grahas [_varga])

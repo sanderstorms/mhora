@@ -2,6 +2,7 @@
 {
 	public enum Bhava
 	{
+		None = 0,
 		LagnaBhava  = 1,
 		DhanaBhava  = 2,
 		SahajaBhava = 3,

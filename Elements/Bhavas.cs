@@ -1,5 +1,7 @@
 ﻿using System;
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
+using Mhora.Util;
 
 namespace Mhora.Elements
 {
@@ -389,6 +391,30 @@ namespace Mhora.Elements
 				}
 			
 			return false;
+		}
+
+		public static int HousesTo(this Bhava bhava, Bhava other)
+		{
+			var houses = other.Index() - bhava.Index() + 1;
+
+			if (houses <= 0)
+			{
+				houses = 12 + houses;
+			}
+
+			return houses;
+		}
+
+		public static int HousesFrom(this Bhava bhava, Bhava other)
+		{
+			var houses = bhava.Index() - other.Index()  + 1;
+
+			if (houses <= 0)
+			{
+				houses = 12 + houses;
+			}
+
+			return houses;
 		}
 	}
 }

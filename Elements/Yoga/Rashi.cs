@@ -9,11 +9,14 @@ namespace Mhora.Elements.Yoga
 	{
 		private static readonly Dictionary<DivisionType, List <Rashi>> _rashis = new();
 
+		private readonly DivisionType _varga;
 		private readonly ZodiacHouse  _zh;
+		private          Bhava        _bhava;
 
-		protected Rashi(ZodiacHouse zh)
+		protected Rashi(ZodiacHouse zh, DivisionType varga)
 		{
-			_zh = zh;
+			_varga = varga;
+			_zh    = zh;
 			Grahas = new List<Graha>();
 		}
 
@@ -39,54 +42,62 @@ namespace Mhora.Elements.Yoga
 
 		public ZodiacHouse ZodiacHouse => _zh;
 
+		public Bhava Bhava
+		{
+			get
+			{
+				if (_bhava == Bhava.None)
+				{
+					var grahas = Graha.Grahas(_varga);
+					var lagna  = grahas.Find(graha => graha.Body == Body.Lagna).Rasi.ZodiacHouse;
+					_bhava = (Bhava) lagna.NumHousesBetween(ZodiacHouse);
+				}
+
+				return _bhava;
+			}
+		}
+
 		public static Rashi FindOrAdd(ZodiacHouse zh, DivisionType varga)
 		{
-			if (_rashis.TryGetValue(varga, out var rashis) == false)
-			{
-				rashis = new List<Rashi>();
-				_rashis.Add(varga, rashis);
-			}
-
+			var rashis = Rashis(varga);
 			var rashi = rashis.Find (rashi => rashi._zh == zh);
 			if (rashi == null)
 			{
-				rashi = new Rashi (zh);
+				rashi = new Rashi (zh, varga);
 				rashis.Add (rashi);
 			}
 			return rashi;
 		}
 
-		public static Rashi Find(ZodiacHouse zh, DivisionType varga)
+		public static List <Rashi> Rashis (DivisionType varga)
 		{
 			if (_rashis.TryGetValue(varga, out var rashis) == false)
 			{
 				rashis = new List<Rashi>();
 				_rashis.Add(varga, rashis);
+				foreach (ZodiacHouse zh in Enum.GetValues(typeof(ZodiacHouse)))
+				{
+					rashis.Add(new Rashi(zh,varga));
+				}
 			}
 
-			return rashis.Find (rashi => rashi._zh == zh);
+			return (rashis);
 		}
 
 		public List<Graha> Grahas { get; set;}
 
 		public static bool Examine(DivisionType varga)
 		{
-			if (_rashis.TryGetValue(varga, out var rashis) == false)
-			{
-				rashis = new List<Rashi>();
-				_rashis.Add(varga, rashis);
-				return (false);
-			}
 
-			if (rashis.Count < 12)
-			{
-				return (false);
-			}
-
+			var rashis = Rashis(varga);
 			var grahas = Graha.Grahas(varga);
+
+			var lagna = grahas.Find(graha => graha.Body == Body.Lagna).Rasi.ZodiacHouse;
+		
 
 			foreach (var rashi in rashis)
 			{
+				rashi._bhava = (Bhava) lagna.NumHousesBetween(rashi.ZodiacHouse);
 				rashi.Grahas = grahas.FindAll(graha => graha.Rasi == rashi);
 			}
 			return (true);
@@ -97,17 +108,7 @@ namespace Mhora.Elements.Yoga
 		{
 			if (_rashis.TryGetValue(varga, out var rashis) == false)
 			{
-				rashis = new List<Rashi>();
-				_rashis.Add(varga, rashis);
-			}
-			else
-			{
-				rashis.Clear();
-			}
-
-			foreach (ZodiacHouse zh in Enum.GetValues(typeof(ZodiacHouse)))
-			{
-				rashis.Add(new Rashi(zh));
+				rashis = Rashis(varga);
 			}
 		}
 	}

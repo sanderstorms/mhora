@@ -439,6 +439,37 @@ public static class ZodiacHouses
 		return (ret);
 	}
 
+	public static Body LordOfSign(this ZodiacHouse zodiacHouse)
+	{
+		switch (zodiacHouse)
+		{
+			case ZodiacHouse.Ari: 
+			case ZodiacHouse.Sco:
+				return Body.Mars;
+			case ZodiacHouse.Tau:
+			case ZodiacHouse.Lib:
+				return Body.Venus;
+			case ZodiacHouse.Gem:
+			case ZodiacHouse.Vir:
+				return Body.Venus;
+			case ZodiacHouse.Can:
+				return Body.Moon;
+			case ZodiacHouse.Leo:
+				return Body.Sun;
+			case ZodiacHouse.Sag:
+			case ZodiacHouse.Pis:
+				return Body.Jupiter;
+			case ZodiacHouse.Cap:
+			case ZodiacHouse.Aqu:
+				return Body.Saturn;
+			default:
+				Debug.Assert(false, "ZodiacHouse::KalachakraMirrorSign");
+				break;
+		}
+
+		return Body.Lagna;
+	}
+
 
 	public static bool RasiDristi(this ZodiacHouse zodiacHouse, ZodiacHouse b)
 	{

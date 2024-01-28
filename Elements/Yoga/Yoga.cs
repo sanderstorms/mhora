@@ -25,7 +25,7 @@ namespace Mhora.Elements.Yoga
 					return (false);
 				}
 
-				if (graha.HousesFrom(first) > 7)
+				if (graha.Bhava.HousesFrom(first.Bhava) > 7)
 				{
 					return (false);
 				}
@@ -121,7 +121,7 @@ namespace Mhora.Elements.Yoga
 
 			foreach (var graha in planets)
 			{
-				var placement = graha.HousesFrom(first);
+				var placement = graha.Bhava.HousesFrom(first.Bhava);
 				if ((placement != 1) && (placement != 7))
 				{
 					return (false);
