@@ -31,9 +31,9 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 
 	public LagnaKendradiRasiDasa(Horoscope h)
 	{
-		var fsRasi = new FindStronger(this._h, _mDtype, FindStronger.RulesNarayanaDasaRasi(this._h));
-		this._h       = h;
-		_options = new RasiDasaUserOptions(this._h, FindStronger.RulesNarayanaDasaRasi(this._h));
+		var fsRasi = new FindStronger(_h, _mDtype, FindStronger.RulesNarayanaDasaRasi(_h));
+		_h       = h;
+		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNarayanaDasaRasi(_h));
 	}
 
 	public void RecalculateOptions()

@@ -14,8 +14,8 @@ public class NonLinearTransit
 
 	public NonLinearTransit(Horoscope h, Body b)
 	{
-		this._h       = h;
-		this._b = b;
+		_h       = h;
+		_b = b;
 	}
 
 	public int BodyNameToSweph(Body b)

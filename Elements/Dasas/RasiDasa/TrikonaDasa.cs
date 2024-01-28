@@ -46,8 +46,8 @@ public class TrikonaDasa : Dasa, IDasa
 
 	public TrikonaDasa(Horoscope h)
 	{
-		this._h       = h;
-		_options = new UserOptions(this._h, FindStronger.RulesNavamsaDasaRasi(this._h));
+		_h       = h;
+		_options = new UserOptions(_h, FindStronger.RulesNavamsaDasaRasi(_h));
 	}
 
 	public void RecalculateOptions()

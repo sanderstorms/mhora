@@ -31,8 +31,8 @@ public class KaranaChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa, INaksha
 	{
 		Common       = this;
 		KaranaCommon = this;
-		this._h      = h;
-		_cd          = new ChaturashitiSamaDasa(this._h);
+		_h      = h;
+		_cd          = new ChaturashitiSamaDasa(_h);
 	}
 
 	public override object GetOptions()

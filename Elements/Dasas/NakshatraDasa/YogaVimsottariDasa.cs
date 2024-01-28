@@ -36,8 +36,8 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 		_options    = new UserOptions();
 		Common     = this;
 		YogaCommon = this;
-		this._h    = h;
-		_vd         = new VimsottariDasa(this._h);
+		_h    = h;
+		_vd         = new VimsottariDasa(_h);
 	}
 
 	public override object GetOptions()

@@ -29,7 +29,7 @@ public class YogaPraveshDasa : Dasa, IDasa
 
 	public YogaPraveshDasa(Horoscope h)
 	{
-		this._h = h;
+		_h = h;
 	}
 
 	public object GetOptions()

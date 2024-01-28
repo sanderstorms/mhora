@@ -29,8 +29,8 @@ public class ShoolaDasa : Dasa, IDasa
 
 	public ShoolaDasa(Horoscope h)
 	{
-		this._h       = h;
-		_options = new RasiDasaUserOptions(this._h, FindStronger.RulesNarayanaDasaRasi(this._h));
+		_h       = h;
+		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNarayanaDasaRasi(_h));
 	}
 
 	public double ParamAyus()

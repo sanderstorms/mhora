@@ -27,7 +27,7 @@ public class TajakaDasa : Dasa, IDasa
 
 	public TajakaDasa(Horoscope h)
 	{
-		this._h = h;
+		_h = h;
 	}
 
 	public object GetOptions()

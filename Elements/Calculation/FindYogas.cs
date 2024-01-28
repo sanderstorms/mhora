@@ -67,9 +67,9 @@ public class FindYogas
 
 	public FindYogas(Horoscope h, Division dtype)
 	{
-		this._h       = h;
+		_h       = h;
 		_dtype  = dtype;
-		_zhLagna = this._h.GetPosition(Body.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
+		_zhLagna = _h.GetPosition(Body.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
 	}
 
 	public static void Test(Horoscope h, Division dtype)

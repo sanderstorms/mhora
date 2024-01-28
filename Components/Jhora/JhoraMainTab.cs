@@ -81,11 +81,11 @@ public class JhoraMainTab : MhoraControl
 		//
 		// TODO: Add any constructor code after InitializeComponent call
 		//
-		base.h                                      =  h;
+		this.h                                      =  h;
 		MhoraGlobalOptions.DisplayPrefsChanged += OnRedisplay;
 		OnRedisplay(MhoraGlobalOptions.Instance);
 
-		AddControlToTab(_tabBasics, new JhoraBasicsTab(base.h));
+		AddControlToTab(_tabBasics, new JhoraBasicsTab(this.h));
 		//this.bTabBasicsLoaded = true;
 	}
 

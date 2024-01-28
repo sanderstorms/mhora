@@ -29,7 +29,7 @@ public class DwisaptatiSamaDasa : NakshatraDasa, INakshatraDasa
 	public DwisaptatiSamaDasa(Horoscope h)
 	{
 		Common  = this;
-		this._h = h;
+		_h = h;
 	}
 
 	public override object GetOptions()

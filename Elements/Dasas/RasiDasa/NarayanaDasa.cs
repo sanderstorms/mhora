@@ -31,9 +31,9 @@ public class NarayanaDasa : Dasa, IDasa
 
 	public NarayanaDasa(Horoscope h)
 	{
-		this._h       = h;
+		_h       = h;
 		BSama   = false;
-		Options = new RasiDasaUserOptions(this._h, FindStronger.RulesNarayanaDasaRasi(this._h));
+		Options = new RasiDasaUserOptions(_h, FindStronger.RulesNarayanaDasaRasi(_h));
 	}
 
 	public void RecalculateOptions()

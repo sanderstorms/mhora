@@ -35,9 +35,9 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 	public KarakaKendradiGrahaDasa(Horoscope h)
 	{
-		this._h = h;
-		_options = new UserOptions(this._h);
-		_vd      = new VimsottariDasa(this._h);
+		_h = h;
+		_options = new UserOptions(_h);
+		_vd      = new VimsottariDasa(_h);
 	}
 
 	public double ParamAyus()
@@ -207,8 +207,8 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 		public UserOptions(Horoscope h)
 		{
-			this._h           = h;
-			_stdDivPos = this._h.CalculateDivisionPositions(Dtype);
+			_h           = h;
+			_stdDivPos = _h.CalculateDivisionPositions(Dtype);
 			Recalculate();
 		}
 

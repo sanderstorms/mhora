@@ -29,7 +29,7 @@ public class DwadashottariDasa : NakshatraDasa, INakshatraDasa
 	public DwadashottariDasa(Horoscope h)
 	{
 		Common  = this;
-		this._h = h;
+		_h = h;
 	}
 
 	public override object GetOptions()

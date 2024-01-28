@@ -14,8 +14,8 @@ public class Retrogression
 		//Debug.Assert((int)_b >= (int)Body.Type.Moon &&
 		//	(int)_b <= (int)Body.Type.Saturn, 
 		//	string.Format("Retrogression::Retrogression. Invalid Body {0}", _b));
-		this._h       = h;
-		this._b = b;
+		_h       = h;
+		_b = b;
 	}
 
 	public void GetRetroSolarCusps(ref Longitude start, ref Longitude end)

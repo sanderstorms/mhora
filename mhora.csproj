@@ -179,6 +179,7 @@
     <Compile Include="Definitions\Muhurta.cs" />
     <Compile Include="Definitions\Nakshatra.cs" />
     <Compile Include="Definitions\Nakshatra28.cs" />
+    <Compile Include="Elements\Yoga\Yoga.cs" />
     <Compile Include="Elements\ZodiacHouses.cs" />
     <Compile Include="Definitions\Tithi.cs" />
     <Compile Include="Elements\Yoga\Conditions.cs" />

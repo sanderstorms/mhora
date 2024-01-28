@@ -30,8 +30,8 @@ public class CharaDasa : Dasa, IDasa
 
 	public CharaDasa(Horoscope h)
 	{
-		this._h       = h;
-		_options = new RasiDasaUserOptions(this._h, FindStronger.RulesNavamsaDasaRasi(this._h));
+		_h       = h;
+		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNavamsaDasaRasi(_h));
 	}
 
 	public double ParamAyus()

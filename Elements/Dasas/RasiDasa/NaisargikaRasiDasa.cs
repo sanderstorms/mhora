@@ -30,7 +30,7 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 
 	public NaisargikaRasiDasa(Horoscope h)
 	{
-		this._h       = h;
+		_h       = h;
 		_options = new UserOptions();
 	}
 

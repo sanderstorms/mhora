@@ -29,7 +29,7 @@ public class TithiPraveshDasa : Dasa, IDasa
 
 	public TithiPraveshDasa(Horoscope h)
 	{
-		this._h = h;
+		_h = h;
 	}
 
 	public object GetOptions()

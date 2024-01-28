@@ -37,10 +37,7 @@ namespace Mhora.Elements.Yoga
 			return (false);
 		}
 
-		public static implicit operator ZodiacHouse (Rashi rashi)
-		{
-			return (rashi._zh);
-		}
+		public ZodiacHouse ZodiacHouse => _zh;
 
 		public static Rashi FindOrAdd(ZodiacHouse zh, DivisionType varga)
 		{

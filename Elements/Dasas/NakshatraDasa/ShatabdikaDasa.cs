@@ -29,7 +29,7 @@ public class ShatabdikaDasa : NakshatraDasa, INakshatraDasa
 	public ShatabdikaDasa(Horoscope h)
 	{
 		Common  = this;
-		this._h = h;
+		_h = h;
 	}
 
 	public override object GetOptions()

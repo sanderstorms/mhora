@@ -34,8 +34,8 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 	public NaisargikaGrahaDasa(Horoscope h)
 	{
-		this._h       = h;
-		_options = new UserOptions(this._h);
+		_h       = h;
+		_options = new UserOptions(_h);
 	}
 
 	public double ParamAyus()
@@ -244,9 +244,9 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 		public UserOptions(Horoscope h)
 		{
-			this._h           = h;
-			_stdDivPos = this._h.CalculateDivisionPositions(Dtype);
-			var fs = new FindStronger(this._h, Dtype, FindStronger.RulesStrongerCoLord(this._h));
+			_h           = h;
+			_stdDivPos = _h.CalculateDivisionPositions(Dtype);
+			var fs = new FindStronger(_h, Dtype, FindStronger.RulesStrongerCoLord(_h));
 			MLordSco          = fs.StrongerGraha(Body.Mars, Body.Ketu, true);
 			MLordAqu          = fs.StrongerGraha(Body.Saturn, Body.Rahu, true);
 			ExcludeNodes      = true;

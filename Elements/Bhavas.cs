@@ -63,7 +63,7 @@ namespace Mhora.Elements
 				break;
 			}
 
-			if (bhava.Trikona())
+			if (bhava.IsTrikona())
 			{
 				classification |= Class.Trikona;
 			}
@@ -181,7 +181,7 @@ namespace Mhora.Elements
 			return false;
 		}
 
-		public static bool Trikona (this Bhava bhava)
+		public static bool IsTrikona (this Bhava bhava)
 		{
 			switch (bhava)
 			{

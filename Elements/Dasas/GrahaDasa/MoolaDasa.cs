@@ -35,9 +35,9 @@ public class MoolaDasa : Dasa, IDasa
 
 	public MoolaDasa(Horoscope h)
 	{
-		this._h = h;
-		_options = new UserOptions(this._h);
-		_vd      = new VimsottariDasa(this._h);
+		_h = h;
+		_options = new UserOptions(_h);
+		_vd      = new VimsottariDasa(_h);
 	}
 
 	public double ParamAyus()
@@ -190,8 +190,8 @@ public class MoolaDasa : Dasa, IDasa
 
 		public UserOptions(Horoscope h)
 		{
-			this._h     = h;
-			_stdDivPos = this._h.CalculateDivisionPositions(Dtype);
+			_h     = h;
+			_stdDivPos = _h.CalculateDivisionPositions(Dtype);
 			MSeedBody   = Body.Lagna;
 			CalculateRasiStrengths();
 			CalculateGrahaStrengths();

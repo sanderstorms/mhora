@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Mhora.Definitions;
 using Mhora.Util;
 
@@ -44,6 +45,15 @@ namespace Mhora.Elements.Yoga
 			return (grahas);
 		}
 
+		public static List<Graha> Planets(DivisionType varga)
+		{
+			var planets = Grahas(varga).FindAll(graha => graha.BodyType == BodyType.Graha);
+			planets.RemoveAll(graha => graha.Body == Body.Ketu || graha.Body == Body.Rahu);
+			planets.Sort((x, y) => x.Bhava.CompareTo(y.Bhava));
+			return (planets);
+		}
+	
+
 		public static Graha FindOrAdd(DivisionPosition dp, DivisionType varga)
 		{
 			var grahas = Grahas(varga);
@@ -63,8 +73,71 @@ namespace Mhora.Elements.Yoga
 			return grahas.Find(graha => graha._dp.Body == body);
 		}
 
-		public Rashi Rasi => _rashi;
-		public DivisionType Varga => _varga;
+		public bool IsBenefic
+		{
+			get
+			{
+				switch (Body)
+				{
+					case Body.Sun:
+					case Body.Mars:
+					case Body.Rahu:
+					case Body.Ketu:
+					case Body.Saturn:
+						return false;
+
+					case Body.Jupiter:
+					case Body.Venus:
+						return (true);
+				}
+
+				if (Body == Body.Moon)
+				{
+					var tithi = _dp.Longitude.ToTithi();
+					if (tithi >= Tithi.KrishnaPratipada)
+					{
+						return (false);
+					}
+					return (true);
+				}
+
+				if (Body == Body.Mercury)
+				{
+					if (Bhava.IsDushtana())
+					{
+						return (false);
+					}
+
+
+					if (Conjunct.Count > 0)
+					{
+						foreach (var graha in Conjunct)
+						{
+							if (graha.IsBenefic == false)
+							{
+								return (false);
+							}
+						}
+
+						if ((Before.IsBenefic == false) && (After.IsBenefic == false))
+						{
+							return (false);
+						}
+
+						return (true);
+
+					}
+				}
+
+				return (true);
+			}
+		}
+
+		public BodyType     BodyType => _dp.BodyType;
+		public Body         Body     => _dp.Body;
+		public Bhava        Bhava    => _bhava;
+		public Rashi        Rasi     => _rashi;
+		public DivisionType Varga    => _varga;
 
 		public Conditions Conditions { get; private set; }
 
@@ -82,6 +155,65 @@ namespace Mhora.Elements.Yoga
 				return (_houseLord);
 			}
 		}
+
+		private Graha _before;
+		public Graha Before
+		{
+			get
+			{
+				if (_before == null)
+				{
+					var grahas = _grahas[_varga];
+
+					for (int index = 0; index < grahas.Count; index++)
+					{
+						if (grahas[index].Body == Body.Mercury)
+						{
+							if (index == 0)
+							{
+								_before = grahas.Last();
+							}
+							else
+							{
+								_before = grahas [index - 1];
+							}
+							break;
+						}
+					}
+				}
+				return _before;
+			}
+		}
+
+		private Graha _after;
+		public Graha After
+		{
+			get
+			{
+				if (_after == null)
+				{
+					var grahas = _grahas[_varga];
+
+					for (int index = 0; index < grahas.Count; index++)
+					{
+						if (grahas[index].Body == Body.Mercury)
+						{
+							if (index == grahas.Count - 1)
+							{
+								_after = grahas.First();
+							}
+							else
+							{
+								_after = grahas [index + 1];
+							}
+							break;
+						}
+					}
+				}
+				return _after;
+			}
+		}
+
 
 		public Graha Exchange  { get; private set; }
 
@@ -202,7 +334,7 @@ namespace Mhora.Elements.Yoga
 			else
 			{
 				var lagna = Find(Body.Lagna, _varga);
-				var bhava = _dp.ZodiacHouse.Index() - ((ZodiacHouse) lagna.Rasi).Index() + 1;
+				var bhava = _dp.ZodiacHouse.Index() - lagna.Rasi.ZodiacHouse.Index() + 1;
 
 				if (bhava <= 0)
 				{
@@ -239,6 +371,10 @@ namespace Mhora.Elements.Yoga
 
 			foreach (var graha in _grahas [_varga])
 			{
+				if (graha.Body == Body)
+				{
+					continue;
+				}
 				if (_dp.GrahaDristi(graha._dp.ZodiacHouse))
 				{
 					AspectTo.Add(graha);
@@ -249,7 +385,7 @@ namespace Mhora.Elements.Yoga
 					AspectFrom.Add(graha);
 				}
 
-				if (graha._dp.ZodiacHouse.RasiDristi(_rashi))
+				if (graha._dp.ZodiacHouse.RasiDristi(_rashi.ZodiacHouse))
 				{
 					RashiDrishti.Add(graha);
 				}
@@ -312,6 +448,8 @@ namespace Mhora.Elements.Yoga
 					grahas.Add(new Graha(dp, varga));
 				}
 			}
+
+			grahas.Sort((x, y) => x._dp.Longitude.CompareTo(y._dp.Longitude));
 
 			foreach (var graha in grahas)
 			{

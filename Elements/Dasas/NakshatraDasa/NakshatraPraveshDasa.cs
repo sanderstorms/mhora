@@ -29,7 +29,7 @@ public class NakshatraPraveshDasa : Dasa, IDasa
 
 	public NakshatraPraveshDasa(Horoscope h)
 	{
-		this._h = h;
+		_h = h;
 	}
 
 	public object GetOptions()

@@ -155,17 +155,17 @@ public class FindStronger
 
 	public FindStronger(Horoscope h, Division dtype, ArrayList rules, bool useSimpleLords)
 	{
-		this._h         = h;
-		this._dtype     = dtype;
-		this._rules     = rules;
+		_h         = h;
+		_dtype     = dtype;
+		_rules     = rules;
 		_bUseSimpleLords = useSimpleLords;
 	}
 
 	public FindStronger(Horoscope h, Division dtype, ArrayList rules)
 	{
-		this._h         = h;
-		this._dtype     = dtype;
-		this._rules     = rules;
+		_h         = h;
+		_dtype     = dtype;
+		_rules     = rules;
 		_bUseSimpleLords = false;
 	}
 

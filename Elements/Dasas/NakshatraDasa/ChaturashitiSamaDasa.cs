@@ -29,7 +29,7 @@ public class ChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa
 	public ChaturashitiSamaDasa(Horoscope h)
 	{
 		Common  = this;
-		this._h = h;
+		_h = h;
 	}
 
 	public override object GetOptions()

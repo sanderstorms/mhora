@@ -38,8 +38,8 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		_options     = new UserOptions();
 		TithiCommon = this;
 		Common      = this;
-		this._h     = h;
-		_ad         = new AshtottariDasa(this._h);
+		_h     = h;
+		_ad         = new AshtottariDasa(_h);
 	}
 
 	public override object GetOptions()

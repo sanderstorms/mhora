@@ -28,7 +28,7 @@ public class TattwaDasa : Dasa, IDasa
 
 	public TattwaDasa(Horoscope h)
 	{
-		this._h = h;
+		_h = h;
 	}
 
 	public double ParamAyus()

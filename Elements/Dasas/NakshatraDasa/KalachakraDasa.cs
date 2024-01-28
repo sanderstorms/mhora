@@ -39,7 +39,7 @@ public class KalachakraDasa : Dasa, IDasa
 
 	public KalachakraDasa(Horoscope h)
 	{
-		this._h = h;
+		_h = h;
 
 		var zAri = ZodiacHouse.Ari;
 		var zSag = ZodiacHouse.Sag;

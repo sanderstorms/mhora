@@ -27,7 +27,7 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 
 	public SudarshanaChakraDasa(Horoscope h)
 	{
-		this._h = h;
+		_h = h;
 	}
 
 	public double ParamAyus()

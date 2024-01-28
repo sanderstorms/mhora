@@ -439,11 +439,11 @@ public class BasicCalculationsControl : MhoraControl
 			li.Text = bk.GetPosition.Name.Name();
 			if (vt == ViewType.ViewCharaKarakas)
 			{
-				li.SubItems.Add(Elements.Bodies.Karakas[i]);
+				li.SubItems.Add(Bodies.Karakas[i]);
 			}
 			else
 			{
-				li.SubItems.Add(Elements.Bodies.Karakas7[i]);
+				li.SubItems.Add(Bodies.Karakas7[i]);
 			}
 
 			li.SubItems.Add(string.Format("{0:0.00}", bk.GetOffset()));
@@ -586,11 +586,11 @@ public class BasicCalculationsControl : MhoraControl
 
 			if (dirForward)
 			{
-				l = n.Add(Elements.Bodies.LattaAspects[i]);
+				l = n.Add(Bodies.LattaAspects[i]);
 			}
 			else
 			{
-				l = n.AddReverse(Elements.Bodies.LattaAspects[i]);
+				l = n.AddReverse(Bodies.LattaAspects[i]);
 			}
 
 			var nak_fmt = string.Empty;
@@ -608,7 +608,7 @@ public class BasicCalculationsControl : MhoraControl
 			}
 
 			var li  = new ListViewItem(b.Name());
-			var fmt = string.Format("{0:00}-{1}", Elements.Bodies.LattaAspects[i], l);
+			var fmt = string.Format("{0:00}-{1}", Bodies.LattaAspects[i], l);
 			li.SubItems.Add(fmt);
 			li.SubItems.Add(nak_fmt);
             mList.Items.Add(li);
@@ -911,7 +911,7 @@ public class BasicCalculationsControl : MhoraControl
 
 			if ((int) bp.Name >= (int)Definitions.Body.Sun && (int) bp.Name <= (int)Definitions.Body.Rahu)
 			{
-				li.Text = string.Format("{0}   {1}", li.Text, Elements.Bodies.KarakasS[karaka_indices[(int) bp.Name]]);
+				li.Text = string.Format("{0}   {1}", li.Text, Bodies.KarakasS[karaka_indices[(int) bp.Name]]);
 			}
 
 			li.SubItems.Add(longitudeToString(bp.Longitude));
