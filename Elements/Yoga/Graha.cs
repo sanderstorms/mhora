@@ -164,6 +164,15 @@ namespace Mhora.Elements.Yoga
 					{
 						return (true);
 					}
+
+					if (rashi.Bhava.IsKendra())
+					{
+						var lagna = Find(Body.Lagna, _varga);
+						if (lagna.Body.IsFriend(Body))
+						{
+							return (true);
+						}
+					}
 				}
 
 				return (false);
