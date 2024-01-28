@@ -113,7 +113,7 @@ public abstract class BaseStrength
 		{
 			if (dp.BodyType == BodyType.Graha && dp.ZodiacHouse == zh)
 			{
-				ret.Add(dp.Name);
+				ret.Add(dp.Body);
 			}
 		}
 

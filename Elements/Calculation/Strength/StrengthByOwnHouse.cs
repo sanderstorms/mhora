@@ -79,7 +79,7 @@ public class StrengthByOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
 				continue;
 			}
 
-			ret += Value(dp.Name);
+			ret += Value(dp.Body);
 		}
 
 		return ret;

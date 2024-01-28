@@ -183,7 +183,7 @@
     <Compile Include="Definitions\Tithi.cs" />
     <Compile Include="Elements\Yoga\Conditions.cs" />
     <Compile Include="Elements\Yoga\Graha.cs" />
-    <Compile Include="Elements\Yoga\Rasi.cs" />
+    <Compile Include="Elements\Yoga\Rashi.cs" />
     <Compile Include="Definitions\ZodiacHouse.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

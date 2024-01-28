@@ -479,13 +479,13 @@ public class BasicCalculationsControl : MhoraControl
 		foreach (DivisionPosition dp in al)
 		{
 			var desc = string.Empty;
-			if (dp.Name == Definitions.Body.Other)
+			if (dp.Body == Definitions.Body.Other)
 			{
 				desc = dp.Description;
 			}
 			else
 			{
-				desc = dp.Name.ToString();
+				desc = dp.Body.ToString();
 			}
 
 			var li = new ListViewItem(desc);

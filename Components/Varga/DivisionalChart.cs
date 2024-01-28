@@ -29,6 +29,7 @@ using Mhora.Components.Property;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Yoga;
 using Mhora.Tables;
 using Mhora.Util;
 
@@ -901,8 +902,8 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			f = fBase;
 			if (dp.BodyType == BodyType.Graha || dp.BodyType == BodyType.Lagna)
 			{
-				var bp = h.GetPosition(dp.Name);
-				if (dp.Name == Body.Lagna)
+				var bp = h.GetPosition(dp.Body);
+				if (dp.Body == Body.Lagna)
 				{
 					f = new Font(fBase.Name, fBase.Size, FontStyle.Bold);
 				}
@@ -980,8 +981,8 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		if (PrintMode == false && dp.HasLongitude)
 		{
 			var   pLon = dc.GetBodyPosition(dp.Longitude);
-			var   pn   = new Pen(MhoraGlobalOptions.Instance.GetBinduColor(dp.Name), (float) 0.01);
-			Brush br   = new SolidBrush(MhoraGlobalOptions.Instance.GetBinduColor(dp.Name));
+			var   pn   = new Pen(MhoraGlobalOptions.Instance.GetBinduColor(dp.Body), (float) 0.01);
+			Brush br   = new SolidBrush(MhoraGlobalOptions.Instance.GetBinduColor(dp.Body));
 			g.FillEllipse(br, pLon.X - 2, pLon.Y - 2, 4, 4);
 			//g.DrawEllipse(pn, pLon.X-1, pLon.Y-1, 2, 2);
 			g.DrawEllipse(new Pen(Color.Gray), pLon.X - 2, pLon.Y - 2, 4, 4);
@@ -1392,6 +1393,9 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		arudha_pos       = h.CalculateArudhaDivisionPositions(options.Varga);
 		varnada_pos      = h.CalculateVarnadaDivisionPositions(options.Varga);
 		graha_arudha_pos = h.CalculateGrahaArudhaDivisionPositions(options.Varga);
+
+		Graha.Create(h, options.Varga.MultipleDivisions [0].Varga);
+
 		SetChartStyle(options.ChartStyle);
 		CalculateBindus();
 		Invalidate();

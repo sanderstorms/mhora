@@ -79,7 +79,7 @@ public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGrah
 				continue;
 			}
 
-			ret += Value(dp.Name);
+			ret += Value(dp.Body);
 		}
 
 		return ret;

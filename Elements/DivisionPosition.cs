@@ -31,15 +31,15 @@ public class DivisionPosition
 
 	public double        CuspHigher  { get; set; }
 	public double        CuspLower   { get; set; }
-	public Body Name        { get; set; }
+	public Body Body        { get; set; }
 	public int           Part        { get; set; }
 	public int           RulerIndex  { get; set; }
 	public BodyType     BodyType        { get; set; }
 	public ZodiacHouse   ZodiacHouse { get; set; }
 
-	public DivisionPosition(Body name, BodyType bodyType, ZodiacHouse zodiacHouse, double cuspLower, double cuspHigher, int part)
+	public DivisionPosition(Body body, BodyType bodyType, ZodiacHouse zodiacHouse, double cuspLower, double cuspHigher, int part)
 	{
-		Name         = name;
+		Body         = body;
 		BodyType         = bodyType;
 		ZodiacHouse = zodiacHouse;
 		CuspLower   = cuspLower;
@@ -58,7 +58,7 @@ public class DivisionPosition
 				return _description;
 			}
 
-			return Name.ToShortString();
+			return Body.ToShortString();
 		}
 		set => _description = value;
 	}
@@ -89,7 +89,7 @@ public class DivisionPosition
 
 	public bool IsInMoolaTrikona()
 	{
-		switch (Name)
+		switch (Body)
 		{
 			case Body.Sun:
 				if (ZodiacHouse == ZodiacHouse.Leo)
@@ -162,7 +162,7 @@ public class DivisionPosition
 	public bool IsInOwnHouse()
 	{
 		var zh = ZodiacHouse;
-		switch (Name)
+		switch (Body)
 		{
 			case Body.Sun:
 				if (zh == ZodiacHouse.Leo)
@@ -234,7 +234,7 @@ public class DivisionPosition
 
 	public bool IsExaltedPhalita()
 	{
-		switch (Name)
+		switch (Body)
 		{
 			case Body.Sun:
 				if (ZodiacHouse == ZodiacHouse.Ari)
@@ -306,7 +306,7 @@ public class DivisionPosition
 
 	public bool IsDebilitatedPhalita()
 	{
-		switch (Name)
+		switch (Body)
 		{
 			case Body.Sun:
 				if (ZodiacHouse == ZodiacHouse.Lib)
@@ -384,22 +384,22 @@ public class DivisionPosition
 			return true;
 		}
 
-		if (Name == Body.Jupiter && (num == 5 || num == 9))
+		if (Body == Body.Jupiter && (num == 5 || num == 9))
 		{
 			return true;
 		}
 
-		if (Name == Body.Rahu && (num == 5 || num == 9 || num == 2))
+		if (Body == Body.Rahu && (num == 5 || num == 9 || num == 2))
 		{
 			return true;
 		}
 
-		if (Name == Body.Mars && (num == 4 || num == 8))
+		if (Body == Body.Mars && (num == 4 || num == 8))
 		{
 			return true;
 		}
 
-		if (Name == Body.Saturn && (num == 3 || num == 10))
+		if (Body == Body.Saturn && (num == 3 || num == 10))
 		{
 			return true;
 		}
