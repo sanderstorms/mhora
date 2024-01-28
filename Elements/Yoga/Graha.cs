@@ -302,6 +302,49 @@ namespace Mhora.Elements.Yoga
 			return (false);
 		}
 
+		// F.T.S. - FIRST TIER STRENGTH
+		// S.T.S. = SECOND TIER STRENGHT
+		// F.T.W. = FIRST TIER WEAKNESS
+		// S.T.W. = SECOND TIER WEAKNESS
+		//
+		// 1	
+		// Retrograde	
+		// Assoc/Asp of NB	
+		// Combustion	
+		// Assoc/Asp of NM
+		// 
+		// 2	
+		// Exhalted	
+		// Friendly Sign	
+		// Debilitation	
+		// Enemy Sign
+		// 
+		// 3	
+		// Sva Rasi	
+		// Flanked by NB’s	
+		// “New’ish” Moon	
+		// Flanked by NB’s
+		// 
+		// 4	
+		// Dig Bala	
+		// Winner of War	
+		// Solar or Lunar Eclipse	
+		// Rasi Sandhi
+		// 
+		// 5	
+		// “Full’ish” Moon		
+		// Loses War	
+		// 
+		// 6	
+		// RA/KE Eclipse			
+		public int Strength
+		{
+			get
+			{
+
+			}
+		}
+
 		//Planets placed in 2nd, 3rd, 4th, 10th, 11th & 12th from a planet act as its Temporary Friend
 		public bool IsTemporalFriend(Graha graha)
 		{
