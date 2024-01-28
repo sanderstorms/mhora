@@ -197,8 +197,8 @@ namespace Mhora.Elements.Yoga
 
 		public BodyType     BodyType => _dp.BodyType;
 		public Body         Body     => _dp.Body;
-		public Bhava        Bhava    => Rasi.Bhava;
-		public Rashi        Rasi     => _rashi;
+		public Bhava        Bhava    => Rashi.Bhava;
+		public Rashi        Rashi     => _rashi;
 		public DivisionType Varga    => _varga;
 
 		public Conditions Conditions { get; private set; }
@@ -364,24 +364,29 @@ namespace Mhora.Elements.Yoga
 			return Relation.Neutral;
 		}
 
+		public bool IsDebilitated => _dp.IsDebilitatedPhalita();
+		public bool IsExalted     => _dp.IsExaltedPhalita();
+		public bool IsMoolTrikona => _dp.IsInMoolaTrikona();
+		public bool IsInOwnHouse => _dp.IsInOwnHouse();
+
 		private void Examine()
 		{
-			if (_dp.IsDebilitatedPhalita())
+			if (IsDebilitated)
 			{
 				Conditions |= Conditions.Debilitated;
 			}
 
-			if (_dp.IsExaltedPhalita())
+			if (IsExalted)
 			{
 				Conditions |= Conditions.Exalted;
 			}
 
-			if (_dp.IsInMoolaTrikona())
+			if (IsMoolTrikona)
 			{
 				Conditions |= Conditions.Moolatrikona;
 			}
 
-			if (_dp.IsInOwnHouse())
+			if (IsInOwnHouse)
 			{
 				Conditions |= Conditions.OwnHouse;
 			}

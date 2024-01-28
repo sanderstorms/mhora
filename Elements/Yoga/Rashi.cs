@@ -49,7 +49,7 @@ namespace Mhora.Elements.Yoga
 				if (_bhava == Bhava.None)
 				{
 					var grahas = Graha.Grahas(_varga);
-					var lagna  = grahas.Find(graha => graha.Body == Body.Lagna).Rasi.ZodiacHouse;
+					var lagna  = grahas.Find(graha => graha.Body == Body.Lagna).Rashi.ZodiacHouse;
 					_bhava = (Bhava) lagna.NumHousesBetween(ZodiacHouse);
 				}
 
@@ -92,13 +92,13 @@ namespace Mhora.Elements.Yoga
 			var rashis = Rashis(varga);
 			var grahas = Graha.Grahas(varga);
 
-			var lagna = grahas.Find(graha => graha.Body == Body.Lagna).Rasi.ZodiacHouse;
+			var lagna = grahas.Find(graha => graha.Body == Body.Lagna).Rashi.ZodiacHouse;
 		
 
 			foreach (var rashi in rashis)
 			{
 				rashi._bhava = (Bhava) lagna.NumHousesBetween(rashi.ZodiacHouse);
-				rashi.Grahas = grahas.FindAll(graha => graha.Rasi == rashi);
+				rashi.Grahas = grahas.FindAll(graha => graha.Rashi == rashi);
 			}
 			return (true);
 
@@ -110,6 +110,18 @@ namespace Mhora.Elements.Yoga
 			{
 				rashis = Rashis(varga);
 			}
+		}
+
+		public static Rashi Find(Bhava bhava, DivisionType varga)
+		{
+			var rashis = Rashis(varga);
+			return (rashis.Find(rashi => rashi.Bhava == bhava));
+		}
+
+		public static Rashi Find(ZodiacHouse zh, DivisionType varga)
+		{
+			var rashis = Rashis(varga);
+			return (rashis.Find(rashi => rashi.ZodiacHouse == zh));
 		}
 	}
 }

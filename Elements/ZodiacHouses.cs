@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -37,6 +38,45 @@ public static class ZodiacHouses
 				Trace.Assert(false, "isDaySign internal error");
 				return true;
 		}
+	}
+
+	public static bool IsFixedSign(this ZodiacHouse zodiacHouse)
+	{
+		switch (zodiacHouse)
+		{
+			case ZodiacHouse.Tau:
+			case ZodiacHouse.Leo:
+			case ZodiacHouse.Sco:
+			case ZodiacHouse.Aqu:
+				return (true);
+		}
+		return (false);
+	}
+
+	public static bool IsMoveableSign(this ZodiacHouse zodiacHouse)
+	{
+		switch (zodiacHouse)
+		{
+			case ZodiacHouse.Ari:
+			case ZodiacHouse.Can:
+			case ZodiacHouse.Lib:
+			case ZodiacHouse.Cap:
+				return (true);
+		}
+		return (false);
+	}
+
+	public static bool IsDualSign(this ZodiacHouse zodiacHouse)
+	{
+		switch (zodiacHouse)
+		{
+			case ZodiacHouse.Gem:
+			case ZodiacHouse.Vir:
+			case ZodiacHouse.Sag:
+			case ZodiacHouse.Pis:
+				return (true);
+		}
+		return (false);
 	}
 
 	public static bool IsOdd(this ZodiacHouse zodiacHouse)
