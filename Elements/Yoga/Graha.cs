@@ -130,9 +130,12 @@ namespace Mhora.Elements.Yoga
 					{
 						foreach (var graha in Conjunct)
 						{
-							if (graha.IsBenefic == false)
+							if (graha.Body != Body.Sun)
 							{
-								return (false);
+								if (graha.IsBenefic == false)
+								{
+									return (false);
+								}
 							}
 						}
 
@@ -233,7 +236,7 @@ namespace Mhora.Elements.Yoga
 
 					for (int index = 0; index < grahas.Count; index++)
 					{
-						if (grahas[index].Body == Body.Mercury)
+						if (grahas[index].Body == Body)
 						{
 							if (index == 0)
 							{
@@ -262,7 +265,7 @@ namespace Mhora.Elements.Yoga
 
 					for (int index = 0; index < grahas.Count; index++)
 					{
-						if (grahas[index].Body == Body.Mercury)
+						if (grahas[index].Body == Body)
 						{
 							if (index == grahas.Count - 1)
 							{
@@ -307,6 +310,27 @@ namespace Mhora.Elements.Yoga
 			}
 
 			return (false);
+		}
+
+		//Area of the Dig bala = length of planets-deducted from the weak point of the planets
+		//(if the distance between them is more than 180 degree then it is deducted from 360 degrees)
+		public bool IsDigBala
+		{
+			get
+			{
+				switch (Body)
+				{
+					case Body.Sun:     return (Bhava == Bhava.KarmaBhava);
+					case Body.Moon:    return (Bhava == Bhava.SukhaBhava);
+					case Body.Mars:    return (Bhava == Bhava.KarmaBhava);
+					case Body.Mercury: return (Bhava == Bhava.LagnaBhava);
+					case Body.Jupiter: return (Bhava == Bhava.LagnaBhava);
+					case Body.Venus:   return (Bhava == Bhava.SukhaBhava);
+					case Body.Saturn:  return (Bhava == Bhava.JayaBhava );
+				}
+
+				return (false);
+			}
 		}
 
 		// F.T.S. - FIRST TIER STRENGTH
