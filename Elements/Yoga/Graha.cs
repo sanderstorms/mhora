@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Mhora.Definitions;
+using Mhora.Elements.Calculation;
 using Mhora.Util;
 
 namespace Mhora.Elements.Yoga
@@ -11,6 +12,7 @@ namespace Mhora.Elements.Yoga
 
 		private readonly DivisionType     _varga;
 		private readonly DivisionPosition _dp;
+		private			 Position		  _position;
 		private readonly Rashi            _rashi;
 
 		protected Graha(DivisionPosition dp, DivisionType varga)
@@ -195,6 +197,8 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
+        public bool IsRetrograde => (_position.SpeedLongitude < 0.0);
+
 		public BodyType     BodyType => _dp.BodyType;
 		public Body         Body     => _dp.Body;
 		public Bhava        Bhava    => Rashi.Bhava;
@@ -287,6 +291,9 @@ namespace Mhora.Elements.Yoga
 		public List<Graha>  MutualAspect { get; }
 		public List<Graha>  Conjunct     { get; }
 
+		private double _digBala;
+        public double DigBala => _digBala;
+
 		public bool IsStrong()
 		{
 			if (IsDebilitated)
@@ -341,7 +348,25 @@ namespace Mhora.Elements.Yoga
 		{
 			get
 			{
+				int strength = 0;
+				if (IsRetrograde)
+                {
+                    strength += 2;
+                }
+				if (IsExalted)
+                {
+                    strength += 2;
+                }
+				else if (IsInOwnHouse)
+                {
+                    strength += 2;
+                }
+				if (DigBala > 30)
+                {
+                    strength += 2;
+                }
 
+				return (strength);
 			}
 		}
 
@@ -523,6 +548,7 @@ namespace Mhora.Elements.Yoga
 		public static void Create(Horoscope h, DivisionType varga)
 		{
 			var division = new Division(varga);
+
 			var positions = h.CalculateDivisionPositions(division);
 
 			var grahas = Grahas(varga);
@@ -532,13 +558,14 @@ namespace Mhora.Elements.Yoga
 
 			foreach (DivisionPosition dp in positions)
 			{
-				if (dp.BodyType == BodyType.Graha)
+				if ((dp.BodyType == BodyType.Graha) || (dp.BodyType == BodyType.Lagna))
 				{
-					grahas.Add(new Graha(dp, varga));
-				}
-				else if (dp.BodyType == BodyType.Lagna)
-				{
-					grahas.Add(new Graha(dp, varga));
+					var graha = new Graha(dp, varga)
+                    {
+                        _position = h.GetPosition(dp.Body),
+                        _digBala  = h.DigBala(dp.Body) //Todo rewrite DigBala
+                    };
+                    grahas.Add(graha);
 				}
 			}
 
