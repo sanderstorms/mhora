@@ -284,7 +284,8 @@ namespace Mhora.Elements.Yoga
 		}
 
 
-		public Graha Exchange  { get; private set; }
+		private Graha _exchange;
+		public  Graha Exchange => _exchange;
 
 
 		public List<Rashi>  Ownership    { get; }
@@ -390,9 +391,206 @@ namespace Mhora.Elements.Yoga
                     strength += 2;
                 }
 
+				int st = 0;
+				foreach (var graha in Conjunct)
+				{
+					if (graha.IsBenefic)
+					{
+						st++;
+					}
+					else
+					{
+						st--;
+					}
+				}
+
+				foreach (var graha in AspectFrom)
+				{
+					if (graha.IsBenefic)
+					{
+						st++;
+					}
+					else
+					{
+						st--;
+						if (graha.Body == Body.Sun)
+						{
+							strength--;
+						}
+					}
+				}
+
+				if (st > 0)
+				{
+					strength++;
+				}
+				else if (st < 0)
+				{
+					strength--;
+				}
+
+				if (IsDebilitated)
+				{
+					strength -= 2;
+				}
+
 				return (strength);
 			}
 		}
+
+
+		public bool Paapkartari 
+		{
+			get
+			{
+				if (Before.IsBenefic == false)
+				{
+					if (Bhava.HousesFrom(Before.Bhava) > 1)
+					{
+						return false;
+					}
+					if (After.IsBenefic == false)
+					{
+						if (Bhava.HousesTo(Before.Bhava) > 1)
+						{
+							return false;
+						}
+
+						return (true);
+					}
+				}
+				return false;
+			}
+		}
+
+		public bool BètweenBenefics
+		{
+			get
+			{
+				if (Before.IsBenefic)
+				{
+					if (Bhava.HousesFrom(Before.Bhava) > 1)
+					{
+						return false;
+					}
+					if (After.IsBenefic)
+					{
+						if (Bhava.HousesTo(Before.Bhava) > 1)
+						{
+							return false;
+						}
+
+						return (true);
+					}
+				}
+				return false;
+			}
+		}
+
+		public bool FriendlySign 
+		{
+			get
+			{
+				if ((IsExalted) || (IsMoolTrikona) || (IsInOwnHouse))
+				{
+					return (true);
+				}
+
+				if (HouseLord.Body.IsFriend(Body))
+				{
+					return (true);
+				}
+				return (false);
+			}
+		}
+
+		public bool EnemySign
+		{
+			get
+			{
+				if (IsDebilitated)
+				{
+					return (true);
+				}
+
+				if (HouseLord.Body.IsEnemy(Body))
+				{
+					return (true);
+				}
+
+				return (false);
+			}
+		}
+
+		public bool IsTaraGraha
+		{
+			get
+			{
+				switch (Body)
+				{
+					case Body.Mars:
+					case Body.Mercury:
+					case Body.Jupiter:
+					case Body.Venus:
+					case Body.Saturn:
+						return true;
+				}
+				return false;
+			}
+		}
+
+		//Planetary war
+		public bool GrahaYuda
+		{
+			get
+			{
+				if (IsTaraGraha)
+				{
+					foreach (var graha in Conjunct)
+					{
+						if (graha.IsTaraGraha)
+						{
+							if ((graha._position.Longitude - _position.Longitude) < 1.0)
+							{
+								return (true);
+							}
+						}
+					}
+				}
+				return (false);
+			}
+		}
+
+		//Planet with highest latitude wins
+		public bool WinnerOfWar
+		{
+			get
+			{
+				if (IsTaraGraha)
+				{
+					foreach (var graha in Conjunct)
+					{
+						if (graha.IsTaraGraha)
+						{
+						}
+					}
+				}
+				return (false);
+			}
+		}
+
+		//                  normal      vakri
+		// Moon (Chandra)	0° to 12°	--
+		// Mars (Mangal)	0° to 17°	0° to 8°
+		// Mercury (Budh)	0° to 14°	0° to 12°
+		// Jupiter (Guru)	0° to 11°	0° to 11°
+		// Venus (Shukra)	0° to 10°	0° to 8°
+		// Saturn (Shani)	0° to 16°	0° to 16°
+		public bool Combust
+		{
+			get;
+		}
+
 
 		//Planets placed in 2nd, 3rd, 4th, 10th, 11th & 12th from a planet act as its Temporary Friend
 		public bool IsTemporalFriend(Graha graha)
@@ -534,7 +732,7 @@ namespace Mhora.Elements.Yoga
 
 				if (HouseLord._dp.Body == graha._dp.Body && _dp.Body == graha.HouseLord._dp.Body)
 				{
-					Exchange = graha;
+					_exchange = graha;
 				}
 
 				if (_dp.ZodiacHouse == graha._dp.ZodiacHouse)
