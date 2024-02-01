@@ -931,11 +931,11 @@ public class Horoscope : ICloneable
 
 		var bpVyatipata = new Position(this, Body.Vyatipata, BodyType.Upagraha, new Longitude(360.0).Sub(bpDhuma.Longitude), 0, 0, 0, 0, 0);
 
-		var bpParivesha = new Position(this, Body.Parivesha, BodyType.Upagraha, bpVyatipata.Longitude.Add(180), 0, 0, 0, 0, 0);
+		var bpParivesha = new Position(this, Body.Parivesha, BodyType.Upagraha, bpVyatipata.Longitude.Add(180.0), 0, 0, 0, 0, 0);
 
 		var bpIndrachapa = new Position(this, Body.Indrachapa, BodyType.Upagraha, new Longitude(360.0).Sub(bpParivesha.Longitude), 0, 0, 0, 0, 0);
 
-		var bpUpaketu = new Position(this, Body.Upaketu, BodyType.Upagraha, slon.Sub(30), 0, 0, 0, 0, 0);
+		var bpUpaketu = new Position(this, Body.Upaketu, BodyType.Upagraha, slon.Sub(30.0), 0, 0, 0, 0, 0);
 
 		PositionList.Add(bpDhuma);
 		PositionList.Add(bpVyatipata);
@@ -1055,8 +1055,8 @@ public class Horoscope : ICloneable
 		AddOtherPosition("User Specified", new Longitude(Options.CustomBodyLongitude.Value));
 		AddOtherPosition("Brighu Bindu", rahPos.Add(moonPos.Sub(rahPos).Value / 2.0));
 		AddOtherPosition("Muhurta Point", muhurtaPos);
-		AddOtherPosition("Ra-Ke m.p", rahPos.Add(90));
-		AddOtherPosition("Ke-Ra m.p", rahPos.Add(270));
+		AddOtherPosition("Ra-Ke m.p", rahPos.Add(90.0));
+		AddOtherPosition("Ke-Ra m.p", rahPos.Add(270.0));
 
 		var l1Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse(), new Division(DivisionType.Rasi))).Longitude;
 		var l6Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), new Division(DivisionType.Rasi))).Longitude;

@@ -36,6 +36,8 @@ public class Longitude : DmsPoint
 
 	}
 
+	public static implicit operator Longitude (double lon) => new Longitude(lon);
+
 	public override string ToString()
 	{
 		var lon     = this;

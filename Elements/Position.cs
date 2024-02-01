@@ -91,7 +91,7 @@ public class Position : ICloneable
 
 	public object Clone()
 	{
-		var bp = new Position(H, Name, BodyType, Longitude.Add(0), Latitude, Distance, SpeedLongitude, SpeedLatitude, SpeedDistance);
+		var bp = new Position(H, Name, BodyType, Longitude, Latitude, Distance, SpeedLongitude, SpeedLatitude, SpeedDistance);
 		bp.OtherString = OtherString;
 		return bp;
 	}

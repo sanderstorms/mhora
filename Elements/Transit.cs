@@ -81,7 +81,7 @@ public class Transit
 	public Longitude LongitudeOfMoon(double ut)
 	{
 		var bpMoon = _h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
-		return bpMoon.Longitude.Add(0);
+		return bpMoon.Longitude;
 	}
 
 	public Longitude LongitudeOfSunMoonYogaDir(double ut, ref bool bDirRetro)

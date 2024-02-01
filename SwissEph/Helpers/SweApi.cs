@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Util;
 
@@ -44,7 +45,7 @@ internal class SweApi : IDisposable
 	/// </param>
 	/// <param name="date">Дата. UTC.</param>
 	/// <returns>Время восхода/заката в формате Юлианского дня.</returns>
-	public double SunriseSunsetJulDay(GeoPosition position, double pressure, double temperature, DateTime date)
+	public static double SunriseSunsetJulDay(GeoPosition position, double pressure, double temperature, DateTime date)
 	{
 		var tjd = date.UniversalTime();
 
@@ -86,7 +87,7 @@ internal class SweApi : IDisposable
 	/// </summary>
 	/// <param name="jday">Юлианский день. UTC.</param>
 	/// <returns>UTC Дату.</returns>
-	public DateTime JulDayToDateTime(double jday)
+	public static DateTime JulDayToDateTime(double jday)
 	{
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
@@ -103,12 +104,14 @@ internal class SweApi : IDisposable
 	/// <param name="jday">Юлианский день. UTC.</param>
 	/// <param name="calcFlag">Тип вычислений. По умолчанию <see cref="sweph.SEFLG_EQUATORIAL" />.</param>
 	/// <returns><see cref="BodyPosition" />.</returns>
-	public BodyPosition GetSunPosition(Horoscope h, double jday)
+	public static BodyPosition GetBodyPosition(Horoscope h, double jday, int body)
 	{
 		var sterr    = new StringBuilder();
 		var position = new double[6];
 
-		var result = h.CalcUT(jday, sweph.SE_SUN, 0, position, sterr);
+		var result = h.CalcUT(jday, body, 0, position);
+
+		//var result = h.CalcUT(jday, body, 0, position, sterr);
 		if (result == sweph.ERR)
 		{
 			throw new SwedllException(sterr.ToString());
@@ -137,7 +140,7 @@ internal class SweApi : IDisposable
 	///     <see cref="BodyPosition.Latitude" />.
 	/// </param>
 	/// <returns>Горизонтальные координаты тела.</returns>
-	public HorizontalCoordinates GetHorizontalCoordinates(double jday, GeoPosition position, double pressure, double temperature, BodyPosition bodyPosition)
+	public static HorizontalCoordinates GetHorizontalCoordinates(double jday, GeoPosition position, double pressure, double temperature, BodyPosition bodyPosition)
 	{
 		var geopos = new[]
 		{
@@ -147,7 +150,7 @@ internal class SweApi : IDisposable
 		};
 		var xin = new[]
 		{
-			bodyPosition.Longitude,
+			(double) bodyPosition.Longitude,
 			bodyPosition.Latitude,
 			bodyPosition.Distance
 		};

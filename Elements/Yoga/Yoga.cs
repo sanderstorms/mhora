@@ -606,7 +606,7 @@ namespace Mhora.Elements.Yoga
 			var ninthLord = ninthRashi.ZodiacHouse.LordOfSign();
 			graha = Graha.Find(ninthLord, varga);
 
-			if (graha.IsStrong())
+			if (graha.IsStrong)
 			{
 				return (true);
 			}

@@ -750,7 +750,7 @@ public class TransitSearch : MhoraControl
 
 	private double StartSearch(bool bUpdateDate)
 	{
-		var found_lon = opts.TransitPoint.Add(0);
+		var found_lon = opts.TransitPoint;
 		var bForward  = true;
 		var found_ut  = h.TransitSearch(opts.SearchBody, opts.StartDate, opts.Forward, opts.TransitPoint, found_lon, ref bForward);
 

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
-using Mhora.Util;
+using Mhora.SwissEph;
+using Mhora.SwissEph.Helpers;
 
 namespace Mhora.Elements.Yoga
 {
@@ -12,8 +14,9 @@ namespace Mhora.Elements.Yoga
 
 		private readonly DivisionType     _varga;
 		private readonly DivisionPosition _dp;
-		private			 Position		  _position;
+		private          Position         _position;
 		private readonly Rashi            _rashi;
+		private          BodyPosition     _bodyPosition;
 
 		protected Graha(DivisionPosition dp, DivisionType varga)
 		{
@@ -202,11 +205,12 @@ namespace Mhora.Elements.Yoga
 
         public bool IsRetrograde => (_position.SpeedLongitude < 0.0);
 
-		public BodyType     BodyType => _dp.BodyType;
-		public Body         Body     => _dp.Body;
-		public Bhava        Bhava    => Rashi.Bhava;
-		public Rashi        Rashi     => _rashi;
-		public DivisionType Varga    => _varga;
+		public BodyType     BodyType     => _dp.BodyType;
+		public Body         Body         => _dp.Body;
+		public Bhava        Bhava        => Rashi.Bhava;
+		public Rashi        Rashi        => _rashi;
+		public DivisionType Varga        => _varga;
+		public BodyPosition BodyPosition => _bodyPosition;
 
 		public Conditions Conditions { get; private set; }
 
@@ -298,19 +302,33 @@ namespace Mhora.Elements.Yoga
 		private double _digBala;
         public double DigBala => _digBala;
 
-		public bool IsStrong()
+		public bool IsStrong
 		{
-			if (IsDebilitated)
+			get
 			{
+				if (IsDebilitated)
+				{
+					if (Strength < 2)
+					{
+						return (false);
+					}
+				}
+
+				if (IsExalted || IsMoolTrikona || IsInOwnHouse)
+				{
+					if (Strength >= 2)
+					{
+						return (true);
+					}
+				}
+
+				if (Strength >= 3)
+				{
+					return (true);
+				}
+
 				return (false);
 			}
-
-			if (IsExalted || IsMoolTrikona || IsInOwnHouse)
-			{
-				return (true);
-			}
-
-			return (false);
 		}
 
 		//Area of the Dig bala = length of planets-deducted from the weak point of the planets
@@ -434,6 +452,18 @@ namespace Mhora.Elements.Yoga
 					strength -= 2;
 				}
 
+				if (GrahaYuda)
+				{
+					if (WinnerOfWar)
+					{
+						strength += 1;
+					}
+					else
+					{
+						strength -= 1;
+					}
+				}
+
 				return (strength);
 			}
 		}
@@ -463,10 +493,14 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
-		public bool BètweenBenefics
+		public bool ShubhKartari
 		{
 			get
 			{
+				if (IsCombust || IsRetrograde)
+				{
+					return (false);
+				}
 				if (Before.IsBenefic)
 				{
 					if (Bhava.HousesFrom(Before.Bhava) > 1)
@@ -539,6 +573,9 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
+		public bool IsLuminary    => (Body == Body.Moon) || (Body == Body.Sun);
+		public bool IsChayaGraha => (Body == Body.Rahu) || (Body == Body.Ketu);
+
 		//Planetary war
 		public bool GrahaYuda
 		{
@@ -550,7 +587,7 @@ namespace Mhora.Elements.Yoga
 					{
 						if (graha.IsTaraGraha)
 						{
-							if ((graha._position.Longitude - _position.Longitude) < 1.0)
+							if (Distance(graha) < 1.0)
 							{
 								return (true);
 							}
@@ -572,6 +609,7 @@ namespace Mhora.Elements.Yoga
 					{
 						if (graha.IsTaraGraha)
 						{
+							return (_bodyPosition.Latitude > graha._bodyPosition.Latitude);
 						}
 					}
 				}
@@ -586,10 +624,45 @@ namespace Mhora.Elements.Yoga
 		// Jupiter (Guru)	0° to 11°	0° to 11°
 		// Venus (Shukra)	0° to 10°	0° to 8°
 		// Saturn (Shani)	0° to 16°	0° to 16°
-		public bool Combust
+		public bool IsCombust
 		{
-			get;
+			get
+			{
+				foreach (var graha in Conjunct)
+				{
+					if (graha.Body == Body.Sun)
+					{
+						switch (Body)
+						{
+							case Body.Moon:    return (Distance(graha) <= 12);
+							case Body.Saturn:  return (Distance(graha) <= 16);
+							case Body.Jupiter: return (Distance(graha) <= 11);
+							case Body.Mars:
+								if (IsRetrograde)
+								{
+									return (Distance(graha) <= 17);
+								}
+								return (Distance(graha) <= 8);
+							case Body.Mercury:
+								if (IsRetrograde)
+								{
+									return (Distance(graha) <= 14);
+								}
+								return (Distance(graha) <= 12);
+							case Body.Venus:
+								if (IsRetrograde)
+								{
+									return (Distance(graha) <= 10);
+								}
+								return (Distance(graha) <= 8);
+						}
+					}
+				}
+				return (false);
+			}
 		}
+
+		public double Distance(Graha graha) => (graha._position.Longitude - _position.Longitude);
 
 
 		//Planets placed in 2nd, 3rd, 4th, 10th, 11th & 12th from a planet act as its Temporary Friend
@@ -767,6 +840,30 @@ namespace Mhora.Elements.Yoga
 			return (true);
 		}
 
+		public static BodyPosition GetBodyPosition(Horoscope h, Body body)
+		{
+			var sterr    = new StringBuilder();
+			var position = new double[6];
+
+			var result = h.CalcUT(h.Info.Jd, body.SwephBody(), 0, position);
+
+			if (result == sweph.ERR)
+			{
+				throw new SwedllException(sterr.ToString());
+			}
+
+			return new BodyPosition
+			{
+				Longitude      = position[0],
+				Latitude       = position[1],
+				Distance       = position[2],
+				LongitudeSpeed = position[3],
+				LatitudeSpeed  = position[4],
+				DistanceSpeed  = position[5]
+			};
+		}
+
+
 		public static void Create(Horoscope h, DivisionType varga)
 		{
 			var division = new Division(varga);
@@ -785,8 +882,12 @@ namespace Mhora.Elements.Yoga
 					var graha = new Graha(dp, varga)
                     {
                         _position = h.GetPosition(dp.Body),
-                        _digBala  = h.DigBala(dp.Body) //Todo rewrite DigBala
                     };
+					if ((dp.Body != Body.Lagna) && (graha.IsChayaGraha == false))
+					{
+						graha._digBala      = h.DigBala(dp.Body);
+						graha._bodyPosition = GetBodyPosition(h, dp.Body);
+					}
                     grahas.Add(graha);
 				}
 			}

@@ -99,6 +99,9 @@ public static class Bodies
 			case Body.Venus:   return sweph.SE_VENUS;
 			case Body.Saturn:  return sweph.SE_SATURN;
 			case Body.Lagna:   return sweph.SE_BIT_NO_REFRACTION;
+			case Body.Rahu:    return sweph.SE_MEAN_NODE;
+			case Body.Ketu:    return sweph.SE_MEAN_NODE;
+
 			default:                    throw new Exception();
 		}
 	}
@@ -138,7 +141,7 @@ public static class Bodies
 
 	public static Longitude DebilitationDegree(this Body b)
 	{
-		return ExaltationDegree(b).Add(180);
+		return ExaltationDegree(b).Add(180.0);
 	}
 
 	public static string Name(this Body b)

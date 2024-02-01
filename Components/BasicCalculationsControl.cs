@@ -515,7 +515,7 @@ public class BasicCalculationsControl : MhoraControl
 		foreach (var b in bodyReferences)
 		{
 			var bp    = (Position) h.GetPosition(b).Clone();
-			var bpLon = bp.Longitude.Add(0);
+			var bpLon = bp.Longitude;
 
 			bp.Longitude = bpLon.Add(30.0 / 9.0 * (64 - 1));
 			Repopulate64NavamsaHelper(b, "64th Navamsa", bp, new Division(DivisionType.Navamsa));
@@ -762,7 +762,7 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Cusp End", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Rasi", -2, HorizontalAlignment.Left);
 
-		var lpos = h.GetPosition(Definitions.Body.Lagna).Longitude.Add(0);
+		var lpos = h.GetPosition(Definitions.Body.Lagna).Longitude;
 		var bp   = new Position(h, Definitions.Body.Lagna, BodyType.Lagna, lpos, 0, 0, 0, 0, 0);
 		for (var i = 0; i < 12; i++)
 		{
