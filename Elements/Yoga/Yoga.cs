@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Mhora.Definitions;
 using Mhora.Util;
 
@@ -7,13 +8,6 @@ namespace Mhora.Elements.Yoga
 {
 	public static class Yoga
 	{
-		public static List<Graha> Grahas (DivisionType varga)
-		{
-			var grahas = Grahas(varga);
-			grahas.RemoveAll(graha => graha.Body == Body.Lagna);
-			return grahas;
-		}
-
 		//The Seven grahas occupy the seven contiguous houses starting from houses other than the kendras
 		//The native is a commander of an army, honored by the ruler, good in looks, brave and wealthy.
 		public static bool AakritiArdhachandra(this DivisionType varga)
@@ -46,7 +40,7 @@ namespace Mhora.Elements.Yoga
 		public static bool AakritiChakra(this DivisionType varga)
 		{
 			var bhava   = Bhava.LagnaBhava;
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -66,7 +60,7 @@ namespace Mhora.Elements.Yoga
 		//long lived, comfortable in the early and concluding portions of his life.
 		public static bool AakritiChhatra(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -83,7 +77,7 @@ namespace Mhora.Elements.Yoga
 		//Such a native is indigent, servile, rejected, bereft of comforts, devoid of near and dear ones and cruel hearted.
 		public static bool AakritiDanda(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -100,7 +94,7 @@ namespace Mhora.Elements.Yoga
 		//The native is brave, a jailer, proud, skilled in archery, a thief, a wanderer, happy in the middle portion of his life.
 		public static bool AakritiDhanush(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -118,7 +112,7 @@ namespace Mhora.Elements.Yoga
 		//fearsome, envious of others and ever engaged in earning money.
 		public static bool AakritiGada(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			var first = grahas[0];
 			if (first.Bhava.IsKendra() == false)
@@ -142,7 +136,7 @@ namespace Mhora.Elements.Yoga
 		//One born in this yoga is gluttonous, servile, blessed with friends, liked by good people, living by agriculture.
 		public static bool AakritiHalaMoksha(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 			foreach (var graha in grahas)
 			{
 				if (graha.Bhava.IsMoksha() == false)
@@ -157,7 +151,7 @@ namespace Mhora.Elements.Yoga
 		//One born in this yoga is gluttonous, servile, blessed with friends, liked by good people, living by agriculture.
 		public static bool AakritiHalaKama(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 			foreach (var graha in grahas)
 			{
 				if (graha.Bhava.IsKama() == false)
@@ -172,7 +166,7 @@ namespace Mhora.Elements.Yoga
 		//One born in this yoga is gluttonous, servile, blessed with friends, liked by good people, living by agriculture.
 		public static bool AakritiHalaArtha(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 			foreach (var graha in grahas)
 			{
 				if (graha.Bhava.IsArtha() == false)
@@ -188,7 +182,7 @@ namespace Mhora.Elements.Yoga
 		//ignorant of what is right and wrong.
 		public static bool AakritiKoota(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -205,7 +199,7 @@ namespace Mhora.Elements.Yoga
 		//This makes the native famous, miserly, greedy, ambitious, of fickle nature, earning through water related pursuits.
 		public static bool AakritiNauka(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -223,7 +217,7 @@ namespace Mhora.Elements.Yoga
 		//The native is a wanderer, servile, quarrelsome, a message bearer,and an ambassador
 		public static bool AakritiPakshi(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -240,7 +234,7 @@ namespace Mhora.Elements.Yoga
 		//The native is wealthy, renowned, blessed with physical pleasures, likeable, stable of mind.
 		public static bool AakritiSamudra(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 			var bhava   = Bhava.DhanaBhava;
 
 			foreach (var graha in grahas)
@@ -260,7 +254,7 @@ namespace Mhora.Elements.Yoga
 		//and earning only through hard labor.
 		public static bool AakritiShakata(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -277,7 +271,7 @@ namespace Mhora.Elements.Yoga
 		//The native is poor, lazy, long lived, combative, argumentative, good to look at, stable and tormented by failures.
 		public static bool AakritiShakti(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -294,7 +288,7 @@ namespace Mhora.Elements.Yoga
 		//One born in this yoga is a native who manufactures arrows, is cruel and wicked, a hunter, a jailer, fond of animal food.
 		public static bool AakritiShara(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -312,7 +306,7 @@ namespace Mhora.Elements.Yoga
 		//devoted to his first wife, and indifferent to the second one.
 		public static bool AakritiShringataka(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -330,7 +324,7 @@ namespace Mhora.Elements.Yoga
 		//long life, sweet- tongued and tends to hoard his wealth and possessions.
 		public static bool AakritiVaapi(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -347,7 +341,7 @@ namespace Mhora.Elements.Yoga
 		//The native is good in look, brave, wickedly disposed and happy during early life and old age.
 		public static bool AakritiVajra(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -375,7 +369,7 @@ namespace Mhora.Elements.Yoga
 		//wealthy, charitable and happy in the middle portion of his life.
 		public static bool AakritiYava(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -402,7 +396,7 @@ namespace Mhora.Elements.Yoga
 		//The native is contented, very learned, wealthy, valorous, blessed with home comforts and pursues his wordy duties.
 		public static bool AakritiYoopa(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -419,7 +413,7 @@ namespace Mhora.Elements.Yoga
 		//One born in this yoga is proud, learned, wealthy, liked by the ruler, famous, of a stable nature and blessed with several sons.
 		public static bool AashrayaMusala(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -436,7 +430,7 @@ namespace Mhora.Elements.Yoga
 		//good to look at and fond of his near and dear ones.
 		public static bool AashrayaNala(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -452,7 +446,7 @@ namespace Mhora.Elements.Yoga
 		//One born in this yoga is fond of travel, of good looks, ambitious, cruel and delights to frequent alien lands in pursuit of wealth.
 		public static bool AashrayaRajju(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			foreach (var graha in grahas)
 			{
@@ -468,7 +462,7 @@ namespace Mhora.Elements.Yoga
 		//A native with this yoga is revered by the ruler, blessed with physical pleasures, likeable and helpful and enjoys a lasting fame.
 		public static bool AmalaKirti(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 			var moon    = grahas.Find(graha => graha.Body == Body.Moon);
 
 			foreach (var graha in grahas)
@@ -494,7 +488,7 @@ namespace Mhora.Elements.Yoga
 		//The person will achieve the ownership of vast lands. The person will gain abundant wealth.
 		public static bool AmaraYogaBenefics(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			bool positiveYoga = true;
 
@@ -514,7 +508,7 @@ namespace Mhora.Elements.Yoga
 		//The person will achieve the ownership of vast lands. The person will gain abundant wealth.
 		public static bool AmaraYogaMalefics (this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 
 			bool negativeYoga = true;
 
@@ -532,7 +526,7 @@ namespace Mhora.Elements.Yoga
 		//Rahu is in 1st house and Ketu is in 7th house and all the grahas fall on one side of Rahu/Ketu axis
 		public static bool AnantKalsarpa(this DivisionType varga)
 		{
-			var grahas = Grahas(varga);
+			var grahas = Graha.Planets(varga);
 			bool left = true;
 			bool right = true;
 
@@ -578,13 +572,39 @@ namespace Mhora.Elements.Yoga
 			return (true);
 		}
 
-		//The lord of the 9 being strong and the lagna lord as also Jupiter and Venus occupy kendras.
+		//The lord of the 9 being strong AND the lagna lord as also Jupiter and Venus occupy kendras. OR
+		//all planets occupy the lagna, the 2, 7 and 12th houses only
 		//One born in this yoga is of a royal bearing, of noble birth, well- behaved, well with wife, sons and fame, bereft of disease.
 		public static bool Bheri(this DivisionType varga)
 		{
+			var ninthRashi = Rashi.Find(Bhava.DharmaBhava, varga);
+			var ninthLord  = ninthRashi.ZodiacHouse.LordOfSign();
+			var graha = Graha.Find(ninthLord, varga);
+
+			if (graha.IsStrong)
+			{
+				return (true);
+			}
+
+			bool yoga= true;
+			foreach (var g in Graha.Planets(varga))
+			{
+				if ((g.Bhava != Bhava.DhanaBhava) && (g.Bhava != Bhava.JayaBhava) && (g.Bhava != Bhava.VyayaBhava))
+				{
+					yoga = false;
+					break;
+				}
+			}
+
+			if (yoga)
+			{
+				return (true);
+			}
+
+
 			var lagnaRashi = Rashi.Find(Bhava.LagnaBhava, varga);
 			var lagnaLord  = lagnaRashi.ZodiacHouse.LordOfSign();
-			var graha      = Graha.Find(lagnaLord, varga);
+			graha      = Graha.Find(lagnaLord, varga);
 			if (graha.Rashi.Bhava.IsKendra() == false)
 			{
 				return (false);
@@ -602,15 +622,372 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			var ninthRashi = Rashi.Find(Bhava.DharmaBhava, varga);
-			var ninthLord = ninthRashi.ZodiacHouse.LordOfSign();
-			graha = Graha.Find(ninthLord, varga);
+			return (false);
+		}
 
-			if (graha.IsStrong)
+
+		//Exalted lagna lord occupying a kendra and aspected by Jupiter.
+		//The Chaamara yoga confers on the native kingship or honor through a king, eloquence,
+		//wisdom, knowledge of several subjects and a longevity of 71 years.
+		public static bool Chaamara1(this DivisionType varga)
+		{
+			var lagnaLord = Graha.Find(Body.Lagna, varga).HouseLord;
+			if (lagnaLord.IsExalted == false)
 			{
-				return (true);
+				return (false);
+			}
+
+			if (lagnaLord.Bhava.IsKendra() == false)
+			{
+				return (false);
+			}
+
+			if (lagnaLord.AspectFrom.Count > 0)
+			{
+				foreach (var graha in lagnaLord.AspectFrom)
+				{
+					if (graha.Body == Body.Jupiter)
+					{
+						return (true);
+					}
+				}
 			}
 			return (false);
 		}
+
+		//Two benefices conjoined either in the Lagna, or in the 7 house or in the 9th or the 10 th house.
+		//The Chaamara yoga confers on the native kingship or honor through a king, eloquence, wisdom,
+		//knowledge of several subjects and a longevity of 71 years.
+		public static bool Chaamara2(this DivisionType varga)
+		{
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if (graha.IsBenefic)
+				{
+					if (graha.Conjunct.Count > 0)
+					{
+						foreach (var conj in graha.Conjunct)
+						{
+							if (conj.IsBenefic == false)
+							{
+								return (false);
+							}
+						}
+
+						switch (graha.Bhava)
+						{
+							case Bhava.LagnaBhava:
+							case Bhava.JayaBhava:
+							case Bhava.DhanaBhava:
+							case Bhava.KarmaBhava:
+								return true;
+						}
+					}
+				}
+			}
+
+			return (false);
+		}
+
+		//All planets occupy the four Kendras
+		//This Yoga destroys numerous afflictions in a chart and ensures wealth and high status to the person.
+		public static bool ChatussagaraKendra(this DivisionType varga)
+		{
+			byte kendra = 0;
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if (graha.Bhava.IsKendra() == false)
+				{
+					return (false);
+				}
+
+				if (graha.Bhava == Bhava.LagnaBhava)
+				{
+					kendra |= 0x01;
+				}
+				else if (graha.Bhava == Bhava.SukhaBhava)
+				{
+					kendra |= 0x02;
+				}
+				else if (graha.Bhava == Bhava.JayaBhava)
+				{
+					kendra |= 0x04;
+				}
+				else
+				{
+					kendra |= 0x08;
+				}
+
+			}
+			return (kendra == 0x0F);
+		}
+
+		//All the planets occupy the four Chara signs
+		//This Yoga destroys numerous afflictions in a chart and ensures wealth and high status to the person.
+		public static bool ChatussagaraChara(this DivisionType varga)
+		{
+			byte chara = 0;
+
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if (graha.Rashi.ZodiacHouse.IsMoveableSign() == false)
+				{
+					return (false);
+				}
+
+				if (graha.Rashi.ZodiacHouse == ZodiacHouse.Ari)
+				{
+					chara |= 0x01;
+				}
+				else if (graha.Rashi.ZodiacHouse == ZodiacHouse.Can)
+				{
+					chara |= 0x02;
+				}
+				else if (graha.Rashi.ZodiacHouse == ZodiacHouse.Lib)
+				{
+					chara |= 0x04;
+				}
+				else
+				{
+					chara |= 0x08;
+				}
+			}
+			return (chara == 0x0F);
+		}
+
+		//All benefices in three kendras, Functional malefics not in kendras.
+		//One born in this yoga is blessed with constant enjoyments, vehicles, good food and clothes and association with lovely women.
+		public static bool DalaMala(this DivisionType varga)
+		{
+			int yoga    = 0;
+			byte kendra = 0;
+
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if (graha.IsFunctionalMalefic)
+				{
+					if (graha.Bhava.IsKendra())
+					{
+						return (false);
+					}
+				}
+				else if (graha.IsBenefic)
+				{
+					if (graha.Bhava.IsKendra() == false)
+					{
+						return (false);
+					}
+
+					if (graha.Bhava == Bhava.LagnaBhava)
+					{
+						if ((kendra & 0x01) == 0)
+						{
+							kendra |= 0x01;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+					else if (graha.Bhava == Bhava.SukhaBhava)
+					{
+						if ((kendra & 0x02) == 0)
+						{
+							kendra |= 0x02;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+					else if (graha.Bhava == Bhava.JayaBhava)
+					{
+						if ((kendra & 0x04) == 0)
+						{
+							kendra |= 0x04;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+					else
+					{
+						if ((kendra & 0x08) == 0)
+						{
+							kendra |= 0x08;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+				}
+			}
+
+			return (yoga == 3);
+		}
+
+		//All Functional Malefic in three kendras, Benefic not in kendras
+		//One born in this yoga is scheming, wicked, miserable, destitute, and dependent upon others for his subsistence.
+		public static bool DalaSarpa(this DivisionType varga)
+		{
+			int  yoga   = 0;
+			byte kendra = 0;
+
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if (graha.IsBenefic)
+				{
+					if (graha.Bhava.IsKendra())
+					{
+						return (false);
+					}
+				}
+				else if (graha.IsFunctionalMalefic)
+				{
+					if (graha.Bhava.IsKendra() == false)
+					{
+						return (false);
+					}
+
+					if (graha.Bhava == Bhava.LagnaBhava)
+					{
+						if ((kendra & 0x01) == 0)
+						{
+							kendra |= 0x01;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+					else if (graha.Bhava == Bhava.SukhaBhava)
+					{
+						if ((kendra & 0x02) == 0)
+						{
+							kendra |= 0x02;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+					else if (graha.Bhava == Bhava.JayaBhava)
+					{
+						if ((kendra & 0x04) == 0)
+						{
+							kendra |= 0x04;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+					else
+					{
+						if ((kendra & 0x08) == 0)
+						{
+							kendra |= 0x08;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+				}
+			}
+
+			return (yoga == 3);
+
+		}
+
+		//All benefices in three kendras malefics not in kendras.
+		//One born in this yoga is blessed with constant enjoyments, vehicles, good food and clothes and association with lovely women.
+		public static bool DalaMaala(this DivisionType varga)
+		{
+			int  yoga   = 0;
+			byte kendra = 0;
+
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if (graha.IsBenefic)
+				{
+					if (graha.Bhava.IsKendra() == false)
+					{
+						return (false);
+					}
+
+					if (graha.Bhava == Bhava.LagnaBhava)
+					{
+						if ((kendra & 0x01) == 0)
+						{
+							kendra |= 0x01;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+					else if (graha.Bhava == Bhava.SukhaBhava)
+					{
+						if ((kendra & 0x02) == 0)
+						{
+							kendra |= 0x02;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+					else if (graha.Bhava == Bhava.JayaBhava)
+					{
+						if ((kendra & 0x04) == 0)
+						{
+							kendra |= 0x04;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+					else
+					{
+						if ((kendra & 0x08) == 0)
+						{
+							kendra |= 0x08;
+							yoga++;
+						}
+						else
+						{
+							return (false);
+						}
+					}
+				}
+				else
+				{
+					if (graha.Bhava.IsKendra())
+					{
+						return (false);
+					}
+				}
+			}
+
+			return (yoga == 3);
+
+		}
+
 	}
+
 }

@@ -20,6 +20,8 @@ namespace Mhora.Elements.Yoga
 			Grahas = new List<Graha>();
 		}
 
+		public static implicit operator ZodiacHouse(Rashi rashi) => rashi.ZodiacHouse;
+
 		public override string ToString()
 		{
 			return _zh.Name ();
@@ -56,6 +58,8 @@ namespace Mhora.Elements.Yoga
 				return _bhava;
 			}
 		}
+
+		public Graha Lord => Graha.Find(_zh.LordOfSign(), _varga);
 
 		public static Rashi FindOrAdd(ZodiacHouse zh, DivisionType varga)
 		{

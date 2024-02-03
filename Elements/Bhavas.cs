@@ -214,7 +214,8 @@ namespace Mhora.Elements
 			switch (bhava)
 			{
 				case Bhava.DhanaBhava:
-				case Bhava.JayaBhava: return true;
+				case Bhava.JayaBhava: 
+					return true;
 			}
 			return false;
 		}

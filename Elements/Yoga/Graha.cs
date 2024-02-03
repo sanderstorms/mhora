@@ -32,6 +32,8 @@ namespace Mhora.Elements.Yoga
 			Ownership    = new List<Rashi>();
 		}
 
+		public static implicit operator Body(Graha graha) => graha.Body;
+
 
 		public override string ToString()
 		{
@@ -93,6 +95,109 @@ namespace Mhora.Elements.Yoga
 			return (false);
 		}
 
+		//The five major associations are:
+		// 
+		// By mutual exchange of sign, e.g. the Sun in Aries and Mars in Leo,
+		// By mutual aspect of planets, e.g. Saturn in Aries and Mars in Capricorn,
+		// By occupying a particular sign other than its own, e.g. Jupiter in taurus sign owned by Venus,
+		// By occupying mutual square positions, e.g. Jupiter in Aries and Mars in Cancer or Libra or Capricorn, and
+		// By occupying mutual trinal positions, e.g. Jupiter in Aries and Mars in either Leo or in Sagittarius.[4]
+		public bool IsAssociatedWith (Graha graha)
+		{
+			if (graha.Varga == Varga)
+			{
+				if (Conjunct.Contains(graha))
+				{
+					return (true);
+				}
+
+				if (MutualAspect.Contains(graha))
+				{
+					return (true);
+				}
+
+				if (Bhava.IsKendra() && graha.Bhava.IsKendra())
+				{
+					return (true);
+				}
+
+				if (Bhava.IsTrikona() && graha.Bhava.IsTrikona())
+				{
+					return (true);
+				}
+			}
+
+			if (Rashi.Lord == graha)
+			{
+				return (true);
+			}
+
+
+			return (false);
+		}
+
+		public bool IsAspectedBy(Body body)
+		{
+			var graha = Find(body, _varga);
+			return IsAspectedBy(graha);
+		}
+
+		public bool IsAspectedBy(Graha graha)
+		{
+			foreach (var aspect in AspectFrom)
+			{
+				if (aspect == graha)
+				{
+					return (true);
+				}
+			}
+			return (false);
+		}
+
+		public bool IsConjuctWith(Graha graha)
+		{
+			foreach (var conjunct in Conjunct)
+			{
+				if (conjunct == graha)
+				{
+					return (true);
+				}
+			}
+			return (false);
+		}
+
+		public bool IsUnderInfluenceOf(Body body)
+		{
+			var graha = Find(body, _varga);
+			return IsUnderInfluenceOf(graha);
+		}
+
+		public bool IsUnderInfluenceOf(Graha graha)
+		{
+			if (IsAspectedBy(graha))
+			{
+				return (true);
+			}
+
+			if (IsConjuctWith(graha))
+			{
+				return (true);
+			}
+
+			if (IsAssociatedWith(graha))
+			{
+				return (true);
+			}
+			return (false);
+		}
+
+		public bool IsAssociatedWith(Body body)
+		{
+			var graha = Find(body, _varga);
+			return IsAssociatedWith(graha);
+		}
+
+
 		public bool IsBenefic
 		{
 			get
@@ -113,7 +218,8 @@ namespace Mhora.Elements.Yoga
 
 				if (Body == Body.Moon)
 				{
-					var tithi = _dp.Longitude.ToTithi();
+					var sun = Find(Body.Sun, _varga);
+					var tithi = _position.Longitude.Sub(sun._position.Longitude).ToTithi();
 					if (tithi >= Tithi.KrishnaPratipada)
 					{
 						return (false);
@@ -123,6 +229,11 @@ namespace Mhora.Elements.Yoga
 
 				if (Body == Body.Mercury)
 				{
+					var jupiter = Find(Body.Jupiter, _varga);
+					if (jupiter.Strength >= 2)
+					{
+						return (true);
+					}
 					if (Bhava.IsDushtana())
 					{
 						return (false);
@@ -211,6 +322,7 @@ namespace Mhora.Elements.Yoga
 		public Rashi        Rashi        => _rashi;
 		public DivisionType Varga        => _varga;
 		public BodyPosition BodyPosition => _bodyPosition;
+
 
 		public Conditions Conditions { get; private set; }
 
@@ -587,7 +699,7 @@ namespace Mhora.Elements.Yoga
 					{
 						if (graha.IsTaraGraha)
 						{
-							if (Distance(graha) < 1.0)
+							if (DistanceTo(graha) < 1.0)
 							{
 								return (true);
 							}
@@ -634,27 +746,27 @@ namespace Mhora.Elements.Yoga
 					{
 						switch (Body)
 						{
-							case Body.Moon:    return (Distance(graha) <= 12);
-							case Body.Saturn:  return (Distance(graha) <= 16);
-							case Body.Jupiter: return (Distance(graha) <= 11);
+							case Body.Moon:    return (DistanceTo(graha) <= 12);
+							case Body.Saturn:  return (DistanceTo(graha) <= 16);
+							case Body.Jupiter: return (DistanceTo(graha) <= 11);
 							case Body.Mars:
 								if (IsRetrograde)
 								{
-									return (Distance(graha) <= 17);
+									return (DistanceTo(graha) <= 17);
 								}
-								return (Distance(graha) <= 8);
+								return (DistanceTo(graha) <= 8);
 							case Body.Mercury:
 								if (IsRetrograde)
 								{
-									return (Distance(graha) <= 14);
+									return (DistanceTo(graha) <= 14);
 								}
-								return (Distance(graha) <= 12);
+								return (DistanceTo(graha) <= 12);
 							case Body.Venus:
 								if (IsRetrograde)
 								{
-									return (Distance(graha) <= 10);
+									return (DistanceTo(graha) <= 10);
 								}
-								return (Distance(graha) <= 8);
+								return (DistanceTo(graha) <= 8);
 						}
 					}
 				}
@@ -662,7 +774,9 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
-		public double Distance(Graha graha) => (graha._position.Longitude - _position.Longitude);
+		public double DistanceTo(Graha graha) => (graha._position.Longitude - _position.Longitude);
+
+		public double DistanceFrom(Graha graha) => (_position.Longitude - graha._position.Longitude);
 
 
 		//Planets placed in 2nd, 3rd, 4th, 10th, 11th & 12th from a planet act as its Temporary Friend
@@ -810,7 +924,10 @@ namespace Mhora.Elements.Yoga
 
 				if (_dp.ZodiacHouse == graha._dp.ZodiacHouse)
 				{
-					Conjunct.Add(graha);
+					if (graha.Body != Body.Lagna)
+					{
+						Conjunct.Add(graha);
+					}
 				}
 			}
 
