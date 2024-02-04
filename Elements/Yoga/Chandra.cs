@@ -33,7 +33,7 @@ namespace Mhora.Elements.Yoga
 			var moon = Graha.Find(Body.Moon, varga);
 
 			var mercury = Graha.Find(Body.Mercury, varga);
-			if (mercury.IsBenefic == false)
+			if (mercury.IsNaturalMalefic)
 			{
 				return (false);
 			}
@@ -454,7 +454,7 @@ namespace Mhora.Elements.Yoga
 			{
 				foreach (var graha in moon.Conjunct)
 				{
-					if (graha.IsBenefic == false)
+					if (graha.IsNaturalBenefic == false)
 					{
 						return (false);
 					}
@@ -486,7 +486,7 @@ namespace Mhora.Elements.Yoga
 			{
 				if (moon.IsAssociatedWith(graha))
 				{
-					if (graha.IsBenefic)
+					if (graha.IsNaturalBenefic)
 					{
 						yoga++;
 					}
@@ -501,7 +501,7 @@ namespace Mhora.Elements.Yoga
 			{
 				foreach (var graha in moon.AspectFrom)
 				{
-					if (graha.IsBenefic)
+					if (graha.IsNaturalBenefic)
 					{
 						yoga++;
 					}
@@ -527,7 +527,7 @@ namespace Mhora.Elements.Yoga
 			{
 				if (moon.IsAssociatedWith(graha))
 				{
-					if (graha.IsBenefic)
+					if (graha.IsNaturalBenefic)
 					{
 						yoga++;
 					}
@@ -543,12 +543,12 @@ namespace Mhora.Elements.Yoga
 				return true;
 			}
 
-			if (moon.Before.IsBenefic == false)
+			if (moon.Before.IsNaturalBenefic == false)
 			{
 				return (false);
 			}
 
-			if (moon.After.IsBenefic == false)
+			if (moon.After.IsNaturalBenefic == false)
 			{
 				return (false);
 			}
@@ -635,7 +635,7 @@ namespace Mhora.Elements.Yoga
 
 			foreach (var graha in moon.AspectFrom)
 			{
-				if (graha.IsBenefic)
+				if (graha.IsNaturalBenefic)
 				{
 					return (true);
 				}
@@ -721,7 +721,7 @@ namespace Mhora.Elements.Yoga
 			var rashi = Rashi.Find(Bhava.SahajaBhava, varga);
 			foreach (var graha in rashi.Grahas)
 			{
-				if (graha.IsBenefic == false)
+				if (graha.IsNaturalMalefic)
 				{
 					return (true);
 				}
@@ -758,7 +758,7 @@ namespace Mhora.Elements.Yoga
 			{
 				if (moon.IsAssociatedWith(graha))
 				{
-					if (graha.IsBenefic == false)
+					if (graha.IsNaturalMalefic)
 					{
 						return (true);
 					}
@@ -767,7 +767,7 @@ namespace Mhora.Elements.Yoga
 
 			foreach (var graha in moon.AspectFrom)
 			{
-				if (graha.IsBenefic == false)
+				if (graha.IsNaturalMalefic)
 				{
 					return (true);
 				}
@@ -902,7 +902,7 @@ namespace Mhora.Elements.Yoga
 					continue;
 				}
 
-				if (graha.IsBenefic == false)
+				if (graha.IsNaturalMalefic)
 				{
 					return (true);
 				}
@@ -919,7 +919,7 @@ namespace Mhora.Elements.Yoga
 			var rashi = Rashi.Find(Bhava.SukhaBhava, varga);
 			foreach (var graha in rashi.Grahas)
 			{
-				if (graha.IsBenefic == false)
+				if (graha.IsNaturalMalefic)
 				{
 					return (true);
 				}
@@ -929,7 +929,7 @@ namespace Mhora.Elements.Yoga
 			rashi = Rashi.Find(zh, varga);
 			foreach (var graha in rashi.Grahas)
 			{
-				if (graha.IsBenefic == false)
+				if (graha.IsNaturalMalefic)
 				{
 					return (true);
 				}
@@ -987,7 +987,7 @@ namespace Mhora.Elements.Yoga
 					return (false);
 				}
 
-				if (graha.IsBenefic == false)
+				if (graha.IsNaturalMalefic)
 				{
 					yoga = true;
 				}
@@ -1030,7 +1030,7 @@ namespace Mhora.Elements.Yoga
 			bool yoga = false;
 			foreach (var graha in moon.Conjunct)
 			{
-				if (graha.IsBenefic == false)
+				if (graha.IsNaturalMalefic)
 				{
 					yoga = true;
 					break;
@@ -1106,7 +1106,7 @@ namespace Mhora.Elements.Yoga
 
 			foreach (var graha in Graha.Planets(varga))
 			{
-				if (graha.IsBenefic == false)
+				if (graha.IsNaturalMalefic)
 				{
 					if (moon.IsAssociatedWith(graha))
 					{

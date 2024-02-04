@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System;
 using Mhora.Definitions;
 using Mhora.Util;
 
@@ -8,406 +6,6 @@ namespace Mhora.Elements.Yoga
 {
 	public static class Yoga
 	{
-		//The Seven grahas occupy the seven contiguous houses starting from houses other than the kendras
-		//The native is a commander of an army, honored by the ruler, good in looks, brave and wealthy.
-		public static bool AakritiArdhachandra(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-			var first   = grahas.First();
-			if (first.Bhava.IsKendra())
-			{
-				return (false);
-			}
-
-			foreach (var graha in grahas)
-			{
-				if (graha.Conjunct.Count > 0)
-				{
-					return (false);
-				}
-
-				if (graha.Bhava.HousesFrom(first.Bhava) > 7)
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//All Planets in six alternate houses starting from the lagna.
-		//The native is of lovely looks, illustrious, a king or his equivalent.
-		public static bool AakritiChakra(this DivisionType varga)
-		{
-			var bhava   = Bhava.LagnaBhava;
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if (graha.Bhava != bhava)
-				{
-					return (false);
-				}
-
-				bhava += 2;
-			}
-
-			return (true);
-		}
-
-		//All grahas located in houses 7 to 1.
-		//A native with this yoga is scholarly, wise, kindhearted, high status, looking after his dependents,
-		//long lived, comfortable in the early and concluding portions of his life.
-		public static bool AakritiChhatra(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if (graha.Bhava.Index() > 7)
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//All grahas located in the four houses from the tenth to Lagna.
-		//Such a native is indigent, servile, rejected, bereft of comforts, devoid of near and dear ones and cruel hearted.
-		public static bool AakritiDanda(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if ((graha.Bhava.Index() < 10) && (graha.Bhava != Bhava.LagnaBhava))
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//All grahas located in houses 10 to 4.
-		//The native is brave, a jailer, proud, skilled in archery, a thief, a wanderer, happy in the middle portion of his life.
-		public static bool AakritiDhanush(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if ((graha.Bhava.Index() > 4) && (graha.Bhava.Index() < 10))
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//All grahas in two adjacent kendras.
-		//The native with this yoga is wealthy, learned, versed in mantras, tantras and music,
-		//fearsome, envious of others and ever engaged in earning money.
-		public static bool AakritiGada(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			var first = grahas[0];
-			if (first.Bhava.IsKendra() == false)
-			{
-				return (false);
-			}
-
-			foreach (var graha in grahas)
-			{
-				var placement = graha.Bhava.HousesFrom(first.Bhava);
-				if ((placement != 1) && (placement != 7))
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//All grahas in houses 4, 8, 12.
-		//One born in this yoga is gluttonous, servile, blessed with friends, liked by good people, living by agriculture.
-		public static bool AakritiHalaMoksha(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-			foreach (var graha in grahas)
-			{
-				if (graha.Bhava.IsMoksha() == false)
-				{
-					return (false);
-				}
-			}
-			return (true);
-		}
-
-		//All grahas in houses 3, 7, 11.
-		//One born in this yoga is gluttonous, servile, blessed with friends, liked by good people, living by agriculture.
-		public static bool AakritiHalaKama(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-			foreach (var graha in grahas)
-			{
-				if (graha.Bhava.IsKama() == false)
-				{
-					return (false);
-				}
-			}
-			return (true);
-		}
-
-		//All grahas in houses 2, 6, 10.
-		//One born in this yoga is gluttonous, servile, blessed with friends, liked by good people, living by agriculture.
-		public static bool AakritiHalaArtha(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-			foreach (var graha in grahas)
-			{
-				if (graha.Bhava.IsArtha() == false)
-				{
-					return (false);
-				}
-			}
-			return (true);
-		}
-
-		//Planets located in houses 4 to 10.
-		//The result is an untruthful native, a jailer, cruel, a resident of forts or hills or forests, a wrestler,
-		//ignorant of what is right and wrong.
-		public static bool AakritiKoota(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if ((graha.Bhava.Index() < 4) && (graha.Bhava.Index() > 10))
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//All grahas located in houses 1 to 7
-		//This makes the native famous, miserly, greedy, ambitious, of fickle nature, earning through water related pursuits.
-		public static bool AakritiNauka(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if (graha.Bhava.Index() > 7)
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-
-		//All grahas in houses 4 and 10
-		//The native is a wanderer, servile, quarrelsome, a message bearer,and an ambassador
-		public static bool AakritiPakshi(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if ((graha.Bhava != Bhava.SukhaBhava) && (graha.Bhava != Bhava.KarmaBhava))
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//Planets in six alternate houses starting from the Second houses.
-		//The native is wealthy, renowned, blessed with physical pleasures, likeable, stable of mind.
-		public static bool AakritiSamudra(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-			var bhava   = Bhava.DhanaBhava;
-
-			foreach (var graha in grahas)
-			{
-				if (graha.Bhava != bhava)
-				{
-					return (false);
-				}
-
-				bhava += 2;
-			}
-			return (true);
-		}
-
-		//All grahas in houses 1 and 7
-		//One born in this yoga suffers penury and privations, ill health, lean body, discord with a wicked wife
-		//and earning only through hard labor.
-		public static bool AakritiShakata(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if ((graha.Bhava != Bhava.LagnaBhava) && (graha.Bhava != Bhava.JayaBhava))
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//All grahas located in houses 7 to 10.
-		//The native is poor, lazy, long lived, combative, argumentative, good to look at, stable and tormented by failures.
-		public static bool AakritiShakti(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if ((graha.Bhava < Bhava.JayaBhava) && (graha.Bhava > Bhava.KarmaBhava))
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//All grahas located in houses 4 to 7
-		//One born in this yoga is a native who manufactures arrows, is cruel and wicked, a hunter, a jailer, fond of animal food.
-		public static bool AakritiShara(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if ((graha.Bhava != Bhava.SukhaBhava) && (graha.Bhava != Bhava.JayaBhava))
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//All grahas in trikonas 1, 5, 9.
-		//The native is blessed with comforts fond of combat, courageous, very wise, wealthy,
-		//devoted to his first wife, and indifferent to the second one.
-		public static bool AakritiShringataka(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if (graha.Bhava.IsTrikona() == false)
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//All grahas falling in houses other than the four kendras.
-		//The native this yoga in his horoscope is ever engaged in accumulating wealth, has small but lasting comforts,
-		//long life, sweet- tongued and tends to hoard his wealth and possessions.
-		public static bool AakritiVaapi(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if (graha.Bhava.IsKendra())
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
-
-		//Benefices in houses 1 and 7, Malefic in 4 and 10.
-		//The native is good in look, brave, wickedly disposed and happy during early life and old age.
-		public static bool AakritiVajra(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if (graha.IsBenefic)
-				{
-					if ((graha.Bhava != Bhava.LagnaBhava) && (graha.Bhava != Bhava.JayaBhava))
-					{
-						return (false);
-					}
-				}
-				else
-				{
-					if ((graha.Bhava != Bhava.SukhaBhava) && (graha.Bhava != Bhava.KarmaBhava))
-					{
-						return (false);
-					}
-				}
-			}
-
-			return (true);
-		}
-
-		//Malefic in houses 1 and 7, Benefices in houses 4 and 10.
-		//Given to restraint and auspicious pursuits, such a native is consistent in nature,
-		//wealthy, charitable and happy in the middle portion of his life.
-		public static bool AakritiYava(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if (graha.IsBenefic)
-				{
-					if ((graha.Bhava != Bhava.SukhaBhava) && (graha.Bhava != Bhava.KarmaBhava))
-					{
-						return (false);
-					}
-				}
-				else
-				{
-					if ((graha.Bhava != Bhava.LagnaBhava) && (graha.Bhava != Bhava.JayaBhava))
-					{
-						return (false);
-					}
-				}
-			}
-
-			return (true);
-		}
-
-		//All grahas located in houses 1 to 4
-		//The native is contented, very learned, wealthy, valorous, blessed with home comforts and pursues his wordy duties.
-		public static bool AakritiYoopa(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-
-			foreach (var graha in grahas)
-			{
-				if (graha.Bhava.Index() > 4)
-				{
-					return (false);
-				}
-			}
-
-			return (true);
-		}
 
 		//All grahas in Sthira Sign and several other grahas are also in Sthira sign.
 		//One born in this yoga is proud, learned, wealthy, liked by the ruler, famous, of a stable nature and blessed with several sons.
@@ -467,7 +65,7 @@ namespace Mhora.Elements.Yoga
 
 			foreach (var graha in grahas)
 			{
-				if (graha.IsBenefic)
+				if (graha.IsNaturalBenefic)
 				{
 					if (graha.Bhava == Bhava.KarmaBhava)
 					{
@@ -494,7 +92,7 @@ namespace Mhora.Elements.Yoga
 
 			foreach (var graha in grahas)
 			{
-				if (graha.IsBenefic)
+				if (graha.IsNaturalBenefic)
 				{
 					positiveYoga &= graha.Bhava.IsKendra();
 				}
@@ -514,62 +112,13 @@ namespace Mhora.Elements.Yoga
 
 			foreach (var graha in grahas)
 			{
-				if (graha.IsBenefic == false)
+				if (graha.IsNaturalMalefic)
 				{
 					negativeYoga &= graha.Bhava.IsKendra();
 				}
 			}
 
 			return (negativeYoga);
-		}
-
-		//Rahu is in 1st house and Ketu is in 7th house and all the grahas fall on one side of Rahu/Ketu axis
-		public static bool AnantKalsarpa(this DivisionType varga)
-		{
-			var grahas = Graha.Planets(varga);
-			bool left = true;
-			bool right = true;
-
-			var rahu = Graha.Find(Body.Rahu, varga);
-			if (rahu.Bhava != Bhava.LagnaBhava)
-			{
-				return (false);
-			}
-
-			foreach (var graha in Graha.Planets(varga))
-			{
-				left  |= (graha.Bhava <= Bhava.JayaBhava);
-				right |= (graha.Bhava  > Bhava.JayaBhava);
-			}
-
-			return (left |right);
-		}
-
-
-		//All seven planets occupying one house each from the lagna to seventh house starting with the 9th house.
-		//Powerful well to do, saintly, a devout performer of sacrifices.
-		public static bool BhagyaMalika(this DivisionType varga)
-		{
-			var   grahas     = Graha.Planets(varga);
-			Bhava firstBhave = grahas.First().Bhava;
-
-			if (firstBhave == Bhava.MrtyuBhava)
-			{
-				return (false);
-			}
-
-			for (int index = 1; index < grahas.Count; index++)
-			{
-				if (grahas[index].Bhava == Bhava.MrtyuBhava)
-				{
-					return (false);
-				}
-				if (firstBhave.HousesTo(grahas[index].Bhava) != index)
-				{
-					return (false);
-				}
-			}
-			return (true);
 		}
 
 		//The lord of the 9 being strong AND the lagna lord as also Jupiter and Venus occupy kendras. OR
@@ -662,13 +211,13 @@ namespace Mhora.Elements.Yoga
 		{
 			foreach (var graha in Graha.Planets(varga))
 			{
-				if (graha.IsBenefic)
+				if (graha.IsNaturalBenefic)
 				{
 					if (graha.Conjunct.Count > 0)
 					{
 						foreach (var conj in graha.Conjunct)
 						{
-							if (conj.IsBenefic == false)
+							if (conj.IsNaturalBenefic == false)
 							{
 								return (false);
 							}
@@ -771,7 +320,7 @@ namespace Mhora.Elements.Yoga
 						return (false);
 					}
 				}
-				else if (graha.IsBenefic)
+				else if (graha.IsNaturalBenefic)
 				{
 					if (graha.Bhava.IsKendra() == false)
 					{
@@ -841,7 +390,7 @@ namespace Mhora.Elements.Yoga
 
 			foreach (var graha in Graha.Planets(varga))
 			{
-				if (graha.IsBenefic)
+				if (graha.IsNaturalBenefic)
 				{
 					if (graha.Bhava.IsKendra())
 					{
@@ -919,7 +468,7 @@ namespace Mhora.Elements.Yoga
 
 			foreach (var graha in Graha.Planets(varga))
 			{
-				if (graha.IsBenefic)
+				if (graha.IsNaturalBenefic)
 				{
 					if (graha.Bhava.IsKendra() == false)
 					{
@@ -988,6 +537,490 @@ namespace Mhora.Elements.Yoga
 
 		}
 
+		//If the native born in Night time and the Moon located in its own navamsha, or that of a friend's house and aspected by Venus.
+		//The native is very wealthy. According to one interpretation, irrespective of the birth being during daytime or night-time,
+		//the placement of the Moon in a favorable navamsha, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
+		public static bool DhanadhanaNight(this Horoscope h, DivisionType varga)
+		{
+			if (h.IsDayBirth())
+			{
+				return (false);
+			}
+
+			var moon = Graha.Find(Body.Moon, DivisionType.Navamsa);
+			if (moon == null)
+			{
+				throw new Exception("Navamsha not calculated!");
+			}
+
+			moon = Graha.Find(Body.Moon, varga);
+			if (moon.IsInOwnHouse)
+			{
+				return (true);
+			}
+
+			if (moon.FriendlySign)
+			{
+				return (true);
+			}
+
+			if (moon.IsAspectedBy(Body.Venus))
+			{
+				return (true);
+			}
+
+			return (false);
+		}
+
+		//If the native born in Day time and the Moon located in its own navamsha, or that of a friend's house and aspected by Jupiter.
+		//The native is very wealthy. According to one interpretation, irrespective of the birth being during daytime or night-time,
+		//the placement of the Moon in a favorable navamsha, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
+		public static bool DhanadhanaDay(this Horoscope h, DivisionType varga)
+		{
+			if (h.IsDayBirth() == false)
+			{
+				return (false);
+			}
+
+			var moon = Graha.Find(Body.Moon, DivisionType.Navamsa);
+			if (moon == null)
+			{
+				throw new Exception("Navamsha not calculated!");
+			}
+
+			moon = Graha.Find(Body.Moon, varga);
+			if (moon.IsInOwnHouse)
+			{
+				return (true);
+			}
+
+			if (moon.FriendlySign)
+			{
+				return (true);
+			}
+
+			if (moon.IsAspectedBy(Body.Jupiter))
+			{
+				return (true);
+			}
+
+			return (false);
+		}
+
+		//All Malefics in the 8th house and All Benefic in the Lagna.
+		//The person is a commander one whose orders others follow.
+		public static bool Dhwaja(this DivisionType varga)
+		{
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if (graha.IsNaturalBenefic)
+				{
+					if (graha.Bhava != Bhava.LagnaBhava)
+					{
+						return (false);
+					}
+				}
+				else if (graha.IsNaturalMalefic)
+				{
+					if (graha.Bhava != Bhava.MrtyuBhava)
+					{
+						return (false);
+					}
+				}
+			}
+			return (true);
+		}
+
+		//All planets in the Lagna, 5th, 7th and in the 9th house.
+		//The native takes over the sustenance of his fellow beings.
+		public static bool Hamsa(this DivisionType varga)
+		{
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if ((graha.Bhava != Bhava.PutraBhava) && 
+				    (graha.Bhava != Bhava.JayaBhava) && 
+				    (graha.Bhava != Bhava.DharmaBhava))
+				{
+					return (false);
+				}
+			}
+			return (true);
+		}
+
+		//This yoga arises when the Moon occupies the 11th house from the lagna.
+		//The native suffers death as a consequence of some stupidly egotistical action of his.
+		public static bool HathaHantaa(this DivisionType varga)
+		{
+			var moon = Graha.Find(Body.Moon, varga);
+			return (moon.Bhava == Bhava.LabhaBhava);
+		}
+
+		public static int HousesFrom(this DivisionType varga, Body body, Body from)
+		{
+			var graha  = Graha.Find(body, varga);
+			var graha2 = Graha.Find(from, varga);
+			return (graha.Bhava.HousesFrom(graha2.Bhava));
+		}
+
+		//Mars is 3rd from Moon, Saturn is 7th from Mars, Venus is 7th from Saturn Jupiter is 7th from Venus.
+		//The person is celebrated a king or his equal amiable eloquent wealthy and fortunate.
+		public static bool Indra(this DivisionType varga)
+		{
+			if (varga.HousesFrom(Body.Mars, Body.Moon) != 7)
+			{
+				return (false);
+			}
+
+			if (varga.HousesFrom(Body.Saturn, Body.Mars) != 7)
+			{
+				return (false);
+			}
+
+			if (varga.HousesFrom(Body.Venus, Body.Saturn) != 7)
+			{
+				return (false);
+			}
+
+			if (varga.HousesFrom(Body.Jupiter, Body.Venus) != 7)
+			{
+				return (false);
+			}
+
+			return (true);
+		}
+
+		//The 4 lord exalted or in its own house, associated with or aspected by the 10 lord.
+		//The native with this yoga is aggressive, courageous, ignorant, commander of an army, owner (ruler) of several villages.
+		public static bool Kaahala1(this DivisionType varga)
+		{
+			var lord4 = Rashi.Find(Bhava.SukhaBhava, varga).Lord;
+			if (lord4.IsExalted == false)
+			{
+				return (false);
+			}
+
+			var lord10 = Rashi.Find(Bhava.KarmaBhava, varga).Lord;
+			if (lord4.IsAssociatedWith(lord10))
+			{
+				return (true);
+			}
+
+			if (lord4.IsAspectedBy(lord10))
+			{
+				return (true);
+			}
+			return (false);
+		}
+
+		//Lords of the 4 and 9 in mutual kendras and lord of the lagna are being strong.
+		//The native with this yoga is aggressive, courageous, ignorant, commander of an army, owner (ruler) of several villages.
+		public static bool Kaahala2(this DivisionType varga)
+		{
+			var lord1 = Rashi.Find(Bhava.LagnaBhava, varga).Lord;
+			var lord4 = Rashi.Find(Bhava.SukhaBhava, varga).Lord;
+			var lord9 = Rashi.Find(Bhava.DharmaBhava, varga).Lord;
+
+			if (lord4.Bhava.IsKendra() == false)
+			{
+				return (false);
+			}
+
+			if (lord9.Bhava.IsKendra() == false)
+			{
+				return (false);
+			}
+
+			if (lord4.Exchange != lord9)
+			{
+				return (false);
+			}
+
+			if (lord1.Strength < 2)
+			{
+				return (false);
+			}
+
+			return (true);
+		}
+
+		//All planets in the 7th, 10th and 11th houses.
+		//The person even if born in an ordinary ambiance
+		public static bool Karika(this DivisionType varga)
+		{
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if ((graha.Bhava != Bhava.JayaBhava) &&
+					(graha.Bhava !=Bhava.KarmaBhava) &&
+					(graha.Bhava != Bhava.LabhaBhava))
+				{
+					return (false);
+				}
+			}
+
+			return (true);
+		}
+
+		//When natural malefics occupy houses 2 and 12 from the lagna.
+		//This yoga produces criminal tendencies, ill health, unwholesome food, excessive sexual urge, intention to grab the wealth of others.
+		public static bool PaapaKartari(this DivisionType varga)
+		{
+			bool yoga  = false;
+			var  rashi = Rashi.Find(Bhava.DhanaBhava, varga);
+			foreach (var graha in rashi.Grahas)
+			{
+				if (graha.IsNaturalBenefic)
+				{
+					return (false);
+				}
+				if (graha.IsNaturalMalefic)
+				{
+					yoga = true;
+				}
+			}
+
+			if (yoga == false)
+			{
+				return (false);
+			}
+
+			yoga  = false;
+			rashi = Rashi.Find(Bhava.VyayaBhava, varga);
+			foreach (var graha in rashi.Grahas)
+			{
+				if (graha.IsNaturalBenefic)
+				{
+					return (false);
+				}
+				if (graha.IsNaturalMalefic)
+				{
+					yoga = true;
+				}
+			}
+
+			return (yoga);
+		}
+
+		//When natural benefices occupy houses 2 and 12 from the lagna.
+		//This yoga confers on the native eloquence, good health, handsome appearance, much wealth and fame.
+		public static bool ShubhaKartari(this DivisionType varga)
+		{
+			bool yoga  = false;
+			var  rashi = Rashi.Find(Bhava.DhanaBhava, varga);
+			foreach (var graha in rashi.Grahas)
+			{
+				if (graha.IsNaturalMalefic)
+				{
+					return (false);
+				}
+				if (graha.IsNaturalBenefic)
+				{
+					yoga = true;
+				}
+			}
+
+			if (yoga == false)
+			{
+				return (false);
+			}
+
+			yoga  = false;
+			rashi = Rashi.Find(Bhava.VyayaBhava, varga);
+			foreach (var graha in rashi.Grahas)
+			{
+				if (graha.IsNaturalMalefic)
+				{
+					return (false);
+				}
+				if (graha.IsNaturalBenefic)
+				{
+					yoga = true;
+				}
+			}
+
+			return (yoga);
+
+		}
+
+		//Occupation of the 2 house by the 9 lord, and of the 9th house by the 2nd lord, and lagna lord occupying a kendra or a trikona house.
+		//The native born in this yoga is immersed in the study of sacred scriptures, dignified, skillful, wealthy, blessed with wisdom, kindness
+		public static bool Khadga(this DivisionType varga)
+		{
+			var lord2 = Rashi.Find(Bhava.DhanaBhava, varga).Lord;
+			var lord9 = Rashi.Find(Bhava.DharmaBhava, varga).Lord;
+			if (lord2.Rashi.ZodiacHouse.LordOfSign() != lord9)
+			{
+				return (false);
+			}
+
+			if (lord9.Rashi.ZodiacHouse.LordOfSign() != lord2)
+			{
+				return (false);
+			}
+
+			var lord1 = Rashi.Find(Bhava.LagnaBhava, varga).Lord;
+			if (lord1.Bhava.IsKendra() || lord1.Bhava.IsTrikona())
+			{
+				return (true);
+			}
+
+			return (false);
+		}
+
+		//When benefices occupy houses 7 and 8 from the lagna.
+		//One born in this yoga is learned and blessed with comforts.
+		public static bool Lagnadhi(this DivisionType varga)
+		{
+			byte yoga = 0x00;
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if (graha.Bhava == Bhava.DhanaBhava)
+				{
+					if (graha.IsNaturalBenefic)
+					{
+						yoga |= 0x01;
+					}
+					else
+					{
+						return (false);
+					}
+
+				}
+				else if (graha.Bhava == Bhava.MrtyuBhava)
+				{
+					if (graha.IsNaturalBenefic)
+					{
+						yoga |= 0x02;
+					}
+					else
+					{
+						return (false);
+					}
+				}
+				else
+				{
+					continue;
+				}
+			}
+			return (yoga == 0x03);
+		}
+
+
+		//when benefices occupy houses 7th & 8th from the Lagna, bereft of malefic association or aspect.
+		//One born in this yoga is learned and blessed with comforts.
+		public static bool Lagnadhi1(this DivisionType varga)
+		{
+			if (varga.Lagnadhi() == false)
+			{
+				return (false);
+			}
+
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if ((graha.Bhava == Bhava.DhanaBhava) || (graha.Bhava == Bhava.MrtyuBhava))
+				{
+					if (graha.IsNaturalBenefic)
+					{
+						if (graha.IsAspectedByMalefics)
+						{
+							return (false);
+						}
+
+						if (graha.IsAssociatedWithMalefics)
+						{
+							return (false);
+						}
+					}
+				}
+			}
+			return (true);
+		}
+
+		//It results when the lagna lord is abundantly strong and the lord of 9th house occupies a kendra
+		//identical with his own house, his sign of exaltation, or his mooltrikona.
+		//One born in this, is good in looks, virtuous, very wealthy, owns vast lands, learned,
+		//an illustrious king, widely renowned, blessed with wives and children.
+		public static bool Lakshmi(this DivisionType varga)
+		{
+			var lord1 = Rashi.Find(Bhava.LagnaBhava, varga).Lord;
+			if (lord1.Strength < 2)
+			{
+				return false;
+			}
+
+			var lord9 = Rashi.Find(Bhava.DharmaBhava, varga).Lord;
+			if (lord9.Bhava.IsKendra())
+			{
+				return (true);
+			}
+
+			if (lord9.IsInOwnHouse)
+			{
+				return (true);
+			}
+
+			if (lord9.IsMoolTrikona)
+			{
+				return (true);
+			}
+
+			return (false);
+		}
+
+		//Birth during nighttime, Even Sign rising in lagna, Sun & Moon occupies even sign.
+		//The native is blessed with all feminine qualities, grace good fortune, good character, wealth and progeny.
+		public static bool MahaBhagyaNight(this Horoscope h, DivisionType varga)
+		{
+			if (h.IsDayBirth())
+			{
+				return (false);
+			}
+
+			var lagna = Graha.Find(Body.Lagna, varga);
+			if ((lagna.Rashi.ZodiacHouse.Index() % 2) != 0)
+			{
+				return (false);
+			}
+			var sun = Graha.Find(Body.Sun, varga);
+			if ((sun.Rashi.ZodiacHouse.Index() % 2) != 0)
+			{
+				return (false);
+			}
+			var moon = Graha.Find(Body.Moon, varga);
+			if ((moon.Rashi.ZodiacHouse.Index() % 2) != 0)
+			{
+				return (false);
+			}
+
+			return (true);
+		}
+
+		//Birth during the daytime, Odd sign rising in the lagna, Sun & Moon occupying odd sign.
+		//On born in this, is pleasant to look at, liberal, widely renowned, lord of lands.
+		public static bool MahaBhagyaDay(this Horoscope h, DivisionType varga)
+		{
+			if (h.IsDayBirth() == false)
+			{
+				return (false);
+			}
+
+			var lagna = Graha.Find(Body.Lagna, varga);
+			if ((lagna.Rashi.ZodiacHouse.Index() % 2) == 0)
+			{
+				return (false);
+			}
+			var sun = Graha.Find(Body.Sun, varga);
+			if ((sun.Rashi.ZodiacHouse.Index() % 2) == 0)
+			{
+				return (false);
+			}
+			var moon = Graha.Find(Body.Moon, varga);
+			if ((moon.Rashi.ZodiacHouse.Index() % 2) == 0)
+			{
+				return (false);
+			}
+
+			return (true);
+		}
 	}
 
 }

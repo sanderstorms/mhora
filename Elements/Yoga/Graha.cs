@@ -14,7 +14,6 @@ namespace Mhora.Elements.Yoga
 
 		private readonly DivisionType     _varga;
 		private readonly DivisionPosition _dp;
-		private          Position         _position;
 		private readonly Rashi            _rashi;
 		private          BodyPosition     _bodyPosition;
 
@@ -136,6 +135,42 @@ namespace Mhora.Elements.Yoga
 			return (false);
 		}
 
+		public bool IsAssociatedWithMalefics
+		{
+			get
+			{
+				foreach (var graha in Planets(_varga))
+				{
+					if (graha.IsFunctionalMalefic)
+					{
+						if (IsAssociatedWith(graha))
+						{
+							return (true);
+						}
+					}
+				}
+
+				return (false);
+			}
+		}
+
+		public bool IsAspectedByMalefics
+		{
+			get
+			{
+				foreach (var graha in AspectFrom)
+				{
+					if (graha.IsFunctionalMalefic)
+					{
+						return (true);
+					}
+				}
+
+				return (false);
+			}
+		}
+
+
 		public bool IsAspectedBy(Body body)
 		{
 			var graha = Find(body, _varga);
@@ -154,6 +189,12 @@ namespace Mhora.Elements.Yoga
 			return (false);
 		}
 
+		public bool IsConjuctWith(Body body)
+		{
+			var graha = Find(body, _varga);
+			return (IsConjuctWith(graha));
+		}
+
 		public bool IsConjuctWith(Graha graha)
 		{
 			foreach (var conjunct in Conjunct)
@@ -164,6 +205,22 @@ namespace Mhora.Elements.Yoga
 				}
 			}
 			return (false);
+		}
+
+		public bool IsConjunctWithPlanet
+		{
+			get
+			{
+				foreach (var conjunct in Conjunct)
+				{
+					if (conjunct.IsPlanet)
+					{
+						return (true);
+					}
+				}
+				return (false);
+
+			}
 		}
 
 		public bool IsUnderInfluenceOf(Body body)
@@ -198,7 +255,7 @@ namespace Mhora.Elements.Yoga
 		}
 
 
-		public bool IsBenefic
+		public bool IsNaturalBenefic
 		{
 			get
 			{
@@ -219,7 +276,7 @@ namespace Mhora.Elements.Yoga
 				if (Body == Body.Moon)
 				{
 					var sun = Find(Body.Sun, _varga);
-					var tithi = _position.Longitude.Sub(sun._position.Longitude).ToTithi();
+					var tithi = _bodyPosition.Longitude.Sub(sun._bodyPosition.Longitude).ToTithi();
 					if (tithi >= Tithi.KrishnaPratipada)
 					{
 						return (false);
@@ -246,14 +303,14 @@ namespace Mhora.Elements.Yoga
 						{
 							if (graha.Body != Body.Sun)
 							{
-								if (graha.IsBenefic == false)
+								if (graha.IsNaturalBenefic == false)
 								{
 									return (false);
 								}
 							}
 						}
 
-						if ((Before.IsBenefic == false) && (After.IsBenefic == false))
+						if ((Before.IsNaturalBenefic == false) && (After.IsNaturalBenefic == false))
 						{
 							return (false);
 						}
@@ -264,6 +321,29 @@ namespace Mhora.Elements.Yoga
 				}
 
 				return (true);
+			}
+		}
+
+		public bool IsNaturalMalefic
+		{
+			get
+			{
+				switch (Body)
+				{
+					case Body.Mars:
+					case Body.Rahu:
+					case Body.Ketu:
+					case Body.Saturn:
+						return (true);
+
+					case Body.Jupiter:
+					case Body.Venus:
+						return (false);
+
+					case Body.Mercury: 
+						return (IsNaturalBenefic == false);
+				}
+				return (false);
 			}
 		}
 
@@ -314,7 +394,8 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
-        public bool IsRetrograde => (_position.SpeedLongitude < 0.0);
+		private bool _isRetrograde;
+        public  bool IsRetrograde => _isRetrograde;
 
 		public BodyType     BodyType     => _dp.BodyType;
 		public Body         Body         => _dp.Body;
@@ -402,7 +483,6 @@ namespace Mhora.Elements.Yoga
 
 		private Graha _exchange;
 		public  Graha Exchange => _exchange;
-
 
 		public List<Rashi>  Ownership    { get; }
 		public List<Graha>  RashiDrishti { get; }
@@ -524,7 +604,7 @@ namespace Mhora.Elements.Yoga
 				int st = 0;
 				foreach (var graha in Conjunct)
 				{
-					if (graha.IsBenefic)
+					if (graha.IsNaturalBenefic)
 					{
 						st++;
 					}
@@ -536,7 +616,7 @@ namespace Mhora.Elements.Yoga
 
 				foreach (var graha in AspectFrom)
 				{
-					if (graha.IsBenefic)
+					if (graha.IsNaturalBenefic)
 					{
 						st++;
 					}
@@ -585,13 +665,13 @@ namespace Mhora.Elements.Yoga
 		{
 			get
 			{
-				if (Before.IsBenefic == false)
+				if (Before.IsNaturalBenefic == false)
 				{
 					if (Bhava.HousesFrom(Before.Bhava) > 1)
 					{
 						return false;
 					}
-					if (After.IsBenefic == false)
+					if (After.IsNaturalBenefic == false)
 					{
 						if (Bhava.HousesTo(Before.Bhava) > 1)
 						{
@@ -613,13 +693,13 @@ namespace Mhora.Elements.Yoga
 				{
 					return (false);
 				}
-				if (Before.IsBenefic)
+				if (Before.IsNaturalBenefic)
 				{
 					if (Bhava.HousesFrom(Before.Bhava) > 1)
 					{
 						return false;
 					}
-					if (After.IsBenefic)
+					if (After.IsNaturalBenefic)
 					{
 						if (Bhava.HousesTo(Before.Bhava) > 1)
 						{
@@ -685,8 +765,9 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
-		public bool IsLuminary    => (Body == Body.Moon) || (Body == Body.Sun);
+		public bool IsLuminary   => (Body == Body.Moon) || (Body == Body.Sun);
 		public bool IsChayaGraha => (Body == Body.Rahu) || (Body == Body.Ketu);
+		public bool IsPlanet     => IsTaraGraha         || IsLuminary;
 
 		//Planetary war
 		public bool GrahaYuda
@@ -774,9 +855,9 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
-		public double DistanceTo(Graha graha) => (graha._position.Longitude - _position.Longitude);
+		public double DistanceTo(Graha graha) => (graha._bodyPosition.Longitude - _bodyPosition.Longitude);
 
-		public double DistanceFrom(Graha graha) => (_position.Longitude - graha._position.Longitude);
+		public double DistanceFrom(Graha graha) => (_bodyPosition.Longitude - graha._bodyPosition.Longitude);
 
 
 		//Planets placed in 2nd, 3rd, 4th, 10th, 11th & 12th from a planet act as its Temporary Friend
@@ -996,14 +1077,22 @@ namespace Mhora.Elements.Yoga
 			{
 				if ((dp.BodyType == BodyType.Graha) || (dp.BodyType == BodyType.Lagna))
 				{
+					var position = h.GetPosition(dp.Body);
 					var graha = new Graha(dp, varga)
-                    {
-                        _position = h.GetPosition(dp.Body),
-                    };
+					{
+						_isRetrograde = (position.SpeedLongitude < 0.0)
+					};
 					if ((dp.Body != Body.Lagna) && (graha.IsChayaGraha == false))
 					{
 						graha._digBala      = h.DigBala(dp.Body);
 						graha._bodyPosition = GetBodyPosition(h, dp.Body);
+					}
+					else
+					{
+						graha._bodyPosition = new BodyPosition
+						{
+							Longitude = position.Longitude
+						};
 					}
                     grahas.Add(graha);
 				}

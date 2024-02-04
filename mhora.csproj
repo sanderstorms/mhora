@@ -179,9 +179,16 @@
     <Compile Include="Definitions\Muhurta.cs" />
     <Compile Include="Definitions\Nakshatra.cs" />
     <Compile Include="Definitions\Nakshatra28.cs" />
+    <Compile Include="Elements\Yoga\Aakriti.cs" />
     <Compile Include="Elements\Yoga\Buddh.cs" />
     <Compile Include="Elements\Yoga\Chandra.cs" />
     <Compile Include="Elements\Yoga\Dhana.cs" />
+    <Compile Include="Elements\Yoga\GajaKesari.cs" />
+    <Compile Include="Elements\Yoga\Guru.cs" />
+    <Compile Include="Elements\Yoga\HariHaraBramha.cs" />
+    <Compile Include="Elements\Yoga\Kalsarpa.cs" />
+    <Compile Include="Elements\Yoga\MahaParivartana.cs" />
+    <Compile Include="Elements\Yoga\Malika.cs" />
     <Compile Include="Elements\Yoga\Yoga.cs" />
     <Compile Include="Elements\ZodiacHouses.cs" />
     <Compile Include="Definitions\Tithi.cs" />
