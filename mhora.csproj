@@ -188,7 +188,9 @@
     <Compile Include="Elements\Yoga\HariHaraBramha.cs" />
     <Compile Include="Elements\Yoga\Kalsarpa.cs" />
     <Compile Include="Elements\Yoga\MahaParivartana.cs" />
+    <Compile Include="Elements\Yoga\Mahapurusha.cs" />
     <Compile Include="Elements\Yoga\Malika.cs" />
+    <Compile Include="Elements\Yoga\Mangal.cs" />
     <Compile Include="Elements\Yoga\Yoga.cs" />
     <Compile Include="Elements\ZodiacHouses.cs" />
     <Compile Include="Definitions\Tithi.cs" />

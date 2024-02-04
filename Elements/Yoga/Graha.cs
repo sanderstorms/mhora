@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
@@ -937,10 +939,81 @@ namespace Mhora.Elements.Yoga
 			return Relation.Neutral;
 		}
 
-		public bool IsDebilitated => _dp.IsDebilitatedPhalita();
-		public bool IsExalted     => _dp.IsExaltedPhalita();
-		public bool IsMoolTrikona => _dp.IsInMoolaTrikona();
-		public bool IsInOwnHouse => _dp.IsInOwnHouse();
+		public bool IsDebilitated => Rashi == Body.DebilitationSign();
+		public bool IsExalted     => Rashi == Body.ExaltationSign();
+		public bool IsMoolTrikona => Rashi == Body.MooltrikonaSign();
+		public bool IsInOwnHouse  => Rashi.Lord == this;
+
+		//When a Neecha - Bhanga Yoga is present,the debilitation gets cancelled and is said to produce benefic results.
+		public bool NeechaBhanga
+		{
+			get
+			{
+				if (IsDebilitated == false)
+				{
+					return (false);
+				}
+
+				//The debilitated planet is associated with or aspected by its exaltation sign's lord.
+				var lord = Rashi.Find(Body.ExaltationSign(), _varga).Lord;
+				if (IsAspectedBy(lord))
+				{
+					return (true);
+				}
+
+				//The lord of the house where the planet is Exalted (I.e. the Exaltation lord of the planet)
+				//is in kendra from the lagna or the Moon.
+				if (lord.Bhava.IsKendra())
+				{
+					return (true);
+				}
+
+				if (Body != Body.Moon)
+				{
+					var moon  = Find(Body.Moon, _varga);
+					var bhava = (Bhava) lord.Bhava.HousesFrom(moon.Bhava);
+					if (bhava.IsKendra())
+					{
+						return (true);
+					}
+				}
+
+				//The debilitated planet is associated with or aspected by its debilitation sign's lord.
+				foreach (var graha in MutualAspect)
+				{
+					if (graha.IsDebilitated)
+					{
+						return (true);
+					}
+				}
+
+				//The lord of the house where the planet is debilitated (I.e. the debilitation lord of the planet)
+				//is in kendra from the lagna or the Moon
+				if (Rashi.Lord.Bhava.IsKendra())
+				{
+					return (true);
+				}
+
+				if (Body != Body.Moon)
+				{
+					var moon  = Find(Body.Moon, _varga);
+					var bhava = (Bhava) lord.Bhava.HousesFrom(moon.Bhava);
+					if (bhava.IsKendra())
+					{
+						return (true);
+					}
+				}
+
+				//The debilitated planet exchanges houses with its debilitation sign's lord.
+				if (Exchange == Rashi.Lord)
+				{
+					return (true);
+				}
+				return (false);
+			}
+			
+		}
+
 
 		private void Examine()
 		{

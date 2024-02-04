@@ -386,4 +386,57 @@ public static class Bodies
 		return false;
 	}
 
+	public static ZodiacHouse ExaltationSign(this Body body)
+	{
+		switch (body)
+		{
+			case Body.Sun:     return ZodiacHouse.Ari;
+			case Body.Moon:    return ZodiacHouse.Tau;
+			case Body.Mars:    return ZodiacHouse.Cap;
+			case Body.Mercury: return ZodiacHouse.Vir;
+			case Body.Jupiter: return ZodiacHouse.Can;
+			case Body.Venus:   return ZodiacHouse.Pis;
+			case Body.Saturn:  return ZodiacHouse.Lib;
+			case Body.Rahu:    return ZodiacHouse.Gem;
+			case Body.Ketu:    return ZodiacHouse.Sag;
+		}
+
+		throw new Exception("Not a graha");
+	}
+
+	public static ZodiacHouse DebilitationSign(this Body body)
+	{
+		switch (body)
+		{
+			case Body.Sun:     return ZodiacHouse.Lib;
+			case Body.Moon:    return ZodiacHouse.Sco;
+			case Body.Mars:    return ZodiacHouse.Can;
+			case Body.Mercury: return ZodiacHouse.Pis;
+			case Body.Jupiter: return ZodiacHouse.Cap;
+			case Body.Venus:   return ZodiacHouse.Vir;
+			case Body.Saturn:  return ZodiacHouse.Ari;
+			case Body.Rahu:    return ZodiacHouse.Sag;
+			case Body.Ketu:    return ZodiacHouse.Gem;
+		}
+
+		throw new Exception("Not a graha");
+	}
+
+	public static ZodiacHouse MooltrikonaSign(this Body body)
+	{
+		switch (body)
+		{
+			case Body.Sun:     return ZodiacHouse.Leo;
+			case Body.Moon:    return ZodiacHouse.Tau;
+			case Body.Mars:    return ZodiacHouse.Ari;
+			case Body.Mercury: return ZodiacHouse.Vir;
+			case Body.Jupiter: return ZodiacHouse.Sag;
+			case Body.Venus:   return ZodiacHouse.Lib;
+			case Body.Saturn:  return ZodiacHouse.Aqu;
+			case Body.Rahu:    return ZodiacHouse.Vir;
+			case Body.Ketu:    return ZodiacHouse.Pis;
+		}
+
+		throw new Exception("Not a graha");
+	}
 }

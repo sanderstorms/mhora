@@ -1021,6 +1021,31 @@ namespace Mhora.Elements.Yoga
 
 			return (true);
 		}
+
+		//Moon conjoined with Rahu, aspected by Jupiter 'which itself is under melefic association.
+		//The person is a heinous sinner.
+		public static bool MahaPataka(this DivisionType varga)
+		{
+			var moon = Graha.Find(Body.Moon, varga);
+			if (moon.IsConjuctWith(Body.Rahu) == false)
+			{
+				return (false);
+			}
+
+			if (moon.IsAspectedBy(Body.Jupiter) == false)
+			{
+				return (false);
+			}
+
+			var jupiter = Graha.Find(Body.Jupiter, varga);
+			if (jupiter.IsAssociatedWithMalefics)
+			{
+				return (true);
+			}
+
+			return (false);
+		}
+
 	}
 
 }
