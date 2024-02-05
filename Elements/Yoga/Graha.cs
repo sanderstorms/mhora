@@ -1014,7 +1014,22 @@ namespace Mhora.Elements.Yoga
 			
 		}
 
+		public bool IsBefore(Body body)
+		{
+			var graha = Find(body, _varga);
+			return (IsBefore(graha));
+		}
 
+		public bool IsBefore(Graha graha) => BodyPosition.Longitude < graha.BodyPosition.Longitude;
+
+		public bool IsAfter(Body body)
+		{
+			var graha = Find(body, _varga);
+			return (IsAfter(graha));
+		}
+
+		public bool IsAfter(Graha graha) => BodyPosition.Longitude > graha.BodyPosition.Longitude;
+		
 		private void Examine()
 		{
 			if (IsDebilitated)

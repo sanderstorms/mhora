@@ -4,26 +4,65 @@ namespace Mhora.Elements.Yoga
 {
 	public static class Kalsarpa
 	{
+		public static bool KalsarpaYoga(this DivisionType varga)
+		{
+			var rahu = Graha.Find(Body.Rahu, varga);
+			var ketuBhava = rahu.Bhava.Add(7);
+
+			bool left  = false;
+			bool right = false;
+
+			foreach (var graha in Graha.Planets(varga))
+			{
+				if (graha.Bhava == rahu.Bhava)
+				{
+					if (graha.IsBefore(rahu))
+					{
+						left = true;
+					}
+					else
+					{
+						right = true;
+					}
+				}
+				else if (graha.Bhava == ketuBhava)
+				{
+					if (graha.IsBefore(Body.Ketu))
+					{
+						right = true;
+					}
+					else
+					{
+						left = true;
+					}
+				}
+				else
+				{
+					if (graha.Bhava.HousesFrom(rahu.Bhava) < 7)
+					{
+						left = true;
+					}
+					else
+					{
+						right = true;
+					}
+				}
+			}
+
+			return (left != right);
+		}
+
+
 		//Rahu is in 1st house and Ketu is in 7th house and all the grahas fall on one side of Rahu/Ketu axis
 		public static bool AnantKalsarpa(this DivisionType varga)
 		{
-			var  grahas = Graha.Planets(varga);
-			bool left   = true;
-			bool right  = true;
-
 			var rahu = Graha.Find(Body.Rahu, varga);
 			if (rahu.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
 			}
 
-			foreach (var graha in Graha.Planets(varga))
-			{
-				left  |= (graha.Bhava <= Bhava.JayaBhava);
-				right |= (graha.Bhava > Bhava.JayaBhava);
-			}
-
-			return (left |right);
+			return varga.KalsarpaYoga();
 		}
 
 		//Rahu is in 8th house and Ketu is in 2th house and all the planets fall on one side of Rahu/Ketu axis.
@@ -36,35 +75,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			bool yoga = true;
-			foreach (var graha in Graha.Planets(varga))
-			{
-				if ((graha.Bhava <= Bhava.DhanaBhava) || (graha.Bhava >= Bhava.MrtyuBhava))
-				{
-					if (graha.Bhava != Bhava.LagnaBhava)
-					{
-						yoga = false;
-						break;
-					}
-				}
-			}
-
-			if (yoga)
-			{
-				return (true);
-			}
-
-			yoga = true;
-			foreach (var graha in Graha.Planets(varga))
-			{
-				if ((graha.Bhava >= Bhava.DhanaBhava) || (graha.Bhava <= Bhava.MrtyuBhava))
-				{
-					yoga = false;
-					break;
-				}
-			}
-
-			return (yoga);
+			return varga.KalsarpaYoga();
 		}
 
 		//Rahu is in 2nd house and Ketu is in 8th house and all the planets fall on one side of Rahu/Ketu axis.
@@ -77,35 +88,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			bool yoga = true;
-			foreach (var graha in Graha.Planets(varga))
-			{
-				if ((graha.Bhava <= Bhava.DhanaBhava) || (graha.Bhava >= Bhava.MrtyuBhava))
-				{
-					if (graha.Bhava != Bhava.LagnaBhava)
-					{
-						yoga = false;
-						break;
-					}
-				}
-			}
-
-			if (yoga)
-			{
-				return (true);
-			}
-
-			yoga = true;
-			foreach (var graha in Graha.Planets(varga))
-			{
-				if ((graha.Bhava >= Bhava.DhanaBhava) || (graha.Bhava <= Bhava.MrtyuBhava))
-				{
-					yoga = false;
-					break;
-				}
-			}
-
-			return (yoga);
+			return varga.KalsarpaYoga();
 		}
 
 		//Rahu is in 6th house and Ketu is in 12th house and all the planets fall on one side of Rahu/Ketu axis.
@@ -118,35 +101,21 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			bool yoga = true;
-			foreach (var graha in Graha.Planets(varga))
+			return varga.KalsarpaYoga();
+		}
+
+		//Rahu is in 5th house and Ketu is in 11th house and all the planets fall on one side of Rahu/Ketu axis
+		//This person will get child after some troubles and will have obstacles in education as well,
+		//will earn in shares or lottries. Earns name in the field of art.
+		public static bool PadmaKalsarpa(this DivisionType varga)
+		{
+			var rahu = Graha.Find(Body.Rahu, varga);
+			if (rahu.Bhava != Bhava.PutraBhava)
 			{
-				if ((graha.Bhava <= Bhava.ShatruBhava) || (graha.Bhava >= Bhava.LabhaBhava))
-				{
-					if (graha.Bhava != Bhava.LagnaBhava)
-					{
-						yoga = false;
-						break;
-					}
-				}
+				return (false);
 			}
 
-			if (yoga)
-			{
-				return (true);
-			}
-
-			yoga = true;
-			foreach (var graha in Graha.Planets(varga))
-			{
-				if ((graha.Bhava >= Bhava.ShatruBhava) || (graha.Bhava <= Bhava.LabhaBhava))
-				{
-					yoga = false;
-					break;
-				}
-			}
-
-			return (yoga);
+			return varga.KalsarpaYoga();
 		}
 	}
 

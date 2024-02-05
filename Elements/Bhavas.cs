@@ -417,5 +417,16 @@ namespace Mhora.Elements
 
 			return houses;
 		}
+
+		public static Bhava Add(this Bhava bhava, int nr)
+		{
+			var result = (bhava.Index() + nr);
+			while (result > 12)
+			{
+				result -= 12;
+			}
+
+			return (Bhava) result;
+		}
 	}
 }
