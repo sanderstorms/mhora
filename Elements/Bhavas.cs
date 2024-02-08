@@ -283,6 +283,18 @@ namespace Mhora.Elements
 			return false;
 		}
 
+		public static bool IsTrishadaya(this Bhava bhava)
+		{
+			switch (bhava)
+			{
+				case Bhava.SahajaBhava:
+				case Bhava.ShatruBhava:
+				case Bhava.LabhaBhava:
+					return true;
+			}
+			return false;
+		}
+
 		public static bool IsKutumbaSthana(this Bhava bhava)
 		{
 			switch (bhava)

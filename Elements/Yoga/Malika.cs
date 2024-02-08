@@ -152,5 +152,33 @@ namespace Mhora.Elements.Yoga
 
 			return (yoga == 0xF7);
 		}
+
+		//All seven planets occupying one house each from the lagna to seventh house starting with the 5th house.
+		//Famous religious, performing sacrificial rituals.
+		public static bool PutraMalika(this DivisionType varga)
+		{
+			var  planets = Graha.Planets(varga);
+			byte yoga    = 0x00;
+			foreach (var graha in planets)
+			{
+				if (graha.IsConjunctWithPlanet)
+				{
+					return (false);
+				}
+
+				if ((graha.Bhava > Bhava.LagnaBhava) && (graha.Bhava < Bhava.PutraBhava))
+				{
+					return (false);
+				}
+
+				if ((graha.Bhava >= Bhava.JayaBhava) || (graha.Bhava == Bhava.LagnaBhava))
+				{
+					yoga |= (byte) (1 << graha.Bhava.Index());
+				}
+			}
+
+			return (yoga == 0xF7);
+
+		}
 	}
 }

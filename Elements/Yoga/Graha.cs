@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.SwissEph.Helpers;
+using Mhora.Util;
 
 namespace Mhora.Elements.Yoga
 {
@@ -18,6 +17,8 @@ namespace Mhora.Elements.Yoga
 		private readonly DivisionPosition _dp;
 		private readonly Rashi            _rashi;
 		private          BodyPosition     _bodyPosition;
+		private          Angle            _angle;
+		private          Angle            _bhavaAngle;
 
 		protected Graha(DivisionPosition dp, DivisionType varga)
 		{
@@ -31,6 +32,8 @@ namespace Mhora.Elements.Yoga
 			Conjunct     = new List<Graha>();
 			RashiDrishti = new List<Graha>();
 			Ownership    = new List<Rashi>();
+			Association  = new List<Graha>();
+			OwnHouses    = new List<Rashi>();
 		}
 
 		public static implicit operator Body(Graha graha) => graha.Body;
@@ -54,12 +57,27 @@ namespace Mhora.Elements.Yoga
 
 		public static List<Graha> Planets(DivisionType varga)
 		{
-			var planets = Grahas(varga).FindAll(graha => graha.BodyType == BodyType.Graha);
-			planets.RemoveAll(graha => graha.Body == Body.Ketu || graha.Body == Body.Rahu);
-			planets.Sort((x, y) => x.Bhava.CompareTo(y.Bhava));
+			var planets = Karaka7(varga);
+			planets.Sort((x, y) => x._angle.CompareTo(y._angle));
 			return (planets);
 		}
-	
+
+		public static List<Graha> Karaka8(DivisionType varga)
+		{
+			var grahas = Grahas(varga).FindAll(graha => graha.BodyType == BodyType.Graha);
+			grahas.RemoveAll(graha => graha.Body == Body.Ketu);
+			grahas.Sort((x, y) => y._bhavaAngle.CompareTo(x._bhavaAngle));
+			return (grahas);
+		}
+
+		public static List<Graha> Karaka7(DivisionType varga)
+		{
+			var grahas = Karaka8(varga);
+			grahas.RemoveAll(graha => graha.Body == Body.Rahu);
+			grahas.Sort((x, y) => y._bhavaAngle.CompareTo(x._bhavaAngle));
+			return (grahas);
+		}
+
 
 		public static Graha FindOrAdd(DivisionPosition dp, DivisionType varga)
 		{
@@ -78,6 +96,24 @@ namespace Mhora.Elements.Yoga
 		{
 			var grahas = Grahas(varga);
 			return grahas.Find(graha => graha._dp.Body == body);
+		}
+
+		public static Graha Find(Karaka8 karaka, DivisionType varga)
+		{
+			var grahas = Karaka8(varga);
+			return (grahas[karaka.Index()]);
+		}
+
+		public static Graha Find(Karaka7 karaka, DivisionType varga)
+		{
+			var grahas = Karaka7(varga);
+			return (grahas[karaka.Index()]);
+		}
+
+		public bool Owns(Bhava bhava)
+		{
+			var rashi = Rashi.Find(bhava, _varga);
+			return (Owns(rashi));
 		}
 
 		public bool Owns(Rashi rashi)
@@ -137,6 +173,33 @@ namespace Mhora.Elements.Yoga
 			return (false);
 		}
 
+		public bool IsAssociatedWith(Bhava bhava)
+		{
+			foreach (var graha in Association)
+			{
+				if (graha.Bhava == bhava)
+				{
+					return (true);
+				}
+			}
+			return (false);
+		}
+
+
+		public bool IsMutualAssosiating(Graha graha) => IsAssociatedBy(graha) && IsAssociatedWith(graha);
+
+		public bool IsAssociatedBy(Body body)
+		{
+			var graha = Find(body, _varga);
+			return (IsAssociatedBy(graha));
+		}
+
+		public bool IsAssociatedBy(Graha graha)
+		{
+			return graha.IsAssociatedWith(this);
+		}
+
+
 		public bool IsAssociatedWithMalefics
 		{
 			get
@@ -172,6 +235,41 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
+		public bool IsAspectedByBenefics
+		{
+			get
+			{
+				foreach (var graha in AspectFrom)
+				{
+					if (graha.IsFunctionalBenefic)
+					{
+						return (true);
+					}
+				}
+
+				return (false);
+			}
+		}
+
+		public bool IsAspecting(Body body)
+		{
+			var graha = Find(body, _varga);
+			return IsAspecting(graha);
+		}
+
+		public bool IsAspecting(Graha graha)
+		{
+			foreach (var aspect in AspectTo)
+			{
+				if (aspect == graha)
+				{
+					return (true);
+				}
+			}
+
+			return (false);
+
+		}
 
 		public bool IsAspectedBy(Body body)
 		{
@@ -492,9 +590,41 @@ namespace Mhora.Elements.Yoga
 		public List<Graha>  AspectTo     { get; }
 		public List<Graha>  MutualAspect { get; }
 		public List<Graha>  Conjunct     { get; }
+		public List<Graha>  Association  { get; }
+		public List<Rashi>  OwnHouses    { get; }
 
 		private double _digBala;
         public double DigBala => _digBala;
+
+        public bool HasMutualAspectWith(Graha graha) => IsAspectedBy(graha) && graha.IsAspecting(this);
+
+		//Any planet which owns both a kendra and a trikona is called a Yoga-Karaka, this gives rise to highly benefic Raja Yoga
+		//This Yoga confers the status of the individual in terms of success recognition and status..
+        public bool YogaKaraka
+        {
+	        get
+	        {
+		        if (BodyType != BodyType.Graha)
+		        {
+			        return (false);
+		        }
+		        if (OwnHouses.Count == 1)
+		        {
+			        return false;
+		        }
+
+		        if (OwnHouses[0].Bhava.IsKendra() && OwnHouses[1].Bhava.IsTrikona())
+		        {
+			        return (true);
+		        }
+		        if (OwnHouses[0].Bhava.IsTrikona() && OwnHouses[1].Bhava.IsKendra())
+		        {
+			        return (true);
+		        }
+
+		        return (false);
+	        }
+        }
 
 		public bool IsStrong
 		{
@@ -823,6 +953,10 @@ namespace Mhora.Elements.Yoga
 		{
 			get
 			{
+				if (_dp.BodyType != BodyType.Graha)
+				{
+					return (false);
+				}
 				foreach (var graha in Conjunct)
 				{
 					if (graha.Body == Body.Sun)
@@ -939,10 +1073,52 @@ namespace Mhora.Elements.Yoga
 			return Relation.Neutral;
 		}
 
-		public bool IsDebilitated => Rashi == Body.DebilitationSign();
-		public bool IsExalted     => Rashi == Body.ExaltationSign();
-		public bool IsMoolTrikona => Rashi == Body.MooltrikonaSign();
-		public bool IsInOwnHouse  => Rashi.Lord == this;
+		public bool IsDebilitated
+		{
+			get
+			{
+				if (_dp.BodyType != BodyType.Graha)
+				{
+					return (false);
+				}
+				return (Rashi == Body.DebilitationSign());
+			}
+		}
+		public bool IsExalted
+		{
+			get
+			{
+				if (_dp.BodyType != BodyType.Graha)
+				{
+					return (false);
+				}
+				return Rashi == Body.ExaltationSign();
+			}
+		}
+
+		public bool IsMoolTrikona
+		{
+			get
+			{
+				if (_dp.BodyType != BodyType.Graha)
+				{
+					return (false);
+				}
+				return Rashi == Body.MooltrikonaSign();
+			}
+		}
+
+		public bool IsInOwnHouse
+		{
+			get
+			{
+				if (_dp.BodyType != BodyType.Graha)
+				{
+					return (true);
+				}
+				return Rashi.Lord == this;
+			}
+		}
 
 		//When a Neecha - Bhanga Yoga is present,the debilitation gets cancelled and is said to produce benefic results.
 		public bool NeechaBhanga
@@ -1014,6 +1190,14 @@ namespace Mhora.Elements.Yoga
 			
 		}
 
+		public Bhava HouseFrom(Body body)
+		{
+			var graha = Find(body, _varga);
+			return HouseFrom(graha);
+		}
+
+		public Bhava HouseFrom(Graha graha) => (Bhava) Bhava.HousesFrom(graha.Bhava);
+
 		public bool IsBefore(Body body)
 		{
 			var graha = Find(body, _varga);
@@ -1050,6 +1234,15 @@ namespace Mhora.Elements.Yoga
 			if (IsInOwnHouse)
 			{
 				Conditions |= Conditions.OwnHouse;
+			}
+
+			_bhavaAngle =  _dp.Longitude.ToZodiacHouseOffset();
+			_angle       =  (Bhava.Index() - 1) * 30.0;
+			_angle       += _bhavaAngle;
+
+			if (IsChayaGraha)
+			{
+				_bhavaAngle = 30.0 - _bhavaAngle;
 			}
 
 			if (Bhava.IsKaraka(_dp.Body))
@@ -1098,6 +1291,12 @@ namespace Mhora.Elements.Yoga
 						Conjunct.Add(graha);
 					}
 				}
+
+				if (IsAssociatedWith(graha))
+				{
+					Association.Add(graha);
+				}
+
 			}
 
 			foreach (var graha in AspectFrom)
@@ -1192,6 +1391,8 @@ namespace Mhora.Elements.Yoga
 			{
 				graha.Examine();
 			}
+
+			var planets = Planets(varga);
 
 			Rashi.Examine(varga);
 		}

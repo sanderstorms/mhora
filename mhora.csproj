@@ -170,6 +170,7 @@
   <ItemGroup>
     <Compile Include="Definitions\Body.cs" />
     <Compile Include="Definitions\BodyType.cs" />
+    <Compile Include="Definitions\Karaka.cs" />
     <Compile Include="Definitions\Relation.cs" />
     <Compile Include="Elements\Bhavas.cs" />
     <Compile Include="Elements\Calculations.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Elements\Yoga\Mahapurusha.cs" />
     <Compile Include="Elements\Yoga\Malika.cs" />
     <Compile Include="Elements\Yoga\Mangal.cs" />
+    <Compile Include="Elements\Yoga\Raja.cs" />
     <Compile Include="Elements\Yoga\Yoga.cs" />
     <Compile Include="Elements\ZodiacHouses.cs" />
     <Compile Include="Definitions\Tithi.cs" />
@@ -210,6 +212,7 @@
     <Compile Include="SwissEph\Helpers\BodyPosition.cs" />
     <Compile Include="SwissEph\SwephDll.cs" />
     <Compile Include="Util\Angle.cs" />
+    <Compile Include="Util\Calc.cs" />
     <Compile Include="Util\CompilerService.cs" />
     <Compile Include="SwissEph\Helpers\GeoPosition.cs" />
     <Compile Include="SwissEph\Helpers\HorizontalCoordinates.cs" />

@@ -1046,6 +1046,98 @@ namespace Mhora.Elements.Yoga
 			return (false);
 		}
 
-	}
+		//Benefic Planets occupying the kendras and 6th & 8th house either vacant or occupied by benefic only.
+		//One born with either of the above combinations in the horoscope is renowned, illustrious, fortunate,
+		//wealthy, an orator, charitable, learned.
+		public static bool ParvataKendra(this DivisionType varga)
+		{
+			int yoga = 0;
+			foreach (var rashi in Rashi.Rashis(varga))
+			{
+				switch (rashi.Bhava)
+				{
+					case Bhava.ShatruBhava:
+					case Bhava.MrtyuBhava:
+					{
+						if (rashi.Grahas.Count > 0)
+						{
+							return (false);
+						}
+					}
+					break;
 
+					case Bhava.LagnaBhava:
+					case Bhava.SukhaBhava:
+					case Bhava.JayaBhava:
+					case Bhava.KarmaBhava:
+					{
+						if (rashi.Grahas.Count > 0)
+						{
+							foreach (var graha in rashi.Grahas)
+							{
+								if (graha.Body == Body.Lagna)
+								{
+									continue;
+								}
+
+								if (graha.IsNaturalMalefic || graha.IsFunctionalMalefic)
+								{
+									return (false);
+								}
+
+								if (graha.IsNaturalBenefic)
+								{
+									yoga |= (1 << graha.Bhava.Index());
+								}
+							}
+						}
+					}
+					break;
+				}
+			}
+
+			return (yoga.NumberOfSetBits () >= 3);
+		}
+
+		//The lord of the Lagna and that of the 12th lord placed in mutual kendras, and aspected by benefices.
+		//One born with either of the above combinations in the horoscope is renowned, illustrious, fortunate,
+		//wealthy, an orator, charitable, learned, very lustful.
+		public static bool ParvataLagna(this DivisionType varga)
+		{
+			var lord1  = Rashi.Find(Bhava.LagnaBhava, varga).Lord;
+			var lord12 = Rashi.Find(Bhava.VyayaBhava, varga).Lord;
+
+			if (lord1.Bhava.IsKendra() == false)
+			{
+				return (false);
+			}
+
+			if (lord12.Bhava.IsKendra() == false)
+			{
+				return (false);
+			}
+
+			if (lord1.Exchange != lord12)
+			{
+				return (false);
+			}
+
+			if (lord1.Bhava.HousesFrom(lord12.Bhava) != 7)
+			{
+				return (false);
+			}
+
+			if (lord1.IsAspectedByBenefics == false)
+			{
+				return (false);
+			}
+
+			if (lord12.IsAspectedByBenefics == false)
+			{
+				return (false);
+			}
+
+			return (true);
+		}
+	}
 }

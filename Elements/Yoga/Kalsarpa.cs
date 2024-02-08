@@ -117,6 +117,19 @@ namespace Mhora.Elements.Yoga
 
 			return varga.KalsarpaYoga();
 		}
+
+		//Rahu is in 10th house and Ketu is in 4th house and all the planets fall on one side of Rahu/Ketu axis.
+		//This type of persons luck rises outside the place the place of his birth, he will be physically weak.
+		public static bool PatakKalsarpa(this DivisionType varga)
+		{
+			var rahu = Graha.Find(Body.Rahu, varga);
+			if (rahu.Bhava != Bhava.KarmaBhava)
+			{
+				return (false);
+			}
+
+			return varga.KalsarpaYoga();
+		}
 	}
 
 }
