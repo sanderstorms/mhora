@@ -130,6 +130,45 @@ namespace Mhora.Elements.Yoga
 
 			return varga.KalsarpaYoga();
 		}
+
+		//Rahu is in 9th house and Ketu is in 3rd house and all the planets fall on one side of Rahu/Ketu axis.
+		//This type of a person will go on a world tour. He will be a good warrior, a renouned writer or a good player.
+		//But these type of people are having some mental troubles and there luck rises after the death of there father.
+		public static bool ShankhchudKalsarpa(this DivisionType varga)
+		{
+			var rahu = Graha.Find(Body.Rahu, varga);
+			if (rahu.Bhava != Bhava.DharmaBhava)
+			{
+				return (false);
+			}
+
+			return varga.KalsarpaYoga();
+		}
+
+		//Rahu is in 4th house and Ketu is in 10th house and all the planets fall on one side of Rahu/Ketu axis.
+		//This type of persons luck rises outside the place the place of his birth, they will be physically weak.
+		public static bool ShankhpatKalsarpa(this DivisionType varga)
+		{
+			var rahu = Graha.Find(Body.Rahu, varga);
+			if (rahu.Bhava != Bhava.KarmaBhava)
+			{
+				return (false);
+			}
+			return varga.KalsarpaYoga();
+		}
+
+		//Rahu is in 12th house and Ketu is in 6th house and all the planets fall on one side of Rahu/Ketu axis.
+		//The person will become a Jyotishi or an Advocate, but he will have a dangerous disease.
+		public static bool SheshnagKalsarpa(this DivisionType varga)
+		{
+			var rahu = Graha.Find(Body.Rahu, varga);
+			if (rahu.Bhava != Bhava.VyayaBhava)
+			{
+				return (false);
+			}
+
+			return varga.KalsarpaYoga();
+		}
 	}
 
 }

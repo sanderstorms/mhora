@@ -193,6 +193,9 @@
     <Compile Include="Elements\Yoga\Malika.cs" />
     <Compile Include="Elements\Yoga\Mangal.cs" />
     <Compile Include="Elements\Yoga\Raja.cs" />
+    <Compile Include="Elements\Yoga\Ravi.cs" />
+    <Compile Include="Elements\Yoga\Sankhya.cs" />
+    <Compile Include="Elements\Yoga\Shukra.cs" />
     <Compile Include="Elements\Yoga\Yoga.cs" />
     <Compile Include="Elements\ZodiacHouses.cs" />
     <Compile Include="Definitions\Tithi.cs" />

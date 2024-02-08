@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Mhora.Definitions;
 using Mhora.Util;
+using Newtonsoft.Json.Linq;
 
 namespace Mhora.Elements.Yoga
 {
@@ -1139,5 +1141,115 @@ namespace Mhora.Elements.Yoga
 
 			return (true);
 		}
+
+		//Mercury, Jupiter and Venus are in the Kendras or Trikonas or in the 2nd house,
+		//and Jupiter is strong occupying own sign friends sign or exalted.
+		//The person is highly learned, scholarly very well versed in prose and poetry
+		//as also in sacred scriptures and higher mathematics.
+		public static bool Saraswati(this DivisionType varga)
+		{
+			var grahas = new List<Graha>()
+			{
+				Graha.Find(Body.Mercury, varga),
+				Graha.Find(Body.Jupiter, varga),
+				Graha.Find(Body.Venus, varga),
+			};
+
+			foreach (var graha in grahas)
+			{
+				if ((graha.Bhava.IsKendra() == false) && 
+				    (graha.Bhava.IsTrikona() == false) && 
+				    (graha.Bhava != Bhava.DhanaBhava))
+				{
+					return (false);
+				}
+			}
+
+			var jupiter = Graha.Find(Body.Jupiter, varga);
+			if ((jupiter.IsInOwnHouse) || (jupiter.IsExalted) || (jupiter.FriendlySign))
+			{
+				return (true);
+			}
+			return (false);
+		}
+
+		//When Jupiter, located in a house other than a kendra, occupies the 6, 8, 12th house from moon.
+		//It produces a native who is destitute, indigent, ever toiling, disliked by all.
+		public static bool Shakata(this DivisionType varga)
+		{
+			var jupiter = Graha.Find(Body.Jupiter, varga);
+			if (jupiter.Bhava.IsKendra())
+			{
+				return (false);
+			}
+			switch (jupiter.HouseFrom(Body.Moon))
+			{
+				case Bhava.ShatruBhava:
+				case Bhava.MrtyuBhava:
+				case Bhava.VyayaBhava:
+					return (true);
+			}
+
+			return (false);
+		}
+
+		//The 5 lord and 6 lord in mutual kendras and the lagna lord is strong OR
+		//The lord of the lagna as well as that of the 10 house occupy a Chara(movable) sign and 9 lord is strong
+		//One born in the Shankha yoga is kind-hearted, virtuous, learned, blessed with wife and children,
+		//morally sound, owns lands, lives long(upto 81)
+		public static bool Shankha(this DivisionType varga)
+		{
+			var lagna = Graha.Find(Body.Lagna, varga);
+			var lord5 = Rashi.Find(Bhava.PutraBhava, varga).Lord;
+			var lord6 = Rashi.Find(Bhava.ShatruBhava, varga).Lord;
+
+			if (lord5.Bhava.IsKendra() && lord6.Bhava.IsKendra())
+			{
+				if (lord5.Exchange == lord6)
+				{
+					return (lagna.HouseLord.Strength >= 2);
+				}
+			}
+
+			var lord1  = Rashi.Find(Bhava.LagnaBhava, varga).Lord;
+			var lord9  = Rashi.Find(Bhava.DharmaBhava, varga).Lord;
+			var lord10 = Rashi.Find(Bhava.KarmaBhava, varga).Lord;
+
+			if (lord1.Rashi.ZodiacHouse.IsMoveableSign() == false)
+			{
+				return (false);
+			}
+			if (lord10.Rashi.ZodiacHouse.IsMoveableSign() == false)
+			{
+				return (false);
+			}
+
+			return (lord9.Strength >= 2);
+		}
+
+		//Exalted lord of the 7th occupying the 10th house and the 9th lord also in the 10th house.
+		//The person is glorious like Indra the king of gods.
+		public static bool Shrinatha(this DivisionType varga)
+		{
+			var lord7 = Rashi.Find(Bhava.JayaBhava, varga).Lord;
+			if (lord7.IsExalted == false)
+			{
+				return (false);
+			}
+
+			if (lord7.Bhava != Bhava.KarmaBhava)
+			{
+				return (false);
+			}
+
+			var lord9 = Rashi.Find(Bhava.DharmaBhava, varga).Lord;
+			if (lord9.Bhava == Bhava.KarmaBhava)
+			{
+				return (true);
+			}
+
+			return (false);
+		}
+
 	}
 }
