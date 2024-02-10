@@ -295,6 +295,33 @@ namespace Mhora.Elements
 			return false;
 		}
 
+		public static bool IsPanaphara(this Bhava bhava)
+		{
+			switch (bhava)
+			{
+				case Bhava.DhanaBhava:
+				case Bhava.PutraBhava:
+				case Bhava.MrtyuBhava:
+				case Bhava.LabhaBhava:
+					return true;
+			}
+			return false;
+		}
+
+		public static bool IsApoklima(this Bhava bhava)
+		{
+			switch (bhava)
+			{
+				case Bhava.SahajaBhava:
+				case Bhava.ShatruBhava:
+				case Bhava.DharmaBhava:
+				case Bhava.VyayaBhava:
+					return (true);
+			}
+
+			return false;
+		}
+
 		public static bool IsKutumbaSthana(this Bhava bhava)
 		{
 			switch (bhava)

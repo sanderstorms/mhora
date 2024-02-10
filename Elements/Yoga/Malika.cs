@@ -274,5 +274,71 @@ namespace Mhora.Elements.Yoga
 			return (yoga == 0xF7);
 
 		}
+
+		//All seven planets occupying one house each from the lagna to seventh house starting with the 4th house.
+		//Liberal ruler of several countries.
+		public static bool SukhaMalika(this DivisionType varga)
+		{
+			if (Rashi.Find(Bhava.SukhaBhava, varga).Grahas.Count != 1)
+			{
+				return (false);
+			}
+
+			var  planets = Graha.Planets(varga);
+			byte yoga    = 0x00;
+			foreach (var graha in planets)
+			{
+				if (graha.IsConjunctWithPlanet)
+				{
+					return (false);
+				}
+
+				if ((graha.Bhava > Bhava.LagnaBhava) && (graha.Bhava < Bhava.SukhaBhava))
+				{
+					return (false);
+				}
+
+				if ((graha.Bhava >= Bhava.JayaBhava) || (graha.Bhava == Bhava.LagnaBhava))
+				{
+					yoga |= (byte) (1 << graha.Bhava.Index());
+				}
+			}
+
+			return (yoga == 0xF7);
+
+		}
+
+		//All seven planets occupying one house each from the lagna to seventh house starting with the 12th house.
+		//Widely respected honored liberal indulges in lavish spendings.
+		public static bool VrayaMalika(this DivisionType varga)
+		{
+			if (Rashi.Find(Bhava.VyayaBhava, varga).Grahas.Count != 1)
+			{
+				return (false);
+			}
+
+			var  planets = Graha.Planets(varga);
+			byte yoga    = 0x00;
+			foreach (var graha in planets)
+			{
+				if (graha.IsConjunctWithPlanet)
+				{
+					return (false);
+				}
+
+				if ((graha.Bhava > Bhava.JayaBhava) && (graha.Bhava < Bhava.KarmaBhava))
+				{
+					return (false);
+				}
+
+				if ((graha.Bhava >= Bhava.LagnaBhava) && (graha.Bhava <= Bhava.JayaBhava))
+				{
+					yoga |= (byte) (1 << graha.Bhava.Index());
+				}
+			}
+
+			return (yoga == 0xF7);
+
+		}
 	}
 }

@@ -1251,5 +1251,86 @@ namespace Mhora.Elements.Yoga
 			return (false);
 		}
 
+		//All planets occupying houses 2, 6, 8 and 12.
+		//The person acquires the ‘Simhasana’ or the royal throne.
+		public static bool Simhasana(this DivisionType varga)
+		{
+			foreach (var graha in Graha.Planets(varga))
+			{
+				switch (graha.Bhava)
+				{
+					case Bhava.DhanaBhava:
+					case Bhava.ShatruBhava:
+					case Bhava.MrtyuBhava:
+					case Bhava.VyayaBhava: 
+						break;
+					default:
+						return (false);
+				}
+			}
+
+			return (true);
+		}
+
+		//Location of the Moon in a kendra(1, 4, 7, 10) from the sun.
+		//This produces ordinary wealth, learning, efficiency and fame of native.
+		public static bool AlpaUttamadi(this DivisionType varga)
+		{
+			var moon = Graha.Find(Body.Moon, varga);
+			return (moon.HouseFrom(Body.Sun).IsKendra());
+		}
+
+		//Location of the Moon in a Panaphara ( 2, 5, 8, 11) from the Sun.
+		//This produces medium wealth, learning, efficiency and fame of native.
+		public static bool MadhyaUttamadi(this DivisionType varga)
+		{
+			var moon = Graha.Find(Body.Moon, varga);
+			return (moon.HouseFrom(Body.Sun).IsPanaphara());
+		}
+
+		//Location of the Moon in a Apoklima house ( 3, 6, 9, 12 ) from the Sun.
+		//The wealth, learning, efficiency and fame of the native are plenteous.
+		// The manasagari ascribes : Many sons, trouble from daughters.
+		public static bool UttamaUttamadi(this DivisionType varga)
+		{
+			var moon = Graha.Find(Body.Moon, varga);
+			return (moon.HouseFrom(Body.Sun).IsApoklima());
+		}
+
+		//It is produced When all the benefices occupy the Upachaya houses (3, 6, 10, 11) from the Moon.
+		//This yoga produces an individual who is extremely wealthy and enjoys comforts while staying at home.
+		public static bool Vasumna(this DivisionType varga)
+		{
+			var moon = Graha.Find(Body.Moon, varga);
+			return (moon.HouseFrom(Body.Sun).IsUpachay());
+		}
+
+		//The 6th lord is in the 6th, 8th or 12th house.
+		//This is supposed to confer happiness health and fame. The person will conquer his/her enemies
+		//and will hesitate in indulging in sinful deeds. Friends will be illustrious and with class.
+		public static bool ViparitaHarshaRaja(this DivisionType varga)
+		{
+			var lord6 = Rashi.Find(Bhava.ShatruBhava, varga).Lord;
+			return lord6.Bhava.IsDushtana();
+		}
+
+		//The 8th lord is in the 6th, 8th or 12th house.
+		//This confers learning longevity and prosperity. The person will be successful
+		//in all ventures conqueror of foes and a great celebrity.
+		public static bool ViparitaSaralaRaja(this DivisionType varga)
+		{
+			var lord8 = Rashi.Find(Bhava.MrtyuBhava, varga).Lord;
+			return lord8.Bhava.IsDushtana();
+		}
+
+		//The 12th lord is in the 6th, 8th or 12th house.
+		//This makes the person virtuous and contented. The person will be equipped with good behavior
+		//towards others will enjoy happiness will be independent following a respectable profession or
+		//conduct and will be known for good qualities.
+		public static bool ViparitaVimalaRaja(this DivisionType varga)
+		{
+			var lord12 = Rashi.Find(Bhava.VyayaBhava, varga).Lord;
+			return lord12.Bhava.IsDushtana();
+		}
 	}
 }
