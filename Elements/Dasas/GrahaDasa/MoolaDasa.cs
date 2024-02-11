@@ -24,6 +24,7 @@ using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Calculation.Strength;
 using Mhora.Elements.Dasas.NakshatraDasa;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.GrahaDasa;
 
@@ -53,7 +54,7 @@ public class MoolaDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var cycleStart = ParamAyus() * cycle;
-		var curr        = 0.0;
+		TimeOffset curr        = 0.0;
 		var al          = new ArrayList(24);
 		foreach (Body b in _options.GrahaStrengths.grahas)
 		{
@@ -132,9 +133,9 @@ public class MoolaDasa : Dasa, IDasa
 		return _options.Clone();
 	}
 
-	public double LengthOfDasa(Body plt)
+	public TimeOffset LengthOfDasa(Body plt)
 	{
-		double length = 0;
+		TimeOffset length = 0;
 
 		// Count to moola trikona - 1.
 		// Use Aqu / Sco as MT houses for Rahu / Ketu

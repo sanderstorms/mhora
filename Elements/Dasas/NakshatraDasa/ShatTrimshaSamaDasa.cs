@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System.Collections;
 using System.Diagnostics;
 using Mhora.Definitions;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
@@ -72,7 +73,7 @@ public class ShatTrimshaSamaDasa : NakshatraDasa, INakshatraDasa
 		return new DasaEntry(NextDasaLordHelper(di.Graha), 0, 0, di.Level, string.Empty);
 	}
 
-	public double LengthOfDasa(Body plt)
+	public TimeOffset LengthOfDasa(Body plt)
 	{
 		switch (plt)
 		{

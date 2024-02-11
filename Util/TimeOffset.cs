@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace Mhora.Util
 {
 	[JsonObject]
-	public class TimeOffset
+	public class TimeOffset : IEquatable<TimeOffset>
 	{
 		private readonly int      _years;
 		private readonly TimeSpan _remainder;
@@ -98,14 +98,63 @@ namespace Mhora.Util
 		   return (new TimeOffset(timeOffset));
 	   }
 
-	   public static TimeOffset operator +(TimeOffset start, double years)  => start.Add(new TimeOffset(years));
-	   public static TimeOffset operator -(TimeOffset start, double years)  => start.Sub(new TimeOffset(years));
-	   public static TimeOffset operator /(TimeOffset start, double factor) => start.Div(factor);
-	   public static TimeOffset operator *(TimeOffset start, double factor) => start.Mul(factor);
+	   public static TimeOffset operator +(TimeOffset start,  double years)  => start.Add(new TimeOffset(years));
+	   public static TimeOffset operator -(TimeOffset start,  double years)  => start.Sub(new TimeOffset(years));
+	   public static TimeOffset operator /(TimeOffset start,  double factor) => start.Div(factor);
+	   public static TimeOffset operator *(TimeOffset start,  double factor) => start.Mul(factor);
+	   public static bool operator < (TimeOffset      offset, double value)  => offset.TotalYears < value; 
+	   public static bool operator > (TimeOffset      offset, double value)  => offset.TotalYears > value; 
+	   public static bool operator == (TimeOffset     offset, double value)  => offset.TotalYears == value; 
+	   public static bool operator != (TimeOffset     offset, double value)  => offset.TotalYears != value; 
 
-	   public static TimeOffset operator +(TimeOffset start, TimeOffset offset) => start.Add(offset);
-	   public static TimeOffset operator -(TimeOffset start, TimeOffset offset) => start.Sub(offset);
-	   public static TimeOffset operator /(TimeOffset start, TimeOffset offset) => start.Div(offset.TotalYears);
-	   public static TimeOffset operator *(TimeOffset start, TimeOffset offset) => start.Mul(offset.TotalYears);
+	   public static TimeOffset operator +(TimeOffset start,  TimeOffset offset) => start.Add(offset);
+	   public static TimeOffset operator -(TimeOffset start,  TimeOffset offset) => start.Sub(offset);
+	   public static TimeOffset operator /(TimeOffset start,  TimeOffset offset) => start.Div(offset.TotalYears);
+	   public static TimeOffset operator *(TimeOffset start,  TimeOffset offset) => start.Mul(offset.TotalYears);
+	   public static bool operator < (TimeOffset      offset, TimeOffset other)  => offset.TotalYears < other.TotalYears; 
+	   public static bool operator > (TimeOffset      offset, TimeOffset other)  => offset.TotalYears > other.TotalYears; 
+
+	   public bool Equals(TimeOffset other)
+	   {
+		   if (ReferenceEquals(null, other))
+		   {
+			   return false;
+		   }
+
+		   if (ReferenceEquals(this, other))
+		   {
+			   return true;
+		   }
+
+		   return _years == other._years && _remainder.Equals(other._remainder);
+	   }
+
+	   public override bool Equals(object obj)
+	   {
+		   if (ReferenceEquals(null, obj))
+		   {
+			   return false;
+		   }
+
+		   if (ReferenceEquals(this, obj))
+		   {
+			   return true;
+		   }
+
+		   if (obj.GetType() != this.GetType())
+		   {
+			   return false;
+		   }
+
+		   return Equals((TimeOffset) obj);
+	   }
+
+	   public override int GetHashCode()
+	   {
+		   unchecked
+		   {
+			   return (_years * 397) ^ _remainder.GetHashCode();
+		   }
+	   }
 	}
 }

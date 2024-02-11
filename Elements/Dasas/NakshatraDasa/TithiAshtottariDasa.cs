@@ -21,6 +21,7 @@ using System.Collections;
 using System.Diagnostics;
 using Mhora.Components.Delegates;
 using Mhora.Definitions;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
@@ -100,7 +101,7 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		return _ad.NextDasaLord(di);
 	}
 
-	public double LengthOfDasa(Body plt)
+	public TimeOffset LengthOfDasa(Body plt)
 	{
 		return _ad.LengthOfDasa(plt);
 	}

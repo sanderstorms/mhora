@@ -20,6 +20,7 @@ using System.Collections;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.RasiDasa;
 
@@ -52,7 +53,8 @@ public class CharaDasa : Dasa, IDasa
 
 		var bIsZodiacal = zhSeed.Add(9).IsOddFooted();
 
-		var dasaLengthSum = 0.0;
+		TimeOffset dasaLengthSum = TimeOffset.Zero;
+		;
 		for (var i = 1; i <= 12; i++)
 		{
 			ZodiacHouse zhDasa;

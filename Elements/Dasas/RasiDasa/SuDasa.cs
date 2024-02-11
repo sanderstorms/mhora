@@ -20,6 +20,7 @@ using System.Collections;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.RasiDasa;
 
@@ -77,7 +78,7 @@ public class SuDasa : Dasa, IDasa
 
 		var bIsForward = zhSeed.IsOdd();
 
-		var dasaLengthSum = 0.0;
+		TimeOffset dasaLengthSum = 0.0;
 		for (var i = 1; i <= 12; i++)
 		{
 			ZodiacHouse zhDasa;
@@ -107,7 +108,7 @@ public class SuDasa : Dasa, IDasa
 			dasaLengthSum += dasaLength;
 		}
 
-		var cycleLength  = cycle                                        * ParamAyus();
+		TimeOffset cycleLength  = cycle                                        * ParamAyus();
 		var offsetLength = bpSl.Longitude.ToZodiacHouseOffset() / 30.0 * ((DasaEntry) al[0]).DasaLength;
 
 		//Mhora.Log.Debug ("Completed {0}, going back {1} of {2} years", bp_sl.longitude.toZodiacHouseOffset() / 30.0,

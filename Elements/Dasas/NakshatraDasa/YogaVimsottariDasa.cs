@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using Mhora.Components.Delegates;
 using Mhora.Definitions;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
@@ -85,7 +86,7 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 		return _vd.NextDasaLord(di);
 	}
 
-	public double LengthOfDasa(Body plt)
+	public TimeOffset LengthOfDasa(Body plt)
 	{
 		return _vd.LengthOfDasa(plt);
 	}

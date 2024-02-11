@@ -80,7 +80,7 @@ public class TajakaDasa : Dasa, IDasa
 		}
 
 		TimeOffset start  = 0.0;
-		double     length = 0.0;
+		TimeOffset length = 0.0;
 		var        level  = 0;
 
 		var al = new ArrayList(12);

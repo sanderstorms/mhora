@@ -73,7 +73,7 @@ public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 		return new DasaEntry(NextDasaLordHelper(di.Graha), TimeOffset.Zero, 0, di.Level, string.Empty);
 	}
 
-	public double LengthOfDasa(Body plt)
+	public TimeOffset LengthOfDasa(Body plt)
 	{
 		switch (plt)
 		{

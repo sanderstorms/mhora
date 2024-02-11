@@ -112,7 +112,7 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 		return new DasaEntry(NextDasaLordHelper(di.Graha), 0, 0, di.Level, string.Empty);
 	}
 
-	public double LengthOfDasa(Body plt)
+	public TimeOffset LengthOfDasa(Body plt)
 	{
 		return DasaLength(plt);
 	}

@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using Mhora.Definitions;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
@@ -77,7 +78,7 @@ public class KaranaChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa, INaksha
 		return _cd.NextDasaLord(di);
 	}
 
-	public double LengthOfDasa(Body plt)
+	public TimeOffset LengthOfDasa(Body plt)
 	{
 		return _cd.LengthOfDasa(plt);
 	}

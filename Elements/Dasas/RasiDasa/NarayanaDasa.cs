@@ -20,6 +20,7 @@ using System.Collections;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.RasiDasa;
 
@@ -129,7 +130,7 @@ public class NarayanaDasa : Dasa, IDasa
 			backward = !backward;
 		}
 
-		var dasaLengthSum = 0.0;
+		TimeOffset dasaLengthSum = 0.0;
 		for (var i = 0; i < 12; i++)
 		{
 			ZodiacHouse zhDasa;

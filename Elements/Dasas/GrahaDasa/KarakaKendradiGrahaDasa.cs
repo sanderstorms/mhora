@@ -24,6 +24,7 @@ using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Calculation.Strength;
 using Mhora.Elements.Dasas.NakshatraDasa;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.GrahaDasa;
 
@@ -53,7 +54,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var cycleStart = ParamAyus() * cycle;
-		var curr        = 0.0;
+		TimeOffset curr        = 0.0;
 		var al          = new ArrayList(24);
 		foreach (Body b in _options.GrahaStrengths.grahas)
 		{

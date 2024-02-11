@@ -26,20 +26,20 @@ namespace Mhora.Elements.Dasas;
 [TypeConverter(typeof(DasaEntryConverter))]
 public class DasaEntry
 {
-	private double      _dasaLength; // 1 year = 360 days = 360 degrees is used internally!!!!
 	private Body        _graha;
 	private int         _level;
 	private string      _shortDesc;
 	private TimeOffset  _start;
+	private TimeOffset  _length; // 1 year = 360 days = 360 degrees is used internally!!!!
 	private ZodiacHouse _zodiacHouse;
 
-	public DasaEntry(Body graha, TimeOffset startUt, double dasaLength, int level, string name)
+	public DasaEntry(Body graha, TimeOffset startUt, TimeOffset dasaLength, int level, string name)
 	{
 		_graha = graha;
 		Construct(startUt,dasaLength, level, name);
 	}
 
-	public DasaEntry(ZodiacHouse zh, TimeOffset startUt, double dasaLength, int level, string name)
+	public DasaEntry(ZodiacHouse zh, TimeOffset startUt, TimeOffset dasaLength, int level, string name)
 	{
 		_zodiacHouse = zh;
 		Construct(startUt, dasaLength, level, name);
@@ -47,7 +47,7 @@ public class DasaEntry
 
 	public DasaEntry()
 	{
-		_dasaLength  = 0;
+		_length  = 0;
 		_start     = new TimeOffset();
 		_level       = 1;
 		_shortDesc   = "Jup";
@@ -73,10 +73,10 @@ public class DasaEntry
 		set => _start = value;
 	}
 
-	public double DasaLength
+	public TimeOffset DasaLength
 	{
-		get => _dasaLength;
-		set => _dasaLength = value;
+		get => _length;
+		set => _length = value;
 	}
 
 	public Body Graha
@@ -91,10 +91,10 @@ public class DasaEntry
 		set => _zodiacHouse = value;
 	}
 
-	private void Construct(TimeOffset startUt, double dasaLength, int level, string shortDesc)
+	private void Construct(TimeOffset startUt, TimeOffset dasaLength, int level, string shortDesc)
 	{
 		_start    = startUt;
-		_dasaLength = dasaLength;
+		_length = dasaLength;
 		_level      = level;
 		_shortDesc  = shortDesc;
 	}

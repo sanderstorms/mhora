@@ -20,6 +20,7 @@ using System.Collections;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.RasiDasa;
 
@@ -64,7 +65,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 			9,
 			12
 		};
-		double dasaLengthSum = 0;
+		TimeOffset dasaLengthSum = TimeOffset.Zero;
 
 		var zhStart = _options.GetSeed();
 		zhStart = _options.FindStrongerRasi(_options.SeventhStrengths, zhStart, zhStart.Add(7));

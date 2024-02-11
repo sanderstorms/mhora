@@ -78,7 +78,7 @@ public class NakshatraPraveshDasa : Dasa, IDasa
 		}
 
 		TimeOffset start  = 0.0;
-		double     length = 0.0;
+		TimeOffset     length = 0.0;
 		var        level  = 0;
 
 		ArrayList al = null;

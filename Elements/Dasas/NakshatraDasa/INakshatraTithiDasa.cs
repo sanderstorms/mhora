@@ -17,11 +17,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
 public interface INakshatraTithiDasa : IDasa
 {
 	Body LordOfTithi(Longitude  l);
-	double    LengthOfDasa(Body plt); // Length of a maha dasa
+	TimeOffset    LengthOfDasa(Body plt); // Length of a maha dasa
 }
