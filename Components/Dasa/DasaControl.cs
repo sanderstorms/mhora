@@ -966,7 +966,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			_td = new ToDate(h.Info.Jd, DasaOptions.YearType, DasaOptions.YearLength, compress, h);
 		}
 
-		_td.SetOffset(DasaOptions.OffsetDays + DasaOptions.OffsetHours / 24.0 + DasaOptions.OffsetMinutes / (24.0 * 60.0));
+		_td.SetOffset(DasaOptions.Offset + TimeSpan.FromDays(DasaOptions.OffsetDays));
 	}
 
 	private object SetDasaOptions(object o)
