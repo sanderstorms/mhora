@@ -202,7 +202,6 @@ public class ToDate
 
 				l  =  new Longitude(lon       + _spos);
 				jd =  t.LinearSearch(_h.Info.Jd + years * TimeUtils.SiderealYear.TotalDays, l, t.LongitudeOfSun);
-				jd += _h.Info.DstOffset.TotalDays;
 				sweph.RevJul(jd, out year, out month, out day, out dhour);
 				return new DateTime(year, month, day).AddHours(dhour);
 			case DateType.TithiPraveshYear:
