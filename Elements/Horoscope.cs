@@ -520,14 +520,14 @@ public class Horoscope : ICloneable
 
 	private void PopulateSunrisetCache()
 	{
-		Time sunriseUt   = 0.0;
+		double sunriseUt   = 0.0;
 
 		PopulateSunrisetCacheHelper(Info.Jd, ref _nextSunrise, ref _nextSunset, ref sunriseUt);
 		PopulateSunrisetCacheHelper(sunriseUt - 1.0 - 1.0 / 24.0, ref _sunrise, ref _sunset, ref sunriseUt);
 		//Debug.WriteLine("Sunrise[t]: " + this.sunrise.ToString() + " " + this.sunrise.ToString(), "Basics");
 	}
 
-	public void PopulateSunrisetCacheHelper(double ut, ref Time sr, ref Time ss, ref Time srUt)
+	public void PopulateSunrisetCacheHelper(double ut, ref Time sr, ref Time ss, ref double srUt)
 	{
 		var srflag = 0;
 		switch (Options.SunrisePosition)

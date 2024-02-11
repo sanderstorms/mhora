@@ -94,7 +94,7 @@ public class PanchangaControl : MhoraControl
 	private Mutex mutexProgress;
 
 	private Time sunrise = new Time();
-	private Time ut_sr = new Time();
+	private double ut_sr;
 
 
 	public PanchangaControl(Horoscope _h)
