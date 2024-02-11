@@ -572,7 +572,7 @@ public class TransitSearch : MhoraControl
 
 		var dp                = h.GetPosition(opts.SearchBody).ToDivisionPosition(opts.Division);
 		var yearlyProgression = (dp.CuspHigher - dp.CuspLower) / 30.0;
-		var julday_ut         = opts.StartDate.UniversalTime();
+		var julday_ut         = opts.StartDate.ToJulian();
 
 		if (julday_ut <= h.Info.Jd)
 		{

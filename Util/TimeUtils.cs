@@ -41,9 +41,13 @@ public static class TimeUtils
 
 	public static DateTime AddYears(this DateTime startDate, double years)
 	{
-		var fullYears = Math.Truncate(years);
-		startDate = startDate.AddYears(fullYears);
-		return startDate + RemainingDays(years);
+		if (years > double.Epsilon)
+		{
+			var fullYears = (int) Math.Truncate(years);
+			startDate = startDate.AddYears(fullYears);
+			return startDate + RemainingDays(years);
+		}
+		return startDate;
 	}
 
 	public static DateTime CalculateDate(double ut, double offsetInyears)
@@ -55,6 +59,14 @@ public static class TimeUtils
 		dateTime = dateTime.AddYears(offset.Years);
 
 		return dateTime + offset.Remainder;
+	}
+
+	public static double AddYears(double ut, double years)
+	{
+		sweph.RevJul(ut, out var year, out var month, out var day, out var hours);
+		var dateTime = new DateTime(year, month, day).AddHours(hours);
+		dateTime.AddYears(years);
+		return dateTime.ToJulian();
 	}
 
 
@@ -73,7 +85,7 @@ public static class TimeUtils
 		return new DateTime(year, month, day).AddHours(time);
 	}
 
-	public static double UniversalTime(this DateTime dateTime)
+	public static double ToJulian(this DateTime dateTime)
 	{
 		return sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Time().TotalHours);
 	}

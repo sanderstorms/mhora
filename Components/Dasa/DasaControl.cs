@@ -1184,7 +1184,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		DasaOptions.YearType = ToDate.DateType.TithiYear;
 		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 		var tdTithi   = new ToDate(h.Info.Jd, ToDate.DateType.TithiYear, 360.0, 0, h);
-		if (tdTithi.AddYears(1).UniversalTime() + 15.0 < tdPravesh.AddYears(1).UniversalTime())
+		if (tdTithi.AddYears(1).ToJulian() + 15.0 < tdPravesh.AddYears(1).ToJulian())
 		{
 			DasaOptions.YearLength = 390;
 		}
@@ -1202,15 +1202,15 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		DasaOptions.YearType = ToDate.DateType.YogaYear;
 		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.YogaPraveshYear, 360.0, 0, h);
 		var tdYoga    = new ToDate(h.Info.Jd, ToDate.DateType.YogaYear, 324.0, 0, h);
-		var    dateToSurpass = tdPravesh.AddYears(1).UniversalTime() - 5;
-		var    dateCurrent    = tdYoga.AddYears(0).UniversalTime();
+		var    dateToSurpass = tdPravesh.AddYears(1).ToJulian() - 5;
+		var    dateCurrent    = tdYoga.AddYears(0).ToJulian();
 		double months          = 0;
 		while (dateCurrent < dateToSurpass)
 		{
 			Application.Log.Debug("{0} > {1}", h.Moment(dateCurrent), h.Moment(dateToSurpass));
 
 			months++;
-			dateCurrent = tdYoga.AddYears(months / 12.0).UniversalTime();
+			dateCurrent = tdYoga.AddYears(months / 12.0).ToJulian();
 		}
 		DasaOptions.Compression = 1;
 		DasaOptions.YearLength  = (int) months * 27;
@@ -1247,7 +1247,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	{
 		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 		DasaOptions.YearType   = ToDate.DateType.FixedYear;
-		DasaOptions.YearLength = tdPravesh.AddYears(1).UniversalTime() - tdPravesh.AddYears(0).UniversalTime();
+		DasaOptions.YearLength = tdPravesh.AddYears(1).ToJulian() - tdPravesh.AddYears(0).ToJulian();
 		Reset();
 	}
 

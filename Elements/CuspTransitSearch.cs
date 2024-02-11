@@ -61,7 +61,7 @@ public static class CuspTransitSearch
 
 		if (((int) SearchBody <= (int) Body.Moon || (int) SearchBody > (int) Body.Saturn) && SearchBody != Body.Lagna)
 		{
-			return StartDate.UniversalTime();
+			return StartDate.ToJulian();
 		}
 
 		var r = new Retrogression(h, SearchBody);

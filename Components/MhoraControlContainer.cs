@@ -203,7 +203,7 @@ public class MhoraControlContainer : UserControl
 				dc.DasaOptions.YearType = ToDate.DateType.TithiYear;
 				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 				var td_tithi   = new ToDate(h.Info.Jd, ToDate.DateType.TithiYear, 360.0, 0, h);
-				if (td_tithi.AddYears(1).UniversalTime() + 15.0 < td_pravesh.AddYears(1).UniversalTime())
+				if (td_tithi.AddYears(1).ToJulian() + 15.0 < td_pravesh.AddYears(1).ToJulian())
 				{
 					dc.DasaOptions.YearLength = 390;
 				}
@@ -223,7 +223,7 @@ public class MhoraControlContainer : UserControl
 				var dc         = new DasaControl(h, new TithiAshtottariDasa(h));
 				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 				dc.DasaOptions.YearType   = ToDate.DateType.FixedYear;
-				dc.DasaOptions.YearLength = td_pravesh.AddYears(1).UniversalTime() - td_pravesh.AddYears(0).UniversalTime();
+				dc.DasaOptions.YearLength = td_pravesh.AddYears(1).ToJulian() - td_pravesh.AddYears(0).ToJulian();
 
 				var tuo = (TithiAshtottariDasa.UserOptions) dc.DasaSpecificOptions;
 				tuo.UseTithiRemainder      = true;

@@ -48,7 +48,7 @@ internal class CuspTransitSearch
 		var bDiscard = true;
 
 		var t        = new Transit(h, SearchBody);
-		var ut_base  = StartDate.UniversalTime() - h.Info.DstOffset.TotalDays;
+		var ut_base  = StartDate.ToJulian() - h.Info.DstOffset.TotalDays;
 		var lon_curr = t.GenericLongitude(ut_base, ref bDiscard);
 
 		double diff = 0;
@@ -86,12 +86,12 @@ internal class CuspTransitSearch
 
 		if (((int) SearchBody <= (int) Body.Moon || (int) SearchBody > (int) Body.Saturn) && SearchBody != Body.Lagna)
 		{
-			return StartDate.UniversalTime();
+			return StartDate.ToJulian();
 		}
 
 		var r = new Retrogression(h, SearchBody);
 
-		var julday_ut = StartDate.UniversalTime() - h.Info.DstOffset.TotalDays;
+		var julday_ut = StartDate.ToJulian() - h.Info.DstOffset.TotalDays;
 		var found_ut  = julday_ut;
 
 		if (Forward)

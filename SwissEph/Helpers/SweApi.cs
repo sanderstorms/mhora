@@ -47,7 +47,7 @@ internal class SweApi : IDisposable
 	/// <returns>Время восхода/заката в формате Юлианского дня.</returns>
 	public static double SunriseSunsetJulDay(GeoPosition position, double pressure, double temperature, DateTime date)
 	{
-		var tjd = date.UniversalTime();
+		var tjd = date.ToJulian();
 
 		var geopos = new[]
 		{

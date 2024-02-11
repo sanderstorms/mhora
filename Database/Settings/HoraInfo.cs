@@ -207,7 +207,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 		{
 			if (double.IsNaN(_jd))
 			{
-				_jd = UtcTob.UniversalTime();
+				_jd = UtcTob.ToJulian();
 				//_jd += GetLmtOffset(_jd);
 			}
 			return _jd;

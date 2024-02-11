@@ -249,7 +249,7 @@ public static class Basics
 		var stdGrahas = new ArrayList(20);
 
 		sweph.SetEphePath(ephePath);
-		var juldayUt = h.UniversalTime(hi.DateOfBirth); // (hi.tob - hi.DstOffset).UniversalTime();
+		var juldayUt = h.UniversalTime(hi.DateOfBirth); // (hi.tob - hi.DstOffset).ToJulian();
 
 		var swephRahuBody = sweph.SE_MEAN_NODE;
 		if (o.NodeType == HoroscopeOptions.ENodeType.True)
