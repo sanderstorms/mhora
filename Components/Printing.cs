@@ -198,11 +198,11 @@ public class MhoraPrintDocument : PrintDocument
 		string s;
 		if (bGraha)
 		{
-			s = string.Format("{0} {1}", deAntar.Graha.ToShortString(), td.AddYears(deAntar.StartUt).ToDateString());
+			s = string.Format("{0} {1}", deAntar.Graha.ToShortString(), td.AddYears(deAntar.Start).ToDateString());
 		}
 		else
 		{
-			s = string.Format("{0} {1}", deAntar.ZHouse.ToShortString(), td.AddYears(deAntar.StartUt).ToDateString());
+			s = string.Format("{0} {1}", deAntar.ZHouse.ToShortString(), td.AddYears(deAntar.Start).ToDateString());
 		}
 
 		return s;
@@ -325,7 +325,7 @@ public class MhoraPrintDocument : PrintDocument
 
 	private string GetVimAntarString(ToDate td, DasaEntry de)
 	{
-		var mStart = td.AddYears(de.StartUt);
+		var mStart = td.AddYears(de.Start);
 		return string.Format("{0} {1}", de.Graha.ToShortString(), mStart.ToDateString());
 	}
 
@@ -346,7 +346,7 @@ public class MhoraPrintDocument : PrintDocument
 		{
 			g.ResetTransform();
 			g.TranslateTransform(left, top);
-			var mStart = td.AddYears(de.StartUt);
+			var mStart = td.AddYears(de.Start);
 			g.DrawString(de.Graha.Name(), f, b, 0, 0);
 			//s = string.Format("{0} ", mStart.ToDateString());
 			//g.DrawString(s, f_fix, b, width / 6, 0);

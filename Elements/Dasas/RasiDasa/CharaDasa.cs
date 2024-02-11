@@ -86,7 +86,7 @@ public class CharaDasa : Dasa, IDasa
 		var cycleLength = cycle * ParamAyus();
 		foreach (DasaEntry di in al)
 		{
-			di.StartUt += cycleLength;
+			di.Start += cycleLength;
 		}
 
 		return al;

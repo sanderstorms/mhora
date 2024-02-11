@@ -82,7 +82,7 @@ public class NakshatraPraveshDasa : Dasa, IDasa
 		var        level  = 0;
 
 		ArrayList al = null;
-		start = pdi.StartUt;
+		start = pdi.Start;
 		level = pdi.Level + 1;
 
 		switch (pdi.Level)

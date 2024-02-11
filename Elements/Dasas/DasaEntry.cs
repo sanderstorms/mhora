@@ -30,7 +30,7 @@ public class DasaEntry
 	private Body        _graha;
 	private int         _level;
 	private string      _shortDesc;
-	private TimeOffset  _startUt;
+	private TimeOffset  _start;
 	private ZodiacHouse _zodiacHouse;
 
 	public DasaEntry(Body graha, TimeOffset startUt, double dasaLength, int level, string name)
@@ -48,7 +48,7 @@ public class DasaEntry
 	public DasaEntry()
 	{
 		_dasaLength  = 0;
-		_startUt     = new TimeOffset();
+		_start     = new TimeOffset();
 		_level       = 1;
 		_shortDesc   = "Jup";
 		_graha       = Body.Jupiter;
@@ -67,10 +67,10 @@ public class DasaEntry
 		set => _level = value;
 	}
 
-	public TimeOffset StartUt
+	public TimeOffset Start
 	{
-		get => _startUt;
-		set => _startUt = value;
+		get => _start;
+		set => _start = value;
 	}
 
 	public double DasaLength
@@ -93,7 +93,7 @@ public class DasaEntry
 
 	private void Construct(TimeOffset startUt, double dasaLength, int level, string shortDesc)
 	{
-		_startUt    = startUt;
+		_start    = startUt;
 		_dasaLength = dasaLength;
 		_level      = level;
 		_shortDesc  = shortDesc;

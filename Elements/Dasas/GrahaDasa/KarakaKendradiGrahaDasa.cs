@@ -82,7 +82,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 	public ArrayList AntarDasa(DasaEntry pdi)
 	{
 		var al   = new ArrayList();
-		var curr = pdi.StartUt;
+		var curr = pdi.Start;
 
 		var bOrder = new ArrayList();
 		var bFound = false;

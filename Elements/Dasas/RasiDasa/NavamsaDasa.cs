@@ -67,7 +67,7 @@ public class NavamsaDasa : Dasa, IDasa
 		var cycleLength = cycle * ParamAyus();
 		foreach (DasaEntry di in al)
 		{
-			di.StartUt += cycleLength;
+			di.Start += cycleLength;
 		}
 
 		return al;
@@ -84,7 +84,7 @@ public class NavamsaDasa : Dasa, IDasa
 			zhStronger = zhStronger.AdarsaSign();
 		}
 
-		var dasaStart = pdi.StartUt;
+		var dasaStart = pdi.Start;
 
 		for (var i = 1; i <= 12; i++)
 		{

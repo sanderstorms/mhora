@@ -117,7 +117,7 @@ public class SuDasa : Dasa, IDasa
 
 		foreach (DasaEntry di in al)
 		{
-			di.StartUt += cycleLength;
+			di.Start += cycleLength;
 		}
 
 		return al;
@@ -129,7 +129,7 @@ public class SuDasa : Dasa, IDasa
 		var zhSeed = pdi.ZHouse;
 
 		var dasaLength     = pdi.DasaLength / 12.0;
-		var dasaLengthSum = pdi.StartUt;
+		var dasaLengthSum = pdi.Start;
 		for (var i = 1; i <= 12; i++)
 		{
 			ZodiacHouse zhDasa;

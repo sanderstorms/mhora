@@ -61,8 +61,8 @@ public class Dasa3Parts : Form
 
 	private void PopulateDescription()
 	{
-		var start = _td.AddYears(_de.StartUt);
-		var end   = _td.AddYears(_de.StartUt + _de.DasaLength);
+		var start = _td.AddYears(_de.Start);
+		var end   = _td.AddYears(_de.Start + _de.DasaLength);
 		var zh = (_de.ZHouse);
 		if ((int) _de.ZHouse != 0)
 		{
@@ -84,7 +84,7 @@ public class Dasa3Parts : Form
 		var alParts = new ArrayList();
 		for (var i = 0; i < 4; i++)
 		{
-			var m = _td.AddYears(_de.StartUt + partLength * i);
+			var m = _td.AddYears(_de.Start + partLength * i);
 			alParts.Add(m);
 		}
 

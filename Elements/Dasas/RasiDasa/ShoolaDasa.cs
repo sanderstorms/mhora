@@ -62,7 +62,7 @@ public class ShoolaDasa : Dasa, IDasa
 		var cycleLength = cycle * ParamAyus();
 		foreach (DasaEntry di in al)
 		{
-			di.StartUt += cycleLength;
+			di.Start += cycleLength;
 		}
 
 		return al;
@@ -76,7 +76,7 @@ public class ShoolaDasa : Dasa, IDasa
 		var zhStronger = zhFirst.Add(1);
 		zhStronger = _options.FindStrongerRasi(_options.SeventhStrengths, zhFirst, zhFirst.Add(7));
 
-		var dasaStart = pdi.StartUt;
+		var dasaStart = pdi.Start;
 
 		for (var i = 1; i <= 12; i++)
 		{

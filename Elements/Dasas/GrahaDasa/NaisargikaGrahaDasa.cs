@@ -146,7 +146,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 			}
 		}
 
-		var curr = pdi.StartUt;
+		var curr = pdi.Start;
 		for (var i = 0; i < size; i++)
 		{
 			var bn = (Body) orderedAntar.grahas[i];

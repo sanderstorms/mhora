@@ -41,15 +41,15 @@ public abstract class NakshatraDasa : Dasa
 	{
 		var numItems = Common.NumberOfDasaItems();
 		var ditems   = new ArrayList(numItems);
-		var curr     = new DasaEntry(pdi.Graha, pdi.StartUt, 0, pdi.Level + 1, string.Empty);
+		var curr     = new DasaEntry(pdi.Graha, pdi.Start, 0, pdi.Level + 1, string.Empty);
 		for (var i = 0; i < numItems; i++)
 		{
 			var dlength = Common.LengthOfDasa(curr.Graha) / Common.ParamAyus() * pdi.DasaLength;
 			var desc    = pdi.DasaName + " " + curr.Graha.ToShortString();
-			var di      = new DasaEntry(curr.Graha, curr.StartUt, dlength, curr.Level, desc);
+			var di      = new DasaEntry(curr.Graha, curr.Start, dlength, curr.Level, desc);
 			ditems.Add(di);
 			curr         = Common.NextDasaLord(di);
-			curr.StartUt = di.StartUt + dlength;
+			curr.Start = di.Start + dlength;
 		}
 
 		return ditems;

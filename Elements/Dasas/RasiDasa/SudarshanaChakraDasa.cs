@@ -72,7 +72,7 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 	public ArrayList AntarDasa(DasaEntry de)
 	{
 		var al     = new ArrayList(12);
-		var start  = de.StartUt;
+		var start  = de.Start;
 		var length = de.DasaLength / 12.0;
 		var zh     = de.ZHouse;
 		for (var i = 1; i <= 12; i++)

@@ -82,7 +82,7 @@ public class KalachakraDasa : Dasa, IDasa
 
 		foreach (DasaEntry de in al)
 		{
-			de.StartUt -= offsetLength;
+			de.Start -= offsetLength;
 		}
 
 		return al;

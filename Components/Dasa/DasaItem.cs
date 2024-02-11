@@ -57,8 +57,8 @@ public class DasaItem : ListViewItem
 		//this.Text = entry.shortDesc;
 		Font      = MhoraGlobalOptions.Instance.GeneralFont;
 		ForeColor = MhoraGlobalOptions.Instance.DasaPeriodColor;
-		var m          = td.AddYears(Entry.StartUt);
-		var m2         = td.AddYears(Entry.StartUt + Entry.DasaLength);
+		var m          = td.AddYears(Entry.Start);
+		var m2         = td.AddYears(Entry.Start + Entry.DasaLength);
 		var sDateRange = m + " - " + m2;
 		for (var i = 1; i < Entry.Level; i++)
 		{

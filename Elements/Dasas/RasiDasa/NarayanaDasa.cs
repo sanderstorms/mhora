@@ -166,7 +166,7 @@ public class NarayanaDasa : Dasa, IDasa
 		var cycleLength = cycle * ParamAyus();
 		foreach (DasaEntry di in al)
 		{
-			di.StartUt += cycleLength;
+			di.Start += cycleLength;
 		}
 
 		return al;
@@ -189,7 +189,7 @@ public class NarayanaDasa : Dasa, IDasa
 			backward = true;
 		}
 
-		var dasaStart = pdi.StartUt;
+		var dasaStart = pdi.Start;
 		for (var i = 1; i <= 12; i++)
 		{
 			ZodiacHouse zhDasa;

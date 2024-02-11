@@ -708,7 +708,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var h2 = (Horoscope) h.Clone();
 		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		var m = _td.AddYears(di.Entry.StartUt);
+		var m = _td.AddYears(di.Entry.Start);
 		h2.Info.DateOfBirth = m;
 
 		var mchild = (MhoraChild) ParentForm;
@@ -728,8 +728,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var h2 = (Horoscope) h.Clone();
 		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		var m    = _td.AddYears(di.Entry.StartUt);
-		var mEnd = _td.AddYears(di.Entry.StartUt + di.Entry.DasaLength);
+		var m    = _td.AddYears(di.Entry.Start);
+		var mEnd = _td.AddYears(di.Entry.Start + di.Entry.DasaLength);
 
 		var utDiff = mEnd.ToUniversalTime() - m.ToUniversalTime();
 		h2.Info.DateOfBirth = m;
@@ -755,7 +755,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var h2 = (Horoscope) h.Clone();
 		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		var m = _td.AddYears(di.Entry.StartUt);
+		var m = _td.AddYears(di.Entry.Start);
 		h2.Info.DateOfBirth = m;
 
 		h2.OnChanged();
@@ -788,7 +788,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		}
 
 		var di = (DasaItem) _dasaItemList.SelectedItems[0];
-		var m = _td.AddYears(di.Entry.StartUt);
+		var m = _td.AddYears(di.Entry.Start);
 		Clipboard.SetDataObject(m.ToString(), true);
 	}
 
@@ -1312,7 +1312,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var start = new TimeOffset();
 		if (_dasaItemList.Items.Count >= 1)
 		{
-			start = ((DasaItem) _dasaItemList.Items[0]).Entry.StartUt;
+			start = ((DasaItem) _dasaItemList.Items[0]).Entry.Start;
 		}
 
 		for (var i = 0; i < _dasaItemList.Items.Count; i++)
@@ -1321,8 +1321,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			al[i] = di.Entry;
 			if (al[i].Level == 1)
 			{
-				al[i].StartUt =  start;
-				start         += al[i].DasaLength;
+				al[i].Start =  start;
+				start      += al[i].DasaLength;
 			}
 
 			am[i] = new DasaItem(al[i]);
@@ -1346,7 +1346,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var h2 = (Horoscope) h.Clone();
 		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		var m = _td.AddYears(di.Entry.StartUt);
+		var m = _td.AddYears(di.Entry.Start);
 		h2.Info.DateOfBirth = m;
 
 		var mchild = (MhoraChild) ParentForm;
@@ -1383,8 +1383,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		{
 			var di = (DasaItem) _dasaItemList.Items[i];
 
-			var mStart = _td.AddYears(di.Entry.StartUt);
-			var mEnd   = _td.AddYears(di.Entry.StartUt + di.Entry.DasaLength);
+			var mStart = _td.AddYears(di.Entry.Start);
+			var mEnd   = _td.AddYears(di.Entry.Start + di.Entry.DasaLength);
 
 			var utStart = h.UniversalTime(mStart);
 			var utEnd   = h.UniversalTime(mEnd);
