@@ -36,6 +36,11 @@ namespace Mhora.Elements;
 /// </summary>
 public class Horoscope : ICloneable
 {
+	private Time _sunrise;
+	private Time _sunset;
+	private Time _nextSunrise;
+	private Time _nextSunset;
+
 	private static readonly string[] VarnadaStrs =
 	{
 		"VL",
@@ -104,11 +109,11 @@ public class Horoscope : ICloneable
 		private set;
 	}
 
-	private Time _nextSunrise;
-	public  Time NextSunrise => _nextSunrise;
+	public Time Sunrise => _sunrise;
+	public Time Sunset  => _sunset;
 
-	private Time _nextSunset;
-	public Time NextSunset => _nextSunset;
+	public Time NextSunrise => _nextSunrise;
+	public Time NextSunset  => _nextSunset;
 	
 	
 	public HoroscopeOptions Options
@@ -129,12 +134,6 @@ public class Horoscope : ICloneable
 		get;
 		set;
 	}
-
-	private Time _sunrise;
-	public  Time Sunrise => _sunrise;
-
-	private Time        _sunset;
-	public  Time        Sunset => _sunset;
 
 	public Longitude[] SwephHouseCusps
 	{
@@ -568,6 +567,7 @@ public class Horoscope : ICloneable
 				}
 
 				srUt = tret;
+				var sunrise = srUt.ToUtc();
 				sweph.RevJul(tret, out year, out month, out day, out hour);
 				sr = hour + Info.DstOffset.TotalHours;
 				this.Set(tret, sweph.SE_SUN, srflag, geopos, 0.0, 0.0, ref tret);

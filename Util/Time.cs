@@ -1,9 +1,12 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Mhora.Util
 {
+	[JsonObject]
 	public class Time : IComparable, IComparable<TimeSpan>, IEquatable<TimeSpan>
 	{
+		[JsonProperty]
 		private TimeSpan _timeSpan;
 
 		public Time()

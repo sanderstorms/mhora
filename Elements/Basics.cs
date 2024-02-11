@@ -170,25 +170,27 @@ public static class Basics
 
 	public static Longitude CalculateBodyLongitude(this Horoscope h, double ut, int ipl)
 	{
-		var xx = new double[6]
+		var sterr    = new StringBuilder();
+		var position = new double[6];
+
+		var result = h.CalcUT(h.Info.Jd, ipl, 0, position);
+
+		if (result == sweph.ERR)
 		{
-			0,
-			0,
-			0,
-			0,
-			0,
-			0
+			throw new SwedllException(sterr.ToString());
+		}
+		/*
+		var bodyPositin = new BodyPosition
+		{
+			Longitude      = position[0],
+			Latitude       = position[1],
+			Distance       = position[2],
+			LongitudeSpeed = position[3],
+			LatitudeSpeed  = position[4],
+			DistanceSpeed  = position[5]
 		};
-		try
-		{
-			h.CalcUT(ut, ipl, 0, xx);
-			return new Longitude(xx[0]);
-		}
-		catch (SwephException exc)
-		{
-			Application.Log.Debug("Sweph: {0}\n", exc.status);
-			throw new Exception(string.Empty);
-		}
+		*/
+		return new Longitude (position[0]);
 	}
 
 	/// <summary>

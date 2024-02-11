@@ -1,8 +1,10 @@
 ﻿
 using System;
+using Newtonsoft.Json;
 
 namespace Mhora.Util
 {
+	[JsonObject]
 	public class TimeOffset
 	{
 		private readonly int      _years;
@@ -53,8 +55,10 @@ namespace Mhora.Util
 	   public static implicit operator TimeOffset (double totalYears) => new TimeOffset (totalYears);
 	   public static implicit operator TimeOffset (DateTime dateTime) => new TimeOffset (dateTime);
 
+
 	   public static TimeOffset Zero => new TimeOffset(0);
 
+	   [JsonIgnore]
 	   public double TotalYears
 	   {
 		   get
@@ -65,7 +69,9 @@ namespace Mhora.Util
 		   }
 	   }
 
+	   [JsonProperty]
 	   public int      Years     => _years;
+	   [JsonProperty]
 	   public TimeSpan Remainder => _remainder;
 
 	   public TimeOffset Add(TimeOffset offset)

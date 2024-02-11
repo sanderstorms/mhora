@@ -351,7 +351,7 @@ public class PanchangaControl : MhoraControl
 		return found_ut.ToUtc();
 	}
 
-	private string utTimeToString(double ut_event, double ut_sr, double sunrise)
+	private string utTimeToString(double ut_event, Time ut_sr, Time sunrise)
 	{
 		var m   = utToMoment(ut_event);
 		var hms = m.Time ();
@@ -369,7 +369,7 @@ public class PanchangaControl : MhoraControl
 		return string.Format("{0:00}:{1:00}", hms.Hours, hms.Minutes);
 	}
 
-	private string timeToString(double time)
+	private string timeToString(Time time)
 	{
 		var hms = TimeSpan.FromHours(time);
 		return string.Format("{0:00}:{1:00}", hms.Hours, hms.Minutes, hms.Seconds);
