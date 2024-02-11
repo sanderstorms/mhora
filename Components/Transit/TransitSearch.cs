@@ -465,7 +465,7 @@ public class TransitSearch : MhoraControl
 	{
 		switch (b)
 		{
-			case Body.Sun:   return 365.2425;
+			case Body.Sun:   return TimeUtils.SiderealYear.TotalDays;
 			case Body.Moon:  return 28.0;
 			case Body.Lagna: return 1.0;
 		}
@@ -540,7 +540,7 @@ public class TransitSearch : MhoraControl
 
 		//Mhora.Log.Debug ("Progression lons are {0} and {1}", lon_start, lon_prog);
 
-		var dExpectedLon = ut_diff * 360.0 / 365.2425;
+		var dExpectedLon = ut_diff * 360.0 / TimeUtils.SiderealYear.TotalDays;
 		var lon_expected = lon_start.Add(dExpectedLon);
 
 		if (Elements.Transit.CircLonLessThan(lon_expected, lon_prog))

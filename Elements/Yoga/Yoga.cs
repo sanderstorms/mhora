@@ -193,17 +193,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			if (lagnaLord.AspectFrom.Count > 0)
-			{
-				foreach (var graha in lagnaLord.AspectFrom)
-				{
-					if (graha.Body == Body.Jupiter)
-					{
-						return (true);
-					}
-				}
-			}
-			return (false);
+			return lagnaLord.IsAspectedBy(Body.Jupiter);
 		}
 
 		//Two benefices conjoined either in the Lagna, or in the 7 house or in the 9th or the 10 th house.
@@ -537,6 +527,36 @@ namespace Mhora.Elements.Yoga
 
 			return (yoga == 3);
 
+		}
+
+		//Dhana ($$$) Yogas are formed when ANY of the two Lords of Houses1, 2, 5, 9 or 11
+		//are in Association (in a house together) or in Mutual Aspect
+		//(especially if these Lords are First Tier Strength or “wellplaced”
+		public static bool Dhana(this DivisionType varga)
+		{
+			foreach (var rashi in Rashi.Rashis(varga))
+			{
+				if (rashi.Bhava.IsDhana())
+				{
+					foreach (var graha in rashi.Lord.MutualAspect)
+					{
+						if (graha.Bhava.IsDhana())
+						{
+							return true;
+						}
+					}
+					foreach (var graha in rashi.Lord.Association)
+					{
+						if (graha.Bhava.IsDhana())
+						{
+							return true;
+						}
+					}
+
+				}
+			}
+
+			return false;
 		}
 
 		//If the native born in Night time and the Moon located in its own navamsha, or that of a friend's house and aspected by Venus.

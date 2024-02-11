@@ -40,12 +40,12 @@ public class DasaItem : ListViewItem
 		Entry = entry;
 	}
 
-	public DasaItem(Body graha, double startUt, double dasaLength, int level, string shortDesc)
+	public DasaItem(Body graha, TimeOffset startUt, double dasaLength, int level, string shortDesc)
 	{
 		Construct(new DasaEntry(graha, startUt, dasaLength, level, shortDesc));
 	}
 
-	public DasaItem(ZodiacHouse zodiacHouse, double startUt, double dasaLength, int level, string shortDesc)
+	public DasaItem(ZodiacHouse zodiacHouse, TimeOffset startUt, double dasaLength, int level, string shortDesc)
 	{
 		Construct(new DasaEntry(zodiacHouse, startUt, dasaLength, level, shortDesc));
 	}

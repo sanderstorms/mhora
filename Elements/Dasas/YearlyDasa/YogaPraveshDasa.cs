@@ -77,8 +77,9 @@ public class YogaPraveshDasa : Dasa, IDasa
 			return new ArrayList();
 		}
 
-		double    start = 0.0, length = 0.0;
-		var       level = 0;
+		TimeOffset start  = TimeOffset.Zero; 
+		double     length = 0.0;
+		var        level  = 0;
 
 		ArrayList al = null;
 		start = pdi.StartUt;

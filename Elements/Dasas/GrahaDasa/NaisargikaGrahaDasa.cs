@@ -24,6 +24,7 @@ using Mhora.Components.Property;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Calculation.Strength;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.GrahaDasa;
 
@@ -63,8 +64,8 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 			Body.Lagna
 		};
 
-		var cycleStart = ParamAyus() * cycle;
-		var curr        = 0.0;
+		var cycleStart  = new TimeOffset(ParamAyus() * cycle);
+		var curr        = new TimeOffset();
 		foreach (var bn in order)
 		{
 			var dasaLength = LengthOfDasa(bn);

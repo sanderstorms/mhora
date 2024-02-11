@@ -492,7 +492,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		// mFixedYears365
 		// 
 		this._mFixedYears365.Index =  3;
-		this._mFixedYears365.Text  =  "~ Solar Year (365.2425 days)";
+		this._mFixedYears365.Text  =  "~ Solar Year (TimeUtils.SiderealYear.TotalDays days)";
 		this._mFixedYears365.Click += new System.EventHandler(this.mFixedYears365_Click);
 		// 
 		// mCustomYears
@@ -1051,13 +1051,13 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mFixedYears365_Click(object sender, EventArgs e)
 	{
-		if (DasaOptions.YearType == ToDate.DateType.FixedYear && DasaOptions.YearLength == 365.2425)
+		if (DasaOptions.YearType == ToDate.DateType.FixedYear && DasaOptions.YearLength == TimeUtils.SiderealYear.TotalDays)
 		{
 			return;
 		}
 
 		DasaOptions.YearType   = ToDate.DateType.FixedYear;
-		DasaOptions.YearLength = 365.2425;
+		DasaOptions.YearLength = TimeUtils.SiderealYear.TotalDays;
 		SetDasaYearType();
 		Reset();
 	}
@@ -1309,7 +1309,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	{
 		var al    = new DasaEntry[_dasaItemList.Items.Count];
 		var am    = new DasaItem[_dasaItemList.Items.Count];
-		var start = 0.0;
+		var start = new TimeOffset();
 		if (_dasaItemList.Items.Count >= 1)
 		{
 			start = ((DasaItem) _dasaItemList.Items[0]).Entry.StartUt;

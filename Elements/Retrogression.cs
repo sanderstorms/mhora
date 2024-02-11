@@ -51,7 +51,7 @@ public class Retrogression
 				return ut;
 
 			Longitude diffIncrease = diff.sub(cusp_start);
-			double ret = ut + (diffIncrease.value * 360.0/365.2425);
+			double ret = ut + (diffIncrease.value * 360.0/TimeUtils.SiderealYear.TotalDays);
 			return ret;
 #endif
 	}

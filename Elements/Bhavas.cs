@@ -133,6 +133,20 @@ namespace Mhora.Elements
 			return PurusharthaType.Moksha;
 		}
 
+		public static bool IsDhana(this Bhava bhava)
+		{
+			switch (bhava)
+			{
+				case Bhava.LagnaBhava:
+				case Bhava.DhanaBhava:
+				case Bhava.PutraBhava:
+				case Bhava.DharmaBhava:
+				case Bhava.LabhaBhava:
+					return true;
+			}
+			return false;
+		}
+
 		public static bool IsDharma(this Bhava bhava)
 		{
 			switch (bhava)

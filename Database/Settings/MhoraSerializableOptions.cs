@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.IO;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
+using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Hora;
 using Newtonsoft.Json;
@@ -56,118 +57,118 @@ public class MhoraSerializableOptions
 [JsonObject]
 public class StrengthOptions : MhoraSerializableOptions, ICloneable
 {
-	private FindStronger.EGrahaStrength[] _mColord;
-	private FindStronger.EGrahaStrength[] _mKarakaKendradiGrahaDasaColord;
-	private FindStronger.EGrahaStrength[] _mKarakaKendradiGrahaDasaGraha;
-	private FindStronger.ERasiStrength[]  _mKarakaKendradiGrahaDasaRasi;
-	private FindStronger.ERasiStrength[]  _mMoolaDasaRasi;
-	private FindStronger.EGrahaStrength[] _mNaisargikaDasaGraha;
-	private FindStronger.ERasiStrength[]  _mNaisargikaDasaRasi;
-	private FindStronger.ERasiStrength[]  _mNarayanaDasaRasi;
-	private FindStronger.ERasiStrength[]  _mNavamsaDasaRasi;
+	private GrahaStrength[] _mColord;
+	private GrahaStrength[] _mKarakaKendradiGrahaDasaColord;
+	private GrahaStrength[] _mKarakaKendradiGrahaDasaGraha;
+	private RashiStrength[]  _mKarakaKendradiGrahaDasaRasi;
+	private RashiStrength[]  _mMoolaDasaRasi;
+	private GrahaStrength[] _mNaisargikaDasaGraha;
+	private RashiStrength[]  _mNaisargikaDasaRasi;
+	private RashiStrength[]  _mNarayanaDasaRasi;
+	private RashiStrength[]  _mNavamsaDasaRasi;
 
 
 	public StrengthOptions()
 	{
 		Colord = new[]
 		{
-			FindStronger.EGrahaStrength.NotInOwnHouse,
-			FindStronger.EGrahaStrength.AspectsRasi,
-			FindStronger.EGrahaStrength.Exaltation,
-			FindStronger.EGrahaStrength.RasisNature,
-			FindStronger.EGrahaStrength.NarayanaDasaLength,
-			FindStronger.EGrahaStrength.Longitude
+			GrahaStrength.NotInOwnHouse,
+			GrahaStrength.AspectsRasi,
+			GrahaStrength.Exaltation,
+			GrahaStrength.RasisNature,
+			GrahaStrength.NarayanaDasaLength,
+			GrahaStrength.Longitude
 		};
 
 		NaisargikaDasaGraha = new[]
 		{
-			FindStronger.EGrahaStrength.Exaltation,
-			FindStronger.EGrahaStrength.LordInOwnHouse,
-			FindStronger.EGrahaStrength.MoolaTrikona,
-			FindStronger.EGrahaStrength.Longitude
+			GrahaStrength.Exaltation,
+			GrahaStrength.LordInOwnHouse,
+			GrahaStrength.MoolaTrikona,
+			GrahaStrength.Longitude
 		};
 
 		KarakaKendradiGrahaDasaGraha = new[]
 		{
-			FindStronger.EGrahaStrength.Exaltation,
-			FindStronger.EGrahaStrength.MoolaTrikona,
-			FindStronger.EGrahaStrength.OwnHouse,
-			FindStronger.EGrahaStrength.Longitude
+			GrahaStrength.Exaltation,
+			GrahaStrength.MoolaTrikona,
+			GrahaStrength.OwnHouse,
+			GrahaStrength.Longitude
 		};
 
 		KarakaKendradiGrahaDasaRasi = new[]
 		{
-			FindStronger.ERasiStrength.Conjunction,
-			FindStronger.ERasiStrength.AspectsRasi,
-			FindStronger.ERasiStrength.Exaltation,
-			FindStronger.ERasiStrength.MoolaTrikona,
-			FindStronger.ERasiStrength.OwnHouse,
-			FindStronger.ERasiStrength.LordsNature,
-			FindStronger.ERasiStrength.AtmaKaraka,
-			FindStronger.ERasiStrength.Longitude,
-			FindStronger.ERasiStrength.LordInDifferentOddity,
-			FindStronger.ERasiStrength.KarakaKendradiGrahaDasaLength
+			RashiStrength.Conjunction,
+			RashiStrength.AspectsRasi,
+			RashiStrength.Exaltation,
+			RashiStrength.MoolaTrikona,
+			RashiStrength.OwnHouse,
+			RashiStrength.LordsNature,
+			RashiStrength.AtmaKaraka,
+			RashiStrength.Longitude,
+			RashiStrength.LordInDifferentOddity,
+			RashiStrength.KarakaKendradiGrahaDasaLength
 		};
 		KarakaKendradiGrahaDasaColord = new[]
 		{
-			FindStronger.EGrahaStrength.NotInOwnHouse,
-			FindStronger.EGrahaStrength.Conjunction,
-			FindStronger.EGrahaStrength.AspectsRasi,
-			FindStronger.EGrahaStrength.Exaltation,
-			FindStronger.EGrahaStrength.MoolaTrikona,
-			FindStronger.EGrahaStrength.OwnHouse,
-			FindStronger.EGrahaStrength.LordsNature,
-			FindStronger.EGrahaStrength.AtmaKaraka,
-			FindStronger.EGrahaStrength.Longitude,
-			FindStronger.EGrahaStrength.LordInDifferentOddity,
-			FindStronger.EGrahaStrength.KarakaKendradiGrahaDasaLength
+			GrahaStrength.NotInOwnHouse,
+			GrahaStrength.Conjunction,
+			GrahaStrength.AspectsRasi,
+			GrahaStrength.Exaltation,
+			GrahaStrength.MoolaTrikona,
+			GrahaStrength.OwnHouse,
+			GrahaStrength.LordsNature,
+			GrahaStrength.AtmaKaraka,
+			GrahaStrength.Longitude,
+			GrahaStrength.LordInDifferentOddity,
+			GrahaStrength.KarakaKendradiGrahaDasaLength
 		};
 
 		NavamsaDasaRasi = new[]
 		{
-			FindStronger.ERasiStrength.AspectsRasi,
-			FindStronger.ERasiStrength.Conjunction,
-			FindStronger.ERasiStrength.Exaltation,
-			FindStronger.ERasiStrength.LordInDifferentOddity,
-			FindStronger.ERasiStrength.RasisNature,
-			FindStronger.ERasiStrength.LordsLongitude
+			RashiStrength.AspectsRasi,
+			RashiStrength.Conjunction,
+			RashiStrength.Exaltation,
+			RashiStrength.LordInDifferentOddity,
+			RashiStrength.RasisNature,
+			RashiStrength.LordsLongitude
 		};
 
 		MoolaDasaRasi = new[]
 		{
-			FindStronger.ERasiStrength.Conjunction,
-			FindStronger.ERasiStrength.Exaltation,
-			FindStronger.ERasiStrength.MoolaTrikona,
-			FindStronger.ERasiStrength.OwnHouse,
-			FindStronger.ERasiStrength.RasisNature,
-			FindStronger.ERasiStrength.LordsLongitude
+			RashiStrength.Conjunction,
+			RashiStrength.Exaltation,
+			RashiStrength.MoolaTrikona,
+			RashiStrength.OwnHouse,
+			RashiStrength.RasisNature,
+			RashiStrength.LordsLongitude
 		};
 
 		NarayanaDasaRasi = new[]
 		{
-			FindStronger.ERasiStrength.Conjunction,
-			FindStronger.ERasiStrength.AspectsRasi,
-			FindStronger.ERasiStrength.Exaltation,
-			FindStronger.ERasiStrength.LordInDifferentOddity,
-			FindStronger.ERasiStrength.RasisNature,
-			FindStronger.ERasiStrength.LordsLongitude
+			RashiStrength.Conjunction,
+			RashiStrength.AspectsRasi,
+			RashiStrength.Exaltation,
+			RashiStrength.LordInDifferentOddity,
+			RashiStrength.RasisNature,
+			RashiStrength.LordsLongitude
 		};
 
 		NaisargikaDasaRasi = new[]
 		{
-			FindStronger.ERasiStrength.Conjunction,
-			FindStronger.ERasiStrength.AspectsRasi,
-			FindStronger.ERasiStrength.Exaltation,
-			FindStronger.ERasiStrength.RasisNature,
-			FindStronger.ERasiStrength.LordIsAtmaKaraka,
-			FindStronger.ERasiStrength.LordInDifferentOddity,
-			FindStronger.ERasiStrength.Longitude
+			RashiStrength.Conjunction,
+			RashiStrength.AspectsRasi,
+			RashiStrength.Exaltation,
+			RashiStrength.RasisNature,
+			RashiStrength.LordIsAtmaKaraka,
+			RashiStrength.LordInDifferentOddity,
+			RashiStrength.Longitude
 		};
 	}
 
 	[Category("Co-Lord Strengths")]
 	[PGDisplayName("Graha Strength")]
-	public FindStronger.EGrahaStrength[] Colord
+	public GrahaStrength[] Colord
 	{
 		get => _mColord;
 		set => _mColord = value;
@@ -175,7 +176,7 @@ public class StrengthOptions : MhoraSerializableOptions, ICloneable
 
 	[Category("Naisargika Dasa Strengths")]
 	[PGDisplayName("Graha Strengths")]
-	public FindStronger.EGrahaStrength[] NaisargikaDasaGraha
+	public GrahaStrength[] NaisargikaDasaGraha
 	{
 		get => _mNaisargikaDasaGraha;
 		set => _mNaisargikaDasaGraha = value;
@@ -183,7 +184,7 @@ public class StrengthOptions : MhoraSerializableOptions, ICloneable
 
 	[Category("Naisargika Dasa Strengths")]
 	[PGDisplayName("Rasi Strengths")]
-	public FindStronger.ERasiStrength[] NaisargikaDasaRasi
+	public RashiStrength[] NaisargikaDasaRasi
 	{
 		get => _mNaisargikaDasaRasi;
 		set => _mNaisargikaDasaRasi = value;
@@ -191,7 +192,7 @@ public class StrengthOptions : MhoraSerializableOptions, ICloneable
 
 	[Category("Navamsa Dasa Strengths")]
 	[PGDisplayName("Rasi Strengths")]
-	public FindStronger.ERasiStrength[] NavamsaDasaRasi
+	public RashiStrength[] NavamsaDasaRasi
 	{
 		get => _mNavamsaDasaRasi;
 		set => _mNavamsaDasaRasi = value;
@@ -199,7 +200,7 @@ public class StrengthOptions : MhoraSerializableOptions, ICloneable
 
 	[Category("Moola Dasa Strengths")]
 	[PGDisplayName("Rasi Strengths")]
-	public FindStronger.ERasiStrength[] MoolaDasaRasi
+	public RashiStrength[] MoolaDasaRasi
 	{
 		get => _mMoolaDasaRasi;
 		set => _mMoolaDasaRasi = value;
@@ -207,7 +208,7 @@ public class StrengthOptions : MhoraSerializableOptions, ICloneable
 
 	[Category("Narayana Dasa Strengths")]
 	[PGDisplayName("Rasi Strengths")]
-	public FindStronger.ERasiStrength[] NarayanaDasaRasi
+	public RashiStrength[] NarayanaDasaRasi
 	{
 		get => _mNarayanaDasaRasi;
 		set => _mNarayanaDasaRasi = value;
@@ -215,7 +216,7 @@ public class StrengthOptions : MhoraSerializableOptions, ICloneable
 
 	[Category("Karakas Kendradi Graha Dasa")]
 	[PGDisplayName("Rasi Strengths")]
-	public FindStronger.ERasiStrength[] KarakaKendradiGrahaDasaRasi
+	public RashiStrength[] KarakaKendradiGrahaDasaRasi
 	{
 		get => _mKarakaKendradiGrahaDasaRasi;
 		set => _mKarakaKendradiGrahaDasaRasi = value;
@@ -223,7 +224,7 @@ public class StrengthOptions : MhoraSerializableOptions, ICloneable
 
 	[Category("Karakas Kendradi Graha Dasa")]
 	[PGDisplayName("Graha Strengths")]
-	public FindStronger.EGrahaStrength[] KarakaKendradiGrahaDasaGraha
+	public GrahaStrength[] KarakaKendradiGrahaDasaGraha
 	{
 		get => _mKarakaKendradiGrahaDasaGraha;
 		set => _mKarakaKendradiGrahaDasaGraha = value;
@@ -233,7 +234,7 @@ public class StrengthOptions : MhoraSerializableOptions, ICloneable
 	[Category("Karakas Kendradi Graha Dasa")]
 	[PGDisplayName("CoLord Strengths")]
 	[TypeConverter(typeof(MhoraArrayConverter))]
-	public FindStronger.EGrahaStrength[] KarakaKendradiGrahaDasaColord
+	public GrahaStrength[] KarakaKendradiGrahaDasaColord
 	{
 		get => _mKarakaKendradiGrahaDasaColord;
 		set => _mKarakaKendradiGrahaDasaColord = value;
@@ -242,24 +243,24 @@ public class StrengthOptions : MhoraSerializableOptions, ICloneable
 	public object Clone()
 	{
 		var opts = new StrengthOptions();
-		opts.Colord              = (FindStronger.EGrahaStrength[]) Colord.Clone();
-		opts.NaisargikaDasaGraha = (FindStronger.EGrahaStrength[]) NaisargikaDasaGraha.Clone();
-		opts.NavamsaDasaRasi     = (FindStronger.ERasiStrength[]) NavamsaDasaRasi.Clone();
-		opts.MoolaDasaRasi       = (FindStronger.ERasiStrength[]) MoolaDasaRasi.Clone();
-		opts.NarayanaDasaRasi    = (FindStronger.ERasiStrength[]) NarayanaDasaRasi.Clone();
-		opts.NaisargikaDasaRasi  = (FindStronger.ERasiStrength[]) NaisargikaDasaRasi.Clone();
+		opts.Colord              = (GrahaStrength[]) Colord.Clone();
+		opts.NaisargikaDasaGraha = (GrahaStrength[]) NaisargikaDasaGraha.Clone();
+		opts.NavamsaDasaRasi     = (RashiStrength[]) NavamsaDasaRasi.Clone();
+		opts.MoolaDasaRasi       = (RashiStrength[]) MoolaDasaRasi.Clone();
+		opts.NarayanaDasaRasi    = (RashiStrength[]) NarayanaDasaRasi.Clone();
+		opts.NaisargikaDasaRasi  = (RashiStrength[]) NaisargikaDasaRasi.Clone();
 		return opts;
 	}
 
 	public object Copy(object o)
 	{
 		var so = (StrengthOptions) o;
-		Colord              = (FindStronger.EGrahaStrength[]) so.Colord.Clone();
-		NaisargikaDasaGraha = (FindStronger.EGrahaStrength[]) so.NaisargikaDasaGraha.Clone();
-		NavamsaDasaRasi     = (FindStronger.ERasiStrength[]) so.NavamsaDasaRasi.Clone();
-		MoolaDasaRasi       = (FindStronger.ERasiStrength[]) so.MoolaDasaRasi.Clone();
-		NarayanaDasaRasi    = (FindStronger.ERasiStrength[]) so.NarayanaDasaRasi.Clone();
-		NaisargikaDasaRasi  = (FindStronger.ERasiStrength[]) so.NaisargikaDasaRasi.Clone();
+		Colord              = (GrahaStrength[]) so.Colord.Clone();
+		NaisargikaDasaGraha = (GrahaStrength[]) so.NaisargikaDasaGraha.Clone();
+		NavamsaDasaRasi     = (RashiStrength[]) so.NavamsaDasaRasi.Clone();
+		MoolaDasaRasi       = (RashiStrength[]) so.MoolaDasaRasi.Clone();
+		NarayanaDasaRasi    = (RashiStrength[]) so.NarayanaDasaRasi.Clone();
+		NaisargikaDasaRasi  = (RashiStrength[]) so.NaisargikaDasaRasi.Clone();
 		return Clone();
 	}
 }

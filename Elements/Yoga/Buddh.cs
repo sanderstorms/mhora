@@ -4,28 +4,13 @@ namespace Mhora.Elements.Yoga
 {
 	public static class Buddh
 	{
-		//Conjuntion between Mercury and another graha
-		public static bool BuddhYoga(this DivisionType varga, Body body)
-		{
-			var mercury = Graha.Find(Body.Mercury, varga);
-			if (mercury.Conjunct.Count > 0)
-			{
-				foreach (var graha in mercury.Conjunct)
-				{
-					if (graha.Body == body)
-					{
-						return (true);
-					}
-				}
-			}
-			return (false);
-
-		}
-
-
 		//Conjunction between Mercury and Jupiter.
 		//Eloquent, learned, amiable, handsome, wealthy, well-versed in dance, song and music, very virtuous and fond of perfumes.
-		public static bool BuddhGuru(this DivisionType varga) => varga.BuddhYoga(Body.Jupiter);
+		public static bool BuddhGuru(this DivisionType varga)
+		{
+			var mercury = Graha.Find(Body.Mercury, varga);
+			return mercury.IsConjuctWith(Body.Jupiter);
+		}
 
 		//Mercury and Jupiter are conjunct in 10th House.
 		//A minister or a king, distinguished, amiable, a scholar.
@@ -97,7 +82,11 @@ namespace Mhora.Elements.Yoga
 		//Conjunction between Mercury and Mars.
 		//Adept in making medicines, eloquent, not very rich, looks after a widow or a base woman,
 		//versed in metal-craft and fine arts, a wrestler or boxer.
-		public static bool BuddhMangal(this DivisionType varga) => varga.BuddhYoga(Body.Mars);
+		public static bool BuddhMangal(this DivisionType varga)
+		{
+			var mercury = Graha.Find(Body.Mercury, varga);
+			return mercury.IsConjuctWith(Body.Mars);
+		}
 
 		//Mercury and Mars are Conjunct in Lagna.
 		//Given to violence or killing, adept in fire-related pursuits, an ambassador or a confidant.
@@ -167,7 +156,11 @@ namespace Mhora.Elements.Yoga
 		//Conjunction between Mercury and Saturn
 		//Of a sickly constitution, learned, wealthy, provides sustenance to many, quarrelsome,
 		//fickle-minded, adept in several arts, disobedient to his elders, a cheat.
-		public static bool BuddhShani(this DivisionType varga) => varga.BuddhYoga(Body.Saturn);
+		public static bool BuddhShani(this DivisionType varga)
+		{
+			var mercury = Graha.Find(Body.Mercury, varga);
+			return mercury.IsConjuctWith(Body.Saturn);
+		}
 
 		//Conjunction between Mercury and Saturn in Lagna
 		//Ugly, sinful, devoid of learning, wealth, and vehicles, short-lived.
@@ -238,7 +231,11 @@ namespace Mhora.Elements.Yoga
 		//Conjunction between Mercury and Venus.
 		//Eloquent, virtuous, well versed in scriptural learning, extremely wealthy, a fine sculptor, adept in music,
 		//well dressed, owner of lands,
-		public static bool BuddhShukra(this DivisionType varga) => varga.BuddhYoga(Body.Venus);
+		public static bool BuddhShukra(this DivisionType varga)
+		{
+			var mercury = Graha.Find(Body.Mercury, varga);
+			return mercury.IsConjuctWith(Body.Venus);
+		}
 
 		//Mercury and Venus are Conjunct in Lagna.
 		//Good in looks, learned, honored by the ruler, distinguished, devoted to gods and Brahmins.
@@ -376,7 +373,11 @@ namespace Mhora.Elements.Yoga
 
 		//Conjunction between Sun and Mercury.
 		//The result is learned, sweet- tongued, clever, earns wealth by serving others, scholarly, good in looks and fickle.
-		public static bool BudhaAditya (this DivisionType varga) => varga.BuddhYoga(Body.Sun);
+		public static bool BudhaAditya(this DivisionType varga)
+		{
+			var mercury = Graha.Find(Body.Mercury, varga);
+			return mercury.IsConjuctWith(Body.Sun);
+		}
 
 		//Sun and Mercury are Conjunct in Lagna.
 		//Learned, talkative, strong, wise, long-lived.

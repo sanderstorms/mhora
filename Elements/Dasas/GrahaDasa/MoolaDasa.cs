@@ -318,7 +318,7 @@ public class MoolaDasa : Dasa, IDasa
 			else if (zhSat == zhKet && zhSat == zh)
 			{
 				var rule = new ArrayList();
-				rule.Add(FindStronger.EGrahaStrength.Longitude);
+				rule.Add(GrahaStrength.Longitude);
 				var fs2 = new FindStronger(_h, new Division(DivisionType.Rasi), rule);
 				bIsForward = fs2.CmpGraha(Body.Saturn, Body.Ketu, false);
 			}

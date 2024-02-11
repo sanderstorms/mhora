@@ -17,6 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
+using Mhora.Util;
 
 namespace Mhora.Elements;
 
@@ -140,6 +142,31 @@ public static class Nakshatras
 			default:                  return "---";
 		}
 	}
+
+	public static Body Lord(this Nakshatra nakshatra)
+	{
+		switch ((nakshatra.Index() - 1) % 9)
+		{
+			case 0: return Body.Ketu;
+			case 1: return Body.Venus;
+			case 2: return Body.Sun;
+			case 4: return Body.Moon;
+			case 5: return Body.Mars;
+			case 6: return Body.Rahu;
+			case 7: return Body.Jupiter;
+			case 8: return Body.Saturn;
+			case 9: return Body.Mercury;
+		}
+
+		return (Body.Lagna); //not possible
+	}
+
+	public static ZodiacHouse Pada(this Nakshatra nakshatra, int pada)
+	{
+		var index = ((nakshatra.Index() -1) * 4) + (pada - 1);
+		return ((ZodiacHouse) ((index % 12) + 1));
+	}
+
 
 	public static int Normalize(this Nakshatra value)
 	{

@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using Mhora.Definitions;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.YearlyDasa;
 
@@ -78,8 +79,9 @@ public class TajakaDasa : Dasa, IDasa
 			return new ArrayList();
 		}
 
-		double    start = 0.0, length = 0.0;
-		var       level = 0;
+		TimeOffset start  = 0.0;
+		double     length = 0.0;
+		var        level  = 0;
 
 		var al = new ArrayList(12);
 		start  = pdi.StartUt;

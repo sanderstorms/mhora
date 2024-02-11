@@ -107,7 +107,7 @@ public class ToDate
 		//Mhora.Log.Debug ("Searching for {0} {1} {2}", tYears, tMonths, tDays);
 		lon = _spos - soff;
 		l   = new Longitude(lon);
-		jd  = t.LinearSearch(_h.Info.Jd + tYears * 365.2425, l, t.LongitudeOfSun);
+		jd  = t.LinearSearch(_h.Info.Jd + tYears * TimeUtils.SiderealYear.TotalDays, l, t.LongitudeOfSun);
 		var yogaStart = returnLonFunc(jd, ref bDiscard).Value;
 		var yogaEnd   = returnLonFunc(_h.Info.Jd, ref bDiscard).Value;
 		jdSt = jd + (yogaEnd - yogaStart) / 360.0 * 28.0;
@@ -133,7 +133,20 @@ public class ToDate
 		return new DateTime(year, month, day).Add(TimeSpan.FromHours(dhour));
 	}
 
+	public DateTime AddYears(TimeOffset offset)
+	{
+		var dateTime = AddYearsInternal(0).AddYears(offset.Years);
+		dateTime += offset.Remainder;
+		return (dateTime);
+	}
+
 	public DateTime AddYears(double years)
+	{
+		var timeOffset = new TimeOffset(years);
+		return AddYears(timeOffset);
+	}
+
+	private DateTime AddYearsInternal(double years)
 	{
 		var       jd         = 0.0;
 		int       year       = 0, month  = 0, day    = 0;
@@ -170,7 +183,7 @@ public class ToDate
 				}
 
 				l  =  new Longitude(lon       + _spos);
-				jd =  t.LinearSearch(_h.Info.Jd + years * 365.2425, l, t.LongitudeOfSun);
+				jd =  t.LinearSearch(_h.Info.Jd + years * TimeUtils.SiderealYear.TotalDays, l, t.LongitudeOfSun);
 				jd += _h.Info.DstOffset.TotalDays;
 				jd += _offset;
 				sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);

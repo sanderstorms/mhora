@@ -170,7 +170,9 @@
   <ItemGroup>
     <Compile Include="Definitions\Body.cs" />
     <Compile Include="Definitions\BodyType.cs" />
+    <Compile Include="Definitions\GrahaStrength.cs" />
     <Compile Include="Definitions\Karaka.cs" />
+    <Compile Include="Definitions\RashiStrength.cs" />
     <Compile Include="Definitions\Relation.cs" />
     <Compile Include="Elements\Bhavas.cs" />
     <Compile Include="Elements\Calculations.cs" />
@@ -517,6 +519,7 @@
     <Compile Include="Elements\Dasas\YearlyDasa\TithiPraveshDasa.cs" />
     <Compile Include="Util\Sunriset.cs" />
     <Compile Include="Util\Time.cs" />
+    <Compile Include="Util\TimeOffset.cs" />
     <Compile Include="Util\TimeUtils.cs" />
     <Compile Include="Util\ToDate.cs" />
     <Compile Include="Components\Transit\TransitItem.cs" />

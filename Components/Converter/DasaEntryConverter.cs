@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Globalization;
 using Mhora.Definitions;
 using Mhora.Elements.Dasas;
+using Mhora.Util;
 
 namespace Mhora.Components.Converter;
 
@@ -42,7 +43,7 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 		Trace.Assert(value is string, "DasaEntryConverter::ConvertFrom 1");
 		var s = (string) value;
 
-		var de  = new DasaEntry(Body.Lagna, 0.0, 0.0, 1, "None");
+		var de  = new DasaEntry(Body.Lagna, new TimeOffset(), 0.0, 1, "None");
 		var arr = s.Split(',');
 		if (arr.Length >= 1)
 		{
@@ -56,7 +57,7 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 
 		if (arr.Length >= 3)
 		{
-			de.StartUt = double.Parse(arr[2]);
+			de.StartUt = new TimeOffset(double.Parse(arr[2]));
 		}
 
 		if (arr.Length >= 4)

@@ -234,7 +234,7 @@ public class RasiDasaUserOptions : ICloneable
 		else
 		{
 			var rule = new ArrayList();
-			rule.Add(FindStronger.EGrahaStrength.Longitude);
+			rule.Add(GrahaStrength.Longitude);
 			var fs = new FindStronger(H, Division, rule);
 			var b  = fs.StrongerGraha(Body.Saturn, Body.Ketu, false);
 			if (b == Body.Ketu)

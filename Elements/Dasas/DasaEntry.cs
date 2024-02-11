@@ -19,26 +19,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System.ComponentModel;
 using Mhora.Components.Converter;
 using Mhora.Definitions;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas;
 
 [TypeConverter(typeof(DasaEntryConverter))]
 public class DasaEntry
 {
-	private double           _dasaLength; // 1 year = 360 days = 360 degrees is used internally!!!!
-	private Body    _graha;
-	private int              _level;
-	private string           _shortDesc;
-	private double           _startUt;
+	private double      _dasaLength; // 1 year = 360 days = 360 degrees is used internally!!!!
+	private Body        _graha;
+	private int         _level;
+	private string      _shortDesc;
+	private TimeOffset  _startUt;
 	private ZodiacHouse _zodiacHouse;
 
-	public DasaEntry(Body graha, double startUt, double dasaLength, int level, string name)
+	public DasaEntry(Body graha, TimeOffset startUt, double dasaLength, int level, string name)
 	{
 		_graha = graha;
 		Construct(startUt,dasaLength, level, name);
 	}
 
-	public DasaEntry(ZodiacHouse zh, double startUt, double dasaLength, int level, string name)
+	public DasaEntry(ZodiacHouse zh, TimeOffset startUt, double dasaLength, int level, string name)
 	{
 		_zodiacHouse = zh;
 		Construct(startUt, dasaLength, level, name);
@@ -46,7 +47,8 @@ public class DasaEntry
 
 	public DasaEntry()
 	{
-		_startUt     = _dasaLength = 0.0;
+		_dasaLength  = 0;
+		_startUt     = new TimeOffset();
 		_level       = 1;
 		_shortDesc   = "Jup";
 		_graha       = Body.Jupiter;
@@ -65,7 +67,7 @@ public class DasaEntry
 		set => _level = value;
 	}
 
-	public double StartUt
+	public TimeOffset StartUt
 	{
 		get => _startUt;
 		set => _startUt = value;
@@ -89,7 +91,7 @@ public class DasaEntry
 		set => _zodiacHouse = value;
 	}
 
-	private void Construct(double startUt, double dasaLength, int level, string shortDesc)
+	private void Construct(TimeOffset startUt, double dasaLength, int level, string shortDesc)
 	{
 		_startUt    = startUt;
 		_dasaLength = dasaLength;
