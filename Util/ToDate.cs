@@ -146,33 +146,6 @@ public class ToDate
 		return AddYears(timeOffset);
 	}
 
-	private DateTime _AddYearsInternal(double years)
-	{
-		if (_compression > 0.0)
-		{
-			years *= _compression;
-		}
-
-		sweph.RevJul(_baseUt, out var year, out var month, out var day, out var dhour);
-
-		switch (_type)
-		{
-			case DateType.FixedYear:
-			{
-
-				years *= _yearLength;
-				years += year + _offset;
-
-				//Mhora.Log.Debug("tz = {0}", (h.info.tz.toDouble()) / 24.0);
-				return new DateTime(year, month, day).AddHours(dhour);
-			}
-			break;
-		}
-
-		return new DateTime(year, month, day).AddHours(dhour);
-
-	}
-
 	private DateTime AddYearsInternal(double years)
 	{
 		var       jd         = 0.0;
