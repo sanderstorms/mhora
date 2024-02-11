@@ -14,6 +14,12 @@ namespace Mhora.Util
 		   _remainder = new Time();
 	   }
 
+	   public TimeOffset (DateTime dateTime)
+	   {
+		   _years     = dateTime.Year;
+		   _remainder = dateTime.StartNextYear() - dateTime;
+	   }
+
 	   public TimeOffset (double years)
 	   {
 			_years     = (int) Math.Truncate (years);
@@ -40,6 +46,7 @@ namespace Mhora.Util
 	   //public static implicit operator double(TimeOffset offset) => offset.TotalYears;
 
 	   public static implicit operator TimeOffset (double totalYears) => new TimeOffset (totalYears);
+	   public static implicit operator TimeOffset (DateTime dateTime) => new TimeOffset (dateTime);
 
 	   public static TimeOffset Zero => new TimeOffset(0);
 

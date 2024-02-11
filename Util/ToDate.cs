@@ -146,6 +146,14 @@ public class ToDate
 		return AddYears(timeOffset);
 	}
 
+	private DateTime _AddYearsInternal(double ut, double years)
+	{
+		years *= _yearLength;
+		years += _offset;
+
+		return TimeUtils.CalculateDate(ut, years);
+	}
+
 	private DateTime AddYearsInternal(double years)
 	{
 		var       jd         = 0.0;

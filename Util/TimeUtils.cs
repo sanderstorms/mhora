@@ -39,13 +39,27 @@ public static class TimeUtils
 		return (startDate.AddYears(offset.Years).AddDays(offset.Remainder.TotalDays));
 	}
 
-
 	public static DateTime AddYears(this DateTime startDate, double years)
 	{
 		var fullYears = Math.Truncate(years);
 		startDate = startDate.AddYears(fullYears);
 		return startDate + RemainingDays(years);
 	}
+
+	public static DateTime CalculateDate(double ut, double offsetInyears)
+	{
+		sweph.RevJul(ut, out var year, out var month, out var day, out var hours);
+
+		var offset   = new TimeOffset(offsetInyears);
+		var dateTime = new DateTime(year, month, day).AddHours(hours);
+		dateTime = dateTime.AddYears(offset.Years);
+
+		return dateTime + offset.Remainder;
+	}
+
+
+	public static DateTime StartNextYear(this DateTime dateTime) => new DateTime(dateTime.Year + 1, 1, 1, 0, 0, 0);
+	public static DateTime StartYear    (this DateTime dateTime) => new DateTime(dateTime.Year, 1, 1, 0, 0, 0);
 
 	public static DateTime Moment(this Horoscope h, double tjdUt)
 	{
