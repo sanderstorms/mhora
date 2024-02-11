@@ -568,10 +568,10 @@ public class Horoscope : ICloneable
 				}
 
 				srUt = tret;
-				sweph.RevJul(tret, ref year, ref month, ref day, ref hour);
+				sweph.RevJul(tret, out year, out month, out day, out hour);
 				sr = hour + Info.DstOffset.TotalHours;
 				this.Set(tret, sweph.SE_SUN, srflag, geopos, 0.0, 0.0, ref tret);
-				sweph.RevJul(tret, ref year, ref month, ref day, ref hour);
+				sweph.RevJul(tret, out year, out month, out day, out hour);
 				ss = hour + Info.DstOffset.TotalHours;
 				sr = Basics.NormalizeExc(sr, 0.0, 24.0);
 				ss = Basics.NormalizeExc(ss, 0.0, 24.0);

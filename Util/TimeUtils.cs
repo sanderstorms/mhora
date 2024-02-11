@@ -55,7 +55,7 @@ public static class TimeUtils
 		int    day   = 0;
 
 		tjdUt += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(tjdUt, ref year, ref month, ref day, ref time);
+		sweph.RevJul(tjdUt, out year, out month, out day, out time);
 		return new DateTime(year, month, day).AddHours(time);
 	}
 

@@ -172,7 +172,7 @@ public class PanchangaPrintDocument : PrintDocument
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
 		found_ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
+		sweph.RevJul(found_ut, out year, out month, out day, out hour);
 		var m = new DateTime(year, month, day).AddHours(hour);
 		return m;
 	}

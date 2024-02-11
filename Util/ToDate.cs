@@ -129,7 +129,7 @@ public class ToDate
 		jd    += _h.Info.DstOffset.TotalDays;
 		jd    += _offset;
 
-		sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
+		sweph.RevJul(jd, out year, out month, out day, out dhour);
 		return new DateTime(year, month, day).Add(TimeSpan.FromHours(dhour));
 	}
 
@@ -144,6 +144,33 @@ public class ToDate
 	{
 		var timeOffset = new TimeOffset(years);
 		return AddYears(timeOffset);
+	}
+
+	private DateTime _AddYearsInternal(double years)
+	{
+		if (_compression > 0.0)
+		{
+			years *= _compression;
+		}
+
+		sweph.RevJul(_baseUt, out var year, out var month, out var day, out var dhour);
+
+		switch (_type)
+		{
+			case DateType.FixedYear:
+			{
+
+				years *= _yearLength;
+				years += year + _offset;
+
+				//Mhora.Log.Debug("tz = {0}", (h.info.tz.toDouble()) / 24.0);
+				return new DateTime(year, month, day).AddHours(dhour);
+			}
+			break;
+		}
+
+		return new DateTime(year, month, day).AddHours(dhour);
+
 	}
 
 	private DateTime AddYearsInternal(double years)
@@ -167,7 +194,7 @@ public class ToDate
 				jd = _baseUt + years * _yearLength;
 				//Mhora.Log.Debug("tz = {0}", (h.info.tz.toDouble()) / 24.0);
 				jd += _offset;
-				sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
+				sweph.RevJul(jd, out year, out month, out day, out dhour);
 				return new DateTime(year, month, day).AddHours(dhour);
 			case DateType.SolarYear:
 				// Turn into years of 360 degrees, and then search
@@ -186,7 +213,7 @@ public class ToDate
 				jd =  t.LinearSearch(_h.Info.Jd + years * TimeUtils.SiderealYear.TotalDays, l, t.LongitudeOfSun);
 				jd += _h.Info.DstOffset.TotalDays;
 				jd += _offset;
-				sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
+				sweph.RevJul(jd, out year, out month, out day, out dhour);
 				return new DateTime(year, month, day).AddHours(dhour);
 			case DateType.TithiPraveshYear:
 				t = new Transit(_h);
@@ -218,7 +245,7 @@ public class ToDate
 				jd =  t.LinearSearch(jd + days * 28.0 / 30.0, tithiBase, t.LongitudeOfTithiDir);
 				jd += _h.Info.DstOffset.TotalDays;
 				jd += _offset;
-				sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
+				sweph.RevJul(jd, out year, out month, out day, out dhour);
 				return new DateTime(year, month, day).AddHours(dhour);
 			case DateType.YogaYear:
 				jd -= _h.Info.DstOffset.TotalDays;
@@ -237,7 +264,7 @@ public class ToDate
 				jd        =  t.LinearSearch(jd + yogaDays * 28.0 / 30.0, yogaBase, t.LongitudeOfSunMoonYogaDir);
 				jd        += _h.Info.DstOffset.TotalDays;
 				jd        += _offset;
-				sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
+				sweph.RevJul(jd, out year, out month, out day, out dhour);
 				return new DateTime(year, month, day).AddHours(dhour);
 			default:
 				//years = years * yearLength;
@@ -261,7 +288,7 @@ public class ToDate
 				jd =  t.LinearSearch(newBaseut + years * tyearApprox, l, t.LongitudeOfTithiDir);
 				jd += _offset;
 				//jd += (h.info.tz.toDouble() / 24.0);
-				sweph.RevJul(jd, ref year, ref month, ref day, ref dhour);
+				sweph.RevJul(jd, out year, out month, out day, out dhour);
 				return new DateTime(year, month, day).AddHours(dhour);
 		}
 	}

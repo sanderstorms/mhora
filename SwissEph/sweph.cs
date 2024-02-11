@@ -99,14 +99,14 @@ public static partial class sweph
 		return SwephDll.Swe64.swe_julday(year, month, day, hour, SE_GREG_CAL);
 	}
 
-	public static double RevJul(double tjd, ref int year, ref int month, ref int day, ref double hour)
+	public static double RevJul(double tjd, out int year, out int month, out int day, out double hour)
 	{
 		if (IntPtr.Size == 4)
 		{
-			return SwephDll.Swe32.swe_revjul(tjd, 1, ref year, ref month, ref day, ref hour);
+			return SwephDll.Swe32.swe_revjul(tjd, 1, out year, out month, out day, out hour);
 		}
 
-		return SwephDll.Swe64.swe_revjul(tjd, 1, ref year, ref month, ref day, ref hour);
+		return SwephDll.Swe64.swe_revjul(tjd, 1, out year, out month, out day, out hour);
 	}
 
 	public static int CalcUT(this Horoscope h, double tjd_ut, int ipl, int addFlags, double[] xx, StringBuilder serr = null)

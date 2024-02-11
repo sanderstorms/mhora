@@ -350,7 +350,7 @@ public class PanchangaControl : MhoraControl
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
 		found_ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
+		sweph.RevJul(found_ut, out year, out month, out day, out hour);
 		var m = new DateTime(year, month, day).AddHours(hour);
 		return m;
 	}
@@ -361,7 +361,7 @@ public class PanchangaControl : MhoraControl
 		double time = 0;
 
 		ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(ut, ref year, ref month, ref day, ref time);
+		sweph.RevJul(ut, out year, out month, out day, out time);
 		return timeToString(time);
 	}
 
@@ -396,7 +396,7 @@ public class PanchangaControl : MhoraControl
 		Time   sunset = new Time();
 		h.PopulateSunrisetCacheHelper(ut - 0.5, ref sunrise, ref sunset, ref ut_sr);
 
-		sweph.RevJul(ut_sr, ref year, ref month, ref day, ref hour);
+		sweph.RevJul(ut_sr, out year, out month, out day, out hour);
 		var moment_sr = new DateTime(year, month, day).AddHours(hour);
 		var moment_ut = h.Moment(ut);
 		var infoCurr  = (HoraInfo) h.Info.Clone();
@@ -409,7 +409,7 @@ public class PanchangaControl : MhoraControl
 		local.sunrise    = hCurr.Sunrise;
 		local.sunset     = sunset;
 		local.sunrise_ut = ut_sr;
-		sweph.RevJul(ut, ref year, ref month, ref day, ref hour);
+		sweph.RevJul(ut, out year, out month, out day, out hour);
 		local.wday = (Hora.Weekday) sweph.DayOfWeek(ut);
 
 
@@ -557,7 +557,7 @@ public class PanchangaControl : MhoraControl
 		int    day  = 0, month = 0, year = 0;
 		double time = 0;
 
-		sweph.RevJul(local.sunrise_ut, ref year, ref month, ref day, ref time);
+		sweph.RevJul(local.sunrise_ut, out year, out month, out day, out time);
 		var m = new DateTime(year, month, day).AddHours(time);
 		mList.Items.Add(string.Format("{0}, {1}", local.wday, m.ToDateString()));
 

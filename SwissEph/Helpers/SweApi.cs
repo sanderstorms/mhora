@@ -92,7 +92,7 @@ internal class SweApi : IDisposable
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
 
-		sweph.RevJul(jday, ref year, ref month, ref day, ref hour);
+		sweph.RevJul(jday, out year, out month, out day, out hour);
 		var date = new DateTime(year, month, day, 0, 0, 0, DateTimeKind.Utc);
 
 		return date.AddHours(hour);

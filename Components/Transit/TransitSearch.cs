@@ -441,13 +441,13 @@ public class TransitSearch : MhoraControl
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
 		found_ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
+		sweph.RevJul(found_ut, out year, out month, out day, out hour);
 		var m        = new DateTime(year, month, day).AddHours(hour);
 		var inf      = new HoraInfo(h.Info);
 		inf.DateOfBirth = m;
 		var hTransit = new Horoscope(inf, (HoroscopeOptions) h.Options.Clone());
 
-		sweph.RevJul(found_ut + 5.0, ref year, ref month, ref day, ref hour);
+		sweph.RevJul(found_ut + 5.0, out year, out month, out day, out hour);
 		m2 = new DateTime(year, month, day).AddHours(hour);
 		return hTransit;
 	}
@@ -684,7 +684,7 @@ public class TransitSearch : MhoraControl
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
 		found_ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
+		sweph.RevJul(found_ut, out year, out month, out day, out hour);
 		var m        = new DateTime(year, month, day).AddHours(hour);
 		var inf      = new HoraInfo(h.Info);
 		inf.DateOfBirth = m;
@@ -692,11 +692,11 @@ public class TransitSearch : MhoraControl
 
 		if (opts.Forward)
 		{
-			sweph.RevJul(found_ut + 5.0, ref year, ref month, ref day, ref hour);
+			sweph.RevJul(found_ut + 5.0, out year, out month, out day, out hour);
 		}
 		else
 		{
-			sweph.RevJul(found_ut - 5.0, ref year, ref month, ref day, ref hour);
+			sweph.RevJul(found_ut - 5.0, out year, out month, out day, out hour);
 		}
 
 		var m2 = new DateTime(year, month, day).AddHours(hour);
@@ -741,7 +741,7 @@ public class TransitSearch : MhoraControl
 		}
 
 
-		sweph.RevJul(ut, ref year, ref month, ref day, ref hour);
+		sweph.RevJul(ut, out year, out month, out day, out hour);
 		var m2 = new DateTime(year, month, day).AddHours(hour);
 		opts.StartDate = m2;
 		updateOptions();
