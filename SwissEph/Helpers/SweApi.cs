@@ -83,22 +83,6 @@ internal class SweApi : IDisposable
 	}
 
 	/// <summary>
-	///     Конвертирует Юлианский день в UTC дату.
-	/// </summary>
-	/// <param name="jday">Юлианский день. UTC.</param>
-	/// <returns>UTC Дату.</returns>
-	public static DateTime JulDayToDateTime(double jday)
-	{
-		int    year = 0, month = 0, day = 0;
-		double hour = 0;
-
-		sweph.RevJul(jday, out year, out month, out day, out hour);
-		var date = new DateTime(year, month, day, 0, 0, 0, DateTimeKind.Utc);
-
-		return date.AddHours(hour);
-	}
-
-	/// <summary>
 	///     Вычисляет позицию Солнца для указанного юлианского дня.
 	/// </summary>
 	/// <param name="jday">Юлианский день. UTC.</param>

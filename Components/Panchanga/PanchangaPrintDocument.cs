@@ -168,13 +168,8 @@ public class PanchangaPrintDocument : PrintDocument
 
 	private DateTime utToMoment(double found_ut)
 	{
-		// turn into horoscope
-		int    year = 0, month = 0, day = 0;
-		double hour = 0;
 		found_ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(found_ut, out year, out month, out day, out hour);
-		var m = new DateTime(year, month, day).AddHours(hour);
-		return m;
+		return found_ut.ToUtc();
 	}
 
 	private string utTimeToString(double ut_event, double ut_sr, double sunrise)

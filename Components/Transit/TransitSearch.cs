@@ -438,17 +438,13 @@ public class TransitSearch : MhoraControl
 	private Horoscope utToHoroscope(double found_ut, ref DateTime m2)
 	{
 		// turn into horoscope
-		int    year = 0, month = 0, day = 0;
-		double hour = 0;
 		found_ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(found_ut, out year, out month, out day, out hour);
-		var m        = new DateTime(year, month, day).AddHours(hour);
-		var inf      = new HoraInfo(h.Info);
+		var m   = found_ut.ToUtc();
+		var inf = new HoraInfo(h.Info);
 		inf.DateOfBirth = m;
 		var hTransit = new Horoscope(inf, (HoroscopeOptions) h.Options.Clone());
 
-		sweph.RevJul(found_ut + 5.0, out year, out month, out day, out hour);
-		m2 = new DateTime(year, month, day).AddHours(hour);
+		m2 = (found_ut + 5.0).ToUtc();
 		return hTransit;
 	}
 
@@ -681,25 +677,22 @@ public class TransitSearch : MhoraControl
 		var found_lon = r.GetLon(found_ut, ref bForward);
 
 		// turn into horoscope
-		int    year = 0, month = 0, day = 0;
-		double hour = 0;
 		found_ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(found_ut, out year, out month, out day, out hour);
-		var m        = new DateTime(year, month, day).AddHours(hour);
-		var inf      = new HoraInfo(h.Info);
+		var m   = found_ut.ToUtc();
+		var inf = new HoraInfo(h.Info);
 		inf.DateOfBirth = m;
 		var hTransit = new Horoscope(inf, (HoroscopeOptions) h.Options.Clone());
 
 		if (opts.Forward)
 		{
-			sweph.RevJul(found_ut + 5.0, out year, out month, out day, out hour);
+			found_ut += 5.0;
 		}
 		else
 		{
-			sweph.RevJul(found_ut - 5.0, out year, out month, out day, out hour);
+			found_ut -= 5.0;
 		}
 
-		var m2 = new DateTime(year, month, day).AddHours(hour);
+		var m2 = found_ut.ToUtc();
 		opts.StartDate = m2;
 		// add entry to our list
 		var          fmt = hTransit.Info.DateOfBirth.ToString();
@@ -740,9 +733,7 @@ public class TransitSearch : MhoraControl
 			ut -= offset;
 		}
 
-
-		sweph.RevJul(ut, out year, out month, out day, out hour);
-		var m2 = new DateTime(year, month, day).AddHours(hour);
+		var m2 = ut.ToUtc();
 		opts.StartDate = m2;
 		updateOptions();
 	}

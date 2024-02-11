@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using Mhora.Definitions;
 using Mhora.SwissEph;
+using Mhora.Util;
 
 namespace Mhora.Elements.Calculation;
 
@@ -162,10 +163,7 @@ public class Retrogression
 			var lon_start = GetLon(ut_start);
 			var lon_end   = GetLon(ut_end);
 
-			int    day  = 0, month = 0, year = 0;
-			double hour = 0;
-			sweph.RevJul(ut_start, out year, out month, out day, out hour);
-			var m = new DateTime(year, month, day).AddHours(hour);
+			var m = ut_start.ToUtc();
 
 			//Mhora.Log.Debug ("F {3} Lagna search for {0} between {1} and {2}",
 			//lonToFind, lon_start, lon_end, m);
@@ -192,10 +190,7 @@ public class Retrogression
 			var lon_start = GetLon(ut_start);
 			var lon_end   = GetLon(ut_end);
 
-			int    day  = 0, month = 0, year = 0;
-			double hour = 0;
-			sweph.RevJul(ut_start, out year, out month, out day, out hour);
-			var m = new DateTime(year, month, day).AddHours(hour);
+			var m = ut_start.ToUtc();
 
 			//Mhora.Log.Debug ("B {3} Lagna search for {0} between {1} and {2}",
 			//lonToFind, lon_start, lon_end, m);

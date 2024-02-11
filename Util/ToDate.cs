@@ -143,8 +143,7 @@ public class ToDate
 		jd    =  t.LinearSearch(jdSt, l, returnLonFunc);
 		jd    += _h.Info.DstOffset.TotalDays;
 
-		sweph.RevJul(jd, out year, out month, out day, out dhour);
-		return new DateTime(year, month, day).Add(TimeSpan.FromHours(dhour));
+		return jd.ToUtc();
 	}
 
 	public DateTime AddYears(TimeOffset years)
@@ -271,7 +270,6 @@ public class ToDate
 				break;
 		}
 
-		sweph.RevJul(jd, out var year, out var month, out var day, out var dhour);
-		return new DateTime(year, month, day).AddHours(dhour);
+		return jd.ToUtc();
 	}
 }

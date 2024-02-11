@@ -43,6 +43,11 @@ namespace Mhora.Util
 		   return (new TimeOffset(this));
 	   }
 
+	   public override string ToString()
+	   {
+		   return $"{_years}.{_remainder}";
+	   }
+
 	   //public static implicit operator double(TimeOffset offset) => offset.TotalYears;
 
 	   public static implicit operator TimeOffset (double totalYears) => new TimeOffset (totalYears);

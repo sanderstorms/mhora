@@ -224,6 +224,7 @@
     <Compile Include="SwissEph\Helpers\HorizontalCoordinates.cs" />
     <Compile Include="Util\DmsLocation.cs" />
     <Compile Include="Util\DmsPoint.cs" />
+    <Compile Include="Util\JulianDay.cs" />
     <Compile Include="Util\Range.cs" />
     <Compile Include="SwissEph\Helpers\SunriseSunsetTimeCalcResult.cs" />
     <Compile Include="SwissEph\Helpers\SweApi.cs" />

@@ -347,22 +347,8 @@ public class PanchangaControl : MhoraControl
 	private DateTime utToMoment(double found_ut)
 	{
 		// turn into horoscope
-		int    year = 0, month = 0, day = 0;
-		double hour = 0;
 		found_ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(found_ut, out year, out month, out day, out hour);
-		var m = new DateTime(year, month, day).AddHours(hour);
-		return m;
-	}
-
-	private string utToString(double ut)
-	{
-		int    year = 0, month = 0, day = 0;
-		double time = 0;
-
-		ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(ut, out year, out month, out day, out time);
-		return timeToString(time);
+		return found_ut.ToUtc();
 	}
 
 	private string utTimeToString(double ut_event, double ut_sr, double sunrise)
@@ -391,13 +377,10 @@ public class PanchangaControl : MhoraControl
 
 	private void ComputeEntry(double ut, double[] geopos)
 	{
-		int    year   = 0, month = 0, day = 0;
-		double hour  = 0;
 		Time   sunset = new Time();
 		h.PopulateSunrisetCacheHelper(ut - 0.5, ref sunrise, ref sunset, ref ut_sr);
 
-		sweph.RevJul(ut_sr, out year, out month, out day, out hour);
-		var moment_sr = new DateTime(year, month, day).AddHours(hour);
+		sweph.RevJul(ut_sr, out var year, out var month, out var day, out var hour);
 		var moment_ut = h.Moment(ut);
 		var infoCurr  = (HoraInfo) h.Info.Clone();
 		infoCurr.DateOfBirth = moment_ut;
@@ -554,11 +537,7 @@ public class PanchangaControl : MhoraControl
 	private void DisplayEntry(PanchangaLocalMoments local)
 	{
 		string s;
-		int    day  = 0, month = 0, year = 0;
-		double time = 0;
-
-		sweph.RevJul(local.sunrise_ut, out year, out month, out day, out time);
-		var m = new DateTime(year, month, day).AddHours(time);
+		var m = local.sunrise_ut.ToUtc();
 		mList.Items.Add(string.Format("{0}, {1}", local.wday, m.ToDateString()));
 
 		if (opts.ShowSunriset)

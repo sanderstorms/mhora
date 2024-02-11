@@ -193,7 +193,7 @@ public class AzimuthCalculator
 
 		var coord    = GetSunriseSunsetAzimuthAndTimeInternal(h, date, position, pressure, temperature, purpose, sweApi);
 		var dT       = GetAltitudeCorrection(position.Altitude) / (15 * Math.Cos(ToRad(position.Latitude)) * Math.Sin(ToRad(coord.Coordinates.Azimuth)));
-		var timeBase = SweApi.JulDayToDateTime(coord.JulDay);
+		var timeBase = coord.JulDay.ToUtc();
 		var time     = timeBase.AddMinutes(dT);
 		var jday     = time.ToJulian();
 

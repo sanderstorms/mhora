@@ -52,37 +52,20 @@ public static class TimeUtils
 
 	public static DateTime CalculateDate(double ut, double offsetInyears)
 	{
-		sweph.RevJul(ut, out var year, out var month, out var day, out var hours);
-
+		var dateTime = ut.ToUtc();
 		var offset   = new TimeOffset(offsetInyears);
-		var dateTime = new DateTime(year, month, day).AddHours(hours);
 		dateTime = dateTime.AddYears(offset.Years);
 
 		return dateTime + offset.Remainder;
 	}
-
-	public static double AddYears(double ut, double years)
-	{
-		sweph.RevJul(ut, out var year, out var month, out var day, out var hours);
-		var dateTime = new DateTime(year, month, day).AddHours(hours);
-		dateTime.AddYears(years);
-		return dateTime.ToJulian();
-	}
-
 
 	public static DateTime StartNextYear(this DateTime dateTime) => new DateTime(dateTime.Year + 1, 1, 1, 0, 0, 0);
 	public static DateTime StartYear    (this DateTime dateTime) => new DateTime(dateTime.Year, 1, 1, 0, 0, 0);
 
 	public static DateTime Moment(this Horoscope h, double tjdUt)
 	{
-		double time  = 0;
-		int    year  = 0;
-		int    month = 0;
-		int    day   = 0;
-
 		tjdUt += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(tjdUt, out year, out month, out day, out time);
-		return new DateTime(year, month, day).AddHours(time);
+		return tjdUt.ToUtc();
 	}
 
 	public static double ToJulian(this DateTime dateTime)
@@ -90,36 +73,10 @@ public static class TimeUtils
 		return sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Time().TotalHours);
 	}
 
-	public static double UtcToJulian(this DateTime dateTime)
+	public static DateTime ToUtc(this double jd)
 	{
-		double u2;
-		double u                  = dateTime.Year;
-		if (dateTime.Month < 3) u -= 1;
-		var u0                    = u              + 4712.0;
-		var u1                    = dateTime.Month + 1.0;
-		if (u1 < 4) u1            += 12.0;
-		var jd = Math.Truncate(u0 * SiderealYear.TotalDays)
-			+ Math.Truncate(30.6 * u1 + 0.000001)
-			+ dateTime.Day + dateTime.Time().TotalHours / 24.0 - 63.5;
-
-		return jd;
-	}
-
-	public static DateTime UtcDateTime(this double jd)
-	{
-		double u1;
-		var    u0           = jd + 32082.5;
-		var    u2           = Math.Truncate(u0 + 123.0);
-		var    u3           = Math.Truncate((u2 - 122.2)                   / 365.25);
-		var    u4           = Math.Truncate((u2 - Math.Truncate(365.25 * u3)) / 30.6001);
-		var    jmon         = (int)(u4 - 1.0);
-		if (jmon > 12) jmon -= 12;
-		var jday            = (int)(u2                                 - Math.Truncate(SiderealYear.TotalHours * u3) - Math.Truncate(30.6001 * u4));
-		var jyear           = (int)(u3 + Math.Truncate((u4 - 2.0) / 12.0) - 4800);
-		var jut             = (jd      - Math.Truncate(jd + 0.5)          + 0.5) * 24.0;
-
-		return new DateTime(jyear, jmon, jday).AddHours(jut);
-
+		sweph.RevJul(jd, out var year, out var month, out var day, out var time);
+		return new DateTime(year, month, day).AddHours(time);
 	}
 
 	public static double UniversalTime(this Horoscope h, DateTime dateTime)

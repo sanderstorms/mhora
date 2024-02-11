@@ -16,6 +16,7 @@ namespace Mhora.Util
 			_timeSpan = timeSpan;
 		}
 
+
 		public static implicit operator TimeSpan(Time time)
 		{
 			return time._timeSpan;
