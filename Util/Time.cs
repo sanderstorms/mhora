@@ -16,6 +16,10 @@ namespace Mhora.Util
 			_timeSpan = timeSpan;
 		}
 
+		public override string ToString()
+		{
+			return _timeSpan.ToString();
+		}
 
 		public static implicit operator TimeSpan(Time time)
 		{
