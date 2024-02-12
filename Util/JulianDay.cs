@@ -7,39 +7,52 @@ namespace Mhora.Util
 	[JsonObject]
 	public class JulianDay
 	{
+		private readonly double   _value;
 		private readonly DateTime _date;
 		private readonly Time     _time;
 
-		public JulianDay(double jd)
+		public JulianDay(double value)
 		{
-			sweph.RevJul(jd, out var year, out var month, out var day, out var hours);
+			_value = value;
+			sweph.RevJul(value, out var year, out var month, out var day, out var hours);
 			_date = new DateTime(year, month, day);
 			_time = hours;
 		}
 
 		public JulianDay(DateTime dateTime)
 		{
-			_date = dateTime.Date;
-			_time = dateTime.Time();
+			_date  = dateTime.Date;
+			_time  = dateTime.Time();
+			_value = sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Time().TotalHours);
 		}
 
-		[JsonIgnore]
-		public DateTime Date     => _date;
-		[JsonIgnore]
-		public Time     Time     => _time;
 		[JsonProperty]
-		public DateTime DateTime => _date.Add(_time);
+		public DateTime Date     => _date;
+		[JsonProperty]
+		public Time     Time     => _time;
 
 		public override string ToString()
 		{
-			return $"{_date} {_time}";
+			return $"{_date.Add(_time)}";
 		}
 
+		public JulianDay Add(Time offset)
+		{
+			DateTime dateTime = this;
+			return new JulianDay(dateTime.Add(offset));
+		}
+
+		public JulianDay Sub(Time offset)
+		{
+			DateTime dateTime = this;
+			return new JulianDay(dateTime.Subtract(offset));
+		}
+		
 		public static implicit operator double(JulianDay jd)
 		{
-			return jd.DateTime.ToJulian();
+			return jd._value;
 		}
-
+		
 		public static implicit operator JulianDay(double jd)
 		{
 			return new JulianDay(jd);
@@ -47,7 +60,16 @@ namespace Mhora.Util
 
 		public static implicit operator DateTime(JulianDay jd)
 		{
-			return jd.DateTime;
+			return jd.Date.Add(jd.Time);
 		}
+
+		public static JulianDay operator +(JulianDay jd, Time      offset) => jd.Add (offset);
+		public static JulianDay operator -(JulianDay jd, Time      offset) => jd.Sub (offset);
+		public static bool operator < (JulianDay     jd, JulianDay value)  => jd._value < value._value; 
+		public static bool operator > (JulianDay     jd, JulianDay value)  => jd._value > value._value; 
+		public static bool operator == (JulianDay    jd, JulianDay value)  => jd._value == value._value; 
+		public static bool operator != (JulianDay    jd, JulianDay value)  => jd._value != value._value; 
+		public static bool operator >= (JulianDay    jd, JulianDay value)  => jd._value >= value._value; 
+		public static bool operator <= (JulianDay    jd, JulianDay value)  => jd._value <= value._value; 
 	}
 }
