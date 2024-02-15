@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using Mhora.Definitions;
 using Mhora.Elements;
 
 namespace Mhora.Components.Varga;
 
 public class ChartItems
 {
-	private readonly Dictionary<ZodiacHouse.Rasi, List<DivisionPosition>> _items;
+	private readonly Dictionary<ZodiacHouse, List<DivisionPosition>> _items;
 
 	public ChartItems()
 	{
-		_items = new Dictionary<ZodiacHouse.Rasi, List<DivisionPosition>>();
+		_items = new Dictionary<ZodiacHouse, List<DivisionPosition>>();
 	}
 
-	public List<DivisionPosition> this[ZodiacHouse.Rasi sign]
+	public List<DivisionPosition> this[ZodiacHouse sign]
 	{
 		get
 		{
@@ -33,7 +34,7 @@ public class ChartItems
 
 	public void Add(DivisionPosition dp)
 	{
-		if (_items.TryGetValue(dp.ZodiacHouse.Sign, out var dpList))
+		if (_items.TryGetValue(dp.ZodiacHouse, out var dpList))
 		{
 			dpList.Add(dp);
 		}
@@ -43,7 +44,7 @@ public class ChartItems
 			{
 				dp
 			};
-			_items.Add(dp.ZodiacHouse.Sign, dpList);
+			_items.Add(dp.ZodiacHouse, dpList);
 		}
 	}
 }

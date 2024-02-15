@@ -23,13 +23,13 @@ using System.Threading;
 using System.Windows.Forms;
 using Mhora.Components.Delegates;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
-using mhora.Util;
 using Mhora.Util;
-using Retrogression = Mhora.Elements.Retrogression;
+using Retrogression = Mhora.Elements.Calculation.Retrogression;
 
 namespace Mhora.Components.Panchanga;
 
@@ -94,7 +94,7 @@ public class PanchangaControl : MhoraControl
 	private Mutex mutexProgress;
 
 	private Time sunrise = new Time();
-	private Time ut_sr = new Time();
+	private double ut_sr;
 
 
 	public PanchangaControl(Horoscope _h)
@@ -235,8 +235,10 @@ public class PanchangaControl : MhoraControl
 
 		var h = (Horoscope) _h;
 
-		var li = new ListViewItem();
-		li.Text = "Results may be out of date. Click the Compute Button to Recalculate the panchanga";
+		var li = new ListViewItem
+		{
+			Text = "Results may be out of date. Click the Compute Button to Recalculate the panchanga"
+		};
 		mList.Items.Insert(0, li);
 		mList.Items.Insert(1, string.Empty);
 		bResultsInvalid = true;
@@ -347,25 +349,11 @@ public class PanchangaControl : MhoraControl
 	private DateTime utToMoment(double found_ut)
 	{
 		// turn into horoscope
-		int    year = 0, month = 0, day = 0;
-		double hour = 0;
 		found_ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
-		var m = new DateTime(year, month, day).AddHours(hour);
-		return m;
+		return found_ut.ToUtc();
 	}
 
-	private string utToString(double ut)
-	{
-		int    year = 0, month = 0, day = 0;
-		double time = 0;
-
-		ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(ut, ref year, ref month, ref day, ref time);
-		return timeToString(time);
-	}
-
-	private string utTimeToString(double ut_event, double ut_sr, double sunrise)
+	private string utTimeToString(double ut_event, Time ut_sr, Time sunrise)
 	{
 		var m   = utToMoment(ut_event);
 		var hms = m.Time ();
@@ -383,7 +371,7 @@ public class PanchangaControl : MhoraControl
 		return string.Format("{0:00}:{1:00}", hms.Hours, hms.Minutes);
 	}
 
-	private string timeToString(double time)
+	private string timeToString(Time time)
 	{
 		var hms = TimeSpan.FromHours(time);
 		return string.Format("{0:00}:{1:00}", hms.Hours, hms.Minutes, hms.Seconds);
@@ -391,13 +379,10 @@ public class PanchangaControl : MhoraControl
 
 	private void ComputeEntry(double ut, double[] geopos)
 	{
-		int    year   = 0, month = 0, day = 0;
-		double hour  = 0;
 		Time   sunset = new Time();
 		h.PopulateSunrisetCacheHelper(ut - 0.5, ref sunrise, ref sunset, ref ut_sr);
 
-		sweph.RevJul(ut_sr, ref year, ref month, ref day, ref hour);
-		var moment_sr = new DateTime(year, month, day).AddHours(hour);
+		sweph.RevJul(ut_sr, out var year, out var month, out var day, out var hour);
 		var moment_ut = h.Moment(ut);
 		var infoCurr  = (HoraInfo) h.Info.Clone();
 		infoCurr.DateOfBirth = moment_ut;
@@ -405,11 +390,13 @@ public class PanchangaControl : MhoraControl
 
 		ListViewItem li = null;
 
-		var local = new PanchangaLocalMoments();
-		local.sunrise    = hCurr.Sunrise;
-		local.sunset     = sunset;
-		local.sunrise_ut = ut_sr;
-		sweph.RevJul(ut, ref year, ref month, ref day, ref hour);
+		var local = new PanchangaLocalMoments
+		{
+			sunrise = hCurr.Sunrise,
+			sunset = sunset,
+			sunrise_ut = ut_sr
+		};
+		sweph.RevJul(ut, out year, out month, out day, out hour);
 		local.wday = (Hora.Weekday) sweph.DayOfWeek(ut);
 
 
@@ -430,25 +417,25 @@ public class PanchangaControl : MhoraControl
 		if (opts.CalcLagnaCusps)
 		{
 			li = new ListViewItem();
-			var bp_lagna_sr = h.CalculateSingleBodyPosition(ut_sr, Body.BodyType.Lagna.SwephBody(), Body.BodyType.Lagna, Body.Type.Lagna);
-			var dp_lagna_sr = bp_lagna_sr.ToDivisionPosition(new Division(Vargas.DivisionType.Rasi));
-			local.lagna_zh = dp_lagna_sr.ZodiacHouse.Sign;
+			var bp_lagna_sr = h.CalculateSingleBodyPosition(ut_sr, Body.Lagna.SwephBody(), Body.Lagna, BodyType.Lagna);
+			var dp_lagna_sr = bp_lagna_sr.ToDivisionPosition(new Division(DivisionType.Rasi));
+			local.lagna_zh = dp_lagna_sr.ZodiacHouse;
 
 			var bp_lagna_base = new Longitude(bp_lagna_sr.Longitude.ToZodiacHouseBase());
 			var ut_transit    = ut_sr;
 			for (var i = 1; i <= 12; i++)
 			{
-				var r = new Retrogression(h, Body.BodyType.Lagna);
+				var r = new Retrogression(h, Body.Lagna);
 				ut_transit = r.GetLagnaTransitForward(ut_transit, bp_lagna_base.Add(i * 30.0));
 
-				var pmi = new PanchangaMomentInfo(ut_transit, (int) bp_lagna_sr.Longitude.ToZodiacHouse().Add(i + 1).Sign);
+				var pmi = new PanchangaMomentInfo(ut_transit, bp_lagna_sr.Longitude.ToZodiacHouse().Add(i + 1).Index());
 				local.lagnas_ut.Add(pmi);
 			}
 		}
 
 		if (opts.CalcTithiCusps)
 		{
-			var t = new Elements.Transit(h);
+			var t           = new Elements.Calculation.Transit(h);
 			var tithi_start = t.LongitudeOfTithi(ut_sr).ToTithi();
 			var tithi_end   = t.LongitudeOfTithi(ut_sr + 1.0).ToTithi();
 
@@ -470,7 +457,7 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcKaranaCusps)
 		{
-			var t = new Elements.Transit(h);
+			var t            = new Elements.Calculation.Transit(h);
 			var karana_start = t.LongitudeOfTithi(ut_sr).ToKarana();
 			var karana_end   = t.LongitudeOfTithi(ut_sr + 1.0).ToKarana();
 
@@ -491,7 +478,7 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcSMYogaCusps)
 		{
-			var t = new Elements.Transit(h);
+			var t        = new Elements.Calculation.Transit(h);
 			var sm_start = t.LongitudeOfSunMoonYoga(ut_sr).ToSunMoonYoga();
 			var sm_end   = t.LongitudeOfSunMoonYoga(ut_sr + 1.0).ToSunMoonYoga();
 
@@ -513,8 +500,8 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcNakCusps)
 		{
-			var bDiscard = true;
-			var t        = new Elements.Transit(h, Body.BodyType.Moon);
+			var bDiscard  = true;
+			var t         = new Elements.Calculation.Transit(h, Body.Moon);
 			var nak_start = t.GenericLongitude(ut_sr, ref bDiscard).ToNakshatra();
 			var nak_end   = t.GenericLongitude(ut_sr + 1.0, ref bDiscard).ToNakshatra();
 
@@ -554,11 +541,7 @@ public class PanchangaControl : MhoraControl
 	private void DisplayEntry(PanchangaLocalMoments local)
 	{
 		string s;
-		int    day  = 0, month = 0, year = 0;
-		double time = 0;
-
-		sweph.RevJul(local.sunrise_ut, ref year, ref month, ref day, ref time);
-		var m = new DateTime(year, month, day).AddHours(time);
+		var m = local.sunrise_ut.ToUtc();
 		mList.Items.Add(string.Format("{0}, {1}", local.wday, m.ToDateString()));
 
 		if (opts.ShowSunriset)
@@ -634,7 +617,7 @@ public class PanchangaControl : MhoraControl
 			if (local.karana_index_start == local.karana_index_end && local.karana_index_start >= 0)
 			{
 				var pmi = (PanchangaMomentInfo) globals.karanas_ut[local.karana_index_start];
-				var k   = (Karanas.Karana) pmi.info;
+				var k   = (Karana) pmi.info;
 				mList.Items.Add(string.Format("{0} karana - full.", k));
 			}
 			else
@@ -647,7 +630,7 @@ public class PanchangaControl : MhoraControl
 					}
 
 					var pmi = (PanchangaMomentInfo) globals.karanas_ut[i];
-					var k   = ((Karanas.Karana) pmi.info).AddReverse(2);
+					var k   = ((Karana) pmi.info).AddReverse(2);
 					s_karana += string.Format("{0} karana until {1}", k, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 
 					if (opts.OneEntryPerLine)
@@ -718,7 +701,7 @@ public class PanchangaControl : MhoraControl
 			if (local.nakshatra_index_start == local.nakshatra_index_end && local.nakshatra_index_start >= 0)
 			{
 				var pmi = (PanchangaMomentInfo) globals.nakshatras_ut[local.nakshatra_index_start];
-				var n   = (Nakshatras.Nakshatra) pmi.info;
+				var n   = (Nakshatra) pmi.info;
 				mList.Items.Add(string.Format("{0} - full.", n.Name()));
 			}
 			else
@@ -731,7 +714,7 @@ public class PanchangaControl : MhoraControl
 					}
 
 					var pmi = (PanchangaMomentInfo) globals.nakshatras_ut[i];
-					var n   = ((Nakshatras.Nakshatra) pmi.info).AddReverse(2);
+					var n   = ((Nakshatra) pmi.info).AddReverse(2);
 					s_nak += string.Format("{0} until {1}", n.Name(), utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 					if (opts.OneEntryPerLine)
 					{
@@ -754,13 +737,13 @@ public class PanchangaControl : MhoraControl
 		if (opts.CalcLagnaCusps)
 		{
 			var sLagna = "    ";
-			var zBase  = new ZodiacHouse(local.lagna_zh);
+			var zBase  = (local.lagna_zh);
 			for (var i = 0; i < 12; i++)
 			{
 				var pmi   = (PanchangaMomentInfo) local.lagnas_ut[i];
-				var zCurr = new ZodiacHouse((ZodiacHouse.Rasi) pmi.info);
+				var zCurr = (ZodiacHouse) pmi.info;
 				zCurr  = zCurr.Add(12);
-				sLagna = string.Format("{0}{1} Lagna until {2}. ", sLagna, zCurr.Sign, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
+				sLagna = string.Format("{0}{1} Lagna until {2}. ", sLagna, zCurr, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 				if (opts.OneEntryPerLine || i % 4 == 3)
 				{
 					mList.Items.Add(sLagna);
@@ -967,20 +950,22 @@ public class PanchangaControl : MhoraControl
 
 		public object Clone()
 		{
-			var uo = new UserOptions();
-			uo.NumDays          = NumDays;
-			uo.CalcLagnaCusps   = CalcLagnaCusps;
-			uo.CalcNakCusps     = CalcNakCusps;
-			uo.CalcTithiCusps   = CalcTithiCusps;
-			uo.CalcKaranaCusps  = CalcKaranaCusps;
-			uo.CalcHoraCusps    = CalcHoraCusps;
-			uo.CalcKalaCusps    = CalcKalaCusps;
-			uo.CalcSpecialKalas = CalcSpecialKalas;
-			uo.LargeHours       = LargeHours;
-			uo.ShowUpdates      = ShowUpdates;
-			uo.ShowSunriset     = ShowSunriset;
-			uo.OneEntryPerLine  = OneEntryPerLine;
-			uo.CalcSMYogaCusps  = CalcSMYogaCusps;
+			var uo = new UserOptions
+			{
+				NumDays = NumDays,
+				CalcLagnaCusps = CalcLagnaCusps,
+				CalcNakCusps = CalcNakCusps,
+				CalcTithiCusps = CalcTithiCusps,
+				CalcKaranaCusps = CalcKaranaCusps,
+				CalcHoraCusps = CalcHoraCusps,
+				CalcKalaCusps = CalcKalaCusps,
+				CalcSpecialKalas = CalcSpecialKalas,
+				LargeHours = LargeHours,
+				ShowUpdates = ShowUpdates,
+				ShowSunriset = ShowSunriset,
+				OneEntryPerLine = OneEntryPerLine,
+				CalcSMYogaCusps = CalcSMYogaCusps
+			};
 			return uo;
 		}
 

@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Kuta;
 
 public class KutaNadi
@@ -32,7 +34,7 @@ public class KutaNadi
 		return 2;
 	}
 
-	public static int GetScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
+	public static int GetScore(Nakshatra m, Nakshatra n)
 	{
 		var ea = GetType(m);
 		var eb = GetType(n);
@@ -49,28 +51,28 @@ public class KutaNadi
 		return 0;
 	}
 
-	public static EType GetType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatra n)
 	{
 		switch (n)
 		{
-			case Nakshatras.Nakshatra.Aswini:
-			case Nakshatras.Nakshatra.Aridra:
-			case Nakshatras.Nakshatra.Punarvasu:
-			case Nakshatras.Nakshatra.UttaraPhalguni:
-			case Nakshatras.Nakshatra.Hasta:
-			case Nakshatras.Nakshatra.Jyestha:
-			case Nakshatras.Nakshatra.Moola:
-			case Nakshatras.Nakshatra.Satabisha:
-			case Nakshatras.Nakshatra.PoorvaBhadra: return EType.Vata;
-			case Nakshatras.Nakshatra.Bharani:
-			case Nakshatras.Nakshatra.Mrigarirsa:
-			case Nakshatras.Nakshatra.Pushya:
-			case Nakshatras.Nakshatra.PoorvaPhalguni:
-			case Nakshatras.Nakshatra.Chittra:
-			case Nakshatras.Nakshatra.Anuradha:
-			case Nakshatras.Nakshatra.PoorvaShada:
-			case Nakshatras.Nakshatra.Dhanishta:
-			case Nakshatras.Nakshatra.UttaraBhadra: return EType.Pitta;
+			case Nakshatra.Aswini:
+			case Nakshatra.Aridra:
+			case Nakshatra.Punarvasu:
+			case Nakshatra.UttaraPhalguni:
+			case Nakshatra.Hasta:
+			case Nakshatra.Jyestha:
+			case Nakshatra.Moola:
+			case Nakshatra.Satabisha:
+			case Nakshatra.PoorvaBhadra: return EType.Vata;
+			case Nakshatra.Bharani:
+			case Nakshatra.Mrigarirsa:
+			case Nakshatra.Pushya:
+			case Nakshatra.PoorvaPhalguni:
+			case Nakshatra.Chittra:
+			case Nakshatra.Anuradha:
+			case Nakshatra.PoorvaShada:
+			case Nakshatra.Dhanishta:
+			case Nakshatra.UttaraBhadra: return EType.Pitta;
 		}
 
 		return EType.Sleshma;

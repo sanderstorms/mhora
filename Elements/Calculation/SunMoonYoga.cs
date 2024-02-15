@@ -17,6 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation;
 
 public class SunMoonYoga
@@ -80,19 +82,19 @@ public class SunMoonYoga
 		return new SunMoonYoga((Name) snum);
 	}
 
-	public Body.BodyType getLord()
+	public Body getLord()
 	{
 		switch ((int) value % 9)
 		{
-			case 1:  return Body.BodyType.Saturn;
-			case 2:  return Body.BodyType.Mercury;
-			case 3:  return Body.BodyType.Ketu;
-			case 4:  return Body.BodyType.Venus;
-			case 5:  return Body.BodyType.Sun;
-			case 6:  return Body.BodyType.Moon;
-			case 7:  return Body.BodyType.Mars;
-			case 8:  return Body.BodyType.Rahu;
-			default: return Body.BodyType.Jupiter;
+			case 1:  return Body.Saturn;
+			case 2:  return Body.Mercury;
+			case 3:  return Body.Ketu;
+			case 4:  return Body.Venus;
+			case 5:  return Body.Sun;
+			case 6:  return Body.Moon;
+			case 7:  return Body.Mars;
+			case 8:  return Body.Rahu;
+			default: return Body.Jupiter;
 		}
 	}
 

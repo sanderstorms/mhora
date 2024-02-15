@@ -22,8 +22,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.Tables;
 
 namespace Mhora.Components;
@@ -185,7 +185,7 @@ public class Sarvatobhadra81Control : MhoraControl
 
 		foreach (Position bp in h.PositionList)
 		{
-			if (bp.Type != Body.Type.Graha && bp.Type != Body.Type.Lagna)
+			if (bp.BodyType != BodyType.Graha && bp.BodyType != BodyType.Lagna)
 			{
 				continue;
 			}
@@ -216,18 +216,18 @@ public class Sarvatobhadra81Control : MhoraControl
 		var f_sanskrit = new Font("Sanskrit 99", MhoraGlobalOptions.Instance.GeneralFont.SizeInPoints                                      + 5);
 		for (var i = 1; i <= 12; i++)
 		{
-			var zh     = new ZodiacHouse(ZodiacHouse.Rasi.Ari).Add(i);
+			var zh     = ZodiacHouse.Ari.Add(i);
 			var pxBase = GetCellInRectangle(5, 11, i);
 			var pxOff  = GetItemOffsetCenter();
 			var px     = new Point(pxBase.X + pxOff.X, pxBase.Y + pxOff.Y);
-			var s      = zh.Sign.ToString();
+			var s      = zh.ToString();
 			var sz     = g.MeasureString(s, f);
 			g.DrawString(s, f, Brushes.Purple, px.X - sz.Width / 2, px.Y - sz.Height / 2);
 		}
 
 		for (var i = 1; i <= 28; i++)
 		{
-			var na     = Nakshatras.Nakshatra28.Aswini.Add(i);
+			var na     = Nakshatra28.Aswini.Add(i);
 			var pxBase = GetCellInRectangle(9, 26, i);
 			var pxOff  = GetItemOffsetCenter();
 			var px     = new Point(pxBase.X + pxOff.X, pxBase.Y);

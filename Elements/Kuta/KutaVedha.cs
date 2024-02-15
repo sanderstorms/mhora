@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Diagnostics;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Kuta;
 
@@ -40,7 +41,7 @@ public class KutaVedha
 		Chi
 	}
 
-	public static int GetScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
+	public static int GetScore(Nakshatra m, Nakshatra n)
 	{
 		if (GetType(m) == GetType(n))
 		{
@@ -55,37 +56,37 @@ public class KutaVedha
 		return 1;
 	}
 
-	public static EType GetType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatra n)
 	{
 		switch (n)
 		{
-			case Nakshatras.Nakshatra.Aswini:
-			case Nakshatras.Nakshatra.Jyestha: return EType.AswJye;
-			case Nakshatras.Nakshatra.Bharani:
-			case Nakshatras.Nakshatra.Anuradha: return EType.BhaAnu;
-			case Nakshatras.Nakshatra.Krittika:
-			case Nakshatras.Nakshatra.Vishaka: return EType.KriVis;
-			case Nakshatras.Nakshatra.Rohini:
-			case Nakshatras.Nakshatra.Swati: return EType.RohSwa;
-			case Nakshatras.Nakshatra.Aridra:
-			case Nakshatras.Nakshatra.Sravana: return EType.AriSra;
-			case Nakshatras.Nakshatra.Punarvasu:
-			case Nakshatras.Nakshatra.UttaraShada: return EType.PunUsh;
-			case Nakshatras.Nakshatra.Pushya:
-			case Nakshatras.Nakshatra.PoorvaShada: return EType.PusPsh;
-			case Nakshatras.Nakshatra.Aslesha:
-			case Nakshatras.Nakshatra.Moola: return EType.AslMoo;
-			case Nakshatras.Nakshatra.Makha:
-			case Nakshatras.Nakshatra.Revati: return EType.MakRev;
-			case Nakshatras.Nakshatra.PoorvaPhalguni:
-			case Nakshatras.Nakshatra.UttaraBhadra: return EType.PphUbh;
-			case Nakshatras.Nakshatra.UttaraPhalguni:
-			case Nakshatras.Nakshatra.PoorvaBhadra: return EType.UphPbh;
-			case Nakshatras.Nakshatra.Hasta:
-			case Nakshatras.Nakshatra.Satabisha: return EType.HasSat;
-			case Nakshatras.Nakshatra.Mrigarirsa:
-			case Nakshatras.Nakshatra.Dhanishta: return EType.MriDha;
-			case Nakshatras.Nakshatra.Chittra: return EType.Chi;
+			case Nakshatra.Aswini:
+			case Nakshatra.Jyestha: return EType.AswJye;
+			case Nakshatra.Bharani:
+			case Nakshatra.Anuradha: return EType.BhaAnu;
+			case Nakshatra.Krittika:
+			case Nakshatra.Vishaka: return EType.KriVis;
+			case Nakshatra.Rohini:
+			case Nakshatra.Swati: return EType.RohSwa;
+			case Nakshatra.Aridra:
+			case Nakshatra.Sravana: return EType.AriSra;
+			case Nakshatra.Punarvasu:
+			case Nakshatra.UttaraShada: return EType.PunUsh;
+			case Nakshatra.Pushya:
+			case Nakshatra.PoorvaShada: return EType.PusPsh;
+			case Nakshatra.Aslesha:
+			case Nakshatra.Moola: return EType.AslMoo;
+			case Nakshatra.Makha:
+			case Nakshatra.Revati: return EType.MakRev;
+			case Nakshatra.PoorvaPhalguni:
+			case Nakshatra.UttaraBhadra: return EType.PphUbh;
+			case Nakshatra.UttaraPhalguni:
+			case Nakshatra.PoorvaBhadra: return EType.UphPbh;
+			case Nakshatra.Hasta:
+			case Nakshatra.Satabisha: return EType.HasSat;
+			case Nakshatra.Mrigarirsa:
+			case Nakshatra.Dhanishta: return EType.MriDha;
+			case Nakshatra.Chittra: return EType.Chi;
 		}
 
 		Debug.Assert(false, "KutaVedha::getType");

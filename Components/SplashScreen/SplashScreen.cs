@@ -131,9 +131,11 @@ public class SplashScreen
 	// Only call from ctor
 	private void CreateSplashScreenThread()
 	{
-		thread                = new Thread(ThreadFunction);
-		thread.Name           = "Splash Screen";
-		thread.ApartmentState = ApartmentState.STA;
+		thread                = new Thread(ThreadFunction)
+		{
+			Name = "Splash Screen",
+			ApartmentState = ApartmentState.STA
+		};
 
 		thread.Start();
 		Thread.Sleep(0);

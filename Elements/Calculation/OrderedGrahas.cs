@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using Mhora.Components.Converter;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Calculation;
 
@@ -35,15 +36,17 @@ public class OrderedGrahas : ICloneable
 
 	public object Clone()
 	{
-		var oz = new OrderedGrahas();
-		oz.grahas = (ArrayList) grahas.Clone();
+		var oz = new OrderedGrahas
+		{
+			grahas = (ArrayList) grahas.Clone()
+		};
 		return oz;
 	}
 
 	public override string ToString()
 	{
 		var s = string.Empty;
-		foreach (Body.BodyType bn in grahas)
+		foreach (Body bn in grahas)
 		{
 			s += bn.ToShortString() + " ";
 		}

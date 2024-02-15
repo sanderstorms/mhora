@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has more Graha drishtis of Jupiter, Mercury and Lord
@@ -26,7 +28,7 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
 		var a = Value(m);
 		var b = Value(n);
@@ -43,7 +45,7 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		throw new EqualStrength();
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var a = Value(za);
 		var b = Value(zb);
@@ -60,26 +62,26 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		throw new EqualStrength();
 	}
 
-	protected int Value(ZodiacHouse.Rasi rasi)
+	protected int Value(ZodiacHouse zodiacHouse)
 	{
 		var val = 0;
-		var bl  = GetStrengthLord(rasi);
+		var bl  = GetStrengthLord(zodiacHouse);
 		var dl  = H.GetPosition(bl).ToDivisionPosition(Dtype);
-		var dj  = H.GetPosition(Body.BodyType.Jupiter).ToDivisionPosition(Dtype);
-		var dm  = H.GetPosition(Body.BodyType.Mercury).ToDivisionPosition(Dtype);
+		var dj  = H.GetPosition(Body.Jupiter).ToDivisionPosition(Dtype);
+		var dm  = H.GetPosition(Body.Mercury).ToDivisionPosition(Dtype);
 
-		var zh = new ZodiacHouse(rasi);
-		if (dl.GrahaDristi(zh) || dl.ZodiacHouse.Sign == rasi)
+		var zh = (zodiacHouse);
+		if (dl.GrahaDristi(zh) || dl.ZodiacHouse == zodiacHouse)
 		{
 			val++;
 		}
 
-		if (dj.GrahaDristi(zh) || dj.ZodiacHouse.Sign == rasi)
+		if (dj.GrahaDristi(zh) || dj.ZodiacHouse == zodiacHouse)
 		{
 			val++;
 		}
 
-		if (dm.GrahaDristi(zh) || dm.ZodiacHouse.Sign == rasi)
+		if (dm.GrahaDristi(zh) || dm.ZodiacHouse == zodiacHouse)
 		{
 			val++;
 		}
@@ -87,8 +89,8 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		return val;
 	}
 
-	protected int Value(Body.BodyType bm)
+	protected int Value(Body bm)
 	{
-		return Value(H.GetPosition(bm).ToDivisionPosition(Dtype).ZodiacHouse.Sign);
+		return Value(H.GetPosition(bm).ToDivisionPosition(Dtype).ZodiacHouse);
 	}
 }

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using mhora.Util;
+﻿using Mhora.Definitions;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -15,99 +14,6 @@ public static class Tithis
 		Purna
 	}
 
-	[TypeConverter(typeof(EnumDescConverter))]
-	public enum Tithi
-	{
-		[Description("Shukla Pratipada")]
-		ShuklaPratipada = 1,
-
-		[Description("Shukla Dvitiya")]
-		ShuklaDvitiya,
-
-		[Description("Shukla Tritiya")]
-		ShuklaTritiya,
-
-		[Description("Shukla Chaturti")]
-		ShuklaChaturti,
-
-		[Description("Shukla Panchami")]
-		ShuklaPanchami,
-
-		[Description("Shukla Shashti")]
-		ShuklaShashti,
-
-		[Description("Shukla Saptami")]
-		ShuklaSaptami,
-
-		[Description("Shukla Ashtami")]
-		ShuklaAshtami,
-
-		[Description("Shukla Navami")]
-		ShuklaNavami,
-
-		[Description("Shukla Dashami")]
-		ShuklaDasami,
-
-		[Description("Shukla Ekadasi")]
-		ShuklaEkadasi,
-
-		[Description("Shukla Dwadasi")]
-		ShuklaDvadasi,
-
-		[Description("Shukla Trayodasi")]
-		ShuklaTrayodasi,
-
-		[Description("Shukla Chaturdasi")]
-		ShuklaChaturdasi,
-
-		[Description("Paurnami")]
-		Paurnami,
-
-		[Description("Krishna Pratipada")]
-		KrishnaPratipada,
-
-		[Description("Krishna Dvitiya")]
-		KrishnaDvitiya,
-
-		[Description("Krishna Tritiya")]
-		KrishnaTritiya,
-
-		[Description("Krishna Chaturti")]
-		KrishnaChaturti,
-
-		[Description("Krishna Panchami")]
-		KrishnaPanchami,
-
-		[Description("Krishna Shashti")]
-		KrishnaShashti,
-
-		[Description("Krishna Saptami")]
-		KrishnaSaptami,
-
-		[Description("Krishna Ashtami")]
-		KrishnaAshtami,
-
-		[Description("Krishna Navami")]
-		KrishnaNavami,
-
-		[Description("Krishna Dashami")]
-		KrishnaDasami,
-
-		[Description("Krishna Ekadasi")]
-		KrishnaEkadasi,
-
-		[Description("Krishna Dwadasi")]
-		KrishnaDvadasi,
-
-		[Description("Krishna Trayodasi")]
-		KrishnaTrayodasi,
-
-		[Description("Krishna Chaturdasi")]
-		KrishnaChaturdasi,
-
-		[Description("Amavasya")]
-		Amavasya
-	}
 
 	public static Tithi ToTithi(this int index)
 	{
@@ -153,21 +59,21 @@ public static class Tithis
 		return NandaType.Nanda;
 	}
 
-	public static Body.BodyType GetLord(this Tithi tithi)
+	public static Body GetLord(this Tithi tithi)
 	{
 		// 1 based index starting with prathama
 		var t = tithi.Index();
 
-		//mhora.Log.Debug ("Looking for lord of tithi {0}", t);
+		//Mhora.Log.Debug ("Looking for lord of tithi {0}", t);
 		// check for new moon and full moon 
 		if (t == 30)
 		{
-			return Body.BodyType.Rahu;
+			return Body.Rahu;
 		}
 
 		if (t == 15)
 		{
-			return Body.BodyType.Saturn;
+			return Body.Saturn;
 		}
 
 		// coalesce pakshas
@@ -179,22 +85,22 @@ public static class Tithis
 		switch (t)
 		{
 			case 1:
-			case 9: return Body.BodyType.Sun;
+			case 9: return Body.Sun;
 			case 2:
-			case 10: return Body.BodyType.Moon;
+			case 10: return Body.Moon;
 			case 3:
-			case 11: return Body.BodyType.Mars;
+			case 11: return Body.Mars;
 			case 4:
-			case 12: return Body.BodyType.Mercury;
+			case 12: return Body.Mercury;
 			case 5:
-			case 13: return Body.BodyType.Jupiter;
+			case 13: return Body.Jupiter;
 			case 6:
-			case 14: return Body.BodyType.Venus;
-			case 7: return Body.BodyType.Saturn;
-			case 8: return Body.BodyType.Rahu;
+			case 14: return Body.Venus;
+			case 7: return Body.Saturn;
+			case 8: return Body.Rahu;
 		}
 
-		return Body.BodyType.Sun;
+		return Body.Sun;
 	}
 
 	public static Tithi Add(this Tithi tithi, int i)

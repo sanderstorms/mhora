@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Diagnostics;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Kuta;
 
@@ -37,7 +38,7 @@ public class KutaVarna
 		return 2;
 	}
 
-	public static int GetScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra f)
+	public static int GetScore(Nakshatra m, Nakshatra f)
 	{
 		var em = GetType(m);
 		var ef = GetType(f);
@@ -74,7 +75,7 @@ public class KutaVarna
 		return 0;
 	}
 
-	public static EType GetType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatra n)
 	{
 		switch ((int) n % 6)
 		{

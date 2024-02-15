@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using Mhora.Components.Converter;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Calculation;
 
@@ -35,15 +36,17 @@ public class OrderedZodiacHouses : ICloneable
 
 	public object Clone()
 	{
-		var oz = new OrderedZodiacHouses();
-		oz.houses = (ArrayList) houses.Clone();
+		var oz = new OrderedZodiacHouses
+		{
+			houses = (ArrayList) houses.Clone()
+		};
 		return oz;
 	}
 
 	public override string ToString()
 	{
 		var s     = string.Empty;
-		var names = (ZodiacHouse.Rasi[]) houses.ToArray(typeof(ZodiacHouse.Rasi));
+		var names = (ZodiacHouse[]) houses.ToArray(typeof(ZodiacHouse));
 		foreach (var zn in names)
 		{
 			s += zn + " ";

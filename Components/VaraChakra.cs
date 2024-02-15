@@ -22,8 +22,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 
 namespace Mhora.Components;
 
@@ -115,17 +115,17 @@ public class VaraChakra : MhoraControl
 
 	private void DrawChakra(Graphics g)
 	{
-		Body.BodyType[] bodies =
+		Body[] bodies =
 		{
-			Body.BodyType.Sun,
-			Body.BodyType.Moon,
-			Body.BodyType.Mars,
-			Body.BodyType.Mercury,
-			Body.BodyType.Jupiter,
-			Body.BodyType.Venus,
-			Body.BodyType.Saturn,
-			Body.BodyType.Rahu,
-			Body.BodyType.Ketu
+			Body.Sun,
+			Body.Moon,
+			Body.Mars,
+			Body.Mercury,
+			Body.Jupiter,
+			Body.Venus,
+			Body.Saturn,
+			Body.Rahu,
+			Body.Ketu
 		};
 
 		g.Clear(MhoraGlobalOptions.Instance.ChakraBackgroundColor);

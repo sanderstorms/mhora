@@ -168,7 +168,45 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Definitions\Body.cs" />
+    <Compile Include="Definitions\BodyType.cs" />
+    <Compile Include="Definitions\GrahaStrength.cs" />
+    <Compile Include="Definitions\Karaka.cs" />
+    <Compile Include="Definitions\RashiStrength.cs" />
+    <Compile Include="Definitions\Relation.cs" />
+    <Compile Include="Elements\Bhavas.cs" />
     <Compile Include="Elements\Calculations.cs" />
+    <Compile Include="Definitions\Bhava.cs" />
+    <Compile Include="Definitions\DivisionType.cs" />
+    <Compile Include="Definitions\Karana.cs" />
+    <Compile Include="Definitions\Muhurta.cs" />
+    <Compile Include="Definitions\Nakshatra.cs" />
+    <Compile Include="Definitions\Nakshatra28.cs" />
+    <Compile Include="Elements\Sahama.cs" />
+    <Compile Include="Elements\Yoga\Aakriti.cs" />
+    <Compile Include="Elements\Yoga\Buddh.cs" />
+    <Compile Include="Elements\Yoga\Chandra.cs" />
+    <Compile Include="Elements\Yoga\Dhana.cs" />
+    <Compile Include="Elements\Yoga\GajaKesari.cs" />
+    <Compile Include="Elements\Yoga\Guru.cs" />
+    <Compile Include="Elements\Yoga\HariHaraBramha.cs" />
+    <Compile Include="Elements\Yoga\Kalsarpa.cs" />
+    <Compile Include="Elements\Yoga\MahaParivartana.cs" />
+    <Compile Include="Elements\Yoga\Mahapurusha.cs" />
+    <Compile Include="Elements\Yoga\Malika.cs" />
+    <Compile Include="Elements\Yoga\Mangal.cs" />
+    <Compile Include="Elements\Yoga\Raja.cs" />
+    <Compile Include="Elements\Yoga\Ravi.cs" />
+    <Compile Include="Elements\Yoga\Sankhya.cs" />
+    <Compile Include="Elements\Yoga\Shukra.cs" />
+    <Compile Include="Elements\Yoga\Surya.cs" />
+    <Compile Include="Elements\Yoga\Yoga.cs" />
+    <Compile Include="Elements\ZodiacHouses.cs" />
+    <Compile Include="Definitions\Tithi.cs" />
+    <Compile Include="Elements\Yoga\Conditions.cs" />
+    <Compile Include="Elements\Yoga\Graha.cs" />
+    <Compile Include="Elements\Yoga\Rashi.cs" />
+    <Compile Include="Definitions\ZodiacHouse.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,17 +219,19 @@
     <Compile Include="SwissEph\Helpers\BodyPosition.cs" />
     <Compile Include="SwissEph\SwephDll.cs" />
     <Compile Include="Util\Angle.cs" />
+    <Compile Include="Util\Calc.cs" />
     <Compile Include="Util\CompilerService.cs" />
     <Compile Include="SwissEph\Helpers\GeoPosition.cs" />
     <Compile Include="SwissEph\Helpers\HorizontalCoordinates.cs" />
     <Compile Include="Util\DmsLocation.cs" />
     <Compile Include="Util\DmsPoint.cs" />
+    <Compile Include="Util\JulianDate.cs" />
     <Compile Include="Util\Range.cs" />
     <Compile Include="SwissEph\Helpers\SunriseSunsetTimeCalcResult.cs" />
     <Compile Include="SwissEph\Helpers\SweApi.cs" />
     <Compile Include="SwissEph\Helpers\SwedllException.cs" />
     <Compile Include="SwissEph\Sweodef.cs" />
-    <Compile Include="Tables\Muhurtas.cs" />
+    <Compile Include="Elements\Muhurtas.cs" />
     <Compile Include="Util\Base64Decoder.cs" />
     <Compile Include="Elements\Calculation\CuspTransitSearch.cs" />
     <Compile Include="Elements\Calculation\FindStronger.cs" />
@@ -260,11 +300,9 @@
     <Compile Include="Tables\Taras.cs" />
     <Compile Include="Elements\Tithis.cs" />
     <Compile Include="Tables\Vargas.cs" />
-    <Compile Include="Elements\CuspTransitSearch.cs" />
     <Compile Include="Util\Dll.cs" />
     <Compile Include="Util\EnumHelper.cs" />
     <Compile Include="Elements\NonLinearTransit.cs" />
-    <Compile Include="Elements\Retrogression.cs" />
     <Compile Include="Util\SevenZip.cs" />
     <Compile Include="Util\StringExtension.cs" />
     <Compile Include="Elements\Ashtakavarga.cs">
@@ -273,7 +311,7 @@
     <Compile Include="Components\Varga\AshtakavargaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Elements\Dasas\Nakshatra\AshtottariDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\AshtottariDasa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -289,11 +327,11 @@
     <Compile Include="Elements\Basics.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Elements\Body.cs" />
+    <Compile Include="Elements\Bodies.cs" />
     <Compile Include="Elements\KarakaComparer.cs" />
     <Compile Include="Elements\Position.cs" />
-    <Compile Include="Elements\Dasas\Rasi\CharaDasa.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\ChaturashitiSamaDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\CharaDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\ChaturashitiSamaDasa.cs" />
     <Compile Include="Components\ChooseHoroscopeControl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -306,9 +344,9 @@
     <Compile Include="Elements\Division.cs" />
     <Compile Include="Components\Converter\DivisionConverter.cs" />
     <Compile Include="Elements\DivisionPosition.cs" />
-    <Compile Include="Elements\Dasas\Rasi\DrigDasa.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\DwadashottariDasa.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\DwisaptatiSamaDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\DrigDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\DwadashottariDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\DwisaptatiSamaDasa.cs" />
     <Compile Include="Chart\EastIndianChart.cs" />
     <Compile Include="Components\Delegates\EvtChanged.cs" />
     <Compile Include="Elements\Ghataka\GhatakaDay.cs" />
@@ -321,22 +359,22 @@
     <Compile Include="Components\Property\GlobalizedPropertyDescriptor.cs" />
     <Compile Include="Components\Converter\HMSInfoConverter.cs" />
     <Compile Include="Database\Settings\HoraInfo.cs" />
-    <Compile Include="Elements\Calculation\Horoscope.cs" />
+    <Compile Include="Elements\Horoscope.cs" />
     <Compile Include="Database\Settings\HoroscopeOptions.cs" />
     <Compile Include="Elements\Dasas\IDasa.cs" />
     <Compile Include="Chart\IDrawChart.cs" />
     <Compile Include="Elements\Hora\IFileToHoraInfo.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\INakshatraDasa.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\INakshatraKaranaDasa.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\INakshatraTithiDasa.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\INakshatraYogaDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\INakshatraDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\INakshatraKaranaDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\INakshatraTithiDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\INakshatraYogaDasa.cs" />
     <Compile Include="Components\Dasa\IUpdateable.cs" />
     <Compile Include="Components\Jhora\Jhd.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\KalachakraDasa.cs" />
-    <Compile Include="Elements\Dasas\Graha\KarakaKendradiGrahaDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\KalachakraDasa.cs" />
+    <Compile Include="Elements\Dasas\GrahaDasa\KarakaKendradiGrahaDasa.cs" />
     <Compile Include="Elements\Karanas.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\KaranaChaturashitiSamaDasa.cs" />
-    <Compile Include="Elements\Dasas\Yearly\KaranaPraveshDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\KaranaChaturashitiSamaDasa.cs" />
+    <Compile Include="Elements\Dasas\YearlyDasa\KaranaPraveshDasa.cs" />
     <Compile Include="Elements\Kuta\KutaBhutaNakshatra.cs" />
     <Compile Include="Elements\Kuta\KutaGana.cs" />
     <Compile Include="Elements\Kuta\KutaGotra.cs" />
@@ -347,10 +385,10 @@
     <Compile Include="Elements\Kuta\KutaVarna.cs" />
     <Compile Include="Elements\Kuta\KutaVedha.cs" />
     <Compile Include="Elements\Kuta\KutaVihanga.cs" />
-    <Compile Include="Elements\Dasas\Rasi\LagnaKendradiRasiDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\LagnaKendradiRasiDasa.cs" />
     <Compile Include="Elements\Longitude.cs" />
     <Compile Include="Components\Converter\LongitudeConverter.cs" />
-    <Compile Include="Elements\Dasas\Rasi\MandookaDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\MandookaDasa.cs" />
     <Compile Include="Elements\Hora\Mhd.cs" />
     <Compile Include="Elements\Hora\MhoraArrayConverter.cs" />
     <Compile Include="Elements\Hora\MhoraVerifier.cs">
@@ -411,20 +449,20 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Components\Converter\MomentConverter.cs" />
-    <Compile Include="Elements\Dasas\Graha\MoolaDasa.cs" />
-    <Compile Include="Elements\Dasas\Graha\NaisargikaGrahaDasa.cs" />
-    <Compile Include="Elements\Dasas\Graha\NaisargikaGrahaDasaSP.cs" />
-    <Compile Include="Elements\Dasas\Rasi\NaisargikaRasiDasa.cs" />
+    <Compile Include="Elements\Dasas\GrahaDasa\MoolaDasa.cs" />
+    <Compile Include="Elements\Dasas\GrahaDasa\NaisargikaGrahaDasa.cs" />
+    <Compile Include="Elements\Dasas\GrahaDasa\NaisargikaGrahaDasaSP.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\NaisargikaRasiDasa.cs" />
     <Compile Include="Elements\Nakshatras.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\NakshatraDasa.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\NakshatraPraveshDasa.cs" />
-    <Compile Include="Elements\Dasas\Rasi\NarayanaDasa.cs" />
-    <Compile Include="Elements\Dasas\Rasi\NarayanaSamaDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\NakshatraDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\NakshatraPraveshDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\NarayanaDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\NarayanaSamaDasa.cs" />
     <Compile Include="Components\NavamsaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Elements\Dasas\Rasi\NavamsaDasa.cs" />
-    <Compile Include="Elements\Dasas\Rasi\NirayaanaShoolaDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\NavamsaDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\NirayaanaShoolaDasa.cs" />
     <Compile Include="Elements\Calculation\OrderedGrahas.cs" />
     <Compile Include="Components\Converter\OrderedGrahasConverter.cs" />
     <Compile Include="Elements\Calculation\OrderedZodiacHouses.cs" />
@@ -438,7 +476,7 @@
     <Compile Include="Components\Panchanga\PanchangaPrintDocument.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Elements\Dasas\Nakshatra\PanchottariDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\PanchottariDasa.cs" />
     <Compile Include="Components\Property\PGDisplayName.cs" />
     <Compile Include="Components\Delegates\PGNotVisible.cs" />
     <Compile Include="Components\Printing.cs">
@@ -455,18 +493,18 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Components\Delegates\SetOptionsDelegate.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\ShatabdikaDasa.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\ShatTrimshaSamaDasa.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\ShodashottariDasa.cs" />
-    <Compile Include="Elements\Dasas\Rasi\ShoolaDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\ShatabdikaDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\ShatTrimshaSamaDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\ShodashottariDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\ShoolaDasa.cs" />
     <Compile Include="Components\Converter\SingleDivisionConverter.cs" />
     <Compile Include="Chart\SouthIndianChart.cs" />
     <Compile Include="Components\SplashScreen\SplashScreen.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Components\SplashScreen\SplashScreenStyles.cs" />
-    <Compile Include="Elements\Dasas\Rasi\SudarshanaChakraDasa.cs" />
-    <Compile Include="Elements\Dasas\Rasi\SuDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\SudarshanaChakraDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\SuDasa.cs" />
     <Compile Include="Elements\Calculation\SunMoonYoga.cs" />
     <Compile Include="SwissEph\sweph.cs">
       <SubType>Code</SubType>
@@ -475,12 +513,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SwissEph\Helpers\SwephException.cs" />
-    <Compile Include="Elements\Dasas\Yearly\TajakaDasa.cs" />
-    <Compile Include="Elements\Dasas\Yearly\TattwaDasa.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\TithiAshtottariDasa.cs" />
-    <Compile Include="Elements\Dasas\Yearly\TithiPraveshDasa.cs" />
+    <Compile Include="Elements\Dasas\YearlyDasa\TajakaDasa.cs" />
+    <Compile Include="Elements\Dasas\YearlyDasa\TattwaDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\TithiAshtottariDasa.cs" />
+    <Compile Include="Elements\Dasas\YearlyDasa\TithiPraveshDasa.cs" />
     <Compile Include="Util\Sunriset.cs" />
     <Compile Include="Util\Time.cs" />
+    <Compile Include="Util\TimeOffset.cs" />
     <Compile Include="Util\TimeUtils.cs" />
     <Compile Include="Util\ToDate.cs" />
     <Compile Include="Components\Transit\TransitItem.cs" />
@@ -488,7 +527,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Components\Transit\TransitSearchOptions.cs" />
-    <Compile Include="Elements\Dasas\Rasi\TrikonaDasa.cs" />
+    <Compile Include="Elements\Dasas\RasiDasa\TrikonaDasa.cs" />
     <Compile Include="Elements\Hora\UIStringTypeEditor.cs" />
     <Compile Include="Database\Settings\UserEvent.cs" />
     <Compile Include="Components\VaraChakra.cs">
@@ -497,17 +536,15 @@
     <Compile Include="Components\Varga\VargaRectificationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Elements\Dasas\Nakshatra\VimsottariDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\VimsottariDasa.cs" />
     <Compile Include="Components\Property\XmlYogaNode.cs" />
     <Compile Include="Components\YogaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Elements\Dasas\Yearly\YogaPraveshDasa.cs" />
+    <Compile Include="Elements\Dasas\YearlyDasa\YogaPraveshDasa.cs" />
     <Compile Include="Elements\Calculation\YogasParseException.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\YogaVimsottariDasa.cs" />
-    <Compile Include="Elements\Dasas\Nakshatra\YoginiDasa.cs" />
-    <Compile Include="Elements\ZodiacHouse.cs" />
-    <Compile Include="Elements\Transit.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\YogaVimsottariDasa.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\YoginiDasa.cs" />
     <Content Include="Resources\COPY.BMP" />
     <Content Include="Resources\DISP.BMP" />
     <Content Include="Resources\DOB.BMP" />

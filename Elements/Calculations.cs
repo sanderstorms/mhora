@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using Mhora.Definitions;
 using Mhora.Elements.Calculation;
-using mhora.Util;
+using Mhora.Util;
 
 namespace Mhora.Elements
 {
@@ -63,7 +64,7 @@ namespace Mhora.Elements
 			return l.Value - l.ToSunMoonYogaBase();
 		}
 
-		public static Tithis.Tithi ToTithi(this Longitude l)
+		public static Tithi ToTithi(this Longitude l)
 		{
 			var tIndex = (int) (Math.Floor(l.Value / (360.0 / 30.0)) + 1);
 			var t      = tIndex.ToTithi();
@@ -83,10 +84,10 @@ namespace Mhora.Elements
 		}
 
 
-		public static Karanas.Karana ToKarana(this Longitude l)
+		public static Karana ToKarana(this Longitude l)
 		{
 			var kIndex = (int) (Math.Floor(l.Value / (360.0 / 60.0)) + 1);
-			var k      = (Karanas.Karana) kIndex;
+			var k      = (Karana) kIndex;
 			return k;
 		}
 
@@ -102,10 +103,10 @@ namespace Mhora.Elements
 			return l.Value - l.ToKaranaBase();
 		}
 
-		public static Nakshatras.Nakshatra ToNakshatra(this Longitude l)
+		public static Nakshatra ToNakshatra(this Longitude l)
 		{
 			var snum = (int) (Math.Floor(l.Value / (360.0 / 27.0)) + 1.0);
-			return (Nakshatras.Nakshatra) snum;
+			return (Nakshatra) snum;
 		}
 
 		public static double ToNakshatraBase(this Longitude l)
@@ -115,19 +116,19 @@ namespace Mhora.Elements
 			return cusp;
 		}
 
-		public static Nakshatras.Nakshatra28 ToNakshatra28(this Longitude l)
+		public static Nakshatra28 ToNakshatra28(this Longitude l)
 		{
 			var snum = (int) (Math.Floor(l.Value / (360.0 / 27.0)) + 1.0);
 
-			var ret = (Nakshatras.Nakshatra28) snum;
-			if (snum >= (int) Nakshatras.Nakshatra28.Abhijit)
+			var ret = (Nakshatra28) snum;
+			if (snum >= (int) Nakshatra28.Abhijit)
 			{
 				ret = ret.Add(2);
 			}
 
 			if (l.Value >= 270 + (6.0 + 40.0 / 60.0) && l.Value <= 270 + (10.0 + 53.0 / 60.0 + 20.0 / 3600.0))
 			{
-				ret = Nakshatras.Nakshatra28.Abhijit;
+				ret = Nakshatra28.Abhijit;
 			}
 
 			return ret;
@@ -185,19 +186,19 @@ namespace Mhora.Elements
 		public static ZodiacHouse ToZodiacHouse(this Longitude l)
 		{
 			var znum = (int) (Math.Floor(l.Value / 30.0) + 1.0);
-			return new ZodiacHouse((ZodiacHouse.Rasi) znum);
+			return (ZodiacHouse) znum;
 		}
 
 		public static double ToZodiacHouseBase(this Longitude l)
 		{
-			var znum = l.ToZodiacHouse().Sign.Index ();
+			var znum = l.ToZodiacHouse().Index ();
 			var cusp = (znum - 1) * 30.0;
 			return cusp;
 		}
 
 		public static double ToZodiacHouseOffset(this Longitude l)
 		{
-			var znum = l.ToZodiacHouse().Sign.Index ();
+			var znum = l.ToZodiacHouse().Index ();
 			var cusp = (znum - 1) * 30.0;
 			var ret  = l.Value - cusp;
 			Trace.Assert(ret >= 0.0 && ret <= 30.0);
@@ -212,5 +213,26 @@ namespace Mhora.Elements
 			return perc;
 		}
 
+		public static bool CircularLonLessThan(this Longitude a, Longitude b)
+		{
+			return a.CircLonLessThan(b);
+		}
+
+		public static bool CircLonLessThan(this Longitude a, Longitude b)
+		{
+			var bounds = 40.0;
+
+			if (a.Value > 360.0 - bounds && b.Value < bounds)
+			{
+				return true;
+			}
+
+			if (a.Value < bounds && b.Value > 360.0 - bounds)
+			{
+				return false;
+			}
+
+			return a.Value < b.Value;
+		}
 	}
 }

@@ -22,11 +22,11 @@ using System.Drawing;
 using System.Drawing.Printing;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
-using mhora.Util;
 using Mhora.Util;
 
 namespace Mhora.Components.Panchanga;
@@ -168,13 +168,8 @@ public class PanchangaPrintDocument : PrintDocument
 
 	private DateTime utToMoment(double found_ut)
 	{
-		// turn into horoscope
-		int    year = 0, month = 0, day = 0;
-		double hour = 0;
 		found_ut += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(found_ut, ref year, ref month, ref day, ref hour);
-		var m = new DateTime(year, month, day).AddHours(hour);
-		return m;
+		return found_ut.ToUtc();
 	}
 
 	private string utTimeToString(double ut_event, double ut_sr, double sunrise)
@@ -204,8 +199,8 @@ public class PanchangaPrintDocument : PrintDocument
 
 		for (var j = 1; j <= 12; j++)
 		{
-			var zh = new ZodiacHouse((ZodiacHouse.Rasi) j);
-			g.DrawString(zh.Sign.ToString(), f, b, day_offset + 100 + (int) zh.Sign * time_width, 0);
+			var zh = (ZodiacHouse) j;
+			g.DrawString(zh.ToString(), f, b, day_offset + 100 + zh.Index() * time_width, 0);
 		}
 
 		g.TranslateTransform(0, f.Height);
@@ -221,16 +216,16 @@ public class PanchangaPrintDocument : PrintDocument
 			{
 				var pmi = (PanchangaMomentInfo) local.lagnas_ut[j];
 				//Moment m_lagna = new Moment(pmi.ut, h);
-				var zh = new ZodiacHouse((ZodiacHouse.Rasi) pmi.info);
+				var zh = (ZodiacHouse) pmi.info;
 				zh = zh.Add(12);
 				var _f = f;
 
-				if (local.lagna_zh == zh.Sign)
+				if (local.lagna_zh == zh)
 				{
 					_f = f_u;
 				}
 
-				g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), _f, b, day_offset + 100 + (int) zh.Sign * time_width, 0);
+				g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), _f, b, day_offset + 100 + zh.Index() * time_width, 0);
 			}
 
 			local_index = ++i;
@@ -309,7 +304,7 @@ public class PanchangaPrintDocument : PrintDocument
 				for (var j = 0; j < numKaranas; j++)
 				{
 					var pmi         = (PanchangaMomentInfo) globals.karanas_ut[local.karana_index_start + 1 + j];
-					var k           = (Karanas.Karana) pmi.info;
+					var k           = (Karana) pmi.info;
 					var mKarana     = h.Moment(pmi.ut);
 					var jRow        = (int) Math.Floor((decimal) j / 2);
 					var name_offset = karana_name_1_offset;
@@ -331,7 +326,7 @@ public class PanchangaPrintDocument : PrintDocument
 				for (var j = 0; j < numNaks; j++)
 				{
 					var pmi  = (PanchangaMomentInfo) globals.nakshatras_ut[local.nakshatra_index_start + 1 + j];
-					var n    = (Nakshatras.Nakshatra) pmi.info;
+					var n    = (Nakshatra) pmi.info;
 					var mNak = h.Moment(pmi.ut);
 					g.DrawString(n.Name(), f, b, nak_name_offset, j                                            * f.Height);
 					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, nak_time_offset, j * f.Height);
@@ -377,8 +372,10 @@ public class PanchangaPrintDocument : PrintDocument
 		float offsetX = margin_offset + sm_time_offset + sm_time_width;
 
 		var mCurr  = h.Moment(((PanchangaLocalMoments) locals[iStart]).sunrise_ut);
-		var hiCurr = new HoraInfo(h.Info);
-		hiCurr.DateOfBirth = mCurr;
+		var hiCurr = new HoraInfo(h.Info)
+		{
+			DateOfBirth = mCurr
+		};
 		var hCurr  = new Horoscope(hiCurr, h.Options);
 		var dc     = new DivisionalChart(hCurr);
 		dc.PrintMode         = true;

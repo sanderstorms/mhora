@@ -1,14 +1,12 @@
 ﻿using System;
-using Mhora.Elements.Calculation;
+using Mhora.Elements;
 using Mhora.SwissEph;
 
 namespace Mhora.Util;
 
 public static class TimeUtils
 {
-	public static TimeSpan SiderealYear => new TimeSpan(365, 6, 12, 36, 56);
-
-	public static double SideralMonth => 27.32;
+	public static TimeSpan SiderealYear => TimeSpan.FromDays(365.2425);
 
 	public static TimeSpan Time (this DateTime dateTime)
 	{
@@ -25,58 +23,105 @@ public static class TimeUtils
 		return TimeSpan.FromHours(timeSpan.TotalHours / factor);
 	}
 
-	public static DateTime Moment(this Horoscope h, double tjdUt)
+	public static TimeSpan RemainingDays(double years)
 	{
-		double time  = 0;
-		int    year  = 0;
-		int    month = 0;
-		int    day   = 0;
-
-		tjdUt += h.Info.DstOffset.TotalDays;
-		sweph.RevJul(tjdUt, ref year, ref month, ref day, ref time);
-		return new DateTime(year, month, day).AddHours(time);
+		var remainder = years - Math.Truncate(years);
+		return TimeSpan.FromDays(SiderealYear.TotalDays * remainder);
 	}
 
-	public static double UniversalTime(this DateTime dateTime)
+	public static TimeSpan ToTimeSpan(double years)
+	{
+		return TimeSpan.FromDays(SiderealYear.TotalDays * years);
+	}
+
+	public static DateTime Add(this DateTime startDate, TimeOffset offset)
+	{
+		return (startDate.AddYears(offset.Years).AddDays(offset.Remainder.TotalDays));
+	}
+
+	public static DateTime AddYears(this DateTime startDate, double years)
+	{
+		if (years > double.Epsilon)
+		{
+			var fullYears = (int) Math.Truncate(years);
+			startDate = startDate.AddYears(fullYears);
+			return startDate + RemainingDays(years);
+		}
+		return startDate;
+	}
+
+	public static DateTime CalculateDate(double ut, double offsetInyears)
+	{
+		var dateTime = ut.ToUtc();
+		var offset   = new TimeOffset(offsetInyears);
+		dateTime = dateTime.AddYears(offset.Years);
+
+		return dateTime + offset.Remainder;
+	}
+
+	public static DateTime StartNextYear(this DateTime dateTime) => new DateTime(dateTime.Year + 1, 1, 1, 0, 0, 0);
+	public static DateTime StartYear    (this DateTime dateTime) => new DateTime(dateTime.Year, 1, 1, 0, 0, 0);
+
+	public static DateTime Moment(this Horoscope h, double tjdUt)
+	{
+		tjdUt += h.Info.DstOffset.TotalDays;
+		return tjdUt.ToUtc();
+	}
+
+	public static double ToJulian(this DateTime dateTime)
 	{
 		return sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Time().TotalHours);
 	}
 
-	public static double UtcToJulian(this DateTime dateTime)
+	public static DateTime ToUtc(this double jd)
 	{
-		double u2;
-		double u                  = dateTime.Year;
-		if (dateTime.Month < 3) u -= 1;
-		var u0                    = u              + 4712.0;
-		var u1                    = dateTime.Month + 1.0;
-		if (u1 < 4) u1            += 12.0;
-		var jd = Math.Floor(u0 * SiderealYear.TotalDays)
-			+ Math.Floor(30.6 * u1 + 0.000001)
-			+ dateTime.Day + dateTime.Time().TotalHours / 24.0 - 63.5;
-
-		return (jd);
-	}
-
-	public static DateTime UtcDateTime(this double jd)
-	{
-		double u1;
-		var    u0           = jd + 32082.5;
-		var    u2           = Math.Floor(u0 + 123.0);
-		var    u3           = Math.Floor((u2 - 122.2)                   / 365.25);
-		var    u4           = Math.Floor((u2 - Math.Floor(365.25 * u3)) / 30.6001);
-		var    jmon         = (int)(u4 - 1.0);
-		if (jmon > 12) jmon -= 12;
-		var jday            = (int)(u2                                 - Math.Floor(SiderealYear.TotalHours * u3) - Math.Floor(30.6001 * u4));
-		var jyear           = (int)(u3 + Math.Floor((u4 - 2.0) / 12.0) - 4800);
-		var jut             = (jd      - Math.Floor(jd + 0.5)          + 0.5) * 24.0;
-
-		return new DateTime(jyear, jmon, jday).AddHours(jut);
-
+		sweph.RevJul(jd, out var year, out var month, out var day, out var time);
+		return new DateTime(year, month, day).AddHours(time);
 	}
 
 	public static double UniversalTime(this Horoscope h, DateTime dateTime)
 	{
 		return sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, (dateTime - h.Info.DstOffset).Time().TotalHours);
+	}
+
+	// Return the number of years, months, days, hours,
+	// minutes, seconds, and milliseconds you need to add to
+	// from_date to get to_date.
+	private static TimeOffset GetElapsedTime(this DateTime from_date, DateTime to_date)
+	{
+		// If from_date > to_date, switch them around.
+		if (from_date > to_date)
+		{
+			var elapsed = to_date.GetElapsedTime(from_date);
+			return (1.0 - elapsed);
+		}
+
+		// Handle the years.
+		var years = to_date.Year - from_date.Year;
+
+		// See if we went too far.
+		DateTime test_date = from_date.AddMonths(12 * years);
+		if (test_date > to_date)
+		{
+			years--;
+			test_date = from_date.AddMonths(12 * years);
+		}
+
+		// Add months until we go too far.
+		var months = 0;
+		while (test_date <= to_date)
+		{
+			months++;
+			test_date = from_date.AddMonths(12 * years + months);
+		}
+		months--;
+
+		// Subtract to see how many more days,
+		// hours, minutes, etc. we need.
+		from_date = from_date.AddMonths(12 * years + months);
+		TimeSpan remainder = to_date - from_date;
+
+		return new TimeOffset(years, remainder);
 	}
 
 	public static int FromStringMonth(this string s)
@@ -189,10 +234,10 @@ public static class TimeUtils
 			month += 12;
 		}
 
-		var a = Math.Floor(year / 100.0);
-		var b = 2 - a + Math.Floor(a / 4);
+		var a = Math.Truncate(year / 100.0);
+		var b = 2 - a + Math.Truncate(a / 4);
 
-		var jd = Math.Floor(365.25 * (year + 4716)) + Math.Floor(30.6001 * (month + 1)) + day + b - 1524.5;
+		var jd = Math.Truncate(365.25 * (year + 4716)) + Math.Truncate(30.6001 * (month + 1)) + day + b - 1524.5;
 		return jd;
 	}
 
@@ -720,11 +765,11 @@ public static class TimeUtils
 		if (minutes >= 0 && minutes < 1440)
 		{
 			var floatHour   = minutes / 60.0;
-			var hour        = Math.Floor(floatHour);
-			var floatMinute = 60.0 * (floatHour - Math.Floor(floatHour));
-			var minute      = Math.Floor(floatMinute);
-			var floatSec    = 60.0 * (floatMinute - Math.Floor(floatMinute));
-			var second      = Math.Floor(floatSec + 0.5);
+			var hour        = Math.Truncate(floatHour);
+			var floatMinute = 60.0 * (floatHour - Math.Truncate(floatHour));
+			var minute      = Math.Truncate(floatMinute);
+			var floatSec    = 60.0 * (floatMinute - Math.Truncate(floatMinute));
+			var second      = Math.Truncate(floatSec + 0.5);
 			if (second > 59)
 			{
 				second =  0;
@@ -759,11 +804,11 @@ public static class TimeUtils
 		if (minutes >= 0 && minutes < 1440)
 		{
 			var floatHour   = minutes / 60.0;
-			var hour        = Math.Floor(floatHour);
-			var floatMinute = 60.0 * (floatHour - Math.Floor(floatHour));
-			var minute      = Math.Floor(floatMinute);
-			var floatSec    = 60.0 * (floatMinute - Math.Floor(floatMinute));
-			var second      = Math.Floor(floatSec + 0.5);
+			var hour        = Math.Truncate(floatHour);
+			var floatMinute = 60.0 * (floatHour - Math.Truncate(floatHour));
+			var minute      = Math.Truncate(floatMinute);
+			var floatSec    = 60.0 * (floatMinute - Math.Truncate(floatMinute));
+			var second      = Math.Truncate(floatSec + 0.5);
 			if (second > 59)
 			{
 				second =  0;

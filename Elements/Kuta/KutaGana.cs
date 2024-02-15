@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Kuta;
 
 public class KutaGana
@@ -27,7 +29,7 @@ public class KutaGana
 		Rakshasa
 	}
 
-	public static int GetScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra f)
+	public static int GetScore(Nakshatra m, Nakshatra f)
 	{
 		var em = GetType(m);
 		var ef = GetType(f);
@@ -60,28 +62,28 @@ public class KutaGana
 		return 5;
 	}
 
-	public static EType GetType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatra n)
 	{
 		switch (n)
 		{
-			case Nakshatras.Nakshatra.Aswini:
-			case Nakshatras.Nakshatra.Mrigarirsa:
-			case Nakshatras.Nakshatra.Punarvasu:
-			case Nakshatras.Nakshatra.Pushya:
-			case Nakshatras.Nakshatra.Hasta:
-			case Nakshatras.Nakshatra.Swati:
-			case Nakshatras.Nakshatra.Anuradha:
-			case Nakshatras.Nakshatra.Sravana:
-			case Nakshatras.Nakshatra.Revati: return EType.Deva;
-			case Nakshatras.Nakshatra.Bharani:
-			case Nakshatras.Nakshatra.Rohini:
-			case Nakshatras.Nakshatra.Aridra:
-			case Nakshatras.Nakshatra.PoorvaPhalguni:
-			case Nakshatras.Nakshatra.UttaraPhalguni:
-			case Nakshatras.Nakshatra.PoorvaShada:
-			case Nakshatras.Nakshatra.UttaraShada:
-			case Nakshatras.Nakshatra.PoorvaBhadra:
-			case Nakshatras.Nakshatra.UttaraBhadra: return EType.Nara;
+			case Nakshatra.Aswini:
+			case Nakshatra.Mrigarirsa:
+			case Nakshatra.Punarvasu:
+			case Nakshatra.Pushya:
+			case Nakshatra.Hasta:
+			case Nakshatra.Swati:
+			case Nakshatra.Anuradha:
+			case Nakshatra.Sravana:
+			case Nakshatra.Revati: return EType.Deva;
+			case Nakshatra.Bharani:
+			case Nakshatra.Rohini:
+			case Nakshatra.Aridra:
+			case Nakshatra.PoorvaPhalguni:
+			case Nakshatra.UttaraPhalguni:
+			case Nakshatra.PoorvaShada:
+			case Nakshatra.UttaraShada:
+			case Nakshatra.PoorvaBhadra:
+			case Nakshatra.UttaraBhadra: return EType.Nara;
 		}
 
 		return EType.Rakshasa;

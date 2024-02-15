@@ -22,8 +22,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.Elements.Dasas;
 using Mhora.Util;
 
@@ -492,7 +492,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		// mFixedYears365
 		// 
 		this._mFixedYears365.Index =  3;
-		this._mFixedYears365.Text  =  "~ Solar Year (365.2425 days)";
+		this._mFixedYears365.Text  =  "~ Solar Year (TimeUtils.SiderealYear.TotalDays days)";
 		this._mFixedYears365.Click += new System.EventHandler(this.mFixedYears365_Click);
 		// 
 		// mCustomYears
@@ -708,7 +708,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var h2 = (Horoscope) h.Clone();
 		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		var m = _td.AddYears(di.Entry.StartUt);
+		var m = _td.AddYears(di.Entry.Start);
 		h2.Info.DateOfBirth = m;
 
 		var mchild = (MhoraChild) ParentForm;
@@ -728,8 +728,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var h2 = (Horoscope) h.Clone();
 		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		var m    = _td.AddYears(di.Entry.StartUt);
-		var mEnd = _td.AddYears(di.Entry.StartUt + di.Entry.DasaLength);
+		var m    = _td.AddYears(di.Entry.Start);
+		var mEnd = _td.AddYears(di.Entry.Start + di.Entry.DasaLength);
 
 		var utDiff = mEnd.ToUniversalTime() - m.ToUniversalTime();
 		h2.Info.DateOfBirth = m;
@@ -755,7 +755,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var h2 = (Horoscope) h.Clone();
 		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		var m = _td.AddYears(di.Entry.StartUt);
+		var m = _td.AddYears(di.Entry.Start);
 		h2.Info.DateOfBirth = m;
 
 		h2.OnChanged();
@@ -788,7 +788,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		}
 
 		var di = (DasaItem) _dasaItemList.SelectedItems[0];
-		var m = _td.AddYears(di.Entry.StartUt);
+		var m = _td.AddYears(di.Entry.Start);
 		Clipboard.SetDataObject(m.ToString(), true);
 	}
 
@@ -966,7 +966,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			_td = new ToDate(h.Info.Jd, DasaOptions.YearType, DasaOptions.YearLength, compress, h);
 		}
 
-		_td.SetOffset(DasaOptions.OffsetDays + DasaOptions.OffsetHours / 24.0 + DasaOptions.OffsetMinutes / (24.0 * 60.0));
+		_td.SetOffset(DasaOptions.Offset + TimeSpan.FromDays(DasaOptions.OffsetDays));
 	}
 
 	private object SetDasaOptions(object o)
@@ -1000,7 +1000,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			di.Selected = true;
 		}
 
-		//mhora.Log.Debug ("MouseMove: {0} {1}", e.Y, li != null ? li.Value : -1);
+		//Mhora.Log.Debug ("MouseMove: {0} {1}", e.Y, li != null ? li.Value : -1);
 		//if (li != null)
 		//	li.Selected = true;
 	}
@@ -1012,7 +1012,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void dasaItemList_MouseEnter(object sender, EventArgs e)
 	{
-		//mhora.Log.Debug ("Mouse Enter");
+		//Mhora.Log.Debug ("Mouse Enter");
 		//this.dasaItemList.Focus();
 		//this.dasaItemList.Items[0].Selected = true;
 	}
@@ -1042,7 +1042,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		}
 
 		var li = _dasaItemList.GetItemAt(e.X, e.Y);
-		//mhora.Log.Debug ("MouseMove Click: {0} {1}", e.Y, li != null ? li.Value : -1);
+		//Mhora.Log.Debug ("MouseMove Click: {0} {1}", e.Y, li != null ? li.Value : -1);
 		if (li != null)
 		{
 			li.Selected = true;
@@ -1051,13 +1051,13 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mFixedYears365_Click(object sender, EventArgs e)
 	{
-		if (DasaOptions.YearType == ToDate.DateType.FixedYear && DasaOptions.YearLength == 365.2425)
+		if (DasaOptions.YearType == ToDate.DateType.FixedYear && DasaOptions.YearLength == TimeUtils.SiderealYear.TotalDays)
 		{
 			return;
 		}
 
 		DasaOptions.YearType   = ToDate.DateType.FixedYear;
-		DasaOptions.YearLength = 365.2425;
+		DasaOptions.YearLength = TimeUtils.SiderealYear.TotalDays;
 		SetDasaYearType();
 		Reset();
 	}
@@ -1184,7 +1184,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		DasaOptions.YearType = ToDate.DateType.TithiYear;
 		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 		var tdTithi   = new ToDate(h.Info.Jd, ToDate.DateType.TithiYear, 360.0, 0, h);
-		if (tdTithi.AddYears(1).UniversalTime() + 15.0 < tdPravesh.AddYears(1).UniversalTime())
+		if (tdTithi.AddYears(1).ToJulian() + 15.0 < tdPravesh.AddYears(1).ToJulian())
 		{
 			DasaOptions.YearLength = 390;
 		}
@@ -1202,15 +1202,15 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		DasaOptions.YearType = ToDate.DateType.YogaYear;
 		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.YogaPraveshYear, 360.0, 0, h);
 		var tdYoga    = new ToDate(h.Info.Jd, ToDate.DateType.YogaYear, 324.0, 0, h);
-		var    dateToSurpass = tdPravesh.AddYears(1).UniversalTime() - 5;
-		var    dateCurrent    = tdYoga.AddYears(0).UniversalTime();
+		var    dateToSurpass = tdPravesh.AddYears(1).ToJulian() - 5;
+		var    dateCurrent    = tdYoga.AddYears(0).ToJulian();
 		double months          = 0;
 		while (dateCurrent < dateToSurpass)
 		{
 			Application.Log.Debug("{0} > {1}", h.Moment(dateCurrent), h.Moment(dateToSurpass));
 
 			months++;
-			dateCurrent = tdYoga.AddYears(months / 12.0).UniversalTime();
+			dateCurrent = tdYoga.AddYears(months / 12.0).ToJulian();
 		}
 		DasaOptions.Compression = 1;
 		DasaOptions.YearLength  = (int) months * 27;
@@ -1228,8 +1228,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 		var utStart = tdPravesh.AddYears(0).ToUniversalTime();
 		var utEnd   = tdPravesh.AddYears(1).ToUniversalTime();
-		var spStart = h.CalculateSingleBodyPosition(utStart.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
-		var spEnd   = h.CalculateSingleBodyPosition(utEnd.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
+		var spStart = h.CalculateSingleBodyPosition(utStart.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
+		var spEnd   = h.CalculateSingleBodyPosition(utEnd.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
 		var lDiff    = spEnd.Longitude.Sub(spStart.Longitude);
 		var diff     = lDiff.Value;
 		if (diff < 120.0)
@@ -1247,7 +1247,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	{
 		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 		DasaOptions.YearType   = ToDate.DateType.FixedYear;
-		DasaOptions.YearLength = tdPravesh.AddYears(1).UniversalTime() - tdPravesh.AddYears(0).UniversalTime();
+		DasaOptions.YearLength = tdPravesh.AddYears(1).ToJulian() - tdPravesh.AddYears(0).ToJulian();
 		Reset();
 	}
 
@@ -1309,10 +1309,10 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	{
 		var al    = new DasaEntry[_dasaItemList.Items.Count];
 		var am    = new DasaItem[_dasaItemList.Items.Count];
-		var start = 0.0;
+		var start = new TimeOffset();
 		if (_dasaItemList.Items.Count >= 1)
 		{
-			start = ((DasaItem) _dasaItemList.Items[0]).Entry.StartUt;
+			start = ((DasaItem) _dasaItemList.Items[0]).Entry.Start;
 		}
 
 		for (var i = 0; i < _dasaItemList.Items.Count; i++)
@@ -1321,8 +1321,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			al[i] = di.Entry;
 			if (al[i].Level == 1)
 			{
-				al[i].StartUt =  start;
-				start         += al[i].DasaLength;
+				al[i].Start =  start;
+				start      += al[i].DasaLength;
 			}
 
 			am[i] = new DasaItem(al[i]);
@@ -1346,7 +1346,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var h2 = (Horoscope) h.Clone();
 		var di = (DasaItem) _dasaItemList.SelectedItems[0];
 
-		var m = _td.AddYears(di.Entry.StartUt);
+		var m = _td.AddYears(di.Entry.Start);
 		h2.Info.DateOfBirth = m;
 
 		var mchild = (MhoraChild) ParentForm;
@@ -1383,8 +1383,8 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		{
 			var di = (DasaItem) _dasaItemList.Items[i];
 
-			var mStart = _td.AddYears(di.Entry.StartUt);
-			var mEnd   = _td.AddYears(di.Entry.StartUt + di.Entry.DasaLength);
+			var mStart = _td.AddYears(di.Entry.Start);
+			var mEnd   = _td.AddYears(di.Entry.Start + di.Entry.DasaLength);
 
 			var utStart = h.UniversalTime(mStart);
 			var utEnd   = h.UniversalTime(mEnd);
@@ -1547,8 +1547,10 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 		public object Clone()
 		{
-			var euo = new EventUserOptions(EventDate);
-			euo.Depth = Depth;
+			var euo = new EventUserOptions(EventDate)
+			{
+				Depth = Depth
+			};
 			return euo;
 		}
 	}

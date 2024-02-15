@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Kuta;
 
 public class KutaRajju
@@ -29,7 +31,7 @@ public class KutaRajju
 		Kukshi
 	}
 
-	public static int GetScore(Nakshatras.Nakshatra m, Nakshatras.Nakshatra n)
+	public static int GetScore(Nakshatra m, Nakshatra n)
 	{
 		if (GetType(m) != GetType(n))
 		{
@@ -44,31 +46,31 @@ public class KutaRajju
 		return 1;
 	}
 
-	public static EType GetType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatra n)
 	{
 		switch (n)
 		{
-			case Nakshatras.Nakshatra.Rohini:
-			case Nakshatras.Nakshatra.Aridra:
-			case Nakshatras.Nakshatra.Hasta:
-			case Nakshatras.Nakshatra.Swati:
-			case Nakshatras.Nakshatra.Sravana:
-			case Nakshatras.Nakshatra.Satabisha: return EType.Kantha;
-			case Nakshatras.Nakshatra.Bharani:
-			case Nakshatras.Nakshatra.Pushya:
-			case Nakshatras.Nakshatra.PoorvaPhalguni:
-			case Nakshatras.Nakshatra.Anuradha:
-			case Nakshatras.Nakshatra.PoorvaShada:
-			case Nakshatras.Nakshatra.UttaraBhadra: return EType.Kati;
-			case Nakshatras.Nakshatra.Aswini:
-			case Nakshatras.Nakshatra.Aslesha:
-			case Nakshatras.Nakshatra.Makha:
-			case Nakshatras.Nakshatra.Jyestha:
-			case Nakshatras.Nakshatra.Moola:
-			case Nakshatras.Nakshatra.Revati: return EType.Pada;
-			case Nakshatras.Nakshatra.Mrigarirsa:
-			case Nakshatras.Nakshatra.Dhanishta:
-			case Nakshatras.Nakshatra.Chittra: return EType.Siro;
+			case Nakshatra.Rohini:
+			case Nakshatra.Aridra:
+			case Nakshatra.Hasta:
+			case Nakshatra.Swati:
+			case Nakshatra.Sravana:
+			case Nakshatra.Satabisha: return EType.Kantha;
+			case Nakshatra.Bharani:
+			case Nakshatra.Pushya:
+			case Nakshatra.PoorvaPhalguni:
+			case Nakshatra.Anuradha:
+			case Nakshatra.PoorvaShada:
+			case Nakshatra.UttaraBhadra: return EType.Kati;
+			case Nakshatra.Aswini:
+			case Nakshatra.Aslesha:
+			case Nakshatra.Makha:
+			case Nakshatra.Jyestha:
+			case Nakshatra.Moola:
+			case Nakshatra.Revati: return EType.Pada;
+			case Nakshatra.Mrigarirsa:
+			case Nakshatra.Dhanishta:
+			case Nakshatra.Chittra: return EType.Siro;
 		}
 
 		return EType.Kukshi;

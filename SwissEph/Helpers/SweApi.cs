@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
-using Mhora.Elements.Calculation;
+using Mhora.Definitions;
+using Mhora.Elements;
 using Mhora.Util;
 
 namespace Mhora.SwissEph.Helpers;
@@ -44,9 +45,9 @@ internal class SweApi : IDisposable
 	/// </param>
 	/// <param name="date">Дата. UTC.</param>
 	/// <returns>Время восхода/заката в формате Юлианского дня.</returns>
-	public double SunriseSunsetJulDay(GeoPosition position, double pressure, double temperature, DateTime date)
+	public static double SunriseSunsetJulDay(GeoPosition position, double pressure, double temperature, DateTime date)
 	{
-		var tjd = date.UniversalTime();
+		var tjd = date.ToJulian();
 
 		var geopos = new[]
 		{
@@ -82,33 +83,19 @@ internal class SweApi : IDisposable
 	}
 
 	/// <summary>
-	///     Конвертирует Юлианский день в UTC дату.
-	/// </summary>
-	/// <param name="jday">Юлианский день. UTC.</param>
-	/// <returns>UTC Дату.</returns>
-	public DateTime JulDayToDateTime(double jday)
-	{
-		int    year = 0, month = 0, day = 0;
-		double hour = 0;
-
-		sweph.RevJul(jday, ref year, ref month, ref day, ref hour);
-		var date = new DateTime(year, month, day, 0, 0, 0, DateTimeKind.Utc);
-
-		return date.AddHours(hour);
-	}
-
-	/// <summary>
 	///     Вычисляет позицию Солнца для указанного юлианского дня.
 	/// </summary>
 	/// <param name="jday">Юлианский день. UTC.</param>
 	/// <param name="calcFlag">Тип вычислений. По умолчанию <see cref="sweph.SEFLG_EQUATORIAL" />.</param>
 	/// <returns><see cref="BodyPosition" />.</returns>
-	public BodyPosition GetSunPosition(Horoscope h, double jday)
+	public static BodyPosition GetBodyPosition(Horoscope h, double jday, int body)
 	{
 		var sterr    = new StringBuilder();
 		var position = new double[6];
 
-		var result = h.CalcUT(jday, sweph.SE_SUN, 0, position, sterr);
+		var result = h.CalcUT(jday, body, 0, position);
+
+		//var result = h.CalcUT(jday, body, 0, position, sterr);
 		if (result == sweph.ERR)
 		{
 			throw new SwedllException(sterr.ToString());
@@ -137,7 +124,7 @@ internal class SweApi : IDisposable
 	///     <see cref="BodyPosition.Latitude" />.
 	/// </param>
 	/// <returns>Горизонтальные координаты тела.</returns>
-	public HorizontalCoordinates GetHorizontalCoordinates(double jday, GeoPosition position, double pressure, double temperature, BodyPosition bodyPosition)
+	public static HorizontalCoordinates GetHorizontalCoordinates(double jday, GeoPosition position, double pressure, double temperature, BodyPosition bodyPosition)
 	{
 		var geopos = new[]
 		{
@@ -147,7 +134,7 @@ internal class SweApi : IDisposable
 		};
 		var xin = new[]
 		{
-			bodyPosition.Longitude,
+			(double) bodyPosition.Longitude,
 			bodyPosition.Latitude,
 			bodyPosition.Distance
 		};

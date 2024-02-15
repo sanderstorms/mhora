@@ -25,11 +25,10 @@ using Mhora.Components.Dasa;
 using Mhora.Components.Jhora;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
-using Mhora.Elements.Dasas.Nakshatra;
+using Mhora.Elements.Dasas.NakshatraDasa;
 using Mhora.Elements.Hora;
-using Mhora.Tables;
 
 namespace Mhora.Components;
 
@@ -334,7 +333,7 @@ public class MhoraChild : Form
 		MhoraControlContainer c_div_rasi = new MhoraControlContainer(div_rasi);
 
 		DivisionalChart div_nav = new DivisionalChart(h);
-		div_nav.options.Division = Vargas.DivisionType.Navamsa;
+		div_nav.options.Division = DivisionType.Navamsa;
 		MhoraControlContainer c_div_nav = new MhoraControlContainer(div_nav);
 
 
@@ -507,7 +506,7 @@ public class MhoraChild : Form
 		var c_div_rasi = new MhoraControlContainer(div_rasi);
 
 		var div_nav = new DivisionalChart(h);
-		div_nav.options.Varga = new Division(Vargas.DivisionType.Navamsa);
+		div_nav.options.Varga = new Division(DivisionType.Navamsa);
 		div_nav.SetOptions(div_nav.options);
 		var c_div_nav = new MhoraControlContainer(div_nav);
 
@@ -546,7 +545,7 @@ public class MhoraChild : Form
 		var c_div_rasi = new MhoraControlContainer(div_rasi);
 
 		var div_nav = new DivisionalChart(h);
-		div_nav.options.Varga = new Division(Vargas.DivisionType.Navamsa);
+		div_nav.options.Varga = new Division(DivisionType.Navamsa);
 		div_nav.SetOptions(div_nav.options);
 		var c_div_nav = new MhoraControlContainer(div_nav);
 
@@ -587,7 +586,7 @@ public class MhoraChild : Form
 		var c_div_rasi = new MhoraControlContainer(div_rasi);
 
 		var div_nav = new DivisionalChart(h);
-		div_nav.options.Varga = new Division(Vargas.DivisionType.Navamsa);
+		div_nav.options.Varga = new Division(DivisionType.Navamsa);
 		div_nav.SetOptions(div_nav.options);
 		var c_div_nav = new MhoraControlContainer(div_nav);
 
@@ -667,27 +666,27 @@ public class MhoraChild : Form
 		var c_d1 = new MhoraControlContainer(d1);
 
 		var d2 = new DivisionalChart(h);
-		d2.options.Varga = new Division(Vargas.DivisionType.DrekkanaParasara);
+		d2.options.Varga = new Division(DivisionType.DrekkanaParasara);
 		d2.SetOptions(d2.options);
 		var c_d2 = new MhoraControlContainer(d2);
 
 		var d3 = new DivisionalChart(h);
-		d3.options.Varga = new Division(Vargas.DivisionType.Navamsa);
+		d3.options.Varga = new Division(DivisionType.Navamsa);
 		d3.SetOptions(d3.options);
 		var c_d3 = new MhoraControlContainer(d3);
 
 		var d4 = new DivisionalChart(h);
-		d4.options.Varga = new Division(Vargas.DivisionType.Saptamsa);
+		d4.options.Varga = new Division(DivisionType.Saptamsa);
 		d4.SetOptions(d4.options);
 		var c_d4 = new MhoraControlContainer(d4);
 
 		var d5 = new DivisionalChart(h);
-		d5.options.Varga = new Division(Vargas.DivisionType.Dasamsa);
+		d5.options.Varga = new Division(DivisionType.Dasamsa);
 		d5.SetOptions(d5.options);
 		var c_d5 = new MhoraControlContainer(d5);
 
 		var d6 = new DivisionalChart(h);
-		d6.options.Varga = new Division(Vargas.DivisionType.Vimsamsa);
+		d6.options.Varga = new Division(DivisionType.Vimsamsa);
 		d6.SetOptions(d6.options);
 		var c_d6 = new MhoraControlContainer(d6);
 
@@ -813,6 +812,6 @@ public class MhoraChild : Form
 	private void menuItemEvalYogas_Click(object sender, EventArgs e)
 	{
 		//this.evaluateYogas();
-		//FindYogas.Test(h, new Division(Vargas.DivisionType.Rasi));
+		//FindYogas.Test(h, new Division(DivisionType.Rasi));
 	}
 }

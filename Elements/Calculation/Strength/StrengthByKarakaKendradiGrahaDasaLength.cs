@@ -17,7 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
-using Mhora.Elements.Dasas.Graha;
+using Mhora.Definitions;
+using Mhora.Elements.Dasas.GrahaDasa;
 
 namespace Mhora.Elements.Calculation.Strength;
 
@@ -29,7 +30,7 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
 		var a = Value(m);
 		var b = Value(n);
@@ -46,7 +47,7 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 		throw new EqualStrength();
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var a = Value(za);
 		var b = Value(zb);
@@ -63,12 +64,12 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 		throw new EqualStrength();
 	}
 
-	protected double Value(ZodiacHouse.Rasi zh)
+	protected double Value(ZodiacHouse zh)
 	{
 		double length = 0;
 		foreach (Position bp in H.PositionList)
 		{
-			if (bp.Type == Body.Type.Graha)
+			if (bp.BodyType == BodyType.Graha)
 			{
 				var dp = bp.ToDivisionPosition(Dtype);
 				length = Math.Max(length, KarakaKendradiGrahaDasa.LengthOfDasa(H, Dtype, bp.Name, dp));
@@ -78,7 +79,7 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 		return length;
 	}
 
-	protected double Value(Body.BodyType b)
+	protected double Value(Body b)
 	{
 		var dp = H.GetPosition(b).ToDivisionPosition(Dtype);
 		return KarakaKendradiGrahaDasa.LengthOfDasa(H, Dtype, b, dp);

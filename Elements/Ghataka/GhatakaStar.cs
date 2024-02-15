@@ -16,52 +16,54 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Ghataka;
 
 public class GhatakaStar
 {
-	public static bool CheckStar(ZodiacHouse janmaRasi, Nakshatras.Nakshatra nak)
+	public static bool CheckStar(ZodiacHouse janmaZodiacHouse, Nakshatra nak)
 	{
-		var ja = janmaRasi.Sign;
-		var gh = Nakshatras.Nakshatra.Aswini;
+		var ja = janmaZodiacHouse;
+		var gh = Nakshatra.Aswini;
 		switch (ja)
 		{
-			case ZodiacHouse.Rasi.Ari:
-				gh = Nakshatras.Nakshatra.Makha;
+			case ZodiacHouse.Ari:
+				gh = Nakshatra.Makha;
 				break;
-			case ZodiacHouse.Rasi.Tau:
-				gh = Nakshatras.Nakshatra.Hasta;
+			case ZodiacHouse.Tau:
+				gh = Nakshatra.Hasta;
 				break;
-			case ZodiacHouse.Rasi.Gem:
-				gh = Nakshatras.Nakshatra.Swati;
+			case ZodiacHouse.Gem:
+				gh = Nakshatra.Swati;
 				break;
-			case ZodiacHouse.Rasi.Can:
-				gh = Nakshatras.Nakshatra.Anuradha;
+			case ZodiacHouse.Can:
+				gh = Nakshatra.Anuradha;
 				break;
-			case ZodiacHouse.Rasi.Leo:
-				gh = Nakshatras.Nakshatra.Moola;
+			case ZodiacHouse.Leo:
+				gh = Nakshatra.Moola;
 				break;
-			case ZodiacHouse.Rasi.Vir:
-				gh = Nakshatras.Nakshatra.Sravana;
+			case ZodiacHouse.Vir:
+				gh = Nakshatra.Sravana;
 				break;
-			case ZodiacHouse.Rasi.Lib:
-				gh = Nakshatras.Nakshatra.Satabisha;
+			case ZodiacHouse.Lib:
+				gh = Nakshatra.Satabisha;
 				break;
-			case ZodiacHouse.Rasi.Sco:
-				gh = Nakshatras.Nakshatra.Revati;
+			case ZodiacHouse.Sco:
+				gh = Nakshatra.Revati;
 				break;
 			// FIXME dveja nakshatra?????
-			case ZodiacHouse.Rasi.Sag:
-				gh = Nakshatras.Nakshatra.Revati;
+			case ZodiacHouse.Sag:
+				gh = Nakshatra.Revati;
 				break;
-			case ZodiacHouse.Rasi.Cap:
-				gh = Nakshatras.Nakshatra.Rohini;
+			case ZodiacHouse.Cap:
+				gh = Nakshatra.Rohini;
 				break;
-			case ZodiacHouse.Rasi.Aqu:
-				gh = Nakshatras.Nakshatra.Aridra;
+			case ZodiacHouse.Aqu:
+				gh = Nakshatra.Aridra;
 				break;
-			case ZodiacHouse.Rasi.Pis:
-				gh = Nakshatras.Nakshatra.Aslesha;
+			case ZodiacHouse.Pis:
+				gh = Nakshatra.Aslesha;
 				break;
 		}
 

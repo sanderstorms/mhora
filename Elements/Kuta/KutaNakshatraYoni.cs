@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Diagnostics;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Kuta;
 
@@ -46,60 +47,60 @@ public class KutaNakshatraYoni
 		Mongoose
 	}
 
-	public static ESex GetSex(Nakshatras.Nakshatra n)
+	public static ESex GetSex(Nakshatra n)
 	{
 		switch (n)
 		{
-			case Nakshatras.Nakshatra.Aswini:
-			case Nakshatras.Nakshatra.Bharani:
-			case Nakshatras.Nakshatra.Pushya:
-			case Nakshatras.Nakshatra.Rohini:
-			case Nakshatras.Nakshatra.Moola:
-			case Nakshatras.Nakshatra.Aslesha:
-			case Nakshatras.Nakshatra.Makha:
-			case Nakshatras.Nakshatra.UttaraPhalguni:
-			case Nakshatras.Nakshatra.Swati:
-			case Nakshatras.Nakshatra.Vishaka:
-			case Nakshatras.Nakshatra.Jyestha:
-			case Nakshatras.Nakshatra.PoorvaShada:
-			case Nakshatras.Nakshatra.PoorvaBhadra:
-			case Nakshatras.Nakshatra.UttaraShada: return ESex.Male;
+			case Nakshatra.Aswini:
+			case Nakshatra.Bharani:
+			case Nakshatra.Pushya:
+			case Nakshatra.Rohini:
+			case Nakshatra.Moola:
+			case Nakshatra.Aslesha:
+			case Nakshatra.Makha:
+			case Nakshatra.UttaraPhalguni:
+			case Nakshatra.Swati:
+			case Nakshatra.Vishaka:
+			case Nakshatra.Jyestha:
+			case Nakshatra.PoorvaShada:
+			case Nakshatra.PoorvaBhadra:
+			case Nakshatra.UttaraShada: return ESex.Male;
 		}
 
 		return ESex.Female;
 	}
 
-	public static EType GetType(Nakshatras.Nakshatra n)
+	public static EType GetType(Nakshatra n)
 	{
 		switch (n)
 		{
-			case Nakshatras.Nakshatra.Aswini:
-			case Nakshatras.Nakshatra.Satabisha: return EType.Horse;
-			case Nakshatras.Nakshatra.Bharani:
-			case Nakshatras.Nakshatra.Revati: return EType.Elephant;
-			case Nakshatras.Nakshatra.Pushya:
-			case Nakshatras.Nakshatra.Krittika: return EType.Sheep;
-			case Nakshatras.Nakshatra.Rohini:
-			case Nakshatras.Nakshatra.Mrigarirsa: return EType.Serpent;
-			case Nakshatras.Nakshatra.Moola:
-			case Nakshatras.Nakshatra.Aridra: return EType.Dog;
-			case Nakshatras.Nakshatra.Aslesha:
-			case Nakshatras.Nakshatra.Punarvasu: return EType.Cat;
-			case Nakshatras.Nakshatra.Makha:
-			case Nakshatras.Nakshatra.PoorvaPhalguni: return EType.Rat;
-			case Nakshatras.Nakshatra.UttaraPhalguni:
-			case Nakshatras.Nakshatra.UttaraBhadra: return EType.Cow;
-			case Nakshatras.Nakshatra.Swati:
-			case Nakshatras.Nakshatra.Hasta: return EType.Buffalo;
-			case Nakshatras.Nakshatra.Vishaka:
-			case Nakshatras.Nakshatra.Chittra: return EType.Tiger;
-			case Nakshatras.Nakshatra.Jyestha:
-			case Nakshatras.Nakshatra.Anuradha: return EType.Hare;
-			case Nakshatras.Nakshatra.PoorvaShada:
-			case Nakshatras.Nakshatra.Sravana: return EType.Monkey;
-			case Nakshatras.Nakshatra.PoorvaBhadra:
-			case Nakshatras.Nakshatra.Dhanishta: return EType.Lion;
-			case Nakshatras.Nakshatra.UttaraShada: return EType.Mongoose;
+			case Nakshatra.Aswini:
+			case Nakshatra.Satabisha: return EType.Horse;
+			case Nakshatra.Bharani:
+			case Nakshatra.Revati: return EType.Elephant;
+			case Nakshatra.Pushya:
+			case Nakshatra.Krittika: return EType.Sheep;
+			case Nakshatra.Rohini:
+			case Nakshatra.Mrigarirsa: return EType.Serpent;
+			case Nakshatra.Moola:
+			case Nakshatra.Aridra: return EType.Dog;
+			case Nakshatra.Aslesha:
+			case Nakshatra.Punarvasu: return EType.Cat;
+			case Nakshatra.Makha:
+			case Nakshatra.PoorvaPhalguni: return EType.Rat;
+			case Nakshatra.UttaraPhalguni:
+			case Nakshatra.UttaraBhadra: return EType.Cow;
+			case Nakshatra.Swati:
+			case Nakshatra.Hasta: return EType.Buffalo;
+			case Nakshatra.Vishaka:
+			case Nakshatra.Chittra: return EType.Tiger;
+			case Nakshatra.Jyestha:
+			case Nakshatra.Anuradha: return EType.Hare;
+			case Nakshatra.PoorvaShada:
+			case Nakshatra.Sravana: return EType.Monkey;
+			case Nakshatra.PoorvaBhadra:
+			case Nakshatra.Dhanishta: return EType.Lion;
+			case Nakshatra.UttaraShada: return EType.Mongoose;
 		}
 
 

@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Drawing;
+using Mhora.Definitions;
 using Mhora.Elements;
 
 namespace Mhora.Chart;
@@ -24,8 +25,8 @@ namespace Mhora.Chart;
 public interface IDrawChart
 {
 	bool  SeparateGrahaHandling { get; }
-	Point GetBodyPosition(Longitude       l);
-	Point GetBodyTextPosition(Longitude   l,  Size itemSize);
+	Point GetBodyPosition(Longitude      l);
+	Point GetBodyTextPosition(Longitude  l,  Size itemSize);
 	Point GetSingleItemOffset(ZodiacHouse zh, Size itemSize);
 	Point GetItemOffset(ZodiacHouse       zh, Size itemSize, int n);
 	Point GetSmallItemOffset(ZodiacHouse  zh, Size itemSize, int n);

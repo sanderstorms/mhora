@@ -24,10 +24,10 @@ using System.Windows.Forms;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
-using Mhora.Tables;
-using mhora.Util;
+using Mhora.Util;
 
 namespace Mhora.Components;
 
@@ -201,9 +201,9 @@ public class RasiStrengthsControl : Form
 
 	private void InitializeComboBoxes()
 	{
-		for (var i = (int) ZodiacHouse.Rasi.Ari; i <= (int) ZodiacHouse.Rasi.Pis; i++)
+		for (var i = (int) ZodiacHouse.Ari; i <= (int) ZodiacHouse.Pis; i++)
 		{
-			var s = string.Format("{0}", ((ZodiacHouse.Rasi) i).ToString());
+			var s = string.Format("{0}", ((ZodiacHouse) i).ToString());
 			cbRasi1.Items.Add(s);
 			cbRasi2.Items.Add(s);
 		}
@@ -245,14 +245,16 @@ public class RasiStrengthsControl : Form
 			cbRasi2.SelectedIndex = 0;
 		}
 
-		var z1 = (ZodiacHouse.Rasi) cbRasi1.SelectedIndex + 1;
-		var z2 = (ZodiacHouse.Rasi) cbRasi2.SelectedIndex + 1;
+		var z1 = (ZodiacHouse) cbRasi1.SelectedIndex + 1;
+		var z2 = (ZodiacHouse) cbRasi2.SelectedIndex + 1;
 
 		var al = GetRules();
 		for (var i = 0; i < al.Count; i++)
 		{
-			var rule = new ArrayList();
-			rule.Add(al[i]);
+			var rule = new ArrayList
+			{
+				al[i]
+			};
 			var fs        = new FindStronger(h, options.Division, rule);
 			var zw        = fs.StrongerRasi(z1, z2, false, ref winner);
 			var li        = new ListViewItem();
@@ -314,7 +316,7 @@ public class RasiStrengthsControl : Form
 	{
 		public UserOptions()
 		{
-			Division = new Division(Vargas.DivisionType.Rasi);
+			Division = new Division(DivisionType.Rasi);
 		}
 
 		[PGNotVisible]
@@ -325,7 +327,7 @@ public class RasiStrengthsControl : Form
 		}
 
 		[PGDisplayName("Vargas")]
-		public Vargas.DivisionType UIDivision
+		public DivisionType UIDivision
 		{
 			get => Division.MultipleDivisions[0].Varga;
 			set => Division = new Division(value);
@@ -333,8 +335,10 @@ public class RasiStrengthsControl : Form
 
 		public object Clone()
 		{
-			var uo = new UserOptions();
-			uo.Division = Division;
+			var uo = new UserOptions
+			{
+				Division = Division
+			};
 			return uo;
 		}
 

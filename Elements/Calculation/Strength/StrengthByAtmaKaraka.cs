@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi contains AK
@@ -26,7 +28,7 @@ public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
 		var ak = FindAtmaKaraka();
 		if (m == ak)
@@ -42,12 +44,12 @@ public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var ala = FindGrahasInHouse(za);
 		var alb = FindGrahasInHouse(zb);
 		var ak  = FindAtmaKaraka();
-		foreach (Body.BodyType ba in ala)
+		foreach (Body ba in ala)
 		{
 			if (ba == ak)
 			{
@@ -55,7 +57,7 @@ public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 			}
 		}
 
-		foreach (Body.BodyType bb in alb)
+		foreach (Body bb in alb)
 		{
 			if (bb == ak)
 			{

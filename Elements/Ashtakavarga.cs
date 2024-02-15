@@ -18,7 +18,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Collections;
 using System.Diagnostics;
-using Mhora.Elements.Calculation;
+using Mhora.Definitions;
+using Mhora.Util;
 
 namespace Mhora.Elements;
 
@@ -36,7 +37,7 @@ public class Ashtakavarga
 	private readonly Division  _dtype;
 	private readonly Horoscope _h;
 
-	private Body.BodyType[] _avBodies;
+	private Body[] _avBodies;
 
 	public Ashtakavarga(Horoscope h, Division dtype)
 	{
@@ -44,14 +45,14 @@ public class Ashtakavarga
 		_dtype = dtype;
 		_avBodies = new[]
 		{
-			Body.BodyType.Sun,
-			Body.BodyType.Moon,
-			Body.BodyType.Mars,
-			Body.BodyType.Mercury,
-			Body.BodyType.Jupiter,
-			Body.BodyType.Venus,
-			Body.BodyType.Saturn,
-			Body.BodyType.Lagna
+			Body.Sun,
+			Body.Moon,
+			Body.Mars,
+			Body.Mercury,
+			Body.Jupiter,
+			Body.Venus,
+			Body.Saturn,
+			Body.Lagna
 		};
 	}
 
@@ -62,27 +63,27 @@ public class Ashtakavarga
 			case EKakshya.EkStandard:
 				_avBodies = new[]
 				{
-					Body.BodyType.Sun,
-					Body.BodyType.Moon,
-					Body.BodyType.Mars,
-					Body.BodyType.Mercury,
-					Body.BodyType.Jupiter,
-					Body.BodyType.Venus,
-					Body.BodyType.Saturn,
-					Body.BodyType.Lagna
+					Body.Sun,
+					Body.Moon,
+					Body.Mars,
+					Body.Mercury,
+					Body.Jupiter,
+					Body.Venus,
+					Body.Saturn,
+					Body.Lagna
 				};
 				break;
 			case EKakshya.EkRegular:
 				_avBodies = new[]
 				{
-					Body.BodyType.Saturn,
-					Body.BodyType.Jupiter,
-					Body.BodyType.Mars,
-					Body.BodyType.Sun,
-					Body.BodyType.Venus,
-					Body.BodyType.Mercury,
-					Body.BodyType.Moon,
-					Body.BodyType.Lagna
+					Body.Saturn,
+					Body.Jupiter,
+					Body.Mars,
+					Body.Sun,
+					Body.Venus,
+					Body.Mercury,
+					Body.Moon,
+					Body.Lagna
 				};
 				break;
 		}
@@ -730,30 +731,30 @@ public class Ashtakavarga
 		return bindus;
 	}
 
-	public int BodyToInt(Body.BodyType b)
+	public int BodyToInt(Body b)
 	{
 		switch (b)
 		{
-			case Body.BodyType.Sun:     return 0;
-			case Body.BodyType.Moon:    return 1;
-			case Body.BodyType.Mars:    return 2;
-			case Body.BodyType.Mercury: return 3;
-			case Body.BodyType.Jupiter: return 4;
-			case Body.BodyType.Venus:   return 5;
-			case Body.BodyType.Saturn:  return 6;
-			case Body.BodyType.Lagna:   return 7;
+			case Body.Sun:     return 0;
+			case Body.Moon:    return 1;
+			case Body.Mars:    return 2;
+			case Body.Mercury: return 3;
+			case Body.Jupiter: return 4;
+			case Body.Venus:   return 5;
+			case Body.Saturn:  return 6;
+			case Body.Lagna:   return 7;
 			default:
 				Trace.Assert(false, "Ashtakavarga:BodyToInt");
 				return 0;
 		}
 	}
 
-	public Body.BodyType[] GetBodies()
+	public Body[] GetBodies()
 	{
 		return _avBodies;
 	}
 
-	public int[] GetPav(Body.BodyType m)
+	public int[] GetPav(Body m)
 	{
 		var ret = new int[12]
 		{
@@ -799,7 +800,7 @@ public class Ashtakavarga
 			0
 		};
 
-		var zl = _h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
+		var zl = (ZodiacHouse) _h.GetPosition(Body.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
 
 		foreach (var b in GetBodies())
 		{
@@ -810,9 +811,9 @@ public class Ashtakavarga
 
 			for (var i = 0; i < 12; i++)
 			{
-				var zi   = new ZodiacHouse((ZodiacHouse.Rasi) i + 1);
+				var zi   = (ZodiacHouse) i + 1;
 				var rasi = zb.NumHousesBetween(zi);
-				rasi          =  (int) zl.Add(rasi).Sign;
+				rasi          =  zl.Add(rasi).Index();
 				sav[rasi - 1] += pav[i];
 			}
 		}
@@ -840,7 +841,7 @@ public class Ashtakavarga
 		foreach (var b in GetBodies())
 		{
 			// Lagna's bindus are not included in SAV
-			if (b == Body.BodyType.Lagna)
+			if (b == Body.Lagna)
 			{
 				continue;
 			}
@@ -856,7 +857,7 @@ public class Ashtakavarga
 		return sav;
 	}
 
-	public ZodiacHouse.Rasi[] GetBindus(Body.BodyType m, Body.BodyType n)
+	public ZodiacHouse[] GetBindus(Body m, Body n)
 	{
 		var allBindus = new int[8][][];
 		allBindus[0] = BindusSun();
@@ -870,12 +871,12 @@ public class Ashtakavarga
 
 		var al = new ArrayList();
 
-		var zh = _h.GetPosition(n).ToDivisionPosition(_dtype).ZodiacHouse;
+		var zh = (ZodiacHouse) _h.GetPosition(n).ToDivisionPosition(_dtype).ZodiacHouse;
 		foreach (var i in allBindus[BodyToInt(m)][BodyToInt(n)])
 		{
-			al.Add(zh.Add(i).Sign);
+			al.Add(zh.Add(i));
 		}
 
-		return (ZodiacHouse.Rasi[]) al.ToArray(typeof(ZodiacHouse.Rasi));
+		return (ZodiacHouse[]) al.ToArray(typeof(ZodiacHouse));
 	}
 }

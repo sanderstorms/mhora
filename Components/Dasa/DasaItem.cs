@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System.Windows.Forms;
 using Mhora.Database.Settings;
-using Mhora.Elements;
+using Mhora.Definitions;
 using Mhora.Elements.Dasas;
 using Mhora.Util;
 
@@ -40,12 +40,12 @@ public class DasaItem : ListViewItem
 		Entry = entry;
 	}
 
-	public DasaItem(Body.BodyType graha, double startUt, double dasaLength, int level, string shortDesc)
+	public DasaItem(Body graha, TimeOffset startUt, double dasaLength, int level, string shortDesc)
 	{
 		Construct(new DasaEntry(graha, startUt, dasaLength, level, shortDesc));
 	}
 
-	public DasaItem(ZodiacHouse.Rasi zodiacHouse, double startUt, double dasaLength, int level, string shortDesc)
+	public DasaItem(ZodiacHouse zodiacHouse, TimeOffset startUt, double dasaLength, int level, string shortDesc)
 	{
 		Construct(new DasaEntry(zodiacHouse, startUt, dasaLength, level, shortDesc));
 	}
@@ -57,8 +57,8 @@ public class DasaItem : ListViewItem
 		//this.Text = entry.shortDesc;
 		Font      = MhoraGlobalOptions.Instance.GeneralFont;
 		ForeColor = MhoraGlobalOptions.Instance.DasaPeriodColor;
-		var m          = td.AddYears(Entry.StartUt);
-		var m2         = td.AddYears(Entry.StartUt + Entry.DasaLength);
+		var m          = td.AddYears(Entry.Start);
+		var m2         = td.AddYears(Entry.Start + Entry.DasaLength);
 		var sDateRange = m + " - " + m2;
 		for (var i = 1; i < Entry.Level; i++)
 		{

@@ -20,10 +20,8 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using Mhora.Components.Property;
 using Mhora.Database.World;
-using Mhora.Elements;
 using Mhora.Util;
 using Newtonsoft.Json;
 using SqlNado.Query;
@@ -209,10 +207,10 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 		{
 			if (double.IsNaN(_jd))
 			{
-				_jd = UtcTob.UniversalTime();
+				_jd = UtcTob.ToJulian();
 				//_jd += GetLmtOffset(_jd);
 			}
-			return (_jd);
+			return _jd;
 		}
 	}
 	public void Export(string filename)
@@ -247,7 +245,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 			{
 				Console.WriteLine(e);
 			}
-			return (new HoraInfo());
+			return new HoraInfo();
 		}
 	}
 }

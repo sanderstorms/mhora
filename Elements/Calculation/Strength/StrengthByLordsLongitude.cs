@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi's lord has traversed larger longitude
@@ -25,7 +27,7 @@ public class StrengthByLordsLongitude : BaseStrength, IStrengthRasi
 	{
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var lora = GetStrengthLord(za);
 		var lorb = GetStrengthLord(zb);

@@ -19,7 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Runtime.Serialization;
 using Mhora.Elements.Hora;
 using Newtonsoft.Json;
 
@@ -68,11 +67,13 @@ public class UserEvent : MhoraSerializableOptions, ICloneable
 
 	public object Clone()
 	{
-		var ue = new UserEvent();
-		ue.EventName     = EventName;
-		ue.EventTime     = EventTime;
-		ue.WorkWithEvent = WorkWithEvent;
-		ue.EventDesc     = EventDesc;
+		var ue = new UserEvent
+		{
+			EventName = EventName,
+			EventTime = EventTime,
+			WorkWithEvent = WorkWithEvent,
+			EventDesc = EventDesc
+		};
 		return ue;
 	}
 

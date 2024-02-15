@@ -21,13 +21,11 @@ using System.Collections;
 using System.Drawing;
 using System.Drawing.Printing;
 using Mhora.Components.Varga;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.Elements.Dasas;
-using Mhora.Elements.Dasas.Nakshatra;
-using Mhora.Elements.Dasas.Rasi;
-using Mhora.Tables;
-using mhora.Util;
+using Mhora.Elements.Dasas.NakshatraDasa;
+using Mhora.Elements.Dasas.RasiDasa;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -73,9 +71,9 @@ public class MhoraPrintDocument : PrintDocument
 	protected override void OnBeginPrint(PrintEventArgs e)
 	{
 		alVargas = new ArrayList();
-		for (var i = (int) Vargas.DivisionType.HoraParasara; i <= (int) Vargas.DivisionType.DwadasamsaDwadasamsa; i++)
+		for (var i = (int) DivisionType.HoraParasara; i <= (int) DivisionType.DwadasamsaDwadasamsa; i++)
 		{
-			alVargas.Add(new Division((Vargas.DivisionType) i));
+			alVargas.Add(new Division((DivisionType) i));
 		}
 
 		numVargaPages = (int) Math.Ceiling(alVargas.Count / 6.0);
@@ -200,11 +198,11 @@ public class MhoraPrintDocument : PrintDocument
 		string s;
 		if (bGraha)
 		{
-			s = string.Format("{0} {1}", deAntar.Graha.ToShortString(), td.AddYears(deAntar.StartUt).ToDateString());
+			s = string.Format("{0} {1}", deAntar.Graha.ToShortString(), td.AddYears(deAntar.Start).ToDateString());
 		}
 		else
 		{
-			s = string.Format("{0} {1}", ZodiacHouse.ToShortString(deAntar.ZHouse), td.AddYears(deAntar.StartUt).ToDateString());
+			s = string.Format("{0} {1}", deAntar.ZHouse.ToShortString(), td.AddYears(deAntar.Start).ToDateString());
 		}
 
 		return s;
@@ -288,8 +286,13 @@ public class MhoraPrintDocument : PrintDocument
 		g.TranslateTransform(left, top);
 		PrintDasa(id, false);
 
-		var vd = new VimsottariDasa(h);
-		vd.Options.SeedBody = VimsottariDasa.UserOptions.StartBodyType.Lagna;
+		var vd = new VimsottariDasa(h)
+		{
+			Options =
+			{
+				SeedBody = VimsottariDasa.UserOptions.StartBodyType.Lagna
+			}
+		};
 		vd.SetOptions(vd.Options);
 		id = vd;
 		PrintDasa(id, true);
@@ -327,7 +330,7 @@ public class MhoraPrintDocument : PrintDocument
 
 	private string GetVimAntarString(ToDate td, DasaEntry de)
 	{
-		var mStart = td.AddYears(de.StartUt);
+		var mStart = td.AddYears(de.Start);
 		return string.Format("{0} {1}", de.Graha.ToShortString(), mStart.ToDateString());
 	}
 
@@ -348,7 +351,7 @@ public class MhoraPrintDocument : PrintDocument
 		{
 			g.ResetTransform();
 			g.TranslateTransform(left, top);
-			var mStart = td.AddYears(de.StartUt);
+			var mStart = td.AddYears(de.Start);
 			g.DrawString(de.Graha.Name(), f, b, 0, 0);
 			//s = string.Format("{0} ", mStart.ToDateString());
 			//g.DrawString(s, f_fix, b, width / 6, 0);
@@ -393,7 +396,7 @@ public class MhoraPrintDocument : PrintDocument
 		top   = e.MarginBounds.Top;
 		width = e.MarginBounds.Width;
 
-		var dtype = new Division(Vargas.DivisionType.Rasi);
+		var dtype = new Division(DivisionType.Rasi);
 		var dc    = new DivisionalChart(h);
 		dc.PrintMode = true;
 
@@ -514,7 +517,7 @@ public class MhoraPrintDocument : PrintDocument
 		dc_rasi.PrintMode = true;
 
 		var dc_nav = new DivisionalChart(h);
-		dc_nav.options.Varga = new Division(Vargas.DivisionType.Navamsa);
+		dc_nav.options.Varga = new Division(DivisionType.Navamsa);
 		dc_nav.PrintMode     = true;
 		dc_nav.SetOptions(dc_nav.options);
 
@@ -530,20 +533,20 @@ public class MhoraPrintDocument : PrintDocument
 		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.Wday, h.Info.DateOfBirth, h.Info.DstOffset, h.Info.Latitude, h.Info.Longitude));
 
 		// Tithis
-		var ltithi = h.GetPosition(Body.BodyType.Moon).Longitude.Sub(h.GetPosition(Body.BodyType.Sun).Longitude);
+		var ltithi = h.GetPosition(Body.Moon).Longitude.Sub(h.GetPosition(Body.Sun).Longitude);
 		var offset = 360.0 / 30.0 - ltithi.ToTithiOffset();
 		var ti     = ltithi.ToTithi();
 		PrintString(string.Format("Tithis: {0} {1:N}% left", ti.GetEnumDescription(), offset / 12.0 * 100));
 
 		// Nakshatra
-		var lmoon = h.GetPosition(Body.BodyType.Moon).Longitude;
+		var lmoon = h.GetPosition(Body.Moon).Longitude;
 		var nmoon = lmoon.ToNakshatra();
 		offset = 360.0 / 27.0 - lmoon.ToNakshatraOffset();
 		var pada = lmoon.ToNakshatraPada();
 		PrintString(string.Format("Nakshatra: {0} {1}  {2:N}% left", nmoon.Name(), pada, offset / (360.0 / 27.0) * 100));
 
 		// Yoga, Hora
-		var smLon  = h.GetPosition(Body.BodyType.Sun).Longitude.Add(h.GetPosition(Body.BodyType.Moon).Longitude);
+		var smLon  = h.GetPosition(Body.Sun).Longitude.Add(h.GetPosition(Body.Moon).Longitude);
 		var smYoga = smLon.ToSunMoonYoga();
 		var bHora  = h.CalculateHora();
 		PrintString(string.Format("{0} Yoga, {1} Hora", smYoga.value, bHora));
@@ -554,12 +557,12 @@ public class MhoraPrintDocument : PrintDocument
 		// Calculation Details
 		foreach (Position bp in h.PositionList)
 		{
-			switch (bp.Type)
+			switch (bp.BodyType)
 			{
-				case Body.Type.Graha:
-				case Body.Type.Lagna:
-				case Body.Type.SpecialLagna:
-				case Body.Type.Upagraha:
+				case BodyType.Graha:
+				case BodyType.Lagna:
+				case BodyType.SpecialLagna:
+				case BodyType.Upagraha:
 					PrintBody(bp);
 					break;
 			}
@@ -568,8 +571,13 @@ public class MhoraPrintDocument : PrintDocument
 		top  = e.MarginBounds.Top  + width / 2 + pad_height + f.Height;
 		left = e.MarginBounds.Left + width / 2;
 		// Vimsottari Dasa
-		var vd = new VimsottariDasa(h);
-		vd.Options.SeedBody = VimsottariDasa.UserOptions.StartBodyType.Moon;
+		var vd = new VimsottariDasa(h)
+		{
+			Options =
+			{
+				SeedBody = VimsottariDasa.UserOptions.StartBodyType.Moon
+			}
+		};
 		PrintVimDasa(vd);
 	}
 }

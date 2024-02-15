@@ -16,74 +16,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+using Mhora.Elements.Yoga;
+using Mhora.Util;
+
 namespace Mhora.Elements;
 
 public static class Nakshatras
 {
-	// int values should not be changed. 
-	// used in kalachakra dasa, and various other places.
-	public enum Nakshatra
-	{
-		Aswini         = 1,
-		Bharani        = 2,
-		Krittika       = 3,
-		Rohini         = 4,
-		Mrigarirsa     = 5,
-		Aridra         = 6,
-		Punarvasu      = 7,
-		Pushya         = 8,
-		Aslesha        = 9,
-		Makha          = 10,
-		PoorvaPhalguni = 11,
-		UttaraPhalguni = 12,
-		Hasta          = 13,
-		Chittra        = 14,
-		Swati          = 15,
-		Vishaka        = 16,
-		Anuradha       = 17,
-		Jyestha        = 18,
-		Moola          = 19,
-		PoorvaShada    = 20,
-		UttaraShada    = 21,
-		Sravana        = 22,
-		Dhanishta      = 23,
-		Satabisha      = 24,
-		PoorvaBhadra   = 25,
-		UttaraBhadra   = 26,
-		Revati         = 27
-	}
-
-	public enum Nakshatra28
-	{
-		Aswini         = 1,
-		Bharani        = 2,
-		Krittika       = 3,
-		Rohini         = 4,
-		Mrigarirsa     = 5,
-		Aridra         = 6,
-		Punarvasu      = 7,
-		Pushya         = 8,
-		Aslesha        = 9,
-		Makha          = 10,
-		PoorvaPhalguni = 11,
-		UttaraPhalguni = 12,
-		Hasta          = 13,
-		Chittra        = 14,
-		Swati          = 15,
-		Vishaka        = 16,
-		Anuradha       = 17,
-		Jyestha        = 18,
-		Moola          = 19,
-		PoorvaShada    = 20,
-		UttaraShada    = 21,
-		Abhijit        = 22,
-		Sravana        = 23,
-		Dhanishta      = 24,
-		Satabisha      = 25,
-		PoorvaBhadra   = 26,
-		UttaraBhadra   = 27,
-		Revati         = 28
-	}
 
 	public static readonly int[][] TaraAspects =
 	{
@@ -202,6 +142,31 @@ public static class Nakshatras
 			default:                  return "---";
 		}
 	}
+
+	public static Body Lord(this Nakshatra nakshatra)
+	{
+		switch ((nakshatra.Index() - 1) % 9)
+		{
+			case 0: return Body.Ketu;
+			case 1: return Body.Venus;
+			case 2: return Body.Sun;
+			case 4: return Body.Moon;
+			case 5: return Body.Mars;
+			case 6: return Body.Rahu;
+			case 7: return Body.Jupiter;
+			case 8: return Body.Saturn;
+			case 9: return Body.Mercury;
+		}
+
+		return (Body.Lagna); //not possible
+	}
+
+	public static ZodiacHouse Pada(this Nakshatra nakshatra, int pada)
+	{
+		var index = ((nakshatra.Index() -1) * 4) + (pada - 1);
+		return ((ZodiacHouse) ((index % 12) + 1));
+	}
+
 
 	public static int Normalize(this Nakshatra value)
 	{

@@ -25,12 +25,12 @@ using Mhora.Components.Panchanga;
 using Mhora.Components.Transit;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
-using Mhora.Elements.Dasas.Graha;
-using Mhora.Elements.Dasas.Nakshatra;
-using Mhora.Elements.Dasas.Rasi;
-using Mhora.Elements.Dasas.Yearly;
+using Mhora.Elements.Dasas.GrahaDasa;
+using Mhora.Elements.Dasas.NakshatraDasa;
+using Mhora.Elements.Dasas.RasiDasa;
+using Mhora.Elements.Dasas.YearlyDasa;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -103,7 +103,7 @@ public class MhoraControlContainer : UserControl
 			case BaseUserOptions.ViewType.KutaMatching:
 			{
 				var h2 = h;
-				foreach (var f in (MhoraGlobalOptions.MainControl).MdiChildren)
+				foreach (var f in MhoraGlobalOptions.MainControl.MdiChildren)
 				{
 					if (f is MhoraChild)
 					{
@@ -203,7 +203,7 @@ public class MhoraControlContainer : UserControl
 				dc.DasaOptions.YearType = ToDate.DateType.TithiYear;
 				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 				var td_tithi   = new ToDate(h.Info.Jd, ToDate.DateType.TithiYear, 360.0, 0, h);
-				if (td_tithi.AddYears(1).UniversalTime() + 15.0 < td_pravesh.AddYears(1).UniversalTime())
+				if (td_tithi.AddYears(1).ToJulian() + 15.0 < td_pravesh.AddYears(1).ToJulian())
 				{
 					dc.DasaOptions.YearLength = 390;
 				}
@@ -223,7 +223,7 @@ public class MhoraControlContainer : UserControl
 				var dc         = new DasaControl(h, new TithiAshtottariDasa(h));
 				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 				dc.DasaOptions.YearType   = ToDate.DateType.FixedYear;
-				dc.DasaOptions.YearLength = td_pravesh.AddYears(1).UniversalTime() - td_pravesh.AddYears(0).UniversalTime();
+				dc.DasaOptions.YearLength = td_pravesh.AddYears(1).ToJulian() - td_pravesh.AddYears(0).ToJulian();
 
 				var tuo = (TithiAshtottariDasa.UserOptions) dc.DasaSpecificOptions;
 				tuo.UseTithiRemainder      = true;
@@ -240,8 +240,8 @@ public class MhoraControlContainer : UserControl
 				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 				var ut_start = td_pravesh.AddYears(0).ToUniversalTime();
 				var ut_end   = td_pravesh.AddYears(1).ToUniversalTime();
-				var sp_start = h.CalculateSingleBodyPosition(ut_start.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
-				var sp_end   = h.CalculateSingleBodyPosition(ut_end.Time().TotalHours, Body.BodyType.Sun.SwephBody(), Body.BodyType.Sun, Body.Type.Graha);
+				var sp_start = h.CalculateSingleBodyPosition(ut_start.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
+				var sp_end   = h.CalculateSingleBodyPosition(ut_end.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
 				var lDiff    = sp_end.Longitude.Sub(sp_start.Longitude);
 				var diff     = lDiff.Value;
 				if (diff < 120)
@@ -488,8 +488,10 @@ public class MhoraControlContainer : UserControl
 
 		public object Clone()
 		{
-			var uo = new BaseUserOptions();
-			uo.View = View;
+			var uo = new BaseUserOptions
+			{
+				View = View
+			};
 			return uo;
 		}
 	}

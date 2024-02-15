@@ -24,10 +24,10 @@ using System.Windows.Forms;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
-using Mhora.Tables;
-using mhora.Util;
+using Mhora.Util;
 
 namespace Mhora.Components;
 
@@ -213,15 +213,15 @@ public class GrahaStrengthsControl : Form
 
 	private void InitializeComboBoxes()
 	{
-		for (var i = (int) Body.BodyType.Sun; i <= (int) Body.BodyType.Lagna; i++)
+		for (var i = (int) Body.Sun; i <= (int) Body.Lagna; i++)
 		{
-			var s = ((Body.BodyType) i).Name();
+			var s = ((Body) i).Name();
 			cbGraha1.Items.Add(s);
 			cbGraha2.Items.Add(s);
 		}
 
-		cbGraha1.SelectedIndex = (int) Body.BodyType.Mars;
-		cbGraha2.SelectedIndex = (int) Body.BodyType.Ketu;
+		cbGraha1.SelectedIndex = (int) Body.Mars;
+		cbGraha2.SelectedIndex = (int) Body.Ketu;
 
 		cbStrength.Items.Add("Co-Lord");
 		cbStrength.Items.Add("Naisargika Graha Dasa");
@@ -246,15 +246,17 @@ public class GrahaStrengthsControl : Form
 		mList.Columns.Add("Winner", -1, HorizontalAlignment.Left);
 
 		var winner = 0;
-		var b1     = (Body.BodyType) cbGraha1.SelectedIndex;
-		var b2     = (Body.BodyType) cbGraha2.SelectedIndex;
+		var b1     = (Body) cbGraha1.SelectedIndex;
+		var b2     = (Body) cbGraha2.SelectedIndex;
 
 		var bSimpleLord = false;
 		var al          = GetRules(ref bSimpleLord);
 		for (var i = 0; i < al.Count; i++)
 		{
-			var rule = new ArrayList();
-			rule.Add(al[i]);
+			var rule = new ArrayList
+			{
+				al[i]
+			};
 			var fs = new FindStronger(h, options.Division, rule);
 			var bw = fs.StrongerGraha(b1, b2, bSimpleLord, ref winner);
 
@@ -289,9 +291,9 @@ public class GrahaStrengthsControl : Form
 	{
 		if (cbStrength.SelectedIndex == RVimsottariDasa)
 		{
-			options.Division       = new Division(Vargas.DivisionType.BhavaPada);
-			cbGraha1.SelectedIndex = (int) Body.BodyType.Lagna;
-			cbGraha1.SelectedIndex = (int) Body.BodyType.Moon;
+			options.Division       = new Division(DivisionType.BhavaPada);
+			cbGraha1.SelectedIndex = (int) Body.Lagna;
+			cbGraha1.SelectedIndex = (int) Body.Moon;
 		}
 
 		lVarga.Text = options.Division.ToString();
@@ -304,17 +306,17 @@ public class GrahaStrengthsControl : Form
 		{
 			switch (cbGraha1.SelectedIndex)
 			{
-				case (int) Body.BodyType.Mars:
-					cbGraha2.SelectedIndex = (int) Body.BodyType.Ketu;
+				case (int) Body.Mars:
+					cbGraha2.SelectedIndex = (int) Body.Ketu;
 					break;
-				case (int) Body.BodyType.Ketu:
-					cbGraha2.SelectedIndex = (int) Body.BodyType.Mars;
+				case (int) Body.Ketu:
+					cbGraha2.SelectedIndex = (int) Body.Mars;
 					break;
-				case (int) Body.BodyType.Saturn:
-					cbGraha2.SelectedIndex = (int) Body.BodyType.Rahu;
+				case (int) Body.Saturn:
+					cbGraha2.SelectedIndex = (int) Body.Rahu;
 					break;
-				case (int) Body.BodyType.Rahu:
-					cbGraha2.SelectedIndex = (int) Body.BodyType.Saturn;
+				case (int) Body.Rahu:
+					cbGraha2.SelectedIndex = (int) Body.Saturn;
 					break;
 			}
 		}
@@ -342,8 +344,8 @@ public class GrahaStrengthsControl : Form
 
 	private void populateColordLabel()
 	{
-		var lAqu = h.LordOfZodiacHouse(new ZodiacHouse(ZodiacHouse.Rasi.Aqu), options.Division);
-		var lSco = h.LordOfZodiacHouse(new ZodiacHouse(ZodiacHouse.Rasi.Sco), options.Division);
+		var lAqu = h.LordOfZodiacHouse((ZodiacHouse.Aqu), options.Division);
+		var lSco = h.LordOfZodiacHouse((ZodiacHouse.Sco), options.Division);
 		lColords.Text = string.Format("{0} and {1} are the stronger co-lords", lSco, lAqu);
 	}
 
@@ -360,7 +362,7 @@ public class GrahaStrengthsControl : Form
 	{
 		public UserOptions()
 		{
-			Division = new Division(Vargas.DivisionType.Rasi);
+			Division = new Division(DivisionType.Rasi);
 		}
 
 		[PGNotVisible]
@@ -371,7 +373,7 @@ public class GrahaStrengthsControl : Form
 		}
 
 		[PGDisplayName("Vargas")]
-		public Vargas.DivisionType UIDivision
+		public DivisionType UIDivision
 		{
 			get => Division.MultipleDivisions[0].Varga;
 			set => Division = new Division(value);
@@ -379,8 +381,10 @@ public class GrahaStrengthsControl : Form
 
 		public object Clone()
 		{
-			var uo = new UserOptions();
-			uo.Division = Division;
+			var uo = new UserOptions
+			{
+				Division = Division
+			};
 			return uo;
 		}
 

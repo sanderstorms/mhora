@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi's lord by nature (moveable, fixed, dual)
@@ -26,14 +28,14 @@ public class StrengthByLordsNature : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
-		var za = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
-		var zb = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		var za = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse;
+		var zb = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse;
 		return Stronger(za, zb);
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		int[] vals =
 		{
@@ -56,10 +58,10 @@ public class StrengthByLordsNature : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	public int NaturalValueForRasi(ZodiacHouse.Rasi zha)
+	public int NaturalValueForRasi(ZodiacHouse zha)
 	{
 		var bl  = H.LordOfZodiacHouse(zha, Dtype);
-		var zhl = H.GetPosition(bl).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		var zhl = H.GetPosition(bl).ToDivisionPosition(Dtype).ZodiacHouse;
 
 		int[] vals =
 		{

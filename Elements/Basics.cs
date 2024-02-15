@@ -21,7 +21,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Text;
 using Mhora.Database.Settings;
-using Mhora.Elements.Calculation;
+using Mhora.Definitions;
 using Mhora.SwissEph;
 using Mhora.SwissEph.Helpers;
 using Mhora.Util;
@@ -100,41 +100,41 @@ public static class Basics
 		return x;
 	}
 
-	public static ZodiacHouse GetMoolaTrikonaRasi(this Body.BodyType b)
+	public static ZodiacHouse GetMoolaTrikonaRasi(this Body b)
 	{
-		var z = ZodiacHouse.Rasi.Ari;
+		var z = ZodiacHouse.Ari;
 		switch (b)
 		{
-			case Body.BodyType.Sun:
-				z = ZodiacHouse.Rasi.Leo;
+			case Body.Sun:
+				z = ZodiacHouse.Leo;
 				break;
-			case Body.BodyType.Moon:
-				z = ZodiacHouse.Rasi.Tau;
+			case Body.Moon:
+				z = ZodiacHouse.Tau;
 				break;
-			case Body.BodyType.Mars:
-				z = ZodiacHouse.Rasi.Ari;
+			case Body.Mars:
+				z = ZodiacHouse.Ari;
 				break;
-			case Body.BodyType.Mercury:
-				z = ZodiacHouse.Rasi.Vir;
+			case Body.Mercury:
+				z = ZodiacHouse.Vir;
 				break;
-			case Body.BodyType.Jupiter:
-				z = ZodiacHouse.Rasi.Sag;
+			case Body.Jupiter:
+				z = ZodiacHouse.Sag;
 				break;
-			case Body.BodyType.Venus:
-				z = ZodiacHouse.Rasi.Lib;
+			case Body.Venus:
+				z = ZodiacHouse.Lib;
 				break;
-			case Body.BodyType.Saturn:
-				z = ZodiacHouse.Rasi.Aqu;
+			case Body.Saturn:
+				z = ZodiacHouse.Aqu;
 				break;
-			case Body.BodyType.Rahu:
-				z = ZodiacHouse.Rasi.Vir;
+			case Body.Rahu:
+				z = ZodiacHouse.Vir;
 				break;
-			case Body.BodyType.Ketu:
-				z = ZodiacHouse.Rasi.Pis;
+			case Body.Ketu:
+				z = ZodiacHouse.Pis;
 				break;
 		}
 
-		return new ZodiacHouse(z);
+		return (z);
 	}
 
 
@@ -145,50 +145,52 @@ public static class Basics
 	/// </summary>
 	/// <param name="zh">The House whose lord should be returned</param>
 	/// <returns>The lord of zh</returns>
-	public static Body.BodyType SimpleLordOfZodiacHouse(this ZodiacHouse.Rasi zh)
+	public static Body SimpleLordOfZodiacHouse(this ZodiacHouse zh)
 	{
 		switch (zh)
 		{
-			case ZodiacHouse.Rasi.Ari: return Body.BodyType.Mars;
-			case ZodiacHouse.Rasi.Tau: return Body.BodyType.Venus;
-			case ZodiacHouse.Rasi.Gem: return Body.BodyType.Mercury;
-			case ZodiacHouse.Rasi.Can: return Body.BodyType.Moon;
-			case ZodiacHouse.Rasi.Leo: return Body.BodyType.Sun;
-			case ZodiacHouse.Rasi.Vir: return Body.BodyType.Mercury;
-			case ZodiacHouse.Rasi.Lib: return Body.BodyType.Venus;
-			case ZodiacHouse.Rasi.Sco: return Body.BodyType.Mars;
-			case ZodiacHouse.Rasi.Sag: return Body.BodyType.Jupiter;
-			case ZodiacHouse.Rasi.Cap: return Body.BodyType.Saturn;
-			case ZodiacHouse.Rasi.Aqu: return Body.BodyType.Saturn;
-			case ZodiacHouse.Rasi.Pis: return Body.BodyType.Jupiter;
+			case ZodiacHouse.Ari: return Body.Mars;
+			case ZodiacHouse.Tau: return Body.Venus;
+			case ZodiacHouse.Gem: return Body.Mercury;
+			case ZodiacHouse.Can: return Body.Moon;
+			case ZodiacHouse.Leo: return Body.Sun;
+			case ZodiacHouse.Vir: return Body.Mercury;
+			case ZodiacHouse.Lib: return Body.Venus;
+			case ZodiacHouse.Sco: return Body.Mars;
+			case ZodiacHouse.Sag: return Body.Jupiter;
+			case ZodiacHouse.Cap: return Body.Saturn;
+			case ZodiacHouse.Aqu: return Body.Saturn;
+			case ZodiacHouse.Pis: return Body.Jupiter;
 		}
 
 		Trace.Assert(false, string.Format("Basics.SimpleLordOfZodiacHouse for {0} failed", (int) zh));
-		return Body.BodyType.Other;
+		return Body.Other;
 	}
 
 
 	public static Longitude CalculateBodyLongitude(this Horoscope h, double ut, int ipl)
 	{
-		var xx = new double[6]
+		var sterr    = new StringBuilder();
+		var position = new double[6];
+
+		var result = h.CalcUT(ut, ipl, 0, position);
+
+		if (result == sweph.ERR)
 		{
-			0,
-			0,
-			0,
-			0,
-			0,
-			0
+			throw new SwedllException(sterr.ToString());
+		}
+		/*
+		var bodyPosition = new BodyPosition
+		{
+			Longitude      = position[0],
+			Latitude       = position[1],
+			Distance       = position[2],
+			LongitudeSpeed = position[3],
+			LatitudeSpeed  = position[4],
+			DistanceSpeed  = position[5]
 		};
-		try
-		{
-			h.CalcUT(ut, ipl, 0, xx);
-			return new Longitude(xx[0]);
-		}
-		catch (SwephException exc)
-		{
-			Application.Log.Debug("Sweph: {0}\n", exc.status);
-			throw new Exception(string.Empty);
-		}
+		*/
+		return new Longitude (position[0]);
 	}
 
 	/// <summary>
@@ -197,13 +199,13 @@ public static class Basics
 	/// <param name="ut">The time for which the calculations should be performed</param>
 	/// <param name="ipl">The Swiss Ephemeris body Type</param>
 	/// <param name="body">The local application body name</param>
-	/// <param name="type">The local application body type</param>
+	/// <param name="bodyType">The local application body type</param>
 	/// <returns>A BodyPosition class</returns>
-	public static Position CalculateSingleBodyPosition(this Horoscope h, double ut, int ipl, Body.BodyType body, Body.Type type)
+	public static Position CalculateSingleBodyPosition(this Horoscope h, double ut, int ipl, Body body, BodyType bodyType)
 	{
-		if (body == Body.BodyType.Lagna)
+		if (body == Body.Lagna)
 		{
-			var b = new Position(h, body, type, new Longitude(h.Lagna(ut)), 0, 0, 0, 0, 0);
+			var b = new Position(h, body, bodyType, new Longitude(h.Lagna(ut)), 0, 0, 0, 0, 0);
 			return b;
 		}
 
@@ -220,7 +222,7 @@ public static class Basics
 		{
 			h.CalcUT(ut, ipl, 0, xx);
 
-			var b = new Position(h, body, type, new Longitude(xx[0]), xx[1], xx[2], xx[3], xx[4], xx[5]);
+			var b = new Position(h, body, bodyType, new Longitude(xx[0]), xx[1], xx[2], xx[3], xx[4], xx[5]);
 			return b;
 		}
 		catch (SwephException exc)
@@ -249,7 +251,7 @@ public static class Basics
 		var stdGrahas = new ArrayList(20);
 
 		sweph.SetEphePath(ephePath);
-		var juldayUt = h.UniversalTime(hi.DateOfBirth); // (hi.tob - hi.DstOffset).UniversalTime();
+		var juldayUt = h.UniversalTime(hi.DateOfBirth); // (hi.tob - hi.DstOffset).ToJulian();
 
 		var swephRahuBody = sweph.SE_MEAN_NODE;
 		if (o.NodeType == HoroscopeOptions.ENodeType.True)
@@ -263,22 +265,22 @@ public static class Basics
 			addFlags = sweph.SEFLG_TRUEPOS;
 		}
 
-		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_SUN, Body.BodyType.Sun, Body.Type.Graha));
-		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_MOON, Body.BodyType.Moon, Body.Type.Graha));
-		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_MARS, Body.BodyType.Mars, Body.Type.Graha));
-		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_MERCURY, Body.BodyType.Mercury, Body.Type.Graha));
-		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_JUPITER, Body.BodyType.Jupiter, Body.Type.Graha));
-		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_VENUS, Body.BodyType.Venus, Body.Type.Graha));
-		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_SATURN, Body.BodyType.Saturn, Body.Type.Graha));
-		var rahu = h.CalculateSingleBodyPosition(juldayUt, swephRahuBody, Body.BodyType.Rahu, Body.Type.Graha);
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_SUN, Body.Sun, BodyType.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_MOON, Body.Moon, BodyType.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_MARS, Body.Mars, BodyType.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_MERCURY, Body.Mercury, BodyType.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_JUPITER, Body.Jupiter, BodyType.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_VENUS, Body.Venus, BodyType.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_SATURN, Body.Saturn, BodyType.Graha));
+		var rahu = h.CalculateSingleBodyPosition(juldayUt, swephRahuBody, Body.Rahu, BodyType.Graha);
 
-		var ketu = h.CalculateSingleBodyPosition(juldayUt, swephRahuBody, Body.BodyType.Ketu, Body.Type.Graha);
+		var ketu = h.CalculateSingleBodyPosition(juldayUt, swephRahuBody, Body.Ketu, BodyType.Graha);
 		ketu.Longitude = rahu.Longitude.Add(new Longitude(180.0));
 		stdGrahas.Add(rahu);
 		stdGrahas.Add(ketu);
 
 		var asc = h.Lagna(juldayUt);
-		stdGrahas.Add(new Position(h, Body.BodyType.Lagna, Body.Type.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
+		stdGrahas.Add(new Position(h, Body.Lagna, BodyType.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
 
 		var istaGhati = NormalizeExc(hi.DateOfBirth.Time ().TotalHours - sunrise, 0.0, 24.0) * 2.5;
 		var glLon     = ((Position) stdGrahas[0]).Longitude.Add(new Longitude(istaGhati        * 30.0));
@@ -293,10 +295,10 @@ public static class Basics
 
 		var vlLon = ((Position) stdGrahas[0]).Longitude.Add(new Longitude(vl * 30.0));
 
-		stdGrahas.Add(new Position(h, Body.BodyType.BhavaLagna, Body.Type.SpecialLagna, blLon, 0, 0, 0, 0, 0));
-		stdGrahas.Add(new Position(h, Body.BodyType.HoraLagna, Body.Type.SpecialLagna, hlLon, 0, 0, 0, 0, 0));
-		stdGrahas.Add(new Position(h, Body.BodyType.GhatiLagna, Body.Type.SpecialLagna, glLon, 0, 0, 0, 0, 0));
-		stdGrahas.Add(new Position(h, Body.BodyType.VighatiLagna, Body.Type.SpecialLagna, vlLon, 0, 0, 0, 0, 0));
+		stdGrahas.Add(new Position(h, Body.BhavaLagna, BodyType.SpecialLagna, blLon, 0, 0, 0, 0, 0));
+		stdGrahas.Add(new Position(h, Body.HoraLagna, BodyType.SpecialLagna, hlLon, 0, 0, 0, 0, 0));
+		stdGrahas.Add(new Position(h, Body.GhatiLagna, BodyType.SpecialLagna, glLon, 0, 0, 0, 0, 0));
+		stdGrahas.Add(new Position(h, Body.VighatiLagna, BodyType.SpecialLagna, vlLon, 0, 0, 0, 0, 0));
 
 
 		return stdGrahas;

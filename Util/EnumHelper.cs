@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace mhora.Util;
+namespace Mhora.Util;
 
 public static class EnumHelper
 {

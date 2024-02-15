@@ -20,8 +20,8 @@ using System;
 using System.ComponentModel;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
+using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Tables;
 
 namespace Mhora.Components.Transit;
 
@@ -36,10 +36,10 @@ public class TransitSearchOptions : ICloneable
 	public TransitSearchOptions()
 	{
 		StartDate    = DateTime.Now;
-		SearchBody   = Body.BodyType.Sun;
+		SearchBody   = Body.Sun;
 		TransitPoint = new Longitude(0.0);
 		Forward      = true;
-		Division     = new Division(Vargas.DivisionType.Rasi);
+		Division     = new Division(DivisionType.Rasi);
 	}
 
 
@@ -53,7 +53,7 @@ public class TransitSearchOptions : ICloneable
 	[Category("Transit Search")]
 	[PropertyOrder(1)]
 	[PGDisplayName("In Vargas")]
-	public Vargas.DivisionType UIDivision
+	public DivisionType UIDivision
 	{
 		get => Division.MultipleDivisions[0].Varga;
 		set => Division = new Division(value);
@@ -105,7 +105,7 @@ public class TransitSearchOptions : ICloneable
 	[Category("Transit Search")]
 	[PropertyOrder(4)]
 	[PGDisplayName("When Body")]
-	public Body.BodyType SearchBody
+	public Body SearchBody
 	{
 		get;
 		set;
@@ -134,11 +134,13 @@ public class TransitSearchOptions : ICloneable
 	public object Clone()
 	{
 		// TODO:  Add TransitSearchOptions.Clone implementation
-		var ret = new TransitSearchOptions();
-		ret.StartDate    = StartDate;
-		ret.Forward      = Forward;
-		ret.SearchBody   = SearchBody;
-		ret.TransitPoint = TransitPoint;
+		var ret = new TransitSearchOptions
+		{
+			StartDate = StartDate,
+			Forward = Forward,
+			SearchBody = SearchBody,
+			TransitPoint = TransitPoint
+		};
 		return ret;
 	}
 

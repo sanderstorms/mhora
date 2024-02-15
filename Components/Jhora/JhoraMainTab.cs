@@ -24,8 +24,8 @@ using Mhora.Components.Panchanga;
 using Mhora.Components.Transit;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
-using Mhora.Elements.Calculation;
-using Mhora.Elements.Dasas.Yearly;
+using Mhora.Elements;
+using Mhora.Elements.Dasas.YearlyDasa;
 using Mhora.Util;
 
 namespace Mhora.Components.Jhora;
@@ -81,11 +81,11 @@ public class JhoraMainTab : MhoraControl
 		//
 		// TODO: Add any constructor code after InitializeComponent call
 		//
-		base.h                                      =  h;
+		this.h                                      =  h;
 		MhoraGlobalOptions.DisplayPrefsChanged += OnRedisplay;
 		OnRedisplay(MhoraGlobalOptions.Instance);
 
-		AddControlToTab(_tabBasics, new JhoraBasicsTab(base.h));
+		AddControlToTab(_tabBasics, new JhoraBasicsTab(this.h));
 		//this.bTabBasicsLoaded = true;
 	}
 

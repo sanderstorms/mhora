@@ -22,7 +22,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Mhora.Components.Property;
-using Mhora.Tables;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Calculation;
 /*
@@ -67,9 +67,9 @@ public class FindYogas
 
 	public FindYogas(Horoscope h, Division dtype)
 	{
-		this._h       = h;
+		_h       = h;
 		_dtype  = dtype;
-		_zhLagna = this._h.GetPosition(Body.BodyType.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
+		_zhLagna = _h.GetPosition(Body.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
 	}
 
 	public static void Test(Horoscope h, Division dtype)
@@ -121,14 +121,14 @@ public class FindYogas
 	{
 		RootNode = new Node(null, rule, _dtype);
 
-		//mhora.Log.Debug ("");
-		//mhora.Log.Debug ("Evaluating yoga .{0}.", rule);
+		//Mhora.Log.Debug ("");
+		//Mhora.Log.Debug ("Evaluating yoga .{0}.", rule);
 		GenerateSimpleParseTree();
 		ExpandSimpleNodes();
 		var bRet = ReduceTree();
 
-		//mhora.Log.Debug ("Final: {0} = {1}", bRet, rule);
-		//mhora.Log.Debug ("");
+		//Mhora.Log.Debug ("Final: {0} = {1}", bRet, rule);
+		//Mhora.Log.Debug ("");
 		return bRet;
 	}
 
@@ -230,8 +230,8 @@ public class FindYogas
 
 		cats = TrimWhitespace(cats);
 
-		Body.BodyType        b1,   b2, b3;
-		ZodiacHouse.Rasi zh1,  zh2;
+		Body        b1,   b2, b3;
+		ZodiacHouse zh1,  zh2, zh;
 		int              hse1, hse2;
 
 		var evalDiv = n.Dtype;
@@ -241,7 +241,7 @@ public class FindYogas
 			case "gr: in house:":
 				b1  = StringToBody(simpleVals[0]);
 				zh1 = StringToRasi(simpleVals[2]);
-				if (_h.GetPosition(b1).ToDivisionPosition(evalDiv).ZodiacHouse.Sign == zh1)
+				if (_h.GetPosition(b1).ToDivisionPosition(evalDiv).ZodiacHouse == zh1)
 				{
 					return true;
 				}
@@ -276,7 +276,7 @@ public class FindYogas
 			case "gr: with gr:":
 				b1 = StringToBody(simpleVals[0]);
 				b2 = StringToBody(simpleVals[2]);
-				if (_h.GetPosition(b1).ToDivisionPosition(evalDiv).ZodiacHouse.Sign == _h.GetPosition(b2).ToDivisionPosition(evalDiv).ZodiacHouse.Sign)
+				if (_h.GetPosition(b1).ToDivisionPosition(evalDiv).ZodiacHouse == _h.GetPosition(b2).ToDivisionPosition(evalDiv).ZodiacHouse)
 				{
 					return true;
 				}
@@ -295,7 +295,7 @@ public class FindYogas
 				b1   = StringToBody(simpleVals[0]);
 				hse1 = StringToHouse(simpleVals[2]);
 				zh1  = StringToRasi(simpleVals[4]);
-				if (_h.GetPosition(b1).ToDivisionPosition(evalDiv).ZodiacHouse.Sign == new ZodiacHouse(zh1).Add(hse1).Sign)
+				if (_h.GetPosition(b1).ToDivisionPosition(evalDiv).ZodiacHouse == zh1.Add(hse1))
 				{
 					return true;
 				}
@@ -305,16 +305,18 @@ public class FindYogas
 				b1   = StringToBody(simpleVals[0]);
 				hse1 = StringToHouse(simpleVals[2]);
 				b2   = StringToBody(simpleVals[4]);
-				return _h.GetPosition(b1).ToDivisionPosition(evalDiv).ZodiacHouse.Sign == _h.GetPosition(b2).ToDivisionPosition(evalDiv).ZodiacHouse.Add(hse1).Sign;
+				zh   = (ZodiacHouse) _h.GetPosition(b2).ToDivisionPosition(evalDiv).ZodiacHouse;
+				return _h.GetPosition(b1).ToDivisionPosition(evalDiv).ZodiacHouse == zh.Add(hse1);
 			case "Graha in house: from gr: except gr:":
 				hse1 = StringToHouse(simpleVals[2]);
 				b1   = StringToBody(simpleVals[4]);
 				b2   = StringToBody(simpleVals[6]);
-				zh1  = _h.GetPosition(b1).ToDivisionPosition(evalDiv).ZodiacHouse.Add(hse1).Sign;
-				for (var i = (int) Body.BodyType.Sun; i <= (int) Body.BodyType.Lagna; i++)
+				zh   = (ZodiacHouse) _h.GetPosition(b1).ToDivisionPosition(evalDiv).ZodiacHouse;
+				zh1  = zh.Add(hse1);
+				for (var i = (int) Body.Sun; i <= (int) Body.Lagna; i++)
 				{
-					var bExc = (Body.BodyType) i;
-					if (bExc != b2 && _h.GetPosition(bExc).ToDivisionPosition(evalDiv).ZodiacHouse.Sign == zh1)
+					var bExc = (Body) i;
+					if (bExc != b2 && _h.GetPosition(bExc).ToDivisionPosition(evalDiv).ZodiacHouse == zh1)
 					{
 						return true;
 					}
@@ -325,7 +327,7 @@ public class FindYogas
 				zh1  = StringToRasi(simpleVals[0]);
 				hse1 = StringToHouse(simpleVals[2]);
 				zh2  = StringToRasi(simpleVals[4]);
-				if (new ZodiacHouse(zh1).Add(hse1).Sign == zh2)
+				if (zh1.Add(hse1) == zh2)
 				{
 					return true;
 				}
@@ -340,7 +342,7 @@ public class FindYogas
 
 	public bool ReduceTree(Node n)
 	{
-		//mhora.Log.Debug ("Enter ReduceTree {0} {1}", n.type, n.term);
+		//Mhora.Log.Debug ("Enter ReduceTree {0} {1}", n.type, n.term);
 		var bRet = false;
 		switch (n.Type)
 		{
@@ -379,7 +381,7 @@ public class FindYogas
 		}
 
 	reduceTreeDone:
-		//mhora.Log.Debug ("Exit ReduceTree {0} {1} {2}", n.type, n.term, bRet);
+		//Mhora.Log.Debug ("Exit ReduceTree {0} {1} {2}", n.type, n.term, bRet);
 		return bRet;
 	}
 
@@ -403,7 +405,7 @@ public class FindYogas
 		{
 			n.Dtype = StringToDivision(mDiv.Groups[1].Value);
 			text    = text.Replace(mDiv.Groups[1].Value, string.Empty);
-			//				mhora.Log.Debug ("Match. Replaced {0}. Text now {1}", 
+			//				Mhora.Log.Debug ("Match. Replaced {0}. Text now {1}", 
 			//					mDiv.Groups[1].Value, text);
 		}
 
@@ -412,7 +414,7 @@ public class FindYogas
 		{
 			n.Type = Node.EType.Single;
 			n.Term = text;
-			//mhora.Log.Debug ("Need to evaluate simple node {0}", text);
+			//Mhora.Log.Debug ("Need to evaluate simple node {0}", text);
 			return;
 		}
 
@@ -457,7 +459,7 @@ public class FindYogas
 			}
 		}
 
-		//mhora.Log.Debug ("Need to evaluate complex node {0}", text);
+		//Mhora.Log.Debug ("Need to evaluate complex node {0}", text);
 	}
 
 	public void GenerateSimpleParseTree()
@@ -478,43 +480,43 @@ public class FindYogas
 	}
 
 
-	public Body.BodyType StringToBody(string s)
+	public Body StringToBody(string s)
 	{
 		switch (s)
 		{
 			case "su":
-			case "sun": return Body.BodyType.Sun;
+			case "sun": return Body.Sun;
 			case "mo":
 			case "moo":
-			case "moon": return Body.BodyType.Moon;
+			case "moon": return Body.Moon;
 			case "ma":
 			case "mar":
-			case "mars": return Body.BodyType.Mars;
+			case "mars": return Body.Mars;
 			case "me":
 			case "mer":
-			case "mercury": return Body.BodyType.Mercury;
+			case "mercury": return Body.Mercury;
 			case "ju":
 			case "jup":
-			case "jupiter": return Body.BodyType.Jupiter;
+			case "jupiter": return Body.Jupiter;
 			case "ve":
 			case "ven":
-			case "venus": return Body.BodyType.Venus;
+			case "venus": return Body.Venus;
 			case "sa":
 			case "sat":
-			case "saturn": return Body.BodyType.Saturn;
+			case "saturn": return Body.Saturn;
 			case "ra":
 			case "rah":
-			case "rahu": return Body.BodyType.Rahu;
+			case "rahu": return Body.Rahu;
 			case "ke":
 			case "ket":
-			case "ketu": return Body.BodyType.Ketu;
+			case "ketu": return Body.Ketu;
 			case "la":
 			case "lag":
 			case "lagna":
-			case "asc": return Body.BodyType.Lagna;
+			case "asc": return Body.Lagna;
 			default:
 				MessageBox.Show("Unknown body: " + s + GetRuleName());
-				return Body.BodyType.Other;
+				return Body.Other;
 		}
 	}
 
@@ -523,47 +525,47 @@ public class FindYogas
 		// trim trailing @
 		s = s.Substring(0, s.Length - 1);
 
-		Vargas.DivisionType dtype;
+		DivisionType dtype;
 		switch (s)
 		{
 			case "rasi":
 			case "d-1":
 			case "d1":
-				dtype = Vargas.DivisionType.Rasi;
+				dtype = DivisionType.Rasi;
 				break;
 			case "navamsa":
 			case "d-9":
 			case "d9":
-				dtype = Vargas.DivisionType.Navamsa;
+				dtype = DivisionType.Navamsa;
 				break;
 			default:
 				MessageBox.Show("Unknown division: " + s + GetRuleName());
-				dtype = Vargas.DivisionType.Rasi;
+				dtype = DivisionType.Rasi;
 				break;
 		}
 
 		return new Division(dtype);
 	}
 
-	public ZodiacHouse.Rasi StringToRasi(string s)
+	public ZodiacHouse StringToRasi(string s)
 	{
 		switch (s)
 		{
-			case "ari": return ZodiacHouse.Rasi.Ari;
-			case "tau": return ZodiacHouse.Rasi.Tau;
-			case "gem": return ZodiacHouse.Rasi.Gem;
-			case "can": return ZodiacHouse.Rasi.Can;
-			case "leo": return ZodiacHouse.Rasi.Leo;
-			case "vir": return ZodiacHouse.Rasi.Vir;
-			case "lib": return ZodiacHouse.Rasi.Lib;
-			case "sco": return ZodiacHouse.Rasi.Sco;
-			case "sag": return ZodiacHouse.Rasi.Sag;
-			case "cap": return ZodiacHouse.Rasi.Cap;
-			case "aqu": return ZodiacHouse.Rasi.Aqu;
-			case "pis": return ZodiacHouse.Rasi.Pis;
+			case "ari": return ZodiacHouse.Ari;
+			case "tau": return ZodiacHouse.Tau;
+			case "gem": return ZodiacHouse.Gem;
+			case "can": return ZodiacHouse.Can;
+			case "leo": return ZodiacHouse.Leo;
+			case "vir": return ZodiacHouse.Vir;
+			case "lib": return ZodiacHouse.Lib;
+			case "sco": return ZodiacHouse.Sco;
+			case "sag": return ZodiacHouse.Sag;
+			case "cap": return ZodiacHouse.Cap;
+			case "aqu": return ZodiacHouse.Aqu;
+			case "pis": return ZodiacHouse.Pis;
 			default:
 				MessageBox.Show("Unknown rasi: " + s + GetRuleName());
-				return ZodiacHouse.Rasi.Ari;
+				return ZodiacHouse.Ari;
 		}
 	}
 
@@ -642,8 +644,8 @@ public class FindYogas
 	public string ReplaceBasicNodeTermHelper(Division d, string cat, string val)
 	{
 		var              tempVal = 0;
-		ZodiacHouse.Rasi zh;
-		Body.BodyType        b;
+		ZodiacHouse zh;
+		Body        b;
 		switch (cat)
 		{
 			case "rasi:":
@@ -671,7 +673,7 @@ public class FindYogas
 				break;
 			case "rasiof:":
 				b = StringToBody(val);
-				return _h.GetPosition(b).ToDivisionPosition(d).ZodiacHouse.Sign.ToString().ToLower();
+				return _h.GetPosition(b).ToDivisionPosition(d).ZodiacHouse.ToString().ToLower();
 			case "lordof:":
 				tempVal = StringToHouse(val);
 				if (tempVal > 0)
@@ -798,7 +800,7 @@ public class FindYogas
 			sNew += ">";
 		}
 
-		//mhora.Log.Debug ("{0} evals to {1}", sTerm, sNew);
+		//Mhora.Log.Debug ("{0} evals to {1}", sTerm, sNew);
 		return sNew;
 	}
 
@@ -806,7 +808,7 @@ public class FindYogas
 	{
 		while (true)
 		{
-			//mhora.Log.Debug ("Simplifying basic term: .{0}.", sTerm);		
+			//Mhora.Log.Debug ("Simplifying basic term: .{0}.", sTerm);		
 			var m = Regex.Match(sTerm, "<[^<>]*>");
 
 			// No terms found. Nothing to do.
@@ -829,7 +831,7 @@ public class FindYogas
 			// Found a term, evaluated it. Nothing happened. Done.
 			var newInner = ReplaceBasicNodeTerm(d, sInner);
 
-			//mhora.Log.Debug ("{0} && {1}", newInner.Length, m.Value.Length);
+			//Mhora.Log.Debug ("{0} && {1}", newInner.Length, m.Value.Length);
 
 			if (newInner == m.Value.ToLower())
 			{
@@ -860,7 +862,7 @@ public class FindYogas
 		n.Term = TrimWhitespace(sNew);
 
 		//cats = this.trimWhitespace(cats);
-		//mhora.Log.Debug ("Cats = {0}", cats);
+		//Mhora.Log.Debug ("Cats = {0}", cats);
 	}
 
 	public void ExpandSimpleNode(Queue q, Node n)
@@ -871,7 +873,7 @@ public class FindYogas
 
 		var eLogic = Node.EType.Or;
 
-		//mhora.Log.Debug ("Inner logic: n.term is {0}", n.term);
+		//Mhora.Log.Debug ("Inner logic: n.term is {0}", n.term);
 		if (n.Term[0] == '&' && n.Term[1] == '&')
 		{
 			eLogic = Node.EType.And;
@@ -881,7 +883,7 @@ public class FindYogas
 		{
 			n.Term = TrimWhitespace(n.Term.Substring(2, n.Term.Length - 2));
 		}
-		//mhora.Log.Debug ("Inner logic: n.term is now {0}", n.term);
+		//Mhora.Log.Debug ("Inner logic: n.term is now {0}", n.term);
 
 		// find num Vals etc
 		var simpleTerms         = n.Term.Split(' ');
@@ -903,7 +905,7 @@ public class FindYogas
 			}
 		}
 
-		//mhora.Log.Debug ("Exp: {0} requires {1} exps", n.term, numExps);
+		//Mhora.Log.Debug ("Exp: {0} requires {1} exps", n.term, numExps);
 
 		// done
 		if (numExps <= 1)
@@ -970,7 +972,7 @@ public class FindYogas
 		{
 			var nChild = new Node(n, TrimWhitespace(sNew[i]), n.Dtype);
 			n.AddChild(nChild);
-			//mhora.Log.Debug ("sNew[{0}]: {1}", i, sNew[i]);
+			//Mhora.Log.Debug ("sNew[{0}]: {1}", i, sNew[i]);
 		}
 	}
 

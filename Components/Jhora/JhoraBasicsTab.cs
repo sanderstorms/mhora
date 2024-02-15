@@ -21,7 +21,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using Mhora.Components.Varga;
 using Mhora.Database.Settings;
-using Mhora.Elements.Calculation;
+using Mhora.Elements;
 
 namespace Mhora.Components.Jhora;
 
@@ -59,10 +59,10 @@ public class JhoraBasicsTab : MhoraControl
 		//
 		// TODO: Add any constructor code after InitializeComponent call
 		//
-		base.h                                      =  h;
+		this.h                                      =  h;
 		MhoraGlobalOptions.DisplayPrefsChanged += OnRedisplay;
 		OnRedisplay(MhoraGlobalOptions.Instance);
-		AddControlToTab(_tabKeyInfo, new KeyInfoControl(base.h));
+		AddControlToTab(_tabKeyInfo, new KeyInfoControl(this.h));
 		//this.AddControlToTab (tabTest, new BalasControl(h));
 		//this.AddControlToTab (tabTest, new Sarvatobhadra81Control(h));
 		//this.AddControlToTab (tabTest, new KutaMatchingControl(h, h));

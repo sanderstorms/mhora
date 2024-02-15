@@ -20,8 +20,9 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-using Mhora.Elements;
+using Mhora.Definitions;
 using Mhora.Elements.Dasas;
+using Mhora.Util;
 
 namespace Mhora.Components.Converter;
 
@@ -42,7 +43,7 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 		Trace.Assert(value is string, "DasaEntryConverter::ConvertFrom 1");
 		var s = (string) value;
 
-		var de  = new DasaEntry(Body.BodyType.Lagna, 0.0, 0.0, 1, "None");
+		var de  = new DasaEntry(Body.Lagna, new TimeOffset(), 0.0, 1, "None");
 		var arr = s.Split(',');
 		if (arr.Length >= 1)
 		{
@@ -56,7 +57,7 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 
 		if (arr.Length >= 3)
 		{
-			de.StartUt = double.Parse(arr[2]);
+			de.Start = new TimeOffset(double.Parse(arr[2]));
 		}
 
 		if (arr.Length >= 4)
@@ -66,12 +67,12 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 
 		if (arr.Length >= 5)
 		{
-			de.Graha = (Body.BodyType) int.Parse(arr[4]);
+			de.Graha = (Body) int.Parse(arr[4]);
 		}
 
 		if (arr.Length >= 6)
 		{
-			de.ZHouse = (ZodiacHouse.Rasi) int.Parse(arr[5]);
+			de.ZHouse = (ZodiacHouse) int.Parse(arr[5]);
 		}
 
 		return de;
@@ -81,6 +82,6 @@ internal class DasaEntryConverter : ExpandableObjectConverter
 	{
 		Trace.Assert(destType == typeof(string) && value is DasaEntry, "DasaItem::ConvertTo 1");
 		var de = (DasaEntry) value;
-		return de.DasaName + "," + de.Level + "," + de.StartUt + "," + de.DasaLength + "," + (int) de.Graha + "," + (int) de.ZHouse;
+		return de.DasaName + "," + de.Level + "," + de.Start + "," + de.DasaLength + "," + (int) de.Graha + "," + (int) de.ZHouse;
 	}
 }

@@ -23,7 +23,7 @@ public static class SwephDll
 		public static extern double swe_julday(int year, int month, int day, double hour, int gregflag);
 
 		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_revjul")]
-		public static extern double swe_revjul(double tjd, int gregflag, ref int year, ref int month, ref int day, ref double hour);
+		public static extern double swe_revjul(double tjd, int gregflag, out int year, out int month, out int day, out double hour);
 
 		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_sol_eclipse_when_glob")]
 		public static extern int swe_sol_eclipse_when_glob(double tjd_ut, int iflag, int ifltype, double[] tret, bool backward, StringBuilder s);
@@ -103,7 +103,7 @@ public static class SwephDll
 		public static extern double swe_julday(int year, int month, int day, double hour, int gregflag);
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_revjul")]
-		public static extern double swe_revjul(double tjd, int gregflag, ref int year, ref int month, ref int day, ref double hour);
+		public static extern double swe_revjul(double tjd, int gregflag, out int year, out int month, out int day, out double hour);
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_sol_eclipse_when_glob")]
 		public static extern int swe_sol_eclipse_when_glob(double tjd_ut, int iflag, int ifltype, double[] tret, bool backward, StringBuilder s);

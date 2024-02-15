@@ -17,8 +17,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
+using System.Security.Cryptography;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
+using Mhora.Definitions;
 using Mhora.Util;
 
 namespace Mhora.Elements.Dasas;
@@ -122,15 +124,9 @@ public abstract class Dasa
 			set;
 		}
 
-		[PGDisplayName("Offset Dates by Hours")]
-		public double OffsetHours
-		{
-			get;
-			set;
-		}
 
-		[PGDisplayName("Offset Dates by Minutes")]
-		public double OffsetMinutes
+		[PGDisplayName("Offset (hh:mm:ss)")]
+		public TimeSpan Offset
 		{
 			get;
 			set;
@@ -138,24 +134,24 @@ public abstract class Dasa
 
 		public object Clone()
 		{
-			var o = new DasaOptions();
-			o.YearLength    = YearLength;
-			o.YearType      = YearType;
-			o.Compression   = Compression;
-			o.OffsetDays    = OffsetDays;
-			o.OffsetHours   = OffsetHours;
-			o.OffsetMinutes = OffsetMinutes;
+			var o = new DasaOptions
+			{
+				YearLength = YearLength,
+				YearType = YearType,
+				Compression = Compression,
+				OffsetDays = OffsetDays,
+				Offset = Offset
+			};
 			return o;
 		}
 
 		public void Copy(DasaOptions o)
 		{
-			YearLength    = o.YearLength;
-			YearType      = o.YearType;
-			Compression   = o.Compression;
-			OffsetDays    = o.OffsetDays;
-			OffsetHours   = o.OffsetHours;
-			OffsetMinutes = o.OffsetMinutes;
+			YearLength   = o.YearLength;
+			YearType     = o.YearType;
+			Compression  = o.Compression;
+			OffsetDays   = o.OffsetDays;
+			Offset       = o.Offset;
 		}
 	}
 }

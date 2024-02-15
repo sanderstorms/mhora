@@ -16,9 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 public interface IStrengthRasi
 {
-	bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb);
+	bool Stronger(ZodiacHouse za, ZodiacHouse zb);
 }

@@ -16,50 +16,52 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Ghataka;
 
 public class GhatakaTithi
 {
-	public static bool CheckTithi(ZodiacHouse janmaRasi, Tithis.Tithi t)
+	public static bool CheckTithi(ZodiacHouse janmaZodiacHouse, Tithi t)
 	{
-		var ja = janmaRasi.Sign;
+		var ja = janmaZodiacHouse;
 		var gh = Tithis.NandaType.Nanda;
 		switch (ja)
 		{
-			case ZodiacHouse.Rasi.Ari:
+			case ZodiacHouse.Ari:
 				gh = Tithis.NandaType.Nanda;
 				break;
-			case ZodiacHouse.Rasi.Tau:
+			case ZodiacHouse.Tau:
 				gh = Tithis.NandaType.Purna;
 				break;
-			case ZodiacHouse.Rasi.Gem:
+			case ZodiacHouse.Gem:
 				gh = Tithis.NandaType.Bhadra;
 				break;
-			case ZodiacHouse.Rasi.Can:
+			case ZodiacHouse.Can:
 				gh = Tithis.NandaType.Bhadra;
 				break;
-			case ZodiacHouse.Rasi.Leo:
+			case ZodiacHouse.Leo:
 				gh = Tithis.NandaType.Jaya;
 				break;
-			case ZodiacHouse.Rasi.Vir:
+			case ZodiacHouse.Vir:
 				gh = Tithis.NandaType.Purna;
 				break;
-			case ZodiacHouse.Rasi.Lib:
+			case ZodiacHouse.Lib:
 				gh = Tithis.NandaType.Rikta;
 				break;
-			case ZodiacHouse.Rasi.Sco:
+			case ZodiacHouse.Sco:
 				gh = Tithis.NandaType.Nanda;
 				break;
-			case ZodiacHouse.Rasi.Sag:
+			case ZodiacHouse.Sag:
 				gh = Tithis.NandaType.Jaya;
 				break;
-			case ZodiacHouse.Rasi.Cap:
+			case ZodiacHouse.Cap:
 				gh = Tithis.NandaType.Rikta;
 				break;
-			case ZodiacHouse.Rasi.Aqu:
+			case ZodiacHouse.Aqu:
 				gh = Tithis.NandaType.Jaya;
 				break;
-			case ZodiacHouse.Rasi.Pis:
+			case ZodiacHouse.Pis:
 				gh = Tithis.NandaType.Purna;
 				break;
 		}

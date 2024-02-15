@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has larger number of grahas in kendras
@@ -26,12 +28,12 @@ public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengt
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
-		return Stronger(H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse.Sign, H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse.Sign);
+		return Stronger(H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse, H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse);
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var numa = Value(za);
 		var numb = Value(zb);
@@ -48,7 +50,7 @@ public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengt
 		throw new EqualStrength();
 	}
 
-	public int Value(ZodiacHouse.Rasi rasi)
+	public int Value(ZodiacHouse zodiacHouse)
 	{
 		var kendras = new int[4]
 		{
@@ -58,10 +60,10 @@ public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengt
 			10
 		};
 		var numGrahas = 0;
-		var zh        = new ZodiacHouse(rasi);
+		var zh        = zodiacHouse;
 		foreach (var i in kendras)
 		{
-			numGrahas += NumGrahasInZodiacHouse(zh.Add(i).Sign);
+			numGrahas += NumGrahasInZodiacHouse(zh.Add(i));
 		}
 
 		return numGrahas;

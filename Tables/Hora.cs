@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Mhora.Elements;
+using Mhora.Definitions;
 
 namespace Mhora.Tables;
 
@@ -30,37 +30,37 @@ public static class Hora
 		"Sunday"
 	};
 
-	public static Weekday BodyToWeekday(this Body.BodyType b)
+	public static Weekday BodyToWeekday(this Body b)
 	{
 		switch (b)
 		{
-			case Body.BodyType.Sun:     return Weekday.Sunday;
-			case Body.BodyType.Moon:    return Weekday.Monday;
-			case Body.BodyType.Mars:    return Weekday.Tuesday;
-			case Body.BodyType.Mercury: return Weekday.Wednesday;
-			case Body.BodyType.Jupiter: return Weekday.Thursday;
-			case Body.BodyType.Venus:   return Weekday.Friday;
-			case Body.BodyType.Saturn:  return Weekday.Saturday;
+			case Body.Sun:     return Weekday.Sunday;
+			case Body.Moon:    return Weekday.Monday;
+			case Body.Mars:    return Weekday.Tuesday;
+			case Body.Mercury: return Weekday.Wednesday;
+			case Body.Jupiter: return Weekday.Thursday;
+			case Body.Venus:   return Weekday.Friday;
+			case Body.Saturn:  return Weekday.Saturday;
 		}
 
 		Debug.Assert(false, string.Format("bodyToWeekday({0})", b));
 		throw new Exception();
 	}
 
-	public static Body.BodyType WeekdayRuler(this Weekday w)
+	public static Body WeekdayRuler(this Weekday w)
 	{
 		switch (w)
 		{
-			case Weekday.Sunday:    return Body.BodyType.Sun;
-			case Weekday.Monday:    return Body.BodyType.Moon;
-			case Weekday.Tuesday:   return Body.BodyType.Mars;
-			case Weekday.Wednesday: return Body.BodyType.Mercury;
-			case Weekday.Thursday:  return Body.BodyType.Jupiter;
-			case Weekday.Friday:    return Body.BodyType.Venus;
-			case Weekday.Saturday:  return Body.BodyType.Saturn;
+			case Weekday.Sunday:    return Body.Sun;
+			case Weekday.Monday:    return Body.Moon;
+			case Weekday.Tuesday:   return Body.Mars;
+			case Weekday.Wednesday: return Body.Mercury;
+			case Weekday.Thursday:  return Body.Jupiter;
+			case Weekday.Friday:    return Body.Venus;
+			case Weekday.Saturday:  return Body.Saturn;
 			default:
 				Debug.Assert(false, "Basics::weekdayRuler");
-				return Body.BodyType.Sun;
+				return Body.Sun;
 		}
 	}
 

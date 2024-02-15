@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has more conjunctions/rasi drishtis of Jupiter, Mercury and Lord
@@ -26,17 +28,17 @@ public class StrengthByAspectsRasi : BaseStrength, IStrengthRasi, IStrengthGraha
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
-		var zm = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
-		var zn = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse.Sign;
+		var zm = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse;
+		var zn = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse;
 		return Stronger(zm, zn);
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
-		var zj = H.GetPosition(Body.BodyType.Jupiter).ToDivisionPosition(Dtype).ZodiacHouse;
-		var zm = H.GetPosition(Body.BodyType.Mercury).ToDivisionPosition(Dtype).ZodiacHouse;
+		var zj = H.GetPosition(Body.Jupiter).ToDivisionPosition(Dtype).ZodiacHouse;
+		var zm = H.GetPosition(Body.Mercury).ToDivisionPosition(Dtype).ZodiacHouse;
 
 		var a = Value(zj, zm, za);
 		var b = Value(zj, zm, zb);
@@ -53,25 +55,24 @@ public class StrengthByAspectsRasi : BaseStrength, IStrengthRasi, IStrengthGraha
 		throw new EqualStrength();
 	}
 
-	protected int Value(ZodiacHouse zj, ZodiacHouse zm, ZodiacHouse.Rasi zx)
+	protected int Value(ZodiacHouse zj, ZodiacHouse zm, ZodiacHouse zx)
 	{
 		var ret = 0;
-		var zh  = new ZodiacHouse(zx);
 
 		var bl = GetStrengthLord(zx);
 		var zl = H.GetPosition(bl).ToDivisionPosition(Dtype).ZodiacHouse;
 
-		if (zj.RasiDristi(zh) || zj.Sign == zh.Sign)
+		if (zj.RasiDristi(zx) || zj == zx)
 		{
 			ret++;
 		}
 
-		if (zm.RasiDristi(zh) || zm.Sign == zh.Sign)
+		if (zm.RasiDristi(zx) || zm == zx)
 		{
 			ret++;
 		}
 
-		if (zl.RasiDristi(zh) || zl.Sign == zh.Sign)
+		if (zl.RasiDristi(zx) || zl == zx)
 		{
 			ret++;
 		}

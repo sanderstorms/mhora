@@ -16,6 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Definitions;
+
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi has more planets in moola trikona
@@ -26,7 +28,7 @@ public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGrah
 	{
 	}
 
-	public bool Stronger(Body.BodyType m, Body.BodyType n)
+	public bool Stronger(Body m, Body n)
 	{
 		var valm = Value(m);
 		var valn = Value(n);
@@ -44,7 +46,7 @@ public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGrah
 		throw new EqualStrength();
 	}
 
-	public bool Stronger(ZodiacHouse.Rasi za, ZodiacHouse.Rasi zb)
+	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var vala = Value(za);
 		var valb = Value(zb);
@@ -62,28 +64,28 @@ public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGrah
 		throw new EqualStrength();
 	}
 
-	public int Value(ZodiacHouse.Rasi zn)
+	public int Value(ZodiacHouse zn)
 	{
 		var ret = 0;
 		foreach (DivisionPosition dp in StdDivPos)
 		{
-			if (dp.Type != Body.Type.Graha)
+			if (dp.BodyType != BodyType.Graha)
 			{
 				continue;
 			}
 
-			if (dp.ZodiacHouse.Sign != zn)
+			if (dp.ZodiacHouse != zn)
 			{
 				continue;
 			}
 
-			ret += Value(dp.Name);
+			ret += Value(dp.Body);
 		}
 
 		return ret;
 	}
 
-	public int Value(Body.BodyType b)
+	public int Value(Body b)
 	{
 		if (H.GetPosition(b).ToDivisionPosition(Dtype).IsInMoolaTrikona())
 		{
