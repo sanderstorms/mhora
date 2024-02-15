@@ -330,10 +330,12 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 		public object Clone()
 		{
-			var uo = new UserOptions(_h);
-			uo.MLordSco      = MLordSco;
-			uo.MLordAqu      = MLordAqu;
-			uo.RasiStrengths = new OrderedZodiacHouses[3];
+			var uo = new UserOptions(_h)
+			{
+				MLordSco = MLordSco,
+				MLordAqu = MLordAqu,
+				RasiStrengths = new OrderedZodiacHouses[3]
+			};
 			for (var i = 0; i < 3; i++)
 			{
 				uo.RasiStrengths[i]  = (OrderedZodiacHouses) RasiStrengths[i].Clone();

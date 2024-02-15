@@ -236,9 +236,11 @@ public class Horoscope : ICloneable
 			zhsum = zhsum.Add(10);
 		}
 
-		var dp2 = new DivisionPosition(Body.Other, BodyType.GrahaArudha, zhsum, 0, 0, 0);
-		//dp2.Longitude   = zhsum.DivisionalLongitude(dp.Longitude, dpl.part);
-		dp2.Description = string.Format("{0}{1}", bn.ToShortString(), hse);
+		var dp2 = new DivisionPosition(Body.Other, BodyType.GrahaArudha, zhsum, 0, 0, 0)
+		{
+			//dp2.Longitude   = zhsum.DivisionalLongitude(dp.Longitude, dpl.part);
+			Description = string.Format("{0}{1}", bn.ToShortString(), hse)
+		};
 		return dp2;
 	}
 
@@ -379,9 +381,11 @@ public class Horoscope : ICloneable
 				zhV = zhPis.AddReverse(sum);
 			}
 
-			var divPos = new DivisionPosition(Body.Other, BodyType.Varnada, zhV, 0, 0, 0);
+			var divPos = new DivisionPosition(Body.Other, BodyType.Varnada, zhV, 0, 0, 0)
+			{
+				Description = VarnadaStrs[i - 1]
+			};
 
-			divPos.Description = VarnadaStrs[i - 1];
 			al.Add(divPos);
 		}
 
@@ -829,8 +833,10 @@ public class Horoscope : ICloneable
 
 	private void CalculateUpagrahasSingle(Body b, double tjd)
 	{
-		var lon = new Longitude(0.0);
-		lon.Value = this.Lagna(tjd);
+		var lon = new Longitude(0.0)
+		{
+			Value = this.Lagna(tjd)
+		};
 		var bp = new Position(this, b, BodyType.Upagraha, lon, 0, 0, 0, 0, 0);
 		PositionList.Add(bp);
 	}
@@ -966,8 +972,10 @@ public class Horoscope : ICloneable
 
 	private void AddChandraLagna(string desc, Longitude lon)
 	{
-		var bp = new Position(this, Body.Other, BodyType.ChandraLagna, lon, 0, 0, 0, 0, 0);
-		bp.OtherString = desc;
+		var bp = new Position(this, Body.Other, BodyType.ChandraLagna, lon, 0, 0, 0, 0, 0)
+		{
+			OtherString = desc
+		};
 		PositionList.Add(bp);
 	}
 
@@ -1142,7 +1150,7 @@ public class Horoscope : ICloneable
 		// Weekday (depends on sunrise)
 		CalculateWeekday();
 		// Sahamas
-		CalculateSahamas();
+		PositionList.AddRange (this.CalculateSahamas());
 		// Prana sphuta etc. (depends on upagrahas)
 		GetPrashnaMargaPositions();
 		CalculateChandraLagnas();
@@ -1203,8 +1211,10 @@ public class Horoscope : ICloneable
 
 	public void AddOtherPosition(string desc, Longitude lon, Body name)
 	{
-		var bp = new Position(this, name, BodyType.Other, lon, 0, 0, 0, 0, 0);
-		bp.OtherString = desc;
+		var bp = new Position(this, name, BodyType.Other, lon, 0, 0, 0, 0, 0)
+		{
+			OtherString = desc
+		};
 		PositionList.Add(bp);
 	}
 
@@ -1280,179 +1290,4 @@ public class Horoscope : ICloneable
 		return (Position) PositionList[0];
 	}
 
-	private Position SahamaHelper(string sahama, Body b, Body a, Body c)
-	{
-		var lonA = GetPosition(a).Longitude;
-		var       lonB = GetPosition(b).Longitude;
-		var       lonC = GetPosition(c).Longitude;
-		return SahamaHelper(sahama, lonB, lonA, lonC);
-	}
-
-	private Position SahamaHelper(string sahama, Body b, Body a, Longitude lonC)
-	{
-		var lonA = GetPosition(a).Longitude;
-		var       lonB = GetPosition(b).Longitude;
-		return SahamaHelper(sahama, lonB, lonA, lonC);
-	}
-
-	private Position SahamaHelper(string sahama, Longitude lonB, Body a, Body c)
-	{
-		var lonA = GetPosition(a).Longitude;
-		var       lonC = GetPosition(c).Longitude;
-		return SahamaHelper(sahama, lonB, lonA, lonC);
-	}
-
-	private Position SahamaHelper(string sahama, Longitude lonB, Longitude lonA, Longitude lonC)
-	{
-		// b-a+c
-		var bDay = IsDayBirth();
-
-		var lonR = lonB.Sub(lonA).Add(lonC);
-		if (lonB.Sub(lonA).Value <= lonC.Sub(lonA).Value)
-		{
-			lonR = lonR.Add(new Longitude(30.0));
-		}
-
-		var bp = new Position(this, Body.Other, BodyType.Sahama, lonR, 0.0, 0.0, 0.0, 0.0, 0.0);
-		bp.OtherString = sahama;
-		return bp;
-	}
-
-	private Position SahamaDnHelper(string sahama, Longitude lonB, Longitude lonA, Longitude lonC)
-	{
-		// b-a+c
-		var       bDay = IsDayBirth();
-		Longitude lonR;
-		if (bDay)
-		{
-			lonR = lonB.Sub(lonA).Add(lonC);
-		}
-		else
-		{
-			lonR = lonA.Sub(lonB).Add(lonC);
-		}
-
-		if (lonB.Sub(lonA).Value <= lonC.Sub(lonA).Value)
-		{
-			lonR = lonR.Add(new Longitude(30.0));
-		}
-
-		var bp = new Position(this, Body.Other, BodyType.Sahama, lonR, 0.0, 0.0, 0.0, 0.0, 0.0);
-		bp.OtherString = sahama;
-		return bp;
-	}
-
-	private Position SahamaDnHelper(string sahama, Body b, Longitude lonA, Body c)
-	{
-		var lonB = GetPosition(b).Longitude;
-		var       lonC = GetPosition(c).Longitude;
-		return SahamaDnHelper(sahama, lonB, lonA, lonC);
-	}
-
-	private Position SahamaDnHelper(string sahama, Longitude lonB, Body a, Body c)
-	{
-		var lonA = GetPosition(a).Longitude;
-		var       lonC = GetPosition(c).Longitude;
-		return SahamaDnHelper(sahama, lonB, lonA, lonC);
-	}
-
-	private Position SahamaDnHelper(string sahama, Longitude lonB, Longitude lonA, Body c)
-	{
-		var lonC = GetPosition(c).Longitude;
-		return SahamaDnHelper(sahama, lonB, lonA, lonC);
-	}
-
-	private Position SahamaDnHelper(string sahama, Body b, Body a, Body c)
-	{
-		var lonA = GetPosition(a).Longitude;
-		var       lonB = GetPosition(b).Longitude;
-		var       lonC = GetPosition(c).Longitude;
-		return SahamaDnHelper(sahama, lonB, lonA, lonC);
-	}
-
-	private Position SahamaHelperNormalize(Position b, Body lower, Body higher)
-	{
-		var lonA = GetPosition(lower).Longitude;
-		var lonB = GetPosition(higher).Longitude;
-		if (b.Longitude.Sub(lonA).Value < lonB.Sub(lonA).Value)
-		{
-			return b;
-		}
-
-		b.Longitude = b.Longitude.Add(new Longitude(30.0));
-		return b;
-	}
-
-	public ArrayList CalculateSahamas()
-	{
-		var bDay      = IsDayBirth();
-		var al        = new ArrayList();
-		var lonLagna = GetPosition(Body.Lagna).Longitude;
-		var lonBase  = new Longitude(lonLagna.ToZodiacHouseBase());
-		var zhLagna  = lonLagna.ToZodiacHouse();
-		var zhMoon   = GetPosition(Body.Moon).Longitude.ToZodiacHouse();
-		var zhSun    = GetPosition(Body.Sun).Longitude.ToZodiacHouse();
-
-
-		// Fixed positions. Relied on by other sahams
-		al.Add(SahamaDnHelper("Punya", Body.Moon, Body.Sun, Body.Lagna));
-		al.Add(SahamaDnHelper("Vidya", Body.Sun, Body.Moon, Body.Lagna));
-		al.Add(SahamaDnHelper("Sastra", Body.Jupiter, Body.Saturn, Body.Mercury));
-
-		// Variable positions.
-		al.Add(SahamaDnHelper("Yasas", Body.Jupiter, ((Position) al[0]).Longitude, Body.Lagna));
-		al.Add(SahamaDnHelper("Mitra", Body.Jupiter, ((Position) al[0]).Longitude, Body.Venus));
-		al.Add(SahamaDnHelper("Mahatmya", ((Position) al[0]).Longitude, Body.Mars, Body.Lagna));
-
-		var bLagnaLord = LordOfZodiacHouse(zhLagna, new Division(DivisionType.Rasi));
-		if (bLagnaLord != Body.Mars)
-		{
-			al.Add(SahamaDnHelper("Samartha", Body.Mars, bLagnaLord, Body.Lagna));
-		}
-		else
-		{
-			al.Add(SahamaDnHelper("Samartha", Body.Jupiter, Body.Mars, Body.Lagna));
-		}
-
-		al.Add(SahamaHelper("Bhratri", Body.Jupiter, Body.Saturn, Body.Lagna));
-		al.Add(SahamaDnHelper("Gaurava", Body.Jupiter, Body.Moon, Body.Sun));
-		al.Add(SahamaDnHelper("Pitri", Body.Saturn, Body.Sun, Body.Lagna));
-		al.Add(SahamaDnHelper("Rajya", Body.Saturn, Body.Sun, Body.Lagna));
-		al.Add(SahamaDnHelper("Matri", Body.Moon, Body.Venus, Body.Lagna));
-		al.Add(SahamaDnHelper("Putra", Body.Jupiter, Body.Moon, Body.Lagna));
-		al.Add(SahamaDnHelper("Jeeva", Body.Saturn, Body.Jupiter, Body.Lagna));
-		al.Add(SahamaDnHelper("Karma", Body.Mars, Body.Mercury, Body.Lagna));
-		al.Add(SahamaDnHelper("Roga", Body.Lagna, Body.Moon, Body.Lagna));
-		al.Add(SahamaDnHelper("Kali", Body.Jupiter, Body.Mars, Body.Lagna));
-		al.Add(SahamaDnHelper("Bandhu", Body.Mercury, Body.Moon, Body.Lagna));
-		al.Add(SahamaHelper("Mrityu", lonBase.Add(8.0   * 30.0), Body.Moon, Body.Lagna));
-		al.Add(SahamaHelper("Paradesa", lonBase.Add(9.0 * 30.0), LordOfZodiacHouse(zhLagna.Add(9), new Division(DivisionType.Rasi)), Body.Lagna));
-		al.Add(SahamaHelper("Artha", lonBase.Add(2.0    * 30.0), LordOfZodiacHouse(zhLagna.Add(2), new Division(DivisionType.Rasi)), Body.Lagna));
-		al.Add(SahamaDnHelper("Paradara", Body.Venus, Body.Sun, Body.Lagna));
-		al.Add(SahamaDnHelper("Vanik", Body.Moon, Body.Mercury, Body.Lagna));
-
-		if (bDay)
-		{
-			al.Add(SahamaHelper("Karyasiddhi", Body.Saturn, Body.Sun, LordOfZodiacHouse(zhSun, new Division(DivisionType.Rasi))));
-		}
-		else
-		{
-			al.Add(SahamaHelper("Karyasiddhi", Body.Saturn, Body.Moon, LordOfZodiacHouse(zhMoon, new Division(DivisionType.Rasi))));
-		}
-
-		al.Add(SahamaDnHelper("Vivaha", Body.Venus, Body.Saturn, Body.Lagna));
-		al.Add(SahamaHelper("Santapa", Body.Saturn, Body.Moon, lonBase.Add(6.0 * 30.0)));
-		al.Add(SahamaDnHelper("Sraddha", Body.Venus, Body.Mars, Body.Lagna));
-		al.Add(SahamaDnHelper("Preeti", ((Position) al[2]).Longitude, ((Position) al[0]).Longitude, Body.Lagna));
-		al.Add(SahamaDnHelper("Jadya", Body.Mars, Body.Saturn, Body.Mercury));
-		al.Add(SahamaHelper("Vyapara", Body.Mars, Body.Saturn, Body.Lagna));
-		al.Add(SahamaDnHelper("Satru", Body.Mars, Body.Saturn, Body.Lagna));
-		al.Add(SahamaDnHelper("Jalapatana", new Longitude(105.0), Body.Saturn, Body.Lagna));
-		al.Add(SahamaDnHelper("Bandhana", ((Position) al[0]).Longitude, Body.Saturn, Body.Lagna));
-		al.Add(SahamaDnHelper("Apamrityu", lonBase.Add(8.0 * 30.0), Body.Mars, Body.Lagna));
-		al.Add(SahamaHelper("Labha", lonBase.Add(11.0      * 30.0), LordOfZodiacHouse(zhLagna.Add(11), new Division(DivisionType.Rasi)), Body.Lagna));
-
-		PositionList.AddRange(al);
-		return al;
-	}
 }

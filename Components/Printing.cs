@@ -286,8 +286,13 @@ public class MhoraPrintDocument : PrintDocument
 		g.TranslateTransform(left, top);
 		PrintDasa(id, false);
 
-		var vd = new VimsottariDasa(h);
-		vd.Options.SeedBody = VimsottariDasa.UserOptions.StartBodyType.Lagna;
+		var vd = new VimsottariDasa(h)
+		{
+			Options =
+			{
+				SeedBody = VimsottariDasa.UserOptions.StartBodyType.Lagna
+			}
+		};
 		vd.SetOptions(vd.Options);
 		id = vd;
 		PrintDasa(id, true);
@@ -566,8 +571,13 @@ public class MhoraPrintDocument : PrintDocument
 		top  = e.MarginBounds.Top  + width / 2 + pad_height + f.Height;
 		left = e.MarginBounds.Left + width / 2;
 		// Vimsottari Dasa
-		var vd = new VimsottariDasa(h);
-		vd.Options.SeedBody = VimsottariDasa.UserOptions.StartBodyType.Moon;
+		var vd = new VimsottariDasa(h)
+		{
+			Options =
+			{
+				SeedBody = VimsottariDasa.UserOptions.StartBodyType.Moon
+			}
+		};
 		PrintVimDasa(vd);
 	}
 }

@@ -134,12 +134,14 @@ public abstract class Dasa
 
 		public object Clone()
 		{
-			var o = new DasaOptions();
-			o.YearLength  = YearLength;
-			o.YearType    = YearType;
-			o.Compression = Compression;
-			o.OffsetDays  = OffsetDays;
-			o.Offset      = Offset;
+			var o = new DasaOptions
+			{
+				YearLength = YearLength,
+				YearType = YearType,
+				Compression = Compression,
+				OffsetDays = OffsetDays,
+				Offset = Offset
+			};
 			return o;
 		}
 

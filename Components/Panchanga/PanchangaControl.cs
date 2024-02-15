@@ -29,7 +29,7 @@ using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
-using Retrogression = Mhora.Elements.Retrogression;
+using Retrogression = Mhora.Elements.Calculation.Retrogression;
 
 namespace Mhora.Components.Panchanga;
 
@@ -235,8 +235,10 @@ public class PanchangaControl : MhoraControl
 
 		var h = (Horoscope) _h;
 
-		var li = new ListViewItem();
-		li.Text = "Results may be out of date. Click the Compute Button to Recalculate the panchanga";
+		var li = new ListViewItem
+		{
+			Text = "Results may be out of date. Click the Compute Button to Recalculate the panchanga"
+		};
 		mList.Items.Insert(0, li);
 		mList.Items.Insert(1, string.Empty);
 		bResultsInvalid = true;
@@ -388,10 +390,12 @@ public class PanchangaControl : MhoraControl
 
 		ListViewItem li = null;
 
-		var local = new PanchangaLocalMoments();
-		local.sunrise    = hCurr.Sunrise;
-		local.sunset     = sunset;
-		local.sunrise_ut = ut_sr;
+		var local = new PanchangaLocalMoments
+		{
+			sunrise = hCurr.Sunrise,
+			sunset = sunset,
+			sunrise_ut = ut_sr
+		};
 		sweph.RevJul(ut, out year, out month, out day, out hour);
 		local.wday = (Hora.Weekday) sweph.DayOfWeek(ut);
 
@@ -431,7 +435,7 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcTithiCusps)
 		{
-			var t = new Elements.Transit(h);
+			var t           = new Elements.Calculation.Transit(h);
 			var tithi_start = t.LongitudeOfTithi(ut_sr).ToTithi();
 			var tithi_end   = t.LongitudeOfTithi(ut_sr + 1.0).ToTithi();
 
@@ -453,7 +457,7 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcKaranaCusps)
 		{
-			var t = new Elements.Transit(h);
+			var t            = new Elements.Calculation.Transit(h);
 			var karana_start = t.LongitudeOfTithi(ut_sr).ToKarana();
 			var karana_end   = t.LongitudeOfTithi(ut_sr + 1.0).ToKarana();
 
@@ -474,7 +478,7 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcSMYogaCusps)
 		{
-			var t = new Elements.Transit(h);
+			var t        = new Elements.Calculation.Transit(h);
 			var sm_start = t.LongitudeOfSunMoonYoga(ut_sr).ToSunMoonYoga();
 			var sm_end   = t.LongitudeOfSunMoonYoga(ut_sr + 1.0).ToSunMoonYoga();
 
@@ -496,8 +500,8 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcNakCusps)
 		{
-			var bDiscard = true;
-			var t        = new Elements.Transit(h, Body.Moon);
+			var bDiscard  = true;
+			var t         = new Elements.Calculation.Transit(h, Body.Moon);
 			var nak_start = t.GenericLongitude(ut_sr, ref bDiscard).ToNakshatra();
 			var nak_end   = t.GenericLongitude(ut_sr + 1.0, ref bDiscard).ToNakshatra();
 
@@ -946,20 +950,22 @@ public class PanchangaControl : MhoraControl
 
 		public object Clone()
 		{
-			var uo = new UserOptions();
-			uo.NumDays          = NumDays;
-			uo.CalcLagnaCusps   = CalcLagnaCusps;
-			uo.CalcNakCusps     = CalcNakCusps;
-			uo.CalcTithiCusps   = CalcTithiCusps;
-			uo.CalcKaranaCusps  = CalcKaranaCusps;
-			uo.CalcHoraCusps    = CalcHoraCusps;
-			uo.CalcKalaCusps    = CalcKalaCusps;
-			uo.CalcSpecialKalas = CalcSpecialKalas;
-			uo.LargeHours       = LargeHours;
-			uo.ShowUpdates      = ShowUpdates;
-			uo.ShowSunriset     = ShowSunriset;
-			uo.OneEntryPerLine  = OneEntryPerLine;
-			uo.CalcSMYogaCusps  = CalcSMYogaCusps;
+			var uo = new UserOptions
+			{
+				NumDays = NumDays,
+				CalcLagnaCusps = CalcLagnaCusps,
+				CalcNakCusps = CalcNakCusps,
+				CalcTithiCusps = CalcTithiCusps,
+				CalcKaranaCusps = CalcKaranaCusps,
+				CalcHoraCusps = CalcHoraCusps,
+				CalcKalaCusps = CalcKalaCusps,
+				CalcSpecialKalas = CalcSpecialKalas,
+				LargeHours = LargeHours,
+				ShowUpdates = ShowUpdates,
+				ShowSunriset = ShowSunriset,
+				OneEntryPerLine = OneEntryPerLine,
+				CalcSMYogaCusps = CalcSMYogaCusps
+			};
 			return uo;
 		}
 

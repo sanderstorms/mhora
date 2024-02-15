@@ -1,6 +1,7 @@
 using System;
 using Mhora.Definitions;
 using Mhora.SwissEph;
+using Calculations = Mhora.Elements.Calculations;
 
 namespace Mhora.Elements;
 
@@ -56,7 +57,7 @@ public class NonLinearTransit
 		if (Math.Abs(utEnd - utStart) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
 		{
 			//Mhora.Log.Debug ("BinarySearchNormal: Found {0} at {1}", lon_to_find, ut_start);
-			if (Transit.CircLonLessThan(GetLongitude(utStart, ref bDiscard), lonToFind))
+			if (GetLongitude(utStart, ref bDiscard).CircLonLessThan(lonToFind))
 			{
 				return utEnd;
 			}
@@ -68,7 +69,7 @@ public class NonLinearTransit
 
 		var lon = GetLongitude(utMiddle, ref bDiscard);
 		//Mhora.Log.Debug ("BinarySearchNormal {0} Find:{1} {2} curr:{3}", b, lon_to_find.value, ut_middle, lon.value);
-		if (Transit.CircLonLessThan(lon, lonToFind))
+		if (lon.CircLonLessThan(lonToFind))
 		{
 			return BinarySearchNormal(utMiddle, utEnd, lonToFind);
 		}
@@ -88,7 +89,7 @@ public class NonLinearTransit
 		var bDiscard  = true;
 		var lon       = GetLongitude(utMiddle, ref bDiscard);
 		//Mhora.Log.Debug ("BinarySearchRetro {0} Find:{1} {2} curr:{3}", b, lon_to_find.value, ut_middle, lon.value);
-		if (Transit.CircLonLessThan(lon, lonToFind))
+		if (lon.CircLonLessThan(lonToFind))
 		{
 			return BinarySearchRetro(utStart, utMiddle, lonToFind);
 		}
@@ -105,7 +106,7 @@ public class NonLinearTransit
 			var  lEnd          = GetLongitude(ut + 1.0, ref bForwardEnd);
 			if (bForwardStart && bForwardEnd)
 			{
-				if (Transit.CircLonLessThan(lStart, lonToFind) && Transit.CircLonLessThan(lonToFind, lEnd))
+				if (lStart.CircLonLessThan(lonToFind) && lonToFind.CircLonLessThan(lEnd))
 				{
 					//Mhora.Log.Debug("2: (N) +1.0. {0} Curr:{1} Start:{2} End:{3}", b, lonToFind.value, lStart.value, lEnd.value);
 					return BinarySearchNormal(ut, ut + 1.0, lonToFind);
@@ -116,7 +117,7 @@ public class NonLinearTransit
 			}
 			else if (bForwardStart == false && bForwardEnd == false)
 			{
-				if (Transit.CircLonLessThan(lEnd, lonToFind) && Transit.CircLonLessThan(lonToFind, lStart))
+				if (lEnd.CircLonLessThan(lonToFind) && lonToFind.CircLonLessThan(lStart))
 				{
 					//Mhora.Log.Debug("2: (R) +1.0. {0} Curr:{1} Start:{2} End:{3}", b, lonToFind.value, lStart.value, lEnd.value);
 					return BinarySearchRetro(ut, ut + 1.0, lonToFind);

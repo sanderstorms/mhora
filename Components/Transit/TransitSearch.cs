@@ -23,10 +23,11 @@ using Mhora.Components.Property;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
-using Retrogression = Mhora.Elements.Retrogression;
+using Retrogression = Mhora.Elements.Calculation.Retrogression;
 
 namespace Mhora.Components.Transit;
 
@@ -440,8 +441,10 @@ public class TransitSearch : MhoraControl
 		// turn into horoscope
 		found_ut += h.Info.DstOffset.TotalDays;
 		var m   = found_ut.ToUtc();
-		var inf = new HoraInfo(h.Info);
-		inf.DateOfBirth = m;
+		var inf = new HoraInfo(h.Info)
+		{
+			DateOfBirth = m
+		};
 		var hTransit = new Horoscope(inf, (HoroscopeOptions) h.Options.Clone());
 
 		m2 = (found_ut + 5.0).ToUtc();
@@ -494,7 +497,7 @@ public class TransitSearch : MhoraControl
 		var start_lon = r.GetLon(h.Info.Jd);
 		//Mhora.Log.Debug ("Real start lon is {0}", start_lon);
 		var curr_julday = h.Info.Jd;
-		var t           = new Elements.Transit(h, opts.SearchBody);
+		var t           = new Elements.Calculation.Transit(h, opts.SearchBody);
 		while (totalProgression >= 360.0)
 		{
 			curr_julday      =  t.LinearSearch(curr_julday + DirectSpeed(opts.SearchBody), start_lon, t.GenericLongitude);
@@ -529,8 +532,8 @@ public class TransitSearch : MhoraControl
 		var ut_diff   = julday_ut - h.Info.Jd;
 
 		//Mhora.Log.Debug ("Expected ut_diff is {0}", ut_diff);
-		var bDummy = true;
-		var t         = new Elements.Transit(h);
+		var bDummy    = true;
+		var t         = new Elements.Calculation.Transit(h);
 		var lon_start = t.LongitudeOfSun(h.Info.Jd, ref bDummy);
 		var lon_prog  = t.LongitudeOfSun(julday_ut, ref bDummy);
 
@@ -539,7 +542,7 @@ public class TransitSearch : MhoraControl
 		var dExpectedLon = ut_diff * 360.0 / TimeUtils.SiderealYear.TotalDays;
 		var lon_expected = lon_start.Add(dExpectedLon);
 
-		if (Elements.Transit.CircLonLessThan(lon_expected, lon_prog))
+		if (lon_expected.CircLonLessThan(lon_prog))
 		{
 			dExpectedLon += lon_prog.Sub(lon_expected);
 		}
@@ -679,8 +682,10 @@ public class TransitSearch : MhoraControl
 		// turn into horoscope
 		found_ut += h.Info.DstOffset.TotalDays;
 		var m   = found_ut.ToUtc();
-		var inf = new HoraInfo(h.Info);
-		inf.DateOfBirth = m;
+		var inf = new HoraInfo(h.Info)
+		{
+			DateOfBirth = m
+		};
 		var hTransit = new Horoscope(inf, (HoroscopeOptions) h.Options.Clone());
 
 		if (opts.Forward)

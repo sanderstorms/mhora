@@ -372,8 +372,10 @@ public class PanchangaPrintDocument : PrintDocument
 		float offsetX = margin_offset + sm_time_offset + sm_time_width;
 
 		var mCurr  = h.Moment(((PanchangaLocalMoments) locals[iStart]).sunrise_ut);
-		var hiCurr = new HoraInfo(h.Info);
-		hiCurr.DateOfBirth = mCurr;
+		var hiCurr = new HoraInfo(h.Info)
+		{
+			DateOfBirth = mCurr
+		};
 		var hCurr  = new Horoscope(hiCurr, h.Options);
 		var dc     = new DivisionalChart(hCurr);
 		dc.PrintMode         = true;

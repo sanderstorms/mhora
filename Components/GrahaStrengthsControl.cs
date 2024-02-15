@@ -253,8 +253,10 @@ public class GrahaStrengthsControl : Form
 		var al          = GetRules(ref bSimpleLord);
 		for (var i = 0; i < al.Count; i++)
 		{
-			var rule = new ArrayList();
-			rule.Add(al[i]);
+			var rule = new ArrayList
+			{
+				al[i]
+			};
 			var fs = new FindStronger(h, options.Division, rule);
 			var bw = fs.StrongerGraha(b1, b2, bSimpleLord, ref winner);
 
@@ -379,8 +381,10 @@ public class GrahaStrengthsControl : Form
 
 		public object Clone()
 		{
-			var uo = new UserOptions();
-			uo.Division = Division;
+			var uo = new UserOptions
+			{
+				Division = Division
+			};
 			return uo;
 		}
 

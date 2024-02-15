@@ -242,13 +242,15 @@ public class StrengthOptions : MhoraSerializableOptions, ICloneable
 
 	public object Clone()
 	{
-		var opts = new StrengthOptions();
-		opts.Colord              = (GrahaStrength[]) Colord.Clone();
-		opts.NaisargikaDasaGraha = (GrahaStrength[]) NaisargikaDasaGraha.Clone();
-		opts.NavamsaDasaRasi     = (RashiStrength[]) NavamsaDasaRasi.Clone();
-		opts.MoolaDasaRasi       = (RashiStrength[]) MoolaDasaRasi.Clone();
-		opts.NarayanaDasaRasi    = (RashiStrength[]) NarayanaDasaRasi.Clone();
-		opts.NaisargikaDasaRasi  = (RashiStrength[]) NaisargikaDasaRasi.Clone();
+		var opts = new StrengthOptions
+		{
+			Colord = (GrahaStrength[]) Colord.Clone(),
+			NaisargikaDasaGraha = (GrahaStrength[]) NaisargikaDasaGraha.Clone(),
+			NavamsaDasaRasi = (RashiStrength[]) NavamsaDasaRasi.Clone(),
+			MoolaDasaRasi = (RashiStrength[]) MoolaDasaRasi.Clone(),
+			NarayanaDasaRasi = (RashiStrength[]) NarayanaDasaRasi.Clone(),
+			NaisargikaDasaRasi = (RashiStrength[]) NaisargikaDasaRasi.Clone()
+		};
 		return opts;
 	}
 

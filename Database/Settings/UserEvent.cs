@@ -67,11 +67,13 @@ public class UserEvent : MhoraSerializableOptions, ICloneable
 
 	public object Clone()
 	{
-		var ue = new UserEvent();
-		ue.EventName     = EventName;
-		ue.EventTime     = EventTime;
-		ue.WorkWithEvent = WorkWithEvent;
-		ue.EventDesc     = EventDesc;
+		var ue = new UserEvent
+		{
+			EventName = EventName,
+			EventTime = EventTime,
+			WorkWithEvent = WorkWithEvent,
+			EventDesc = EventDesc
+		};
 		return ue;
 	}
 

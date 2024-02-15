@@ -213,5 +213,26 @@ namespace Mhora.Elements
 			return perc;
 		}
 
+		public static bool CircularLonLessThan(this Longitude a, Longitude b)
+		{
+			return a.CircLonLessThan(b);
+		}
+
+		public static bool CircLonLessThan(this Longitude a, Longitude b)
+		{
+			var bounds = 40.0;
+
+			if (a.Value > 360.0 - bounds && b.Value < bounds)
+			{
+				return true;
+			}
+
+			if (a.Value < bounds && b.Value > 360.0 - bounds)
+			{
+				return false;
+			}
+
+			return a.Value < b.Value;
+		}
 	}
 }

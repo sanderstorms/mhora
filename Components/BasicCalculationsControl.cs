@@ -87,8 +87,10 @@ public class BasicCalculationsControl : MhoraControl
 		menuBasicGrahas.Checked                =  true;
 		h.Changed                              += OnRecalculate;
 		MhoraGlobalOptions.DisplayPrefsChanged += OnRedisplay;
-		options                                =  new UserOptions();
-		options.DivisionType                   =  new Division(DivisionType.Rasi);
+		options                                =  new UserOptions
+		{
+			DivisionType = new Division(DivisionType.Rasi)
+		};
 	}
 
 	/// <summary>
@@ -392,8 +394,10 @@ public class BasicCalculationsControl : MhoraControl
 			var sn   = nmoon.Add(Taras.SpecialIndices[i]);
 			var sn28 = nmoon28.Add(Taras.SpecialIndices[i]);
 
-			var li = new ListViewItem();
-			li.Text = string.Format("{0:00}  {1} Tara", Taras.SpecialIndices[i], Taras.SpecialNames[i]);
+			var li = new ListViewItem
+			{
+				Text = string.Format("{0:00}  {1} Tara", Taras.SpecialIndices[i], Taras.SpecialNames[i])
+			};
 			li.SubItems.Add(sn.ToString());
 			li.SubItems.Add(sn28.ToString());
 			mList.Items.Add(li);
@@ -459,8 +463,10 @@ public class BasicCalculationsControl : MhoraControl
 	private void Repopulate64NavamsaHelper(Body b, string name, Position bp, Division div)
 	{
 		var dp = bp.ToDivisionPosition(div);
-		var li = new ListViewItem();
-		li.Text = b.ToString();
+		var li = new ListViewItem
+		{
+			Text = b.ToString()
+		};
 		li.SubItems.Add(name);
 		li.SubItems.Add(dp.ZodiacHouse.ToString());
 		li.SubItems.Add(h.LordOfZodiacHouse(dp.ZodiacHouse, div).Name());
@@ -542,8 +548,10 @@ public class BasicCalculationsControl : MhoraControl
 		for (var i = (int)Definitions.Body.Sun; i <= (int)Definitions.Body.Ketu; i++)
 		{
 			var b  = (Body) i;
-			var li = new ListViewItem();
-			li.Text = b.Name();
+			var li = new ListViewItem
+			{
+				Text = b.Name()
+			};
 			var dp            = h.GetPosition(b).ToDivisionPosition(new Division(DivisionType.Panchamsa));
 			var avastha_index = -1;
 			switch (dp.ZodiacHouse.Index() % 2)
@@ -729,8 +737,10 @@ public class BasicCalculationsControl : MhoraControl
 
 		for (var i = 0; i < 12; i++)
 		{
-			var li = new ListViewItem();
-			li.Text = string.Format("{0}", (char) h.SwephHouseSystem);
+			var li = new ListViewItem
+			{
+				Text = string.Format("{0}", (char) h.SwephHouseSystem)
+			};
 			li.SubItems.Add(h.SwephHouseCusps[i].Value.ToString());
 			li.SubItems.Add(h.SwephHouseCusps[i + 1].Value.ToString());
 			mList.Items.Add(li);
@@ -767,8 +777,10 @@ public class BasicCalculationsControl : MhoraControl
 		for (var i = 0; i < 12; i++)
 		{
 			var dp = bp.ToDivisionPosition(options.DivisionType);
-			var li = new ListViewItem();
-			li.Text = longitudeToString(new Longitude(dp.CuspLower));
+			var li = new ListViewItem
+			{
+				Text = longitudeToString(new Longitude(dp.CuspLower))
+			};
 			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
 			li.SubItems.Add(dp.ZodiacHouse.ToString());
 			bp.Longitude = new Longitude(dp.CuspHigher + 1);
@@ -906,8 +918,10 @@ public class BasicCalculationsControl : MhoraControl
 				continue;
 			}
 
-			var li = new ListViewItem();
-			li.Text = GetBodyString(bp);
+			var li = new ListViewItem
+			{
+				Text = GetBodyString(bp)
+			};
 
 			if ((int) bp.Name >= (int)Definitions.Body.Sun && (int) bp.Name <= (int)Definitions.Body.Rahu)
 			{
@@ -1241,9 +1255,11 @@ public class BasicCalculationsControl : MhoraControl
 
 		public object Clone()
 		{
-			var uo = new UserOptions();
-			uo.DivisionType  = DivisionType;
-			uo.NakshatraLord = NakshatraLord;
+			var uo = new UserOptions
+			{
+				DivisionType = DivisionType,
+				NakshatraLord = NakshatraLord
+			};
 			return uo;
 		}
 

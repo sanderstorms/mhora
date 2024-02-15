@@ -91,8 +91,10 @@ public class Position : ICloneable
 
 	public object Clone()
 	{
-		var bp = new Position(H, Name, BodyType, Longitude, Latitude, Distance, SpeedLongitude, SpeedLatitude, SpeedDistance);
-		bp.OtherString = OtherString;
+		var bp = new Position(H, Name, BodyType, Longitude, Latitude, Distance, SpeedLongitude, SpeedLatitude, SpeedDistance)
+		{
+			OtherString = OtherString
+		};
 		return bp;
 	}
 
@@ -154,8 +156,10 @@ public class Position : ICloneable
 		var zhouse    = (int) Longitude.ToZodiacHouse();
 		var numParts = PartOfZodiacHouse(n);
 		var divHouse = Longitude.ToZodiacHouse().Add(numParts);
-		var dp        = new DivisionPosition(Name, BodyType, divHouse, 0, 0, 0);
-		dp.Longitude = divHouse.DivisionalLongitude(Longitude, n);
+		var dp        = new DivisionPosition(Name, BodyType, divHouse, 0, 0, 0)
+		{
+			Longitude = divHouse.DivisionalLongitude(Longitude, n)
+		};
 		PopulateRegularCusps(n, dp);
 		return dp;
 	}
@@ -329,8 +333,10 @@ public class Position : ICloneable
 			zh = (ZodiacHouse) nightSigns[sign];
 		}
 
-		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0);
-		dp.Longitude = zh.DivisionalLongitude(Longitude, 2);
+		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0)
+		{
+			Longitude = zh.DivisionalLongitude(Longitude, 2)
+		};
 		PopulateRegularCusps(2, dp);
 		return dp;
 	}
@@ -352,8 +358,10 @@ public class Position : ICloneable
 
 		Application.Log.Debug("{0} ends in {1}", Name, zh);
 
-		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0);
-		dp.Longitude = zh.DivisionalLongitude(Longitude, 2);
+		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0)
+		{
+			Longitude = zh.DivisionalLongitude(Longitude, 2)
+		};
 		PopulateRegularCusps(2, dp);
 		return dp;
 	}
@@ -373,9 +381,11 @@ public class Position : ICloneable
 			rulerIndex = 2;
 		}
 
-		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0);
-		dp.Longitude   = zh.DivisionalLongitude(Longitude, 2);
-		dp.RulerIndex = rulerIndex;
+		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0)
+		{
+			Longitude = zh.DivisionalLongitude(Longitude, 2),
+			RulerIndex = rulerIndex
+		};
 		return PopulateRegularCusps(2, dp);
 	}
 
@@ -391,8 +401,10 @@ public class Position : ICloneable
 		var zhouse = Longitude.ToZodiacHouse();
 		var part   = PartOfZodiacHouse(n);
 		var dhouse = zhouse.Add(offset[part % 3]);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, 3);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, 3)
+		};
 		PopulateRegularCusps(n, dp);
 		if (n == 3)
 		{
@@ -443,8 +455,10 @@ public class Position : ICloneable
 				break;
 		}
 
-		var dp = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, 3);
+		var dp = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, 3)
+		};
 		return PopulateRegularCusps(3, dp);
 	}
 
@@ -474,8 +488,10 @@ public class Position : ICloneable
 			zh2 = zh1.AddReverse(numDone + part + 1);
 		}
 
-		var dp = new DivisionPosition(Name, BodyType, zh2, 0, 0, 0);
-		dp.Longitude = zh2.DivisionalLongitude(Longitude, 3);
+		var dp = new DivisionPosition(Name, BodyType, zh2, 0, 0, 0)
+		{
+			Longitude = zh2.DivisionalLongitude(Longitude, 3)
+		};
 		return PopulateRegularCusps(3, dp);
 	}
 
@@ -492,8 +508,10 @@ public class Position : ICloneable
 		var zhouse = Longitude.ToZodiacHouse();
 		var part   = PartOfZodiacHouse(n);
 		var dhouse = zhouse.Add(offset[part % 4]);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, n)
+		};
 		if (n == 4)
 		{
 			dp.RulerIndex = part;
@@ -507,8 +525,10 @@ public class Position : ICloneable
 		var mod     = (int) Longitude.ToZodiacHouse() % 2;
 		var dhousen = mod % 2 == 1 ? ZodiacHouse.Ari : ZodiacHouse.Lib;
 		var dhouse  = dhousen.Add(PartOfZodiacHouse(n));
-		var dp      = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
+		var dp      = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, n)
+		};
 		return PopulateRegularCusps(n, dp);
 	}
 
@@ -522,8 +542,10 @@ public class Position : ICloneable
 		}
 
 		zh = zh.Add(part);
-		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0);
-		dp.Longitude = zh.DivisionalLongitude(Longitude, n);
+		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0)
+		{
+			Longitude = zh.DivisionalLongitude(Longitude, n)
+		};
 
 		if (n == 7)
 		{
@@ -583,8 +605,10 @@ public class Position : ICloneable
 		}
 
 		var dhouse = zstart.Add(PartOfZodiacHouse(8));
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, 8);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, 8)
+		};
 		return PopulateRegularCusps(8, dp);
 	}
 
@@ -610,8 +634,10 @@ public class Position : ICloneable
 		var mod    = (int) Longitude.ToZodiacHouse() % 2;
 		var dhouse = mod % 2 == 1 ? offsetOdd[part - 1] : offsetEven[part - 1];
 		var zh     = dhouse;
-		var dp     = new DivisionPosition(Name, BodyType, zh, 0, 0, 0);
-		dp.Longitude = zh.DivisionalLongitude(Longitude, 5);
+		var dp     = new DivisionPosition(Name, BodyType, zh, 0, 0, 0)
+		{
+			Longitude = zh.DivisionalLongitude(Longitude, 5)
+		};
 		return PopulateRegularCusps(5, dp);
 	}
 
@@ -623,8 +649,10 @@ public class Position : ICloneable
 		var zstart = zari.AddReverse(diff);
 		var part   = PartOfZodiacHouse(11);
 		var zend   = zstart.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, zend, 0, 0, 0);
-		dp.Longitude = zend.DivisionalLongitude(Longitude, 11);
+		var dp     = new DivisionPosition(Name, BodyType, zend, 0, 0, 0)
+		{
+			Longitude = zend.DivisionalLongitude(Longitude, 11)
+		};
 		return PopulateRegularCusps(11, dp);
 	}
 
@@ -633,8 +661,10 @@ public class Position : ICloneable
 		var zhstart = Longitude.ToZodiacHouse().Add(12);
 		var part    = PartOfZodiacHouse(11);
 		var zend    = zhstart.AddReverse(part);
-		var dp      = new DivisionPosition(Name, BodyType, zend, 0, 0, 0);
-		dp.Longitude = zend.DivisionalLongitude(Longitude, 11);
+		var dp      = new DivisionPosition(Name, BodyType, zend, 0, 0, 0)
+		{
+			Longitude = zend.DivisionalLongitude(Longitude, 11)
+		};
 		return PopulateRegularCusps(11, dp);
 	}
 
@@ -719,8 +749,10 @@ public class Position : ICloneable
 
 		var part   = PartOfZodiacHouse(n);
 		var dhouse = dhousename.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, n)
+		};
 		return PopulateRegularCusps(n, dp);
 	}
 
@@ -746,8 +778,10 @@ public class Position : ICloneable
 		var dhousename = mod % 2 == 1 ? ZodiacHouse.Leo : ZodiacHouse.Can;
 		var part       = PartOfZodiacHouse(n);
 		var dhouse     = dhousename.Add(part);
-		var dp         = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
+		var dp         = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, n)
+		};
 		if (n == 24)
 		{
 			if (Longitude.ToZodiacHouse().IsOdd())
@@ -787,8 +821,10 @@ public class Position : ICloneable
 
 		var part   = PartOfZodiacHouse(n);
 		var dhouse = dhousename.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, n)
+		};
 		return PopulateRegularCusps(n, dp);
 	}
 
@@ -804,8 +840,10 @@ public class Position : ICloneable
 		var zhouse = Longitude.ToZodiacHouse();
 		var part   = PartOfZodiacHouse(30);
 		var dhouse = zhouse.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, 30);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, 30)
+		};
 		return PopulateRegularCusps(30, dp);
 	}
 
@@ -908,10 +946,12 @@ public class Position : ICloneable
 		cuspLower  += Longitude.ToZodiacHouseBase();
 		cuspHigher += Longitude.ToZodiacHouseBase();
 
-		var dp = new DivisionPosition(Name, BodyType, dhouse, cuspLower, cuspHigher, 0);
-		dp.Longitude   = dhouse.DivisionalLongitude(Longitude, 30);
-		dp.RulerIndex = rulerIndex;
-		dp.Part        = part;
+		var dp = new DivisionPosition(Name, BodyType, dhouse, cuspLower, cuspHigher, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, 30),
+			RulerIndex = rulerIndex,
+			Part = part
+		};
 		return dp;
 	}
 
@@ -921,9 +961,11 @@ public class Position : ICloneable
 		var dhousename = mod % 2 == 1 ? ZodiacHouse.Ari : ZodiacHouse.Lib;
 		var part       = PartOfZodiacHouse(40);
 		var dhouse     = dhousename.Add(part);
-		var dp         = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude   = dhouse.DivisionalLongitude(Longitude, 40);
-		dp.RulerIndex = part.NormalizeInc(1, 12);
+		var dp         = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, 40),
+			RulerIndex = part.NormalizeInc(1, 12)
+		};
 		return PopulateRegularCusps(40, dp);
 	}
 
@@ -946,8 +988,10 @@ public class Position : ICloneable
 
 		var part   = PartOfZodiacHouse(n);
 		var dhouse = dhousename.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, n)
+		};
 		if (n == 45)
 		{
 			switch ((int) Longitude.ToZodiacHouse() % 3)
@@ -974,8 +1018,10 @@ public class Position : ICloneable
 		var zhouse = Longitude.ToZodiacHouse();
 		var part   = PartOfZodiacHouse(60);
 		var dhouse = zhouse.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, 60);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, 60)
+		};
 		if (Longitude.ToZodiacHouse().IsOdd())
 		{
 			dp.RulerIndex = part;
@@ -1007,8 +1053,10 @@ public class Position : ICloneable
 		var zhouse = Longitude.ToZodiacHouse();
 		var part   = PartOfZodiacHouse(150);
 		var dhouse = zhouse.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, 150);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, 150)
+		};
 		switch ((int) Longitude.ToZodiacHouse() % 3)
 		{
 			case 1:
@@ -1062,9 +1110,11 @@ public class Position : ICloneable
 
 		alUnsorted.Add(30.0);
 		alUnsorted.Sort();
-		var alSorted = new ArrayList(150);
+		var alSorted = new ArrayList(150)
+		{
+			0.0
+		};
 
-		alSorted.Add(0.0);
 		for (var i = 0; i < alUnsorted.Count; i++)
 		{
 			if ((double) alUnsorted[i] != (double) alSorted[alSorted.Count - 1])
@@ -1118,8 +1168,10 @@ public class Position : ICloneable
 
 		var zhouse = Longitude.ToZodiacHouse();
 		var dhouse = zhouse.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
-		dp.Longitude = dhouse.DivisionalLongitude(Longitude, 150);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		{
+			Longitude = dhouse.DivisionalLongitude(Longitude, 150)
+		};
 
 		switch ((int) Longitude.ToZodiacHouse() % 3)
 		{

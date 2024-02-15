@@ -24,6 +24,7 @@ using System.Windows.Forms;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
@@ -683,8 +684,10 @@ public class VargaRectificationForm : Form
 
 		public object Clone()
 		{
-			var uo = new UserOptions(StartTime, EndTime);
-			uo.Divisions = (Division[]) Divisions.Clone();
+			var uo = new UserOptions(StartTime, EndTime)
+			{
+				Divisions = (Division[]) Divisions.Clone()
+			};
 			return uo;
 		}
 

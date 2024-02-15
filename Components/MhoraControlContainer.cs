@@ -488,8 +488,10 @@ public class MhoraControlContainer : UserControl
 
 		public object Clone()
 		{
-			var uo = new BaseUserOptions();
-			uo.View = View;
+			var uo = new BaseUserOptions
+			{
+				View = View
+			};
 			return uo;
 		}
 	}

@@ -148,8 +148,10 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 
 		public object Clone()
 		{
-			var uo = new UserOptions();
-			uo.ParamAyus = ParamAyus;
+			var uo = new UserOptions
+			{
+				ParamAyus = ParamAyus
+			};
 			return uo;
 		}
 	}

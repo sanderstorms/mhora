@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using Mhora.Components.Delegates;
 using Mhora.Definitions;
+using Mhora.Elements.Calculation;
 using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
@@ -120,8 +121,10 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 
 		public object Clone()
 		{
-			var options = new UserOptions();
-			options.BExpungeTravelled = BExpungeTravelled;
+			var options = new UserOptions
+			{
+				BExpungeTravelled = BExpungeTravelled
+			};
 			return options;
 		}
 

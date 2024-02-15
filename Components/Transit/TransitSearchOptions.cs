@@ -134,11 +134,13 @@ public class TransitSearchOptions : ICloneable
 	public object Clone()
 	{
 		// TODO:  Add TransitSearchOptions.Clone implementation
-		var ret = new TransitSearchOptions();
-		ret.StartDate    = StartDate;
-		ret.Forward      = Forward;
-		ret.SearchBody   = SearchBody;
-		ret.TransitPoint = TransitPoint;
+		var ret = new TransitSearchOptions
+		{
+			StartDate = StartDate,
+			Forward = Forward,
+			SearchBody = SearchBody,
+			TransitPoint = TransitPoint
+		};
 		return ret;
 	}
 

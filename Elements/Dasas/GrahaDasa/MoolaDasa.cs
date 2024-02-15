@@ -226,10 +226,12 @@ public class MoolaDasa : Dasa, IDasa
 
 		public object Clone()
 		{
-			var uo = new UserOptions(_h);
-			uo.GrahaStrengths = (OrderedGrahas) GrahaStrengths.Clone();
-			uo.RasiStrengths  = new OrderedZodiacHouses[3];
-			uo.MSeedBody      = MSeedBody;
+			var uo = new UserOptions(_h)
+			{
+				GrahaStrengths = (OrderedGrahas) GrahaStrengths.Clone(),
+				RasiStrengths = new OrderedZodiacHouses[3],
+				MSeedBody = MSeedBody
+			};
 			for (var i = 0; i < 3; i++)
 			{
 				uo.RasiStrengths[i] = (OrderedZodiacHouses) RasiStrengths[i].Clone();
@@ -318,8 +320,10 @@ public class MoolaDasa : Dasa, IDasa
 			}
 			else if (zhSat == zhKet && zhSat == zh)
 			{
-				var rule = new ArrayList();
-				rule.Add(GrahaStrength.Longitude);
+				var rule = new ArrayList
+				{
+					GrahaStrength.Longitude
+				};
 				var fs2 = new FindStronger(_h, new Division(DivisionType.Rasi), rule);
 				bIsForward = fs2.CmpGraha(Body.Saturn, Body.Ketu, false);
 			}

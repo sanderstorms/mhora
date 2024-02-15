@@ -67,7 +67,7 @@ public static partial class sweph
 		}
 	}
 
-	public static int DayOfWeek(double jd)
+	public static int DayOfWeek(JulianDate jd)
 	{
 		if (IntPtr.Size == 4)
 		{
@@ -109,7 +109,7 @@ public static partial class sweph
 		return SwephDll.Swe64.swe_revjul(tjd, 1, out year, out month, out day, out hour);
 	}
 
-	public static int CalcUT(this Horoscope h, double tjd_ut, int ipl, int addFlags, double[] xx, StringBuilder serr = null)
+	public static int CalcUT(this Horoscope h, JulianDate tjd_ut, int ipl, int addFlags, double[] xx, StringBuilder serr = null)
 	{
 		int ret;
 		serr ??= new StringBuilder(256);
@@ -131,7 +131,7 @@ public static partial class sweph
 		return ret;
 	}
 
-	public static int Calc(this Horoscope h, double tjd_ut, int ipl, int addFlags, double[] xx)
+	public static int Calc(this Horoscope h, JulianDate tjd_ut, int ipl, int addFlags, double[] xx)
 	{
 		int ret;
 		var serr = new StringBuilder(256);
@@ -158,7 +158,7 @@ public static partial class sweph
 	**   CalculatorSwe   ---   calcJd
 	**
 	******************************************************/
-	public static double calcJd(double jd )
+	public static double calcJd(JulianDate jd )
 	{
 		if (IntPtr.Size == 4)
 		{
@@ -176,7 +176,7 @@ public static partial class sweph
 	 **   CalculatorSwe   ---   calcNextSolarEvent
 	 **
 	 ******************************************************/
-	public static double CalcNextSolarEvent(EventType type, double jd, double lat, double lon)
+	public static double CalcNextSolarEvent(EventType type, JulianDate jd, double lat, double lon)
 	{
 		StringBuilder err  = new StringBuilder();
 		var           rsmi = new double [3];
@@ -222,7 +222,7 @@ public static partial class sweph
 
 
 
-	public static int SolEclipseWhenGlob(this Horoscope h, double tjd_ut, double[] tret, bool forward)
+	public static int SolEclipseWhenGlob(this Horoscope h, JulianDate tjd_ut, double[] tret, bool forward)
 	{
 		var serr = new StringBuilder(256);
 
@@ -234,7 +234,7 @@ public static partial class sweph
 		return SwephDll.Swe64.swe_sol_eclipse_when_glob(tjd_ut, h.Iflag, 0, tret, !forward, serr);
 	}
 
-	public static int SolEclipseWhenLoc(this Horoscope h, double tjd_ut, double[] tret, double[] attr, bool forward)
+	public static int SolEclipseWhenLoc(this Horoscope h, JulianDate tjd_ut, double[] tret, double[] attr, bool forward)
 	{
 		var serr = new StringBuilder(256);
 		var geopos = new double[3]
@@ -252,7 +252,7 @@ public static partial class sweph
 		return SwephDll.Swe64.swe_sol_eclipse_when_loc(tjd_ut, h.Iflag, geopos, tret, attr, !forward, serr);
 	}
 
-	public static void LunEclipseWhen(this Horoscope h, double tjd_ut, double[] tret, bool forward)
+	public static void LunEclipseWhen(this Horoscope h, JulianDate tjd_ut, double[] tret, bool forward)
 	{
 		int ret;
 		var serr = new StringBuilder(256);
@@ -651,7 +651,7 @@ public static partial class sweph
 		}
 	}
 
-	public static double GetAyanamsaUT(double tjd_ut)
+	public static double GetAyanamsaUT(JulianDate tjd_ut)
 	{
 		if (IntPtr.Size == 4)
 		{
@@ -661,7 +661,7 @@ public static partial class sweph
 		return SwephDll.Swe64.swe_get_ayanamsa_ut(tjd_ut);
 	}
 
-	public static int Rise(this Horoscope h, double tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, ref double tret, StringBuilder serr = null)
+	public static int Rise(this Horoscope h, JulianDate tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, ref double tret, StringBuilder serr = null)
 	{
 		serr ??= new StringBuilder(256);
 
@@ -673,7 +673,7 @@ public static partial class sweph
 		return SwephDll.Swe64.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, SE_CALC_RISE | rsflag, geopos, atpress, attemp, ref tret, serr);
 	}
 
-	public static int Set(this Horoscope h, double tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, ref double tret)
+	public static int Set(this Horoscope h, JulianDate tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, ref double tret)
 	{
 		var serr = new StringBuilder(256);
 
@@ -685,7 +685,7 @@ public static partial class sweph
 		return SwephDll.Swe64.swe_rise_trans(tjd_ut, ipl, string.Empty, h.Iflag, SE_CALC_SET | rsflag, geopos, atpress, attemp, ref tret, serr);
 	}
 
-	public static int Lmt(this Horoscope h, double tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, ref double tret)
+	public static int Lmt(this Horoscope h, JulianDate tjd_ut, int ipl, int rsflag, double[] geopos, double atpress, double attemp, ref double tret)
 	{
 		var serr = new StringBuilder(256);
 
@@ -698,7 +698,7 @@ public static partial class sweph
 	}
 
 
-	public static int HousesEx(this Horoscope h, double tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc)
+	public static int HousesEx(this Horoscope h, JulianDate tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc)
 	{
 		int ret;
 
@@ -728,7 +728,7 @@ public static partial class sweph
 		return ret;
 	}
 
-	public static double Lagna(this Horoscope h, double tjd_ut)
+	public static double Lagna(this Horoscope h, JulianDate tjd_ut)
 	{
 		var hi    = h.Info;
 		var cusps = new double[13];
@@ -764,7 +764,7 @@ public static partial class sweph
 	 **   CalculatorSwe   ---   calcSiderealTime
 	 **
 	 ******************************************************/
-	public static double CalcSiderealTime(double jd, double longitude )
+	public static double CalcSiderealTime(JulianDate jd, double longitude )
 	{
 		if (IntPtr.Size == 4)
 		{

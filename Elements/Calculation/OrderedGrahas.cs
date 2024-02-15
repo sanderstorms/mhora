@@ -36,8 +36,10 @@ public class OrderedGrahas : ICloneable
 
 	public object Clone()
 	{
-		var oz = new OrderedGrahas();
-		oz.grahas = (ArrayList) grahas.Clone();
+		var oz = new OrderedGrahas
+		{
+			grahas = (ArrayList) grahas.Clone()
+		};
 		return oz;
 	}
 

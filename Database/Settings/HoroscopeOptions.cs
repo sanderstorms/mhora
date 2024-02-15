@@ -282,20 +282,22 @@ public class HoroscopeOptions : MhoraSerializableOptions, ICloneable
 
 	public object Clone()
 	{
-		var o = new HoroscopeOptions();
-		o.SunrisePosition   = SunrisePosition;
-		o.GrahaPositionType = GrahaPositionType;
-		o._nodeType          = _nodeType;
-		o.Ayanamsa          = Ayanamsa;
-		o.AyanamsaOffset    = AyanamsaOffset;
-		o.HoraType          = HoraType;
-		o.KalaType          = KalaType;
-		o.BhavaType         = BhavaType;
-		o._mUserLongitude    = _mUserLongitude;
-		o.MaandiType        = MaandiType;
-		o.GulikaType        = GulikaType;
-		o.UpagrahaType      = UpagrahaType;
-		o.EphemerisPath     = EphemerisPath;
+		var o = new HoroscopeOptions
+		{
+			SunrisePosition = SunrisePosition,
+			GrahaPositionType = GrahaPositionType,
+			_nodeType = _nodeType,
+			Ayanamsa = Ayanamsa,
+			AyanamsaOffset = AyanamsaOffset,
+			HoraType = HoraType,
+			KalaType = KalaType,
+			BhavaType = BhavaType,
+			_mUserLongitude = _mUserLongitude,
+			MaandiType = MaandiType,
+			GulikaType = GulikaType,
+			UpagrahaType = UpagrahaType,
+			EphemerisPath = EphemerisPath
+		};
 		return o;
 	}
 

@@ -129,15 +129,17 @@ public class RasiDasaUserOptions : ICloneable
 
 	public virtual object Clone()
 	{
-		var uo = new RasiDasaUserOptions(H, MRules);
-		uo.Division         = (Division) Division.Clone();
-		uo.ColordAqu        = ColordAqu;
-		uo.ColordSco        = ColordSco;
-		uo.MSeed            = MSeed;
-		uo.SeventhStrengths = SeventhStrengths;
-		uo.KetuExceptions   = KetuExceptions;
-		uo.SaturnExceptions = SaturnExceptions;
-		uo.SeedHouse        = SeedHouse;
+		var uo = new RasiDasaUserOptions(H, MRules)
+		{
+			Division = (Division) Division.Clone(),
+			ColordAqu = ColordAqu,
+			ColordSco = ColordSco,
+			MSeed = MSeed,
+			SeventhStrengths = SeventhStrengths,
+			KetuExceptions = KetuExceptions,
+			SaturnExceptions = SaturnExceptions,
+			SeedHouse = SeedHouse
+		};
 		return uo;
 	}
 
@@ -233,8 +235,10 @@ public class RasiDasaUserOptions : ICloneable
 		}
 		else
 		{
-			var rule = new ArrayList();
-			rule.Add(GrahaStrength.Longitude);
+			var rule = new ArrayList
+			{
+				GrahaStrength.Longitude
+			};
 			var fs = new FindStronger(H, Division, rule);
 			var b  = fs.StrongerGraha(Body.Saturn, Body.Ketu, false);
 			if (b == Body.Ketu)

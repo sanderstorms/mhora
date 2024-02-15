@@ -1547,8 +1547,10 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 		public object Clone()
 		{
-			var euo = new EventUserOptions(EventDate);
-			euo.Depth = Depth;
+			var euo = new EventUserOptions(EventDate)
+			{
+				Depth = Depth
+			};
 			return euo;
 		}
 	}

@@ -22,7 +22,7 @@ using Mhora.Components.Delegates;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.SwissEph;
-using Transit = Mhora.Elements.Transit;
+using Transit = Mhora.Elements.Calculation.Transit;
 
 namespace Mhora.Util;
 

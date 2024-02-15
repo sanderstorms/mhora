@@ -74,8 +74,10 @@ public class DrigDasa : Dasa, IDasa
 
 	public ArrayList AntarDasa(DasaEntry pdi)
 	{
-		var nd = new NarayanaDasa(_h);
-		nd.Options = _options;
+		var nd = new NarayanaDasa(_h)
+		{
+			Options = _options
+		};
 		return nd.AntarDasa(pdi);
 	}
 

@@ -2023,11 +2023,13 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 		public object Clone()
 		{
-			var uo = new UserOptions();
-			uo.Varga      = Varga;
-			uo.ChartStyle = ChartStyle;
-			uo.ViewStyle  = ViewStyle;
-			uo.ShowInner  = ShowInner;
+			var uo = new UserOptions
+			{
+				Varga = Varga,
+				ChartStyle = ChartStyle,
+				ViewStyle = ViewStyle,
+				ShowInner = ShowInner
+			};
 			return uo;
 		}
 

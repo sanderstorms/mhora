@@ -149,9 +149,11 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 
 		public object Clone()
 		{
-			var options = new UserOptions();
-			options.MTithiOffset      = MTithiOffset;
-			options.BExpungeTravelled = BExpungeTravelled;
+			var options = new UserOptions
+			{
+				MTithiOffset = MTithiOffset,
+				BExpungeTravelled = BExpungeTravelled
+			};
 			return options;
 		}
 

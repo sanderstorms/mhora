@@ -99,23 +99,27 @@ public class FindStronger
 
 	public static ArrayList RulesJaiminiFirstRasi(Horoscope h)
 	{
-		var rules = new ArrayList();
-		rules.Add(RashiStrength.AtmaKaraka);
-		rules.Add(RashiStrength.Conjunction);
-		rules.Add(RashiStrength.Exaltation);
-		rules.Add(RashiStrength.MoolaTrikona);
-		rules.Add(RashiStrength.OwnHouse);
-		rules.Add(RashiStrength.RasisNature);
-		rules.Add(RashiStrength.LordIsAtmaKaraka);
-		rules.Add(RashiStrength.LordsLongitude);
-		rules.Add(RashiStrength.LordInDifferentOddity);
+		var rules = new ArrayList
+		{
+			RashiStrength.AtmaKaraka,
+			RashiStrength.Conjunction,
+			RashiStrength.Exaltation,
+			RashiStrength.MoolaTrikona,
+			RashiStrength.OwnHouse,
+			RashiStrength.RasisNature,
+			RashiStrength.LordIsAtmaKaraka,
+			RashiStrength.LordsLongitude,
+			RashiStrength.LordInDifferentOddity
+		};
 		return rules;
 	}
 
 	public static ArrayList RulesJaiminiSecondRasi(Horoscope h)
 	{
-		var rules = new ArrayList();
-		rules.Add(RashiStrength.AspectsRasi);
+		var rules = new ArrayList
+		{
+			RashiStrength.AspectsRasi
+		};
 		return rules;
 	}
 
@@ -126,9 +130,11 @@ public class FindStronger
 
 	public static ArrayList RulesVimsottariGraha(Horoscope h)
 	{
-		var rules = new ArrayList();
-		rules.Add(GrahaStrength.KendraConjunction);
-		rules.Add(GrahaStrength.First);
+		var rules = new ArrayList
+		{
+			GrahaStrength.KendraConjunction,
+			GrahaStrength.First
+		};
 		return rules;
 	}
 

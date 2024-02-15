@@ -43,8 +43,10 @@ public class Mhd : IFileToHoraInfo
 		{
 			var hi        = new HoraInfo();
 			var sOut      = new FileStream(_fname, FileMode.Open, FileAccess.Read);
-			var formatter = new BinaryFormatter();
-			formatter.AssemblyFormat = FormatterAssemblyStyle.Simple;
+			var formatter = new BinaryFormatter
+			{
+				AssemblyFormat = FormatterAssemblyStyle.Simple
+			};
 			hi                       = (HoraInfo) formatter.Deserialize(sOut);
 			sOut.Close();
 			return hi;

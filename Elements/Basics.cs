@@ -173,14 +173,14 @@ public static class Basics
 		var sterr    = new StringBuilder();
 		var position = new double[6];
 
-		var result = h.CalcUT(h.Info.Jd, ipl, 0, position);
+		var result = h.CalcUT(ut, ipl, 0, position);
 
 		if (result == sweph.ERR)
 		{
 			throw new SwedllException(sterr.ToString());
 		}
 		/*
-		var bodyPositin = new BodyPosition
+		var bodyPosition = new BodyPosition
 		{
 			Longitude      = position[0],
 			Latitude       = position[1],

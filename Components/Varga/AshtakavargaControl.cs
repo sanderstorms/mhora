@@ -958,10 +958,12 @@ public class AshtakavargaControl : MhoraControl
 
 		public object Clone()
 		{
-			var ao = new AshtakavargaOptions();
-			ao.VargaType  = VargaType;
-			ao.ChartStyle = ChartStyle;
-			ao.SavType    = SavType;
+			var ao = new AshtakavargaOptions
+			{
+				VargaType = VargaType,
+				ChartStyle = ChartStyle,
+				SavType = SavType
+			};
 			return ao;
 		}
 

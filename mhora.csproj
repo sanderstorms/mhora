@@ -182,6 +182,7 @@
     <Compile Include="Definitions\Muhurta.cs" />
     <Compile Include="Definitions\Nakshatra.cs" />
     <Compile Include="Definitions\Nakshatra28.cs" />
+    <Compile Include="Elements\Sahama.cs" />
     <Compile Include="Elements\Yoga\Aakriti.cs" />
     <Compile Include="Elements\Yoga\Buddh.cs" />
     <Compile Include="Elements\Yoga\Chandra.cs" />
@@ -224,7 +225,7 @@
     <Compile Include="SwissEph\Helpers\HorizontalCoordinates.cs" />
     <Compile Include="Util\DmsLocation.cs" />
     <Compile Include="Util\DmsPoint.cs" />
-    <Compile Include="Util\JulianDay.cs" />
+    <Compile Include="Util\JulianDate.cs" />
     <Compile Include="Util\Range.cs" />
     <Compile Include="SwissEph\Helpers\SunriseSunsetTimeCalcResult.cs" />
     <Compile Include="SwissEph\Helpers\SweApi.cs" />
@@ -299,11 +300,9 @@
     <Compile Include="Tables\Taras.cs" />
     <Compile Include="Elements\Tithis.cs" />
     <Compile Include="Tables\Vargas.cs" />
-    <Compile Include="Elements\CuspTransitSearch.cs" />
     <Compile Include="Util\Dll.cs" />
     <Compile Include="Util\EnumHelper.cs" />
     <Compile Include="Elements\NonLinearTransit.cs" />
-    <Compile Include="Elements\Retrogression.cs" />
     <Compile Include="Util\SevenZip.cs" />
     <Compile Include="Util\StringExtension.cs" />
     <Compile Include="Elements\Ashtakavarga.cs">
@@ -546,7 +545,6 @@
     <Compile Include="Elements\Calculation\YogasParseException.cs" />
     <Compile Include="Elements\Dasas\NakshatraDasa\YogaVimsottariDasa.cs" />
     <Compile Include="Elements\Dasas\NakshatraDasa\YoginiDasa.cs" />
-    <Compile Include="Elements\Transit.cs" />
     <Content Include="Resources\COPY.BMP" />
     <Content Include="Resources\DISP.BMP" />
     <Content Include="Resources\DOB.BMP" />

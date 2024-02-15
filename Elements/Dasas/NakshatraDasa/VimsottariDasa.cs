@@ -281,11 +281,13 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 
 		public object Clone()
 		{
-			var options = new UserOptions();
-			options.StartGraha      = StartGraha;
-			options.NakshatraOffset = NakshatraOffset;
-			options.SeedBody         = SeedBody;
-			options.Div              = (Division) Div.Clone();
+			var options = new UserOptions
+			{
+				StartGraha = StartGraha,
+				NakshatraOffset = NakshatraOffset,
+				SeedBody = SeedBody,
+				Div = (Division) Div.Clone()
+			};
 			return options;
 		}
 	}

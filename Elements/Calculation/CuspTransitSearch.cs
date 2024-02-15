@@ -1,37 +1,12 @@
-/******
-Copyright (C) 2005 Ajit Krishnan (http://www.mudgala.com)
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-******/
-
 using System;
 using Mhora.Definitions;
 using Mhora.Util;
 
 namespace Mhora.Elements.Calculation;
 
-internal class CuspTransitSearch
+public static class CuspTransitSearch
 {
-	private readonly Horoscope h;
-
-	public CuspTransitSearch(Horoscope _h)
-	{
-		h = _h;
-	}
-
-	private double DirectSpeed(Body b)
+	private static double DirectSpeed(Body b)
 	{
 		switch (b)
 		{
@@ -43,12 +18,12 @@ internal class CuspTransitSearch
 		return 0.0;
 	}
 
-	public double TransitSearchDirect(Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
+	public static double TransitSearchDirect(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
 	{
 		var bDiscard = true;
 
 		var t        = new Transit(h, SearchBody);
-		var ut_base  = StartDate.ToJulian() - h.Info.DstOffset.TotalDays;
+		var ut_base  = h.UniversalTime(StartDate);
 		var lon_curr = t.GenericLongitude(ut_base, ref bDiscard);
 
 		double diff = 0;
@@ -77,11 +52,11 @@ internal class CuspTransitSearch
 	}
 
 
-	public double TransitSearch(Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
+	public static double TransitSearch(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
 	{
 		if (SearchBody == Body.Sun || SearchBody == Body.Moon)
 		{
-			return TransitSearchDirect(SearchBody, StartDate, Forward, TransitPoint, FoundLon, ref bForward);
+			return h.TransitSearchDirect(SearchBody, StartDate, Forward, TransitPoint, FoundLon, ref bForward);
 		}
 
 		if (((int) SearchBody <= (int) Body.Moon || (int) SearchBody > (int) Body.Saturn) && SearchBody != Body.Lagna)
@@ -91,7 +66,7 @@ internal class CuspTransitSearch
 
 		var r = new Retrogression(h, SearchBody);
 
-		var julday_ut = StartDate.ToJulian() - h.Info.DstOffset.TotalDays;
+		var julday_ut = h.UniversalTime(StartDate);
 		var found_ut  = julday_ut;
 
 		if (Forward)
@@ -104,6 +79,7 @@ internal class CuspTransitSearch
 		}
 
 		FoundLon.Value = r.GetLon(found_ut, ref bForward).Value;
+
 		return found_ut;
 	}
 }

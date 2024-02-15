@@ -36,8 +36,10 @@ public class OrderedZodiacHouses : ICloneable
 
 	public object Clone()
 	{
-		var oz = new OrderedZodiacHouses();
-		oz.houses = (ArrayList) houses.Clone();
+		var oz = new OrderedZodiacHouses
+		{
+			houses = (ArrayList) houses.Clone()
+		};
 		return oz;
 	}
 

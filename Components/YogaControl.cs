@@ -170,8 +170,10 @@ public class YogaControl : MhoraControl
 	private void evaluateYoga(XmlYogaNode n)
 	{
 		var bRet = fy.EvaluateYoga(n);
-		var li   = new ListViewItem();
-		li.Text = bRet.ToString();
+		var li   = new ListViewItem
+		{
+			Text = bRet.ToString()
+		};
 		li.SubItems.Add(n.yogaCat);
 		li.SubItems.Add(n.yogaName);
 		li.SubItems.Add(n.result);

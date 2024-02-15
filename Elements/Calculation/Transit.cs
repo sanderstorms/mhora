@@ -1,21 +1,3 @@
-/******
-Copyright (C) 2005 Ajit Krishnan (http://www.mudgala.com)
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-******/
-
 using System;
 using Mhora.Components.Delegates;
 using Mhora.Definitions;
@@ -25,25 +7,25 @@ namespace Mhora.Elements.Calculation;
 
 public class Transit
 {
-	private readonly Body b;
-	private readonly Horoscope h;
+	private readonly Body _b;
+	private readonly Horoscope _h;
 
-	public Transit(Horoscope _h)
+	public Transit(Horoscope h)
 	{
-		h = _h;
-		b = Body.Other;
+		_h = h;
+		_b = Body.Other;
 	}
 
-	public Transit(Horoscope _h, Body _b)
+	public Transit(Horoscope h, Body b)
 	{
-		h = _h;
-		b = _b;
+		_h = h;
+		_b = b;
 	}
 
 
 	public Longitude LongitudeOfSun(double ut, ref bool bDirRetro)
 	{
-		var bp = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
+		var bp = _h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
 		if (bp.SpeedLongitude >= 0)
 		{
 			bDirRetro = false;
@@ -58,12 +40,12 @@ public class Transit
 
 	public Longitude GenericLongitude(double ut, ref bool bDirRetro)
 	{
-		if (b == Body.Lagna)
+		if (_b == Body.Lagna)
 		{
-			return new Longitude(h.Lagna(ut));
+			return new Longitude(_h.Lagna(ut));
 		}
 
-		var bp = h.CalculateSingleBodyPosition(ut, b.SwephBody(), b, BodyType.Other);
+		var bp = _h.CalculateSingleBodyPosition(ut, _b.SwephBody(), _b, BodyType.Other);
 		if (bp.SpeedLongitude >= 0)
 		{
 			bDirRetro = false;
@@ -84,9 +66,9 @@ public class Transit
 
 	public Longitude LongitudeOfTithi(double ut)
 	{
-		var bp_sun  = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
-		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
-		var rel     = bp_moon.Longitude.Sub(bp_sun.Longitude);
+		var bpSun  = _h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
+		var bpMoon = _h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
+		var rel     = bpMoon.Longitude.Sub(bpSun.Longitude);
 		return rel;
 	}
 
@@ -98,8 +80,8 @@ public class Transit
 
 	public Longitude LongitudeOfMoon(double ut)
 	{
-		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
-		return bp_moon.Longitude;
+		var bpMoon = _h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
+		return bpMoon.Longitude;
 	}
 
 	public Longitude LongitudeOfSunMoonYogaDir(double ut, ref bool bDirRetro)
@@ -110,99 +92,78 @@ public class Transit
 
 	public Longitude LongitudeOfSunMoonYoga(double ut)
 	{
-		var bp_sun  = h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
-		var bp_moon = h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
-		var rel     = bp_moon.Longitude.Add(bp_sun.Longitude);
+		var bpSun  = _h.CalculateSingleBodyPosition(ut, sweph.SE_SUN, Body.Sun, BodyType.Graha);
+		var bpMoon = _h.CalculateSingleBodyPosition(ut, sweph.SE_MOON, Body.Moon, BodyType.Graha);
+		var rel     = bpMoon.Longitude.Add(bpSun.Longitude);
 		return rel;
 	}
 
-	public bool CircularLonLessThan(Longitude a, Longitude b)
+
+	public double LinearSearch(double approxUt, Longitude lonToFind, ReturnLon func)
 	{
-		return CircLonLessThan(a, b);
+		var dayStart = LinearSearchApprox(approxUt, lonToFind, func);
+		var dayFound = LinearSearchBinary(dayStart, dayStart + 1.0, lonToFind, func);
+		return dayFound;
 	}
 
-	public static bool CircLonLessThan(Longitude a, Longitude b)
-	{
-		var bounds = 40.0;
-
-		if (a.Value > 360.0 - bounds && b.Value < bounds)
-		{
-			return true;
-		}
-
-		if (a.Value < bounds && b.Value > 360.0 - bounds)
-		{
-			return false;
-		}
-
-		return a.Value < b.Value;
-	}
-
-	public double LinearSearch(double approx_ut, Longitude lon_to_find, ReturnLon func)
-	{
-		var day_start = LinearSearchApprox(approx_ut, lon_to_find, func);
-		var day_found = LinearSearchBinary(day_start, day_start + 1.0, lon_to_find, func);
-		return day_found;
-	}
-
-	public double LinearSearchBinary(double ut_start, double ut_end, Longitude lon_to_find, ReturnLon func)
+	public double LinearSearchBinary(double utStart, double utEnd, Longitude lonToFind, ReturnLon func)
 	{
 		var bDiscard = true;
-		if (Math.Abs(ut_end - ut_start) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
+		if (Math.Abs(utEnd - utStart) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
 		{
-			if (CircLonLessThan(func(ut_start, ref bDiscard), lon_to_find))
+			if (Calculations.CircLonLessThan(func(utStart, ref bDiscard), lonToFind))
 			{
-				return ut_end;
+				return utEnd;
 			}
 
-			return ut_start;
+			return utStart;
 		}
 
-		var ut_middle = (ut_start + ut_end) / 2.0;
-		var lon       = func(ut_middle, ref bDiscard);
-		if (CircularLonLessThan(lon, lon_to_find))
+		var utMiddle = (utStart + utEnd) / 2.0;
+		var lon       = func(utMiddle, ref bDiscard);
+		if (lon.CircularLonLessThan(lonToFind))
 		{
-			return LinearSearchBinary(ut_middle, ut_end, lon_to_find, func);
+			return LinearSearchBinary(utMiddle, utEnd, lonToFind, func);
 		}
 
-		return LinearSearchBinary(ut_start, ut_middle, lon_to_find, func);
+		return LinearSearchBinary(utStart, utMiddle, lonToFind, func);
 	}
 
-	public double NonLinearSearch(double ut, Body b, Longitude lon_to_find, ReturnLon func)
+	public double NonLinearSearch(double ut, Body b, Longitude lonToFind, ReturnLon func)
 	{
-		var rDir_start = false;
-		var rDir_end   = false;
+		var rDirStart = false;
+		var rDirEnd   = false;
 		var bDayFound  = false;
 		ut -= 1.0;
 		do
 		{
 			ut += 1.0;
-			var l_start = func(ut, ref rDir_start);
-			var l_end   = func(ut + 1.0, ref rDir_end);
-			if (CircularLonLessThan(l_start, lon_to_find) && CircularLonLessThan(lon_to_find, l_end))
+			var lStart = func(ut, ref rDirStart);
+			var lEnd   = func(ut + 1.0, ref rDirEnd);
+			if (lStart.CircularLonLessThan(lonToFind) && lonToFind.CircularLonLessThan(lEnd))
 			{
 				bDayFound = true;
 			}
 		}
 		while (bDayFound == false);
 
-		if (rDir_start == false && rDir_end == false)
+		if (rDirStart == false && rDirEnd == false)
 		{
-			LinearSearchBinary(ut, ut + 1.0, lon_to_find, LongitudeOfSun);
+			LinearSearchBinary(ut, ut + 1.0, lonToFind, LongitudeOfSun);
 		}
 
 		return ut;
 	}
 
-	public double LinearSearchApprox(double approx_ut, Longitude lon_to_find, ReturnLon func)
+	public double LinearSearchApprox(double approxUt, Longitude lonToFind, ReturnLon func)
 	{
 		var bDiscard = true;
-		var ut       = Math.Floor(approx_ut);
+		var ut       = Math.Floor(approxUt);
 		var lon      = func(ut, ref bDiscard);
 
-		if (CircularLonLessThan(lon, lon_to_find))
+		if (lon.CircularLonLessThan(lonToFind))
 		{
-			while (CircularLonLessThan(lon, lon_to_find))
+			while (lon.CircularLonLessThan(lonToFind))
 			{
 				ut  += 1.0;
 				lon =  func(ut, ref bDiscard);
@@ -212,7 +173,7 @@ public class Transit
 		}
 		else
 		{
-			while (!CircularLonLessThan(lon, lon_to_find))
+			while (!lon.CircularLonLessThan(lonToFind))
 			{
 				ut  -= 1.0;
 				lon =  func(ut, ref bDiscard);

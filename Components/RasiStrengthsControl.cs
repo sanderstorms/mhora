@@ -251,8 +251,10 @@ public class RasiStrengthsControl : Form
 		var al = GetRules();
 		for (var i = 0; i < al.Count; i++)
 		{
-			var rule = new ArrayList();
-			rule.Add(al[i]);
+			var rule = new ArrayList
+			{
+				al[i]
+			};
 			var fs        = new FindStronger(h, options.Division, rule);
 			var zw        = fs.StrongerRasi(z1, z2, false, ref winner);
 			var li        = new ListViewItem();
@@ -333,8 +335,10 @@ public class RasiStrengthsControl : Form
 
 		public object Clone()
 		{
-			var uo = new UserOptions();
-			uo.Division = Division;
+			var uo = new UserOptions
+			{
+				Division = Division
+			};
 			return uo;
 		}
 

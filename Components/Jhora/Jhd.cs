@@ -70,15 +70,15 @@ public class Jhd : IFileToHoraInfo
 			}
 		}
 
-		var hi = new HoraInfo()
+		var hi = new HoraInfo
 		{
 			DateOfBirth = m,
 			Latitude    = (double) lat,
 			Longitude   = (double) lon,
 			City        = worldCity,
-			FileType    = HoraInfo.EFileType.JagannathaHora
+			FileType    = HoraInfo.EFileType.JagannathaHora,
+			Name = Path.GetFileNameWithoutExtension(_fname)
 		};
-		hi.Name = Path.GetFileNameWithoutExtension(_fname);
 		return hi;
 	}
 
