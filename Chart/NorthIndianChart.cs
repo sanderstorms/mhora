@@ -161,7 +161,7 @@ public class NorthIndianChart : IDrawChart
 
 			g.DrawString(rashi.ToString(), fnt, Brushes.Blue, p);
 			rashi++;
-			rashi %= 12;
+			rashi %= 13;
 			if (rashi == 0)
 			{
 				rashi++;
