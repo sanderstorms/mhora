@@ -116,11 +116,11 @@ public class KalachakraDasa : Dasa, IDasa
 		{
 			if (direct)
 			{
-				zh = BhuktiDirect(pdi.ZHouse, i);
+				zh = BhuktiDirect(pdi.ZHouse, i, out _);
 			}
 			else
 			{
-				zh = BhuktiIndirect(pdi.ZHouse, i);
+				zh = BhuktiIndirect(pdi.ZHouse, i, out _);
 				
 			}
 			var dasaLength = DasaLength(zh);
@@ -134,11 +134,11 @@ public class KalachakraDasa : Dasa, IDasa
 		{
 			if (direct)
 			{
-				zh = BhuktiDirect(pdi.ZHouse, i);
+				zh = BhuktiDirect(pdi.ZHouse, i, out _); //Check for next dasa level
 			}
 			else
 			{
-				zh = BhuktiIndirect(pdi.ZHouse, i);
+				zh = BhuktiIndirect(pdi.ZHouse, i, out _);
 				
 			}
 			var dasaLength = DasaLength(zh)  * dasaLengthSum;
@@ -211,16 +211,18 @@ public class KalachakraDasa : Dasa, IDasa
 		return (false);
 	}
 
-	public ZodiacHouse BhuktiDirect(ZodiacHouse zh, int cycle)
+	public ZodiacHouse BhuktiDirect(ZodiacHouse zh, int cycle, out bool direct)
 	{
 		var progression = ((zh.Index() - 1) * 9) + 1 + cycle;
 		var bhukti      = (ZodiacHouse) progression.NormalizeInc(1, 12);
 		var dp          = (int) Math.Ceiling(progression / 12.0) - 1;
 		if ((dp % 2) == 1)
 		{
+			direct = false;
 			return bhukti.LordsOtherSign();
 		}
 
+		direct = true;
 		return bhukti;
 
 	}
@@ -241,7 +243,7 @@ public class KalachakraDasa : Dasa, IDasa
 		return (ZodiacHouse) (12 - (zh.Index() - 1));
 	}
 
-	public ZodiacHouse BhuktiIndirect(ZodiacHouse zh, int cycle)
+	public ZodiacHouse BhuktiIndirect(ZodiacHouse zh, int cycle, out bool direct)
 	{
 		var index       = Indirect(zh).Index();
 		var progression = ((index - 1) * 9) + 1 + cycle;
@@ -256,8 +258,10 @@ public class KalachakraDasa : Dasa, IDasa
 
 		if ((dp % 2) == 0)
 		{
+			direct = false;
 			return bhukti.LordsOtherSign();
 		}
+		direct = true;
 		return bhukti;
 	}
 
