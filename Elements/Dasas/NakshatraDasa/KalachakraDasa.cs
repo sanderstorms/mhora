@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Definitions;
 using Mhora.Util;
 
@@ -36,6 +37,8 @@ public class KalachakraDasa : Dasa, IDasa
 	private readonly Horoscope _h;
 	private          Nakshatra _nakshatra;
 	private          double    _dasaLength;
+
+	private Dictionary<ZodiacHouse, bool> _dasa = new ();
 
 	public KalachakraDasa(Horoscope h)
 	{
@@ -66,7 +69,7 @@ public class KalachakraDasa : Dasa, IDasa
 
 		for (var i = 0; i < 9; i++)
 		{
-			var zh  = DasaPeriod(mLon.Value, i);
+			var zh  = DasaPeriod(mLon.Value, i, out _);
 			var len = DasaLength(zh);
 			_dasaLength += len;
 		}
@@ -85,7 +88,8 @@ public class KalachakraDasa : Dasa, IDasa
 		var start = -offsetLength;
 		for (var i = 0; i < 9; i++)
 		{
-			var zh  = DasaPeriod(mLon.Value, i);
+			var zh  = DasaPeriod(mLon.Value, i, out var savya);
+			_dasa.Add(zh, savya);
 			var len = DasaLength(zh);
 			var de  = new DasaEntry(zh, start, len, 1, zh.ToString());
 			al.Add(de);
@@ -100,18 +104,14 @@ public class KalachakraDasa : Dasa, IDasa
 		var         al = new ArrayList();
 		ZodiacHouse zh;
 		double      dasaLengthSum = 0;
-		var         direct        = IsDirect(_nakshatra);
 
 		if (pdi.Level >= 2)
 		{
 			return al;
 		}
 
-		if ((pdi.Level % 2) == 1)
-		{
-			direct = !direct;
-		}
-
+		var direct = _dasa[pdi.ZHouse];
+			
 		for (var i = 0; i < 9; i++)
 		{
 			if (direct)
@@ -151,19 +151,19 @@ public class KalachakraDasa : Dasa, IDasa
 	}
 
 
-	public ZodiacHouse DasaPeriod (Longitude lon, int cycle)
+	public ZodiacHouse DasaPeriod (Longitude lon, int cycle, out bool savya)
 	{
 		_nakshatra = lon.ToNakshatra();
 		var pada = lon.ToNakshatraPada();
-		var zh   = NavamsaRasi(_nakshatra, pada);
+		var zh   = NavamsaRasi(_nakshatra, pada, out _);
 
 		(var nakshatra, pada) = zh.NakshatraPada();
 		(nakshatra, pada)     = nakshatra.AddPada(pada + cycle);
 
-		return NavamsaRasi(nakshatra, pada);
+		return NavamsaRasi(nakshatra, pada, out savya);
 	}
 
-	public ZodiacHouse NavamsaRasi(Nakshatra nakshatra, int pada)
+	public ZodiacHouse NavamsaRasi(Nakshatra nakshatra, int pada, out bool savya)
 	{
 		var dp       = nakshatra.Index().NormalizeInc(1, 6);
 		var dpOffset = dp.NormalizeInc(1, 3) - 1;
@@ -174,16 +174,42 @@ public class KalachakraDasa : Dasa, IDasa
 			case 1:
 			case 2:
 			case 3:
+				savya = true;
 				return (zh); //Clockwise (Savya)
 			default:
+				savya = false;
 				return zh.LordsOtherSign();
 		}
 	}
 
-	//Zodiac order:
-	//1: Direct
-	//2: Direct reverse
-	//3: Direct
+	public bool IsDirect(Nakshatra nakshatra)
+	{
+		switch (nakshatra)
+		{
+			case Nakshatra.Aswini:
+			case Nakshatra.Punarvasu:
+			case Nakshatra.Hasta:
+			case Nakshatra.Moola:
+			case Nakshatra.PoorvaBhadra: 
+				return true;
+
+			case Nakshatra.Bharani:
+			case Nakshatra.Pushya:
+			case Nakshatra.Chittra:
+			case Nakshatra.PoorvaShada:
+			case Nakshatra.UttaraBhadra:
+				return true;
+				
+			case Nakshatra.Krittika:
+			case Nakshatra.Aslesha:
+			case Nakshatra.Swati:
+			case Nakshatra.UttaraShada:
+			case Nakshatra.Revati: 
+				return true;
+		}
+
+		return (false);
+	}
 
 	public ZodiacHouse BhuktiDirect(ZodiacHouse zh, int cycle)
 	{
@@ -215,10 +241,6 @@ public class KalachakraDasa : Dasa, IDasa
 		return (ZodiacHouse) (12 - (zh.Index() - 1));
 	}
 
-
-	//1: Indirect reverse
-	//2: Indirect
-	//3: Indirect
 	public ZodiacHouse BhuktiIndirect(ZodiacHouse zh, int cycle)
 	{
 		var index       = Indirect(zh).Index();
@@ -226,6 +248,12 @@ public class KalachakraDasa : Dasa, IDasa
 		var bhukti      = (ZodiacHouse) progression.NormalizeInc(1, 12);
 		bhukti = Invert(bhukti);
 		var dp          = (int) Math.Ceiling(progression / 12.0) - 1;
+
+		if (dp >= 6)
+		{
+			dp++; //switch in direction
+		}
+
 		if ((dp % 2) == 0)
 		{
 			return bhukti.LordsOtherSign();
@@ -250,35 +278,6 @@ public class KalachakraDasa : Dasa, IDasa
 
 	public void RecalculateOptions()
 	{
-	}
-
-	public bool IsDirect(Nakshatra nakshatra)
-	{
-		switch (nakshatra)
-		{
-			case Nakshatra.Aswini:
-			case Nakshatra.Punarvasu:
-			case Nakshatra.Hasta:
-			case Nakshatra.Moola:
-			case Nakshatra.PoorvaBhadra: 
-				return true;
-
-			case Nakshatra.Bharani:
-			case Nakshatra.Pushya:
-			case Nakshatra.Chittra:
-			case Nakshatra.PoorvaShada:
-			case Nakshatra.UttaraBhadra:
-				return true;
-				
-			case Nakshatra.Krittika:
-			case Nakshatra.Aslesha:
-			case Nakshatra.Swati:
-			case Nakshatra.UttaraShada:
-			case Nakshatra.Revati: 
-				return true;
-		}
-
-		return (false);
 	}
 
 	public double DasaLength(ZodiacHouse zh)
