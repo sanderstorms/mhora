@@ -26,19 +26,9 @@ namespace Mhora.Elements.Dasas.NakshatraDasa;
 
 public class KalachakraDasa : Dasa, IDasa
 {
-	public enum GroupType
-	{
-		Savya,
-		SavyaMirrored,
-		Apasavya,
-		ApasavyaMirrored
-	}
-
 	private readonly Horoscope _h;
 	private          Nakshatra _nakshatra;
 	private          double    _dasaLength;
-
-	private Dictionary<ZodiacHouse, bool> _dasa = new ();
 
 	public KalachakraDasa(Horoscope h)
 	{
@@ -89,9 +79,8 @@ public class KalachakraDasa : Dasa, IDasa
 		for (var i = 0; i < 9; i++)
 		{
 			var zh  = DasaPeriod(mLon.Value, i, out var savya);
-			_dasa.Add(zh, savya);
 			var len = DasaLength(zh);
-			var de  = new DasaEntry(zh, start, len, 1, zh.ToString());
+			var de  = new KalaChakraDasaEntry(zh, start, len, 1, savya, zh.ToString());
 			al.Add(de);
 			start += len;
 		}
@@ -105,16 +94,11 @@ public class KalachakraDasa : Dasa, IDasa
 		ZodiacHouse zh;
 		double      dasaLengthSum = 0;
 
-		if (pdi.Level >= 2)
-		{
-			return al;
-		}
+		var entry = pdi as KalaChakraDasaEntry;
 
-		var direct = _dasa[pdi.ZHouse];
-			
 		for (var i = 0; i < 9; i++)
 		{
-			if (direct)
+			if (entry.Direct)
 			{
 				zh = BhuktiDirect(pdi.ZHouse, i, out _);
 			}
@@ -132,17 +116,18 @@ public class KalachakraDasa : Dasa, IDasa
 		var start = pdi.Start;
 		for (var i = 0; i < 9; i++)
 		{
-			if (direct)
+			bool direct;
+			if (entry.Direct)
 			{
-				zh = BhuktiDirect(pdi.ZHouse, i, out _); //Check for next dasa level
+				zh = BhuktiDirect(pdi.ZHouse, i, out direct);
 			}
 			else
 			{
-				zh = BhuktiIndirect(pdi.ZHouse, i, out _);
+				zh = BhuktiIndirect(pdi.ZHouse, i, out direct);
 				
 			}
-			var dasaLength = DasaLength(zh)  * dasaLengthSum;
-			var de         = new DasaEntry(zh, start, dasaLength, pdi.Level + 1, pdi.DasaName + " " + zh);
+			var dasaLength = DasaLength(zh) * dasaLengthSum;
+			var de         = new KalaChakraDasaEntry(zh, start, dasaLength, pdi.Level + 1, direct, "  " + pdi.DasaName + " " + zh);
 			start += dasaLength;
 			al.Add(de);
 		}
