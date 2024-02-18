@@ -63,19 +63,12 @@ public class KalachakraDasa : Dasa, IDasa
 			_dasaLength = 0;
 		}
 
-		for (var i = 0; i < 9; i++)
-		{
-			var zh  = DasaPeriod(mLon.Value, i);
-			var len = DasaLength(zh);
-			_dasaLength += len;
-		}
 
 		for (var i = 0; i < 9; i++)
 		{
 			var zh  = DasaPeriod(mLon.Value, i);
 			var len = DasaLength(zh);
-			var de  = new DasaEntry(zh, _dasaLength, len, 1, zh.ToString());
-			al.Add(de);
+			_dasaLength += len;
 		}
 
 		/*
@@ -87,11 +80,16 @@ public class KalachakraDasa : Dasa, IDasa
 
 		var bhogyaSarvayu = (left.TotalArcseconds * 100) / 12000;
 		*/
-		var   offsetLength    = mLon.ToNakshatraPadaPercentage() / 100.0 * _dasaLength;
+		var offsetLength = mLon.ToNakshatraPadaPercentage() / 100.0 * _dasaLength;
 
-		foreach (DasaEntry de in al)
+		var start = -offsetLength;
+		for (var i = 0; i < 9; i++)
 		{
-			de.Start -= offsetLength;
+			var zh  = DasaPeriod(mLon.Value, i);
+			var len = DasaLength(zh);
+			var de  = new DasaEntry(zh, start, len, 1, zh.ToString());
+			al.Add(de);
+			start += len;
 		}
 
 		return al;
@@ -103,6 +101,11 @@ public class KalachakraDasa : Dasa, IDasa
 		ZodiacHouse zh;
 		double      dasaLengthSum = 0;
 		var         direct        = IsDirect(_nakshatra);
+
+		if (pdi.Level >= 2)
+		{
+			return al;
+		}
 
 		if ((pdi.Level % 2) == 1)
 		{
@@ -124,8 +127,9 @@ public class KalachakraDasa : Dasa, IDasa
 			dasaLengthSum += dasaLength;
 		}
 
-		dasaLengthSum = (pdi.DasaLength.TotalYears / dasaLengthSum);
+		dasaLengthSum = pdi.DasaLength.TotalYears / dasaLengthSum;
 
+		var start = pdi.Start;
 		for (var i = 0; i < 9; i++)
 		{
 			if (direct)
@@ -137,8 +141,9 @@ public class KalachakraDasa : Dasa, IDasa
 				zh = BhuktiIndirect(pdi.ZHouse, i);
 				
 			}
-			var dasaLength = DasaLength(zh);
-			var de         = new DasaEntry(zh, dasaLengthSum, dasaLength / dasaLengthSum, 1, pdi.DasaName + " " + zh);
+			var dasaLength = DasaLength(zh)  * dasaLengthSum;
+			var de         = new DasaEntry(zh, start, dasaLength, pdi.Level + 1, pdi.DasaName + " " + zh);
+			start += dasaLength;
 			al.Add(de);
 		}
 
