@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using Mhora.Components.Delegates;
@@ -68,7 +69,7 @@ public class Horoscope : ICloneable
 		Body.Mars
 	};
 
-	public HoraInfo Info { get; set;}
+	public HoraInfo Info { get;}
 
 	public readonly Body[] KalaOrder =
 	{
@@ -157,7 +158,7 @@ public class Horoscope : ICloneable
 	{
 		Options          = options;
 		Info             = info;
-		sweph.SetSidMode((int) HoroscopeOptions.AyanamsaType.TrueCitra, 0.0, 0.0);
+		sweph.SetSidMode((int) options.Ayanamsa, 0.0, 0.0);
 		SwephHouseSystem = 'P';
 		PopulateCache();
 		MhoraGlobalOptions.CalculationPrefsChanged += OnGlobalCalcPrefsChanged;
@@ -212,12 +213,15 @@ public class Horoscope : ICloneable
 		return bp.ToDivisionPosition(d);
 	}
 
-	public ArrayList CalculateDivisionPositions(Division d)
+	public List<DivisionPosition> CalculateDivisionPositions(Division d)
 	{
-		var al = new ArrayList();
+		var al = new List<DivisionPosition>();
 		foreach (Position bp in PositionList)
 		{
-			al.Add(CalculateDivisionPosition(bp, d));
+			if (bp.BodyType != BodyType.Other)
+			{
+				al.Add(CalculateDivisionPosition(bp, d));
+			}
 		}
 
 		return al;
@@ -244,7 +248,7 @@ public class Horoscope : ICloneable
 		return dp2;
 	}
 
-	public ArrayList CalculateGrahaArudhaDivisionPositions(Division dtype)
+	public List <DivisionPosition> CalculateGrahaArudhaDivisionPositions(Division dtype)
 	{
 		object[][] parameters =
 		{
@@ -319,7 +323,7 @@ public class Horoscope : ICloneable
 				Body.Rahu
 			}
 		};
-		var al = new ArrayList(14);
+		var al = new List <DivisionPosition> ();
 
 		for (var i = 0; i < parameters.Length; i++)
 		{
@@ -329,9 +333,9 @@ public class Horoscope : ICloneable
 		return al;
 	}
 
-	public ArrayList CalculateVarnadaDivisionPositions(Division dtype)
+	public List <DivisionPosition> CalculateVarnadaDivisionPositions(Division dtype)
 	{
-		var al   = new ArrayList(12);
+		var al   = new List <DivisionPosition> ();
 		var zhL  = (ZodiacHouse) GetPosition(Body.Lagna).ToDivisionPosition(dtype).ZodiacHouse;
 		var zhHl = (ZodiacHouse) GetPosition(Body.HoraLagna).ToDivisionPosition(dtype).ZodiacHouse;
 
@@ -410,7 +414,7 @@ public class Horoscope : ICloneable
 		return dp;
 	}
 
-	public ArrayList CalculateArudhaDivisionPositions(Division d)
+	public List <DivisionPosition> CalculateArudhaDivisionPositions(Division d)
 	{
 		Body[] bnlist =
 		{
@@ -429,8 +433,8 @@ public class Horoscope : ICloneable
 			Body.UL
 		};
 
-		var              fsColord       = new FindStronger(this, d, FindStronger.RulesStrongerCoLord(this));
-		var              arudhaDivList = new ArrayList(14);
+		var              fsColord      = new FindStronger(this, d, FindStronger.RulesStrongerCoLord(this));
+		var              arudhaDivList = new List <DivisionPosition> ();
 		DivisionPosition first, second;
 		for (var j = 1; j <= 12; j++)
 		{

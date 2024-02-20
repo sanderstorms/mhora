@@ -243,6 +243,10 @@ public class Position : ICloneable
 
 	private bool HoraSunDayNight()
 	{
+		if (BodyType == BodyType.Other)
+		{
+			return (false);
+		}
 		var sign = (int) Longitude.ToZodiacHouse();
 		var part = PartOfZodiacHouse(2);
 		if (Longitude.ToZodiacHouse().IsDaySign())

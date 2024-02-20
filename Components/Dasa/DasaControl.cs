@@ -909,6 +909,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		_minCycle--;
 		var a = _id.Dasa(_minCycle);
 		var i = 0;
+		_dasaItemList.Items.Clear();
 		foreach (DasaEntry de in a)
 		{
 			var di = new DasaItem(de);
@@ -922,6 +923,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	{
 		_maxCycle++;
 		var a = _id.Dasa(_maxCycle);
+		_dasaItemList.Items.Clear();
 		foreach (DasaEntry de in a)
 		{
 			var di = new DasaItem(de);

@@ -23,6 +23,7 @@ using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
+//Lagna in Taurus/Libra navamsa
 public class DwadashottariDasa : NakshatraDasa, INakshatraDasa
 {
 	private readonly Horoscope _h;

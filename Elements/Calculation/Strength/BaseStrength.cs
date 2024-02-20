@@ -17,17 +17,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Definitions;
 
 namespace Mhora.Elements.Calculation.Strength;
 
 public abstract class BaseStrength
 {
-	protected bool      BUseSimpleLords;
-	protected Division  Dtype;
-	protected Horoscope H;
-	protected ArrayList StdDivPos;
-	protected ArrayList StdGrahas;
+	protected bool                    BUseSimpleLords;
+	protected Division                Dtype;
+	protected Horoscope               H;
+	protected List <DivisionPosition> StdDivPos;
+	protected ArrayList               StdGrahas;
 
 	protected BaseStrength(Horoscope h, Division dtype, bool bUseSimpleLords)
 	{

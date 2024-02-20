@@ -26,6 +26,7 @@ using Mhora.Components.Varga;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Dasas;
 using Mhora.Elements.Dasas.NakshatraDasa;
 using Mhora.Tables;
 using Mhora.Util;
@@ -691,34 +692,34 @@ public class BasicCalculationsControl : MhoraControl
 		switch (options.NakshatraLord)
 		{
 			default:
-			case ENakshatraLord.Vimsottari:
+			case Dasas.NakshatraLord.Vimsottari:
 				id = new VimsottariDasa(h);
 				break;
-			case ENakshatraLord.Ashtottari:
+			case Dasas.NakshatraLord.Ashtottari:
 				id = new AshtottariDasa(h);
 				break;
-			case ENakshatraLord.Yogini:
+			case Dasas.NakshatraLord.Yogini:
 				id = new YoginiDasa(h);
 				break;
-			case ENakshatraLord.Shodashottari:
+			case Dasas.NakshatraLord.Shodashottari:
 				id = new ShodashottariDasa(h);
 				break;
-			case ENakshatraLord.Dwadashottari:
+			case Dasas.NakshatraLord.Dwadashottari:
 				id = new DwadashottariDasa(h);
 				break;
-			case ENakshatraLord.Panchottari:
+			case Dasas.NakshatraLord.Panchottari:
 				id = new PanchottariDasa(h);
 				break;
-			case ENakshatraLord.Shatabdika:
+			case Dasas.NakshatraLord.Shatabdika:
 				id = new ShatabdikaDasa(h);
 				break;
-			case ENakshatraLord.ChaturashitiSama:
+			case Dasas.NakshatraLord.ChaturashitiSama:
 				id = new ChaturashitiSamaDasa(h);
 				break;
-			case ENakshatraLord.DwisaptatiSama:
+			case Dasas.NakshatraLord.DwisaptatiSama:
 				id = new DwisaptatiSamaDasa(h);
 				break;
-			case ENakshatraLord.ShatTrimshaSama:
+			case Dasas.NakshatraLord.ShatTrimshaSama:
 				id = new ShatTrimshaSamaDasa(h);
 				break;
 		}
@@ -789,42 +790,6 @@ public class BasicCalculationsControl : MhoraControl
 
 		ColorAndFontRows(mList);
 		ResizeColumns();
-	}
-
-	private string AmsaRuler(Position bp, DivisionPosition dp)
-	{
-		if (dp.RulerIndex == 0)
-		{
-			return string.Empty;
-		}
-
-		var ri = dp.RulerIndex - 1;
-
-		if (options.DivisionType.MultipleDivisions.Length == 1)
-		{
-			switch (options.DivisionType.MultipleDivisions[0].Varga)
-			{
-				case DivisionType.HoraParasara:     return Vargas.Rulers.Hora[ri];
-				case DivisionType.DrekkanaParasara: return Vargas.Rulers.Drekkana[ri];
-				case DivisionType.Chaturthamsa:     return Vargas.Rulers.Chaturthamsa[ri];
-				case DivisionType.Saptamsa:         return Vargas.Rulers.Saptamsa[ri];
-				case DivisionType.Navamsa:          return Vargas.Rulers.Navamsa[ri];
-				case DivisionType.Dasamsa:          return Vargas.Rulers.Dasamsa[ri];
-				case DivisionType.Dwadasamsa:       return Vargas.Rulers.Dwadasamsa[ri];
-				case DivisionType.Shodasamsa:       return Vargas.Rulers.Shodasamsa[ri];
-				case DivisionType.Vimsamsa:         return Vargas.Rulers.Vimsamsa[ri];
-				case DivisionType.Chaturvimsamsa:   return Vargas.Rulers.Chaturvimsamsa[ri];
-				case DivisionType.Nakshatramsa:     return Vargas.Rulers.Nakshatramsa[ri];
-				case DivisionType.Trimsamsa:        return Vargas.Rulers.Trimsamsa[ri];
-				case DivisionType.Khavedamsa:       return Vargas.Rulers.Khavedamsa[ri];
-				case DivisionType.Akshavedamsa:     return Vargas.Rulers.Akshavedamsa[ri];
-				case DivisionType.Shashtyamsa:      return Vargas.Rulers.Shashtyamsa[ri];
-				case DivisionType.Nadiamsa:         return Vargas.Rulers.NadiamsaCKN[ri];
-				case DivisionType.NadiamsaCKN:      return Vargas.Rulers.NadiamsaCKN[ri];
-			}
-		}
-
-		return string.Empty;
 	}
 
 	private string GetBodyString(Position bp)
@@ -936,7 +901,7 @@ public class BasicCalculationsControl : MhoraControl
 			var dp = bp.ToDivisionPosition(options.DivisionType);
 			li.SubItems.Add(dp.ZodiacHouse.ToString());
 			li.SubItems.Add(dp.Part.ToString());
-			li.SubItems.Add(AmsaRuler(bp, dp));
+			li.SubItems.Add(bp.AmsaRuler( options.DivisionType.MultipleDivisions[0].Varga, dp.RulerIndex));
 			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspLower)));
 			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
 
@@ -1217,20 +1182,6 @@ public class BasicCalculationsControl : MhoraControl
 		}
 	}
 
-	private enum ENakshatraLord
-	{
-		Vimsottari,
-		Ashtottari,
-		Yogini,
-		Shodashottari,
-		Dwadashottari,
-		Panchottari,
-		Shatabdika,
-		ChaturashitiSama,
-		DwisaptatiSama,
-		ShatTrimshaSama
-	}
-
 	private class UserOptions : ICloneable
 	{
 		[PGNotVisible]
@@ -1247,7 +1198,7 @@ public class BasicCalculationsControl : MhoraControl
 			set => DivisionType = new Division(value);
 		}
 
-		public ENakshatraLord NakshatraLord
+		public Dasas.NakshatraLord NakshatraLord
 		{
 			get;
 			set;

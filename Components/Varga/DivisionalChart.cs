@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -41,8 +42,7 @@ namespace Mhora.Components.Varga;
 [Serializable]
 public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 {
-	private ArrayList arudha_pos;
-	private Brush     b = new SolidBrush(Color.Black);
+	private Brush                   b = new SolidBrush(Color.Black);
 
 	private bool             bInnerMode;
 	public  HoroscopeOptions calculation_options;
@@ -52,13 +52,16 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	/// </summary>
 	private Container components = null;
 
-	public  ContextMenu contextMenu;
-	private IDrawChart  dc;
-	private ArrayList   div_pos;
+	public  ContextMenu             contextMenu;
+	private IDrawChart              dc;
+
+	private List <DivisionPosition> arudha_pos;
+	private List <DivisionPosition> div_pos;
+	private List <DivisionPosition> graha_arudha_pos;
+	private List<DivisionPosition>  varnada_pos;
 
 	private Font fBase = new(MhoraGlobalOptions.Instance.VargaFont.FontFamily, MhoraGlobalOptions.Instance.VargaFont.SizeInPoints);
 
-	private ArrayList graha_arudha_pos;
 
 	private DivisionalChart innerControl;
 
@@ -166,9 +169,8 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private Pen pn_black = new(Color.Black, (float) 0.01);
 
-	public  bool      PrintMode = false;
-	private int[]     sav_bindus;
-	private ArrayList varnada_pos;
+	public  bool                   PrintMode = false;
+	private int[]                  sav_bindus;
 
 	public DivisionalChart(Horoscope _h)
 	{
@@ -1186,7 +1188,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		DrawItems(g, true);
 		items.Clear();
 
-		ArrayList secondary_pos = null;
+		List<DivisionPosition> secondary_pos = null;
 
 		if (options.ViewStyle == UserOptions.EViewStyle.Normal)
 		{
@@ -1393,8 +1395,6 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		arudha_pos       = h.CalculateArudhaDivisionPositions(options.Varga);
 		varnada_pos      = h.CalculateVarnadaDivisionPositions(options.Varga);
 		graha_arudha_pos = h.CalculateGrahaArudhaDivisionPositions(options.Varga);
-
-		Graha.Create(h, options.Varga.MultipleDivisions [0].Varga);
 
 		SetChartStyle(options.ChartStyle);
 		CalculateBindus();

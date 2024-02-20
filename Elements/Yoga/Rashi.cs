@@ -27,6 +27,11 @@ namespace Mhora.Elements.Yoga
 			return _zh.Name ();
 		}
 
+		public static void Clear()
+		{
+			_rashis.Clear();
+		}
+
 		public override bool Equals(object obj)
 		{
 			if (obj is Rashi rashi)

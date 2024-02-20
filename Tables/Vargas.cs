@@ -528,6 +528,32 @@ public static class Vargas
 		return string.Empty;
 	}
 
+	public static string AmsaRuler(this Position bp, DivisionType varga, int ri)
+	{
+		switch (varga)
+		{
+			case DivisionType.HoraParasara:     return Rulers.Hora[ri];
+			case DivisionType.DrekkanaParasara: return Rulers.Drekkana[ri];
+			case DivisionType.Chaturthamsa:     return Rulers.Chaturthamsa[ri];
+			case DivisionType.Saptamsa:         return Rulers.Saptamsa[ri];
+			case DivisionType.Navamsa:          return Rulers.Navamsa[ri];
+			case DivisionType.Dasamsa:          return Rulers.Dasamsa[ri];
+			case DivisionType.Dwadasamsa:       return Rulers.Dwadasamsa[ri];
+			case DivisionType.Shodasamsa:       return Rulers.Shodasamsa[ri];
+			case DivisionType.Vimsamsa:         return Rulers.Vimsamsa[ri];
+			case DivisionType.Chaturvimsamsa:   return Rulers.Chaturvimsamsa[ri];
+			case DivisionType.Nakshatramsa:     return Rulers.Nakshatramsa[ri];
+			case DivisionType.Trimsamsa:        return Rulers.Trimsamsa[ri];
+			case DivisionType.Khavedamsa:       return Rulers.Khavedamsa[ri];
+			case DivisionType.Akshavedamsa:     return Rulers.Akshavedamsa[ri];
+			case DivisionType.Shashtyamsa:      return Rulers.Shashtyamsa[ri];
+			case DivisionType.Nadiamsa:         return Rulers.NadiamsaCKN[ri];
+			case DivisionType.NadiamsaCKN:      return Rulers.NadiamsaCKN[ri];
+		}
+
+		return string.Empty;
+	}
+
 	public static string NumPartsInDivisionString(this Division div)
 	{
 		var sRet = "D";

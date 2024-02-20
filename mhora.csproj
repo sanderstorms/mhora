@@ -182,12 +182,14 @@
     <Compile Include="Definitions\Muhurta.cs" />
     <Compile Include="Definitions\Nakshatra.cs" />
     <Compile Include="Definitions\Nakshatra28.cs" />
+    <Compile Include="Elements\Dasas\Dasas.cs" />
     <Compile Include="Elements\Dasas\KalaChakraDasaEntry.cs" />
     <Compile Include="Elements\Sahama.cs" />
     <Compile Include="Elements\Yoga\Aakriti.cs" />
     <Compile Include="Elements\Yoga\Buddh.cs" />
     <Compile Include="Elements\Yoga\Chandra.cs" />
     <Compile Include="Elements\Yoga\Dhana.cs" />
+    <Compile Include="Elements\Yoga\DpList.cs" />
     <Compile Include="Elements\Yoga\GajaKesari.cs" />
     <Compile Include="Elements\Yoga\Guru.cs" />
     <Compile Include="Elements\Yoga\HariHaraBramha.cs" />

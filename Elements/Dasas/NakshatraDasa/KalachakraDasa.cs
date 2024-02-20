@@ -75,12 +75,32 @@ public class KalachakraDasa : Dasa, IDasa
 		*/
 		var offsetLength = mLon.ToNakshatraPadaPercentage() / 100.0 * _dasaLength;
 
-		var start = -offsetLength;
+		var start   = -offsetLength;
+		int skipped = 0;
 		for (var i = 0; i < 9; i++)
 		{
 			var zh  = DasaPeriod(mLon.Value, i, out var savya);
 			var len = DasaLength(zh);
-			var de  = new KalaChakraDasaEntry(zh, start, len, 1, savya, zh.ToString());
+
+			if ((start + len) >= 0)
+			{
+				var de = new KalaChakraDasaEntry(zh, start, len, 1, savya, zh.ToString());
+				al.Add(de);
+			}
+			else
+			{
+				skipped++;
+			}
+
+			start += len;
+		}
+
+		for (var i = 0; i < skipped; i++)
+		{
+			var zh  = DasaPeriod(mLon.Value, i, out var savya);
+			var len = DasaLength(zh);
+
+			var de = new KalaChakraDasaEntry(zh, start, len, 1, savya, zh.ToString());
 			al.Add(de);
 			start += len;
 		}
@@ -127,7 +147,7 @@ public class KalachakraDasa : Dasa, IDasa
 				
 			}
 			var dasaLength = DasaLength(zh) * dasaLengthSum;
-			var de         = new KalaChakraDasaEntry(zh, start, dasaLength, pdi.Level + 1, direct, "  " + pdi.DasaName + " " + zh);
+			var de         = new KalaChakraDasaEntry(zh, start, dasaLength, pdi.Level + 1, direct, pdi.DasaName + " " + zh);
 			start += dasaLength;
 			al.Add(de);
 		}

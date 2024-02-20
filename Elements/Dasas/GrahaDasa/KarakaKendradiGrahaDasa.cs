@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Mhora.Components.Property;
 using Mhora.Definitions;
@@ -201,10 +202,10 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 	public class UserOptions : ICloneable
 	{
-		private readonly Horoscope _h;
-		public           Division  Dtype = new(DivisionType.Rasi);
-		protected        Body MSeedBody;
-		private          ArrayList _stdDivPos;
+		private readonly Horoscope               _h;
+		public           Division                Dtype = new(DivisionType.Rasi);
+		protected        Body                    MSeedBody;
+		private          List <DivisionPosition> _stdDivPos;
 
 		public UserOptions(Horoscope h)
 		{

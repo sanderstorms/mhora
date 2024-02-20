@@ -23,6 +23,8 @@ using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
+
+//Lagna in Sun's hora in Sukla paksha or Lagna in Moon's hora in Krishna paksha
 public class ShodashottariDasa : NakshatraDasa, INakshatraDasa
 {
 	private readonly Horoscope _h;

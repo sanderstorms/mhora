@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Mhora.Components.Controls;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
@@ -12,6 +15,7 @@ namespace Mhora.Elements.Yoga
 	public class Graha
 	{
 		private static readonly Dictionary<DivisionType, List <Graha>> _grahas = new();
+		private static readonly Dictionary<DivisionType, DpList>       _dpList = new ();
 
 		private readonly DivisionType     _varga;
 		private readonly DivisionPosition _dp;
@@ -44,15 +48,43 @@ namespace Mhora.Elements.Yoga
 			return _dp.ToString();
 		}
 
+		public static void Clear()
+		{
+			_dpList.Clear();
+			_grahas.Clear();
+		}
+
 		public static List<Graha> Grahas(DivisionType varga)
 		{
 			if (_grahas.TryGetValue(varga, out var grahas) == false)
 			{
 				grahas = new List<Graha>();
+			}
+			return (grahas);
+		}
+
+
+		public static List<Graha> Grahas(Horoscope h, DivisionType varga)
+		{
+			if (_grahas.TryGetValue(varga, out var grahas) == false)
+			{
+				grahas = Create(h, varga);
 				_grahas.Add(varga, grahas);
+				
 			}
 
 			return (grahas);
+		}
+
+		public static DpList Positions(Horoscope h, DivisionType varga)
+		{
+			if (_dpList.TryGetValue(varga, out var dpList) == false)
+			{
+				dpList = new DpList(h, new Division(varga));
+				_dpList.Add(varga, dpList);
+			}
+
+			return (dpList);
 		}
 
 		public static List<Graha> Planets(DivisionType varga)
@@ -1349,52 +1381,52 @@ namespace Mhora.Elements.Yoga
 		}
 
 
-		public static void Create(Horoscope h, DivisionType varga)
+		private static List<Graha> Create(Horoscope h, DivisionType varga)
 		{
-			var division = new Division(varga);
-
-			var positions = h.CalculateDivisionPositions(division);
-
-			var grahas = Grahas(varga);
-			grahas.Clear();
-
-			Rashi.Create(varga);
-
-			foreach (DivisionPosition dp in positions)
+			var grahas = new List<Graha>();
+			try
 			{
-				if ((dp.BodyType == BodyType.Graha) || (dp.BodyType == BodyType.Lagna))
+				var dpList = Positions(h, varga);
+				Rashi.Create(varga);
+
+				foreach (DivisionPosition dp in dpList.Positions)
 				{
-					var position = h.GetPosition(dp.Body);
-					var graha = new Graha(dp, varga)
+					if ((dp.BodyType == BodyType.Graha) || (dp.BodyType == BodyType.Lagna))
 					{
-						_isRetrograde = (position.SpeedLongitude < 0.0)
-					};
-					if ((dp.Body != Body.Lagna) && (graha.IsChayaGraha == false))
-					{
-						graha._digBala      = h.DigBala(dp.Body);
-						graha._bodyPosition = GetBodyPosition(h, dp.Body);
-					}
-					else
-					{
-						graha._bodyPosition = new BodyPosition
+						var position = h.GetPosition(dp.Body);
+						var graha = new Graha(dp, varga)
 						{
-							Longitude = position.Longitude
+							_isRetrograde = (position.SpeedLongitude < 0.0)
 						};
+						if ((dp.Body != Body.Lagna) && (graha.IsChayaGraha == false))
+						{
+							graha._digBala      = h.DigBala(dp.Body);
+							graha._bodyPosition = GetBodyPosition(h, dp.Body);
+						}
+						else
+						{
+							graha._bodyPosition = new BodyPosition
+							{
+								Longitude = position.Longitude
+							};
+						}
+						grahas.Add(graha);
 					}
-                    grahas.Add(graha);
+				}
+
+				grahas.Sort((x, y) => x._dp.Longitude.CompareTo(y._dp.Longitude));
+
+				foreach (var graha in grahas)
+				{
+					graha.Examine();
 				}
 			}
-
-			grahas.Sort((x, y) => x._dp.Longitude.CompareTo(y._dp.Longitude));
-
-			foreach (var graha in grahas)
+			catch (Exception e)
 			{
-				graha.Examine();
+				Application.Log.Exception(e);
 			}
 
-			var planets = Planets(varga);
-
-			Rashi.Examine(varga);
+			return (grahas);
 		}
 	}
 }

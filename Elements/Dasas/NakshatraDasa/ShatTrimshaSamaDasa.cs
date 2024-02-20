@@ -23,6 +23,7 @@ using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
+//Lagna in Sun's hora in daytime or Lagna in Moon's hora in night time~
 public class ShatTrimshaSamaDasa : NakshatraDasa, INakshatraDasa
 {
 	private readonly Horoscope _h;
