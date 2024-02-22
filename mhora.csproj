@@ -184,6 +184,7 @@
     <Compile Include="Definitions\Nakshatra28.cs" />
     <Compile Include="Elements\Dasas\Dasas.cs" />
     <Compile Include="Elements\Dasas\KalaChakraDasaEntry.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\KalaChakra.cs" />
     <Compile Include="Elements\Sahama.cs" />
     <Compile Include="Elements\Yoga\Aakriti.cs" />
     <Compile Include="Elements\Yoga\Buddh.cs" />
