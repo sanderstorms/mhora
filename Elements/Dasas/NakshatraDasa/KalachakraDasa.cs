@@ -16,7 +16,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using System;
 using System.Collections;
 using Mhora.Definitions;
 using Mhora.Util;
@@ -81,8 +80,8 @@ public class KalachakraDasa : Dasa, IDasa
 
 		for (var i = 0; i < 9; i++)
 		{
-			var zh  = KalaChakra.DasaPeriod(mLon.Value, i, out _);
-			var len = DasaLength(zh);
+			var zh  = mLon.DasaPeriod(i, out _);
+			var len = zh.DasaLength();
 			dasaLength += len;
 		}
 
@@ -101,8 +100,8 @@ public class KalachakraDasa : Dasa, IDasa
 		int skipped = 0;
 		for (var i = 0; i < 9; i++)
 		{
-			var zh  = KalaChakra.DasaPeriod(mLon.Value, i, out var savya);
-			var len = DasaLength(zh);
+			var zh  = mLon.DasaPeriod(i, out var savya);
+			var len = zh.DasaLength();
 
 			if ((start + len) >= 0)
 			{
@@ -119,8 +118,8 @@ public class KalachakraDasa : Dasa, IDasa
 
 		for (var i = 0; i < skipped; i++)
 		{
-			var zh  = KalaChakra.DasaPeriod(mLon.Value, i, out var savya);
-			var len = DasaLength(zh);
+			var zh  = mLon.DasaPeriod(i, out var savya);
+			var len = zh.DasaLength();
 
 			var de = new KalaChakraDasaEntry(zh, start, len, 1, savya, zh.ToString());
 			al.Add(de);
@@ -142,14 +141,14 @@ public class KalachakraDasa : Dasa, IDasa
 		{
 			if (entry.Direct)
 			{
-				zh = KalaChakra.BhuktiDirect(pdi.ZHouse, i, out _);
+				zh = pdi.ZHouse.BhuktiDirect(i, out _);
 			}
 			else
 			{
-				zh = KalaChakra.BhuktiIndirect(pdi.ZHouse, i, out _);
+				zh = pdi.ZHouse.BhuktiIndirect(i, out _);
 				
 			}
-			var dasaLength = DasaLength(zh);
+			var dasaLength = zh.DasaLength();
 			dasaLengthSum += dasaLength;
 		}
 
@@ -161,14 +160,14 @@ public class KalachakraDasa : Dasa, IDasa
 			bool direct;
 			if (entry.Direct)
 			{
-				zh = KalaChakra.BhuktiDirect(pdi.ZHouse, i, out direct);
+				zh = pdi.ZHouse.BhuktiDirect(i, out direct);
 			}
 			else
 			{
-				zh = KalaChakra.BhuktiIndirect(pdi.ZHouse, i, out direct);
+				zh = pdi.ZHouse.BhuktiIndirect(i, out direct);
 				
 			}
-			var dasaLength = DasaLength(zh) * dasaLengthSum;
+			var dasaLength = zh.DasaLength() * dasaLengthSum;
 			var name       = pdi.DasaName + " " + zh.Name();
 			var de         = new KalaChakraDasaEntry(zh, start, dasaLength, pdi.Level + 1, direct, name);
 			start += dasaLength;
@@ -195,25 +194,5 @@ public class KalachakraDasa : Dasa, IDasa
 
 	public void RecalculateOptions()
 	{
-	}
-
-	public static double DasaLength(ZodiacHouse zh)
-	{
-		switch (zh)
-		{
-			case ZodiacHouse.Ari:
-			case ZodiacHouse.Sco: return 7;
-			case ZodiacHouse.Tau:
-			case ZodiacHouse.Lib: return 16;
-			case ZodiacHouse.Gem:
-			case ZodiacHouse.Vir: return 9;
-			case ZodiacHouse.Can: return 21;
-			case ZodiacHouse.Leo: return 5;
-			case ZodiacHouse.Sag:
-			case ZodiacHouse.Pis: return 10;
-			case ZodiacHouse.Cap:
-			case ZodiacHouse.Aqu: return 4;
-			default: throw new Exception("KalachakraDasa::DasaLength");
-		}
 	}
 }

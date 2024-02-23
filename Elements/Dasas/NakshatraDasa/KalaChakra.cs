@@ -20,7 +20,7 @@ namespace Mhora.Elements.Dasas.NakshatraDasa
 			Mark = 0x40, // Mark next Gati
 		}
 
-		public static Gati DasaGati(ZodiacHouse dasa, int cycle)
+		public static Gati DasaGati(this ZodiacHouse dasa, int cycle)
 		{
 			var gati = Gati.None;
 
@@ -40,7 +40,7 @@ namespace Mhora.Elements.Dasas.NakshatraDasa
 						gati |= Gati.FF;
 					}
 				}
-					break;
+				break;
 
 				case 2:
 				{
@@ -49,7 +49,7 @@ namespace Mhora.Elements.Dasas.NakshatraDasa
 						gati = Gati.Re;
 					}
 				}
-					break;
+				break;
 
 				case 3:
 				{
@@ -65,7 +65,7 @@ namespace Mhora.Elements.Dasas.NakshatraDasa
 							return Gati.FF;
 					}
 				}
-					break;
+				break;
 
 				case 4:
 				{
@@ -79,7 +79,7 @@ namespace Mhora.Elements.Dasas.NakshatraDasa
 							return Gati.FF;
 					}
 				}
-					break;
+				break;
 
 				case 6:
 				{
@@ -92,7 +92,7 @@ namespace Mhora.Elements.Dasas.NakshatraDasa
 							return Gati.Mark;
 					}
 				}
-					break;
+				break;
 
 				case 7:
 				{
@@ -105,9 +105,8 @@ namespace Mhora.Elements.Dasas.NakshatraDasa
 						case ZodiacHouse.Lib:
 							return Gati.QJ;
 					}
-
-					break;
 				}
+                break;
 
 				case 8:
 				{
@@ -118,7 +117,7 @@ namespace Mhora.Elements.Dasas.NakshatraDasa
 							return Gati.Re;
 					}
 				}
-					break;
+				break;
 
 				case 9: //jeeva
 				{
@@ -139,110 +138,129 @@ namespace Mhora.Elements.Dasas.NakshatraDasa
 					}
 
 				}
-					break;
+				break;
 			}
 
 			return (gati);
 		}
 
-	public static ZodiacHouse DasaPeriod (Longitude lon, int cycle, out bool savya)
-	{
-		var nakshatra = lon.ToNakshatra();
-		var pada = lon.ToNakshatraPada();
-		var zh   = NavamsaRasi(nakshatra, pada, out _);
+	    public static ZodiacHouse DasaPeriod (this Longitude lon, int cycle, out bool savya)
+	    {
+		    var nakshatra = lon.ToNakshatra();
+		    var pada = lon.ToNakshatraPada();
+		    var zh   = nakshatra.NavamsaRasi(pada, out _);
 
-		(nakshatra, pada) = zh.NakshatraPada();
-		(nakshatra, pada) = nakshatra.AddPada(pada + cycle);
+		    (nakshatra, pada) = zh.NakshatraPada();
+		    (nakshatra, pada) = nakshatra.AddPada(pada + cycle);
 
-		return NavamsaRasi(nakshatra, pada, out savya);
-	}
+		    return NavamsaRasi(nakshatra, pada, out savya);
+	    }
 
-	public static ZodiacHouse NavamsaRasi(Nakshatra nakshatra, int pada, out bool savya)
-	{
-		var dp       = nakshatra.Index().NormalizeInc(1, 6);
-		var dpOffset = dp.NormalizeInc(1, 3) - 1;
-		var zh       = (ZodiacHouse) (dpOffset * 4 + pada);
+	    public static ZodiacHouse NavamsaRasi(this Nakshatra nakshatra, int pada, out bool savya)
+	    {
+		    var dp       = nakshatra.Index().NormalizeInc(1, 6);
+		    var dpOffset = dp.NormalizeInc(1, 3) - 1;
+		    var zh       = (ZodiacHouse) (dpOffset * 4 + pada);
 
-		switch (dp)
-		{
-			case 1:
-			case 2:
-			case 3:
-				savya = true;
-				return (zh); //Clockwise (Savya)
-			default:
-				savya = false;
-				return zh.LordsOtherSign();
+		    switch (dp)
+		    {
+			    case 1:
+			    case 2:
+			    case 3:
+				    savya = true;
+				    return (zh); //Clockwise (Savya)
+			    default:
+				    savya = false;
+				    return zh.LordsOtherSign();
+		    }
+	    }
+
+	    public static ZodiacHouse Indirect(this ZodiacHouse zh)
+	    {
+		    switch (zh)
+		    {
+			    case ZodiacHouse.Leo: return ZodiacHouse.Can;
+			    case ZodiacHouse.Can: return ZodiacHouse.Leo;
+		    }
+
+		    return zh.LordsOtherSign();
+	    }
+
+	    public static ZodiacHouse Invert(this ZodiacHouse zh)
+	    {
+		    return (ZodiacHouse) (12 - (zh.Index() - 1));
+	    }
+
+	    public static int DasaPackDirect(this ZodiacHouse zh, int cycle, out ZodiacHouse bhukti)
+	    {
+		    var progression = ((zh.Index() - 1) * 9)                 + 1 + cycle;
+		    var dp          = (int) Math.Ceiling(progression / 12.0) - 1;
+		    
+		    bhukti      = (ZodiacHouse) progression.NormalizeInc(1, 12);
+		    return (dp);
+	    }
+
+	    public static ZodiacHouse BhuktiDirect(this ZodiacHouse zh, int cycle, out bool direct)
+	    {
+		    var dp = zh.DasaPackDirect(cycle, out ZodiacHouse bhukti);
+		    if ((dp % 2) == 1)
+		    {
+			    direct = false;
+			    return bhukti.LordsOtherSign();
+		    }
+
+		    direct = true;
+		    return bhukti;
+
+	    }
+
+	    public static int DasaPackIndirect(this ZodiacHouse zh, int cycle, out ZodiacHouse bhukti)
+	    {
+		    var index       = zh.Indirect().Index();
+		    var progression = ((index - 1) * 9) + 1 + cycle;
+
+		    var dp          = (int) Math.Ceiling(progression / 12.0) - 1;
+		    bhukti = (ZodiacHouse)progression.NormalizeInc(1, 12);
+		    bhukti = bhukti.Invert();
+		    return (dp);
+	    }
+
+	    public static ZodiacHouse BhuktiIndirect(this ZodiacHouse zh, int cycle, out bool direct)
+	    {
+		    var dp = zh.DasaPackIndirect(cycle, out var bhukti);
+
+		    if (dp >= 6)
+		    {
+			    dp++; //switch in direction
+		    }
+
+		    if ((dp % 2) == 0)
+		    {
+			    direct = false;
+			    return bhukti.LordsOtherSign();
+		    }
+		    direct = true;
+		    return bhukti;
+	    }
+
+        public static double DasaLength(this ZodiacHouse zh)
+        {
+            switch (zh)
+            {
+                case ZodiacHouse.Ari:
+                case ZodiacHouse.Sco: return 7;
+                case ZodiacHouse.Tau:
+                case ZodiacHouse.Lib: return 16;
+                case ZodiacHouse.Gem:
+                case ZodiacHouse.Vir: return 9;
+                case ZodiacHouse.Can: return 21;
+                case ZodiacHouse.Leo: return 5;
+                case ZodiacHouse.Sag:
+                case ZodiacHouse.Pis: return 10;
+                case ZodiacHouse.Cap:
+                case ZodiacHouse.Aqu: return 4;
+                default: throw new Exception("KalachakraDasa::DasaLength");
+            }
 		}
-	}
-
-	public static ZodiacHouse Indirect(ZodiacHouse zh)
-	{
-		switch (zh)
-		{
-			case ZodiacHouse.Leo: return ZodiacHouse.Can;
-			case ZodiacHouse.Can: return ZodiacHouse.Leo;
-		}
-
-		return zh.LordsOtherSign();
-	}
-
-	public static ZodiacHouse Invert(ZodiacHouse zh)
-	{
-		return (ZodiacHouse) (12 - (zh.Index() - 1));
-	}
-
-	public static int DasaPackDirect(ZodiacHouse zh, int cycle, out ZodiacHouse bhukti)
-	{
-		var progression = ((zh.Index() - 1) * 9)                 + 1 + cycle;
-		var dp          = (int) Math.Ceiling(progression / 12.0) - 1;
-		
-		bhukti      = (ZodiacHouse) progression.NormalizeInc(1, 12);
-		return (dp);
-	}
-
-	public static ZodiacHouse BhuktiDirect(ZodiacHouse zh, int cycle, out bool direct)
-	{
-		var dp = DasaPackDirect(zh, cycle, out ZodiacHouse bhukti);
-		if ((dp % 2) == 1)
-		{
-			direct = false;
-			return bhukti.LordsOtherSign();
-		}
-
-		direct = true;
-		return bhukti;
-
-	}
-
-	public static int DasaPackIndirect(ZodiacHouse zh, int cycle, out ZodiacHouse bhukti)
-	{
-		var index       = Indirect(zh).Index();
-		var progression = ((index - 1) * 9)  + 1 + cycle;
-
-		var dp          = (int) Math.Ceiling(progression / 12.0) - 1;
-		bhukti = (ZodiacHouse)progression.NormalizeInc(1, 12);
-		bhukti = Invert(bhukti);
-		return (dp);
-	}
-
-	public static ZodiacHouse BhuktiIndirect(ZodiacHouse zh, int cycle, out bool direct)
-	{
-		var dp = DasaPackIndirect(zh, cycle, out var bhukti);
-
-		if (dp >= 6)
-		{
-			dp++; //switch in direction
-		}
-
-		if ((dp % 2) == 0)
-		{
-			direct = false;
-			return bhukti.LordsOtherSign();
-		}
-		direct = true;
-		return bhukti;
-	}
-
 	}
 }
