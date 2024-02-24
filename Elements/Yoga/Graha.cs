@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Mhora.Components.Controls;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
@@ -14,21 +11,42 @@ namespace Mhora.Elements.Yoga
 {
 	public class Graha
 	{
-		private static readonly Dictionary<DivisionType, List <Graha>> _grahas = new();
-		private static readonly Dictionary<DivisionType, DpList>       _dpList = new ();
-
+		private readonly Position         _position;
 		private readonly DivisionType     _varga;
 		private readonly DivisionPosition _dp;
 		private readonly Rashi            _rashi;
-		private          BodyPosition     _bodyPosition;
+		private readonly BodyPosition     _bodyPosition;
+		private readonly Angle            _houseOffset;
 		private          Angle            _angle;
-		private          Angle            _bhavaAngle;
+		private          Bhava            _bhava;
 
-		protected Graha(DivisionPosition dp, DivisionType varga)
+		internal Graha(Position position, DivisionPosition dp, DivisionType varga, Rashi rashi)
 		{
-			_dp    = dp;
-			_varga = varga;
-			_rashi  = Rashi.FindOrAdd(_dp.ZodiacHouse, _varga);
+			_position = position;
+			_dp       = dp;
+			_rashi    = rashi;
+			_varga    = varga;
+
+			_isRetrograde = (_position.SpeedLongitude < 0.0);
+			_houseOffset   = _dp.Longitude.ToZodiacHouseOffset();
+			if (IsChayaGraha)
+			{
+				_houseOffset = 30.0 - _houseOffset;
+			}
+
+			if ((dp.Body != Body.Lagna) && (IsChayaGraha == false))
+			{
+				_digBala      = _position.H.DigBala(dp.Body);
+				_bodyPosition = GetBodyPosition(_position.H, dp.Body);
+			}
+			else
+			{
+				_bodyPosition = new BodyPosition
+				{
+					Longitude = position.Longitude
+				};
+			}
+
 
 			AspectFrom   = new List<Graha>();
 			AspectTo     = new List<Graha>();
@@ -48,99 +66,7 @@ namespace Mhora.Elements.Yoga
 			return _dp.ToString();
 		}
 
-		public static void Clear()
-		{
-			_dpList.Clear();
-			_grahas.Clear();
-		}
-
-		public static List<Graha> Grahas(DivisionType varga)
-		{
-			if (_grahas.TryGetValue(varga, out var grahas) == false)
-			{
-				grahas = new List<Graha>();
-			}
-			return (grahas);
-		}
-
-
-		public static List<Graha> Grahas(Horoscope h, DivisionType varga)
-		{
-			if (_grahas.TryGetValue(varga, out var grahas) == false)
-			{
-				grahas = Create(h, varga);
-				_grahas.Add(varga, grahas);
-				
-			}
-
-			return (grahas);
-		}
-
-		public static DpList Positions(Horoscope h, DivisionType varga)
-		{
-			if (_dpList.TryGetValue(varga, out var dpList) == false)
-			{
-				dpList = new DpList(h, new Division(varga));
-				_dpList.Add(varga, dpList);
-			}
-
-			return (dpList);
-		}
-
-		public static List<Graha> Planets(DivisionType varga)
-		{
-			var planets = Karaka7(varga);
-			planets.Sort((x, y) => x._angle.CompareTo(y._angle));
-			return (planets);
-		}
-
-		public static List<Graha> Karaka8(DivisionType varga)
-		{
-			var grahas = Grahas(varga).FindAll(graha => graha.BodyType == BodyType.Graha);
-			grahas.RemoveAll(graha => graha.Body == Body.Ketu);
-			grahas.Sort((x, y) => y._bhavaAngle.CompareTo(x._bhavaAngle));
-			return (grahas);
-		}
-
-		public static List<Graha> Karaka7(DivisionType varga)
-		{
-			var grahas = Karaka8(varga);
-			grahas.RemoveAll(graha => graha.Body == Body.Rahu);
-			grahas.Sort((x, y) => y._bhavaAngle.CompareTo(x._bhavaAngle));
-			return (grahas);
-		}
-
-
-		public static Graha FindOrAdd(DivisionPosition dp, DivisionType varga)
-		{
-			var grahas = Grahas(varga);
-			var graha  = grahas.Find(graha => graha._dp.Body == dp.Body);
-			if (graha == null)
-			{
-				graha = new Graha(dp, varga);
-				grahas.Add(graha);
-			}
-
-			return graha;
-		}
-
-		public static Graha Find(Body body, DivisionType varga)
-		{
-			var grahas = Grahas(varga);
-			return grahas.Find(graha => graha._dp.Body == body);
-		}
-
-		public static Graha Find(Karaka8 karaka, DivisionType varga)
-		{
-			var grahas = Karaka8(varga);
-			return (grahas[karaka.Index()]);
-		}
-
-		public static Graha Find(Karaka7 karaka, DivisionType varga)
-		{
-			var grahas = Karaka7(varga);
-			return (grahas[karaka.Index()]);
-		}
+		public Grahas List { get; internal set;}
 
 		public bool Owns(Bhava bhava)
 		{
@@ -173,27 +99,24 @@ namespace Mhora.Elements.Yoga
 		// By occupying mutual trinal positions, e.g. Jupiter in Aries and Mars in either Leo or in Sagittarius.[4]
 		public bool IsAssociatedWith (Graha graha)
 		{
-			if (graha.Varga == Varga)
+			if (Conjunct.Contains(graha))
 			{
-				if (Conjunct.Contains(graha))
-				{
-					return (true);
-				}
+				return (true);
+			}
 
-				if (MutualAspect.Contains(graha))
-				{
-					return (true);
-				}
+			if (MutualAspect.Contains(graha))
+			{
+				return (true);
+			}
 
-				if (Bhava.IsKendra() && graha.Bhava.IsKendra())
-				{
-					return (true);
-				}
+			if (Bhava.IsKendra() && graha.Bhava.IsKendra())
+			{
+				return (true);
+			}
 
-				if (Bhava.IsTrikona() && graha.Bhava.IsTrikona())
-				{
-					return (true);
-				}
+			if (Bhava.IsTrikona() && graha.Bhava.IsTrikona())
+			{
+				return (true);
 			}
 
 			if (Rashi.Lord == graha)
@@ -222,7 +145,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsAssociatedBy(Body body)
 		{
-			var graha = Find(body, _varga);
+			var graha = List.Find(body);
 			return (IsAssociatedBy(graha));
 		}
 
@@ -236,7 +159,7 @@ namespace Mhora.Elements.Yoga
 		{
 			get
 			{
-				foreach (var graha in Planets(_varga))
+				foreach (var graha in List.Planets)
 				{
 					if (graha.IsFunctionalMalefic)
 					{
@@ -285,7 +208,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsAspecting(Body body)
 		{
-			var graha = Find(body, _varga);
+			var graha = List.Find(body);
 			return IsAspecting(graha);
 		}
 
@@ -305,7 +228,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsAspectedBy(Body body)
 		{
-			var graha = Find(body, _varga);
+			var graha = List.Find(body);
 			return IsAspectedBy(graha);
 		}
 
@@ -323,7 +246,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsConjuctWith(Body body)
 		{
-			var graha = Find(body, _varga);
+			var graha = List.Find(body);
 			return (IsConjuctWith(graha));
 		}
 
@@ -357,7 +280,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsUnderInfluenceOf(Body body)
 		{
-			var graha = Find(body, _varga);
+			var graha = List.Find(body);
 			return IsUnderInfluenceOf(graha);
 		}
 
@@ -382,7 +305,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsAssociatedWith(Body body)
 		{
-			var graha = Find(body, _varga);
+			var graha = List.Find(body);
 			return IsAssociatedWith(graha);
 		}
 
@@ -407,7 +330,7 @@ namespace Mhora.Elements.Yoga
 
 				if (Body == Body.Moon)
 				{
-					var sun = Find(Body.Sun, _varga);
+					var sun = List.Find(Body.Sun);
 					var tithi = _bodyPosition.Longitude.Sub(sun._bodyPosition.Longitude).ToTithi();
 					if (tithi >= Tithi.KrishnaPratipada)
 					{
@@ -418,7 +341,7 @@ namespace Mhora.Elements.Yoga
 
 				if (Body == Body.Mercury)
 				{
-					var jupiter = Find(Body.Jupiter, _varga);
+					var jupiter = List.Find(Body.Jupiter);
 					if (jupiter.Strength >= 2)
 					{
 						return (true);
@@ -498,7 +421,7 @@ namespace Mhora.Elements.Yoga
 
 					if (rashi.Bhava.IsKendra())
 					{
-						var lagna = Find(Body.Lagna, _varga);
+						var lagna = List.Find(Body.Lagna);
 						if (lagna.Body.IsFriend(Body))
 						{
 							return (true);
@@ -529,12 +452,13 @@ namespace Mhora.Elements.Yoga
 		private bool _isRetrograde;
         public  bool IsRetrograde => _isRetrograde;
 
-		public BodyType     BodyType     => _dp.BodyType;
-		public Body         Body         => _dp.Body;
-		public Bhava        Bhava        => Rashi.Bhava;
+		public BodyType     BodyType     => _position.BodyType;
+		public Body         Body         => _position.Name;
+		public Bhava        Bhava        => _bhava;
 		public Rashi        Rashi        => _rashi;
-		public DivisionType Varga        => _varga;
 		public BodyPosition BodyPosition => _bodyPosition;
+		public Angle        HouseOffset  => _houseOffset;
+		public Angle        Angle        => _angle;
 
 
 		public Conditions Conditions { get; private set; }
@@ -547,7 +471,7 @@ namespace Mhora.Elements.Yoga
 				if (_houseLord == null)
 				{
 					var lord = _dp.ZodiacHouse.SimpleLordOfZodiacHouse(); 
-					_houseLord = Find(lord, _varga);
+					_houseLord = List.Find(lord);
 				}
 
 				return (_houseLord);
@@ -561,19 +485,17 @@ namespace Mhora.Elements.Yoga
 			{
 				if (_before == null)
 				{
-					var grahas = _grahas[_varga];
-
-					for (int index = 0; index < grahas.Count; index++)
+					for (int index = 0; index < List.Count; index++)
 					{
-						if (grahas[index].Body == Body)
+						if (List[index].Body == Body)
 						{
 							if (index == 0)
 							{
-								_before = grahas.Last();
+								_before = List.Last();
 							}
 							else
 							{
-								_before = grahas [index - 1];
+								_before = List [index - 1];
 							}
 							break;
 						}
@@ -590,19 +512,17 @@ namespace Mhora.Elements.Yoga
 			{
 				if (_after == null)
 				{
-					var grahas = _grahas[_varga];
-
-					for (int index = 0; index < grahas.Count; index++)
+					for (int index = 0; index < List.Count; index++)
 					{
-						if (grahas[index].Body == Body)
+						if (List[index].Body == Body)
 						{
-							if (index == grahas.Count - 1)
+							if (index == List.Count - 1)
 							{
-								_after = grahas.First();
+								_after = List.First();
 							}
 							else
 							{
-								_after = grahas [index + 1];
+								_after = List [index + 1];
 							}
 							break;
 						}
@@ -619,7 +539,7 @@ namespace Mhora.Elements.Yoga
 		public List<Rashi>  Ownership    { get; }
 		public List<Graha>  RashiDrishti { get; }
 		public List <Graha> AspectFrom   { get; }
-		public List<Graha>  AspectTo     { get; }
+		public List <Graha> AspectTo     { get; }
 		public List<Graha>  MutualAspect { get; }
 		public List<Graha>  Conjunct     { get; }
 		public List<Graha>  Association  { get; }
@@ -985,7 +905,7 @@ namespace Mhora.Elements.Yoga
 		{
 			get
 			{
-				if (_dp.BodyType != BodyType.Graha)
+				if (BodyType != BodyType.Graha)
 				{
 					return (false);
 				}
@@ -1062,7 +982,7 @@ namespace Mhora.Elements.Yoga
 
 		public Relation Relationship(Graha graha)
 		{
-			if (_dp.Body.IsFriend(graha._dp.Body))
+			if (Body.IsFriend(graha.Body))
 			{
 				if (IsTemporalEnemy(graha))
 				{
@@ -1077,7 +997,7 @@ namespace Mhora.Elements.Yoga
 				return Relation.Friend;
 			}
 
-			if (_dp.Body.IsEnemy(graha._dp.Body))
+			if (Body.IsEnemy(graha.Body))
 			{
 				if (IsTemporalEnemy(graha))
 				{
@@ -1109,7 +1029,7 @@ namespace Mhora.Elements.Yoga
 		{
 			get
 			{
-				if (_dp.BodyType != BodyType.Graha)
+				if (BodyType != BodyType.Graha)
 				{
 					return (false);
 				}
@@ -1120,7 +1040,7 @@ namespace Mhora.Elements.Yoga
 		{
 			get
 			{
-				if (_dp.BodyType != BodyType.Graha)
+				if (BodyType != BodyType.Graha)
 				{
 					return (false);
 				}
@@ -1132,7 +1052,7 @@ namespace Mhora.Elements.Yoga
 		{
 			get
 			{
-				if (_dp.BodyType != BodyType.Graha)
+				if (BodyType != BodyType.Graha)
 				{
 					return (false);
 				}
@@ -1144,7 +1064,7 @@ namespace Mhora.Elements.Yoga
 		{
 			get
 			{
-				if (_dp.BodyType != BodyType.Graha)
+				if (BodyType != BodyType.Graha)
 				{
 					return (true);
 				}
@@ -1178,7 +1098,7 @@ namespace Mhora.Elements.Yoga
 
 				if (Body != Body.Moon)
 				{
-					var moon  = Find(Body.Moon, _varga);
+					var moon  = List.Find(Body.Moon);
 					var bhava = (Bhava) lord.Bhava.HousesFrom(moon.Bhava);
 					if (bhava.IsKendra())
 					{
@@ -1204,7 +1124,7 @@ namespace Mhora.Elements.Yoga
 
 				if (Body != Body.Moon)
 				{
-					var moon  = Find(Body.Moon, _varga);
+					var moon  = List.Find(Body.Moon);
 					var bhava = (Bhava) lord.Bhava.HousesFrom(moon.Bhava);
 					if (bhava.IsKendra())
 					{
@@ -1224,7 +1144,7 @@ namespace Mhora.Elements.Yoga
 
 		public Bhava HouseFrom(Body body)
 		{
-			var graha = Find(body, _varga);
+			var graha = List.Find(body);
 			return HouseFrom(graha);
 		}
 
@@ -1232,7 +1152,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsBefore(Body body)
 		{
-			var graha = Find(body, _varga);
+			var graha = List.Find(body);
 			return (IsBefore(graha));
 		}
 
@@ -1240,13 +1160,13 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsAfter(Body body)
 		{
-			var graha = Find(body, _varga);
+			var graha = List.Find(body);
 			return (IsAfter(graha));
 		}
 
 		public bool IsAfter(Graha graha) => BodyPosition.Longitude > graha.BodyPosition.Longitude;
 		
-		private void Examine()
+		internal void Examine()
 		{
 			if (IsDebilitated)
 			{
@@ -1268,21 +1188,15 @@ namespace Mhora.Elements.Yoga
 				Conditions |= Conditions.OwnHouse;
 			}
 
-			_bhavaAngle =  _dp.Longitude.ToZodiacHouseOffset();
 			_angle       =  (Bhava.Index() - 1) * 30.0;
-			_angle       += _bhavaAngle;
+			_angle       += _houseOffset;
 
-			if (IsChayaGraha)
-			{
-				_bhavaAngle = 30.0 - _bhavaAngle;
-			}
-
-			if (Bhava.IsKaraka(_dp.Body))
+			if (Bhava.IsKaraka(Body))
 			{
 				Conditions |= Conditions.KarakaPlanet;
 			}
 
-			foreach (var rashi in Rashi.Rashis(_varga))
+			foreach (var rashi in Rashi.Find (_varga))
 			{
 				if (Owns(rashi))
 				{
@@ -1290,33 +1204,33 @@ namespace Mhora.Elements.Yoga
 				}
 			}
 
-			foreach (var graha in _grahas [_varga])
+			foreach (var graha in List)
 			{
 				if (graha.Body == Body)
 				{
 					continue;
 				}
-				if (_dp.GrahaDristi(graha._dp.ZodiacHouse))
+				if (_dp.GrahaDristi(graha.Rashi.ZodiacHouse))
 				{
 					AspectTo.Add(graha);
 				}
 
-				if (graha._dp.GrahaDristi(_dp.ZodiacHouse))
+				if (graha._dp.GrahaDristi(Rashi.ZodiacHouse))
 				{
 					AspectFrom.Add(graha);
 				}
 
-				if (graha._dp.ZodiacHouse.RasiDristi(_rashi.ZodiacHouse))
+				if (graha.Rashi.ZodiacHouse.RasiDristi(_rashi.ZodiacHouse))
 				{
 					RashiDrishti.Add(graha);
 				}
 
-				if (HouseLord._dp.Body == graha._dp.Body && _dp.Body == graha.HouseLord._dp.Body)
+				if (HouseLord.Body == graha.Body && Body == graha.HouseLord.Body)
 				{
 					_exchange = graha;
 				}
 
-				if (_dp.ZodiacHouse == graha._dp.ZodiacHouse)
+				if (Rashi.ZodiacHouse == graha.Rashi.ZodiacHouse)
 				{
 					if (graha.Body != Body.Lagna)
 					{
@@ -1339,22 +1253,6 @@ namespace Mhora.Elements.Yoga
 				}
 			}
 
-		}
-
-		private static bool Examine(DivisionType varga)
-		{
-			var grahas = Grahas(varga);
-
-			if (grahas.Count < 9)
-			{
-				return (false);
-			}
-
-			foreach (var graha in grahas)
-			{
-				graha.Examine();
-			}
-			return (true);
 		}
 
 		public static BodyPosition GetBodyPosition(Horoscope h, Body body)
@@ -1380,53 +1278,5 @@ namespace Mhora.Elements.Yoga
 			};
 		}
 
-
-		private static List<Graha> Create(Horoscope h, DivisionType varga)
-		{
-			var grahas = new List<Graha>();
-			try
-			{
-				var dpList = Positions(h, varga);
-				Rashi.Create(varga);
-
-				foreach (DivisionPosition dp in dpList.Positions)
-				{
-					if ((dp.BodyType == BodyType.Graha) || (dp.BodyType == BodyType.Lagna))
-					{
-						var position = h.GetPosition(dp.Body);
-						var graha = new Graha(dp, varga)
-						{
-							_isRetrograde = (position.SpeedLongitude < 0.0)
-						};
-						if ((dp.Body != Body.Lagna) && (graha.IsChayaGraha == false))
-						{
-							graha._digBala      = h.DigBala(dp.Body);
-							graha._bodyPosition = GetBodyPosition(h, dp.Body);
-						}
-						else
-						{
-							graha._bodyPosition = new BodyPosition
-							{
-								Longitude = position.Longitude
-							};
-						}
-						grahas.Add(graha);
-					}
-				}
-
-				grahas.Sort((x, y) => x._dp.Longitude.CompareTo(y._dp.Longitude));
-
-				foreach (var graha in grahas)
-				{
-					graha.Examine();
-				}
-			}
-			catch (Exception e)
-			{
-				Application.Log.Exception(e);
-			}
-
-			return (grahas);
-		}
 	}
 }

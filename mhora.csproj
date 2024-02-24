@@ -192,6 +192,7 @@
     <Compile Include="Elements\Yoga\Dhana.cs" />
     <Compile Include="Elements\Yoga\DpList.cs" />
     <Compile Include="Elements\Yoga\GajaKesari.cs" />
+    <Compile Include="Elements\Yoga\Grahas.cs" />
     <Compile Include="Elements\Yoga\Guru.cs" />
     <Compile Include="Elements\Yoga\HariHaraBramha.cs" />
     <Compile Include="Elements\Yoga\Kalsarpa.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="Elements\Yoga\Malika.cs" />
     <Compile Include="Elements\Yoga\Mangal.cs" />
     <Compile Include="Elements\Yoga\Raja.cs" />
+    <Compile Include="Elements\Yoga\Rashis.cs" />
     <Compile Include="Elements\Yoga\Ravi.cs" />
     <Compile Include="Elements\Yoga\Sankhya.cs" />
     <Compile Include="Elements\Yoga\Shukra.cs" />

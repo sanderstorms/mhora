@@ -8,10 +8,10 @@ namespace Mhora.Elements.Yoga
 		//The Sun in Simha Lagna, under the association or aspect of Mars and Jupiter.
 		//Strong Lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
-		public static bool DhanaSurya(this DivisionType varga)
+		public static bool DhanaSurya(this Grahas grahaList)
 		{
 			byte yoga = 0;
-			var sun  = Graha.Find(Body.Sun, varga);
+			var sun  = grahaList.Find(Body.Sun);
 			if (sun.Rashi.ZodiacHouse != ZodiacHouse.Leo)
 			{
 				return (false);
@@ -46,9 +46,9 @@ namespace Mhora.Elements.Yoga
 		//The Jupiter occupying the 5th house identical with its own rashi (Dhanu/Meena), and Mercury in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable to examine the
 		//dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
-		public static bool DhanaGuru5th(this DivisionType varga)
+		public static bool DhanaGuru5th(this Grahas grahaList)
 		{
-			var jupiter = Graha.Find(Body.Jupiter, varga);
+			var jupiter = grahaList.Find(Body.Jupiter);
 			if (jupiter.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -59,7 +59,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			var mercury = Graha.Find(Body.Mercury, varga);
+			var mercury = grahaList.Find(Body.Mercury);
 			if (mercury.Bhava == Bhava.LabhaBhava)
 			{
 				return (true);
@@ -71,28 +71,28 @@ namespace Mhora.Elements.Yoga
 		//The Lagna lord is associtating with the 2nd or 5th or 9th or the 11th lord.
 		//This indicates a promise of rise in status associated with increased inflow of money. The native will be benefited
 		//specially when the participating planet’s is in it’s mahadasha.
-		public static bool DhanaLagna(this DivisionType varga)
+		public static bool DhanaLagna(this Grahas grahaList)
 		{
-			var lagnaLord = Rashi.Find(Bhava.LagnaBhava, varga).Lord;
-			var graha     = Rashi.Find(Bhava.DhanaBhava, varga).Lord;
+			var lagnaLord = grahaList.Rashis.Find(Bhava.LagnaBhava).Lord;
+			var graha     = grahaList.Rashis.Find(Bhava.DhanaBhava).Lord;
 			if (lagnaLord.IsAssociatedWith(graha) == false)
 			{
 				return (true);
 			}
 
-			graha = Rashi.Find(Bhava.PutraBhava, varga).Lord;
+			graha = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
 			if (lagnaLord.IsAssociatedWith(graha) == false)
 			{
 				return (true);
 			}
 
-			graha = Rashi.Find(Bhava.DhanaBhava, varga).Lord;
+			graha = grahaList.Rashis.Find(Bhava.DhanaBhava).Lord;
 			if (lagnaLord.IsAssociatedWith(graha) == false)
 			{
 				return (true);
 			}
 
-			graha = Rashi.Find(Bhava.LabhaBhava, varga).Lord;
+			graha = grahaList.Rashis.Find(Bhava.LabhaBhava).Lord;
 			if (lagnaLord.IsAssociatedWith(graha) == false)
 			{
 				return (true);
@@ -104,21 +104,21 @@ namespace Mhora.Elements.Yoga
 		//The Moon in Karka Lagna, under the influence of Mercury and Jupiter.
 		//Strong Lagna should be there. This combination lead to excessive wealth. This yoga generally related
 		//to one’s profession, it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
-		public static bool DhanaChandra(this DivisionType varga)
+		public static bool DhanaChandra(this Grahas grahaList)
 		{
-			var moon = Graha.Find(Body.Moon, varga);
+			var moon = grahaList.Find(Body.Moon);
 			if (moon.Rashi.ZodiacHouse != ZodiacHouse.Can)
 			{
 				return (false);
 			}
 
-			var mercury = Graha.Find(Body.Mercury, varga);
+			var mercury = grahaList.Find(Body.Mercury);
 			if (moon.IsUnderInfluenceOf(mercury) == false)
 			{
 				return (false);
 			}
 
-			var jupiter = Graha.Find(Body.Jupiter, varga);
+			var jupiter = grahaList.Find(Body.Jupiter);
 			if (moon.IsUnderInfluenceOf(jupiter) == false)
 			{
 				return (false);
@@ -130,20 +130,20 @@ namespace Mhora.Elements.Yoga
 		//The 2nd lord is associtating with the 5th or the 9th or the 11th lord.
 		//This Yoga is for wealth and financial prosperity. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
-		public static bool Dhana2ndHouseLord(this DivisionType varga)
+		public static bool Dhana2ndHouseLord(this Grahas grahaList)
 		{
-			var lord  = Rashi.Find(Bhava.DhanaBhava, varga).Lord;
-			var graha = Rashi.Find(Bhava.PutraBhava, varga).Lord;
+			var lord  = grahaList.Rashis.Find(Bhava.DhanaBhava).Lord;
+			var graha = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
 			if (lord.IsAssociatedWith(graha) == false)
 			{
 				return (false);
 			}
-			graha = Rashi.Find(Bhava.DharmaBhava, varga).Lord;
+			graha = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
 			if (lord.IsAssociatedWith(graha) == false)
 			{
 				return (false);
 			}
-			graha = Rashi.Find(Bhava.LabhaBhava, varga).Lord;
+			graha = grahaList.Rashis.Find(Bhava.LabhaBhava).Lord;
 			if (lord.IsAssociatedWith(graha) == false)
 			{
 				return (false);
@@ -155,9 +155,9 @@ namespace Mhora.Elements.Yoga
 		//The Venus in its own rashi (Vrischika/Tula) in the lagna, under the influence of Mercury and Saturn.
 		//Strong lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
-		public static bool DanaShukraLagna(this DivisionType varga)
+		public static bool DanaShukraLagna(this Grahas grahaList)
 		{
-			var  venus = Graha.Find(Body.Venus, varga);
+			var  venus = grahaList.Find(Body.Venus);
 			if (venus.IsInOwnHouse == false)
 			{
 				return (false);
@@ -184,29 +184,29 @@ namespace Mhora.Elements.Yoga
 		//The Rashis of jupiter falling in the 9 house and Jupiter- Venus or the 5 lord aspecting them produce a potent dhana yoga
 		//This indicates a promise of rise in status associated with increased inflow of money. The native will be benefited
 		//specially when the participating planet’s is in it’s Mahadasha.
-		public static bool DhanaGuru9th(this DivisionType varga)
+		public static bool DhanaGuru9th(this Grahas grahaList)
 		{
-			var jupiter = Graha.Find(Body.Jupiter, varga);
+			var jupiter = grahaList.Find(Body.Jupiter);
 			if (jupiter.Bhava != Bhava.DharmaBhava)
 			{
 				return (false);
 			}
 
 			//Todo: Examine all dhana yoga's
-			var venus = Graha.Find(Body.Venus, varga);
-			var lord  = Rashi.Find(Bhava.PutraBhava, varga).Lord;
+			var venus = grahaList.Find(Body.Venus);
+			var lord  = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
 
-			if (Dhana5thLord(varga))
+			if (grahaList.Dhana5thLord ())
 			{
 				return (true);
 			}
 
-			if (Dhana9thLord(varga))
+			if (grahaList.Dhana9thLord ())
 			{
 				return (true);
 			}
 
-			if (DhanaShukra5th(varga))
+			if (grahaList.DhanaShukra5th ())
 			{
 				return (true);
 			}
@@ -217,9 +217,9 @@ namespace Mhora.Elements.Yoga
 		//The Mercury occupying the 5th house identical with its own rashi(Mithuna/Kanya), with the Moon, Mars and Jupiter in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable to examine the
 		//dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
-		public static bool DhanaBuddh5th(this DivisionType varga)
+		public static bool DhanaBuddh5th(this Grahas grahaList)
 		{
-			var mercury = Graha.Find(Body.Mercury, varga);
+			var mercury = grahaList.Find(Body.Mercury);
 			if (mercury.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -231,8 +231,8 @@ namespace Mhora.Elements.Yoga
 			}
 
 			byte yoga  = 0x00;
-			var  rashi = Rashi.Find(Bhava.LabhaBhava, varga);
-			foreach (var graha in rashi.Grahas)
+			var  rashi = grahaList.Rashis.Find(Bhava.LabhaBhava);
+			foreach (var graha in grahaList.Planets)
 			{
 				if (graha.Body == Body.Moon)
 				{
@@ -256,9 +256,9 @@ namespace Mhora.Elements.Yoga
 		//The Mercury in its own rashi(Mithuna/Kanya) in the Lagna, under the influence of Jupiter and Saturn.
 		//Strong lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts
-		public static bool DhanaBuddhLagna(this DivisionType varga)
+		public static bool DhanaBuddhLagna(this Grahas grahaList)
 		{
-			var mercury = Graha.Find(Body.Mercury, varga);
+			var mercury = grahaList.Find(Body.Mercury);
 			if (mercury.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -285,9 +285,9 @@ namespace Mhora.Elements.Yoga
 		//The Venus occupying the 5th house identical with its own rashi(Vrisha/Tula), and Mars placed in the Lagna.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable
 		//to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
-		public static bool DhanaShukra5th (this DivisionType varga)
+		public static bool DhanaShukra5th (this Grahas grahaList)
 		{
-			var venus = Graha.Find(Body.Venus, varga);
+			var venus = grahaList.Find(Body.Venus);
 			if (venus.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -297,7 +297,7 @@ namespace Mhora.Elements.Yoga
 			{
 				return (false);
 			}
-			var mars = Graha.Find(Body.Mars, varga);
+			var mars = grahaList.Find(Body.Mars);
 			if (mars.Bhava == Bhava.LagnaBhava)
 			{
 				return (true);
@@ -309,9 +309,9 @@ namespace Mhora.Elements.Yoga
 		//The Jupiter in its own rashi(Dhanu/Meena) in the lagna, under the influence of Mars and Mercury.
 		//Strong lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
-		public static bool GuruLagna(this DivisionType varga)
+		public static bool GuruLagna(this Grahas grahaList)
 		{
-			var jupiter = Graha.Find(Body.Jupiter, varga);
+			var jupiter = grahaList.Find(Body.Jupiter);
 			if (jupiter.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -338,9 +338,9 @@ namespace Mhora.Elements.Yoga
 		//The Saturn in its own rashi (Makara/Kumbha) in the lagna, under the influence of Mars and Jupiter.
 		//Strong lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
-		public static bool ShaniLagna(this DivisionType varga)
+		public static bool ShaniLagna(this Grahas grahaList)
 		{
-			var saturn = Graha.Find(Body.Saturn, varga);
+			var saturn = grahaList.Find(Body.Saturn);
 			if (saturn.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -366,9 +366,9 @@ namespace Mhora.Elements.Yoga
 		//The Saturn occupying the 5th house identical with its own sign (Makara/Kumbha), and the /Sun and the Moon in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable to examine the
 		//dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
-		public static bool DhanaShani5th(this DivisionType varga)
+		public static bool DhanaShani5th(this Grahas grahaList)
 		{
-			var saturn = Graha.Find(Body.Saturn, varga);
+			var saturn = grahaList.Find(Body.Saturn);
 			if (saturn.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -380,7 +380,7 @@ namespace Mhora.Elements.Yoga
 			}
 
 			byte yoga  = 0x00;
-			var  rashi = Rashi.Find(Bhava.LabhaBhava, varga);
+			var  rashi = grahaList.Rashis.Find(Bhava.LabhaBhava);
 			foreach (var graha in rashi.Grahas)
 			{
 				if (graha == Body.Sun)
@@ -400,9 +400,9 @@ namespace Mhora.Elements.Yoga
 		//The Mars occupying the 5th house identical with its own rashi(Mesha/Vrischika), and Venus in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable
 		//to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
-		public static bool DhanaMangal5th (this DivisionType varga)
+		public static bool DhanaMangal5th (this Grahas grahaList)
 		{
-			var mars = Graha.Find(Body.Mars, varga);
+			var mars = grahaList.Find(Body.Mars);
 			if (mars.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -413,7 +413,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			var venus = Graha.Find(Body.Venus, varga);
+			var venus = grahaList.Find(Body.Venus);
 			if (venus.Bhava == Bhava.LabhaBhava)
 			{
 				return (true);
@@ -425,9 +425,9 @@ namespace Mhora.Elements.Yoga
 		//The Moon in its own rashi (Karka) in the 5th house, and Saturn in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
-		public static bool DhanaChandra5th(this DivisionType varga)
+		public static bool DhanaChandra5th(this Grahas grahaList)
 		{
-			var moon = Graha.Find(Body.Moon, varga);
+			var moon = grahaList.Find(Body.Moon);
 			if (moon.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -437,7 +437,7 @@ namespace Mhora.Elements.Yoga
 			{
 				return (false);
 			}
-			var saturn = Graha.Find(Body.Saturn, varga);
+			var saturn = grahaList.Find(Body.Saturn);
 			if (saturn.Bhava != Bhava.LabhaBhava)
 			{
 				return (false);
@@ -449,9 +449,9 @@ namespace Mhora.Elements.Yoga
 		//The Sun occupying the 5th house identical with its own rashi (Simha), and the Moon, Jupiter and Saturn in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable to examine the
 		//dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there
-		public static bool DhanaSurya5th(this DivisionType varga)
+		public static bool DhanaSurya5th(this Grahas grahaList)
 		{
-			var sun = Graha.Find(Body.Sun, varga);
+			var sun = grahaList.Find(Body.Sun);
 			if (sun.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -463,7 +463,7 @@ namespace Mhora.Elements.Yoga
 			}
 
 			byte yoga = 0x00;
-			var  rash = Rashi.Find(Bhava.PutraBhava, varga);
+			var  rash = grahaList.Rashis.Find(Bhava.PutraBhava);
 			foreach (var graha in rash.Grahas)
 			{
 				if (graha == Body.Moon)
@@ -488,10 +488,10 @@ namespace Mhora.Elements.Yoga
 		//The 9th lord is associtating with the 11th lord.
 		//This Yoga is for wealth and financial prosperity. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there
-		public static bool Dhana9thLord(this DivisionType varga)
+		public static bool Dhana9thLord(this Grahas grahaList)
 		{
-			var lord9  = Rashi.Find(Bhava.DharmaBhava, varga).Lord;
-			var lord11 = Rashi.Find(Bhava.LabhaBhava, varga).Lord;
+			var lord9  = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord11 = grahaList.Rashis.Find(Bhava.LabhaBhava).Lord;
 
 			return (lord9.IsAssociatedWith(lord11));
 		}
@@ -499,11 +499,11 @@ namespace Mhora.Elements.Yoga
 		//The 5th lord is associtating with the 9th or the 11th lord.
 		//This Yoga is for wealth and financial prosperity. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
-		public static bool Dhana5thLord(this DivisionType varga)
+		public static bool Dhana5thLord(this Grahas grahaList)
 		{
-			var lord5  = Rashi.Find(Bhava.PutraBhava, varga).Lord;
-			var lord9  = Rashi.Find(Bhava.DharmaBhava, varga).Lord;
-			var lord11 = Rashi.Find(Bhava.LabhaBhava, varga).Lord;
+			var lord5  = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
+			var lord9  = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord11 = grahaList.Rashis.Find(Bhava.LabhaBhava).Lord;
 
 			if (lord5.IsAssociatedWith(lord9))
 			{
@@ -520,9 +520,9 @@ namespace Mhora.Elements.Yoga
 		//The Mars in its own rashi(Mesha/Vrischika) in the Lagna, under the influence of Mercury, Venus and Saturn.
 		//Strong Lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
-		public static bool DhanaMangalLagna(this DivisionType varga)
+		public static bool DhanaMangalLagna(this Grahas grahaList)
 		{
-			var mars = Graha.Find(Body.Mars, varga);
+			var mars = grahaList.Find(Body.Mars);
 			if (mars.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);

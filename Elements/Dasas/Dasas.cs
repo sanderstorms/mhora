@@ -26,11 +26,13 @@ namespace Mhora.Elements.Dasas
 
 		public static bool IsValid(this Horoscope h, NakshatraLord dasa)
 		{
+			var grahas  = Grahas.Find(h, DivisionType.Rasi);
+
 			switch (dasa)
 			{
 				case NakshatraLord.Ashtottari:
 				{
-					var rahu = Graha.Find(Body.Rahu, DivisionType.Rasi);
+					var rahu = grahas.Find(Body.Rahu);
 					if (rahu.Bhava == Bhava.LagnaBhava)
 					{
 						return (false);
@@ -46,7 +48,8 @@ namespace Mhora.Elements.Dasas
 
 				case NakshatraLord.Dwadashottari:
 				{
-					var lagna = Graha.Find(Body.Lagna, DivisionType.Navamsa);
+					var navamsa = Grahas.Find(h, DivisionType.Navamsa);
+					var lagna   = navamsa.Find(Body.Lagna);
 					if (lagna.Rashi.Lord == Body.Venus)
 					{
 						return (true);
@@ -56,7 +59,8 @@ namespace Mhora.Elements.Dasas
 
 				case NakshatraLord.Panchottari:
 				{
-					var lagna = Graha.Find(Body.Lagna, DivisionType.Dasamsa);
+					var dasamsa = Grahas.Find(h, DivisionType.Dasamsa);
+					var lagna   = dasamsa.Find(Body.Lagna);
 					if (lagna.Rashi == ZodiacHouse.Can)
 					{
 						return (true);
@@ -66,8 +70,9 @@ namespace Mhora.Elements.Dasas
 
 				case NakshatraLord.Shatabdika:
 				{
-					var lagnaD1 = Graha.Find(Body.Lagna, DivisionType.Rasi);
-					var lagnaD9 = Graha.Find(Body.Lagna, DivisionType.Navamsa);
+					var navamsa = Grahas.Find(h, DivisionType.Navamsa);
+					var lagnaD1 = grahas.Find(Body.Lagna);
+					var lagnaD9 = navamsa.Find(Body.Lagna);
 
 					if (lagnaD1.Rashi == lagnaD9.Rashi)
 					{
@@ -78,7 +83,7 @@ namespace Mhora.Elements.Dasas
 
 				case NakshatraLord.ChaturashitiSama:
 				{
-					var rashi = Rashi.Find(Bhava.KarmaBhava, DivisionType.Rasi);
+					var rashi = grahas.Rashis.Find(Bhava.KarmaBhava);
 					if (rashi.Lord.Bhava == Bhava.KarmaBhava)
 					{
 						return (true);
@@ -88,13 +93,13 @@ namespace Mhora.Elements.Dasas
 
 				case NakshatraLord.DwisaptatiSama:
 				{
-					var lagna = Graha.Find(Body.Lagna, DivisionType.Rasi);
+					var lagna = grahas.Find(Body.Lagna);
 					if (lagna.Bhava == Bhava.JayaBhava)
 					{
 						return (true);
 					}
 
-					var lord = Rashi.Find(Bhava.JayaBhava, DivisionType.Rasi).Lord;
+					var lord = grahas.Rashis.Find(Bhava.JayaBhava).Lord;
 					if (lord.Bhava == Bhava.LagnaBhava)
 					{
 						return (true);
@@ -104,7 +109,8 @@ namespace Mhora.Elements.Dasas
 
 				case NakshatraLord.ShatTrimshaSama:
 				{
-					var sun = Graha.Find(Body.Sun, DivisionType.HoraParasara);
+					var hora = Grahas.Find(h, DivisionType.HoraParasara);
+					var sun  = hora.Find(Body.Sun);
 					if (sun.Rashi == ZodiacHouse.Leo)
 					{
 						return h.IsDayBirth();
@@ -119,5 +125,6 @@ namespace Mhora.Elements.Dasas
 
 			return (true);
 		}
+
 	}
 }

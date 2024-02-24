@@ -6,11 +6,11 @@ namespace Mhora.Elements.Yoga
 	{
 		//The 9th house lord exchanges houses with the 10th lord or the 11th lord.
 		//This combination promises wealth status and physical enjoyments plus beneficial influences from the houses involved.
-		public static bool MahaParivartana9(this DivisionType varga)
+		public static bool MahaParivartana9(this Grahas grahaList)
 		{
-			var lord9 = Rashi.Find(Bhava.DharmaBhava, varga).Lord;
-			var lord10 = Rashi.Find(Bhava.KarmaBhava, varga).Lord;
-			var lord11 = Rashi.Find(Bhava.LabhaBhava, varga).Lord;
+			var lord9 = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord10 = grahaList.Rashis.Find(Bhava.KarmaBhava).Lord;
+			var lord11 = grahaList.Rashis.Find(Bhava.LabhaBhava).Lord;
 
 			if (lord9.Exchange == lord10)
 			{
@@ -27,10 +27,10 @@ namespace Mhora.Elements.Yoga
 
 		//The 10th house lord exchanges houses with the 11th lord.
 		//This combination promises wealth status and physical enjoyments plus beneficial influences from the houses involved.
-		public static bool MahaParivartana10(this DivisionType varga)
+		public static bool MahaParivartana10(this Grahas grahaList)
 		{
-			var lord10 = Rashi.Find(Bhava.KarmaBhava, varga).Lord;
-			var lord11 = Rashi.Find(Bhava.LabhaBhava, varga).Lord;
+			var lord10 = grahaList.Rashis.Find(Bhava.KarmaBhava).Lord;
+			var lord11 = grahaList.Rashis.Find(Bhava.LabhaBhava).Lord;
 			if (lord10.Exchange == lord11)
 			{
 				return (true);
@@ -41,11 +41,11 @@ namespace Mhora.Elements.Yoga
 
 		//The Lagna lord exchanges houses with 2nd or 4th or 5th or 7th or 9th or 10th or the 11th lord.
 		//This combination promises wealth status and physical enjoyments plus beneficial influences from the houses involved.
-		public static bool MahaParivartana1(this DivisionType varga)
+		public static bool MahaParivartana1(this Grahas grahaList)
 		{
-			var lord1 = Rashi.Find(Bhava.LagnaBhava, varga).Lord;
+			var lord1 = grahaList.Rashis.Find(Bhava.LagnaBhava).Lord;
 
-			foreach (var rashi in Rashi.Rashis(varga))
+			foreach (var rashi in grahaList.Rashis)
 			{
 				switch (rashi.Bhava)
 				{
@@ -69,10 +69,10 @@ namespace Mhora.Elements.Yoga
 		}
 
 		//The 2nd house lord exchanges houses with the 4th or the 5th or the 7th or the 9th or the 10th or the 11th lord.
-		public static bool MahaParivartana2(this DivisionType varga)
+		public static bool MahaParivartana2(this Grahas grahaList)
 		{
-			var lord2 = Rashi.Find(Bhava.DhanaBhava, varga).Lord;
-			foreach (var rashi in Rashi.Rashis(varga))
+			var lord2 = grahaList.Rashis.Find(Bhava.DhanaBhava).Lord;
+			foreach (var rashi in grahaList.Rashis)
 			{
 				switch (rashi.Bhava)
 				{
@@ -95,10 +95,10 @@ namespace Mhora.Elements.Yoga
 		}
 
 		//The 4nd house lord exchanges houses with the 5th lord or the 7th lord or the 9th lord or the 10th lord or the 11th lord .
-		public static bool MahaParivartana4(this DivisionType varga)
+		public static bool MahaParivartana4(this Grahas grahaList)
 		{
-			var lord4 = Rashi.Find(Bhava.SukhaBhava, varga).Lord;
-			foreach (var rashi in Rashi.Rashis(varga))
+			var lord4 = grahaList.Rashis.Find(Bhava.SukhaBhava).Lord;
+			foreach (var rashi in grahaList.Rashis)
 			{
 				switch (rashi.Bhava)
 				{
@@ -122,10 +122,10 @@ namespace Mhora.Elements.Yoga
 
 		//The 5th house lord exchanges houses with the 7th lord or the 9th lord or the 10th lord or the 11th lord.
 		//This combination promises wealth status and physical enjoyments plus beneficial influences from the houses involved.
-		public static bool MahaParivartana5(this DivisionType varga)
+		public static bool MahaParivartana5(this Grahas grahaList)
 		{
-			var lord5 = Rashi.Find(Bhava.PutraBhava, varga).Lord;
-			foreach (var rashi in Rashi.Rashis(varga))
+			var lord5 = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
+			foreach (var rashi in grahaList.Rashis)
 			{
 				switch (rashi.Bhava)
 				{
@@ -148,10 +148,10 @@ namespace Mhora.Elements.Yoga
 
 		//The 7th house lord exchanges houses with the 9th lord or the 10th lord or the 11th lord.
 		//This combination promises wealth status and physical enjoyments plus beneficial influences from the houses involved.
-		public static bool MahaParivartana7(this DivisionType varga)
+		public static bool MahaParivartana7(this Grahas grahaList)
 		{
-			var lord7 = Rashi.Find(Bhava.JayaBhava, varga).Lord;
-			foreach (var rashi in Rashi.Rashis(varga))
+			var lord7 = grahaList.Rashis.Find(Bhava.JayaBhava).Lord;
+			foreach (var rashi in grahaList.Rashis)
 			{
 				switch (rashi.Bhava)
 				{
