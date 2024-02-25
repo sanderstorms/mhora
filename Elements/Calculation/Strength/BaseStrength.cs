@@ -16,26 +16,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using System.Collections;
-using System.Collections.Generic;
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
 public abstract class BaseStrength
 {
-	protected bool                    BUseSimpleLords;
-	protected Division                Dtype;
-	protected Horoscope               H;
-	protected List <DivisionPosition> StdDivPos;
-	protected ArrayList               StdGrahas;
+	protected readonly Grahas _grahas;
+	protected          bool   BUseSimpleLords;
 
-	protected BaseStrength(Horoscope h, Division dtype, bool bUseSimpleLords)
+	protected BaseStrength(Grahas grahas, bool bUseSimpleLords)
 	{
-		H               = h;
-		Dtype           = dtype;
+		_grahas = grahas;
 		BUseSimpleLords = bUseSimpleLords;
-		StdDivPos     = H.CalculateDivisionPositions(Dtype);
 	}
 
 	protected Body GetStrengthLord(ZodiacHouse zh)
@@ -45,37 +39,18 @@ public abstract class BaseStrength
 			return zh.SimpleLordOfZodiacHouse();
 		}
 
-		return H.LordOfZodiacHouse(zh, Dtype);
+		var rashi = _grahas.Rashis.Find(zh);
+		return (rashi.Lord);
 	}
 
 	protected int NumGrahasInZodiacHouse(ZodiacHouse zh)
 	{
-		var num = 0;
-		foreach (DivisionPosition dp in StdDivPos)
-		{
-			if (dp.BodyType != BodyType.Graha)
-			{
-				continue;
-			}
-
-			if (dp.ZodiacHouse == zh)
-			{
-				num = num + 1;
-			}
-		}
-
-		return num;
+		return (_grahas.Rashis.Find(zh).Grahas.Count);
 	}
 
 	protected double KarakaLongitude(Body b)
 	{
-		var lon = H.GetPosition(b).Longitude.ToZodiacHouseOffset();
-		if (b == Body.Rahu || b == Body.Ketu)
-		{
-			lon = 30.0 - lon;
-		}
-
-		return lon;
+		return (_grahas.Find(b).HouseOffset);
 	}
 
 	protected Body FindAtmaKaraka()
@@ -102,20 +77,6 @@ public abstract class BaseStrength
 			}
 
 			ret = bn;
-		}
-
-		return ret;
-	}
-
-	public ArrayList FindGrahasInHouse(ZodiacHouse zh)
-	{
-		var ret = new ArrayList();
-		foreach (DivisionPosition dp in StdDivPos)
-		{
-			if (dp.BodyType == BodyType.Graha && dp.ZodiacHouse == zh)
-			{
-				ret.Add(dp.Body);
-			}
 		}
 
 		return ret;

@@ -20,6 +20,7 @@ using System.Collections;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Yoga;
 using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.RasiDasa;
@@ -63,7 +64,8 @@ public class TrikonaDasa : Dasa, IDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		var al      = new ArrayList(12);
+		var rashis = _h.FindRashis(_options.Division);
+		var al     = new ArrayList(12);
 		var zhSeed = _options.GetSeed();
 		if (_options.TrikonaStrengths.houses.Count >= 1)
 		{
@@ -87,7 +89,7 @@ public class TrikonaDasa : Dasa, IDasa
 				zhDasa = zhSeed.AddReverse(_order[i]);
 			}
 
-			double dasaLength = NarayanaDasaLength(zhDasa, GetLordsPosition(zhDasa));
+			double dasaLength = NarayanaDasaLength(zhDasa, GetLordsPosition(rashis [zhDasa]));
 
 
 			var di = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
@@ -148,23 +150,23 @@ public class TrikonaDasa : Dasa, IDasa
 		SetOptions(newOpts);
 	}
 
-	public DivisionPosition GetLordsPosition(ZodiacHouse zh)
+	public Graha GetLordsPosition(Rashi rashi)
 	{
-		Body b;
-		if (zh == ZodiacHouse.Sco)
+		Graha graha;
+		if (rashi == ZodiacHouse.Sco)
 		{
-			b = _options.ColordSco;
+			graha = rashi.GrahaList [_options.ColordSco];
 		}
-		else if (zh == ZodiacHouse.Aqu)
+		else if (rashi == ZodiacHouse.Aqu)
 		{
-			b = _options.ColordAqu;
+			graha = rashi.GrahaList[_options.ColordAqu];
 		}
 		else
 		{
-			b = zh.SimpleLordOfZodiacHouse();
+			graha = rashi.Lord;
 		}
 
-		return _h.GetPosition(b).ToDivisionPosition(_options.Division);
+		return graha;
 	}
 
 	private class UserOptions : RasiDasaUserOptions
@@ -191,7 +193,7 @@ public class TrikonaDasa : Dasa, IDasa
 				zh.Add(5),
 				zh.Add(9)
 			};
-			var fs = new FindStronger(H, Division, MRules);
+			var fs = new FindStronger(H.FindGrahas(Division), MRules);
 			MTrikonaStrengths = fs.GetOrderedHouses(zhT);
 		}
 

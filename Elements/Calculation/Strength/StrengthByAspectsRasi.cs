@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
@@ -24,35 +25,26 @@ namespace Mhora.Elements.Calculation.Strength;
 // Stronger Graha is in such a rasi
 public class StrengthByAspectsRasi : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-	public StrengthByAspectsRasi(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
+	public StrengthByAspectsRasi(Grahas grahas, bool bSimpleLord) : base(grahas, bSimpleLord)
 	{
 	}
 
-	public bool Stronger(Body m, Body n)
+	public int Stronger(Body m, Body n)
 	{
-		var zm = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse;
-		var zn = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse;
+		var zm = _grahas [m].Rashi;
+		var zn = _grahas [n].Rashi;
 		return Stronger(zm, zn);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
-		var zj = H.GetPosition(Body.Jupiter).ToDivisionPosition(Dtype).ZodiacHouse;
-		var zm = H.GetPosition(Body.Mercury).ToDivisionPosition(Dtype).ZodiacHouse;
+		var zj = _grahas [Body.Jupiter].Rashi;
+		var zm = _grahas [Body.Mercury].Rashi;
 
 		var a = Value(zj, zm, za);
 		var b = Value(zj, zm, zb);
-		if (a > b)
-		{
-			return true;
-		}
 
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return a.CompareTo(b);
 	}
 
 	protected int Value(ZodiacHouse zj, ZodiacHouse zm, ZodiacHouse zx)
@@ -60,7 +52,7 @@ public class StrengthByAspectsRasi : BaseStrength, IStrengthRasi, IStrengthGraha
 		var ret = 0;
 
 		var bl = GetStrengthLord(zx);
-		var zl = H.GetPosition(bl).ToDivisionPosition(Dtype).ZodiacHouse;
+		var zl = _grahas [bl].Rashi;
 
 		if (zj.RasiDristi(zx) || zj == zx)
 		{
@@ -72,7 +64,7 @@ public class StrengthByAspectsRasi : BaseStrength, IStrengthRasi, IStrengthGraha
 			ret++;
 		}
 
-		if (zl.RasiDristi(zx) || zl == zx)
+		if (zl.HasDirshtiOn(zx) || zl == zx)
 		{
 			ret++;
 		}

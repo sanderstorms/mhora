@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
@@ -24,36 +25,36 @@ namespace Mhora.Elements.Calculation.Strength;
 // Stronger Graha is AK
 public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-	public StrengthByAtmaKaraka(Horoscope h, Division dtype) : base(h, dtype, true)
+	public StrengthByAtmaKaraka(Grahas grahas) : base(grahas, true)
 	{
 	}
 
-	public bool Stronger(Body m, Body n)
+	public int Stronger(Body m, Body n)
 	{
 		var ak = FindAtmaKaraka();
 		if (m == ak)
 		{
-			return true;
+			return 1;
 		}
 
 		if (n == ak)
 		{
-			return false;
+			return -1;
 		}
 
-		throw new EqualStrength();
+		return (0);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
-		var ala = FindGrahasInHouse(za);
-		var alb = FindGrahasInHouse(zb);
+		var ala = _grahas.Rashis[za].Grahas;
+		var alb = _grahas.Rashis[zb].Grahas;
 		var ak  = FindAtmaKaraka();
 		foreach (Body ba in ala)
 		{
 			if (ba == ak)
 			{
-				return true;
+				return 1;
 			}
 		}
 
@@ -61,10 +62,10 @@ public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 		{
 			if (bb == ak)
 			{
-				return false;
+				return -1;
 			}
 		}
 
-		throw new EqualStrength();
+		return 0;
 	}
 }

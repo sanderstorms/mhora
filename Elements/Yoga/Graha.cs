@@ -204,6 +204,12 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
+		public bool HasDrishtiOn(ZodiacHouse zh)
+		{
+			return _dp.GrahaDristi(zh);
+		}
+
+
 		public bool IsAspecting(Body body)
 		{
 			var graha = Grahas.Find(body);

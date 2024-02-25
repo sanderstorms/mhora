@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
@@ -24,17 +25,17 @@ namespace Mhora.Elements.Calculation.Strength;
 // Stronger Graha is the first one
 public class StrengthByFirst : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-	public StrengthByFirst(Horoscope h, Division dtype) : base(h, dtype, true)
+	public StrengthByFirst(Grahas grahas) : base(grahas, true)
 	{
 	}
 
-	public bool Stronger(Body m, Body n)
+	public int Stronger(Body m, Body n)
 	{
-		return true;
+		return 1;
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
-		return true;
+		return 1;
 	}
 }

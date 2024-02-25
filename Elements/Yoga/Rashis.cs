@@ -22,6 +22,11 @@ namespace Mhora.Elements.Yoga
 
 		public DivisionType Varga => _varga;
 
+		public Rashi this [ZodiacHouse zh]
+		{
+			get => Find(zh);
+		}
+
 		public Rashis (List<Rashi> rashis)
 		{
 			_rashis = rashis;

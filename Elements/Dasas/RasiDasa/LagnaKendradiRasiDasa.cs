@@ -32,7 +32,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 
 	public LagnaKendradiRasiDasa(Horoscope h)
 	{
-		var fsRasi = new FindStronger(_h, _mDtype, FindStronger.RulesNarayanaDasaRasi(_h));
+		var fsRasi = new FindStronger(_h.FindGrahas(_mDtype), FindStronger.RulesNarayanaDasaRasi(_h));
 		_h       = h;
 		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNarayanaDasaRasi(_h));
 	}
@@ -49,7 +49,8 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		var al = new ArrayList(24);
+		var rashis = _h.FindRashis(_mDtype);
+		var al     = new ArrayList(24);
 		int[] order =
 		{
 			1,
@@ -83,9 +84,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 				zh = zh.AddReverse(order[i]);
 			}
 
-			var    lord        = _h.LordOfZodiacHouse(zh, _mDtype);
-			var    dpLord     = _h.GetPosition(lord).ToDivisionPosition(_mDtype);
-			double dasaLength = NarayanaDasaLength(zh, dpLord);
+			double dasaLength = NarayanaDasaLength(zh, rashis [zh].Lord);
 			var    de          = new DasaEntry(zh, dasaLengthSum, dasaLength, 1, zh.ToString());
 			al.Add(de);
 			dasaLengthSum += dasaLength;

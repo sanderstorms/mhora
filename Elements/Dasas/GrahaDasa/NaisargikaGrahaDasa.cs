@@ -248,7 +248,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 		{
 			_h           = h;
 			_stdDivPos = _h.CalculateDivisionPositions(Dtype);
-			var fs = new FindStronger(_h, Dtype, FindStronger.RulesStrongerCoLord(_h));
+			var fs = new FindStronger(_h.FindGrahas(Dtype), FindStronger.RulesStrongerCoLord(_h));
 			MLordSco          = fs.StrongerGraha(Body.Mars, Body.Ketu, true);
 			MLordAqu          = fs.StrongerGraha(Body.Saturn, Body.Rahu, true);
 			ExcludeNodes      = true;
@@ -352,7 +352,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 		public void Recalculate()
 		{
-			var fs = new FindStronger(_h, Dtype, FindStronger.RulesStrongerCoLord(_h));
+			var fs = new FindStronger(_h.FindGrahas(Dtype), FindStronger.RulesStrongerCoLord(_h));
 			MLordSco = fs.StrongerGraha(Body.Mars, Body.Ketu, true);
 			MLordAqu = fs.StrongerGraha(Body.Saturn, Body.Rahu, true);
 			CalculateRasiStrengths();
@@ -389,14 +389,14 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 		public void CalculateRasiStrengths()
 		{
-			var fs = new FindStronger(_h, Dtype, FindStronger.RulesNaisargikaDasaRasi(_h));
+			var fs = new FindStronger(_h.FindGrahas(Dtype), FindStronger.RulesNaisargikaDasaRasi(_h));
 			RasiStrengths = fs.ResultsZodiacKendras(_h.CalculateDivisionPosition(_h.GetPosition(Body.Lagna), Dtype).ZodiacHouse);
 		}
 
 		public void CalculateGrahaStrengths()
 		{
-			var fsTemp = new StrengthByConjunction(_h, Dtype);
-			var fs      = new FindStronger(_h, Dtype, FindStronger.RulesNaisargikaDasaGraha(_h));
+			var grahas = _h.FindGrahas(Dtype);
+			var fs     = new FindStronger(grahas, FindStronger.RulesNaisargikaDasaGraha(_h));
 			GrahaStrengths = new OrderedGrahas[3];
 			for (var i = 0; i < RasiStrengths.Length; i++)
 			{
@@ -404,11 +404,11 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 				var oz = RasiStrengths[i];
 				foreach (ZodiacHouse zn in oz.houses)
 				{
-					var temp     = fsTemp.FindGrahasInHouse(zn);
-					var tempArr = new Body[temp.Count];
-					for (var j = 0; j < temp.Count; j++)
+					var rashi   = grahas.Rashis[zn]; 
+					var tempArr = new Body[rashi.Grahas.Count];
+					for (var j = 0; j < rashi.Grahas.Count; j++)
 					{
-						tempArr[j] = (Body) temp[j];
+						tempArr[j] = rashi.Grahas[j];
 					}
 
 					var sorted = fs.GetOrderedGrahas(tempArr);

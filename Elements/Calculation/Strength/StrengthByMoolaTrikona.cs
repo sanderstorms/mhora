@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
@@ -24,62 +25,37 @@ namespace Mhora.Elements.Calculation.Strength;
 // Stronger planet is in moola trikona rasi
 public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-	public StrengthByMoolaTrikona(Horoscope h, Division dtype) : base(h, dtype, true)
+	public StrengthByMoolaTrikona(Grahas grahas) : base(grahas, true)
 	{
 	}
 
-	public bool Stronger(Body m, Body n)
+	public int Stronger(Body m, Body n)
 	{
 		var valm = Value(m);
 		var valn = Value(n);
 
-		if (valm > valn)
-		{
-			return true;
-		}
-
-		if (valn > valm)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return valm.CompareTo(valn);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var vala = Value(za);
 		var valb = Value(zb);
 
-		if (vala > valb)
-		{
-			return true;
-		}
-
-		if (valb > vala)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return vala.CompareTo(valb);
 	}
 
 	public int Value(ZodiacHouse zn)
 	{
 		var ret = 0;
-		foreach (DivisionPosition dp in StdDivPos)
+		foreach (var graha in _grahas.NavaGrahas)
 		{
-			if (dp.BodyType != BodyType.Graha)
+			if (graha.Rashi.ZodiacHouse != zn)
 			{
 				continue;
 			}
 
-			if (dp.ZodiacHouse != zn)
-			{
-				continue;
-			}
-
-			ret += Value(dp.Body);
+			ret += Value(graha);
 		}
 
 		return ret;
@@ -87,7 +63,7 @@ public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGrah
 
 	public int Value(Body b)
 	{
-		if (H.GetPosition(b).ToDivisionPosition(Dtype).IsInMoolaTrikona())
+		if (_grahas [b].IsMoolTrikona)
 		{
 			return 1;
 		}

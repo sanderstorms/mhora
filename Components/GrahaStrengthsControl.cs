@@ -257,7 +257,7 @@ public class GrahaStrengthsControl : Form
 			{
 				al[i]
 			};
-			var fs = new FindStronger(h, options.Division, rule);
+			var fs = new FindStronger(h.FindGrahas(options.Division), rule);
 			var bw = fs.StrongerGraha(b1, b2, bSimpleLord, ref winner);
 
 			var li        = new ListViewItem();

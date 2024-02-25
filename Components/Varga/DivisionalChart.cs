@@ -1046,7 +1046,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		// display bodies
 		for (var i = 0; i <= max; i++)
 		{
-			var dp = _grahas.DpList.Positions[i];
+			var dp = _grahas.DivisionPositions[i];
 
 			if (options.ViewStyle == UserOptions.EViewStyle.CharaKarakas7)
 			{
@@ -1060,7 +1060,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			items.Add(dp);
 		}
 
-		var dp2 = _grahas.DpList.Positions[(int) Body.Lagna];
+		var dp2 = _grahas.DivisionPositions[(int) Body.Lagna];
 		items.Add(dp2);
 		DrawItems(g, true);
 	}
@@ -1070,7 +1070,8 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		var dpo = h.GetPosition(Body.Lagna).ToDivisionPosition(options.Varga);
 		items.Add(dpo);
 
-		foreach (var dp in _grahas.DpList.GrahaArudha)
+		var grahaArudha = h.CalculateGrahaArudhaDivisionPositions(options.Varga);
+		foreach (var dp in grahaArudha)
 		{
 			items.Add(dp);
 		}
@@ -1149,7 +1150,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			return;
 		}
 
-		foreach (var dp in _grahas.DpList.Positions)
+		foreach (var dp in _grahas.DivisionPositions)
 		{
 			if (options.ViewStyle == UserOptions.EViewStyle.Panchanga && dp.BodyType != BodyType.Graha)
 			{
@@ -1171,7 +1172,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			return;
 		}
 
-		foreach (var dp in _grahas.DpList.Positions)
+		foreach (var dp in _grahas.DivisionPositions)
 		{
 			if (dp.BodyType != BodyType.SpecialLagna)
 			{
@@ -1188,11 +1189,11 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 		if (options.ViewStyle == UserOptions.EViewStyle.Normal)
 		{
-			secondary_pos = _grahas.DpList.Arudha;
+			secondary_pos = h.CalculateArudhaDivisionPositions(options.Varga);
 		}
 		else
 		{
-			secondary_pos = _grahas.DpList.Varnada;
+			secondary_pos = h.CalculateVarnadaDivisionPositions(options.Varga);
 		}
 
 		foreach (var dp in secondary_pos)

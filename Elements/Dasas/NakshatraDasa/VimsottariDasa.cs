@@ -38,7 +38,7 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 		Options   = new UserOptions();
 		Horoscope = h;
 
-		var fsGraha = new FindStronger(h, new Division(DivisionType.BhavaPada), FindStronger.RulesVimsottariGraha(h));
+		var fsGraha = new FindStronger(h.FindGrahas(DivisionType.BhavaPada), FindStronger.RulesVimsottariGraha(h));
 		var stronger = fsGraha.StrongerGraha(Body.Moon, Body.Lagna, false);
 
 		if (stronger == Body.Lagna)

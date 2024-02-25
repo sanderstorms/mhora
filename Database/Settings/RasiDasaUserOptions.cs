@@ -215,7 +215,7 @@ public class RasiDasaUserOptions : ICloneable
 
 	public void CalculateCoLords()
 	{
-		var fs = new FindStronger(H, MDtype, FindStronger.RulesStrongerCoLord(H));
+		var fs = new FindStronger(H.FindGrahas(MDtype), FindStronger.RulesStrongerCoLord(H));
 		MCoLordAqu = fs.StrongerGraha(Body.Saturn, Body.Rahu, true);
 		MCoLordSco = fs.StrongerGraha(Body.Mars, Body.Ketu, true);
 	}
@@ -239,7 +239,7 @@ public class RasiDasaUserOptions : ICloneable
 			{
 				GrahaStrength.Longitude
 			};
-			var fs = new FindStronger(H, Division, rule);
+			var fs = new FindStronger(H.FindGrahas(Division), rule);
 			var b  = fs.StrongerGraha(Body.Saturn, Body.Ketu, false);
 			if (b == Body.Ketu)
 			{
@@ -301,7 +301,7 @@ public class RasiDasaUserOptions : ICloneable
 
 	public void CalculateSeventhStrengths()
 	{
-		var fs   = new FindStronger(H, MDtype, MRules);
+		var fs   = new FindStronger(H.FindGrahas(MDtype), MRules);
 		var zAri = ZodiacHouse.Ari;
 		for (var i = 0; i < 6; i++)
 		{

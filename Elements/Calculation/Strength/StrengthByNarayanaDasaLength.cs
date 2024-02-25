@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Definitions;
 using Mhora.Elements.Dasas;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
@@ -25,54 +26,34 @@ namespace Mhora.Elements.Calculation.Strength;
 // Stronger Graha is in such a rasi
 public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-	public StrengthByNarayanaDasaLength(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
+	public StrengthByNarayanaDasaLength(Grahas grahas, bool bSimpleLord) : base(grahas, bSimpleLord)
 	{
 	}
 
-	public bool Stronger(Body m, Body n)
+	public int Stronger(Body m, Body n)
 	{
 		var a = Value(m);
 		var b = Value(n);
-		if (a > b)
-		{
-			return true;
-		}
 
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return a.CompareTo(b);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var a = Value(za);
 		var b = Value(zb);
-		if (a > b)
-		{
-			return true;
-		}
 
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return a.CompareTo(b);
 	}
 
 	protected int Value(ZodiacHouse zh)
 	{
 		var bl = GetStrengthLord(zh);
-		var pl = H.GetPosition(bl).ToDivisionPosition(Dtype);
-		return Dasa.NarayanaDasaLength((zh), pl);
+		return Dasa.NarayanaDasaLength(zh, _grahas [bl]);
 	}
 
 	protected int Value(Body bm)
 	{
-		var zm = H.GetPosition(bm).ToDivisionPosition(Dtype).ZodiacHouse;
-		return Value(zm);
+		return Value(_grahas [bm].Rashi);
 	}
 }

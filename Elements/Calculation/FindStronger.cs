@@ -22,6 +22,7 @@ using System.ComponentModel;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation.Strength;
+using Mhora.Elements.Yoga;
 using Mhora.Util;
 
 namespace Mhora.Elements.Calculation;
@@ -29,27 +30,17 @@ namespace Mhora.Elements.Calculation;
 public class FindStronger
 {
 
-	private readonly Division  _dtype;
-	private readonly Horoscope _h;
+	private readonly Grahas    _grahas;
 	private readonly ArrayList _rules;
 
 	private bool _bUseSimpleLords;
 
 
-	public FindStronger(Horoscope h, Division dtype, ArrayList rules, bool useSimpleLords)
+	public FindStronger(Grahas grahas, ArrayList rules, bool useSimpleLords = false)
 	{
-		_h         = h;
-		_dtype     = dtype;
-		_rules     = rules;
 		_bUseSimpleLords = useSimpleLords;
-	}
-
-	public FindStronger(Horoscope h, Division dtype, ArrayList rules)
-	{
-		_h         = h;
-		_dtype     = dtype;
-		_rules     = rules;
-		_bUseSimpleLords = false;
+		_grahas          = grahas;
+		_rules           = rules;
 	}
 
 	private static StrengthOptions GetStrengthOptions(Horoscope h)
@@ -395,246 +386,67 @@ public class FindStronger
 		return CmpRasi(za, zb, bSimpleLord, ref winner);
 	}
 
+	public int CmpRasi(ZodiacHouse za, ZodiacHouse zb, bool simpleLord, RashiStrength rule)
+	{
+		switch (rule)
+		{
+			case RashiStrength.Conjunction:
+				return new StrengthByConjunction(_grahas).Stronger(za, zb);
+			case RashiStrength.Exaltation:
+				return new StrengthByExaltation(_grahas).Stronger(za, zb);
+			case RashiStrength.Longitude:
+				return new StrengthByLongitude(_grahas).Stronger(za, zb);
+			case RashiStrength.AtmaKaraka:
+				return new StrengthByAtmaKaraka(_grahas).Stronger(za, zb);
+			case RashiStrength.LordIsAtmaKaraka:
+				return new StrengthByLordIsAtmaKaraka(_grahas, simpleLord).Stronger(za, zb);
+			case RashiStrength.RasisNature:
+				return new StrengthByRasisNature(_grahas).Stronger(za, zb);
+			case RashiStrength.LordsNature:
+				return new StrengthByLordsNature(_grahas).Stronger(za, zb);
+			case RashiStrength.AspectsRasi:
+				return new StrengthByAspectsRasi(_grahas, simpleLord).Stronger(za, zb);
+			case RashiStrength.AspectsGraha:
+				return new StrengthByAspectsGraha(_grahas, simpleLord).Stronger(za, zb);
+			case RashiStrength.LordInDifferentOddity:
+				return new StrengthByLordInDifferentOddity(_grahas, simpleLord).Stronger(za, zb);
+			case RashiStrength.LordsLongitude:
+				return new StrengthByLordsLongitude(_grahas, simpleLord).Stronger(za, zb);
+			case RashiStrength.NarayanaDasaLength:
+				return new StrengthByNarayanaDasaLength(_grahas, simpleLord).Stronger(za, zb);
+			case RashiStrength.VimsottariDasaLength:
+				return new StrengthByVimsottariDasaLength(_grahas).Stronger(za, zb);
+			case RashiStrength.MoolaTrikona:
+				return new StrengthByMoolaTrikona(_grahas).Stronger(za, zb);
+			case RashiStrength.OwnHouse:
+				return new StrengthByOwnHouse(_grahas).Stronger(za, zb);
+			case RashiStrength.KendraConjunction:
+				return new StrengthByKendraConjunction(_grahas).Stronger(za, zb);
+			case RashiStrength.KarakaKendradiGrahaDasaLength:
+				return new StrengthByKarakaKendradiGrahaDasaLength(_grahas).Stronger(za, zb);
+			case RashiStrength.First:
+				return new StrengthByFirst(_grahas).Stronger(za, zb);
+			default: 
+				throw new Exception("Unknown Rasi Strength Rule");
+		}
+	}
+
+
+
 	public bool CmpRasi(ZodiacHouse za, ZodiacHouse zb, bool bSimpleLord, ref int winner)
 	{
-		var bRet   = false;
-		var bFound = true;
-		winner = 0;
-
-		//System.Mhora.Log.Debug("Rasi: {0} {1}", za.ToString(), zb.ToString());
 		foreach (RashiStrength s in _rules)
 		{
-			//System.Mhora.Log.Debug("Rasi::{0}", s);
-			switch (s)
+			var result = CmpRasi(za, zb, bSimpleLord, s);
+			if (result == 0)
 			{
-				case RashiStrength.Conjunction:
-					try
-					{
-						bRet = new StrengthByConjunction(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.Exaltation:
-					try
-					{
-						bRet = new StrengthByExaltation(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.Longitude:
-					try
-					{
-						bRet = new StrengthByLongitude(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.AtmaKaraka:
-					try
-					{
-						bRet = new StrengthByAtmaKaraka(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.LordIsAtmaKaraka:
-					try
-					{
-						bRet = new StrengthByLordIsAtmaKaraka(_h, _dtype, bSimpleLord).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.RasisNature:
-					try
-					{
-						bRet = new StrengthByRasisNature(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.LordsNature:
-					try
-					{
-						bRet = new StrengthByLordsNature(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.AspectsRasi:
-					try
-					{
-						bRet = new StrengthByAspectsRasi(_h, _dtype, bSimpleLord).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.AspectsGraha:
-					try
-					{
-						bRet = new StrengthByAspectsGraha(_h, _dtype, bSimpleLord).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.LordInDifferentOddity:
-					try
-					{
-						bRet = new StrengthByLordInDifferentOddity(_h, _dtype, bSimpleLord).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.LordsLongitude:
-					try
-					{
-						bRet = new StrengthByLordsLongitude(_h, _dtype, bSimpleLord).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.NarayanaDasaLength:
-					try
-					{
-						bRet = new StrengthByNarayanaDasaLength(_h, _dtype, bSimpleLord).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.VimsottariDasaLength:
-					try
-					{
-						bRet = new StrengthByVimsottariDasaLength(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.MoolaTrikona:
-					try
-					{
-						bRet = new StrengthByMoolaTrikona(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.OwnHouse:
-					try
-					{
-						bRet = new StrengthByOwnHouse(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.KendraConjunction:
-					try
-					{
-						bRet = new StrengthByKendraConjunction(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.KarakaKendradiGrahaDasaLength:
-					try
-					{
-						bRet = new StrengthByKarakaKendradiGrahaDasaLength(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case RashiStrength.First:
-					try
-					{
-						bRet = new StrengthByFirst(_h, _dtype).Stronger(za, zb);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				default: throw new Exception("Unknown Rasi Strength Rule");
+				winner++;
+			}
+			else
+			{
+				return (result > 0);
 			}
 		}
-
-		bFound = false;
-
-	found:
-		if (bFound)
-		{
-			return bRet;
-		}
-
 		return true;
 	}
 
@@ -644,245 +456,67 @@ public class FindStronger
 		return CmpGraha(m, n, bSimpleLord, ref winner);
 	}
 
+	public int CmpGraha(Body m, Body n, bool bSimpleLord, GrahaStrength strength)
+	{
+		switch (strength)
+		{
+			case GrahaStrength.Conjunction:
+				return new StrengthByConjunction(_grahas).Stronger(m, n);
+			case GrahaStrength.Exaltation:
+				return new StrengthByExaltation(_grahas).Stronger(m, n);
+			case GrahaStrength.Longitude:
+				return new StrengthByLongitude(_grahas).Stronger(m, n);
+			case GrahaStrength.AtmaKaraka:
+				return new StrengthByAtmaKaraka(_grahas).Stronger(m, n);
+			case GrahaStrength.RasisNature:
+				return new StrengthByRasisNature(_grahas).Stronger(m, n);
+			case GrahaStrength.LordsNature:
+				return new StrengthByLordsNature(_grahas).Stronger(m, n);
+			case GrahaStrength.AspectsRasi:
+				return new StrengthByAspectsRasi(_grahas, bSimpleLord).Stronger(m, n);
+			case GrahaStrength.AspectsGraha:
+				return new StrengthByAspectsGraha(_grahas, bSimpleLord).Stronger(m, n);
+			case GrahaStrength.NarayanaDasaLength:
+				return new StrengthByNarayanaDasaLength(_grahas, bSimpleLord).Stronger(m, n);
+			case GrahaStrength.VimsottariDasaLength:
+				return new StrengthByVimsottariDasaLength(_grahas).Stronger(m, n);
+			case GrahaStrength.MoolaTrikona:
+				return new StrengthByMoolaTrikona(_grahas).Stronger(m, n);
+			case GrahaStrength.OwnHouse:
+				return new StrengthByOwnHouse(_grahas).Stronger(m, n);
+			case GrahaStrength.NotInOwnHouse:
+				return 0 - new StrengthByOwnHouse(_grahas).Stronger(m, n);
+			case GrahaStrength.LordInOwnHouse:
+				return new StrengthByLordInOwnHouse(_grahas, bSimpleLord).Stronger(m, n);
+			case GrahaStrength.LordInDifferentOddity:
+				return new StrengthByLordInDifferentOddity(_grahas, bSimpleLord).Stronger(m, n);
+			case GrahaStrength.KendraConjunction:
+				return new StrengthByKendraConjunction(_grahas).Stronger(m, n);
+			case GrahaStrength.KarakaKendradiGrahaDasaLength:
+				return new StrengthByKarakaKendradiGrahaDasaLength(_grahas).Stronger(m, n);
+			case GrahaStrength.First:
+				return new StrengthByFirst(_grahas).Stronger(m, n);
+			default: 
+				throw new Exception("Unknown Graha Strength Rule");
+		}
+	}
+
+
 	public bool CmpGraha(Body m, Body n, bool bSimpleLord, ref int winner)
 	{
-		var bRet   = false;
-		var bFound = true;
 		winner = 0;
 		foreach (GrahaStrength s in _rules)
 		{
-			//Mhora.Log.Debug("Trying {0}. Curr is {1}", s, winner);
-			switch (s)
+			var result = CmpGraha(m, n, bSimpleLord, s);
+			if (result == 0)
 			{
-				case GrahaStrength.Conjunction:
-					try
-					{
-						bRet = new StrengthByConjunction(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.Exaltation:
-					try
-					{
-						bRet = new StrengthByExaltation(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.Longitude:
-					try
-					{
-						bRet = new StrengthByLongitude(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.AtmaKaraka:
-					try
-					{
-						bRet = new StrengthByAtmaKaraka(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.RasisNature:
-					try
-					{
-						bRet = new StrengthByRasisNature(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.LordsNature:
-					try
-					{
-						bRet = new StrengthByLordsNature(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.AspectsRasi:
-					try
-					{
-						bRet = new StrengthByAspectsRasi(_h, _dtype, bSimpleLord).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.AspectsGraha:
-					try
-					{
-						bRet = new StrengthByAspectsGraha(_h, _dtype, bSimpleLord).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.NarayanaDasaLength:
-					try
-					{
-						bRet = new StrengthByNarayanaDasaLength(_h, _dtype, bSimpleLord).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.VimsottariDasaLength:
-					try
-					{
-						bRet = new StrengthByVimsottariDasaLength(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.MoolaTrikona:
-					try
-					{
-						bRet = new StrengthByMoolaTrikona(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.OwnHouse:
-					try
-					{
-						bRet = new StrengthByOwnHouse(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.NotInOwnHouse:
-					try
-					{
-						bRet = !new StrengthByOwnHouse(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.LordInOwnHouse:
-					try
-					{
-						bRet = new StrengthByLordInOwnHouse(_h, _dtype, bSimpleLord).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.LordInDifferentOddity:
-					try
-					{
-						bRet = new StrengthByLordInDifferentOddity(_h, _dtype, bSimpleLord).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.KendraConjunction:
-					try
-					{
-						bRet = new StrengthByKendraConjunction(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.KarakaKendradiGrahaDasaLength:
-					try
-					{
-						bRet = new StrengthByKarakaKendradiGrahaDasaLength(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				case GrahaStrength.First:
-					try
-					{
-						bRet = new StrengthByFirst(_h, _dtype).Stronger(m, n);
-						goto found;
-					}
-					catch
-					{
-						winner++;
-					}
-
-					break;
-				default: throw new Exception("Unknown Graha Strength Rule");
+				winner++;
+			}
+			else
+			{
+				return (result > 0);
 			}
 		}
-
-		bFound = false;
-
-	found:
-		if (bFound)
-		{
-			return bRet;
-		}
-
-		winner++;
 		return true;
 	}
 }

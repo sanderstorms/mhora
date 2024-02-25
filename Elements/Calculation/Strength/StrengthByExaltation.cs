@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
@@ -24,66 +25,41 @@ namespace Mhora.Elements.Calculation.Strength;
 // Stronger planet is exalted or not debilitated
 public class StrengthByExaltation : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-	public StrengthByExaltation(Horoscope h, Division dtype) : base(h, dtype, true)
+	public StrengthByExaltation(Grahas grahas) : base(grahas, true)
 	{
 	}
 
-	public bool Stronger(Body m, Body n)
+	public int Stronger(Body m, Body n)
 	{
 		var valm = Value(m);
 		var valn = Value(n);
 
-		if (valm > valn)
-		{
-			return true;
-		}
-
-		if (valn > valm)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return valm.CompareTo(valn);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var vala = Value(za);
 		var valb = Value(zb);
 
-		if (vala > valb)
-		{
-			return true;
-		}
-
-		if (valb > vala)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return vala.CompareTo(valb);
 	}
 
 	public int Value(ZodiacHouse zn)
 	{
 		var ret = 0;
-		foreach (DivisionPosition dp in StdDivPos)
+		foreach (var graha in _grahas.NavaGrahas)
 		{
-			if (dp.BodyType != BodyType.Graha)
+			if (graha.Rashi != zn)
 			{
 				continue;
 			}
 
-			if (dp.ZodiacHouse != zn)
-			{
-				continue;
-			}
-
-			if (dp.IsExaltedPhalita())
+			if (graha.IsExalted)
 			{
 				ret++;
 			}
-			else if (dp.IsDebilitatedPhalita())
+			else if (graha.IsDebilitated)
 			{
 				ret--;
 			}
@@ -94,12 +70,12 @@ public class StrengthByExaltation : BaseStrength, IStrengthRasi, IStrengthGraha
 
 	public int Value(Body b)
 	{
-		if (H.GetPosition(b).ToDivisionPosition(Dtype).IsExaltedPhalita())
+		if (_grahas [b].IsExalted)
 		{
 			return 1;
 		}
 
-		if (H.GetPosition(b).ToDivisionPosition(Dtype).IsDebilitatedPhalita())
+		if (_grahas [b].IsDebilitated)
 		{
 			return -1;
 		}

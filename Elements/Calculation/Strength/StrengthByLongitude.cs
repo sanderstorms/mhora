@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
@@ -24,28 +25,19 @@ namespace Mhora.Elements.Calculation.Strength;
 // Stronger Graha has traversed larger longitude in its house
 public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-	public StrengthByLongitude(Horoscope h, Division dtype) : base(h, dtype, true)
+	public StrengthByLongitude(Grahas grahas) : base(grahas, true)
 	{
 	}
 
-	public bool Stronger(Body m, Body n)
+	public int Stronger(Body m, Body n)
 	{
 		var lonm = KarakaLongitude(m);
 		var lonn = KarakaLongitude(n);
-		if (lonm > lonn)
-		{
-			return true;
-		}
 
-		if (lonn > lonm)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return lonn.CompareTo(lonn);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		Body[] karakaBodies =
 		{
@@ -62,28 +54,17 @@ public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
 		double lona = 0.0, lonb = 0.0;
 		foreach (var bn in karakaBodies)
 		{
-			var div    = H.GetPosition(bn).ToDivisionPosition(new Division(DivisionType.Rasi));
 			var offset = KarakaLongitude(bn);
-			if (div.ZodiacHouse == za && offset > lona)
+			if (_grahas [bn].Rashi == za && offset > lona)
 			{
 				lona = offset;
 			}
-			else if (div.ZodiacHouse == zb && offset > lonb)
+			else if (_grahas [bn].Rashi == zb && offset > lonb)
 			{
 				lonb = offset;
 			}
 		}
 
-		if (lona > lonb)
-		{
-			return true;
-		}
-
-		if (lonb > lona)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return lona.CompareTo(lonb);
 	}
 }

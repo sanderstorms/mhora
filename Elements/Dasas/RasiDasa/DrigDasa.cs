@@ -46,6 +46,7 @@ public class DrigDasa : Dasa, IDasa
 
 	public ArrayList Dasa(int cycle)
 	{
+		var rashis  = _h.FindRashis(DivisionType.Rasi);
 		var alOrder = new ArrayList(12);
 		var zhSeed  = _options.GetSeed().Add(9);
 
@@ -61,8 +62,7 @@ public class DrigDasa : Dasa, IDasa
 		for (var i = 0; i < 12; i++)
 		{
 			var zhDasa = (ZodiacHouse) alOrder[i];
-			var dp     = _h.CalculateDivisionPosition(_h.GetPosition(GetLord(zhDasa)), new Division(DivisionType.Rasi));
-			dasaLength = NarayanaDasaLength(zhDasa, dp);
+			dasaLength = NarayanaDasaLength(zhDasa, rashis[zhDasa].Lord);
 			var di = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
 			dasaLengthSum += dasaLength;

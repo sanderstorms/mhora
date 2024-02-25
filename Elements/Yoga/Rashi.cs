@@ -59,6 +59,11 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
+		public bool HasDirshtiOn(ZodiacHouse zh)
+		{
+			return ZodiacHouse.RasiDristi(zh);
+		}
+
 		public Graha Lord => GrahaList.Find(_zh.LordOfSign());
 
 		public List<Graha> Grahas { get; set;}
@@ -66,8 +71,7 @@ namespace Mhora.Elements.Yoga
 		internal void Examine(Grahas grahaList)
 		{
 			GrahaList = grahaList;
-			Grahas = GrahaList.FindAll(graha => graha.Rashi == this);
-
+			Grahas    = GrahaList.NavaGrahas.FindAll(graha => graha.Rashi == this);
 		}
 	}
 }

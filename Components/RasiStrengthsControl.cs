@@ -255,7 +255,7 @@ public class RasiStrengthsControl : Form
 			{
 				al[i]
 			};
-			var fs        = new FindStronger(h, options.Division, rule);
+			var fs        = new FindStronger(h.FindGrahas(options.Division), rule);
 			var zw        = fs.StrongerRasi(z1, z2, false, ref winner);
 			var li        = new ListViewItem();
 			var enumValue = (Enum) al[i];

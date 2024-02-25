@@ -17,32 +17,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi's lord has traversed larger longitude
 public class StrengthByLordsLongitude : BaseStrength, IStrengthRasi
 {
-	public StrengthByLordsLongitude(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
+	public StrengthByLordsLongitude(Grahas grahas, bool bSimpleLord) : base(grahas, bSimpleLord)
 	{
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		var lora = GetStrengthLord(za);
 		var lorb = GetStrengthLord(zb);
 		var offa = KarakaLongitude(lora);
 		var offb = KarakaLongitude(lorb);
-		if (offa > offb)
-		{
-			return true;
-		}
 
-		if (offb > offa)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return offa.CompareTo(offb);
 	}
 }

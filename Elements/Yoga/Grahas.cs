@@ -8,27 +8,52 @@ namespace Mhora.Elements.Yoga
 {
 	public class Grahas : IReadOnlyList<Graha>
 	{
-		private readonly Horoscope    _horoscope;
-		private readonly DivisionType _varga;
-		private readonly List<Graha>  _grahas;
-		private readonly Rashis       _rashis;
-		private readonly DpList       _dpList;
+		private readonly Horoscope              _horoscope;
+		private readonly DivisionType           _varga;
+		private readonly List<Graha>            _grahas;
+		private readonly Rashis                 _rashis;
+		private readonly List<DivisionPosition> _dpList;
 
-		public Grahas (Horoscope horoscope, List<Graha> grahas, Rashis rashis, DpList dplist, DivisionType varga)
+		public Grahas(Horoscope h, DivisionType varga)
+		{
+			_horoscope = h;
+			_varga     = varga;
+			_rashis    = h.FindRashis(varga);
+			_grahas    = new List<Graha>();
+
+			_dpList = h.CalculateDivisionPositions(new Division(varga));
+
+			foreach (DivisionPosition dp in _dpList)
+			{
+				if ((dp.BodyType == BodyType.Graha) || (dp.BodyType == BodyType.Lagna))
+				{
+					var position = h.GetPosition(dp.Body);
+					var graha    = new Graha(position, dp, _rashis.Find(dp.ZodiacHouse));
+					_grahas.Add(graha);
+				}
+			}
+
+			_grahas.Sort((x, y) => x.BodyPosition.Longitude.CompareTo(y.BodyPosition.Longitude));
+		}
+
+
+		public Grahas (Horoscope horoscope, List<Graha> grahas, Rashis rashis, DivisionType varga)
 		{
 			_horoscope = horoscope;
-			_dpList    = dplist;
 			_varga     = varga;
 			_grahas    = grahas;
 			_rashis    = rashis;
 
 		}
 
+		public Graha this [Body body]
+		{
+			get => Find(body);
+		}
+
 		public Horoscope Horoscope => _horoscope;
 
 		public DivisionType Varga => _varga;
-
-		public DpList DpList => _dpList;
 
 		public Graha Find (Karaka8 karaka)
 		{
@@ -47,11 +72,13 @@ namespace Mhora.Elements.Yoga
 			return _grahas.Find(graha => graha == body);
 		}
 
+		public List<Graha> NavaGrahas => _grahas.FindAll(graha => graha.BodyType == BodyType.Graha);
+
 		public List<Graha> Karaka8
 		{
 			get
 			{
-				var karaka8 = _grahas.FindAll(graha => graha.BodyType == BodyType.Graha);
+				var karaka8 = NavaGrahas;
 				karaka8.RemoveAll(graha => graha.Body == Body.Ketu);
 				karaka8.Sort((x, y) => y.HouseOffset.CompareTo(x.HouseOffset));
 				return (karaka8);
@@ -158,6 +185,8 @@ namespace Mhora.Elements.Yoga
 		public Graha this[int index] => _grahas[index];
 
 		public Rashis      Rashis => _rashis;
+
+		public List<DivisionPosition> DivisionPositions => _dpList;
 
 		public List<Graha> FindAll(Predicate<Graha> func)
 		{

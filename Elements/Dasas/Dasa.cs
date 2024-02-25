@@ -17,10 +17,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
-using System.Security.Cryptography;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 using Mhora.Util;
 
 namespace Mhora.Elements.Dasas;
@@ -29,24 +29,24 @@ public abstract class Dasa
 {
 	public Recalculate RecalculateEvent;
 
-	public static int NarayanaDasaLength(ZodiacHouse zh, DivisionPosition dp)
+	public static int NarayanaDasaLength(ZodiacHouse zh, Graha graha)
 	{
 		var length = 0;
 
 		if (zh.IsOddFooted())
 		{
-			length = zh.NumHousesBetween(dp.ZodiacHouse);
+			length = zh.NumHousesBetween(graha.Rashi);
 		}
 		else
 		{
-			length = zh.NumHousesBetweenReverse(dp.ZodiacHouse);
+			length = zh.NumHousesBetweenReverse(graha.Rashi);
 		}
 
-		if (dp.IsExaltedPhalita())
+		if (graha.IsExalted)
 		{
 			length++;
 		}
-		else if (dp.IsDebilitatedPhalita())
+		else if (graha.IsDebilitated)
 		{
 			length--;
 		}

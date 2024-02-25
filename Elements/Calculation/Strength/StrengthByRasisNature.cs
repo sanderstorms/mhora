@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
@@ -24,18 +25,18 @@ namespace Mhora.Elements.Calculation.Strength;
 // Stronger Graha in such a rasi
 public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
 {
-	public StrengthByRasisNature(Horoscope h, Division dtype) : base(h, dtype, true)
+	public StrengthByRasisNature(Grahas grahas) : base(grahas, true)
 	{
 	}
 
-	public bool Stronger(Body m, Body n)
+	public int Stronger(Body m, Body n)
 	{
-		var za = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse;
-		var zb = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse;
+		var za = _grahas [m].Rashi;
+		var zb = _grahas [n].Rashi;
 		return Stronger(za, zb);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
 	{
 		int[] vals =
 		{
@@ -45,17 +46,8 @@ public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
 		}; // dual, move, fix
 		var a = NaturalValueForRasi(za);
 		var b = NaturalValueForRasi(zb);
-		if (a > b)
-		{
-			return true;
-		}
 
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return a.CompareTo(b);
 	}
 
 	public int NaturalValueForRasi(ZodiacHouse zha)
