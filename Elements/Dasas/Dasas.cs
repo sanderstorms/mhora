@@ -26,7 +26,7 @@ namespace Mhora.Elements.Dasas
 
 		public static bool IsValid(this Horoscope h, NakshatraLord dasa)
 		{
-			var grahas  = Grahas.Find(h, DivisionType.Rasi);
+			var grahas  = h.FindGrahas(DivisionType.Rasi);
 
 			switch (dasa)
 			{
@@ -48,7 +48,7 @@ namespace Mhora.Elements.Dasas
 
 				case NakshatraLord.Dwadashottari:
 				{
-					var navamsa = Grahas.Find(h, DivisionType.Navamsa);
+					var navamsa = h.FindGrahas(DivisionType.Navamsa);
 					var lagna   = navamsa.Find(Body.Lagna);
 					if (lagna.Rashi.Lord == Body.Venus)
 					{
@@ -59,7 +59,7 @@ namespace Mhora.Elements.Dasas
 
 				case NakshatraLord.Panchottari:
 				{
-					var dasamsa = Grahas.Find(h, DivisionType.Dasamsa);
+					var dasamsa = h.FindGrahas(DivisionType.Dasamsa);
 					var lagna   = dasamsa.Find(Body.Lagna);
 					if (lagna.Rashi == ZodiacHouse.Can)
 					{
@@ -70,7 +70,7 @@ namespace Mhora.Elements.Dasas
 
 				case NakshatraLord.Shatabdika:
 				{
-					var navamsa = Grahas.Find(h, DivisionType.Navamsa);
+					var navamsa = h.FindGrahas(DivisionType.Navamsa);
 					var lagnaD1 = grahas.Find(Body.Lagna);
 					var lagnaD9 = navamsa.Find(Body.Lagna);
 
@@ -109,7 +109,7 @@ namespace Mhora.Elements.Dasas
 
 				case NakshatraLord.ShatTrimshaSama:
 				{
-					var hora = Grahas.Find(h, DivisionType.HoraParasara);
+					var hora = h.FindGrahas(DivisionType.HoraParasara);
 					var sun  = hora.Find(Body.Sun);
 					if (sun.Rashi == ZodiacHouse.Leo)
 					{

@@ -47,7 +47,7 @@ namespace Mhora.Elements.Yoga
 		}
 
 		//Benefices placed in house 4 10 11 from the lord of the Lagna.
-		public static bool HariHaraBramha1nd(this Grahas grahaList)
+		public static bool HariHaraBramha1st(this Grahas grahaList)
 		{
 			var lord = grahaList.Rashis.Find(Bhava.LagnaBhava).Lord;
 

@@ -525,108 +525,6 @@ namespace Mhora.Elements.Yoga
 
 		}
 
-		//Dhana ($$$) Yogas are formed when ANY of the two Lords of Houses1, 2, 5, 9 or 11
-		//are in Association (in a house together) or in Mutual Aspect
-		//(especially if these Lords are First Tier Strength or “wellplaced”
-		public static bool Dhana(this Grahas grahaList)
-		{
-			foreach (var rashi in grahaList.Rashis)
-			{
-				if (rashi.Bhava.IsDhana())
-				{
-					foreach (var graha in rashi.Lord.MutualAspect)
-					{
-						if (graha.Bhava.IsDhana())
-						{
-							return true;
-						}
-					}
-					foreach (var graha in rashi.Lord.Association)
-					{
-						if (graha.Bhava.IsDhana())
-						{
-							return true;
-						}
-					}
-
-				}
-			}
-
-			return false;
-		}
-
-		//If the native born in Night time and the Moon located in its own navamsha, or that of a friend's house and aspected by Venus.
-		//The native is very wealthy. According to one interpretation, irrespective of the birth being during daytime or night-time,
-		//the placement of the Moon in a favorable navamsha, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
-		public static bool DhanadhanaNight(this Horoscope h, Grahas grahaList)
-		{
-			if (h.IsDayBirth())
-			{
-				return (false);
-			}
-
-			var navamsha = Grahas.Find(h, DivisionType.Navamsa);
-			var moon     = navamsha.Find(Body.Moon);
-			if (moon == null)
-			{
-				throw new Exception("Navamsha not calculated!");
-			}
-
-			moon = grahaList.Find(Body.Moon);
-			if (moon.IsInOwnHouse)
-			{
-				return (true);
-			}
-
-			if (moon.FriendlySign)
-			{
-				return (true);
-			}
-
-			if (moon.IsAspectedBy(Body.Venus))
-			{
-				return (true);
-			}
-
-			return (false);
-		}
-
-		//If the native born in Day time and the Moon located in its own navamsha, or that of a friend's house and aspected by Jupiter.
-		//The native is very wealthy. According to one interpretation, irrespective of the birth being during daytime or night-time,
-		//the placement of the Moon in a favorable navamsha, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
-		public static bool DhanadhanaDay(this Horoscope h, Grahas grahaList)
-		{
-			if (h.IsDayBirth() == false)
-			{
-				return (false);
-			}
-
-			var navamsha = Grahas.Find(h, DivisionType.Navamsa);
-			var moon     = navamsha.Find(Body.Moon);
-			if (moon == null)
-			{
-				throw new Exception("Navamsha not calculated!");
-			}
-
-			moon = grahaList.Find(Body.Moon);
-			if (moon.IsInOwnHouse)
-			{
-				return (true);
-			}
-
-			if (moon.FriendlySign)
-			{
-				return (true);
-			}
-
-			if (moon.IsAspectedBy(Body.Jupiter))
-			{
-				return (true);
-			}
-
-			return (false);
-		}
-
 		//All Malefics in the 8th house and All Benefic in the Lagna.
 		//The person is a commander one whose orders others follow.
 		public static bool Dhwaja(this Grahas grahaList)
@@ -988,9 +886,9 @@ namespace Mhora.Elements.Yoga
 
 		//Birth during nighttime, Even Sign rising in lagna, Sun & Moon occupies even sign.
 		//The native is blessed with all feminine qualities, grace good fortune, good character, wealth and progeny.
-		public static bool MahaBhagyaNight(this Horoscope h, Grahas grahaList)
+		public static bool MahaBhagyaNight(this Grahas grahaList)
 		{
-			if (h.IsDayBirth())
+			if (grahaList.Horoscope.IsDayBirth())
 			{
 				return (false);
 			}
@@ -1016,9 +914,9 @@ namespace Mhora.Elements.Yoga
 
 		//Birth during the daytime, Odd sign rising in the lagna, Sun & Moon occupying odd sign.
 		//On born in this, is pleasant to look at, liberal, widely renowned, lord of lands.
-		public static bool MahaBhagyaDay(this Horoscope h, Grahas grahaList)
+		public static bool MahaBhagyaDay(this Grahas grahaList)
 		{
-			if (h.IsDayBirth() == false)
+			if (grahaList.Horoscope.IsDayBirth() == false)
 			{
 				return (false);
 			}
@@ -1321,34 +1219,6 @@ namespace Mhora.Elements.Yoga
 		{
 			var moon = grahaList.Find(Body.Moon);
 			return (moon.HouseFrom(Body.Sun).IsUpachay());
-		}
-
-		//The 6th lord is in the 6th, 8th or 12th house.
-		//This is supposed to confer happiness health and fame. The person will conquer his/her enemies
-		//and will hesitate in indulging in sinful deeds. Friends will be illustrious and with class.
-		public static bool ViparitaHarshaRaja(this Grahas grahaList)
-		{
-			var lord6 = grahaList.Rashis.Find(Bhava.ShatruBhava).Lord;
-			return lord6.Bhava.IsDushtana();
-		}
-
-		//The 8th lord is in the 6th, 8th or 12th house.
-		//This confers learning longevity and prosperity. The person will be successful
-		//in all ventures conqueror of foes and a great celebrity.
-		public static bool ViparitaSaralaRaja(this Grahas grahaList)
-		{
-			var lord8 = grahaList.Rashis.Find(Bhava.MrtyuBhava).Lord;
-			return lord8.Bhava.IsDushtana();
-		}
-
-		//The 12th lord is in the 6th, 8th or 12th house.
-		//This makes the person virtuous and contented. The person will be equipped with good behavior
-		//towards others will enjoy happiness will be independent following a respectable profession or
-		//conduct and will be known for good qualities.
-		public static bool ViparitaVimalaRaja(this Grahas grahaList)
-		{
-			var lord12 = grahaList.Rashis.Find(Bhava.VyayaBhava).Lord;
-			return lord12.Bhava.IsDushtana();
 		}
 	}
 }

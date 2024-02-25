@@ -52,16 +52,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	/// </summary>
 	private Container components = null;
 
+	private Grahas _grahas;
+
 	public  ContextMenu             contextMenu;
 	private IDrawChart              dc;
 
-	private List <DivisionPosition> arudha_pos;
-	private List <DivisionPosition> div_pos;
-	private List <DivisionPosition> graha_arudha_pos;
-	private List<DivisionPosition>  varnada_pos;
-
 	private Font fBase = new(MhoraGlobalOptions.Instance.VargaFont.FontFamily, MhoraGlobalOptions.Instance.VargaFont.SizeInPoints);
-
 
 	private DivisionalChart innerControl;
 
@@ -1050,7 +1046,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		// display bodies
 		for (var i = 0; i <= max; i++)
 		{
-			var dp = (DivisionPosition) div_pos[i];
+			var dp = _grahas.DpList.Positions[i];
 
 			if (options.ViewStyle == UserOptions.EViewStyle.CharaKarakas7)
 			{
@@ -1064,7 +1060,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			items.Add(dp);
 		}
 
-		var dp2 = (DivisionPosition) div_pos[(int) Body.Lagna];
+		var dp2 = _grahas.DpList.Positions[(int) Body.Lagna];
 		items.Add(dp2);
 		DrawItems(g, true);
 	}
@@ -1074,7 +1070,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		var dpo = h.GetPosition(Body.Lagna).ToDivisionPosition(options.Varga);
 		items.Add(dpo);
 
-		foreach (DivisionPosition dp in graha_arudha_pos)
+		foreach (var dp in _grahas.DpList.GrahaArudha)
 		{
 			items.Add(dp);
 		}
@@ -1148,12 +1144,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			}
 #endif
 
-		if (div_pos == null)
+		if (_grahas == null)
 		{
 			return;
 		}
 
-		foreach (DivisionPosition dp in div_pos)
+		foreach (var dp in _grahas.DpList.Positions)
 		{
 			if (options.ViewStyle == UserOptions.EViewStyle.Panchanga && dp.BodyType != BodyType.Graha)
 			{
@@ -1175,7 +1171,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			return;
 		}
 
-		foreach (DivisionPosition dp in div_pos)
+		foreach (var dp in _grahas.DpList.Positions)
 		{
 			if (dp.BodyType != BodyType.SpecialLagna)
 			{
@@ -1192,14 +1188,14 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 		if (options.ViewStyle == UserOptions.EViewStyle.Normal)
 		{
-			secondary_pos = arudha_pos;
+			secondary_pos = _grahas.DpList.Arudha;
 		}
 		else
 		{
-			secondary_pos = varnada_pos;
+			secondary_pos = _grahas.DpList.Varnada;
 		}
 
-		foreach (DivisionPosition dp in secondary_pos)
+		foreach (var dp in secondary_pos)
 		{
 			items.Add(dp);
 		}
@@ -1391,10 +1387,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void OnRecalculate(object o)
 	{
-		div_pos          = h.CalculateDivisionPositions(options.Varga);
-		arudha_pos       = h.CalculateArudhaDivisionPositions(options.Varga);
-		varnada_pos      = h.CalculateVarnadaDivisionPositions(options.Varga);
-		graha_arudha_pos = h.CalculateGrahaArudhaDivisionPositions(options.Varga);
+		_grahas = h.FindGrahas(options.Varga.MultipleDivisions [0].Varga);
 
 		SetChartStyle(options.ChartStyle);
 		CalculateBindus();

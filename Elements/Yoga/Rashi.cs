@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Mhora.Definitions;
 using Mhora.Util;
 
@@ -7,8 +6,6 @@ namespace Mhora.Elements.Yoga
 {
 	public class Rashi
 	{
-		private static readonly Dictionary<DivisionType, Rashis> _rashis = new();
-
 		private readonly ZodiacHouse _zh;
 		private          Bhava       _bhava;
 
@@ -29,11 +26,6 @@ namespace Mhora.Elements.Yoga
 		{
 			get;
 			private set;
-		}
-
-		internal static void Clear()
-		{
-			_rashis.Clear();
 		}
 
 		public override bool Equals(object obj)
@@ -77,37 +69,5 @@ namespace Mhora.Elements.Yoga
 			Grahas = GrahaList.FindAll(graha => graha.Rashi == this);
 
 		}
-
-		public static Rashis Find(DivisionType varga)
-		{
-			if (_rashis.TryGetValue(varga, out var rashis) == false)
-			{
-				rashis = new Rashis(varga);
-				_rashis.Add(varga, rashis);
-			}
-
-			return (rashis);
-		}
-
-		public static Rashi Find(Bhava bhava, DivisionType varga)
-		{
-			if (_rashis.TryGetValue(varga, out var rashis))
-			{
-				return rashis.Find(bhava);
-			}
-
-			return null;
-		}
-
-		public static Rashi Find(ZodiacHouse zh, DivisionType varga)
-		{
-			if (_rashis.TryGetValue(varga, out var rashis))
-			{
-				return rashis.Find(zh);
-			}
-
-			return null;
-		}
-
 	}
 }

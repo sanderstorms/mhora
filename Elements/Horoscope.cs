@@ -25,6 +25,7 @@ using Mhora.Components.Delegates;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Yoga;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
@@ -37,10 +38,13 @@ namespace Mhora.Elements;
 /// </summary>
 public class Horoscope : ICloneable
 {
-	private Time _sunrise;
-	private Time _sunset;
-	private Time _nextSunrise;
-	private Time _nextSunset;
+	private readonly Dictionary<DivisionType, Grahas> _grahas = new ();
+	private readonly Dictionary<DivisionType, Rashis> _rashis = new ();
+
+	private          Time                             _sunrise;
+	private          Time                             _sunset;
+	private          Time                             _nextSunrise;
+	private          Time                             _nextSunset;
 
 	private static readonly string[] VarnadaStrs =
 	{
@@ -174,6 +178,54 @@ public class Horoscope : ICloneable
 
 		return h;
 	}
+
+	public Rashis FindRashis(DivisionType varga)
+	{
+		if (_rashis.TryGetValue(varga, out var rashis) == false)
+		{
+			rashis = new Rashis(varga);
+			_rashis.Add(varga, rashis);
+		}
+
+		return (rashis);
+	}
+
+	public Grahas FindGrahas(DivisionType varga)
+	{
+		if (_grahas.TryGetValue(varga, out var grahaList))
+		{
+			return (grahaList);
+		}
+		var grahas = new List<Graha> ();
+		try
+		{
+			var dpList = new DpList(this, new Division(varga));
+			var rashis = FindRashis(varga);
+
+			foreach (DivisionPosition dp in dpList.Positions)
+			{
+				if ((dp.BodyType == BodyType.Graha) || (dp.BodyType == BodyType.Lagna))
+				{
+					var position = GetPosition(dp.Body);
+					var graha    = new Graha(position, dp, rashis.Find(dp.ZodiacHouse));
+					grahas.Add(graha);
+				}
+			}
+
+			grahas.Sort((x, y) => x.BodyPosition.Longitude.CompareTo(y.BodyPosition.Longitude));
+
+			grahaList        = new Grahas(this, grahas, rashis, dpList, varga);
+			grahaList.Examine();
+			return (grahaList);
+		}
+		catch (Exception e)
+		{
+			Application.Log.Exception(e);
+		}
+
+		return null;
+	}
+
 
 	public event EvtChanged Changed;
 

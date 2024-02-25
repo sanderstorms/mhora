@@ -35,11 +35,11 @@ public class Division : ICloneable
 {
 	private SingleDivision[] mMultipleDivisions;
 
-	public Division(DivisionType _dtype)
+	public Division(DivisionType dtype)
 	{
 		mMultipleDivisions = new[]
 		{
-			new SingleDivision(_dtype)
+			new SingleDivision(dtype)
 		};
 	}
 
@@ -157,7 +157,7 @@ public class Division : ICloneable
 	public class SingleDivision : ICloneable
 	{
 		private DivisionType mDtype;
-		private int                 mNumParts;
+		private int          mNumParts;
 
 		public SingleDivision(DivisionType _dtype, int _numParts)
 		{

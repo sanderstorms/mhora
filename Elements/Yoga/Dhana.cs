@@ -1,4 +1,5 @@
 ﻿
+using System;
 using Mhora.Definitions;
 
 namespace Mhora.Elements.Yoga
@@ -309,7 +310,7 @@ namespace Mhora.Elements.Yoga
 		//The Jupiter in its own rashi(Dhanu/Meena) in the lagna, under the influence of Mars and Mercury.
 		//Strong lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
-		public static bool GuruLagna(this Grahas grahaList)
+		public static bool DhanaGuruLagna(this Grahas grahaList)
 		{
 			var jupiter = grahaList.Find(Body.Jupiter);
 			if (jupiter.Bhava != Bhava.LagnaBhava)
@@ -338,7 +339,7 @@ namespace Mhora.Elements.Yoga
 		//The Saturn in its own rashi (Makara/Kumbha) in the lagna, under the influence of Mars and Jupiter.
 		//Strong lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
-		public static bool ShaniLagna(this Grahas grahaList)
+		public static bool DhanaShaniLagna(this Grahas grahaList)
 		{
 			var saturn = grahaList.Find(Body.Saturn);
 			if (saturn.Bhava != Bhava.LagnaBhava)
@@ -547,5 +548,108 @@ namespace Mhora.Elements.Yoga
 			}
 			return (true);
 		}
+
+		//Dhana ($$$) Yogas are formed when ANY of the two Lords of Houses1, 2, 5, 9 or 11
+		//are in Association (in a house together) or in Mutual Aspect
+		//(especially if these Lords are First Tier Strength or “wellplaced”
+		public static bool DhanaBhava(this Grahas grahaList)
+		{
+			foreach (var rashi in grahaList.Rashis)
+			{
+				if (rashi.Bhava.IsDhana())
+				{
+					foreach (var graha in rashi.Lord.MutualAspect)
+					{
+						if (graha.Bhava.IsDhana())
+						{
+							return true;
+						}
+					}
+					foreach (var graha in rashi.Lord.Association)
+					{
+						if (graha.Bhava.IsDhana())
+						{
+							return true;
+						}
+					}
+
+				}
+			}
+
+			return false;
+		}
+
+		//If the native born in Night time and the Moon located in its own navamsha, or that of a friend's house and aspected by Venus.
+		//The native is very wealthy. According to one interpretation, irrespective of the birth being during daytime or night-time,
+		//the placement of the Moon in a favorable navamsha, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
+		public static bool DhanaNight(this Grahas grahaList)
+		{
+			if (grahaList.Horoscope.IsDayBirth())
+			{
+				return (false);
+			}
+
+			var navamsha = grahaList.Horoscope.FindGrahas( DivisionType.Navamsa);
+			var moon     = navamsha.Find(Body.Moon);
+			if (moon == null)
+			{
+				throw new Exception("Navamsha not calculated!");
+			}
+
+			moon = grahaList.Find(Body.Moon);
+			if (moon.IsInOwnHouse)
+			{
+				return (true);
+			}
+
+			if (moon.FriendlySign)
+			{
+				return (true);
+			}
+
+			if (moon.IsAspectedBy(Body.Venus))
+			{
+				return (true);
+			}
+
+			return (false);
+		}
+
+		//If the native born in Day time and the Moon located in its own navamsha, or that of a friend's house and aspected by Jupiter.
+		//The native is very wealthy. According to one interpretation, irrespective of the birth being during daytime or night-time,
+		//the placement of the Moon in a favorable navamsha, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
+		public static bool DhanaDay(this Grahas grahaList)
+		{
+			if (grahaList.Horoscope.IsDayBirth() == false)
+			{
+				return (false);
+			}
+
+			var navamsha = grahaList.Horoscope.FindGrahas( DivisionType.Navamsa);
+			var moon     = navamsha.Find(Body.Moon);
+			if (moon == null)
+			{
+				throw new Exception("Navamsha not calculated!");
+			}
+
+			moon = grahaList.Find(Body.Moon);
+			if (moon.IsInOwnHouse)
+			{
+				return (true);
+			}
+
+			if (moon.FriendlySign)
+			{
+				return (true);
+			}
+
+			if (moon.IsAspectedBy(Body.Jupiter))
+			{
+				return (true);
+			}
+
+			return (false);
+		}
+
 	}
 }

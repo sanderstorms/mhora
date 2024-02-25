@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Mhora.Components.Controls;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Components.Varga;
@@ -58,22 +59,23 @@ public class BasicCalculationsControl : MhoraControl
 	private MenuItem     menuBhavaCusps;
 
 
-	private MenuItem     menuChangeVarga;
-	private MenuItem     menuCharaKarakas;
-	private MenuItem     menuCharaKarakas7;
-	private MenuItem     menuCopyLon;
-	private MenuItem     menuItem1;
-	private MenuItem     menuItem2;
-	private MenuItem     menuMrityuLongitudes;
-	private MenuItem     menuNakshatraAspects;
-	private MenuItem     menuNonLonBodies;
-	private MenuItem     menuOtherLongitudes;
-	private MenuItem     menuSahamaLongitudes;
-	private MenuItem     menuSpecialTaras;
-	private MenuItem     menuSpecialTithis;
-	private ListView     mList;
-	private ColumnHeader Nakshatra;
-	private ColumnHeader Pada;
+	private MenuItem             menuChangeVarga;
+	private MenuItem             menuCharaKarakas;
+	private MenuItem             menuCharaKarakas7;
+	private MenuItem             menuCopyLon;
+	private MenuItem             menuItem1;
+	private MenuItem             menuItem2;
+	private MenuItem             menuMrityuLongitudes;
+	private MenuItem             menuNakshatraAspects;
+	private MenuItem             menuNonLonBodies;
+	private MenuItem             menuOtherLongitudes;
+	private MenuItem             menuSahamaLongitudes;
+	private MenuItem             menuSpecialTaras;
+	private MenuItem             menuSpecialTithis;
+	private ListView             mList;
+	private ColumnHeader         Nakshatra;
+	private ColumnHeader         Pada;
+	private ListViewColumnSorter lvwColumnSorter;
 
 	private ViewType vt;
 
@@ -115,216 +117,221 @@ public class BasicCalculationsControl : MhoraControl
 	/// </summary>
 	private void InitializeComponent()
 	{
-		this.mList                   = new System.Windows.Forms.ListView();
-		this.Body                    = new System.Windows.Forms.ColumnHeader();
-		this.Longitude               = new System.Windows.Forms.ColumnHeader();
-		this.Nakshatra               = new System.Windows.Forms.ColumnHeader();
-		this.Pada                    = new System.Windows.Forms.ColumnHeader();
-		this.calculationsContextMenu = new System.Windows.Forms.ContextMenu();
-		this.menuChangeVarga         = new System.Windows.Forms.MenuItem();
-		this.menuCopyLon             = new System.Windows.Forms.MenuItem();
-		this.menuBasicGrahas         = new System.Windows.Forms.MenuItem();
-		this.menuOtherLongitudes     = new System.Windows.Forms.MenuItem();
-		this.menuMrityuLongitudes    = new System.Windows.Forms.MenuItem();
-		this.menuSahamaLongitudes    = new System.Windows.Forms.MenuItem();
-		this.menuNonLonBodies        = new System.Windows.Forms.MenuItem();
-		this.menuCharaKarakas        = new System.Windows.Forms.MenuItem();
-		this.menuCharaKarakas7       = new System.Windows.Forms.MenuItem();
-		this.menu64Navamsa           = new System.Windows.Forms.MenuItem();
-		this.menuAstroInfo           = new System.Windows.Forms.MenuItem();
-		this.menuSpecialTithis       = new System.Windows.Forms.MenuItem();
-		this.menuSpecialTaras        = new System.Windows.Forms.MenuItem();
-		this.menuNakshatraAspects    = new System.Windows.Forms.MenuItem();
-		this.menuBhavaCusps          = new System.Windows.Forms.MenuItem();
-		this.menuAvasthas            = new System.Windows.Forms.MenuItem();
-		this.menuItem1               = new System.Windows.Forms.MenuItem();
-		this.menuItem2               = new System.Windows.Forms.MenuItem();
-		this.SuspendLayout();
-		// 
-		// mList
-		// 
-		this.mList.AllowDrop = true;
-		this.mList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[]
-		{
-			this.Body,
-			this.Longitude,
-			this.Nakshatra,
-			this.Pada
-		});
-		this.mList.ContextMenu          =  this.calculationsContextMenu;
-		this.mList.Dock                 =  System.Windows.Forms.DockStyle.Fill;
-		this.mList.Font                 =  new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
-		this.mList.ForeColor            =  System.Drawing.SystemColors.HotTrack;
-		this.mList.FullRowSelect        =  true;
-		this.mList.Location             =  new System.Drawing.Point(0, 0);
-		this.mList.Name                 =  "mList";
-		this.mList.Size                 =  new System.Drawing.Size(496, 176);
-		this.mList.TabIndex             =  0;
-		this.mList.View                 =  System.Windows.Forms.View.Details;
-		this.mList.MouseHover           += new System.EventHandler(this.mList_MouseHover);
-		this.mList.DragDrop             += new System.Windows.Forms.DragEventHandler(this.mList_DragDrop);
-		this.mList.DragEnter            += new System.Windows.Forms.DragEventHandler(this.mList_DragEnter);
-		this.mList.SelectedIndexChanged += new System.EventHandler(this.mList_SelectedIndexChanged);
-		// 
-		// Body
-		// 
-		this.Body.Text  = "Body";
-		this.Body.Width = 100;
-		// 
-		// Longitude
-		// 
-		this.Longitude.Text  = "Longitude";
-		this.Longitude.Width = 120;
-		// 
-		// Nakshatra
-		// 
-		this.Nakshatra.Text  = "Nakshatra";
-		this.Nakshatra.Width = 120;
-		// 
-		// Pada
-		// 
-		this.Pada.Text  = "Pada";
-		this.Pada.Width = 50;
-		// 
-		// calculationsContextMenu
-		// 
-		this.calculationsContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-		{
-			this.menuChangeVarga,
-			this.menuCopyLon,
-			this.menuBasicGrahas,
-			this.menuOtherLongitudes,
-			this.menuMrityuLongitudes,
-			this.menuSahamaLongitudes,
-			this.menuNonLonBodies,
-			this.menuCharaKarakas,
-			this.menuCharaKarakas7,
-			this.menu64Navamsa,
-			this.menuAstroInfo,
-			this.menuSpecialTithis,
-			this.menuSpecialTaras,
-			this.menuNakshatraAspects,
-			this.menuBhavaCusps,
-			this.menuAvasthas,
-			this.menuItem1,
-			this.menuItem2
-		});
-		this.calculationsContextMenu.Popup += new System.EventHandler(this.calculationsContextMenu_Popup);
-		// 
-		// menuChangeVarga
-		// 
-		this.menuChangeVarga.Index =  0;
-		this.menuChangeVarga.Text  =  "Options";
-		this.menuChangeVarga.Click += new System.EventHandler(this.menuChangeVarga_Click);
-		// 
-		// menuCopyLon
-		// 
-		this.menuCopyLon.Index =  1;
-		this.menuCopyLon.Text  =  "Copy Longitude";
-		this.menuCopyLon.Click += new System.EventHandler(this.menuCopyLon_Click);
-		// 
-		// menuBasicGrahas
-		// 
-		this.menuBasicGrahas.Index =  2;
-		this.menuBasicGrahas.Text  =  "Basic Longitudes";
-		this.menuBasicGrahas.Click += new System.EventHandler(this.menuBasicGrahas_Click);
-		// 
-		// menuOtherLongitudes
-		// 
-		this.menuOtherLongitudes.Index =  3;
-		this.menuOtherLongitudes.Text  =  "Other Longitudes";
-		this.menuOtherLongitudes.Click += new System.EventHandler(this.menuOtherLongitudes_Click);
-		// 
-		// menuMrityuLongitudes
-		// 
-		this.menuMrityuLongitudes.Index =  4;
-		this.menuMrityuLongitudes.Text  =  "Mrityu Longitudes";
-		this.menuMrityuLongitudes.Click += new System.EventHandler(this.menuMrityuLongitudes_Click);
-		// 
-		// menuSahamaLongitudes
-		// 
-		this.menuSahamaLongitudes.Index =  5;
-		this.menuSahamaLongitudes.Text  =  "Sahama Longitudes";
-		this.menuSahamaLongitudes.Click += new System.EventHandler(this.menuSahamaLongitudes_Click);
-		// 
-		// menuNonLonBodies
-		// 
-		this.menuNonLonBodies.Index =  6;
-		this.menuNonLonBodies.Text  =  "Non-Longitude Bodies";
-		this.menuNonLonBodies.Click += new System.EventHandler(this.menuNonLonBodies_Click);
-		// 
-		// menuCharaKarakas
-		// 
-		this.menuCharaKarakas.Index =  7;
-		this.menuCharaKarakas.Text  =  "Chara Karakas (8)";
-		this.menuCharaKarakas.Click += new System.EventHandler(this.menuCharaKarakas_Click);
-		// 
-		// menuCharaKarakas7
-		// 
-		this.menuCharaKarakas7.Index =  8;
-		this.menuCharaKarakas7.Text  =  "Chara Karakas (7)";
-		this.menuCharaKarakas7.Click += new System.EventHandler(this.menuCharaKarakas7_Click);
-		// 
-		// menu64Navamsa
-		// 
-		this.menu64Navamsa.Index =  9;
-		this.menu64Navamsa.Text  =  "64th Navamsa";
-		this.menu64Navamsa.Click += new System.EventHandler(this.menu64Navamsa_Click);
-		// 
-		// menuAstroInfo
-		// 
-		this.menuAstroInfo.Index =  10;
-		this.menuAstroInfo.Text  =  "Astronomical Info";
-		this.menuAstroInfo.Click += new System.EventHandler(this.menuAstroInfo_Click);
-		// 
-		// menuSpecialTithis
-		// 
-		this.menuSpecialTithis.Index =  11;
-		this.menuSpecialTithis.Text  =  "Special Tithis";
-		this.menuSpecialTithis.Click += new System.EventHandler(this.menuSpecialTithis_Click);
-		// 
-		// menuSpecialTaras
-		// 
-		this.menuSpecialTaras.Index =  12;
-		this.menuSpecialTaras.Text  =  "Special Nakshatras";
-		this.menuSpecialTaras.Click += new System.EventHandler(this.menuSpecialTaras_Click);
-		// 
-		// menuNakshatraAspects
-		// 
-		this.menuNakshatraAspects.Index =  13;
-		this.menuNakshatraAspects.Text  =  "Nakshatra Aspects";
-		this.menuNakshatraAspects.Click += new System.EventHandler(this.menuNakshatraAspects_Click);
-		// 
-		// menuBhavaCusps
-		// 
-		this.menuBhavaCusps.Index =  14;
-		this.menuBhavaCusps.Text  =  "Bhava Cusps";
-		this.menuBhavaCusps.Click += new System.EventHandler(this.menuBhavaCusps_Click);
-		// 
-		// menuAvasthas
-		// 
-		this.menuAvasthas.Index =  15;
-		this.menuAvasthas.Text  =  "Avasthas";
-		this.menuAvasthas.Click += new System.EventHandler(this.menuAvasthas_Click);
-		// 
-		// menuItem1
-		// 
-		this.menuItem1.Index = 16;
-		this.menuItem1.Text  = "-";
-		// 
-		// menuItem2
-		// 
-		this.menuItem2.Index = 17;
-		this.menuItem2.Text  = "-";
-		// 
-		// BasicCalculationsControl
-		// 
-		this.ContextMenu = this.calculationsContextMenu;
-		this.Controls.Add(this.mList);
-		this.Name =  "BasicCalculationsControl";
-		this.Size =  new System.Drawing.Size(496, 176);
-		this.Load += new System.EventHandler(this.BasicCalculationsControl_Load);
-		this.ResumeLayout(false);
+			this.mList = new System.Windows.Forms.ListView();
+			this.Body = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.Longitude = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.Nakshatra = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.Pada = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.calculationsContextMenu = new System.Windows.Forms.ContextMenu();
+			this.menuChangeVarga = new System.Windows.Forms.MenuItem();
+			this.menuCopyLon = new System.Windows.Forms.MenuItem();
+			this.menuBasicGrahas = new System.Windows.Forms.MenuItem();
+			this.menuOtherLongitudes = new System.Windows.Forms.MenuItem();
+			this.menuMrityuLongitudes = new System.Windows.Forms.MenuItem();
+			this.menuSahamaLongitudes = new System.Windows.Forms.MenuItem();
+			this.menuNonLonBodies = new System.Windows.Forms.MenuItem();
+			this.menuCharaKarakas = new System.Windows.Forms.MenuItem();
+			this.menuCharaKarakas7 = new System.Windows.Forms.MenuItem();
+			this.menu64Navamsa = new System.Windows.Forms.MenuItem();
+			this.menuAstroInfo = new System.Windows.Forms.MenuItem();
+			this.menuSpecialTithis = new System.Windows.Forms.MenuItem();
+			this.menuSpecialTaras = new System.Windows.Forms.MenuItem();
+			this.menuNakshatraAspects = new System.Windows.Forms.MenuItem();
+			this.menuBhavaCusps = new System.Windows.Forms.MenuItem();
+			this.menuAvasthas = new System.Windows.Forms.MenuItem();
+			this.menuItem1 = new System.Windows.Forms.MenuItem();
+			this.menuItem2 = new System.Windows.Forms.MenuItem();
+			this.SuspendLayout();
+			// 
+			// mList
+			// 
+			this.mList.AllowDrop = true;
+			this.mList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Body,
+            this.Longitude,
+            this.Nakshatra,
+            this.Pada});
+			this.mList.ContextMenu = this.calculationsContextMenu;
+			this.mList.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.mList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.mList.ForeColor = System.Drawing.SystemColors.HotTrack;
+			this.mList.FullRowSelect = true;
+			this.mList.HideSelection = false;
+			this.mList.Location = new System.Drawing.Point(0, 0);
+			this.mList.Name = "mList";
+			this.mList.Size = new System.Drawing.Size(496, 176);
+			this.mList.TabIndex = 0;
+			this.mList.UseCompatibleStateImageBehavior = false;
+			this.mList.View = System.Windows.Forms.View.Details;
+			this.mList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.OnColumnclick);
+			this.mList.SelectedIndexChanged += new System.EventHandler(this.mList_SelectedIndexChanged);
+			this.mList.DragDrop += new System.Windows.Forms.DragEventHandler(this.mList_DragDrop);
+			this.mList.DragEnter += new System.Windows.Forms.DragEventHandler(this.mList_DragEnter);
+			this.mList.MouseHover += new System.EventHandler(this.mList_MouseHover);
+			//
+			// Create an instance of a ListView column sorter and assign it
+			// to the ListView control.
+			this.lvwColumnSorter          = new ListViewColumnSorter();
+			this.mList.ListViewItemSorter = lvwColumnSorter;
+			// 
+			// Body
+			// 
+			this.Body.Text = "Body";
+			this.Body.Width = 100;
+			// 
+			// Longitude
+			// 
+			this.Longitude.Text = "Longitude";
+			this.Longitude.Width = 120;
+			// 
+			// Nakshatra
+			// 
+			this.Nakshatra.Text = "Nakshatra";
+			this.Nakshatra.Width = 120;
+			// 
+			// Pada
+			// 
+			this.Pada.Text = "Pada";
+			this.Pada.Width = 50;
+			// 
+			// calculationsContextMenu
+			// 
+			this.calculationsContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuChangeVarga,
+            this.menuCopyLon,
+            this.menuBasicGrahas,
+            this.menuOtherLongitudes,
+            this.menuMrityuLongitudes,
+            this.menuSahamaLongitudes,
+            this.menuNonLonBodies,
+            this.menuCharaKarakas,
+            this.menuCharaKarakas7,
+            this.menu64Navamsa,
+            this.menuAstroInfo,
+            this.menuSpecialTithis,
+            this.menuSpecialTaras,
+            this.menuNakshatraAspects,
+            this.menuBhavaCusps,
+            this.menuAvasthas,
+            this.menuItem1,
+            this.menuItem2});
+			this.calculationsContextMenu.Popup += new System.EventHandler(this.calculationsContextMenu_Popup);
+			// 
+			// menuChangeVarga
+			// 
+			this.menuChangeVarga.Index = 0;
+			this.menuChangeVarga.Text = "Options";
+			this.menuChangeVarga.Click += new System.EventHandler(this.menuChangeVarga_Click);
+			// 
+			// menuCopyLon
+			// 
+			this.menuCopyLon.Index = 1;
+			this.menuCopyLon.Text = "Copy Longitude";
+			this.menuCopyLon.Click += new System.EventHandler(this.menuCopyLon_Click);
+			// 
+			// menuBasicGrahas
+			// 
+			this.menuBasicGrahas.Index = 2;
+			this.menuBasicGrahas.Text = "Basic Longitudes";
+			this.menuBasicGrahas.Click += new System.EventHandler(this.menuBasicGrahas_Click);
+			// 
+			// menuOtherLongitudes
+			// 
+			this.menuOtherLongitudes.Index = 3;
+			this.menuOtherLongitudes.Text = "Other Longitudes";
+			this.menuOtherLongitudes.Click += new System.EventHandler(this.menuOtherLongitudes_Click);
+			// 
+			// menuMrityuLongitudes
+			// 
+			this.menuMrityuLongitudes.Index = 4;
+			this.menuMrityuLongitudes.Text = "Mrityu Longitudes";
+			this.menuMrityuLongitudes.Click += new System.EventHandler(this.menuMrityuLongitudes_Click);
+			// 
+			// menuSahamaLongitudes
+			// 
+			this.menuSahamaLongitudes.Index = 5;
+			this.menuSahamaLongitudes.Text = "Sahama Longitudes";
+			this.menuSahamaLongitudes.Click += new System.EventHandler(this.menuSahamaLongitudes_Click);
+			// 
+			// menuNonLonBodies
+			// 
+			this.menuNonLonBodies.Index = 6;
+			this.menuNonLonBodies.Text = "Non-Longitude Bodies";
+			this.menuNonLonBodies.Click += new System.EventHandler(this.menuNonLonBodies_Click);
+			// 
+			// menuCharaKarakas
+			// 
+			this.menuCharaKarakas.Index = 7;
+			this.menuCharaKarakas.Text = "Chara Karakas (8)";
+			this.menuCharaKarakas.Click += new System.EventHandler(this.menuCharaKarakas_Click);
+			// 
+			// menuCharaKarakas7
+			// 
+			this.menuCharaKarakas7.Index = 8;
+			this.menuCharaKarakas7.Text = "Chara Karakas (7)";
+			this.menuCharaKarakas7.Click += new System.EventHandler(this.menuCharaKarakas7_Click);
+			// 
+			// menu64Navamsa
+			// 
+			this.menu64Navamsa.Index = 9;
+			this.menu64Navamsa.Text = "64th Navamsa";
+			this.menu64Navamsa.Click += new System.EventHandler(this.menu64Navamsa_Click);
+			// 
+			// menuAstroInfo
+			// 
+			this.menuAstroInfo.Index = 10;
+			this.menuAstroInfo.Text = "Astronomical Info";
+			this.menuAstroInfo.Click += new System.EventHandler(this.menuAstroInfo_Click);
+			// 
+			// menuSpecialTithis
+			// 
+			this.menuSpecialTithis.Index = 11;
+			this.menuSpecialTithis.Text = "Special Tithis";
+			this.menuSpecialTithis.Click += new System.EventHandler(this.menuSpecialTithis_Click);
+			// 
+			// menuSpecialTaras
+			// 
+			this.menuSpecialTaras.Index = 12;
+			this.menuSpecialTaras.Text = "Special Nakshatras";
+			this.menuSpecialTaras.Click += new System.EventHandler(this.menuSpecialTaras_Click);
+			// 
+			// menuNakshatraAspects
+			// 
+			this.menuNakshatraAspects.Index = 13;
+			this.menuNakshatraAspects.Text = "Nakshatra Aspects";
+			this.menuNakshatraAspects.Click += new System.EventHandler(this.menuNakshatraAspects_Click);
+			// 
+			// menuBhavaCusps
+			// 
+			this.menuBhavaCusps.Index = 14;
+			this.menuBhavaCusps.Text = "Bhava Cusps";
+			this.menuBhavaCusps.Click += new System.EventHandler(this.menuBhavaCusps_Click);
+			// 
+			// menuAvasthas
+			// 
+			this.menuAvasthas.Index = 15;
+			this.menuAvasthas.Text = "Avasthas";
+			this.menuAvasthas.Click += new System.EventHandler(this.menuAvasthas_Click);
+			// 
+			// menuItem1
+			// 
+			this.menuItem1.Index = 16;
+			this.menuItem1.Text = "-";
+			// 
+			// menuItem2
+			// 
+			this.menuItem2.Index = 17;
+			this.menuItem2.Text = "-";
+			// 
+			// BasicCalculationsControl
+			// 
+			this.ContextMenu = this.calculationsContextMenu;
+			this.Controls.Add(this.mList);
+			this.Name = "BasicCalculationsControl";
+			this.Size = new System.Drawing.Size(496, 176);
+			this.Load += new System.EventHandler(this.BasicCalculationsControl_Load);
+			this.ResumeLayout(false);
+
 	}
 
 #endregion
@@ -1239,5 +1246,31 @@ public class BasicCalculationsControl : MhoraControl
 		ViewCharaKarakas7,
 		View64Navamsa,
 		ViewNonLonBodies
+	}
+
+	private void OnColumnclick(object sender, ColumnClickEventArgs e)
+	{
+		// Determine if clicked column is already the column that is being sorted.
+		if (e.Column == lvwColumnSorter.SortColumn)
+		{
+			// Reverse the current sort direction for this column.
+			if (lvwColumnSorter.Order == SortOrder.Ascending)
+			{
+				lvwColumnSorter.Order = SortOrder.Descending;
+			}
+			else
+			{
+				lvwColumnSorter.Order = SortOrder.Ascending;
+			}
+		}
+		else
+		{
+			// Set the column number that is to be sorted; default to ascending.
+			lvwColumnSorter.SortColumn = e.Column;
+			lvwColumnSorter.Order      = SortOrder.Ascending;
+		}
+
+		// Perform the sort with these new sort options.
+		mList.Sort();
 	}
 }

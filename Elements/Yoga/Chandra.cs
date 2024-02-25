@@ -6,7 +6,7 @@ namespace Mhora.Elements.Yoga
 	public static class Chandra
 	{
 		//Conjuntion between moon and another graha
-		public static bool ChandraYoga(this Grahas grahaList, Body body)
+		public static bool ChandraGraha(this Grahas grahaList, Body body)
 		{
 			var moon = grahaList.Find(Body.Moon);
 			if (moon.Conjunct.Count > 0)
@@ -148,7 +148,7 @@ namespace Mhora.Elements.Yoga
 
 		//Conjunction between Moon and Mercury.
 		//Pleasant looks, sweet tongued, engaged in virtues deeds, pious, blessed, a poet, kind-hearted, and deeply attached to his wife.
-		public static bool ChandraBuddh(this Grahas grahaList) => grahaList.ChandraYoga(Body.Mercury);
+		public static bool ChandraBuddh(this Grahas grahaList) => grahaList.ChandraGraha(Body.Mercury);
 
 
 		//Moon and Mercury are Conjunct in lagna.
@@ -569,9 +569,9 @@ namespace Mhora.Elements.Yoga
 
 		//The Moon occupying in the navamsha chart its exaltation sign or the house of a very friendly planet, aspected by Jupiter.
 		//When this happens, the adverse Kemadruma yield place to a highly benefic kalpadruma yoga which bestows all comforts on the native.
-		public static bool ChandraKalpadruma5(this Grahas grahaList, Horoscope h)
+		public static bool ChandraKalpadruma5(this Grahas grahaList)
 		{
-			var navamsha = Grahas.Find(h, DivisionType.Navamsa);
+			var navamsha = grahaList.Horoscope.FindGrahas(DivisionType.Navamsa);
 			var moon     = navamsha.Find(Body.Moon);
 			if (moon == null)
 			{
@@ -682,7 +682,7 @@ namespace Mhora.Elements.Yoga
 		//A waning Moon in debilitation, with the native born at night time.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom,
 		//wife and mental peace, such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma9(this Horoscope h, Grahas grahaList)
+		public static bool ChandraKalpadruma9(this Grahas grahaList)
 		{
 			var moon = grahaList.Find(Body.Moon);
 			if (moon.IsDebilitated == false)
@@ -695,7 +695,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			if (h.IsDayBirth())
+			if (grahaList.Horoscope.IsDayBirth())
 			{
 				return (false);
 			}
@@ -736,7 +736,7 @@ namespace Mhora.Elements.Yoga
 		//in a case where birth takes place during the night time.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace,
 		//such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma11(this Horoscope h, Grahas grahaList)
+		public static bool ChandraKalpadruma11(this Grahas grahaList)
 		{
 			var moon = grahaList.Find(Body.Moon);
 
@@ -750,7 +750,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			if (h.IsDayBirth())
+			if (grahaList.Horoscope.IsDayBirth())
 			{
 				return (false);
 			}
@@ -826,7 +826,7 @@ namespace Mhora.Elements.Yoga
 		//The Moon is in conjunction with the Sun, aspected by a debilitated planet and occupying a malefic navamsha.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace
 		//such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma14(this Grahas grahaList, Horoscope h)
+		public static bool ChandraKalpadruma14(this Grahas grahaList)
 		{
 			bool yoga = false;
 			var  moon = grahaList.Find(Body.Moon);
@@ -859,7 +859,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			var navamsa = Grahas.Find(h, DivisionType.Navamsa);
+			var navamsa = grahaList.Horoscope.FindGrahas( DivisionType.Navamsa);
 
 			moon = navamsa.Find(Body.Moon);
 			if (moon == null)
@@ -974,7 +974,7 @@ namespace Mhora.Elements.Yoga
 
 		//The Moon in Chara rashi and Chara navamsha, aspected by an inimical planet, unaspected by Jupiter.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma18(this Grahas grahaList, Horoscope h)
+		public static bool ChandraKalpadruma18(this Grahas grahaList)
 		{
 			var moon = grahaList.Find(Body.Moon);
 			if (moon.Rashi.ZodiacHouse.IsMoveableSign() == false)
@@ -1002,7 +1002,7 @@ namespace Mhora.Elements.Yoga
 			}
 			
 
-			var navamsa = Grahas.Find(h, DivisionType.Navamsa);
+			var navamsa = grahaList.Horoscope.FindGrahas( DivisionType.Navamsa);
 			moon = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
@@ -1019,7 +1019,7 @@ namespace Mhora.Elements.Yoga
 
 		//A weak Moon conjunct with a malefic planet and occupying, in a night birth, a malefic house or a navamsha, aspected by the lord of the 10th house.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma19(this Horoscope h, Grahas grahaList)
+		public static bool ChandraKalpadruma19(this Grahas grahaList)
 		{
 			var moon = grahaList.Find(Body.Moon);
 			if (moon.Strength > 0)
@@ -1027,7 +1027,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			if (h.IsDayBirth())
+			if (grahaList.Horoscope.IsDayBirth())
 			{
 				return (false);
 			}
@@ -1069,7 +1069,7 @@ namespace Mhora.Elements.Yoga
 				return (true);
 			}
 
-			var navamsa = Grahas.Find(h, DivisionType.Navamsa);
+			var navamsa = grahaList.Horoscope.FindGrahas( DivisionType.Navamsa);
 			moon = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
@@ -1086,9 +1086,9 @@ namespace Mhora.Elements.Yoga
 
 		//A waning Moon debilitated in navamsha, associated with a malefic and aspected by the 9 lord.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma20(this Horoscope h, Grahas grahaList)
+		public static bool ChandraKalpadruma20(this Grahas grahaList)
 		{
-			var navamsa = Grahas.Find(h, DivisionType.Navamsa);
+			var navamsa = grahaList.Horoscope.FindGrahas( DivisionType.Navamsa);
 			var moon    = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
@@ -1129,7 +1129,7 @@ namespace Mhora.Elements.Yoga
 		//Conjunction between Moon and Mars.
 		//Wealthy, brave, winner in combat, dealer of women, wines and earthenware,
 		//adept in metal craft, suffering from blood disorders, hostile to mother.
-		public static bool ChandraMangal(this Grahas grahaList) => grahaList.ChandraYoga(Body.Mars);
+		public static bool ChandraMangal(this Grahas grahaList) => grahaList.ChandraGraha(Body.Mars);
 
 		//Moon and mars are Conjunct in Lagna.
 		//Aggressive, suffers from blood and bile disorders.
@@ -1200,7 +1200,7 @@ namespace Mhora.Elements.Yoga
 		//Conjunction between Moon and Saturn.
 		//Born of a widow remarried, attached to an old woman, given to pleasures of the flesh,
 		//bereft of grace, wealth and velour, tends horses and elephants.
-		public static bool ChandraShani(this Grahas grahaList) => grahaList.ChandraYoga(Body.Saturn);
+		public static bool ChandraShani(this Grahas grahaList) => grahaList.ChandraGraha(Body.Saturn);
 
 		//Moon and Saturn are Conjunct in Lagna.
 		//Servile, ugly in looks, greedy, lazy, a sinner.
@@ -1270,7 +1270,7 @@ namespace Mhora.Elements.Yoga
 		//Conjunction between Moon and Venus.
 		//Clever in buying and selling, adept in tailoring, weaving and trading of clothes,
 		//Quarrelsome, fond of flowers and perfumes, lazy, sinful, a poet.
-		public static bool ChandraShukra(this Grahas grahaList) => grahaList.ChandraYoga(Body.Venus);
+		public static bool ChandraShukra(this Grahas grahaList) => grahaList.ChandraGraha(Body.Venus);
 
 		//Moon and Venus are Conjunct in Lagna
 		//Good in looks, devoted to teachers and elders, blessed with good cloths and perfumes, comforted by base women.

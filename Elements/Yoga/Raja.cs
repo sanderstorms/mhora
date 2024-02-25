@@ -707,5 +707,33 @@ namespace Mhora.Elements.Yoga
 
 			return (false);
 		}
+
+		//The 6th lord is in the 6th, 8th or 12th house.
+		//This is supposed to confer happiness health and fame. The person will conquer his/her enemies
+		//and will hesitate in indulging in sinful deeds. Friends will be illustrious and with class.
+		public static bool ViparitaHarshaRaja(this Grahas grahaList)
+		{
+			var lord6 = grahaList.Rashis.Find(Bhava.ShatruBhava).Lord;
+			return lord6.Bhava.IsDushtana();
+		}
+
+		//The 8th lord is in the 6th, 8th or 12th house.
+		//This confers learning longevity and prosperity. The person will be successful
+		//in all ventures conqueror of foes and a great celebrity.
+		public static bool ViparitaSaralaRaja(this Grahas grahaList)
+		{
+			var lord8 = grahaList.Rashis.Find(Bhava.MrtyuBhava).Lord;
+			return lord8.Bhava.IsDushtana();
+		}
+
+		//The 12th lord is in the 6th, 8th or 12th house.
+		//This makes the person virtuous and contented. The person will be equipped with good behavior
+		//towards others will enjoy happiness will be independent following a respectable profession or
+		//conduct and will be known for good qualities.
+		public static bool ViparitaVimalaRaja(this Grahas grahaList)
+		{
+			var lord12 = grahaList.Rashis.Find(Bhava.VyayaBhava).Lord;
+			return lord12.Bhava.IsDushtana();
+		}
 	}
 }

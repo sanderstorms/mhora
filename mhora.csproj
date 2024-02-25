@@ -168,12 +168,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Controls\ListViewColumnSorter.cs" />
     <Compile Include="Definitions\Body.cs" />
     <Compile Include="Definitions\BodyType.cs" />
     <Compile Include="Definitions\GrahaStrength.cs" />
     <Compile Include="Definitions\Karaka.cs" />
     <Compile Include="Definitions\RashiStrength.cs" />
     <Compile Include="Definitions\Relation.cs" />
+    <Compile Include="Definitions\Yoga.cs" />
     <Compile Include="Elements\Bhavas.cs" />
     <Compile Include="Elements\Calculations.cs" />
     <Compile Include="Definitions\Bhava.cs" />
@@ -191,6 +193,7 @@
     <Compile Include="Elements\Yoga\Chandra.cs" />
     <Compile Include="Elements\Yoga\Dhana.cs" />
     <Compile Include="Elements\Yoga\DpList.cs" />
+    <Compile Include="Elements\Yoga\FindYoga.cs" />
     <Compile Include="Elements\Yoga\GajaKesari.cs" />
     <Compile Include="Elements\Yoga\Grahas.cs" />
     <Compile Include="Elements\Yoga\Guru.cs" />

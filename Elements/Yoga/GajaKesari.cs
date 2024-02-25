@@ -4,6 +4,26 @@ namespace Mhora.Elements.Yoga
 {
 	public static class GajaKesari
 	{
+		public static bool GajaKesariChandra(this Grahas grahaList)
+		{
+			var jupiter = grahaList.Find(Body.Jupiter);
+			if (jupiter.IsConjuctWith(Body.Moon))
+			{
+				if (jupiter.Bhava.IsKendra())
+				{
+					return (true);
+				}
+
+				if (jupiter.Bhava.IsTrikona())
+				{
+					return (true);
+				}
+			}
+
+			return (false);
+
+		}
+
 		//Jupiter and Moon are Conjunct at 1th house.
 		//The person is good-looking blessed with friends spouse and progeny.
 		// The person will enjoy health is dignified and impressive

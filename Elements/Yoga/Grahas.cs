@@ -2,33 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using Mhora.Definitions;
-using Mhora.Elements.Calculation;
-using Mhora.SwissEph.Helpers;
 using Mhora.Util;
 
 namespace Mhora.Elements.Yoga
 {
 	public class Grahas : IReadOnlyList<Graha>
 	{
-		private static readonly Dictionary<DivisionType, Grahas> _foundGrahas = new ();
-
+		private readonly Horoscope    _horoscope;
 		private readonly DivisionType _varga;
 		private readonly List<Graha>  _grahas;
 		private readonly Rashis       _rashis;
+		private readonly DpList       _dpList;
 
-		public Grahas (List<Graha> grahas, DivisionType varga)
+		public Grahas (Horoscope horoscope, List<Graha> grahas, Rashis rashis, DpList dplist, DivisionType varga)
 		{
-			_varga = varga;
-			_grahas = grahas;
-			_rashis = Rashi.Find(varga);
+			_horoscope = horoscope;
+			_dpList    = dplist;
+			_varga     = varga;
+			_grahas    = grahas;
+			_rashis    = rashis;
 
-			foreach (var graha in _grahas)
-			{
-				graha.List = this;
-			}
 		}
 
+		public Horoscope Horoscope => _horoscope;
+
 		public DivisionType Varga => _varga;
+
+		public DpList DpList => _dpList;
 
 		public Graha Find (Karaka8 karaka)
 		{
@@ -81,14 +81,67 @@ namespace Mhora.Elements.Yoga
 
 		internal bool Examine()
 		{
+			foreach (var graha in _grahas)
+			{
+				graha.Connect(this);
+			}
 			_rashis.Examine(this);
 			foreach (var graha in _grahas)
 			{
 				graha.Examine();
 			}
+			/*
+			AkritiYoga      = this.FindAakritiYoga();
+			ChandraYoga     = this.FindChandraYoga();
+			DhanaYoga       = this.FindDhanaYoga();
+			GenericYoga     = this.FindGenericYoga();
+			MahaParivartana = this.FindMahaParivartanaYoga();
+			Mahapurusha     = this.FindMahapurushaYoga();
+			MalikaYoga      = this.FindMalikaYoga();
+			RajaYoga        = this.FindRajaYoga();
+			*/
 			return (true);
 		}
 
+		public uint MahaParivartana
+		{
+			get; private set;
+		}
+
+		public uint Mahapurusha
+		{
+			get; private set;
+		}
+
+		public uint MalikaYoga
+		{
+			get; private set;
+		}
+
+		public uint RajaYoga
+		{
+			get; private set;
+		}
+
+		public uint AkritiYoga
+		{
+			get; private set;
+		}
+
+		public uint ChandraYoga
+		{
+			get; private set;
+		}
+
+		public uint DhanaYoga
+		{
+			get; private set;
+		}
+
+		public ulong GenericYoga
+		{
+			get; private set;
+		}
 
 		public IEnumerator<Graha> GetEnumerator()
 		{
@@ -110,47 +163,5 @@ namespace Mhora.Elements.Yoga
 		{
 			return (_grahas.FindAll(func));
 		}
-
-		public static void Clear()
-		{
-			_foundGrahas.Clear();
-		}
-
-		public static Grahas Find(Horoscope h, DivisionType varga)
-		{
-			if (_foundGrahas.TryGetValue(varga, out var grahaList))
-			{
-				return (grahaList);
-			}
-			var grahas = new List<Graha> ();
-			try
-			{
-				var dpList = new DpList(h, new Division(varga));
-				var rashis = Rashi.Find(varga);
-
-				foreach (DivisionPosition dp in dpList.Positions)
-				{
-					if ((dp.BodyType == BodyType.Graha) || (dp.BodyType == BodyType.Lagna))
-					{
-						var position = h.GetPosition(dp.Body);
-						var graha    = new Graha(position, dp, varga, rashis.Find(dp.ZodiacHouse));
-						grahas.Add(graha);
-					}
-				}
-
-				grahas.Sort((x, y) => x.BodyPosition.Longitude.CompareTo(y.BodyPosition.Longitude));
-
-				grahaList = new Grahas(grahas, varga);
-				grahaList.Examine();
-				return (grahaList);
-			}
-			catch (Exception e)
-			{
-				Application.Log.Exception(e);
-			}
-
-			return null;
-		}
-
 	}
 }
