@@ -7,22 +7,22 @@ namespace Mhora.Elements.Yoga
 		//Conjunction between Mars and Jupiter.
 		//Learned, revered, wealthy, very intelligent, skillful lecturer,
 		//a sculpture, skilled in the use of weapons, memories by mere listening, a leader.
-		public static bool MangalGuru(this DivisionType varga)
+		public static bool MangalGuru(this Grahas grahaList)
 		{
-			var mars = Graha.Find(Body.Mars, varga);
+			var mars = grahaList.Find(Body.Mars);
 			return (mars.IsConjuctWith(Body.Jupiter));
 		}
 
 		//Mars and Jupiter are conjunct in Lagna.
 		//Distinguished, talented, virtuous, courageous.
-		public static bool MangalGuru1(this DivisionType varga)
+		public static bool MangalGuru1(this Grahas grahaList)
 		{
-			if (MangalGuru(varga) == false)
+			if (grahaList.MangalGuru () == false)
 			{
 				return (false);
 			}
 
-			if (Graha.Find(Body.Mars, varga).Bhava != Bhava.LagnaBhava)
+			if (grahaList.Find(Body.Mars).Bhava != Bhava.LagnaBhava)
 			{
 				return (true);
 			}
@@ -32,14 +32,14 @@ namespace Mhora.Elements.Yoga
 
 		//Mars and Jupiter are conjunct in 4th House.
 		//Blessed with friends and relatives, consistent, devoted to gods and Brahmins.
-		public static bool MangalGuru4(this DivisionType varga)
+		public static bool MangalGuru4(this Grahas grahaList)
 		{
-			if (MangalGuru(varga) == false)
+			if (grahaList.MangalGuru () == false)
 			{
 				return (false);
 			}
 
-			if (Graha.Find(Body.Mars, varga).Bhava != Bhava.SukhaBhava)
+			if (grahaList.Find(Body.Mars).Bhava != Bhava.SukhaBhava)
 			{
 				return (true);
 			}
@@ -48,14 +48,14 @@ namespace Mhora.Elements.Yoga
 		}
 
 		//Mars and Jupiter are conjunct in 7th House.
-		public static bool MangalGuru7(this DivisionType varga)
+		public static bool MangalGuru7(this Grahas grahaList)
 		{
-			if (MangalGuru(varga) == false)
+			if (grahaList.MangalGuru () == false)
 			{
 				return (false);
 			}
 
-			if (Graha.Find(Body.Mars, varga).Bhava != Bhava.JayaBhava)
+			if (grahaList.Find(Body.Mars).Bhava != Bhava.JayaBhava)
 			{
 				return (true);
 			}
@@ -65,14 +65,14 @@ namespace Mhora.Elements.Yoga
 
 		//Mars and Jupiter are conjunct in 9th House.
 		//Worship-worthy, royal, ailing, harsh, scarred with family.
-		public static bool MangalGuru9(this DivisionType varga)
+		public static bool MangalGuru9(this Grahas grahaList)
 		{
-			if (MangalGuru(varga) == false)
+			if (grahaList.MangalGuru() == false)
 			{
 				return (false);
 			}
 
-			if (Graha.Find(Body.Mars, varga).Bhava != Bhava.DharmaBhava)
+			if (grahaList.Find(Body.Mars).Bhava != Bhava.DharmaBhava)
 			{
 				return (true);
 			}
@@ -82,14 +82,14 @@ namespace Mhora.Elements.Yoga
 
 		//Mars and Jupiter are conjunct in 10th House.
 		//A Highly renowned, very wealthy, wise, with a large family.
-		public static bool MangalGuru10(this DivisionType varga)
+		public static bool MangalGuru10(this Grahas grahaList)
 		{
-			if (MangalGuru(varga) == false)
+			if (grahaList.MangalGuru() == false)
 			{
 				return (false);
 			}
 
-			if (Graha.Find(Body.Mars, varga).Bhava != Bhava.KarmaBhava)
+			if (grahaList.Find(Body.Mars).Bhava != Bhava.KarmaBhava)
 			{
 				return (true);
 			}
@@ -100,22 +100,22 @@ namespace Mhora.Elements.Yoga
 		//Conjunction between Mars and Saturn.
 		//Miserable, quarrelsome, condemnable, a betrayer, clever in talking, versed in the use of weapons,
 		//follower of a faith other than his own, has danger from poison or injury.
-		public static bool MangalShani(this DivisionType varga)
+		public static bool MangalShani(this Grahas grahaList)
 		{
-			var mars = Graha.Find(Body.Mars, varga);
+			var mars = grahaList.Find(Body.Mars);
 			return (mars.IsConjuctWith(Body.Saturn));
 
 		}
 
 		//Mars and Saturn are conjunct in Lagna.
 		//Winner in battle, hostile to mother, short-lived.
-		public static bool MangalShani1(this DivisionType varga)
+		public static bool MangalShani1(this Grahas grahaList)
 		{
-			if (varga.MangalShani() == false)
+			if (grahaList.MangalShani() == false)
 			{
 				return (false);
 			}
-			if (Graha.Find(Body.Mars, varga).Bhava != Bhava.LagnaBhava)
+			if (grahaList.Find(Body.Mars).Bhava != Bhava.LagnaBhava)
 			{
 				return (true);
 			}
@@ -125,13 +125,13 @@ namespace Mhora.Elements.Yoga
 
 		//Mars and Saturn are conjunct in 4th housoe.
 		//Bereft of home comforts, given up by near and dear ones, a sinner.
-		public static bool MangalShani4(this DivisionType varga)
+		public static bool MangalShani4(this Grahas grahaList)
 		{
-			if (varga.MangalShani() == false)
+			if (grahaList.MangalShani() == false)
 			{
 				return (false);
 			}
-			if (Graha.Find(Body.Mars, varga).Bhava != Bhava.SukhaBhava)
+			if (grahaList.Find(Body.Mars).Bhava != Bhava.SukhaBhava)
 			{
 				return (true);
 			}
@@ -141,13 +141,13 @@ namespace Mhora.Elements.Yoga
 
 		//Mars and Saturn are conjunct in 7th house.
 		//Devoid of comforts from wife and children, ailing, indulges in sinful deeds.
-		public static bool MangalShani7(this DivisionType varga)
+		public static bool MangalShani7(this Grahas grahaList)
 		{
-			if (varga.MangalShani() == false)
+			if (grahaList.MangalShani() == false)
 			{
 				return (false);
 			}
-			if (Graha.Find(Body.Mars, varga).Bhava != Bhava.JayaBhava)
+			if (grahaList.Find(Body.Mars).Bhava != Bhava.JayaBhava)
 			{
 				return (true);
 			}
@@ -157,13 +157,13 @@ namespace Mhora.Elements.Yoga
 
 		//Mars and Saturn are conjunct in 9th house.
 		//Earns from the ruler, suffers punishment(for a crime).
-		public static bool MangalShani9(this DivisionType varga)
+		public static bool MangalShani9(this Grahas grahaList)
 		{
-			if (varga.MangalShani() == false)
+			if (grahaList.MangalShani() == false)
 			{
 				return (false);
 			}
-			if (Graha.Find(Body.Mars, varga).Bhava != Bhava.DharmaBhava)
+			if (grahaList.Find(Body.Mars).Bhava != Bhava.DharmaBhava)
 			{
 				return (true);
 			}
@@ -172,13 +172,13 @@ namespace Mhora.Elements.Yoga
 		}
 
 		//Mars and Saturn are conjunct in 10th house.
-		public static bool MangalShani10(this DivisionType varga)
+		public static bool MangalShani10(this Grahas grahaList)
 		{
-			if (varga.MangalShani() == false)
+			if (grahaList.MangalShani() == false)
 			{
 				return (false);
 			}
-			if (Graha.Find(Body.Mars, varga).Bhava != Bhava.KarmaBhava)
+			if (grahaList.Find(Body.Mars).Bhava != Bhava.KarmaBhava)
 			{
 				return (true);
 			}
@@ -188,9 +188,9 @@ namespace Mhora.Elements.Yoga
 
 		//Conjunction between Mars, Mercury, Jupiter, and Saturn.
 		//Valorous, learned, eloquent, truthful, pious, poor.
-		public static bool MangalBuddhGuruShani(this DivisionType varga)
+		public static bool MangalBuddhGuruShani(this Grahas grahaList)
 		{
-			var mars = Graha.Find(Body.Mars, varga);
+			var mars = grahaList.Find(Body.Mars);
 			if (mars.IsConjuctWith(Body.Mercury) == false)
 			{
 				return (false);
@@ -212,9 +212,9 @@ namespace Mhora.Elements.Yoga
 
 		//Conjunction between Mars, Mercury, Jupiter and Venus.
 		//Rich, healthy, highly esteemed, involved in quarrels with women.
-		public static bool MangalBuddhGuruShukra(this DivisionType varga)
+		public static bool MangalBuddhGuruShukra(this Grahas grahaList)
 		{
-			var mars = Graha.Find(Body.Mars, varga);
+			var mars = grahaList.Find(Body.Mars);
 			if (mars.IsConjuctWith(Body.Mercury) == false)
 			{
 				return (false);
@@ -235,21 +235,21 @@ namespace Mhora.Elements.Yoga
 
 		//Mars, Mercury, Jupiter, Venus and Saturn are conjunct.
 		//Easily angered, authorized to render imprisonment and capital punishment, liked by the king, lazy, sickly, suffers from madness.
-		public static bool MangalBuddhGuruShukraShani(this DivisionType varga)
+		public static bool MangalBuddhGuruShukraShani(this Grahas grahaList)
 		{
-			if (varga.MangalBuddhGuruShukra() == false)
+			if (grahaList.MangalBuddhGuruShukra() == false)
 			{
 				return (false);
 			}
 
-			return varga.MangalShani();
+			return grahaList.MangalShani();
 		}
 
 		//Conjunction between Mars, Mercury, Venus, and Saturn.
 		//Skilled in battle, a wrestler, very healthy, renowned, keeps dogs as pets.
-		public static bool MangalBuddhShukraShani(this DivisionType varga)
+		public static bool MangalBuddhShukraShani(this Grahas grahaList)
 		{
-			var mars = Graha.Find(Body.Mars, varga);
+			var mars = grahaList.Find(Body.Mars);
 			if (mars.IsConjuctWith(Body.Mercury) == false)
 			{
 				return (false);
@@ -270,9 +270,9 @@ namespace Mhora.Elements.Yoga
 
 		//Conjunction between Mars, Jupiter, and Saturn.
 		//Lean-bodied, cruel, wicked, bereft of friends, conceited, favored by the ruler.
-		public static bool MangalGuruShani(this DivisionType varga)
+		public static bool MangalGuruShani(this Grahas grahaList)
 		{
-			var mars = Graha.Find(Body.Mars, varga);
+			var mars = grahaList.Find(Body.Mars);
 			if (mars.IsConjuctWith(Body.Mercury) == false)
 			{
 				return (false);
@@ -289,9 +289,9 @@ namespace Mhora.Elements.Yoga
 
 		//Conjunction between Mars, Jupiter, Venus, and Saturn.
 		//Illustrious, wealthy, courageous, addicted to other people’s wives.
-		public static bool MangalGuruShukraShani(this DivisionType varga)
+		public static bool MangalGuruShukraShani(this Grahas grahaList)
 		{
-			var mars = Graha.Find(Body.Mars, varga);
+			var mars = grahaList.Find(Body.Mars);
 			if (mars.IsConjuctWith(Body.Jupiter) == false)
 			{
 				return (false);

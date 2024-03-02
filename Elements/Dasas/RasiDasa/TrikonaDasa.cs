@@ -17,9 +17,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Yoga;
 using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.RasiDasa;
@@ -63,7 +65,8 @@ public class TrikonaDasa : Dasa, IDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		var al      = new ArrayList(12);
+		var rashis = _h.FindRashis(_options.Division);
+		var al     = new ArrayList(12);
 		var zhSeed = _options.GetSeed();
 		if (_options.TrikonaStrengths.houses.Count >= 1)
 		{
@@ -87,7 +90,7 @@ public class TrikonaDasa : Dasa, IDasa
 				zhDasa = zhSeed.AddReverse(_order[i]);
 			}
 
-			double dasaLength = NarayanaDasaLength(zhDasa, GetLordsPosition(zhDasa));
+			double dasaLength = NarayanaDasaLength(zhDasa, GetLordsPosition(rashis [zhDasa]));
 
 
 			var di = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
@@ -148,30 +151,30 @@ public class TrikonaDasa : Dasa, IDasa
 		SetOptions(newOpts);
 	}
 
-	public DivisionPosition GetLordsPosition(ZodiacHouse zh)
+	public Graha GetLordsPosition(Rashi rashi)
 	{
-		Body b;
-		if (zh == ZodiacHouse.Sco)
+		Graha graha;
+		if (rashi == ZodiacHouse.Sco)
 		{
-			b = _options.ColordSco;
+			graha = rashi.GrahaList [_options.ColordSco];
 		}
-		else if (zh == ZodiacHouse.Aqu)
+		else if (rashi == ZodiacHouse.Aqu)
 		{
-			b = _options.ColordAqu;
+			graha = rashi.GrahaList[_options.ColordAqu];
 		}
 		else
 		{
-			b = zh.SimpleLordOfZodiacHouse();
+			graha = rashi.Lord;
 		}
 
-		return _h.GetPosition(b).ToDivisionPosition(_options.Division);
+		return graha;
 	}
 
 	private class UserOptions : RasiDasaUserOptions
 	{
 		protected OrderedZodiacHouses MTrikonaStrengths;
 
-		public UserOptions(Horoscope h, ArrayList rules) : base(h, rules)
+		public UserOptions(Horoscope h, List<RashiStrength> rules) : base(h, rules)
 		{
 			CalculateTrikonaStrengths();
 		}
@@ -184,15 +187,15 @@ public class TrikonaDasa : Dasa, IDasa
 
 		private void CalculateTrikonaStrengths()
 		{
-			var zh = GetSeed();
+			var grahas = H.FindGrahas(Division);
+			var zh     = GetSeed();
 			var zhT = new ZodiacHouse[3]
 			{
 				zh.Add(1),
 				zh.Add(5),
 				zh.Add(9)
 			};
-			var fs = new FindStronger(H, Division, MRules);
-			MTrikonaStrengths = fs.GetOrderedHouses(zhT);
+			MTrikonaStrengths = grahas.GetOrderedHouses(zhT, MRules);
 		}
 
 		public override object Clone()

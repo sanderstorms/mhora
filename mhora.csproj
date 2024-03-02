@@ -168,13 +168,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Controls\ListViewColumnSorter.cs" />
     <Compile Include="Definitions\Body.cs" />
     <Compile Include="Definitions\BodyType.cs" />
     <Compile Include="Definitions\GrahaStrength.cs" />
     <Compile Include="Definitions\Karaka.cs" />
     <Compile Include="Definitions\RashiStrength.cs" />
     <Compile Include="Definitions\Relation.cs" />
+    <Compile Include="Definitions\Yoga.cs" />
     <Compile Include="Elements\Bhavas.cs" />
+    <Compile Include="Elements\CalculateBodyPositionss.cs" />
     <Compile Include="Elements\Calculations.cs" />
     <Compile Include="Definitions\Bhava.cs" />
     <Compile Include="Definitions\DivisionType.cs" />
@@ -182,12 +185,19 @@
     <Compile Include="Definitions\Muhurta.cs" />
     <Compile Include="Definitions\Nakshatra.cs" />
     <Compile Include="Definitions\Nakshatra28.cs" />
+    <Compile Include="Elements\Calculation\Compare.cs" />
+    <Compile Include="Elements\Dasas\Dasas.cs" />
+    <Compile Include="Elements\Dasas\KalaChakraDasaEntry.cs" />
+    <Compile Include="Elements\Dasas\NakshatraDasa\KalaChakra.cs" />
     <Compile Include="Elements\Sahama.cs" />
     <Compile Include="Elements\Yoga\Aakriti.cs" />
     <Compile Include="Elements\Yoga\Buddh.cs" />
     <Compile Include="Elements\Yoga\Chandra.cs" />
     <Compile Include="Elements\Yoga\Dhana.cs" />
+    <Compile Include="Elements\Yoga\DpList.cs" />
+    <Compile Include="Elements\Yoga\FindYoga.cs" />
     <Compile Include="Elements\Yoga\GajaKesari.cs" />
+    <Compile Include="Elements\Yoga\Grahas.cs" />
     <Compile Include="Elements\Yoga\Guru.cs" />
     <Compile Include="Elements\Yoga\HariHaraBramha.cs" />
     <Compile Include="Elements\Yoga\Kalsarpa.cs" />
@@ -196,6 +206,7 @@
     <Compile Include="Elements\Yoga\Malika.cs" />
     <Compile Include="Elements\Yoga\Mangal.cs" />
     <Compile Include="Elements\Yoga\Raja.cs" />
+    <Compile Include="Elements\Yoga\Rashis.cs" />
     <Compile Include="Elements\Yoga\Ravi.cs" />
     <Compile Include="Elements\Yoga\Sankhya.cs" />
     <Compile Include="Elements\Yoga\Shukra.cs" />
@@ -225,6 +236,8 @@
     <Compile Include="SwissEph\Helpers\HorizontalCoordinates.cs" />
     <Compile Include="Util\DmsLocation.cs" />
     <Compile Include="Util\DmsPoint.cs" />
+    <Compile Include="Util\EnumCollection.cs" />
+    <Compile Include="Util\EnumValue.cs" />
     <Compile Include="Util\JulianDate.cs" />
     <Compile Include="Util\Range.cs" />
     <Compile Include="SwissEph\Helpers\SunriseSunsetTimeCalcResult.cs" />
@@ -236,10 +249,6 @@
     <Compile Include="Elements\Calculation\CuspTransitSearch.cs" />
     <Compile Include="Elements\Calculation\FindStronger.cs" />
     <Compile Include="Elements\Calculation\Retrogression.cs" />
-    <Compile Include="Elements\Calculation\Strength\BaseStrength.cs" />
-    <Compile Include="Elements\Calculation\Strength\EqualStrength.cs" />
-    <Compile Include="Elements\Calculation\Strength\IStrengthGraha.cs" />
-    <Compile Include="Elements\Calculation\Strength\IStrengthRasi.cs" />
     <Compile Include="Elements\Calculation\Strength\StrengthByAspectsGraha.cs" />
     <Compile Include="Elements\Calculation\Strength\StrengthByAspectsRasi.cs" />
     <Compile Include="Elements\Calculation\Strength\StrengthByAtmaKaraka.cs" />

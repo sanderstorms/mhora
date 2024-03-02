@@ -23,6 +23,7 @@ using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
+//The 10th lord in 10th
 public class ChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa
 {
 	private readonly Horoscope _h;

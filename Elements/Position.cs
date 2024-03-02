@@ -30,7 +30,7 @@ namespace Mhora.Elements;
 ///     The functions to convert this to a DivisionType (the various vargas)
 ///     are all implemented here
 /// </summary>
-public class Position : ICloneable
+public class Position
 {
 	private static bool      _mbNadiamsaCknCalculated;
 	private static double[]  _mNadiamsaCusps;
@@ -89,7 +89,7 @@ public class Position : ICloneable
 		set;
 	}
 
-	public object Clone()
+	public Position Clone()
 	{
 		var bp = new Position(H, Name, BodyType, Longitude, Latitude, Distance, SpeedLongitude, SpeedLatitude, SpeedDistance)
 		{
@@ -243,6 +243,10 @@ public class Position : ICloneable
 
 	private bool HoraSunDayNight()
 	{
+		if (BodyType == BodyType.Other)
+		{
+			return (false);
+		}
 		var sign = (int) Longitude.ToZodiacHouse();
 		var part = PartOfZodiacHouse(2);
 		if (Longitude.ToZodiacHouse().IsDaySign())

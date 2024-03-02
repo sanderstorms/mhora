@@ -646,11 +646,6 @@ public class MhoraChild : Form
 
 	private void menuStrengthOpts_Click(object sender, EventArgs e)
 	{
-		if (h.StrengthOptions == null)
-		{
-			h.StrengthOptions = (StrengthOptions) MhoraGlobalOptions.Instance.SOptions.Clone();
-		}
-
 		var f = new MhoraOptions(h.StrengthOptions, SetStrengthOptions);
 		f.ShowDialog();
 	}

@@ -20,6 +20,7 @@ using System.Collections;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Yoga;
 using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.RasiDasa;
@@ -71,7 +72,8 @@ public class SuDasa : Dasa, IDasa
 
 	public ArrayList Dasa(int cycle)
 	{
-		var al      = new ArrayList();
+		var rashis = _h.FindRashis(_options.Division);
+		var al     = new ArrayList();
 		var bpSl   = _h.GetPosition(Body.SreeLagna);
 		var zhSeed = bpSl.ToDivisionPosition(_options.Division).ZodiacHouse;
 		zhSeed = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed, zhSeed.Add(7));
@@ -91,9 +93,7 @@ public class SuDasa : Dasa, IDasa
 				zhDasa = zhSeed.AddReverse(_order[i]);
 			}
 
-			var    bl          = GetLord(zhDasa);
-			var    dp          = _h.GetPosition(bl).ToDivisionPosition(_options.Division);
-			double dasaLength = NarayanaDasaLength(zhDasa, dp);
+			double dasaLength = NarayanaDasaLength(zhDasa, rashis [zhDasa].Lord);
 			var    di          = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
 			dasaLengthSum += dasaLength;
@@ -162,13 +162,13 @@ public class SuDasa : Dasa, IDasa
 		return _options.Clone();
 	}
 
-	private Body GetLord(ZodiacHouse zh)
+	private Body GetLord(Rashi rashi)
 	{
-		switch (zh)
+		switch (rashi.ZodiacHouse)
 		{
 			case ZodiacHouse.Aqu: return _options.ColordAqu;
 			case ZodiacHouse.Sco: return _options.ColordSco;
-			default:                   return zh.SimpleLordOfZodiacHouse();
+			default:              return rashi.Lord;
 		}
 	}
 }

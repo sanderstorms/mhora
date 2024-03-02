@@ -491,7 +491,7 @@ public static class ZodiacHouses
 				return Body.Venus;
 			case ZodiacHouse.Gem:
 			case ZodiacHouse.Vir:
-				return Body.Venus;
+				return Body.Mercury;
 			case ZodiacHouse.Can:
 				return Body.Moon;
 			case ZodiacHouse.Leo:

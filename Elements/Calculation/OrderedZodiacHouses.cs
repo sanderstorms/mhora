@@ -34,6 +34,12 @@ public class OrderedZodiacHouses : ICloneable
 		houses = new ArrayList();
 	}
 
+	public OrderedZodiacHouses(ZodiacHouse[] rashis)
+	{
+		houses = new () { rashis };
+	}
+
+
 	public object Clone()
 	{
 		var oz = new OrderedZodiacHouses

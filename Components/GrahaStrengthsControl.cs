@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -195,7 +196,7 @@ public class GrahaStrengthsControl : Form
 	{
 	}
 
-	private ArrayList GetRules(ref bool bSimpleLord)
+	private List <GrahaStrength> GetRules(ref bool bSimpleLord)
 	{
 		bSimpleLord = false;
 		switch (cbStrength.SelectedIndex)
@@ -236,6 +237,7 @@ public class GrahaStrengthsControl : Form
 
 	private void Compute()
 	{
+		var grahas = h.FindGrahas(options.Division);
 		mList.BeginUpdate();
 		mList.Clear();
 
@@ -245,7 +247,6 @@ public class GrahaStrengthsControl : Form
 		mList.Columns.Add("Body", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Winner", -1, HorizontalAlignment.Left);
 
-		var winner = 0;
 		var b1     = (Body) cbGraha1.SelectedIndex;
 		var b2     = (Body) cbGraha2.SelectedIndex;
 
@@ -257,8 +258,7 @@ public class GrahaStrengthsControl : Form
 			{
 				al[i]
 			};
-			var fs = new FindStronger(h, options.Division, rule);
-			var bw = fs.StrongerGraha(b1, b2, bSimpleLord, ref winner);
+			var bw = grahas.Stronger(b1, b2, bSimpleLord, rule, out var winner);
 
 			var li        = new ListViewItem();
 			var enumValue = (Enum) al[i];
@@ -266,7 +266,7 @@ public class GrahaStrengthsControl : Form
 
 			if (winner == 0)
 			{
-				li.SubItems.Add(bw.Name());
+				li.SubItems.Add(bw.Name);
 			}
 
 			mList.Items.Add(li);
@@ -344,8 +344,8 @@ public class GrahaStrengthsControl : Form
 
 	private void populateColordLabel()
 	{
-		var lAqu = h.LordOfZodiacHouse((ZodiacHouse.Aqu), options.Division);
-		var lSco = h.LordOfZodiacHouse((ZodiacHouse.Sco), options.Division);
+		var lAqu = h.LordOfZodiacHouse((ZodiacHouse.Aqu), options.Division, false);
+		var lSco = h.LordOfZodiacHouse((ZodiacHouse.Sco), options.Division, false);
 		lColords.Text = string.Format("{0} and {1} are the stronger co-lords", lSco, lAqu);
 	}
 

@@ -17,73 +17,37 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has a Graha which has traversed larger longitude
-// Stronger Graha has traversed larger longitude in its house
-public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByLongitude rasi has a Graha which has traversed larger longitude
+// StrengthByLongitude Graha has traversed larger longitude in its house
+public static class Longitude
 {
-	public StrengthByLongitude(Horoscope h, Division dtype) : base(h, dtype, true)
+	public static int StrengthByLongitude(this Grahas grahas, Body m, Body n)
 	{
+		var lonm = grahas[m].HouseOffset;
+		var lonn = grahas[n].HouseOffset;
+
+		return lonn.CompareTo(lonn);
 	}
 
-	public bool Stronger(Body m, Body n)
+	public static int StrengthByLongitude(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var lonm = KarakaLongitude(m);
-		var lonn = KarakaLongitude(n);
-		if (lonm > lonn)
-		{
-			return true;
-		}
-
-		if (lonn > lonm)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
-	}
-
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		Body[] karakaBodies =
-		{
-			Body.Sun,
-			Body.Moon,
-			Body.Mars,
-			Body.Mercury,
-			Body.Jupiter,
-			Body.Venus,
-			Body.Saturn,
-			Body.Rahu
-		};
-
 		double lona = 0.0, lonb = 0.0;
-		foreach (var bn in karakaBodies)
+		foreach (var graha in grahas.NavaGrahas)
 		{
-			var div    = H.GetPosition(bn).ToDivisionPosition(new Division(DivisionType.Rasi));
-			var offset = KarakaLongitude(bn);
-			if (div.ZodiacHouse == za && offset > lona)
+			if (graha.Rashi == za && graha.HouseOffset > lona)
 			{
-				lona = offset;
+				lona = graha.HouseOffset;
 			}
-			else if (div.ZodiacHouse == zb && offset > lonb)
+			else if (graha.Rashi == zb && graha.HouseOffset > lonb)
 			{
-				lonb = offset;
+				lonb = graha.HouseOffset;
 			}
 		}
 
-		if (lona > lonb)
-		{
-			return true;
-		}
-
-		if (lonb > lona)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return lona.CompareTo(lonb);
 	}
 }

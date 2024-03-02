@@ -44,6 +44,33 @@ namespace Mhora.Elements
 			return l.Sub(new Longitude(b));
 		}
 
+		public static (Nakshatra, int) NakshatraPada(this ZodiacHouse zh)
+		{
+			var total     = (((zh.Index() -1) * 9.0) / 4) + 1;
+			var nakshatra = ((int) (total)).NormalizeInc (1, 27);
+			var pada      = ((int) (total- nakshatra) * 4);
+
+			return ((Nakshatra) nakshatra, pada);
+		}
+
+		public static (Nakshatra, int) AddPada(this Nakshatra nakshatra, int nrOfPadas)
+		{
+			var pada = 1 + nrOfPadas;
+			while (pada > 4)
+			{
+				nakshatra =  nakshatra.Add(2);
+				pada      -= 4;
+			}
+			return (nakshatra, pada);
+		}
+
+		public static (Nakshatra, int) AddPada(this Longitude lon, int nrOfPadas)
+		{
+			var nakshatra = lon.ToNakshatra();
+			var pada      = lon.ToNakshatraPada();
+
+			return nakshatra.AddPada(pada + nrOfPadas);
+		}
 
 		public static SunMoonYoga ToSunMoonYoga(this Longitude l)
 		{

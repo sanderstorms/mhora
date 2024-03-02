@@ -23,6 +23,7 @@ using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
+//sama dasa	Lagna lord in 7th or 7th lord in lagna
 public class DwisaptatiSamaDasa : NakshatraDasa, INakshatraDasa
 {
 	private readonly Horoscope _h;

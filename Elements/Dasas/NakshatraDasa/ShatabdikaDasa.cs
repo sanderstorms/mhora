@@ -23,6 +23,7 @@ using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
+//Lagna in Cancer dwadasamsa1
 public class ShatabdikaDasa : NakshatraDasa, INakshatraDasa
 {
 	private readonly Horoscope _h;

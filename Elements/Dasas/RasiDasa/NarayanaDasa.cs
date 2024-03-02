@@ -20,6 +20,7 @@ using System.Collections;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Yoga;
 using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.RasiDasa;
@@ -49,6 +50,8 @@ public class NarayanaDasa : Dasa, IDasa
 
 	public ArrayList Dasa(int cycle)
 	{
+		var rashis = _h.FindRashis(Options.Division);
+
 		int[] orderMoveable =
 		{
 			1,
@@ -143,10 +146,8 @@ public class NarayanaDasa : Dasa, IDasa
 				zhDasa = zhSeed.Add(order[i]);
 			}
 
-			var dasaLord = GetLord(zhDasa);
-			//gs.strongerForNarayanaDasa(zh_dasa);
-			var    dlordDpos  = _h.CalculateDivisionPosition(_h.GetPosition(dasaLord), Options.Division);
-			double dasaLength = DasaLength(zhDasa, dlordDpos);
+			var dasaLord = GetLord(rashis [zhDasa]);
+			double dasaLength = DasaLength(zhDasa, dasaLord);
 
 			var di = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
@@ -175,14 +176,16 @@ public class NarayanaDasa : Dasa, IDasa
 
 	public ArrayList AntarDasa(DasaEntry pdi)
 	{
-		var al = new ArrayList(12);
+		var rashis = _h.FindRashis(Options.Division);
+		var al     = new ArrayList(12);
 
 		var zhFirst    = pdi.ZHouse;
 		var zhStronger = zhFirst.Add(1);
 		zhStronger = Options.FindStrongerRasi(Options.SeventhStrengths, zhStronger, zhStronger.Add(7));
 
-		var b        = GetLord(zhStronger);
-		var dp       = _h.CalculateDivisionPosition(_h.GetPosition(b), Options.Division);
+		var b        = GetLord(rashis [zhStronger]);
+		var position = _h.GetPosition(b);
+		var dp       = position.CalculateDivisionPosition(Options.Division);
 		var first    = dp.ZodiacHouse;
 		var backward = false;
 		if ((int) first % 2 == 0)
@@ -235,23 +238,26 @@ public class NarayanaDasa : Dasa, IDasa
 		SetOptions(newOpts);
 	}
 
-	private Body GetLord(ZodiacHouse zh)
+	private Graha GetLord(Rashi rashi)
 	{
-		switch (zh)
+		switch (rashi.ZodiacHouse)
 		{
-			case ZodiacHouse.Aqu: return Options.ColordAqu;
-			case ZodiacHouse.Sco: return Options.ColordSco;
-			default:                   return zh.SimpleLordOfZodiacHouse();
+			case ZodiacHouse.Aqu: 
+				return rashi.GrahaList [Options.ColordAqu];
+			case ZodiacHouse.Sco: 
+				return rashi.GrahaList [Options.ColordSco];
+			default:                   
+				return rashi.Lord;
 		}
 	}
 
-	public int DasaLength(ZodiacHouse zh, DivisionPosition dp)
+	public int DasaLength(ZodiacHouse zh, Graha graha)
 	{
 		if (BSama)
 		{
 			return 12;
 		}
 
-		return NarayanaDasaLength(zh, dp);
+		return NarayanaDasaLength(zh, graha);
 	}
 }

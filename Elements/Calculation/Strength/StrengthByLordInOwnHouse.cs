@@ -17,62 +17,51 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has its Lord in its house
-// Stronger Graha is in its own house
-public class StrengthByLordInOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByLordInOwnHouse rasi has its Lord in its house
+// StrengthByLordInOwnHouse Graha is in its own house
+public static class LordInOwnHouse
 {
-	public StrengthByLordInOwnHouse(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
+	public static int StrengthByLordInOwnHouse(this Grahas grahas, Body m, Body n, bool simpleLord)
 	{
+		var zm = grahas [m].Rashi;
+		var zn = grahas [n].Rashi;
+
+		return grahas.StrengthByLordInOwnHouse(zm, zn, simpleLord);
 	}
 
-	public bool Stronger(Body m, Body n)
+	public static int StrengthByLordInOwnHouse(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-		var zm = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse;
-		var zn = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse;
-		return Stronger(zm, zn);
+		var a = grahas.Value(za, simpleLord);
+		var b = grahas.Value(zb, simpleLord);
+
+		return a.CompareTo(b);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var a = Value(za);
-		var b = Value(zb);
-		if (a > b)
-		{
-			return true;
-		}
-
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
-	}
-
-	protected int Value(ZodiacHouse zodiacHouse)
+	private static int Value(this Grahas grahas, ZodiacHouse zodiacHouse, bool simpleLord)
 	{
 		var ret = 0;
 
 		var zh = (zodiacHouse);
-		var bl = GetStrengthLord(zh);
-		var pl = H.GetPosition(bl).ToDivisionPosition(Dtype);
-		var pj = H.GetPosition(Body.Jupiter).ToDivisionPosition(Dtype);
-		var pm = H.GetPosition(Body.Mercury).ToDivisionPosition(Dtype);
+		var bl = grahas.Horoscope.LordOfZodiacHouse(zh, new Division(grahas.Varga), simpleLord);
+		var pl = grahas [bl];
+		var pj = grahas [Body.Jupiter];
+		var pm = grahas [Body.Mercury];
 
-		if (pl.GrahaDristi(zh))
+		if (pl.HasDrishtiOn(zh))
 		{
 			ret++;
 		}
 
-		if (pj.GrahaDristi(zh))
+		if (pj.HasDrishtiOn(zh))
 		{
 			ret++;
 		}
 
-		if (pm.GrahaDristi(zh))
+		if (pm.HasDrishtiOn(zh))
 		{
 			ret++;
 		}

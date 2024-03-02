@@ -19,69 +19,43 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using Mhora.Definitions;
 using Mhora.Elements.Dasas.GrahaDasa;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger Graha has longer length
-// Stronger rasi has a Graha with longer length placed therein
-public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByKarakaKendradiGrahaDasaLength Graha has longer length
+// StrengthByKarakaKendradiGrahaDasaLength rasi has a Graha with longer length placed therein
+public static class KarakaKendradiGrahaDasaLength
 {
-	public StrengthByKarakaKendradiGrahaDasaLength(Horoscope h, Division dtype) : base(h, dtype, false)
+	public static int StrengthByKarakaKendradiGrahaDasaLength(this Grahas grahas, Body m, Body n)
 	{
+		var a = grahas.KarakaKendradiGrahaDasaLengthStrength(m);
+		var b = grahas.KarakaKendradiGrahaDasaLengthStrength(n);
+
+		return a.CompareTo(b);
 	}
 
-	public bool Stronger(Body m, Body n)
+	public static int StrengthByKarakaKendradiGrahaDasaLength(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var a = Value(m);
-		var b = Value(n);
-		if (a > b)
-		{
-			return true;
-		}
+		var a = grahas.KarakaKendradiGrahaDasaLengthStrength(za);
+		var b = grahas.KarakaKendradiGrahaDasaLengthStrength(zb);
 
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return a.CompareTo(b);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var a = Value(za);
-		var b = Value(zb);
-		if (a > b)
-		{
-			return true;
-		}
-
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
-	}
-
-	protected double Value(ZodiacHouse zh)
+	private static double KarakaKendradiGrahaDasaLengthStrength(this Grahas grahas, ZodiacHouse zh)
 	{
 		double length = 0;
-		foreach (Position bp in H.PositionList)
+		foreach (var graha in grahas.NavaGrahas)
 		{
-			if (bp.BodyType == BodyType.Graha)
-			{
-				var dp = bp.ToDivisionPosition(Dtype);
-				length = Math.Max(length, KarakaKendradiGrahaDasa.LengthOfDasa(H, Dtype, bp.Name, dp));
-			}
+			length = Math.Max(length, KarakaKendradiGrahaDasa.LengthOfDasa(graha));
 		}
 
 		return length;
 	}
 
-	protected double Value(Body b)
+	private static double KarakaKendradiGrahaDasaLengthStrength(this Grahas grahas, Body b)
 	{
-		var dp = H.GetPosition(b).ToDivisionPosition(Dtype);
-		return KarakaKendradiGrahaDasa.LengthOfDasa(H, Dtype, b, dp);
+		return KarakaKendradiGrahaDasa.LengthOfDasa(grahas [b]);
 	}
 }

@@ -67,7 +67,7 @@ namespace Mhora
 		}
 
 
-		protected override void OnLoad(EventArgs e)
+		protected override async void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
 			gOpts = MhoraGlobalOptions.ReadFromFile();
@@ -78,7 +78,7 @@ namespace Mhora
 				Thread.Sleep(0);
 				ss.Close(null, 1000);
 			}
-			openNewJhdFile();
+			await openNewJhdFile();
 		}
 
 		private void menuItemNewView_Click(object sender, EventArgs e)
@@ -107,7 +107,7 @@ namespace Mhora
 			LayoutMdi(MdiLayout.Cascade);
 		}
 
-		private void openNewJhdFile()
+		private async Task openNewJhdFile()
 		{
 			using (var birthDetails = new BirthDetailsDialog())
 			{
@@ -119,7 +119,7 @@ namespace Mhora
 			}
 		}
 
-		private void openJhdFileNow()
+		private async Task openJhdFileNow()
 		{
 			var mNow = DateTime.Now;
 
@@ -150,7 +150,7 @@ namespace Mhora
 		}
 
 
-		private void openJhdFile()
+		private async Task openJhdFile()
 		{
 			var ofd = new OpenFileDialog();
 			ofd.Filter = "Hora Files (*.jhd; *.mhd)|*.jhd;*.mhd";
@@ -197,9 +197,9 @@ namespace Mhora
 			child.Show();
 		}
 
-		private void menuItemFileOpen_Click(object sender, EventArgs e)
+		private async void menuItemFileOpen_Click(object sender, EventArgs e)
 		{
-			openJhdFile();
+			await openJhdFile();
 		}
 
 		private void menuItemHelpAboutMhora_Click(object sender, EventArgs e)
@@ -214,15 +214,15 @@ namespace Mhora
 			dlg.ShowDialog();
 		}
 
-		private void MdiToolBar_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
+		private async void MdiToolBar_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
 		{
 			if (e.Button == toolbarButtonNew)
 			{
-				openNewJhdFile();
+				await openNewJhdFile();
 			}
 			else if (e.Button == toolbarButtonOpen)
 			{
-				openJhdFile();
+				await openJhdFile();
 			}
 			else if (e.Button == toolbarButtonSave)
 			{
@@ -285,9 +285,9 @@ namespace Mhora
 		{
 		}
 
-		private void menuItemFileNewPrasna_Click(object sender, EventArgs e)
+		private async void menuItemFileNewPrasna_Click(object sender, EventArgs e)
 		{
-			openJhdFileNow();
+			await openJhdFileNow();
 		}
 
 
@@ -366,6 +366,8 @@ namespace Mhora
 		public object updateCalcPreferences(object o)
 		{
 			sweph.SetEphePath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
+			sweph.SetSidMode((int) MhoraGlobalOptions.Instance.HOptions.Ayanamsa, 0.0, 0.0);
+
 			MhoraGlobalOptions.NotifyCalculationChange();
 			return o;
 		}

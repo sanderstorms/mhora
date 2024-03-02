@@ -17,25 +17,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi by nature (moveable, fixed, dual)
-// Stronger Graha in such a rasi
-public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByRasisNature rasi by nature (moveable, fixed, dual)
+// StrengthByRasisNature Graha in such a rasi
+public static class RasisNature
 {
-	public StrengthByRasisNature(Horoscope h, Division dtype) : base(h, dtype, true)
+	public static int StrengthByRasisNature(this Grahas grahas, Body m, Body n)
 	{
+		var za = grahas [m].Rashi;
+		var zb = grahas [n].Rashi;
+		return grahas.StrengthByRasisNature(za, zb);
 	}
 
-	public bool Stronger(Body m, Body n)
-	{
-		var za = H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse;
-		var zb = H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse;
-		return Stronger(za, zb);
-	}
-
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByRasisNature(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
 		int[] vals =
 		{
@@ -45,20 +42,11 @@ public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
 		}; // dual, move, fix
 		var a = NaturalValueForRasi(za);
 		var b = NaturalValueForRasi(zb);
-		if (a > b)
-		{
-			return true;
-		}
 
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return a.CompareTo(b);
 	}
 
-	public int NaturalValueForRasi(ZodiacHouse zha)
+	public static int NaturalValueForRasi(this ZodiacHouse zha)
 	{
 		int[] vals =
 		{

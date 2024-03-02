@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
@@ -30,17 +31,17 @@ namespace Mhora.Database.Settings;
 public class RasiDasaUserOptions : ICloneable
 {
 	protected Horoscope             H;
-	protected Body             MCoLordAqu;
-	protected Body             MCoLordSco;
+	protected Body                  MCoLordAqu;
+	protected Body                  MCoLordSco;
 	protected Division              MDtype;
 	protected OrderedZodiacHouses   MKetuExceptions;
-	protected ArrayList             MRules;
+	protected List<RashiStrength>   MRules;
 	protected OrderedZodiacHouses   MSaturnExceptions;
-	protected ZodiacHouse      MSeed;
+	protected ZodiacHouse           MSeed;
 	protected int                   MSeedHouse;
 	protected OrderedZodiacHouses[] MSeventhStrengths;
 
-	public RasiDasaUserOptions(Horoscope h, ArrayList rules)
+	public RasiDasaUserOptions(Horoscope h, List<RashiStrength> rules)
 	{
 		H                 = h;
 		MRules            = rules;
@@ -215,13 +216,15 @@ public class RasiDasaUserOptions : ICloneable
 
 	public void CalculateCoLords()
 	{
-		var fs = new FindStronger(H, MDtype, FindStronger.RulesStrongerCoLord(H));
-		MCoLordAqu = fs.StrongerGraha(Body.Saturn, Body.Rahu, true);
-		MCoLordSco = fs.StrongerGraha(Body.Mars, Body.Ketu, true);
+		var grahas = H.FindGrahas(MDtype);
+		var rules  = FindStronger.RulesStrongerCoLord(H);
+		MCoLordAqu = grahas.Stronger(Body.Saturn, Body.Rahu, true, rules, out _);
+		MCoLordSco = grahas.Stronger(Body.Mars, Body.Ketu, true, rules, out _);
 	}
 
 	public void CalculateExceptions()
 	{
+		var grahas = H.FindGrahas(Division);
 		KetuExceptions.houses.Clear();
 		SaturnExceptions.houses.Clear();
 
@@ -239,8 +242,7 @@ public class RasiDasaUserOptions : ICloneable
 			{
 				GrahaStrength.Longitude
 			};
-			var fs = new FindStronger(H, Division, rule);
-			var b  = fs.StrongerGraha(Body.Saturn, Body.Ketu, false);
+			var b  = grahas.Stronger(Body.Saturn, Body.Ketu, false, rule, out _);
 			if (b == Body.Ketu)
 			{
 				MKetuExceptions.houses.Add(zhKetu);
@@ -301,14 +303,14 @@ public class RasiDasaUserOptions : ICloneable
 
 	public void CalculateSeventhStrengths()
 	{
-		var fs   = new FindStronger(H, MDtype, MRules);
-		var zAri = ZodiacHouse.Ari;
+		var rashis = H.FindRashis(MDtype);
+		var zAri   = ZodiacHouse.Ari;
 		for (var i = 0; i < 6; i++)
 		{
 			MSeventhStrengths[i] = new OrderedZodiacHouses();
 			var za = zAri.Add(i + 1);
 			var zb = za.Add(7);
-			if (fs.CmpRasi(za, zb, false))
+			if (rashis.Compare(za, zb, false, MRules, out _) <= 0)
 			{
 				MSeventhStrengths[i].houses.Add(za);
 				MSeventhStrengths[i].houses.Add(zb);

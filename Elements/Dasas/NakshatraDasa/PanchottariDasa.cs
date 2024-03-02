@@ -23,6 +23,7 @@ using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.NakshatraDasa;
 
+//Rahu in a quadrant/trine from lagna lord, but not in lagna
 public class PanchottariDasa : NakshatraDasa, INakshatraDasa
 {
 	private readonly Horoscope _h;

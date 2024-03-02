@@ -17,31 +17,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi's lord is AK
-public class StrengthByLordIsAtmaKaraka : BaseStrength, IStrengthRasi
+// StrengthByLordIsAtmaKaraka rasi's lord is AK
+public static class LordIsAtmaKaraka
 {
-	public StrengthByLordIsAtmaKaraka(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
+	public static int StrengthByLordIsAtmaKaraka(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-	}
-
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var lora = GetStrengthLord(za);
-		var lorb = GetStrengthLord(zb);
-		var ak   = FindAtmaKaraka();
+		var lora = grahas.Horoscope.LordOfZodiacHouse(za, new Division(grahas.Varga), simpleLord);
+		var lorb = grahas.Horoscope.LordOfZodiacHouse(zb, new Division(grahas.Varga), simpleLord);
+		var ak   = grahas.Karaka8[0];
 		if (lora == ak)
 		{
-			return true;
+			return 1;
 		}
 
 		if (lorb == ak)
 		{
-			return false;
+			return -1;
 		}
 
-		throw new EqualStrength();
+		return 0;
 	}
 }

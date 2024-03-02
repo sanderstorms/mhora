@@ -17,73 +17,45 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has larger number of exalted planets - debilitated planets
-// Stronger planet is exalted or not debilitated
-public class StrengthByExaltation : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByExaltation rasi has larger number of exalted planets - debilitated planets
+// StrengthByExaltation planet is exalted or not debilitated
+public static class Exaltation
 {
-	public StrengthByExaltation(Horoscope h, Division dtype) : base(h, dtype, true)
+	public static int StrengthByExaltation(this Grahas grahas, Body m, Body n)
 	{
+		var valm = grahas.ExaltationStrength(m);
+		var valn = grahas.ExaltationStrength(n);
+
+		return valm.CompareTo(valn);
 	}
 
-	public bool Stronger(Body m, Body n)
+	public static int StrengthByExaltation(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var valm = Value(m);
-		var valn = Value(n);
+		var vala = grahas.ExaltationStrength(za);
+		var valb = grahas.ExaltationStrength(zb);
 
-		if (valm > valn)
-		{
-			return true;
-		}
-
-		if (valn > valm)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return vala.CompareTo(valb);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var vala = Value(za);
-		var valb = Value(zb);
-
-		if (vala > valb)
-		{
-			return true;
-		}
-
-		if (valb > vala)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
-	}
-
-	public int Value(ZodiacHouse zn)
+	public static int ExaltationStrength(this Grahas grahas, ZodiacHouse zn)
 	{
 		var ret = 0;
-		foreach (DivisionPosition dp in StdDivPos)
+		foreach (var graha in grahas.NavaGrahas)
 		{
-			if (dp.BodyType != BodyType.Graha)
+			if (graha.Rashi != zn)
 			{
 				continue;
 			}
 
-			if (dp.ZodiacHouse != zn)
-			{
-				continue;
-			}
-
-			if (dp.IsExaltedPhalita())
+			if (graha.IsExalted)
 			{
 				ret++;
 			}
-			else if (dp.IsDebilitatedPhalita())
+			else if (graha.IsDebilitated)
 			{
 				ret--;
 			}
@@ -92,14 +64,14 @@ public class StrengthByExaltation : BaseStrength, IStrengthRasi, IStrengthGraha
 		return ret;
 	}
 
-	public int Value(Body b)
+	public static int ExaltationStrength(this Grahas grahas, Body b)
 	{
-		if (H.GetPosition(b).ToDivisionPosition(Dtype).IsExaltedPhalita())
+		if (grahas [b].IsExalted)
 		{
 			return 1;
 		}
 
-		if (H.GetPosition(b).ToDivisionPosition(Dtype).IsDebilitatedPhalita())
+		if (grahas [b].IsDebilitated)
 		{
 			return -1;
 		}

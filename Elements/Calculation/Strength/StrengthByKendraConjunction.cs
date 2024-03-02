@@ -17,53 +17,37 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has larger number of grahas in kendras
-// Stronger Graha is in such a rasi
-public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByKendraConjunction rasi has larger number of grahas in kendras
+// StrengthByKendraConjunction Graha is in such a rasi
+public static class KendraConjunction
 {
-	public StrengthByKendraConjunction(Horoscope h, Division dtype) : base(h, dtype, true)
+	public static int StrengthByKendraConjunction(this Grahas grahas, Body m, Body n)
 	{
+		return grahas.StrengthByKendraConjunction(grahas [m].Rashi, grahas [n].Rashi);
 	}
 
-	public bool Stronger(Body m, Body n)
+	public static int StrengthByKendraConjunction(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		return Stronger(H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse, H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse);
+		var numa = grahas.KendraConjunctionStrength(za);
+		var numb = grahas.KendraConjunctionStrength(zb);
+
+		return numa.CompareTo(numb);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int KendraConjunctionStrength(this Grahas grahas, ZodiacHouse zodiacHouse)
 	{
-		var numa = Value(za);
-		var numb = Value(zb);
-		if (numa > numb)
-		{
-			return true;
-		}
+		int numGrahas = 0;
 
-		if (numb > numa)
+		foreach (var graha in grahas)
 		{
-			return false;
-		}
-
-		throw new EqualStrength();
-	}
-
-	public int Value(ZodiacHouse zodiacHouse)
-	{
-		var kendras = new int[4]
-		{
-			1,
-			4,
-			7,
-			10
-		};
-		var numGrahas = 0;
-		var zh        = zodiacHouse;
-		foreach (var i in kendras)
-		{
-			numGrahas += NumGrahasInZodiacHouse(zh.Add(i));
+			if (graha.Bhava.IsKendra())
+			{
+				numGrahas += graha.Conjunct.Count;
+			}
 		}
 
 		return numGrahas;

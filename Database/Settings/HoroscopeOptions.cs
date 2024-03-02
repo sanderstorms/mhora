@@ -36,8 +36,12 @@ public class HoroscopeOptions : MhoraSerializableOptions, ICloneable
 		Krishnamurti       = 5,
 		Suryasiddhanta     = 21,
 		SuryasiddhantaMsun = 22,
+		Revati             = 25,
 		Citra              = 26,
-		TrueCitra          = 27
+		TrueCitra          = 27,
+		TrueRevati         = 28,
+		TruePusya          = 29,
+		TrueMula           = 35,		
 	}
 
 	[TypeConverter(typeof(EnumDescConverter))]

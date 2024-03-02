@@ -17,36 +17,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has larger number of grahas
-// Stronger Graha is in such a rasi
-public class StrengthByConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByConjunction rasi has larger number of grahas
+// StrengthByConjunction Graha is in such a rasi
+public static class Conjunction
 {
-	public StrengthByConjunction(Horoscope h, Division dtype) : base(h, dtype, true)
+	public static int StrengthByConjunction(this Grahas grahas, Body m, Body n)
 	{
+		var gm = grahas.Find(m);
+		var gn = grahas.Find(n);
+
+		return gm.Conjunct.Count.CompareTo(gn.Conjunct.Count);
 	}
 
-	public bool Stronger(Body m, Body n)
+	public static int StrengthByConjunction(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		return Stronger(H.GetPosition(m).ToDivisionPosition(Dtype).ZodiacHouse, H.GetPosition(n).ToDivisionPosition(Dtype).ZodiacHouse);
-	}
+		var rashi1 = grahas.Rashis.Find(za);
+		var rashi2 = grahas.Rashis.Find(zb);
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var numa = NumGrahasInZodiacHouse(za);
-		var numb = NumGrahasInZodiacHouse(zb);
-		if (numa > numb)
-		{
-			return true;
-		}
-
-		if (numb > numa)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return rashi1.Grahas.Count.CompareTo(rashi2.Grahas.Count);
 	}
 }

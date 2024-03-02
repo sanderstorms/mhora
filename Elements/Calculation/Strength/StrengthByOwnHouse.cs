@@ -17,77 +17,49 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has more planets in own house
-// Stronger planet is in own house
-public class StrengthByOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByOwnHouse rasi has more planets in own house
+// StrengthByOwnHouse planet is in own house
+public static class OwnHouse
 {
-	public StrengthByOwnHouse(Horoscope h, Division dtype) : base(h, dtype, true)
+	public static int StrengthByOwnHouse(this Grahas grahas, Body m, Body n)
 	{
+		var valm = grahas.OwnHouseValue(m);
+		var valn = grahas.OwnHouseValue(n);
+
+		return valm.CompareTo(valn);
 	}
 
-	public bool Stronger(Body m, Body n)
+	public static int StrengthByOwnHouse(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var valm = Value(m);
-		var valn = Value(n);
+		var vala = grahas.OwnHouseValue(za);
+		var valb = grahas.OwnHouseValue(zb);
 
-		if (valm > valn)
-		{
-			return true;
-		}
-
-		if (valn > valm)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return vala.CompareTo(valb);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var vala = Value(za);
-		var valb = Value(zb);
-
-		if (vala > valb)
-		{
-			return true;
-		}
-
-		if (valb > vala)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
-	}
-
-	public int Value(ZodiacHouse zn)
+	public static int OwnHouseValue(this Grahas grahas, ZodiacHouse zn)
 	{
 		var ret = 0;
-		foreach (DivisionPosition dp in StdDivPos)
+		foreach (var graha in grahas.NavaGrahas)
 		{
-			if (dp.BodyType != BodyType.Graha)
+			if (graha.Rashi.ZodiacHouse != zn)
 			{
 				continue;
 			}
 
-			if (dp.ZodiacHouse != zn)
-			{
-				continue;
-			}
-
-			ret += Value(dp.Body);
+			ret += grahas.OwnHouseValue(graha);
 		}
 
 		return ret;
 	}
 
-	public int Value(Body b)
+	public static int OwnHouseValue(this Grahas grahas, Body b)
 	{
-		if (H.GetPosition(b).ToDivisionPosition(Dtype).IsInOwnHouse())
+		if (grahas [b].IsInOwnHouse)
 		{
 			return 1;
 		}

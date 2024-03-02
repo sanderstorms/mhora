@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Mhora.Components.Controls;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
@@ -38,12 +39,13 @@ public class KeyInfoControl : MhoraControl
 	/// </summary>
 	private readonly Container components = null;
 
-	private ColumnHeader Info;
-	private ColumnHeader Key;
-	private MenuItem     menuItem1;
-	private MenuItem     menuItem2;
-	private ContextMenu  mKeyInfoMenu;
-	private ListView     mList;
+	private ColumnHeader         Info;
+	private ColumnHeader         Key;
+	private MenuItem             menuItem1;
+	private MenuItem             menuItem2;
+	private ContextMenu          mKeyInfoMenu;
+	private ListView             mList;
+	private ListViewColumnSorter lvwColumnSorter;
 
 	public KeyInfoControl(Horoscope _h)
 	{
@@ -79,69 +81,74 @@ public class KeyInfoControl : MhoraControl
 	/// </summary>
 	private void InitializeComponent()
 	{
-		this.mList        = new System.Windows.Forms.ListView();
-		this.Key          = new System.Windows.Forms.ColumnHeader();
-		this.Info         = new System.Windows.Forms.ColumnHeader();
-		this.mKeyInfoMenu = new System.Windows.Forms.ContextMenu();
-		this.menuItem1    = new System.Windows.Forms.MenuItem();
-		this.menuItem2    = new System.Windows.Forms.MenuItem();
-		this.SuspendLayout();
-		// 
-		// mList
-		// 
-		this.mList.AllowColumnReorder = true;
-		this.mList.BackColor          = System.Drawing.Color.Lavender;
-		this.mList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[]
-		{
-			this.Key,
-			this.Info
-		});
-		this.mList.ContextMenu          =  this.mKeyInfoMenu;
-		this.mList.Dock                 =  System.Windows.Forms.DockStyle.Fill;
-		this.mList.Font                 =  new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte) (0)));
-		this.mList.ForeColor            =  System.Drawing.SystemColors.HotTrack;
-		this.mList.FullRowSelect        =  true;
-		this.mList.Location             =  new System.Drawing.Point(0, 0);
-		this.mList.Name                 =  "mList";
-		this.mList.Size                 =  new System.Drawing.Size(496, 240);
-		this.mList.TabIndex             =  0;
-		this.mList.View                 =  System.Windows.Forms.View.Details;
-		this.mList.SelectedIndexChanged += new System.EventHandler(this.mList_SelectedIndexChanged);
-		// 
-		// Key
-		// 
-		this.Key.Text  = "Key";
-		this.Key.Width = 136;
-		// 
-		// Info
-		// 
-		this.Info.Text  = "Info";
-		this.Info.Width = 350;
-		// 
-		// mKeyInfoMenu
-		// 
-		this.mKeyInfoMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[]
-		{
-			this.menuItem1,
-			this.menuItem2
-		});
-		// 
-		// menuItem1
-		// 
-		this.menuItem1.Index = 0;
-		this.menuItem1.Text  = "-";
-		// 
-		// menuItem2
-		// 
-		this.menuItem2.Index = 1;
-		this.menuItem2.Text  = "-";
-		// 
-		// KeyInfoControl
-		// 
-		this.Controls.Add(this.mList);
-		this.Name = "KeyInfoControl";
-		this.Size = new System.Drawing.Size(496, 240);
-		this.ResumeLayout(false);
+			this.mList = new System.Windows.Forms.ListView();
+			this.Key = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.Info = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.mKeyInfoMenu = new System.Windows.Forms.ContextMenu();
+			this.menuItem1 = new System.Windows.Forms.MenuItem();
+			this.menuItem2 = new System.Windows.Forms.MenuItem();
+			this.SuspendLayout();
+			// 
+			// mList
+			// 
+			this.mList.AllowColumnReorder = true;
+			this.mList.BackColor = System.Drawing.Color.Lavender;
+			this.mList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Key,
+            this.Info});
+			this.mList.ContextMenu = this.mKeyInfoMenu;
+			this.mList.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.mList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.mList.ForeColor = System.Drawing.SystemColors.HotTrack;
+			this.mList.FullRowSelect = true;
+			this.mList.HideSelection = false;
+			this.mList.Location = new System.Drawing.Point(0, 0);
+			this.mList.Name = "mList";
+			this.mList.Size = new System.Drawing.Size(496, 240);
+			this.mList.TabIndex = 0;
+			this.mList.UseCompatibleStateImageBehavior = false;
+			this.mList.View = System.Windows.Forms.View.Details;
+			this.mList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.OnColumnclick);
+			this.mList.SelectedIndexChanged += new System.EventHandler(this.mList_SelectedIndexChanged);
+			//
+			// Create an instance of a ListView column sorter and assign it
+			// to the ListView control.
+			this.lvwColumnSorter          = new ListViewColumnSorter();
+			this.mList.ListViewItemSorter = lvwColumnSorter;
+			// 
+			// Key
+			// 
+			this.Key.Text = "Key";
+			this.Key.Width = 136;
+			// 
+			// Info
+			// 
+			this.Info.Text = "Info";
+			this.Info.Width = 350;
+			// 
+			// mKeyInfoMenu
+			// 
+			this.mKeyInfoMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItem1,
+            this.menuItem2});
+			// 
+			// menuItem1
+			// 
+			this.menuItem1.Index = 0;
+			this.menuItem1.Text = "-";
+			// 
+			// menuItem2
+			// 
+			this.menuItem2.Index = 1;
+			this.menuItem2.Text = "-";
+			// 
+			// KeyInfoControl
+			// 
+			this.Controls.Add(this.mList);
+			this.Name = "KeyInfoControl";
+			this.Size = new System.Drawing.Size(496, 240);
+			this.ResumeLayout(false);
+
 	}
 
 #endregion
@@ -357,5 +364,31 @@ public class KeyInfoControl : MhoraControl
 	private void OnRecalculate(object o)
 	{
 		Repopulate();
+	}
+
+	private void OnColumnclick(object sender, ColumnClickEventArgs e)
+	{
+		// Determine if clicked column is already the column that is being sorted.
+		if (e.Column == lvwColumnSorter.SortColumn)
+		{
+			// Reverse the current sort direction for this column.
+			if (lvwColumnSorter.Order == SortOrder.Ascending)
+			{
+				lvwColumnSorter.Order = SortOrder.Descending;
+			}
+			else
+			{
+				lvwColumnSorter.Order = SortOrder.Ascending;
+			}
+		}
+		else
+		{
+			// Set the column number that is to be sorted; default to ascending.
+			lvwColumnSorter.SortColumn = e.Column;
+			lvwColumnSorter.Order      = SortOrder.Ascending;
+		}
+
+		// Perform the sort with these new sort options.
+		mList.Sort();
 	}
 }

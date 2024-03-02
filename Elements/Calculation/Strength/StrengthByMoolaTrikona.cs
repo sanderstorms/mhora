@@ -17,77 +17,49 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has more planets in moola trikona
-// Stronger planet is in moola trikona rasi
-public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByMoolaTrikona rasi has more planets in moola trikona
+// StrengthByMoolaTrikona planet is in moola trikona rasi
+public static class MoolaTrikona
 {
-	public StrengthByMoolaTrikona(Horoscope h, Division dtype) : base(h, dtype, true)
+	public static int StrengthByMoolaTrikona(this Grahas grahas, Body m, Body n)
 	{
+		var valm = grahas.MoolaTrikonaValue(m);
+		var valn = grahas.MoolaTrikonaValue(n);
+
+		return valm.CompareTo(valn);
 	}
 
-	public bool Stronger(Body m, Body n)
+	public static int StrengthByMoolaTrikona(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var valm = Value(m);
-		var valn = Value(n);
+		var vala = grahas.MoolaTrikonaValue(za);
+		var valb = grahas.MoolaTrikonaValue(zb);
 
-		if (valm > valn)
-		{
-			return true;
-		}
-
-		if (valn > valm)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return vala.CompareTo(valb);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var vala = Value(za);
-		var valb = Value(zb);
-
-		if (vala > valb)
-		{
-			return true;
-		}
-
-		if (valb > vala)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
-	}
-
-	public int Value(ZodiacHouse zn)
+	public static int MoolaTrikonaValue(this Grahas grahas, ZodiacHouse zn)
 	{
 		var ret = 0;
-		foreach (DivisionPosition dp in StdDivPos)
+		foreach (var graha in grahas.NavaGrahas)
 		{
-			if (dp.BodyType != BodyType.Graha)
+			if (graha.Rashi.ZodiacHouse != zn)
 			{
 				continue;
 			}
 
-			if (dp.ZodiacHouse != zn)
-			{
-				continue;
-			}
-
-			ret += Value(dp.Body);
+			ret += grahas.MoolaTrikonaValue(graha);
 		}
 
 		return ret;
 	}
 
-	public int Value(Body b)
+	public static int MoolaTrikonaValue(this Grahas grahas, Body b)
 	{
-		if (H.GetPosition(b).ToDivisionPosition(Dtype).IsInMoolaTrikona())
+		if (grahas [b].IsMoolTrikona)
 		{
 			return 1;
 		}

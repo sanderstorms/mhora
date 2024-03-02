@@ -17,71 +17,50 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has more Graha drishtis of Jupiter, Mercury and Lord
-// Stronger Graha is in such a rasi
-public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByAspectsGraha rasi has more Graha drishtis of Jupiter, Mercury and Lord
+// StrengthByAspectsGraha Graha is in such a rasi
+public static class AspectsGraha
 {
-	public StrengthByAspectsGraha(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
+	public static int StrengthByAspectsGraha(this Grahas grahas, Body m, Body n, bool simpleLord)
 	{
+		var a = grahas.AspectsGrahaStrength(m, simpleLord);
+		var b = grahas.AspectsGrahaStrength(n, simpleLord);
+
+		return a.CompareTo(b);
 	}
 
-	public bool Stronger(Body m, Body n)
+	public static int StrengthByAspectsGraha(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-		var a = Value(m);
-		var b = Value(n);
-		if (a > b)
-		{
-			return true;
-		}
+		var a = grahas.AspectsGrahaStrength(za, simpleLord);
+		var b = grahas.AspectsGrahaStrength(zb, simpleLord);
 
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return a.CompareTo(b);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var a = Value(za);
-		var b = Value(zb);
-		if (a > b)
-		{
-			return true;
-		}
-
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
-	}
-
-	protected int Value(ZodiacHouse zodiacHouse)
+	private static int AspectsGrahaStrength(this Grahas grahas, ZodiacHouse zodiacHouse, bool simpleLord)
 	{
 		var val = 0;
-		var bl  = GetStrengthLord(zodiacHouse);
-		var dl  = H.GetPosition(bl).ToDivisionPosition(Dtype);
-		var dj  = H.GetPosition(Body.Jupiter).ToDivisionPosition(Dtype);
-		var dm  = H.GetPosition(Body.Mercury).ToDivisionPosition(Dtype);
+		var bl  = grahas.Horoscope.LordOfZodiacHouse(zodiacHouse, new Division(grahas.Varga), simpleLord);
+		var dl  = grahas [bl];
+		var dj  = grahas [Body.Jupiter];
+		var dm  = grahas [Body.Mercury];
 
 		var zh = (zodiacHouse);
-		if (dl.GrahaDristi(zh) || dl.ZodiacHouse == zodiacHouse)
+		if (dl.HasDrishtiOn(zh) || dl.Rashi == zodiacHouse)
 		{
 			val++;
 		}
 
-		if (dj.GrahaDristi(zh) || dj.ZodiacHouse == zodiacHouse)
+		if (dj.HasDrishtiOn(zh) || dj.Rashi == zodiacHouse)
 		{
 			val++;
 		}
 
-		if (dm.GrahaDristi(zh) || dm.ZodiacHouse == zodiacHouse)
+		if (dm.HasDrishtiOn(zh) || dm.Rashi == zodiacHouse)
 		{
 			val++;
 		}
@@ -89,8 +68,8 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		return val;
 	}
 
-	protected int Value(Body bm)
+	private static int AspectsGrahaStrength(this Grahas grahas, Body bm, bool simpleLord)
 	{
-		return Value(H.GetPosition(bm).ToDivisionPosition(Dtype).ZodiacHouse);
+		return grahas.AspectsGrahaStrength(grahas.Find(bm).Rashi, simpleLord);
 	}
 }

@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -41,8 +42,7 @@ namespace Mhora.Components.Varga;
 [Serializable]
 public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 {
-	private ArrayList arudha_pos;
-	private Brush     b = new SolidBrush(Color.Black);
+	private Brush                   b = new SolidBrush(Color.Black);
 
 	private bool             bInnerMode;
 	public  HoroscopeOptions calculation_options;
@@ -52,13 +52,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	/// </summary>
 	private Container components = null;
 
-	public  ContextMenu contextMenu;
-	private IDrawChart  dc;
-	private ArrayList   div_pos;
+	private Grahas _grahas;
+
+	public  ContextMenu             contextMenu;
+	private IDrawChart              dc;
 
 	private Font fBase = new(MhoraGlobalOptions.Instance.VargaFont.FontFamily, MhoraGlobalOptions.Instance.VargaFont.SizeInPoints);
-
-	private ArrayList graha_arudha_pos;
 
 	private DivisionalChart innerControl;
 
@@ -166,9 +165,8 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private Pen pn_black = new(Color.Black, (float) 0.01);
 
-	public  bool      PrintMode = false;
-	private int[]     sav_bindus;
-	private ArrayList varnada_pos;
+	public  bool                   PrintMode = false;
+	private int[]                  sav_bindus;
 
 	public DivisionalChart(Horoscope _h)
 	{
@@ -1048,7 +1046,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		// display bodies
 		for (var i = 0; i <= max; i++)
 		{
-			var dp = (DivisionPosition) div_pos[i];
+			var dp = _grahas.DivisionPositions[i];
 
 			if (options.ViewStyle == UserOptions.EViewStyle.CharaKarakas7)
 			{
@@ -1062,7 +1060,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			items.Add(dp);
 		}
 
-		var dp2 = (DivisionPosition) div_pos[(int) Body.Lagna];
+		var dp2 = _grahas.DivisionPositions[(int) Body.Lagna];
 		items.Add(dp2);
 		DrawItems(g, true);
 	}
@@ -1072,7 +1070,8 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		var dpo = h.GetPosition(Body.Lagna).ToDivisionPosition(options.Varga);
 		items.Add(dpo);
 
-		foreach (DivisionPosition dp in graha_arudha_pos)
+		var grahaArudha = h.CalculateGrahaArudhaDivisionPositions(options.Varga);
+		foreach (var dp in grahaArudha)
 		{
 			items.Add(dp);
 		}
@@ -1146,12 +1145,12 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			}
 #endif
 
-		if (div_pos == null)
+		if (_grahas == null)
 		{
 			return;
 		}
 
-		foreach (DivisionPosition dp in div_pos)
+		foreach (var dp in _grahas.DivisionPositions)
 		{
 			if (options.ViewStyle == UserOptions.EViewStyle.Panchanga && dp.BodyType != BodyType.Graha)
 			{
@@ -1173,7 +1172,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			return;
 		}
 
-		foreach (DivisionPosition dp in div_pos)
+		foreach (var dp in _grahas.DivisionPositions)
 		{
 			if (dp.BodyType != BodyType.SpecialLagna)
 			{
@@ -1186,18 +1185,18 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		DrawItems(g, true);
 		items.Clear();
 
-		ArrayList secondary_pos = null;
+		List<DivisionPosition> secondary_pos = null;
 
 		if (options.ViewStyle == UserOptions.EViewStyle.Normal)
 		{
-			secondary_pos = arudha_pos;
+			secondary_pos = h.CalculateArudhaDivisionPositions(options.Varga);
 		}
 		else
 		{
-			secondary_pos = varnada_pos;
+			secondary_pos = h.CalculateVarnadaDivisionPositions(options.Varga);
 		}
 
-		foreach (DivisionPosition dp in secondary_pos)
+		foreach (var dp in secondary_pos)
 		{
 			items.Add(dp);
 		}
@@ -1389,12 +1388,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void OnRecalculate(object o)
 	{
-		div_pos          = h.CalculateDivisionPositions(options.Varga);
-		arudha_pos       = h.CalculateArudhaDivisionPositions(options.Varga);
-		varnada_pos      = h.CalculateVarnadaDivisionPositions(options.Varga);
-		graha_arudha_pos = h.CalculateGrahaArudhaDivisionPositions(options.Varga);
-
-		Graha.Create(h, options.Varga.MultipleDivisions [0].Varga);
+		_grahas = h.FindGrahas(options.Varga.MultipleDivisions [0].Varga);
 
 		SetChartStyle(options.ChartStyle);
 		CalculateBindus();

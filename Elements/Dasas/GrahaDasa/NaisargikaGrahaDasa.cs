@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using Mhora.Components.Property;
@@ -237,23 +238,24 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 	public class UserOptions : ICloneable
 	{
-		private readonly Horoscope _h;
-		public           Division  Dtype = new(DivisionType.Rasi);
-		protected        Body MLordAqu;
-		protected        Body MLordSco;
-		private          ArrayList _stdDivPos;
+		private readonly Horoscope              _h;
+		public           Division               Dtype = new(DivisionType.Rasi);
+		protected        Body                   MLordAqu;
+		protected        Body                   MLordSco;
+		private          List<DivisionPosition> _stdDivPos;
 
 		public UserOptions(Horoscope h)
 		{
+			var grahas = h.FindGrahas(Dtype);
 			_h           = h;
-			_stdDivPos = _h.CalculateDivisionPositions(Dtype);
-			var fs = new FindStronger(_h, Dtype, FindStronger.RulesStrongerCoLord(_h));
-			MLordSco          = fs.StrongerGraha(Body.Mars, Body.Ketu, true);
-			MLordAqu          = fs.StrongerGraha(Body.Saturn, Body.Rahu, true);
-			ExcludeNodes      = true;
-			ExcludeDasaLord   = true;
+			_stdDivPos = _h.PositionList.CalculateDivisionPositions(Dtype);
+			var rules =  FindStronger.RulesStrongerCoLord(_h);
+			MLordSco        = grahas.Stronger(Body.Mars, Body.Ketu, true, rules, out _);
+			MLordAqu        = grahas.Stronger(Body.Saturn, Body.Rahu, true, rules, out _);
+			ExcludeNodes    = true;
+			ExcludeDasaLord = true;
 			Exclude310      = false;
-			Exclude261112 = false;
+			Exclude261112   = false;
 			CalculateRasiStrengths();
 			CalculateGrahaStrengths();
 		}
@@ -351,9 +353,10 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 		public void Recalculate()
 		{
-			var fs = new FindStronger(_h, Dtype, FindStronger.RulesStrongerCoLord(_h));
-			MLordSco = fs.StrongerGraha(Body.Mars, Body.Ketu, true);
-			MLordAqu = fs.StrongerGraha(Body.Saturn, Body.Rahu, true);
+			var grahas = _h.FindGrahas(Dtype);
+			var rules  = FindStronger.RulesStrongerCoLord(_h);
+			MLordSco = grahas.Stronger(Body.Mars, Body.Ketu, true, rules, out _);
+			MLordAqu = grahas.Stronger(Body.Saturn, Body.Rahu, true, rules, out _);
 			CalculateRasiStrengths();
 			CalculateGrahaStrengths();
 		}
@@ -388,14 +391,16 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 		public void CalculateRasiStrengths()
 		{
-			var fs = new FindStronger(_h, Dtype, FindStronger.RulesNaisargikaDasaRasi(_h));
-			RasiStrengths = fs.ResultsZodiacKendras(_h.CalculateDivisionPosition(_h.GetPosition(Body.Lagna), Dtype).ZodiacHouse);
+			var grahas = _h.FindGrahas(Dtype);
+			var lagna  = grahas [Body.Lagna];
+			var rules  = FindStronger.RulesNaisargikaDasaRasi(_h);
+			RasiStrengths = grahas.ResultsZodiacKendras(lagna.Rashi, rules);
 		}
 
 		public void CalculateGrahaStrengths()
 		{
-			var fsTemp = new StrengthByConjunction(_h, Dtype);
-			var fs      = new FindStronger(_h, Dtype, FindStronger.RulesNaisargikaDasaGraha(_h));
+			var grahas = _h.FindGrahas(Dtype);
+			var rules = FindStronger.RulesNaisargikaDasaGraha(_h);
 			GrahaStrengths = new OrderedGrahas[3];
 			for (var i = 0; i < RasiStrengths.Length; i++)
 			{
@@ -403,14 +408,14 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 				var oz = RasiStrengths[i];
 				foreach (ZodiacHouse zn in oz.houses)
 				{
-					var temp     = fsTemp.FindGrahasInHouse(zn);
-					var tempArr = new Body[temp.Count];
-					for (var j = 0; j < temp.Count; j++)
+					var rashi   = grahas.Rashis[zn]; 
+					var tempArr = new Body[rashi.Grahas.Count];
+					for (var j = 0; j < rashi.Grahas.Count; j++)
 					{
-						tempArr[j] = (Body) temp[j];
+						tempArr[j] = rashi.Grahas[j];
 					}
 
-					var sorted = fs.GetOrderedGrahas(tempArr);
+					var sorted = grahas.GetOrderedGrahas(tempArr, rules);
 					foreach (var bn in sorted)
 					{
 						GrahaStrengths[i].grahas.Add(bn);

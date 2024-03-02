@@ -19,58 +19,34 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using Mhora.Definitions;
 using Mhora.Elements.Dasas.NakshatraDasa;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
+public static class VimsottariDasaLength
 {
-	public StrengthByVimsottariDasaLength(Horoscope h, Division dtype) : base(h, dtype, false)
-	{
-	}
-
-	public bool Stronger(Body m, Body n)
+	public static int StrengthByVimsottariDasaLength(this Grahas grahas, Body m, Body n)
 	{
 		var a = VimsottariDasa.DasaLength(m);
 		var b = VimsottariDasa.DasaLength(n);
-		if (a > b)
-		{
-			return true;
-		}
 
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return a.CompareTo(b);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByVimsottariDasaLength(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var a = Value(za);
-		var b = Value(zb);
-		if (a > b)
-		{
-			return true;
-		}
+		var a = grahas.StrengthByVimsottariDasaLengthValue(za);
+		var b = grahas.StrengthByVimsottariDasaLengthValue(zb);
 
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return a.CompareTo(b);
 	}
 
-	protected double Value(ZodiacHouse zh)
+	private static double StrengthByVimsottariDasaLengthValue(this Grahas grahas, ZodiacHouse zh)
 	{
 		double length = 0;
-		foreach (Position bp in H.PositionList)
+		foreach (var graha in grahas.NavaGrahas)
 		{
-			if (bp.BodyType == BodyType.Graha)
-			{
-				length = Math.Max(length, VimsottariDasa.DasaLength(bp.Name));
-			}
+			length = Math.Max(length, VimsottariDasa.DasaLength(graha));
 		}
 
 		return length;

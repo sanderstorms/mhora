@@ -18,61 +18,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Definitions;
 using Mhora.Elements.Dasas;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has a larger narayana dasa length
-// Stronger Graha is in such a rasi
-public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByNarayanaDasaLength rasi has a larger narayana dasa length
+// StrengthByNarayanaDasaLength Graha is in such a rasi
+public static class NarayanaDasaLength
 {
-	public StrengthByNarayanaDasaLength(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
+	public static int StrengthByNarayanaDasaLength(this Grahas grahas, Body m, Body n, bool simpleLord)
 	{
+		var a = grahas.Value(m, simpleLord);
+		var b = grahas.Value(n, simpleLord);
+
+		return a.CompareTo(b);
 	}
 
-	public bool Stronger(Body m, Body n)
+	public static int StrengthByNarayanaDasaLength(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-		var a = Value(m);
-		var b = Value(n);
-		if (a > b)
-		{
-			return true;
-		}
+		var a = grahas.Value(za, simpleLord);
+		var b = grahas.Value(zb, simpleLord);
 
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		return a.CompareTo(b);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	private static int Value(this Grahas grahas, ZodiacHouse zh, bool simpleLord)
 	{
-		var a = Value(za);
-		var b = Value(zb);
-		if (a > b)
-		{
-			return true;
-		}
-
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
+		var bl = grahas.Horoscope.LordOfZodiacHouse(zh, new Division(grahas.Varga), simpleLord);
+		return Dasa.NarayanaDasaLength(zh, grahas [bl]);
 	}
 
-	protected int Value(ZodiacHouse zh)
+	private static int Value(this Grahas grahas, Body bm, bool simpleLord)
 	{
-		var bl = GetStrengthLord(zh);
-		var pl = H.GetPosition(bl).ToDivisionPosition(Dtype);
-		return Dasa.NarayanaDasaLength((zh), pl);
-	}
-
-	protected int Value(Body bm)
-	{
-		var zm = H.GetPosition(bm).ToDivisionPosition(Dtype).ZodiacHouse;
-		return Value(zm);
+		return grahas.Value(grahas [bm].Rashi, simpleLord);
 	}
 }

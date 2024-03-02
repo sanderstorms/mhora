@@ -18,12 +18,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 using Mhora.Components.Delegates;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
+using Mhora.Elements.Yoga;
 using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
@@ -36,26 +39,13 @@ namespace Mhora.Elements;
 /// </summary>
 public class Horoscope : ICloneable
 {
-	private Time _sunrise;
-	private Time _sunset;
-	private Time _nextSunrise;
-	private Time _nextSunset;
+	private readonly Dictionary<DivisionType, Grahas> _grahas = new ();
+	private readonly Dictionary<DivisionType, Rashis> _rashis = new ();
 
-	private static readonly string[] VarnadaStrs =
-	{
-		"VL",
-		"V2",
-		"V3",
-		"V4",
-		"V5",
-		"V6",
-		"V7",
-		"V8",
-		"V9",
-		"V10",
-		"V11",
-		"V12"
-	};
+	private          Time                             _sunrise;
+	private          Time                             _sunset;
+	private          Time                             _nextSunrise;
+	private          Time                             _nextSunset;
 
 	public readonly Body[] HoraOrder =
 	{
@@ -68,7 +58,7 @@ public class Horoscope : ICloneable
 		Body.Mars
 	};
 
-	public HoraInfo Info { get; set;}
+	public HoraInfo Info { get;}
 
 	public readonly Body[] KalaOrder =
 	{
@@ -122,17 +112,18 @@ public class Horoscope : ICloneable
 		private set;
 	}
 
-	public ArrayList PositionList
+	public List<Position> PositionList
 	{
 		get;
 		private set;
 	}
 
 
+	private StrengthOptions _strengthOptions;
 	public StrengthOptions StrengthOptions
 	{
-		get;
-		set;
+		get => _strengthOptions ??= MhoraGlobalOptions.Instance.SOptions.Clone();
+		set => _strengthOptions = value;
 	}
 
 	public Longitude[] SwephHouseCusps
@@ -157,7 +148,7 @@ public class Horoscope : ICloneable
 	{
 		Options          = options;
 		Info             = info;
-		sweph.SetSidMode((int) HoroscopeOptions.AyanamsaType.TrueCitra, 0.0, 0.0);
+		sweph.SetSidMode((int) options.Ayanamsa, 0.0, 0.0);
 		SwephHouseSystem = 'P';
 		PopulateCache();
 		MhoraGlobalOptions.CalculationPrefsChanged += OnGlobalCalcPrefsChanged;
@@ -166,26 +157,69 @@ public class Horoscope : ICloneable
 	public object Clone()
 	{
 		var h = new Horoscope((HoraInfo) Info.Clone(), (HoroscopeOptions) Options.Clone());
-		if (StrengthOptions != null)
-		{
-			h.StrengthOptions = (StrengthOptions) StrengthOptions.Clone();
-		}
-
+		h.StrengthOptions = StrengthOptions.Clone();
+	
 		return h;
 	}
 
+	public Rashis FindRashis(Division division)
+	{
+		return (FindRashis(division.MultipleDivisions[0].Varga));
+	}
+
+	public Rashis FindRashis(DivisionType varga)
+	{
+		if (_rashis.TryGetValue(varga, out var rashis) == false)
+		{
+			rashis = new Rashis(varga);
+			_rashis.Add(varga, rashis);
+		}
+
+		return (rashis);
+	}
+
+	public Grahas FindGrahas(Division division)
+	{
+		return (FindGrahas(division.MultipleDivisions[0].Varga));
+	}
+
+	public Grahas FindGrahas(DivisionType varga)
+	{
+		if (_grahas.TryGetValue(varga, out var grahas) == false)
+		{
+			grahas = new Grahas(this, varga);
+			_grahas.Add(varga, grahas);
+		}
+		try
+		{
+			grahas.Examine();
+			return (grahas);
+		}
+		catch (Exception e)
+		{
+			Application.Log.Exception(e);
+		}
+
+		return null;
+	}
+
+
 	public event EvtChanged Changed;
 
-	public Body LordOfZodiacHouse(ZodiacHouse zh, Division dtype)
+	public Body LordOfZodiacHouse(ZodiacHouse zh, Division dtype, bool simpleLord)
 	{
-		var fsColord = new FindStronger(this, dtype, FindStronger.RulesStrongerCoLord(this));
-
-		switch (zh)
+		if (simpleLord == false)
 		{
-			case ZodiacHouse.Aqu: return fsColord.StrongerGraha(Body.Rahu, Body.Saturn, true);
-			case ZodiacHouse.Sco: return fsColord.StrongerGraha(Body.Ketu, Body.Mars, true);
-			default:                   return zh.SimpleLordOfZodiacHouse();
+			var grahas = _grahas[dtype.MultipleDivisions[0].Varga];
+			var rules = FindStronger.RulesStrongerCoLord(this);
+
+			switch (zh)
+			{
+				case ZodiacHouse.Aqu: return grahas.Stronger(Body.Rahu, Body.Saturn, true, rules, out _);
+				case ZodiacHouse.Sco: return grahas.Stronger(Body.Ketu, Body.Mars, true, rules, out _);
+			}
 		}
+		return zh.SimpleLordOfZodiacHouse();
 	}
 
 	public void OnGlobalCalcPrefsChanged(object o)
@@ -205,263 +239,6 @@ public class Horoscope : ICloneable
 	{
 		PopulateCache();
 		OnlySignalChanged();
-	}
-
-	public DivisionPosition CalculateDivisionPosition(Position bp, Division d)
-	{
-		return bp.ToDivisionPosition(d);
-	}
-
-	public ArrayList CalculateDivisionPositions(Division d)
-	{
-		var al = new ArrayList();
-		foreach (Position bp in PositionList)
-		{
-			al.Add(CalculateDivisionPosition(bp, d));
-		}
-
-		return al;
-	}
-
-	private DivisionPosition CalculateGrahaArudhaDivisionPosition(Body bn, ZodiacHouse zh, Division dtype)
-	{
-		var dp    = GetPosition(bn).ToDivisionPosition(dtype);
-		var dpl   = GetPosition(Body.Lagna).ToDivisionPosition(dtype);
-		var rel   = dp.ZodiacHouse.NumHousesBetween(zh);
-		var hse   = dpl.ZodiacHouse.NumHousesBetween(zh);
-		var zhsum = zh.Add(rel);
-		var rel2  = dp.ZodiacHouse.NumHousesBetween(zhsum);
-		if (rel2 == 1 || rel2 == 7)
-		{
-			zhsum = zhsum.Add(10);
-		}
-
-		var dp2 = new DivisionPosition(Body.Other, BodyType.GrahaArudha, zhsum, 0, 0, 0)
-		{
-			//dp2.Longitude   = zhsum.DivisionalLongitude(dp.Longitude, dpl.part);
-			Description = string.Format("{0}{1}", bn.ToShortString(), hse)
-		};
-		return dp2;
-	}
-
-	public ArrayList CalculateGrahaArudhaDivisionPositions(Division dtype)
-	{
-		object[][] parameters =
-		{
-			new object[]
-			{
-				ZodiacHouse.Ari,
-				Body.Mars
-			},
-			new object[]
-			{
-				ZodiacHouse.Tau,
-				Body.Venus
-			},
-			new object[]
-			{
-				ZodiacHouse.Gem,
-				Body.Mercury
-			},
-			new object[]
-			{
-				ZodiacHouse.Can,
-				Body.Moon
-			},
-			new object[]
-			{
-				ZodiacHouse.Leo,
-				Body.Sun
-			},
-			new object[]
-			{
-				ZodiacHouse.Vir,
-				Body.Mercury
-			},
-			new object[]
-			{
-				ZodiacHouse.Lib,
-				Body.Venus
-			},
-			new object[]
-			{
-				ZodiacHouse.Sco,
-				Body.Mars
-			},
-			new object[]
-			{
-				ZodiacHouse.Sag,
-				Body.Jupiter
-			},
-			new object[]
-			{
-				ZodiacHouse.Cap,
-				Body.Saturn
-			},
-			new object[]
-			{
-				ZodiacHouse.Aqu,
-				Body.Saturn
-			},
-			new object[]
-			{
-				ZodiacHouse.Pis,
-				Body.Jupiter
-			},
-			new object[]
-			{
-				ZodiacHouse.Sco,
-				Body.Ketu
-			},
-			new object[]
-			{
-				ZodiacHouse.Aqu,
-				Body.Rahu
-			}
-		};
-		var al = new ArrayList(14);
-
-		for (var i = 0; i < parameters.Length; i++)
-		{
-			al.Add(CalculateGrahaArudhaDivisionPosition((Body) parameters[i][1], ((ZodiacHouse) parameters[i][0]), dtype));
-		}
-
-		return al;
-	}
-
-	public ArrayList CalculateVarnadaDivisionPositions(Division dtype)
-	{
-		var al   = new ArrayList(12);
-		var zhL  = (ZodiacHouse) GetPosition(Body.Lagna).ToDivisionPosition(dtype).ZodiacHouse;
-		var zhHl = (ZodiacHouse) GetPosition(Body.HoraLagna).ToDivisionPosition(dtype).ZodiacHouse;
-
-		var zhAri = ZodiacHouse.Ari;
-		var zhPis = ZodiacHouse.Pis;
-		for (var i = 1; i <= 12; i++)
-		{
-			zhL  = zhL.Add(i);
-			zhHl = zhHl.Add(i);
-
-			int iL = 0, iHl = 0;
-			if (zhL.IsOdd())
-			{
-				iL = zhAri.NumHousesBetween(zhL);
-			}
-			else
-			{
-				iL = zhPis.NumHousesBetweenReverse(zhL);
-			}
-
-			if (zhHl.IsOdd())
-			{
-				iHl = zhAri.NumHousesBetween(zhHl);
-			}
-			else
-			{
-				iHl = zhPis.NumHousesBetweenReverse(zhHl);
-			}
-
-			var sum = 0;
-			if (zhL.IsOdd() == zhHl.IsOdd())
-			{
-				sum = iL + iHl;
-			}
-			else
-			{
-				sum = Math.Max(iL, iHl) - Math.Min(iL, iHl);
-			}
-
-			ZodiacHouse zhV;
-			if (zhL.IsOdd())
-			{
-				zhV = zhAri.Add(sum);
-			}
-			else
-			{
-				zhV = zhPis.AddReverse(sum);
-			}
-
-			var divPos = new DivisionPosition(Body.Other, BodyType.Varnada, zhV, 0, 0, 0)
-			{
-				Description = VarnadaStrs[i - 1]
-			};
-
-			al.Add(divPos);
-		}
-
-		return al;
-	}
-
-	private DivisionPosition CalculateArudhaDivisionPosition(ZodiacHouse zh, Body bn, Body aname, Division d, BodyType btype)
-	{
-		var bp    = GetPosition(bn);
-		var zhb   = CalculateDivisionPosition(bp, d).ZodiacHouse;
-		var rel   = zh.NumHousesBetween(zhb);
-		var zhsum = zhb.Add(rel);
-		var rel2  = zh.NumHousesBetween(zhsum);
-		if (rel2 == 1 || rel2 == 7)
-		{
-			zhsum = zhsum.Add(10);
-		}
-
-		var dp = new DivisionPosition(aname, btype, zhsum, 0, 0, 0);
-		//dp.Longitude = zhsum.DivisionalLongitude(bp.longitude, dp.part);
-
-		return dp;
-	}
-
-	public ArrayList CalculateArudhaDivisionPositions(Division d)
-	{
-		Body[] bnlist =
-		{
-			Body.Other,
-			Body.AL,
-			Body.A2,
-			Body.A3,
-			Body.A4,
-			Body.A5,
-			Body.A6,
-			Body.A7,
-			Body.A8,
-			Body.A9,
-			Body.A10,
-			Body.A11,
-			Body.UL
-		};
-
-		var              fsColord       = new FindStronger(this, d, FindStronger.RulesStrongerCoLord(this));
-		var              arudhaDivList = new ArrayList(14);
-		DivisionPosition first, second;
-		for (var j = 1; j <= 12; j++)
-		{
-			var           zlagna     = CalculateDivisionPosition(GetPosition(Body.Lagna), d).ZodiacHouse;
-			var           zh         = zlagna.Add(j);
-			var bnWeaker   = Body.Other;
-			var           bnStronger = zh.SimpleLordOfZodiacHouse();
-			if (zh == ZodiacHouse.Aqu)
-			{
-				bnStronger = fsColord.StrongerGraha(Body.Rahu, Body.Saturn, true);
-				bnWeaker   = fsColord.WeakerGraha(Body.Rahu, Body.Saturn, true);
-			}
-			else if (zh == ZodiacHouse.Sco)
-			{
-				bnStronger = fsColord.StrongerGraha(Body.Ketu, Body.Mars, true);
-				bnWeaker   = fsColord.WeakerGraha(Body.Ketu, Body.Mars, true);
-			}
-
-			first = CalculateArudhaDivisionPosition(zh, bnStronger, bnlist[j], d, BodyType.BhavaArudha);
-			arudhaDivList.Add(first);
-			if (zh == ZodiacHouse.Aqu || zh == ZodiacHouse.Sco)
-			{
-				second = CalculateArudhaDivisionPosition(zh, bnWeaker, bnlist[j], d, BodyType.BhavaArudhaSecondary);
-				if (first.ZodiacHouse != second.ZodiacHouse)
-				{
-					arudhaDivList.Add(second);
-				}
-			}
-		}
-
-		return arudhaDivList;
 	}
 
 	public object UpdateHoraInfo(object o)
@@ -690,266 +467,6 @@ public class Horoscope : ICloneable
 		return ret;
 	}
 
-	public Body CalculateKala()
-	{
-		var iBase = 0;
-		return CalculateKala(ref iBase);
-	}
-
-	public Body CalculateKala(ref int iBase)
-	{
-		int[] offsetsDay =
-		{
-			0,
-			6,
-			1,
-			3,
-			2,
-			4,
-			5
-		};
-		var b          = Wday.WeekdayRuler();
-		var bdayBirth = IsDayBirth();
-
-		var cusps = GetKalaCuspsUt();
-		if (Options.KalaType == HoroscopeOptions.EHoraType.Lmt)
-		{
-			b          = LmtWday.WeekdayRuler();
-			bdayBirth = Info.DateOfBirth.Time().TotalHours > LmtSunset || Info.DateOfBirth.Time().TotalHours < LmtSunrise;
-		}
-
-		var i = offsetsDay[(int) b];
-		iBase = i;
-		var j = 0;
-
-		if (bdayBirth)
-		{
-			for (j = 0; j < 8; j++)
-			{
-				if (Info.Jd >= cusps[j] && Info.Jd < cusps[j + 1])
-				{
-					break;
-				}
-			}
-
-			i += j;
-			while (i >= 8)
-			{
-				i -= 8;
-			}
-
-			return KalaOrder[i];
-		}
-
-		//i+=4;
-		for (j = 8; j < 16; j++)
-		{
-			if (Info.Jd >= cusps[j] && Info.Jd < cusps[j + 1])
-			{
-				break;
-			}
-		}
-
-		i += j;
-		while (i >= 8)
-		{
-			i -= 8;
-		}
-
-		return KalaOrder[i];
-	}
-
-	public Body CalculateHora()
-	{
-		var iBody = 0;
-		return CalculateHora(Info.Jd, ref iBody);
-	}
-
-	public Body CalculateHora(double baseUt, ref int baseBody)
-	{
-		int[] offsets =
-		{
-			0,
-			3,
-			6,
-			2,
-			5,
-			1,
-			4
-		};
-		var b     = Wday.WeekdayRuler();
-		var cusps = GetHoraCuspsUt();
-		if (Options.HoraType == HoroscopeOptions.EHoraType.Lmt)
-		{
-			b = LmtWday.WeekdayRuler();
-		}
-
-		var i = offsets[(int) b];
-		baseBody = i;
-		var j = 0;
-		//for (j=0; j<23; j++)
-		//{
-		//	Moment m1 = new Moment(cusps[j], this);
-		//	Moment m2 = new Moment(cusps[j+1], this);
-		//	Mhora.Log.Debug ("Seeing if dob is between {0} and {1}", m1, m2);
-		//}
-		for (j = 0; j < 23; j++)
-		{
-			if (baseUt >= cusps[j] && baseUt < cusps[j + 1])
-			{
-				break;
-			}
-		}
-
-		//Mhora.Log.Debug ("Found hora in the {0}th hora", j);
-		i += j;
-		while (i >= 7)
-		{
-			i -= 7;
-		}
-
-		return HoraOrder[i];
-	}
-
-	private Body CalculateUpagrahasStart()
-	{
-		if (IsDayBirth())
-		{
-			return Wday.WeekdayRuler();
-		}
-
-		switch (Wday)
-		{
-			default:
-			case Tables.Hora.Weekday.Sunday: return Body.Jupiter;
-			case Tables.Hora.Weekday.Monday:    return Body.Venus;
-			case Tables.Hora.Weekday.Tuesday:   return Body.Saturn;
-			case Tables.Hora.Weekday.Wednesday: return Body.Sun;
-			case Tables.Hora.Weekday.Thursday:  return Body.Moon;
-			case Tables.Hora.Weekday.Friday:    return Body.Mars;
-			case Tables.Hora.Weekday.Saturday:  return Body.Mercury;
-		}
-	}
-
-	private void CalculateUpagrahasSingle(Body b, double tjd)
-	{
-		var lon = new Longitude(0.0)
-		{
-			Value = this.Lagna(tjd)
-		};
-		var bp = new Position(this, b, BodyType.Upagraha, lon, 0, 0, 0, 0, 0);
-		PositionList.Add(bp);
-	}
-
-	private void CalculateMaandiHelper(Body b, HoroscopeOptions.EMaandiType mty, double[] jds, double dOffset, int[] bodyOffsets)
-	{
-		switch (mty)
-		{
-			case HoroscopeOptions.EMaandiType.SaturnBegin:
-				CalculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.Saturn]]);
-				break;
-			case HoroscopeOptions.EMaandiType.SaturnMid:
-				CalculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.Saturn]] + dOffset);
-				break;
-			case HoroscopeOptions.EMaandiType.SaturnEnd:
-			case HoroscopeOptions.EMaandiType.LordlessBegin:
-				var off1 = bodyOffsets[(int) Body.Saturn]                      + 1;
-				CalculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.Saturn]] + dOffset * 2.0);
-				break;
-			case HoroscopeOptions.EMaandiType.LordlessMid:
-				CalculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.Saturn]] + dOffset * 3.0);
-				break;
-			case HoroscopeOptions.EMaandiType.LordlessEnd:
-				CalculateUpagrahasSingle(b, jds[bodyOffsets[(int) Body.Saturn]] + dOffset * 4.0);
-				break;
-		}
-	}
-
-	private void CalculateUpagrahas()
-	{
-		double dStart = 0, dEnd = 0;
-
-		var m         = Info.DateOfBirth;
-		dStart = dEnd = sweph.JulDay(m.Year, m.Month, m.Day, -Info.DstOffset.TotalHours);
-		var bStart    = CalculateUpagrahasStart();
-
-		if (IsDayBirth())
-		{
-			dStart += Sunrise / 24.0;
-			dEnd   += Sunset  / 24.0;
-		}
-		else
-		{
-			dStart += Sunset / 24.0;
-			dEnd   += 1.0 + Sunrise / 24.0;
-		}
-
-		var dPeriod = (dEnd - dStart) / 8.0;
-		var dOffset = dPeriod         / 2.0;
-
-		var jds = new double[8];
-		for (var i = 0; i < 8; i++)
-		{
-			jds[i] = dStart + i * dPeriod + dOffset;
-		}
-
-		var bodyOffsets = new int[8];
-		for (var i = 0; i < 8; i++)
-		{
-			var ib = (int) bStart + i;
-			while (ib >= 8)
-			{
-				ib -= 8;
-			}
-
-			bodyOffsets[ib] = i;
-		}
-
-		double dUpagrahaOffset = 0;
-		switch (Options.UpagrahaType)
-		{
-			case HoroscopeOptions.EUpagrahaType.Begin:
-				dUpagrahaOffset = 0;
-				break;
-			case HoroscopeOptions.EUpagrahaType.Mid:
-				dUpagrahaOffset = dOffset;
-				break;
-			case HoroscopeOptions.EUpagrahaType.End:
-				dUpagrahaOffset = dPeriod;
-				break;
-		}
-
-		CalculateUpagrahasSingle(Body.Kala, jds[bodyOffsets[(int) Body.Sun]]);
-		CalculateUpagrahasSingle(Body.Mrityu, jds[bodyOffsets[(int) Body.Mars]]);
-		CalculateUpagrahasSingle(Body.ArthaPraharaka, jds[bodyOffsets[(int) Body.Mercury]]);
-		CalculateUpagrahasSingle(Body.YamaGhantaka, jds[bodyOffsets[(int) Body.Jupiter]]);
-
-
-		CalculateMaandiHelper(Body.Maandi, Options.MaandiType, jds, dOffset, bodyOffsets);
-		CalculateMaandiHelper(Body.Gulika, Options.GulikaType, jds, dOffset, bodyOffsets);
-	}
-
-	private void CalculateSunsUpagrahas()
-	{
-		var slon = GetPosition(Body.Sun).Longitude;
-
-		var bpDhuma = new Position(this, Body.Dhuma, BodyType.Upagraha, slon.Add(133.0 + 20.0 / 60.0), 0, 0, 0, 0, 0);
-
-		var bpVyatipata = new Position(this, Body.Vyatipata, BodyType.Upagraha, new Longitude(360.0).Sub(bpDhuma.Longitude), 0, 0, 0, 0, 0);
-
-		var bpParivesha = new Position(this, Body.Parivesha, BodyType.Upagraha, bpVyatipata.Longitude.Add(180.0), 0, 0, 0, 0, 0);
-
-		var bpIndrachapa = new Position(this, Body.Indrachapa, BodyType.Upagraha, new Longitude(360.0).Sub(bpParivesha.Longitude), 0, 0, 0, 0, 0);
-
-		var bpUpaketu = new Position(this, Body.Upaketu, BodyType.Upagraha, slon.Sub(30.0), 0, 0, 0, 0, 0);
-
-		PositionList.Add(bpDhuma);
-		PositionList.Add(bpVyatipata);
-		PositionList.Add(bpParivesha);
-		PositionList.Add(bpIndrachapa);
-		PositionList.Add(bpUpaketu);
-	}
-
 	private void CalculateWeekday()
 	{
 		var m  = Info.DateOfBirth;
@@ -970,81 +487,7 @@ public class Horoscope : ICloneable
 		LmtWday = (Tables.Hora.Weekday) sweph.DayOfWeek(jd);
 	}
 
-	private void AddChandraLagna(string desc, Longitude lon)
-	{
-		var bp = new Position(this, Body.Other, BodyType.ChandraLagna, lon, 0, 0, 0, 0, 0)
-		{
-			OtherString = desc
-		};
-		PositionList.Add(bp);
-	}
-
-	private void CalculateChandraLagnas()
-	{
-		var bpMoon  = GetPosition(Body.Moon);
-		var lonBase = new Longitude(bpMoon.ExtrapolateLongitude(new Division(DivisionType.Navamsa)).ToZodiacHouseBase());
-		lonBase = lonBase.Add(bpMoon.Longitude.ToZodiacHouseOffset());
-
-		//Mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
-
-		var istaGhati = (Info.DateOfBirth.Time().TotalHours - Sunrise).NormalizeExc(0.0, 24.0) * 2.5;
-		var glLon     = lonBase.Add(new Longitude(istaGhati        * 30.0));
-		var hlLon     = lonBase.Add(new Longitude(istaGhati * 30.0 / 2.5));
-		var blLon     = lonBase.Add(new Longitude(istaGhati * 30.0 / 5.0));
-
-		var vl = istaGhati * 5.0;
-		while (istaGhati > 12.0)
-		{
-			istaGhati -= 12.0;
-		}
-
-		var vlLon = lonBase.Add(new Longitude(vl * 30.0));
-
-		AddChandraLagna("Chandra Lagna - GL", glLon);
-		AddChandraLagna("Chandra Lagna - HL", hlLon);
-		AddChandraLagna("Chandra Ayur Lagna - BL", blLon);
-		AddChandraLagna("Chandra Lagna - ViL", vlLon);
-	}
-
-	private void CalculateSl()
-	{
-		var mpos  = GetPosition(Body.Moon).Longitude;
-		var lpos  = GetPosition(Body.Lagna).Longitude;
-		var sldeg = mpos.ToNakshatraOffset() / (360.0 / 27.0) * 360.0;
-		var slLon = lpos.Add(sldeg);
-		var bp    = new Position(this, Body.SreeLagna, BodyType.SpecialLagna, slLon, 0, 0, 0, 0, 0);
-		PositionList.Add(bp);
-	}
-
-	private void CalculatePranapada()
-	{
-		var spos   = GetPosition(Body.Sun).Longitude;
-		var offset = Info.DateOfBirth.Time().TotalHours - Sunrise;
-		if (offset < 0)
-		{
-			offset += 24.0;
-		}
-
-		offset *= 60.0 * 60.0 / 6.0;
-		Longitude ppos = null;
-		switch ((int) spos.ToZodiacHouse() % 3)
-		{
-			case 1:
-				ppos = spos.Add(offset);
-				break;
-			case 2:
-				ppos = spos.Add(offset + 8.0 * 30.0);
-				break;
-			default:
-			case 0:
-				ppos = spos.Add(offset + 4.0 * 30.0);
-				break;
-		}
-
-		var bp = new Position(this, Body.Pranapada, BodyType.SpecialLagna, ppos, 0, 0, 0, 0, 0);
-		PositionList.Add(bp);
-	}
-
+	
 	private void AddOtherPoints()
 	{
 		var lagPos     = GetPosition(Body.Lagna).Longitude;
@@ -1066,10 +509,10 @@ public class Horoscope : ICloneable
 		AddOtherPosition("Ra-Ke m.p", rahPos.Add(90.0));
 		AddOtherPosition("Ke-Ra m.p", rahPos.Add(270.0));
 
-		var l1Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse(), new Division(DivisionType.Rasi))).Longitude;
-		var l6Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), new Division(DivisionType.Rasi))).Longitude;
-		var l8Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), new Division(DivisionType.Rasi))).Longitude;
-		var l12Pos = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), new Division(DivisionType.Rasi))).Longitude;
+		var l1Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse(), new Division(DivisionType.Rasi), false)).Longitude;
+		var l6Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), new Division(DivisionType.Rasi), false)).Longitude;
+		var l8Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), new Division(DivisionType.Rasi), false)).Longitude;
+		var l12Pos = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), new Division(DivisionType.Rasi), false)).Longitude;
 
 		var mritSatPos   = new Longitude(mandiPos.Value * 8.0 + satPos.Value   * 8.0);
 		var mritJup2Pos  = new Longitude(satPos.Value   * 9.0 + mandiPos.Value * 18.0 + jupPos.Value  * 18.0);
@@ -1132,7 +575,6 @@ public class Horoscope : ICloneable
 	{
 		// The stuff here is largely order sensitive
 		// Try to add new definitions to the end
-
 		sweph.SetEphePath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
 		// Find LMT offset
 		PopulateLmt();
@@ -1141,24 +583,25 @@ public class Horoscope : ICloneable
 		// Basic grahas + Special lagnas (depend on sunrise)
 		PositionList = this.CalculateBodyPositions(Sunrise);
 		// Srilagna etc
-		CalculateSl();
-		CalculatePranapada();
+		PositionList.Add(this.CalculateSl());
+		PositionList.Add(this.CalculatePranapada());
 		// Sun based Upagrahas (depends on sun)
-		CalculateSunsUpagrahas();
+		PositionList.AddRange(this.CalculateSunsUpagrahas());
 		// Upagrahas (depends on sunrise)
-		CalculateUpagrahas();
+		PositionList.AddRange(this.CalculateUpagrahas());
 		// Weekday (depends on sunrise)
 		CalculateWeekday();
 		// Sahamas
+		_ = FindGrahas(DivisionType.Rasi);
 		PositionList.AddRange (this.CalculateSahamas());
 		// Prana sphuta etc. (depends on upagrahas)
 		GetPrashnaMargaPositions();
-		CalculateChandraLagnas();
+		PositionList.AddRange(this.CalculateChandraLagnas());
 		AddOtherPoints();
 		// Add extrapolated special lagnas (depends on sunrise)
 		AddSpecialLagnaPositions();
 		// Hora (depends on weekday)
-		CalculateHora();
+		var hora = this.CalculateHora();
 		// Populate house cusps on options refresh
 		PopulateHouseCusps();
 	}

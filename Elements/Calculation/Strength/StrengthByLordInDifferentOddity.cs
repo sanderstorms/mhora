@@ -17,50 +17,36 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using Mhora.Definitions;
+using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has its lord in a house of different oddity
-// Stronger Graha in such a rasi
-public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByLordInDifferentOddity rasi has its lord in a house of different oddity
+// StrengthByLordInDifferentOddity Graha in such a rasi
+public static class LordInDifferentOddity
 {
-	public StrengthByLordInDifferentOddity(Horoscope h, Division dtype, bool bSimpleLord) : base(h, dtype, bSimpleLord)
+	public static int StrengthByLordInDifferentOddity(this Grahas grahas, Body ba, Body bb, bool simpleLord)
 	{
+		var za = grahas [ba].Rashi;
+		var zb = grahas [bb].Rashi;
+		return grahas.StrengthByLordInDifferentOddity(za, zb, simpleLord);
 	}
 
-	public bool Stronger(Body ba, Body bb)
+	public static int StrengthByLordInDifferentOddity(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-		var za = H.GetPosition(ba).ToDivisionPosition(Dtype).ZodiacHouse;
-		var zb = H.GetPosition(bb).ToDivisionPosition(Dtype).ZodiacHouse;
-		return Stronger(za, zb);
+		var a = grahas.OddityValueForZodiacHouse(za, simpleLord);
+		var b = grahas.OddityValueForZodiacHouse(zb, simpleLord);
+
+		return a.CompareTo(b);
 	}
 
-	public bool Stronger(ZodiacHouse za, ZodiacHouse zb)
+	private static int OddityValueForZodiacHouse(this Grahas grahas, ZodiacHouse zh, bool simpleLord)
 	{
-		var a = OddityValueForZodiacHouse(za);
-		var b = OddityValueForZodiacHouse(zb);
-		if (a > b)
-		{
-			return true;
-		}
-
-		if (a < b)
-		{
-			return false;
-		}
-
-		throw new EqualStrength();
-	}
-
-	protected int OddityValueForZodiacHouse(ZodiacHouse zh)
-	{
-		var lname  = GetStrengthLord(zh);
-		var lbpos  = H.GetPosition(lname);
-		var ldpos  = H.CalculateDivisionPosition(lbpos, Dtype);
-		var zhLor = ldpos.ZodiacHouse;
+		var lname = grahas.Horoscope.LordOfZodiacHouse(zh, new Division(grahas.Varga), simpleLord);
+		var lbpos = grahas[lname];
 
 		//System.Mhora.Log.Debug("   DiffOddity {0} {1} {2}", zh.ToString(), zh_lor.value.ToString(), (int)zh %2==(int)zh_lor.value%2);
-		if ((int) zh % 2 == (int) zhLor % 2)
+		if ((int) zh % 2 == (int) lbpos.Rashi.ZodiacHouse % 2)
 		{
 			return 0;
 		}
