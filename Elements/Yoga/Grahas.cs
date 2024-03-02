@@ -21,7 +21,7 @@ namespace Mhora.Elements.Yoga
 			_rashis    = h.FindRashis(varga);
 			_grahas    = new List<Graha>();
 
-			_dpList = h.CalculateDivisionPositions(new Division(varga));
+			_dpList = h.PositionList.CalculateDivisionPositions(new Division(varga));
 
 			foreach (DivisionPosition dp in _dpList)
 			{
@@ -192,5 +192,68 @@ namespace Mhora.Elements.Yoga
 		{
 			return (_grahas.FindAll(func));
 		}
+
+		public int Compare(Body b1, Body b2, bool simpleLord, ArrayList rules, out int winner)
+		{
+			var strength = new List<GrahaStrength>();
+
+			foreach (GrahaStrength rule in rules)
+			{
+				strength.Add(rule);
+			}
+
+			return (Compare(b1, b2, simpleLord, strength, out winner));
+		}
+
+		public int Compare(Body b1, Body b2, bool simpleLord, List<GrahaStrength> rules, out int winner)
+		{
+			return this[b1].CompareTo(this[b2], simpleLord, rules, out winner);
+		}
+
+		public Graha Stronger(Body b1, Body b2, bool simpleLord, ArrayList rules, out int winner)
+		{
+			var strength = new List<GrahaStrength>();
+
+			foreach (GrahaStrength rule in rules)
+			{
+				strength.Add(rule);
+			}
+
+			return (Stronger(b1, b2, simpleLord, strength, out winner));
+		}
+
+		public Graha Stronger(Body b1, Body b2, bool simpleLord, List<GrahaStrength> rules, out int winner)
+		{
+			if (this[b1].CompareTo(this[b2], simpleLord, rules, out winner) > 0)
+			{
+				return (this [b1]);
+			}
+
+			return (this[b2]);
+		}
+
+
+		public Graha Weaker(Body b1, Body b2, bool simpleLord, ArrayList rules, out int winner)
+		{
+			var strength = new List<GrahaStrength>();
+
+			foreach (GrahaStrength rule in rules)
+			{
+				strength.Add(rule);
+			}
+
+			return (Weaker(b1, b2, simpleLord, strength, out winner));
+		}
+
+		public Graha Weaker(Body b1, Body b2, bool simpleLord, List<GrahaStrength> rules, out int winner)
+		{
+			if (this[b1].CompareTo(this[b2], simpleLord, rules, out winner) < 0)
+			{
+				return (this [b1]);
+			}
+
+			return (this[b2]);
+		}
+
 	}
 }

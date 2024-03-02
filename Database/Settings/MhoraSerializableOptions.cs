@@ -55,7 +55,7 @@ public class MhoraSerializableOptions
 }
 
 [JsonObject]
-public class StrengthOptions : MhoraSerializableOptions, ICloneable
+public class StrengthOptions : MhoraSerializableOptions
 {
 	private GrahaStrength[] _mColord;
 	private GrahaStrength[] _mKarakaKendradiGrahaDasaColord;
@@ -240,7 +240,50 @@ public class StrengthOptions : MhoraSerializableOptions, ICloneable
 		set => _mKarakaKendradiGrahaDasaColord = value;
 	}
 
-	public object Clone()
+	public static RashiStrength[] JaiminiFirstRasi
+	{
+		get
+		{
+			return new []
+			{
+				RashiStrength.AtmaKaraka,
+				RashiStrength.Conjunction,
+				RashiStrength.Exaltation,
+				RashiStrength.MoolaTrikona,
+				RashiStrength.OwnHouse,
+				RashiStrength.RasisNature,
+				RashiStrength.LordIsAtmaKaraka,
+				RashiStrength.LordsLongitude,
+				RashiStrength.LordInDifferentOddity
+			};
+		}
+	}
+
+	public static RashiStrength [] JaiminiSecondRasi
+	{
+		get
+		{
+			return new []
+			{
+				RashiStrength.AspectsRasi
+			};
+		}
+	}
+
+	public static GrahaStrength [] VimsottariGraha
+	{
+		get
+		{
+			return new []
+			{
+				GrahaStrength.KendraConjunction,
+				GrahaStrength.First
+			};
+		}
+	}
+
+
+	public StrengthOptions Clone()
 	{
 		var opts = new StrengthOptions
 		{

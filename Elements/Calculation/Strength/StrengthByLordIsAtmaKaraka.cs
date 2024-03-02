@@ -21,18 +21,14 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi's lord is AK
-public class StrengthByLordIsAtmaKaraka : BaseStrength, IStrengthRasi
+// StrengthByLordIsAtmaKaraka rasi's lord is AK
+public static class LordIsAtmaKaraka
 {
-	public StrengthByLordIsAtmaKaraka(Grahas grahas, bool bSimpleLord) : base(grahas, bSimpleLord)
+	public static int StrengthByLordIsAtmaKaraka(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-	}
-
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var lora = GetStrengthLord(za);
-		var lorb = GetStrengthLord(zb);
-		var ak   = FindAtmaKaraka();
+		var lora = grahas.Horoscope.LordOfZodiacHouse(za, new Division(grahas.Varga), simpleLord);
+		var lorb = grahas.Horoscope.LordOfZodiacHouse(zb, new Division(grahas.Varga), simpleLord);
+		var ak   = grahas.Karaka8[0];
 		if (lora == ak)
 		{
 			return 1;

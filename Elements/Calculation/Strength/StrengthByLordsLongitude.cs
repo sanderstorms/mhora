@@ -22,18 +22,14 @@ using Mhora.Elements.Yoga;
 namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi's lord has traversed larger longitude
-public class StrengthByLordsLongitude : BaseStrength, IStrengthRasi
+public static class LordsLongitude
 {
-	public StrengthByLordsLongitude(Grahas grahas, bool bSimpleLord) : base(grahas, bSimpleLord)
+	public static int StrengthByLordsLongitude(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-	}
-
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var lora = GetStrengthLord(za);
-		var lorb = GetStrengthLord(zb);
-		var offa = KarakaLongitude(lora);
-		var offb = KarakaLongitude(lorb);
+		var lora = grahas.Horoscope.LordOfZodiacHouse(za, new Division(grahas.Varga), simpleLord);
+		var lorb = grahas.Horoscope.LordOfZodiacHouse(zb, new Division(grahas.Varga), simpleLord);
+		var offa = grahas [lora].HouseOffset;
+		var offb = grahas [lorb].HouseOffset;
 
 		return offa.CompareTo(offb);
 	}

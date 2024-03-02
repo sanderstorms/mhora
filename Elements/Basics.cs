@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Mhora.Database.Settings;
@@ -239,7 +240,7 @@ public static class Basics
 	/// </summary>
 	/// <param name="h">The HoraInfo object</param>
 	/// <returns></returns>
-	public static ArrayList CalculateBodyPositions(this Horoscope h, double sunrise)
+	public static List<Position> CalculateBodyPositions(this Horoscope h, double sunrise)
 	{
 		var hi = h.Info;
 		var o  = h.Options;
@@ -248,7 +249,7 @@ public static class Basics
 		var ephePath = MhoraGlobalOptions.Instance.HOptions.EphemerisPath;
 
 		// The order of the array must reflect the order define in Basics.GrahaIndex
-		var stdGrahas = new ArrayList(20);
+		var stdGrahas = new List<Position>();
 
 		sweph.SetEphePath(ephePath);
 		var juldayUt = h.UniversalTime(hi.DateOfBirth); // (hi.tob - hi.DstOffset).ToJulian();

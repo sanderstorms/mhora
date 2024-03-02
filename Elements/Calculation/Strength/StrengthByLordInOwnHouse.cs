@@ -21,39 +21,35 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has its Lord in its house
-// Stronger Graha is in its own house
-public class StrengthByLordInOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByLordInOwnHouse rasi has its Lord in its house
+// StrengthByLordInOwnHouse Graha is in its own house
+public static class LordInOwnHouse
 {
-	public StrengthByLordInOwnHouse(Grahas grahas, bool bSimpleLord) : base(grahas, bSimpleLord)
+	public static int StrengthByLordInOwnHouse(this Grahas grahas, Body m, Body n, bool simpleLord)
 	{
+		var zm = grahas [m].Rashi;
+		var zn = grahas [n].Rashi;
+
+		return grahas.StrengthByLordInOwnHouse(zm, zn, simpleLord);
 	}
 
-	public int Stronger(Body m, Body n)
+	public static int StrengthByLordInOwnHouse(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-		var zm = _grahas [m].Rashi;
-		var zn = _grahas [n].Rashi;
-
-		return Stronger(zm, zn);
-	}
-
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var a = Value(za);
-		var b = Value(zb);
+		var a = grahas.Value(za, simpleLord);
+		var b = grahas.Value(zb, simpleLord);
 
 		return a.CompareTo(b);
 	}
 
-	protected int Value(ZodiacHouse zodiacHouse)
+	private static int Value(this Grahas grahas, ZodiacHouse zodiacHouse, bool simpleLord)
 	{
 		var ret = 0;
 
 		var zh = (zodiacHouse);
-		var bl = GetStrengthLord(zh);
-		var pl = _grahas [bl];
-		var pj = _grahas [Body.Jupiter];
-		var pm = _grahas [Body.Mercury];
+		var bl = grahas.Horoscope.LordOfZodiacHouse(zh, new Division(grahas.Varga), simpleLord);
+		var pl = grahas [bl];
+		var pj = grahas [Body.Jupiter];
+		var pm = grahas [Body.Mercury];
 
 		if (pl.HasDrishtiOn(zh))
 		{

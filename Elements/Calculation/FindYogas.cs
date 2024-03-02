@@ -678,23 +678,23 @@ public class FindYogas
 				tempVal = StringToHouse(val);
 				if (tempVal > 0)
 				{
-					return _h.LordOfZodiacHouse(_zhLagna.Add(tempVal), d).ToString().ToLower();
+					return _h.LordOfZodiacHouse(_zhLagna.Add(tempVal), d, false).ToString().ToLower();
 				}
 
 				zh = StringToRasi(val);
-				return _h.LordOfZodiacHouse(zh, d).ToString().ToLower();
+				return _h.LordOfZodiacHouse(zh, d, false).ToString().ToLower();
 			case "simplelordof:":
 				tempVal = StringToHouse(val);
 				if (tempVal > 0)
 				{
-					return _h.LordOfZodiacHouse(_zhLagna.Add(tempVal), d).ToString().ToLower();
+					return _h.LordOfZodiacHouse(_zhLagna.Add(tempVal), d, false).ToString().ToLower();
 				}
 
 				zh = StringToRasi(val);
 				return zh.SimpleLordOfZodiacHouse().ToString().ToLower();
 			case "dispof:":
 				b = StringToBody(val);
-				return _h.LordOfZodiacHouse(_h.GetPosition(b).ToDivisionPosition(d).ZodiacHouse, d).ToString().ToLower();
+				return _h.LordOfZodiacHouse(_h.GetPosition(b).ToDivisionPosition(d).ZodiacHouse, d, false).ToString().ToLower();
 		}
 
 		return val;

@@ -21,47 +21,30 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has a Graha which has traversed larger longitude
-// Stronger Graha has traversed larger longitude in its house
-public class StrengthByLongitude : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByLongitude rasi has a Graha which has traversed larger longitude
+// StrengthByLongitude Graha has traversed larger longitude in its house
+public static class Longitude
 {
-	public StrengthByLongitude(Grahas grahas) : base(grahas, true)
+	public static int StrengthByLongitude(this Grahas grahas, Body m, Body n)
 	{
-	}
-
-	public int Stronger(Body m, Body n)
-	{
-		var lonm = KarakaLongitude(m);
-		var lonn = KarakaLongitude(n);
+		var lonm = grahas[m].HouseOffset;
+		var lonn = grahas[n].HouseOffset;
 
 		return lonn.CompareTo(lonn);
 	}
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByLongitude(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		Body[] karakaBodies =
-		{
-			Body.Sun,
-			Body.Moon,
-			Body.Mars,
-			Body.Mercury,
-			Body.Jupiter,
-			Body.Venus,
-			Body.Saturn,
-			Body.Rahu
-		};
-
 		double lona = 0.0, lonb = 0.0;
-		foreach (var bn in karakaBodies)
+		foreach (var graha in grahas.NavaGrahas)
 		{
-			var offset = KarakaLongitude(bn);
-			if (_grahas [bn].Rashi == za && offset > lona)
+			if (graha.Rashi == za && graha.HouseOffset > lona)
 			{
-				lona = offset;
+				lona = graha.HouseOffset;
 			}
-			else if (_grahas [bn].Rashi == zb && offset > lonb)
+			else if (graha.Rashi == zb && graha.HouseOffset > lonb)
 			{
-				lonb = offset;
+				lonb = graha.HouseOffset;
 			}
 		}
 

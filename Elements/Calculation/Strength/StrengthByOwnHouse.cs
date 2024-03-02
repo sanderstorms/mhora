@@ -21,49 +21,45 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has more planets in own house
-// Stronger planet is in own house
-public class StrengthByOwnHouse : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByOwnHouse rasi has more planets in own house
+// StrengthByOwnHouse planet is in own house
+public static class OwnHouse
 {
-	public StrengthByOwnHouse(Grahas grahas) : base(grahas, true)
+	public static int StrengthByOwnHouse(this Grahas grahas, Body m, Body n)
 	{
-	}
-
-	public int Stronger(Body m, Body n)
-	{
-		var valm = Value(m);
-		var valn = Value(n);
+		var valm = grahas.OwnHouseValue(m);
+		var valn = grahas.OwnHouseValue(n);
 
 		return valm.CompareTo(valn);
 	}
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByOwnHouse(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var vala = Value(za);
-		var valb = Value(zb);
+		var vala = grahas.OwnHouseValue(za);
+		var valb = grahas.OwnHouseValue(zb);
 
 		return vala.CompareTo(valb);
 	}
 
-	public int Value(ZodiacHouse zn)
+	public static int OwnHouseValue(this Grahas grahas, ZodiacHouse zn)
 	{
 		var ret = 0;
-		foreach (var graha in _grahas.NavaGrahas)
+		foreach (var graha in grahas.NavaGrahas)
 		{
 			if (graha.Rashi.ZodiacHouse != zn)
 			{
 				continue;
 			}
 
-			ret += Value(graha);
+			ret += grahas.OwnHouseValue(graha);
 		}
 
 		return ret;
 	}
 
-	public int Value(Body b)
+	public static int OwnHouseValue(this Grahas grahas, Body b)
 	{
-		if (_grahas [b].IsInOwnHouse)
+		if (grahas [b].IsInOwnHouse)
 		{
 			return 1;
 		}

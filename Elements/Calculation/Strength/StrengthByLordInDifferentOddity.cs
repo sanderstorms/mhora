@@ -21,33 +21,29 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has its lord in a house of different oddity
-// Stronger Graha in such a rasi
-public class StrengthByLordInDifferentOddity : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByLordInDifferentOddity rasi has its lord in a house of different oddity
+// StrengthByLordInDifferentOddity Graha in such a rasi
+public static class LordInDifferentOddity
 {
-	public StrengthByLordInDifferentOddity(Grahas grahas, bool bSimpleLord) : base(grahas, bSimpleLord)
+	public static int StrengthByLordInDifferentOddity(this Grahas grahas, Body ba, Body bb, bool simpleLord)
 	{
+		var za = grahas [ba].Rashi;
+		var zb = grahas [bb].Rashi;
+		return grahas.StrengthByLordInDifferentOddity(za, zb, simpleLord);
 	}
 
-	public int Stronger(Body ba, Body bb)
+	public static int StrengthByLordInDifferentOddity(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-		var za = _grahas [ba].Rashi;
-		var zb = _grahas [bb].Rashi;
-		return Stronger(za, zb);
-	}
-
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var a = OddityValueForZodiacHouse(za);
-		var b = OddityValueForZodiacHouse(zb);
+		var a = grahas.OddityValueForZodiacHouse(za, simpleLord);
+		var b = grahas.OddityValueForZodiacHouse(zb, simpleLord);
 
 		return a.CompareTo(b);
 	}
 
-	protected int OddityValueForZodiacHouse(ZodiacHouse zh)
+	private static int OddityValueForZodiacHouse(this Grahas grahas, ZodiacHouse zh, bool simpleLord)
 	{
-		var lname = GetStrengthLord(zh);
-		var lbpos = _grahas[lname];
+		var lname = grahas.Horoscope.LordOfZodiacHouse(zh, new Division(grahas.Varga), simpleLord);
+		var lbpos = grahas[lname];
 
 		//System.Mhora.Log.Debug("   DiffOddity {0} {1} {2}", zh.ToString(), zh_lor.value.ToString(), (int)zh %2==(int)zh_lor.value%2);
 		if ((int) zh % 2 == (int) lbpos.Rashi.ZodiacHouse % 2)

@@ -22,38 +22,34 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has a larger narayana dasa length
-// Stronger Graha is in such a rasi
-public class StrengthByNarayanaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByNarayanaDasaLength rasi has a larger narayana dasa length
+// StrengthByNarayanaDasaLength Graha is in such a rasi
+public static class NarayanaDasaLength
 {
-	public StrengthByNarayanaDasaLength(Grahas grahas, bool bSimpleLord) : base(grahas, bSimpleLord)
+	public static int StrengthByNarayanaDasaLength(this Grahas grahas, Body m, Body n, bool simpleLord)
 	{
-	}
-
-	public int Stronger(Body m, Body n)
-	{
-		var a = Value(m);
-		var b = Value(n);
+		var a = grahas.Value(m, simpleLord);
+		var b = grahas.Value(n, simpleLord);
 
 		return a.CompareTo(b);
 	}
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByNarayanaDasaLength(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-		var a = Value(za);
-		var b = Value(zb);
+		var a = grahas.Value(za, simpleLord);
+		var b = grahas.Value(zb, simpleLord);
 
 		return a.CompareTo(b);
 	}
 
-	protected int Value(ZodiacHouse zh)
+	private static int Value(this Grahas grahas, ZodiacHouse zh, bool simpleLord)
 	{
-		var bl = GetStrengthLord(zh);
-		return Dasa.NarayanaDasaLength(zh, _grahas [bl]);
+		var bl = grahas.Horoscope.LordOfZodiacHouse(zh, new Division(grahas.Varga), simpleLord);
+		return Dasa.NarayanaDasaLength(zh, grahas [bl]);
 	}
 
-	protected int Value(Body bm)
+	private static int Value(this Grahas grahas, Body bm, bool simpleLord)
 	{
-		return Value(_grahas [bm].Rashi);
+		return grahas.Value(grahas [bm].Rashi, simpleLord);
 	}
 }

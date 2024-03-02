@@ -21,38 +21,34 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has more conjunctions/rasi drishtis of Jupiter, Mercury and Lord
-// Stronger Graha is in such a rasi
-public class StrengthByAspectsRasi : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByAspectsRasi rasi has more conjunctions/rasi drishtis of Jupiter, Mercury and Lord
+// StrengthByAspectsRasi Graha is in such a rasi
+public static class AspectsRasi
 {
-	public StrengthByAspectsRasi(Grahas grahas, bool bSimpleLord) : base(grahas, bSimpleLord)
+	public static int StrengthByAspectsRasi(this Grahas grahas, Body m, Body n, bool simpleLord)
 	{
+		var zm = grahas [m].Rashi;
+		var zn = grahas [n].Rashi;
+		return StrengthByAspectsRasi(grahas, zm, zn, simpleLord);
 	}
 
-	public int Stronger(Body m, Body n)
+	public static int StrengthByAspectsRasi(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-		var zm = _grahas [m].Rashi;
-		var zn = _grahas [n].Rashi;
-		return Stronger(zm, zn);
-	}
+		var zj = grahas [Body.Jupiter].Rashi;
+		var zm = grahas [Body.Mercury].Rashi;
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var zj = _grahas [Body.Jupiter].Rashi;
-		var zm = _grahas [Body.Mercury].Rashi;
-
-		var a = Value(zj, zm, za);
-		var b = Value(zj, zm, zb);
+		var a = grahas.Value(zj, zm, za, simpleLord);
+		var b = grahas.Value(zj, zm, zb, simpleLord);
 
 		return a.CompareTo(b);
 	}
 
-	protected int Value(ZodiacHouse zj, ZodiacHouse zm, ZodiacHouse zx)
+	private static int Value (this Grahas grahas, ZodiacHouse zj, ZodiacHouse zm, ZodiacHouse zx, bool simpleLord)
 	{
 		var ret = 0;
 
-		var bl = GetStrengthLord(zx);
-		var zl = _grahas [bl].Rashi;
+		var bl = grahas.Horoscope.LordOfZodiacHouse(zx, new Division(grahas.Varga), simpleLord);
+		var zl = grahas [bl].Rashi;
 
 		if (zj.RasiDristi(zx) || zj == zx)
 		{

@@ -21,37 +21,33 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has more Graha drishtis of Jupiter, Mercury and Lord
-// Stronger Graha is in such a rasi
-public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByAspectsGraha rasi has more Graha drishtis of Jupiter, Mercury and Lord
+// StrengthByAspectsGraha Graha is in such a rasi
+public static class AspectsGraha
 {
-	public StrengthByAspectsGraha(Grahas grahas, bool bSimpleLord) : base(grahas, bSimpleLord)
+	public static int StrengthByAspectsGraha(this Grahas grahas, Body m, Body n, bool simpleLord)
 	{
-	}
-
-	public int Stronger(Body m, Body n)
-	{
-		var a = Value(m);
-		var b = Value(n);
+		var a = grahas.AspectsGrahaStrength(m, simpleLord);
+		var b = grahas.AspectsGrahaStrength(n, simpleLord);
 
 		return a.CompareTo(b);
 	}
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByAspectsGraha(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-		var a = Value(za);
-		var b = Value(zb);
+		var a = grahas.AspectsGrahaStrength(za, simpleLord);
+		var b = grahas.AspectsGrahaStrength(zb, simpleLord);
 
 		return a.CompareTo(b);
 	}
 
-	protected int Value(ZodiacHouse zodiacHouse)
+	private static int AspectsGrahaStrength(this Grahas grahas, ZodiacHouse zodiacHouse, bool simpleLord)
 	{
 		var val = 0;
-		var bl  = GetStrengthLord(zodiacHouse);
-		var dl  = _grahas [bl];
-		var dj  = _grahas [Body.Jupiter];
-		var dm  = _grahas [Body.Mercury];
+		var bl  = grahas.Horoscope.LordOfZodiacHouse(zodiacHouse, new Division(grahas.Varga), simpleLord);
+		var dl  = grahas [bl];
+		var dj  = grahas [Body.Jupiter];
+		var dm  = grahas [Body.Mercury];
 
 		var zh = (zodiacHouse);
 		if (dl.HasDrishtiOn(zh) || dl.Rashi == zodiacHouse)
@@ -72,8 +68,8 @@ public class StrengthByAspectsGraha : BaseStrength, IStrengthRasi, IStrengthGrah
 		return val;
 	}
 
-	protected int Value(Body bm)
+	private static int AspectsGrahaStrength(this Grahas grahas, Body bm, bool simpleLord)
 	{
-		return Value(_grahas.Find(bm).Rashi);
+		return grahas.AspectsGrahaStrength(grahas.Find(bm).Rashi, simpleLord);
 	}
 }

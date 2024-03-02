@@ -21,22 +21,18 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi by nature (moveable, fixed, dual)
-// Stronger Graha in such a rasi
-public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByRasisNature rasi by nature (moveable, fixed, dual)
+// StrengthByRasisNature Graha in such a rasi
+public static class RasisNature
 {
-	public StrengthByRasisNature(Grahas grahas) : base(grahas, true)
+	public static int StrengthByRasisNature(this Grahas grahas, Body m, Body n)
 	{
+		var za = grahas [m].Rashi;
+		var zb = grahas [n].Rashi;
+		return grahas.StrengthByRasisNature(za, zb);
 	}
 
-	public int Stronger(Body m, Body n)
-	{
-		var za = _grahas [m].Rashi;
-		var zb = _grahas [n].Rashi;
-		return Stronger(za, zb);
-	}
-
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByRasisNature(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
 		int[] vals =
 		{
@@ -50,7 +46,7 @@ public class StrengthByRasisNature : BaseStrength, IStrengthRasi, IStrengthGraha
 		return a.CompareTo(b);
 	}
 
-	public int NaturalValueForRasi(ZodiacHouse zha)
+	public static int NaturalValueForRasi(this ZodiacHouse zha)
 	{
 		int[] vals =
 		{

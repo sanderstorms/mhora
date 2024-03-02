@@ -23,13 +23,9 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
+public static class VimsottariDasaLength
 {
-	public StrengthByVimsottariDasaLength(Grahas grahas) : base(grahas, false)
-	{
-	}
-
-	public int Stronger(Body m, Body n)
+	public static int StrengthByVimsottariDasaLength(this Grahas grahas, Body m, Body n)
 	{
 		var a = VimsottariDasa.DasaLength(m);
 		var b = VimsottariDasa.DasaLength(n);
@@ -37,18 +33,18 @@ public class StrengthByVimsottariDasaLength : BaseStrength, IStrengthRasi, IStre
 		return a.CompareTo(b);
 	}
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByVimsottariDasaLength(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var a = Value(za);
-		var b = Value(zb);
+		var a = grahas.StrengthByVimsottariDasaLengthValue(za);
+		var b = grahas.StrengthByVimsottariDasaLengthValue(zb);
 
 		return a.CompareTo(b);
 	}
 
-	protected double Value(ZodiacHouse zh)
+	private static double StrengthByVimsottariDasaLengthValue(this Grahas grahas, ZodiacHouse zh)
 	{
 		double length = 0;
-		foreach (var graha in _grahas.NavaGrahas)
+		foreach (var graha in grahas.NavaGrahas)
 		{
 			length = Math.Max(length, VimsottariDasa.DasaLength(graha));
 		}

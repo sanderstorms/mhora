@@ -303,13 +303,15 @@ public class MoolaDasa : Dasa, IDasa
 				zh.Add(12)
 			};
 
-			var fs = new FindStronger(grahas, FindStronger.RulesMoolaDasaRasi(_h));
-			zRet[0] = fs.GetOrderedHouses(zhK);
-			zRet[1] = fs.GetOrderedHouses(zhP);
-			zRet[2] = fs.GetOrderedHouses(zhA);
+			var rules = FindStronger.RulesMoolaDasaRasi(_h);
+			zRet[0] = grahas.GetOrderedHouses(zhK, rules);
+			zRet[1] = grahas.GetOrderedHouses(zhP, rules);
+			zRet[2] = grahas.GetOrderedHouses(zhA, rules);
 
-			var zhSat = _h.FindGrahas(DivisionType.Rasi) [Body.Saturn].Rashi;
-			var zhKet = _h.FindGrahas(DivisionType.Rasi) [Body.Ketu].Rashi;
+			grahas = _h.FindGrahas(DivisionType.Rasi);
+
+			var zhSat = grahas [Body.Saturn].Rashi;
+			var zhKet = grahas [Body.Ketu].Rashi;
 
 			var bIsForward = zh.IsOdd();
 			if (zhSat != zhKet && zhSat == zh)
@@ -326,8 +328,7 @@ public class MoolaDasa : Dasa, IDasa
 				{
 					GrahaStrength.Longitude
 				};
-				var fs2 = new FindStronger(_h.FindGrahas(DivisionType.Rasi), rule);
-				bIsForward = fs2.CmpGraha(Body.Saturn, Body.Ketu, false);
+				bIsForward = grahas.Compare(Body.Saturn, Body.Ketu, false, rule, out _) > 0;
 			}
 
 
@@ -347,21 +348,21 @@ public class MoolaDasa : Dasa, IDasa
 
 		public void CalculateGrahaStrengths()
 		{
-			var rashis = _h.FindRashis(Dtype);
-			var fs     = new FindStronger(_h.FindGrahas(Dtype), FindStronger.RulesNaisargikaDasaGraha(_h));
+			var grahas = _h.FindGrahas(Dtype);
+			var rules  = FindStronger.RulesNaisargikaDasaGraha(_h);
 			GrahaStrengths = new OrderedGrahas();
 			foreach (var oz in RasiStrengths)
 			{
 				foreach (ZodiacHouse zn in oz.houses)
 				{
-					var rashi   = rashis [zn];
+					var rashi   = grahas.Rashis[zn];
 					var tempArr = new Body[rashi.Grahas.Count];
 					for (var i = 0; i < rashi.Grahas.Count; i++)
 					{
 						tempArr[i] = rashi.Grahas[i];
 					}
 
-					var sorted = fs.GetOrderedGrahas(tempArr);
+					var sorted = grahas.GetOrderedGrahas(tempArr, rules);
 					foreach (var bn in sorted)
 					{
 						GrahaStrengths.grahas.Add(bn);

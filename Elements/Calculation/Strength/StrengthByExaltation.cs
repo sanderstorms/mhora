@@ -21,34 +21,30 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has larger number of exalted planets - debilitated planets
-// Stronger planet is exalted or not debilitated
-public class StrengthByExaltation : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByExaltation rasi has larger number of exalted planets - debilitated planets
+// StrengthByExaltation planet is exalted or not debilitated
+public static class Exaltation
 {
-	public StrengthByExaltation(Grahas grahas) : base(grahas, true)
+	public static int StrengthByExaltation(this Grahas grahas, Body m, Body n)
 	{
-	}
-
-	public int Stronger(Body m, Body n)
-	{
-		var valm = Value(m);
-		var valn = Value(n);
+		var valm = grahas.ExaltationStrength(m);
+		var valn = grahas.ExaltationStrength(n);
 
 		return valm.CompareTo(valn);
 	}
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByExaltation(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var vala = Value(za);
-		var valb = Value(zb);
+		var vala = grahas.ExaltationStrength(za);
+		var valb = grahas.ExaltationStrength(zb);
 
 		return vala.CompareTo(valb);
 	}
 
-	public int Value(ZodiacHouse zn)
+	public static int ExaltationStrength(this Grahas grahas, ZodiacHouse zn)
 	{
 		var ret = 0;
-		foreach (var graha in _grahas.NavaGrahas)
+		foreach (var graha in grahas.NavaGrahas)
 		{
 			if (graha.Rashi != zn)
 			{
@@ -68,14 +64,14 @@ public class StrengthByExaltation : BaseStrength, IStrengthRasi, IStrengthGraha
 		return ret;
 	}
 
-	public int Value(Body b)
+	public static int ExaltationStrength(this Grahas grahas, Body b)
 	{
-		if (_grahas [b].IsExalted)
+		if (grahas [b].IsExalted)
 		{
 			return 1;
 		}
 
-		if (_grahas [b].IsDebilitated)
+		if (grahas [b].IsDebilitated)
 		{
 			return -1;
 		}

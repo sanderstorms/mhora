@@ -21,22 +21,18 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi's lord by nature (moveable, fixed, dual)
-// Stronger Graha's dispositor in such a rasi
-public class StrengthByLordsNature : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByLordsNature rasi's lord by nature (moveable, fixed, dual)
+// StrengthByLordsNature Graha's dispositor in such a rasi
+public static class LordsNature
 {
-	public StrengthByLordsNature(Grahas grahas) : base(grahas, true)
+	public static int StrengthByLordsNature(this Grahas grahas, Body m, Body n)
 	{
+		var za = grahas [m].Rashi;
+		var zb = grahas [n].Rashi;
+		return grahas.StrengthByLordsNature(za, zb);
 	}
 
-	public int Stronger(Body m, Body n)
-	{
-		var za = _grahas [m].Rashi;
-		var zb = _grahas [n].Rashi;
-		return Stronger(za, zb);
-	}
-
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByLordsNature(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
 		int[] vals =
 		{
@@ -44,15 +40,15 @@ public class StrengthByLordsNature : BaseStrength, IStrengthRasi, IStrengthGraha
 			1,
 			2
 		}; // dual, move, fix
-		var a = NaturalValueForRasi(za);
-		var b = NaturalValueForRasi(zb);
+		var a = grahas.NaturalValueForRasi(za);
+		var b = grahas.NaturalValueForRasi(zb);
 
 		return a.CompareTo(b);
 	}
 
-	public int NaturalValueForRasi(ZodiacHouse zha)
+	public static int NaturalValueForRasi(this Grahas grahas, ZodiacHouse zha)
 	{
-		var bl  = _grahas.Rashis.Find(zha).Lord;
+		var bl  = grahas.Rashis.Find(zha).Lord;
 		var zhl = bl.Rashi;
 
 		int[] vals =

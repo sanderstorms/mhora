@@ -12,7 +12,7 @@ namespace Mhora.Elements.Yoga
 
 		public DpList(Horoscope h, Division division)
 		{
-			Positions   = h.CalculateDivisionPositions(division);
+			Positions   = h.PositionList.CalculateDivisionPositions(division);
 			Arudha      = h.CalculateArudhaDivisionPositions(division);
 			Varnada     = h.CalculateVarnadaDivisionPositions(division);
 			GrahaArudha = h.CalculateGrahaArudhaDivisionPositions(division);

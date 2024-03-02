@@ -63,7 +63,69 @@ namespace Mhora.Elements.Yoga
 			return GetEnumerator();
 		}
 
-		public int    Count => _rashis.Count;
+		public int Count => _rashis.Count;
 
+		public int Compare(ZodiacHouse zha, ZodiacHouse zhb, bool simpleLord, ArrayList rules, out int winner)
+		{
+			var strength = new List<RashiStrength>();
+
+			foreach (RashiStrength rule in rules)
+			{
+				strength.Add(rule);
+			}
+
+			return Compare(zha, zhb, simpleLord, strength, out winner);
+		}
+
+
+		public int Compare(ZodiacHouse zha, ZodiacHouse zhb, bool simpleLord, List<RashiStrength> rules, out int winner)
+		{
+			return this[zha].CompareTo(this[zhb], simpleLord, rules, out winner);
+		}
+
+		public Rashi Stronger(ZodiacHouse zha, ZodiacHouse zhb, bool simpleLord, ArrayList rules, out int winner)
+		{
+			var strength = new List<RashiStrength>();
+
+			foreach (RashiStrength rule in rules)
+			{
+				strength.Add(rule);
+			}
+
+			return Stronger(zha, zhb, simpleLord, strength, out winner);
+		}
+
+
+		public Rashi Stronger(ZodiacHouse zha, ZodiacHouse zhb, bool simpleLord, List<RashiStrength> rules, out int winner)
+		{
+			if (this[zha].CompareTo(this[zhb], simpleLord, rules, out winner) > 0)
+			{
+				return (this [zha]);
+			}
+
+			return (this[zhb]);
+		}
+
+		public Rashi Weaker(ZodiacHouse zha, ZodiacHouse zhb, bool simpleLord, List<RashiStrength> rules, out int winner)
+		{
+			if (this[zha].CompareTo(this[zhb], simpleLord, rules, out winner) < 0)
+			{
+				return (this [zha]);
+			}
+
+			return (this[zhb]);
+		}
+
+		public Rashi Weaker (ZodiacHouse zha, ZodiacHouse zhb, bool simpleLord, ArrayList rules, out int winner)
+		{
+			var strength = new List<RashiStrength>();
+
+			foreach (RashiStrength rule in rules)
+			{
+				strength.Add(rule);
+			}
+
+			return Weaker(zha, zhb, simpleLord, strength, out winner);
+		}
 	}
 }

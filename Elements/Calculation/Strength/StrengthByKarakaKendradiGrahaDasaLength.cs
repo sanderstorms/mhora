@@ -23,34 +23,30 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger Graha has longer length
-// Stronger rasi has a Graha with longer length placed therein
-public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByKarakaKendradiGrahaDasaLength Graha has longer length
+// StrengthByKarakaKendradiGrahaDasaLength rasi has a Graha with longer length placed therein
+public static class KarakaKendradiGrahaDasaLength
 {
-	public StrengthByKarakaKendradiGrahaDasaLength(Grahas grahas) : base(grahas, false)
+	public static int StrengthByKarakaKendradiGrahaDasaLength(this Grahas grahas, Body m, Body n)
 	{
-	}
-
-	public int Stronger(Body m, Body n)
-	{
-		var a = Value(m);
-		var b = Value(n);
+		var a = grahas.KarakaKendradiGrahaDasaLengthStrength(m);
+		var b = grahas.KarakaKendradiGrahaDasaLengthStrength(n);
 
 		return a.CompareTo(b);
 	}
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByKarakaKendradiGrahaDasaLength(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var a = Value(za);
-		var b = Value(zb);
+		var a = grahas.KarakaKendradiGrahaDasaLengthStrength(za);
+		var b = grahas.KarakaKendradiGrahaDasaLengthStrength(zb);
 
 		return a.CompareTo(b);
 	}
 
-	protected double Value(ZodiacHouse zh)
+	private static double KarakaKendradiGrahaDasaLengthStrength(this Grahas grahas, ZodiacHouse zh)
 	{
 		double length = 0;
-		foreach (var graha in _grahas.NavaGrahas)
+		foreach (var graha in grahas.NavaGrahas)
 		{
 			length = Math.Max(length, KarakaKendradiGrahaDasa.LengthOfDasa(graha));
 		}
@@ -58,8 +54,8 @@ public class StrengthByKarakaKendradiGrahaDasaLength : BaseStrength, IStrengthRa
 		return length;
 	}
 
-	protected double Value(Body b)
+	private static double KarakaKendradiGrahaDasaLengthStrength(this Grahas grahas, Body b)
 	{
-		return KarakaKendradiGrahaDasa.LengthOfDasa(_grahas [b]);
+		return KarakaKendradiGrahaDasa.LengthOfDasa(grahas [b]);
 	}
 }

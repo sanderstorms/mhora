@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Mhora.Definitions;
+using Mhora.Elements.Calculation;
 using Mhora.Util;
 
 namespace Mhora.Elements.Yoga
@@ -73,5 +74,24 @@ namespace Mhora.Elements.Yoga
 			GrahaList = grahaList;
 			Grahas    = GrahaList.NavaGrahas.FindAll(graha => graha.Rashi == this);
 		}
+
+		public int CompareTo(Rashi rashi, bool simpleLord, List<RashiStrength> rules, out int winner)
+		{
+			winner = 0;
+			foreach (RashiStrength s in rules)
+			{
+				var result = GrahaList.GetStronger(this, rashi, simpleLord, s);
+				if (result == 0)
+				{
+					winner++;
+				}
+				else
+				{
+					return (result);
+				}
+			}
+			return 0;
+		}
+
 	}
 }

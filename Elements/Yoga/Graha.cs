@@ -58,6 +58,7 @@ namespace Mhora.Elements.Yoga
 
 		public static implicit operator Body(Graha graha) => graha.Body;
 
+		public string Name => Body.Name();
 
 		public override string ToString()
 		{
@@ -1286,6 +1287,25 @@ namespace Mhora.Elements.Yoga
 				DistanceSpeed  = position[5]
 			};
 		}
+
+		public int CompareTo(Graha graha, bool bSimpleLord, List<GrahaStrength> rules, out int winner)
+		{
+			winner = 0;
+			foreach (GrahaStrength s in rules)
+			{
+				var result = Grahas.GetStronger(this, graha, bSimpleLord, s);
+				if (result == 0)
+				{
+					winner++;
+				}
+				else
+				{
+					return result;
+				}
+			}
+			return 0;
+		}
+
 
 	}
 }

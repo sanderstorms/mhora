@@ -21,49 +21,45 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has more planets in moola trikona
-// Stronger planet is in moola trikona rasi
-public class StrengthByMoolaTrikona : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByMoolaTrikona rasi has more planets in moola trikona
+// StrengthByMoolaTrikona planet is in moola trikona rasi
+public static class MoolaTrikona
 {
-	public StrengthByMoolaTrikona(Grahas grahas) : base(grahas, true)
+	public static int StrengthByMoolaTrikona(this Grahas grahas, Body m, Body n)
 	{
-	}
-
-	public int Stronger(Body m, Body n)
-	{
-		var valm = Value(m);
-		var valn = Value(n);
+		var valm = grahas.MoolaTrikonaValue(m);
+		var valn = grahas.MoolaTrikonaValue(n);
 
 		return valm.CompareTo(valn);
 	}
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByMoolaTrikona(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var vala = Value(za);
-		var valb = Value(zb);
+		var vala = grahas.MoolaTrikonaValue(za);
+		var valb = grahas.MoolaTrikonaValue(zb);
 
 		return vala.CompareTo(valb);
 	}
 
-	public int Value(ZodiacHouse zn)
+	public static int MoolaTrikonaValue(this Grahas grahas, ZodiacHouse zn)
 	{
 		var ret = 0;
-		foreach (var graha in _grahas.NavaGrahas)
+		foreach (var graha in grahas.NavaGrahas)
 		{
 			if (graha.Rashi.ZodiacHouse != zn)
 			{
 				continue;
 			}
 
-			ret += Value(graha);
+			ret += grahas.MoolaTrikonaValue(graha);
 		}
 
 		return ret;
 	}
 
-	public int Value(Body b)
+	public static int MoolaTrikonaValue(this Grahas grahas, Body b)
 	{
-		if (_grahas [b].IsMoolTrikona)
+		if (grahas [b].IsMoolTrikona)
 		{
 			return 1;
 		}

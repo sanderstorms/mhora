@@ -21,41 +21,33 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has larger number of grahas in kendras
-// Stronger Graha is in such a rasi
-public class StrengthByKendraConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByKendraConjunction rasi has larger number of grahas in kendras
+// StrengthByKendraConjunction Graha is in such a rasi
+public static class KendraConjunction
 {
-	public StrengthByKendraConjunction(Grahas grahas) : base(grahas, true)
+	public static int StrengthByKendraConjunction(this Grahas grahas, Body m, Body n)
 	{
+		return grahas.StrengthByKendraConjunction(grahas [m].Rashi, grahas [n].Rashi);
 	}
 
-	public int Stronger(Body m, Body n)
+	public static int StrengthByKendraConjunction(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		return Stronger(_grahas [m].Rashi, _grahas [n].Rashi);
-	}
-
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var numa = Value(za);
-		var numb = Value(zb);
+		var numa = grahas.KendraConjunctionStrength(za);
+		var numb = grahas.KendraConjunctionStrength(zb);
 
 		return numa.CompareTo(numb);
 	}
 
-	public int Value(ZodiacHouse zodiacHouse)
+	public static int KendraConjunctionStrength(this Grahas grahas, ZodiacHouse zodiacHouse)
 	{
-		var kendras = new int[4]
+		int numGrahas = 0;
+
+		foreach (var graha in grahas)
 		{
-			1,
-			4,
-			7,
-			10
-		};
-		var numGrahas = 0;
-		var zh        = zodiacHouse;
-		foreach (var i in kendras)
-		{
-			numGrahas += NumGrahasInZodiacHouse(zh.Add(i));
+			if (graha.Bhava.IsKendra())
+			{
+				numGrahas += graha.Conjunct.Count;
+			}
 		}
 
 		return numGrahas;

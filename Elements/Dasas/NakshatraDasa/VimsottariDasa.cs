@@ -34,12 +34,13 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 
 	public VimsottariDasa(Horoscope h)
 	{
+		var grahas = h.FindGrahas(DivisionType.BhavaPada);
+		var rules  = FindStronger.RulesVimsottariGraha(h);
 		Common    = this;
 		Options   = new UserOptions();
 		Horoscope = h;
 
-		var fsGraha = new FindStronger(h.FindGrahas(DivisionType.BhavaPada), FindStronger.RulesVimsottariGraha(h));
-		var stronger = fsGraha.StrongerGraha(Body.Moon, Body.Lagna, false);
+		var stronger = grahas.Stronger(Body.Moon, Body.Lagna, false, rules, out _);
 
 		if (stronger == Body.Lagna)
 		{

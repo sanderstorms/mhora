@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -184,7 +185,7 @@ public class RasiStrengthsControl : Form
 	{
 	}
 
-	private ArrayList GetRules()
+	private List<RashiStrength> GetRules()
 	{
 		switch (cbStrength.SelectedIndex)
 		{
@@ -225,6 +226,8 @@ public class RasiStrengthsControl : Form
 
 	private void Compute()
 	{
+		var grahas = h.FindGrahas(options.Division);
+
 		mList.BeginUpdate();
 		mList.Clear();
 
@@ -255,8 +258,7 @@ public class RasiStrengthsControl : Form
 			{
 				al[i]
 			};
-			var fs        = new FindStronger(h.FindGrahas(options.Division), rule);
-			var zw        = fs.StrongerRasi(z1, z2, false, ref winner);
+			var zw        = grahas.Rashis.Stronger(z1, z2, false, al, out winner);
 			var li        = new ListViewItem();
 			var enumValue = (Enum) al[i];
 			li.Text = string.Format("{0}", enumValue.GetEnumDescription());

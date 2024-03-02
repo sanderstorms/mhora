@@ -21,17 +21,13 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi contains AK
-// Stronger Graha is AK
-public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByAtmaKaraka rasi contains AK
+// StrengthByAtmaKaraka Graha is AK
+public static class AtmaKaraka
 {
-	public StrengthByAtmaKaraka(Grahas grahas) : base(grahas, true)
+	public static int StrengthByAtmaKaraka(this Grahas grahas, Body m, Body n)
 	{
-	}
-
-	public int Stronger(Body m, Body n)
-	{
-		var ak = FindAtmaKaraka();
+		var ak = grahas.Karaka8[0];
 		if (m == ak)
 		{
 			return 1;
@@ -45,11 +41,11 @@ public class StrengthByAtmaKaraka : BaseStrength, IStrengthRasi, IStrengthGraha
 		return (0);
 	}
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByAtmaKaraka(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var ala = _grahas.Rashis[za].Grahas;
-		var alb = _grahas.Rashis[zb].Grahas;
-		var ak  = FindAtmaKaraka();
+		var ala = grahas.Rashis[za].Grahas;
+		var alb = grahas.Rashis[zb].Grahas;
+		var ak  = grahas.Karaka8[0];
 		foreach (Body ba in ala)
 		{
 			if (ba == ak)

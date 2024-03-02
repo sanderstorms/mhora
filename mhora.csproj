@@ -177,6 +177,7 @@
     <Compile Include="Definitions\Relation.cs" />
     <Compile Include="Definitions\Yoga.cs" />
     <Compile Include="Elements\Bhavas.cs" />
+    <Compile Include="Elements\CalculateBodyPositionss.cs" />
     <Compile Include="Elements\Calculations.cs" />
     <Compile Include="Definitions\Bhava.cs" />
     <Compile Include="Definitions\DivisionType.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Definitions\Muhurta.cs" />
     <Compile Include="Definitions\Nakshatra.cs" />
     <Compile Include="Definitions\Nakshatra28.cs" />
+    <Compile Include="Elements\Calculation\Compare.cs" />
     <Compile Include="Elements\Dasas\Dasas.cs" />
     <Compile Include="Elements\Dasas\KalaChakraDasaEntry.cs" />
     <Compile Include="Elements\Dasas\NakshatraDasa\KalaChakra.cs" />
@@ -234,6 +236,8 @@
     <Compile Include="SwissEph\Helpers\HorizontalCoordinates.cs" />
     <Compile Include="Util\DmsLocation.cs" />
     <Compile Include="Util\DmsPoint.cs" />
+    <Compile Include="Util\EnumCollection.cs" />
+    <Compile Include="Util\EnumValue.cs" />
     <Compile Include="Util\JulianDate.cs" />
     <Compile Include="Util\Range.cs" />
     <Compile Include="SwissEph\Helpers\SunriseSunsetTimeCalcResult.cs" />
@@ -245,10 +249,6 @@
     <Compile Include="Elements\Calculation\CuspTransitSearch.cs" />
     <Compile Include="Elements\Calculation\FindStronger.cs" />
     <Compile Include="Elements\Calculation\Retrogression.cs" />
-    <Compile Include="Elements\Calculation\Strength\BaseStrength.cs" />
-    <Compile Include="Elements\Calculation\Strength\EqualStrength.cs" />
-    <Compile Include="Elements\Calculation\Strength\IStrengthGraha.cs" />
-    <Compile Include="Elements\Calculation\Strength\IStrengthRasi.cs" />
     <Compile Include="Elements\Calculation\Strength\StrengthByAspectsGraha.cs" />
     <Compile Include="Elements\Calculation\Strength\StrengthByAspectsRasi.cs" />
     <Compile Include="Elements\Calculation\Strength\StrengthByAtmaKaraka.cs" />

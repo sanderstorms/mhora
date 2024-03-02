@@ -21,24 +21,23 @@ using Mhora.Elements.Yoga;
 
 namespace Mhora.Elements.Calculation.Strength;
 
-// Stronger rasi has larger number of grahas
-// Stronger Graha is in such a rasi
-public class StrengthByConjunction : BaseStrength, IStrengthRasi, IStrengthGraha
+// StrengthByConjunction rasi has larger number of grahas
+// StrengthByConjunction Graha is in such a rasi
+public static class Conjunction
 {
-	public StrengthByConjunction(Grahas grahas) : base(grahas, true) 
+	public static int StrengthByConjunction(this Grahas grahas, Body m, Body n)
 	{
+		var gm = grahas.Find(m);
+		var gn = grahas.Find(n);
+
+		return gm.Conjunct.Count.CompareTo(gn.Conjunct.Count);
 	}
 
-	public int Stronger(Body m, Body n)
+	public static int StrengthByConjunction(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		return Stronger(_grahas.Find(m).Rashi, _grahas.Find(n).Rashi);
-	}
+		var rashi1 = grahas.Rashis.Find(za);
+		var rashi2 = grahas.Rashis.Find(zb);
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
-	{
-		var numa = NumGrahasInZodiacHouse(za);
-		var numb = NumGrahasInZodiacHouse(zb);
-
-		return numa.CompareTo(numb);
+		return rashi1.Grahas.Count.CompareTo(rashi2.Grahas.Count);
 	}
 }

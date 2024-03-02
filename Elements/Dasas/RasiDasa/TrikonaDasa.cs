@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
@@ -173,7 +174,7 @@ public class TrikonaDasa : Dasa, IDasa
 	{
 		protected OrderedZodiacHouses MTrikonaStrengths;
 
-		public UserOptions(Horoscope h, ArrayList rules) : base(h, rules)
+		public UserOptions(Horoscope h, List<RashiStrength> rules) : base(h, rules)
 		{
 			CalculateTrikonaStrengths();
 		}
@@ -186,15 +187,15 @@ public class TrikonaDasa : Dasa, IDasa
 
 		private void CalculateTrikonaStrengths()
 		{
-			var zh = GetSeed();
+			var grahas = H.FindGrahas(Division);
+			var zh     = GetSeed();
 			var zhT = new ZodiacHouse[3]
 			{
 				zh.Add(1),
 				zh.Add(5),
 				zh.Add(9)
 			};
-			var fs = new FindStronger(H.FindGrahas(Division), MRules);
-			MTrikonaStrengths = fs.GetOrderedHouses(zhT);
+			MTrikonaStrengths = grahas.GetOrderedHouses(zhT, MRules);
 		}
 
 		public override object Clone()

@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
@@ -32,7 +33,6 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 
 	public LagnaKendradiRasiDasa(Horoscope h)
 	{
-		var fsRasi = new FindStronger(_h.FindGrahas(_mDtype), FindStronger.RulesNarayanaDasaRasi(_h));
 		_h       = h;
 		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNarayanaDasaRasi(_h));
 	}

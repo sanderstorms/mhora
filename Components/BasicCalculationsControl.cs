@@ -477,7 +477,7 @@ public class BasicCalculationsControl : MhoraControl
 		};
 		li.SubItems.Add(name);
 		li.SubItems.Add(dp.ZodiacHouse.ToString());
-		li.SubItems.Add(h.LordOfZodiacHouse(dp.ZodiacHouse, div).Name());
+		li.SubItems.Add(h.LordOfZodiacHouse(dp.ZodiacHouse, div, false).Name());
 		mList.Items.Add(li);
 	}
 

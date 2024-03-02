@@ -23,18 +23,14 @@ namespace Mhora.Elements.Calculation.Strength;
 
 // Stronger rasi is the first one
 // Stronger Graha is the first one
-public class StrengthByFirst : BaseStrength, IStrengthRasi, IStrengthGraha
+public static class First
 {
-	public StrengthByFirst(Grahas grahas) : base(grahas, true)
-	{
-	}
-
-	public int Stronger(Body m, Body n)
+	public static int StrengthByFirst(this Grahas grahas, Body m, Body n)
 	{
 		return 1;
 	}
 
-	public int Stronger(ZodiacHouse za, ZodiacHouse zb)
+	public static int StrengthByFirst(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
 		return 1;
 	}

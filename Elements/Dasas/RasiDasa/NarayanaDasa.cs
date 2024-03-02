@@ -184,7 +184,8 @@ public class NarayanaDasa : Dasa, IDasa
 		zhStronger = Options.FindStrongerRasi(Options.SeventhStrengths, zhStronger, zhStronger.Add(7));
 
 		var b        = GetLord(rashis [zhStronger]);
-		var dp       = _h.CalculateDivisionPosition(_h.GetPosition(b), Options.Division);
+		var position = _h.GetPosition(b);
+		var dp       = position.CalculateDivisionPosition(Options.Division);
 		var first    = dp.ZodiacHouse;
 		var backward = false;
 		if ((int) first % 2 == 0)
