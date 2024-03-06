@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using Mhora.Database.Settings;
 
-namespace Mhora.Elements.Hora;
+namespace Mhora.Components.File;
 
 /// <summary>
 ///     Interface will return a HoraInfo object specifying all birth

@@ -166,7 +166,7 @@ public partial class BirthDetailsDialog : Form
 		timePicker.Value = DateTime.Now;
 		dateTimePicker.Value = DateTime.Now;
 
-        if (File.Exists("world.db"))
+        if (System.IO.File.Exists("world.db"))
         {
             try
             {

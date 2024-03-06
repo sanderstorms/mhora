@@ -200,7 +200,7 @@ public class Horoscope : ICloneable
 	{
 		if (simpleLord == false)
 		{
-			var grahas = _grahas[varga];
+			var grahas = FindGrahas(varga);
 			var rules = this.RulesStrongerCoLord();
 
 			switch (zh)

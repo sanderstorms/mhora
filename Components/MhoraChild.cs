@@ -22,13 +22,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Mhora.Components.DasaControl;
+using Mhora.Components.File;
 using Mhora.Components.Jhora;
 using Mhora.Components.VargaControl;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Dasas.NakshatraDasa;
-using Mhora.Elements.Hora;
 
 namespace Mhora.Components;
 
@@ -791,9 +791,9 @@ public class MhoraChild : Form
 
 		try
 		{
-			if (false == File.Exists(sfName))
+			if (false == System.IO.File.Exists(sfName))
 			{
-				File.Create(sfName).Close();
+				System.IO.File.Create(sfName).Close();
 			}
 
 			Process.Start(sfName);

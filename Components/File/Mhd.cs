@@ -22,7 +22,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using Mhora.Database.Settings;
 
-namespace Mhora.Elements.Hora;
+namespace Mhora.Components.File;
 
 /// <summary>
 ///     Class deals with reading the Jhd file specification

@@ -22,8 +22,6 @@ using System.Windows.Forms;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Ghataka;
-using Mhora.Elements.Kuta;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -279,85 +277,85 @@ public class KutaMatchingControl : MhoraControl
 
 		{
 			var li = new ListViewItem("Nakshatra Yoni");
-			li.SubItems.Add(KutaNakshatraYoni.GetType(n1) + " (" + KutaNakshatraYoni.GetSex(n1) + ")");
-			li.SubItems.Add(KutaNakshatraYoni.GetType(n2) + " (" + KutaNakshatraYoni.GetSex(n2) + ")");
+			li.SubItems.Add(n1.KutaNakshatraYoni() + " (" + n1.GetSex() + ")");
+			li.SubItems.Add(n2.KutaNakshatraYoni() + " (" + n2.GetSex() + ")");
 			lView.Items.Add(li);
 		}
 		{
 			var li = new ListViewItem("Rasi Yoni");
-			li.SubItems.Add(KutaRasiYoni.GetType(z1).ToString());
-			li.SubItems.Add(KutaRasiYoni.GetType(z2).ToString());
+			li.SubItems.Add(z1.KutaRasiYoni().ToString());
+			li.SubItems.Add(z2.KutaRasiYoni().ToString());
 			lView.Items.Add(li);
 		}
 		{
 			var li = new ListViewItem("Varna");
-			li.SubItems.Add(KutaVarna.GetType(n1).ToString());
-			li.SubItems.Add(KutaVarna.GetType(n2).ToString());
-			li.SubItems.Add(KutaVarna.GetScore(n1, n2) + "/" + KutaVarna.GetMaxScore());
+			li.SubItems.Add(n1.KutaVarna().ToString());
+			li.SubItems.Add(n2.KutaVarna().ToString());
+			li.SubItems.Add(Kutas.Score.Varna(n1, n2) + "/" + Kutas.Score.VarnaMaxScore);
 			lView.Items.Add(li);
 		}
 		{
 			var li = new ListViewItem("Gana (Chandra)");
-			li.SubItems.Add(KutaGana.GetType(n1).ToString());
-			li.SubItems.Add(KutaGana.GetType(n2).ToString());
-			li.SubItems.Add(KutaGana.GetScore(n1, n2) + "/" + KutaGana.GetMaxScore());
+			li.SubItems.Add(n1.KutaGana().ToString());
+			li.SubItems.Add(n2.KutaGana().ToString());
+			li.SubItems.Add(Kutas.Score.Gana(n1, n2) + "/" + Kutas.Score.GanaMaxScore);
 
 			lView.Items.Add(li);
 		}
 		{
 			var li = new ListViewItem("Gana (Lagna)");
-			li.SubItems.Add(KutaGana.GetType(l1.Longitude.ToNakshatra()).ToString());
-			li.SubItems.Add(KutaGana.GetType(l2.Longitude.ToNakshatra()).ToString());
-			li.SubItems.Add(KutaGana.GetScore(l1.Longitude.ToNakshatra(), l2.Longitude.ToNakshatra()) + "/" + KutaGana.GetMaxScore());
+			li.SubItems.Add(l1.Longitude.ToNakshatra().KutaGana().ToString());
+			li.SubItems.Add(l2.Longitude.ToNakshatra().KutaGana().ToString());
+			li.SubItems.Add(Kutas.Score.Gana(l1.Longitude.ToNakshatra(), l2.Longitude.ToNakshatra()) + "/" + Kutas.Score.GanaMaxScore);
 			lView.Items.Add(li);
 		}
 		{
 			var li = new ListViewItem("Vedha");
-			li.SubItems.Add(KutaVedha.GetType(n1).ToString());
-			li.SubItems.Add(KutaVedha.GetType(n2).ToString());
-			li.SubItems.Add(KutaVedha.GetScore(n1, n2) + "/" + KutaVedha.GetMaxScore());
+			li.SubItems.Add(n1.KutaVedha().ToString());
+			li.SubItems.Add(n2.KutaVedha().ToString());
+			li.SubItems.Add(Kutas.Score.Vedha(n1, n2) + "/" + Kutas.Score.VedhaMaxScore);
 			lView.Items.Add(li);
 		}
 		{
 			var li = new ListViewItem("Rajju");
-			li.SubItems.Add(KutaRajju.GetType(n1).ToString());
-			li.SubItems.Add(KutaRajju.GetType(n2).ToString());
-			li.SubItems.Add(KutaRajju.GetScore(n1, n2) + "/" + KutaRajju.GetMaxScore());
+			li.SubItems.Add(n1.KutaRajju().ToString());
+			li.SubItems.Add(n2.KutaRajju().ToString());
+			li.SubItems.Add(Kutas.Score.Rajju(n1, n2) + "/" + Kutas.Score.RajjuMaxScore);
 			lView.Items.Add(li);
 		}
 		{
 			var li = new ListViewItem("Nadi");
-			li.SubItems.Add(KutaNadi.GetType(n1).ToString());
-			li.SubItems.Add(KutaNadi.GetType(n2).ToString());
-			li.SubItems.Add(KutaNadi.GetScore(n1, n2) + "/" + KutaNadi.GetMaxScore());
+			li.SubItems.Add(Kutas.KutaNadi(n1).ToString());
+			li.SubItems.Add(Kutas.KutaNadi(n2).ToString());
+			li.SubItems.Add(Kutas.Score.Nadi(n1, n2) + "/" + Kutas.Score.NadiMaxScore);
 			lView.Items.Add(li);
 		}
 		{
 			var li = new ListViewItem("Gotra (TD:Abhi)");
-			li.SubItems.Add(KutaGotra.GetType(n1).ToString());
-			li.SubItems.Add(KutaGotra.GetType(n2).ToString());
-			li.SubItems.Add(KutaGotra.GetScore(n1, n2) + "/" + KutaGotra.GetMaxScore());
+			li.SubItems.Add(n1.KutaGotra().ToString());
+			li.SubItems.Add(n2.KutaGotra().ToString());
+			li.SubItems.Add(Kutas.Score.Gotra(n1, n2) + "/" + Kutas.Score.GotraMaxScore);
 			lView.Items.Add(li);
 		}
 		{
 			var li = new ListViewItem("Vihanga");
-			li.SubItems.Add(KutaVihanga.GetType(n1).ToString());
-			li.SubItems.Add(KutaVihanga.GetType(n2).ToString());
-			li.SubItems.Add(KutaVihanga.GetDominator(n1, n2).ToString());
+			li.SubItems.Add(n1.KutaVihanga().ToString());
+			li.SubItems.Add(n2.KutaVihanga().ToString());
+			li.SubItems.Add(Kutas.GetDominator(n1, n2).ToString());
 			lView.Items.Add(li);
 		}
 		{
 			var li = new ListViewItem("Bhuta (Nakshatra)");
-			li.SubItems.Add(KutaBhutaNakshatra.GetType(n1).ToString());
-			li.SubItems.Add(KutaBhutaNakshatra.GetType(n2).ToString());
-			li.SubItems.Add(KutaBhutaNakshatra.GetScore(n1, n2) + "/" + KutaBhutaNakshatra.GetMaxScore());
+			li.SubItems.Add(n1.BhutaNakshatra().ToString());
+			li.SubItems.Add(n2.BhutaNakshatra().ToString());
+			li.SubItems.Add(Kutas.Score.BhutaNakshatra(n1, n2) + "/" + Kutas.Score.BhutaNakshatraMaxScore);
 			lView.Items.Add(li);
 		}
 		{
 			var li        = new ListViewItem("Ghataka (Moon)");
 			var ja        = h.GetPosition(Body.Moon).ToDivisionPosition(dtype).ZodiacHouse;
 			var ch        = h2.GetPosition(Body.Moon).ToDivisionPosition(dtype).ZodiacHouse;
-			var isGhataka = GhatakaMoon.CheckGhataka(ja, ch);
+			var isGhataka = Ghataka.Moon(ja, ch);
 			li.SubItems.Add(ja.ToString());
 			li.SubItems.Add(ch.ToString());
 			li.SubItems.Add(getGhatakaString(isGhataka));
@@ -368,7 +366,7 @@ public class KutaMatchingControl : MhoraControl
 			var ja        = h.GetPosition(Body.Moon).ToDivisionPosition(dtype).ZodiacHouse;
 			var ltithi    = h2.GetPosition(Body.Moon).Longitude.Sub(h2.GetPosition(Body.Sun).Longitude);
 			var t         = ltithi.ToTithi();
-			var isGhataka = GhatakaTithi.CheckTithi(ja, t);
+			var isGhataka = Ghataka.Tithi(ja, t);
 			li.SubItems.Add(ja.ToString());
 			li.SubItems.Add(t.ToString());
 			li.SubItems.Add(getGhatakaString(isGhataka));
@@ -378,7 +376,7 @@ public class KutaMatchingControl : MhoraControl
 			var li        = new ListViewItem("Ghataka (Day)");
 			var ja        = h.GetPosition(Body.Moon).ToDivisionPosition(dtype).ZodiacHouse;
 			var wd        = h2.Wday;
-			var isGhataka = GhatakaDay.CheckDay(ja, wd);
+			var isGhataka = Ghataka.Day(ja, wd);
 			li.SubItems.Add(ja.ToString());
 			li.SubItems.Add(wd.ToString());
 			li.SubItems.Add(getGhatakaString(isGhataka));
@@ -388,7 +386,7 @@ public class KutaMatchingControl : MhoraControl
 			var li        = new ListViewItem("Ghataka (Star)");
 			var ja        = h.GetPosition(Body.Moon).ToDivisionPosition(dtype).ZodiacHouse;
 			var na        = h2.GetPosition(Body.Moon).Longitude.ToNakshatra();
-			var isGhataka = GhatakaStar.CheckStar(ja, na);
+			var isGhataka = Ghataka.Star(ja, na);
 			li.SubItems.Add(ja.ToString());
 			li.SubItems.Add(na.Name());
 			li.SubItems.Add(getGhatakaString(isGhataka));
@@ -398,7 +396,7 @@ public class KutaMatchingControl : MhoraControl
 			var li        = new ListViewItem("Ghataka Lagna(S)");
 			var ja        = h.GetPosition(Body.Moon).ToDivisionPosition(dtype).ZodiacHouse;
 			var sa        = h2.GetPosition(Body.Lagna).ToDivisionPosition(dtype).ZodiacHouse;
-			var isGhataka = GhatakaLagnaSame.CheckLagna(ja, sa);
+			var isGhataka = Ghataka.LagnaSame(ja, sa);
 			li.SubItems.Add(ja.ToString());
 			li.SubItems.Add(sa.ToString());
 			li.SubItems.Add(getGhatakaString(isGhataka));
@@ -408,7 +406,7 @@ public class KutaMatchingControl : MhoraControl
 			var li        = new ListViewItem("Ghataka Lagna(O)");
 			var ja        = h.GetPosition(Body.Moon).ToDivisionPosition(dtype).ZodiacHouse;
 			var op        = h2.GetPosition(Body.Lagna).ToDivisionPosition(dtype).ZodiacHouse;
-			var isGhataka = GhatakaLagnaOpp.CheckLagna(ja, op);
+			var isGhataka = Ghataka.LagnaOpp(ja, op);
 			li.SubItems.Add(ja.ToString());
 			li.SubItems.Add(op.ToString());
 			li.SubItems.Add(getGhatakaString(isGhataka));

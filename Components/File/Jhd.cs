@@ -23,11 +23,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Mhora.Database.Settings;
 using Mhora.Database.World;
-using Mhora.Elements.Hora;
 using Mhora.Util;
 using SqlNado.Query;
 
-namespace Mhora.Components.Jhora;
+namespace Mhora.Components.File;
 
 public class Jhd : IFileToHoraInfo
 {
@@ -40,18 +39,18 @@ public class Jhd : IFileToHoraInfo
 
 	public HoraInfo ToHoraInfo()
 	{
-		var  sr      = File.OpenText(_fname);
-		var  m       = ReadMomentLine(sr);
-		var  tz      = ReadHmsLineInfo(sr, true, true);
-		var  lon     = ReadHmsLineInfo(sr, true, true);
-		var  lat     = ReadHmsLineInfo(sr, false, false);
-		var  alt     = ReadHmsLineInfo(sr, false, true);
-		var  est     = ReadHmsLineInfo(sr, false, true);
-		var  dst     = ReadHmsLineInfo(sr, false, true);
-		var  i1      = ReadIntLine(sr);
-		var  i2      = ReadIntLine(sr);
-		var  cityName = sr.ReadLine();
-		var  country = sr.ReadLine();
+		var  sr        = System.IO.File.OpenText(_fname);
+		var  m         = ReadMomentLine(sr);
+		var  tz        = ReadHmsLineInfo(sr, true, true);
+		var  lon       = ReadHmsLineInfo(sr, true, true);
+		var  lat       = ReadHmsLineInfo(sr, false, false);
+		var  alt       = ReadHmsLineInfo(sr, false, true);
+		var  est       = ReadHmsLineInfo(sr, false, true);
+		var  dst       = ReadHmsLineInfo(sr, false, true);
+		var  i1        = ReadIntLine(sr);
+		var  i2        = ReadIntLine(sr);
+		var  cityName  = sr.ReadLine();
+		var  country   = sr.ReadLine();
 		City worldCity = null;
 
 		var       query  = Query.From<City>().Where(city => city.Name.ToLower() == cityName.ToLower()).SelectAll();

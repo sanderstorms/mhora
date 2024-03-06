@@ -18,29 +18,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.ComponentModel;
-using System.Globalization;
+using System.Drawing.Design;
+using System.Windows.Forms.Design;
 
-namespace Mhora.Elements.Hora;
+namespace Mhora.Components.File;
 
-internal class MhoraArrayConverter : ArrayConverter
+public class UiStringTypeEditor : UITypeEditor
 {
-	public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-	{
-		return base.CanConvertFrom(context, sourceType);
-	}
+	private IWindowsFormsEditorService _edSvc;
 
-	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+	public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
 	{
-		return base.ConvertFrom(context, culture, value);
-	}
-
-	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
-	{
-		if (destType == typeof(string))
+		_edSvc = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
+		var stringInit = string.Empty;
+		if (value is string)
 		{
-			return "Click Here To Modify";
+			stringInit = (string) value;
 		}
 
-		return base.ConvertTo(context, culture, value, destType);
+		var le = new LongStringEditor(stringInit);
+		le.TitleText = "Event Description";
+		_edSvc.ShowDialog(le);
+		return le.EditorText;
+	}
+
+	public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+	{
+		return UITypeEditorEditStyle.Modal;
 	}
 }
