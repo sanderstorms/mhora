@@ -57,8 +57,8 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 
 	public ArrayList Dasa(int cycle)
 	{
-		var t = new Transit(_h);
-		var l = t.LongitudeOfSunMoonYoga(_h.Info.Jd);
+		var grahas = _h.FindGrahas(DivisionType.Rasi);
+		var l      = grahas.Calc(_h.Info.Jd, Body.Moon, Body.Sun, false);
 		return _YogaDasa(l, 1, cycle);
 	}
 
@@ -100,7 +100,7 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 
 	public Body LordOfYoga(Longitude l)
 	{
-		return l.ToSunMoonYoga().getLord();
+		return l.ToSunMoonYoga().Lord();
 	}
 
 	public class UserOptions : ICloneable

@@ -580,7 +580,7 @@ public static class Vargas
 	{
 		switch (varga)
 		{
-			case DivisionType.Rasi: return 1;
+			case DivisionType.Rasi:    return 1;
 			case DivisionType.Navamsa: return 9;
 			case DivisionType.HoraParasara:
 			case DivisionType.HoraJagannath:
@@ -591,29 +591,29 @@ public static class Vargas
 			case DivisionType.DrekkanaParivrittitraya:
 			case DivisionType.DrekkanaSomnath: return 3;
 			case DivisionType.Chaturthamsa: return 4;
-			case DivisionType.Panchamsa: return 5;
-			case DivisionType.Shashthamsa: return 6;
-			case DivisionType.Saptamsa: return 7;
+			case DivisionType.Panchamsa:    return 5;
+			case DivisionType.Shashthamsa:  return 6;
+			case DivisionType.Saptamsa:     return 7;
 			case DivisionType.Ashtamsa:
 			case DivisionType.AshtamsaRaman: return 8;
 			case DivisionType.Dasamsa: return 10;
 			case DivisionType.Rudramsa:
 			case DivisionType.RudramsaRaman: return 11;
-			case DivisionType.Dwadasamsa: return 12;
-			case DivisionType.Shodasamsa: return 16;
-			case DivisionType.Vimsamsa: return 20;
+			case DivisionType.Dwadasamsa:     return 12;
+			case DivisionType.Shodasamsa:     return 16;
+			case DivisionType.Vimsamsa:       return 20;
 			case DivisionType.Chaturvimsamsa: return 24;
-			case DivisionType.Nakshatramsa: return 27;
+			case DivisionType.Nakshatramsa:   return 27;
 			case DivisionType.Trimsamsa:
 			case DivisionType.TrimsamsaParivritti:
 			case DivisionType.TrimsamsaSimple: return 30;
-			case DivisionType.Khavedamsa: return 40;
-			case DivisionType.Akshavedamsa: return 45;
-			case DivisionType.Shashtyamsa: return 60;
+			case DivisionType.Khavedamsa:    return 40;
+			case DivisionType.Akshavedamsa:  return 45;
+			case DivisionType.Shashtyamsa:   return 60;
 			case DivisionType.Ashtottaramsa: return 108;
 			case DivisionType.Nadiamsa:
 			case DivisionType.NadiamsaCKN: return 150;
-			case DivisionType.NavamsaDwadasamsa: return 108;
+			case DivisionType.NavamsaDwadasamsa:    return 108;
 			case DivisionType.DwadasamsaDwadasamsa: return 144;
 			case DivisionType.BhavaPada:
 			case DivisionType.BhavaEqual:

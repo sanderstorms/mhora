@@ -25,11 +25,10 @@ using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
-using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
 
-namespace Mhora.Components.Varga;
+namespace Mhora.Components.VargaControl;
 
 /// <summary>
 ///     Summary description for VargaRectificationForm.
@@ -114,9 +113,9 @@ public class VargaRectificationForm : Form
 	{
 		var dp       = h.GetPosition(mBody).ToDivisionPosition(dtypeRasi);
 		var foundLon = new Longitude(0.0);
-		var bForward = true;
-		ut_lower  = h.TransitSearch(mBody, h.Info.DateOfBirth, false, new Longitude(dp.CuspLower), foundLon, ref bForward);
-		ut_higher = h.TransitSearch(mBody, h.Info.DateOfBirth, true, new Longitude(dp.CuspHigher), foundLon, ref bForward);
+		Ref<bool> bForward = new(true);
+		ut_lower  = h.TransitSearch(mBody, h.Info.DateOfBirth, false, new Longitude(dp.CuspLower), foundLon, bForward);
+		ut_higher = h.TransitSearch(mBody, h.Info.DateOfBirth, true, new Longitude(dp.CuspHigher), foundLon, bForward);
 
 
 		var ut_span = (ut_higher - ut_lower) / dtype.NumPartsInDivision() * 5.0;
@@ -163,11 +162,11 @@ public class VargaRectificationForm : Form
 			{
 				var m        = utToMoment(ut_curr);
 				var foundLon = new Longitude(0.0);
-				var bForward = true;
+				Ref<bool> bForward = new(true);
 
 				//Mhora.Log.Debug ("    Starting search at {0}", this.utToMoment(ut_curr));
 
-				ut_curr = h.TransitSearch(mBody, utToMoment(ut_curr), true, new Longitude(dp.CuspHigher), foundLon, ref bForward);
+				ut_curr = h.TransitSearch(mBody, utToMoment(ut_curr), true, new Longitude(dp.CuspHigher), foundLon, bForward);
 
 				bp.Longitude = new Longitude(dp.CuspHigher + 0.1);
 				dp           = bp.ToDivisionPosition(dtype);

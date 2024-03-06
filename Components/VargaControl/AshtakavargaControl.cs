@@ -31,7 +31,7 @@ using Mhora.Elements;
 using Mhora.Tables;
 using Mhora.Util;
 
-namespace Mhora.Components.Varga;
+namespace Mhora.Components.VargaControl;
 
 public class AshtakavargaControl : MhoraControl
 {

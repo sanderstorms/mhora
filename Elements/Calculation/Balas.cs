@@ -84,19 +84,19 @@ public static class ShadBalas
 	{
 		h.VerifyGraha(b);
 		var    bp      = h.GetPosition(b);
-		var    zh_rasi = bp.ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse;
-		var    zh_amsa = bp.ToDivisionPosition(new Division(DivisionType.Navamsa)).ZodiacHouse;
+		var    zh_rasi = bp.ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
+		var    zh_amsa = bp.ToDivisionPosition(DivisionType.Navamsa).ZodiacHouse;
 		double s       = 0;
-		s += OjaYugmaHelper(b, zh_rasi);
-		s += OjaYugmaHelper(b, zh_amsa);
+		s += b.OjaYugmaHelper(zh_rasi);
+		s += b.OjaYugmaHelper(zh_amsa);
 		return s;
 	}
 
 	public static double KendraBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
-		var zh_b = h.GetPosition(b).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse;
-		var zh_l = h.GetPosition(Body.Lagna).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse;
+		var zh_b = h.GetPosition(b).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
+		var zh_l = h.GetPosition(Body.Lagna).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
 		var diff = zh_l.NumHousesBetween(zh_b);
 		switch (diff % 3)
 		{

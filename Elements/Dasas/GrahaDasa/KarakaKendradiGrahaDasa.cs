@@ -198,14 +198,13 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 	public class UserOptions : ICloneable
 	{
 		private readonly Horoscope               _h;
-		public           Division                Dtype = new(DivisionType.Rasi);
 		protected        Body                    MSeedBody;
 		private          List <DivisionPosition> _stdDivPos;
 
 		public UserOptions(Horoscope h)
 		{
 			_h           = h;
-			_stdDivPos = h.PositionList.CalculateDivisionPositions(Dtype);
+			_stdDivPos = h.PositionList.CalculateDivisionPositions(DivisionType.Rasi);
 			Recalculate();
 		}
 
@@ -307,7 +306,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 		{
 			var grahasD1 = _h.FindGrahas(DivisionType.Rasi);
 			var zRet   = new List<ZodiacHouse[]>();
-			var zh     = _h.GetPosition(SeedBody).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse;
+			var zh     = _h.GetPosition(SeedBody).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
 
 			var zhK = new ZodiacHouse[4]
 			{
@@ -331,14 +330,14 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 				zh.Add(12)
 			};
 
-			var grahas = _h.FindGrahas(Dtype);
-			var rules  = FindStronger.RulesKarakaKendradiGrahaDasaRasi(_h);
+			var grahas = _h.FindGrahas(DivisionType.Rasi);
+			var rules  = _h.RulesKarakaKendradiGrahaDasaRasi();
 			zRet.Add(grahas.GetOrderedRasis(zhK, rules));
 			zRet.Add(grahas.GetOrderedRasis(zhP, rules));
 			zRet.Add(grahas.GetOrderedRasis(zhA, rules));
 
-			var zhSat = _h.GetPosition(Body.Saturn).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse;
-			var zhKet = _h.GetPosition(Body.Ketu).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse;
+			var zhSat = _h.GetPosition(Body.Saturn).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
+			var zhKet = _h.GetPosition(Body.Ketu).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
 
 			var bIsForward = zh.IsOdd();
 			if (zhSat != zhKet && zhSat == zh)
@@ -375,8 +374,8 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 		public void CalculateGrahaStrengths()
 		{
-			var grahas = _h.FindGrahas(Dtype);
-			var rules =  FindStronger.RulesKarakaKendradiGrahaDasaGraha(_h);
+			var grahas = _h.FindGrahas(DivisionType.Rasi);
+			var rules  =  _h.RulesKarakaKendradiGrahaDasaGraha();
 			GrahaStrengths = new OrderedGrahas();
 			foreach (var oz in RasiStrengths)
 			{

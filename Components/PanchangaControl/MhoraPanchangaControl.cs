@@ -31,9 +31,9 @@ using Mhora.Tables;
 using Mhora.Util;
 using Retrogression = Mhora.Elements.Calculation.Retrogression;
 
-namespace Mhora.Components.Panchanga;
+namespace Mhora.Components.PanchangaControl;
 
-public class PanchangaControl : MhoraControl
+public class MhoraPanchangaControl : MhoraControl
 {
 	private readonly IContainer components = null;
 
@@ -97,7 +97,7 @@ public class PanchangaControl : MhoraControl
 	private double ut_sr;
 
 
-	public PanchangaControl(Horoscope _h)
+	public MhoraPanchangaControl(Horoscope _h)
 	{
 		// This call is required by the Windows Form Designer.
 		InitializeComponent();
@@ -201,13 +201,13 @@ public class PanchangaControl : MhoraControl
 		this.menuItem2.Index = 3;
 		this.menuItem2.Text  = "-";
 		// 
-		// PanchangaControl
+		// MhoraPanchangaControl
 		// 
 		this.ContextMenu = this.contextMenu;
 		this.Controls.Add(this.bCompute);
 		this.Controls.Add(this.bOpts);
 		this.Controls.Add(this.mList);
-		this.Name =  "PanchangaControl";
+		this.Name =  "MhoraPanchangaControl";
 		this.Size =  new System.Drawing.Size(528, 320);
 		this.Load += new System.EventHandler(this.PanchangaControl_Load);
 		this.ResumeLayout(false);
@@ -379,7 +379,8 @@ public class PanchangaControl : MhoraControl
 
 	private void ComputeEntry(double ut, double[] geopos)
 	{
-		Time   sunset = new Time();
+		var  grahas = h.FindGrahas(DivisionType.Rasi);
+		Time sunset = new Time();
 		h.PopulateSunrisetCacheHelper(ut - 0.5, ref sunrise, ref sunset, ref ut_sr);
 
 		sweph.RevJul(ut_sr, out var year, out var month, out var day, out var hour);
@@ -418,7 +419,7 @@ public class PanchangaControl : MhoraControl
 		{
 			li = new ListViewItem();
 			var bp_lagna_sr = h.CalculateSingleBodyPosition(ut_sr, Body.Lagna.SwephBody(), Body.Lagna, BodyType.Lagna);
-			var dp_lagna_sr = bp_lagna_sr.ToDivisionPosition(new Division(DivisionType.Rasi));
+			var dp_lagna_sr = bp_lagna_sr.ToDivisionPosition(DivisionType.Rasi);
 			local.lagna_zh = dp_lagna_sr.ZodiacHouse;
 
 			var bp_lagna_base = new Longitude(bp_lagna_sr.Longitude.ToZodiacHouseBase());
@@ -435,9 +436,8 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcTithiCusps)
 		{
-			var t           = new Elements.Calculation.Transit(h);
-			var tithi_start = t.LongitudeOfTithi(ut_sr).ToTithi();
-			var tithi_end   = t.LongitudeOfTithi(ut_sr + 1.0).ToTithi();
+			var tithi_start = grahas.Calc(ut_sr, Body.Moon, Body.Sun, true).ToTithi();
+			var tithi_end   = grahas.Calc(ut_sr + 1.0, Body.Moon, Body.Sun, true).ToTithi();
 
 			var tithi_curr = tithi_start.Add(1);
 			local.tithi_index_start = globals.tithis_ut.Count - 1;
@@ -447,7 +447,7 @@ public class PanchangaControl : MhoraControl
 			{
 				tithi_curr = tithi_curr.Add(2);
 				var dLonToFind = ((double) (int) tithi_curr - 1) * (360.0 / 30.0);
-				var ut_found   = t.LinearSearchBinary(ut_sr, ut_sr + 1.0, new Longitude(dLonToFind), t.LongitudeOfTithiDir);
+				var ut_found   = ut_sr.LinearSearchBinary(ut_sr + 1.0, new Longitude(dLonToFind), grahas.Calc(Body.Moon, Body.Sun, true));
 
 				globals.tithis_ut.Add(new PanchangaMomentInfo(ut_found, (int) tithi_curr));
 				local.tithi_index_end++;
@@ -457,9 +457,8 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcKaranaCusps)
 		{
-			var t            = new Elements.Calculation.Transit(h);
-			var karana_start = t.LongitudeOfTithi(ut_sr).ToKarana();
-			var karana_end   = t.LongitudeOfTithi(ut_sr + 1.0).ToKarana();
+			var karana_start = grahas.Calc(ut_sr, Body.Moon, Body.Sun, true).ToKarana();
+			var karana_end   = grahas.Calc(ut_sr + 1.0, Body.Moon, Body.Sun, true).ToKarana();
 
 			var karana_curr = karana_start.Add(1);
 			local.karana_index_start = globals.karanas_ut.Count - 1;
@@ -469,7 +468,7 @@ public class PanchangaControl : MhoraControl
 			{
 				karana_curr = karana_curr.Add(2);
 				var dLonToFind = ((double) (int) karana_curr - 1) * (360.0 / 60.0);
-				var ut_found   = t.LinearSearchBinary(ut_sr, ut_sr + 1.0, new Longitude(dLonToFind), t.LongitudeOfTithiDir);
+				var ut_found   = ut_sr.LinearSearchBinary(ut_sr + 1.0, new Longitude(dLonToFind), grahas.Calc(Body.Moon, Body.Sun, true));
 
 				globals.karanas_ut.Add(new PanchangaMomentInfo(ut_found, (int) karana_curr));
 				local.karana_index_end++;
@@ -478,21 +477,20 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcSMYogaCusps)
 		{
-			var t        = new Elements.Calculation.Transit(h);
-			var sm_start = t.LongitudeOfSunMoonYoga(ut_sr).ToSunMoonYoga();
-			var sm_end   = t.LongitudeOfSunMoonYoga(ut_sr + 1.0).ToSunMoonYoga();
+			var sm_start = grahas.Calc(ut_sr, Body.Moon, Body.Sun, false).ToSunMoonYoga();
+			var sm_end   = grahas.Calc(ut_sr + 1.0, Body.Moon, Body.Sun, false).ToSunMoonYoga();
 
-			var sm_curr = sm_start.add(1);
+			var sm_curr = sm_start.Add(1);
 			local.smyoga_index_start = globals.smyogas_ut.Count - 1;
 			local.smyoga_index_end   = globals.smyogas_ut.Count - 1;
 
-			while (sm_start.value != sm_end.value && sm_curr.value != sm_end.value)
+			while (sm_start != sm_end && sm_curr != sm_end)
 			{
-				sm_curr = sm_curr.add(2);
-				var dLonToFind = ((double) (int) sm_curr.value - 1) * (360.0 / 27);
-				var ut_found   = t.LinearSearchBinary(ut_sr, ut_sr + 1.0, new Longitude(dLonToFind), t.LongitudeOfSunMoonYogaDir);
+				sm_curr = sm_curr.Add(2);
+				var dLonToFind = ((double) (int) sm_curr - 1) * (360.0 / 27);
+				var ut_found   = ut_sr.LinearSearchBinary(ut_sr + 1.0, new Longitude(dLonToFind), grahas.Calc(Body.Moon, Body.Sun, false));
 
-				globals.smyogas_ut.Add(new PanchangaMomentInfo(ut_found, (int) sm_curr.value));
+				globals.smyogas_ut.Add(new PanchangaMomentInfo(ut_found, (int) sm_curr));
 				local.smyoga_index_end++;
 			}
 		}
@@ -500,10 +498,10 @@ public class PanchangaControl : MhoraControl
 
 		if (opts.CalcNakCusps)
 		{
-			var bDiscard  = true;
-			var t         = new Elements.Calculation.Transit(h, Body.Moon);
-			var nak_start = t.GenericLongitude(ut_sr, ref bDiscard).ToNakshatra();
-			var nak_end   = t.GenericLongitude(ut_sr + 1.0, ref bDiscard).ToNakshatra();
+			Ref <bool> bDiscard  = new (true);
+			var        moon      = h.FindGrahas(DivisionType.Rasi) [Body.Moon];
+			var        nak_start = moon.CalculateLongitude(ut_sr, bDiscard).ToNakshatra();
+			var        nak_end   = moon.CalculateLongitude(ut_sr + 1.0, bDiscard).ToNakshatra();
 
 			local.nakshatra_index_start = globals.nakshatras_ut.Count - 1;
 			local.nakshatra_index_end   = globals.nakshatras_ut.Count - 1;
@@ -514,7 +512,7 @@ public class PanchangaControl : MhoraControl
 			{
 				nak_curr = nak_curr.Add(2);
 				var dLonToFind = ((int) nak_curr - 1) * (360.0 / 27.0);
-				var ut_found   = t.LinearSearchBinary(ut_sr, ut_sr + 1.0, new Longitude(dLonToFind), t.GenericLongitude);
+				var ut_found   = ut_sr.LinearSearchBinary(ut_sr + 1.0, new Longitude(dLonToFind), moon.CalculateLongitude);
 
 				globals.nakshatras_ut.Add(new PanchangaMomentInfo(ut_found, (int) nak_curr));
 				Application.Log.Debug("Found nakshatra {0}", nak_curr);
@@ -659,8 +657,8 @@ public class PanchangaControl : MhoraControl
 			if (local.smyoga_index_start == local.smyoga_index_end && local.smyoga_index_start >= 0)
 			{
 				var pmi = (PanchangaMomentInfo) globals.smyogas_ut[local.smyoga_index_start];
-				var sm  = new SunMoonYoga((SunMoonYoga.Name) pmi.info);
-				mList.Items.Add(string.Format("{0} yoga - full.", sm.value));
+				var sm  = (SunMoonYoga) pmi.info;
+				mList.Items.Add(string.Format("{0} yoga - full.", sm));
 			}
 			else
 			{
@@ -672,8 +670,8 @@ public class PanchangaControl : MhoraControl
 					}
 
 					var pmi = (PanchangaMomentInfo) globals.smyogas_ut[i];
-					var sm  = new SunMoonYoga((SunMoonYoga.Name) pmi.info).addReverse(2);
-					s_smyoga += string.Format("{0} yoga until {1}", sm.value, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
+					var sm  = ((SunMoonYoga) pmi.info).AddReverse(2);
+					s_smyoga += string.Format("{0} yoga until {1}", sm, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 
 					if (opts.OneEntryPerLine)
 					{

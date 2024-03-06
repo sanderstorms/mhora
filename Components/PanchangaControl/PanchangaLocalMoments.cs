@@ -20,7 +20,7 @@ using System.Collections;
 using Mhora.Definitions;
 using Mhora.Tables;
 
-namespace Mhora.Components.Panchanga;
+namespace Mhora.Components.PanchangaControl;
 
 public class PanchangaLocalMoments
 {

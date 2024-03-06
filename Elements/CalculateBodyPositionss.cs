@@ -12,12 +12,12 @@ namespace Mhora.Elements
 {
 	public static class CalculateBodyPositionss
 	{
-		public static DivisionPosition CalculateDivisionPosition(this Position bp, Division d)
+		public static DivisionPosition CalculateDivisionPosition(this Position bp, DivisionType d)
 		{
 			return bp.ToDivisionPosition(d);
 		}
 
-		public static List<DivisionPosition> CalculateDivisionPositions(this List<Position> positionList, Division d)
+		public static List<DivisionPosition> CalculateDivisionPositions(this List<Position> positionList, DivisionType d)
 		{
 			var al = new List<DivisionPosition>();
 			foreach (Position bp in positionList)
@@ -31,7 +31,7 @@ namespace Mhora.Elements
 			return al;
 		}
 
-		private static DivisionPosition CalculateGrahaArudhaDivisionPosition(this Horoscope h, Body bn, ZodiacHouse zh, Division dtype)
+		private static DivisionPosition CalculateGrahaArudhaDivisionPosition(this Horoscope h, Body bn, ZodiacHouse zh, DivisionType dtype)
 		{
 			var dp    = h.GetPosition(bn).ToDivisionPosition(dtype);
 			var dpl   = h.GetPosition(Body.Lagna).ToDivisionPosition(dtype);
@@ -52,7 +52,7 @@ namespace Mhora.Elements
 			return dp2;
 		}
 
-		public static List <DivisionPosition> CalculateGrahaArudhaDivisionPositions(this Horoscope h, Division dtype)
+		public static List <DivisionPosition> CalculateGrahaArudhaDivisionPositions(this Horoscope h, DivisionType dtype)
 		{
 			object[][] parameters =
 			{
@@ -153,7 +153,7 @@ namespace Mhora.Elements
 			"V12"
 		};
 
-		public static List <DivisionPosition> CalculateVarnadaDivisionPositions(this Horoscope h, Division dtype)
+		public static List <DivisionPosition> CalculateVarnadaDivisionPositions(this Horoscope h, DivisionType dtype)
 		{
 			var al   = new List <DivisionPosition> ();
 			var zhL  = (ZodiacHouse) h.GetPosition(Body.Lagna).ToDivisionPosition(dtype).ZodiacHouse;
@@ -216,7 +216,7 @@ namespace Mhora.Elements
 			return al;
 		}
 
-		private static DivisionPosition CalculateArudhaDivisionPosition(this Horoscope h, ZodiacHouse zh, Body bn, Body aname, Division d, BodyType btype)
+		private static DivisionPosition CalculateArudhaDivisionPosition(this Horoscope h, ZodiacHouse zh, Body bn, Body aname, DivisionType d, BodyType btype)
 		{
 			var bp    = h.GetPosition(bn);
 			var zhb   = CalculateDivisionPosition(bp, d).ZodiacHouse;
@@ -234,9 +234,9 @@ namespace Mhora.Elements
 			return dp;
 		}
 
-		public static List <DivisionPosition> CalculateArudhaDivisionPositions(this Horoscope h, Division d)
+		public static List <DivisionPosition> CalculateArudhaDivisionPositions(this Horoscope h, DivisionType varga)
 		{
-			var grahas = h.FindGrahas(d);
+			var grahas = h.FindGrahas(varga);
 
 			Body[] bnlist =
 			{
@@ -255,12 +255,12 @@ namespace Mhora.Elements
 				Body.UL
 			};
 
-			var              fsColord      = FindStronger.RulesStrongerCoLord(h);
+			var              fsColord      = h.RulesStrongerCoLord();
 			var              arudhaDivList = new List <DivisionPosition> ();
 			DivisionPosition first, second;
 			for (var j = 1; j <= 12; j++)
 			{
-				var           zlagna     = CalculateDivisionPosition(h.GetPosition(Body.Lagna), d).ZodiacHouse;
+				var           zlagna     = CalculateDivisionPosition(h.GetPosition(Body.Lagna), varga).ZodiacHouse;
 				var           zh         = zlagna.Add(j);
 				var bnWeaker   = Body.Other;
 				var           bnStronger = zh.SimpleLordOfZodiacHouse();
@@ -275,11 +275,11 @@ namespace Mhora.Elements
 					bnWeaker   = grahas.Weaker(Body.Ketu, Body.Mars, true, fsColord, out _);
 				}
 
-				first = h.CalculateArudhaDivisionPosition(zh, bnStronger, bnlist[j], d, BodyType.BhavaArudha);
+				first = h.CalculateArudhaDivisionPosition(zh, bnStronger, bnlist[j], varga, BodyType.BhavaArudha);
 				arudhaDivList.Add(first);
 				if (zh == ZodiacHouse.Aqu || zh == ZodiacHouse.Sco)
 				{
-					second = h.CalculateArudhaDivisionPosition(zh, bnWeaker, bnlist[j], d, BodyType.BhavaArudhaSecondary);
+					second = h.CalculateArudhaDivisionPosition(zh, bnWeaker, bnlist[j], varga, BodyType.BhavaArudhaSecondary);
 					if (first.ZodiacHouse != second.ZodiacHouse)
 					{
 						arudhaDivList.Add(second);
@@ -559,7 +559,7 @@ namespace Mhora.Elements
 		{
 			var positionList = new List<Position>(); 
 			var bpMoon       = h.GetPosition(Body.Moon);
-			var lonBase      = new Longitude(bpMoon.ExtrapolateLongitude(new Division(DivisionType.Navamsa)).ToZodiacHouseBase());
+			var lonBase      = new Longitude(bpMoon.ExtrapolateLongitude(DivisionType.Navamsa).ToZodiacHouseBase());
 			lonBase = lonBase.Add(bpMoon.Longitude.ToZodiacHouseOffset());
 
 			//Mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);

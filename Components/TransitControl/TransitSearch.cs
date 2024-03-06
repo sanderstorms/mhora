@@ -29,7 +29,7 @@ using Mhora.Tables;
 using Mhora.Util;
 using Retrogression = Mhora.Elements.Calculation.Retrogression;
 
-namespace Mhora.Components.Transit;
+namespace Mhora.Components.TransitControl;
 
 public class TransitSearch : MhoraControl
 {
@@ -497,14 +497,17 @@ public class TransitSearch : MhoraControl
 		var start_lon = r.GetLon(h.Info.Jd);
 		//Mhora.Log.Debug ("Real start lon is {0}", start_lon);
 		var curr_julday = h.Info.Jd;
-		var t           = new Elements.Calculation.Transit(h, opts.SearchBody);
+		var ut          = 0.0;
+		var graha       = h.FindGrahas(DivisionType.Rasi) [opts.SearchBody];
 		while (totalProgression >= 360.0)
 		{
-			curr_julday      =  t.LinearSearch(curr_julday + DirectSpeed(opts.SearchBody), start_lon, t.GenericLongitude);
+			ut = curr_julday + DirectSpeed(opts.SearchBody);
+			curr_julday      =  ut.LinearSearch(start_lon, graha.CalculateLongitude);
 			totalProgression -= 360.0;
 		}
 
-		curr_julday = t.LinearSearch(curr_julday + totalProgression / 360.0 * DirectSpeed(opts.SearchBody), start_lon.Add(totalProgression), t.GenericLongitude);
+		ut          = curr_julday + totalProgression / 360.0 * DirectSpeed(opts.SearchBody);
+		curr_julday = ut.LinearSearch(start_lon.Add(totalProgression), graha.CalculateLongitude);
 
 
 		//bool bDiscard = true;
@@ -532,10 +535,10 @@ public class TransitSearch : MhoraControl
 		var ut_diff   = julday_ut - h.Info.Jd;
 
 		//Mhora.Log.Debug ("Expected ut_diff is {0}", ut_diff);
-		var bDummy    = true;
-		var t         = new Elements.Calculation.Transit(h);
-		var lon_start = t.LongitudeOfSun(h.Info.Jd, ref bDummy);
-		var lon_prog  = t.LongitudeOfSun(julday_ut, ref bDummy);
+		Ref <bool> bDummy    = new (true);
+		var        sun       = h.FindGrahas(DivisionType.Rasi) [Body.Sun];
+		var        lon_start = sun.CalculateLongitude(h.Info.Jd, bDummy);
+		var        lon_prog  = sun.CalculateLongitude(julday_ut, bDummy);
 
 		//Mhora.Log.Debug ("Progression lons are {0} and {1}", lon_start, lon_prog);
 
@@ -584,14 +587,14 @@ public class TransitSearch : MhoraControl
 		var totalProgressionOrig = totalProgression;
 
 		//Mhora.Log.Debug ("Total Progression is {0}", totalProgression);
-		var becomesDirect = false;
+		Ref<bool> becomesDirect = new(false);
 		var    r        = new Retrogression(h, opts.SearchBody);
 		var    curr_ut  = h.Info.Jd;
 		double next_ut  = 0;
 		var    found_ut = h.Info.Jd;
 		while (true)
 		{
-			next_ut = r.FindNextCuspForward(curr_ut, ref becomesDirect);
+			next_ut = r.FindNextCuspForward(curr_ut, becomesDirect);
 			var curr_lon = r.GetLon(curr_ut);
 			var next_lon = r.GetLon(next_ut);
 
@@ -662,22 +665,22 @@ public class TransitSearch : MhoraControl
 			return;
 		}
 
-		var becomesDirect = false;
-		var r         = new Retrogression(h, opts.SearchBody);
-		var julday_ut = h.UniversalTime(opts.StartDate);
-		var found_ut  = julday_ut;
+		Ref<bool> becomesDirect = new (false);
+		var     r             = new Retrogression(h, opts.SearchBody);
+		var     julday_ut     = h.UniversalTime(opts.StartDate);
+		var     found_ut      = julday_ut;
 		if (opts.Forward)
 		{
-			found_ut = r.FindNextCuspForward(julday_ut, ref becomesDirect);
+			found_ut = r.FindNextCuspForward(julday_ut, becomesDirect);
 		}
 		else
 		{
-			found_ut = r.FindNextCuspBackward(julday_ut, ref becomesDirect);
+			found_ut = r.FindNextCuspBackward(julday_ut, becomesDirect);
 		}
 
 
-		var bForward  = false;
-		var found_lon = r.GetLon(found_ut, ref bForward);
+		Ref<bool> bForward  = new (false);
+		var     found_lon = r.GetLon(found_ut, bForward);
 
 		// turn into horoscope
 		found_ut += h.Info.DstOffset.TotalDays;
@@ -746,9 +749,9 @@ public class TransitSearch : MhoraControl
 
 	private double StartSearch(bool bUpdateDate)
 	{
-		var found_lon = opts.TransitPoint;
-		var bForward  = true;
-		var found_ut  = h.TransitSearch(opts.SearchBody, opts.StartDate, opts.Forward, opts.TransitPoint, found_lon, ref bForward);
+		var  found_lon = opts.TransitPoint;
+		Ref <bool> bForward  = new(true);
+		var  found_ut  = h.TransitSearch(opts.SearchBody, opts.StartDate, opts.Forward, opts.TransitPoint, found_lon, bForward);
 
 
 		var m2       = DateTime.MinValue;
@@ -948,8 +951,8 @@ public class TransitSearch : MhoraControl
 		var bp = h2.GetPosition(opts.SearchBody);
 		var dp = bp.ToDivisionPosition(opts.Division);
 
-		var becomesDirect = false;
-		var bForward      = false;
+		Ref<bool> becomesDirect = new(false);
+		Ref<bool> bForward = new(false);
 		var r                   = new Retrogression(h, opts.SearchBody);
 		var julday_ut           = h.UniversalTime(opts.StartDate);
 		var found_ut            = julday_ut;
@@ -958,14 +961,14 @@ public class TransitSearch : MhoraControl
 		{
 			if (opts.Forward)
 			{
-				found_ut = r.FindNextCuspForward(found_ut, ref becomesDirect);
+				found_ut = r.FindNextCuspForward(found_ut, becomesDirect);
 			}
 			else
 			{
-				found_ut = r.FindNextCuspBackward(found_ut, ref becomesDirect);
+				found_ut = r.FindNextCuspBackward(found_ut, becomesDirect);
 			}
 
-			var found_lon = r.GetLon(found_ut, ref bForward);
+			var found_lon = r.GetLon(found_ut, bForward);
 
 
 			if (new Longitude(dp.CuspHigher).IsBetween(bp.Longitude, found_lon))

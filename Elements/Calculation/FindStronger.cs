@@ -17,7 +17,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections.Generic;
-using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Yoga;
 
@@ -25,52 +24,42 @@ namespace Mhora.Elements.Calculation;
 
 public static class FindStronger
 {
-	private static StrengthOptions GetStrengthOptions(Horoscope h)
+	public static List<RashiStrength> RulesNaisargikaDasaRasi(this Horoscope h)
 	{
-		if (h.StrengthOptions == null)
-		{
-			return MhoraGlobalOptions.Instance.SOptions;
-		}
-
-		return h.StrengthOptions;
+		return new (h.StrengthOptions.NaisargikaDasaRasi);
 	}
 
-	public static List<RashiStrength> RulesNaisargikaDasaRasi(Horoscope h)
+	public static List<RashiStrength> RulesNarayanaDasaRasi(this Horoscope h)
 	{
-		return new (GetStrengthOptions(h).NaisargikaDasaRasi);
+		return new (h.StrengthOptions.NarayanaDasaRasi);
 	}
 
-	public static List<RashiStrength> RulesNarayanaDasaRasi(Horoscope h)
+	public static List<RashiStrength> RulesKarakaKendradiGrahaDasaRasi(this Horoscope h)
 	{
-		return new (GetStrengthOptions(h).NarayanaDasaRasi);
+		return new (h.StrengthOptions.KarakaKendradiGrahaDasaRasi);
 	}
 
-	public static List<RashiStrength> RulesKarakaKendradiGrahaDasaRasi(Horoscope h)
+	public static List<GrahaStrength> RulesKarakaKendradiGrahaDasaGraha(this Horoscope h)
 	{
-		return new (GetStrengthOptions(h).KarakaKendradiGrahaDasaRasi);
+		return new (h.StrengthOptions.KarakaKendradiGrahaDasaGraha);
 	}
 
-	public static List<GrahaStrength> RulesKarakaKendradiGrahaDasaGraha(Horoscope h)
+	public static List<GrahaStrength> RulesKarakaKendradiGrahaDasaColord(this Horoscope h)
 	{
-		return new (GetStrengthOptions(h).KarakaKendradiGrahaDasaGraha);
+		return new (h.StrengthOptions.KarakaKendradiGrahaDasaColord);
 	}
 
-	public static List<GrahaStrength> RulesKarakaKendradiGrahaDasaColord(Horoscope h)
+	public static List <RashiStrength> RulesMoolaDasaRasi(this Horoscope h)
 	{
-		return new (GetStrengthOptions(h).KarakaKendradiGrahaDasaColord);
+		return new (h.StrengthOptions.MoolaDasaRasi);
 	}
 
-	public static List <RashiStrength> RulesMoolaDasaRasi(Horoscope h)
+	public static List <RashiStrength> RulesNavamsaDasaRasi(this Horoscope h)
 	{
-		return new (GetStrengthOptions(h).MoolaDasaRasi);
+		return new (h.StrengthOptions.NavamsaDasaRasi);
 	}
 
-	public static List <RashiStrength> RulesNavamsaDasaRasi(Horoscope h)
-	{
-		return new (GetStrengthOptions(h).NavamsaDasaRasi);
-	}
-
-	public static List<RashiStrength> RulesJaiminiFirstRasi(Horoscope h)
+	public static List<RashiStrength> RulesJaiminiFirstRasi(this Horoscope h)
 	{
 		var rules = new List<RashiStrength>
 		{
@@ -87,7 +76,7 @@ public static class FindStronger
 		return rules;
 	}
 
-	public static List< RashiStrength> RulesJaiminiSecondRasi(Horoscope h)
+	public static List< RashiStrength> RulesJaiminiSecondRasi(this Horoscope h)
 	{
 		var rules = new List< RashiStrength> 
 		{
@@ -96,12 +85,12 @@ public static class FindStronger
 		return rules;
 	}
 
-	public static List<GrahaStrength> RulesNaisargikaDasaGraha(Horoscope h)
+	public static List<GrahaStrength> RulesNaisargikaDasaGraha(this Horoscope h)
 	{
-		return new (GetStrengthOptions(h).NaisargikaDasaGraha);
+		return new (h.StrengthOptions.NaisargikaDasaGraha);
 	}
 
-	public static List<GrahaStrength> RulesVimsottariGraha(Horoscope h)
+	public static List<GrahaStrength> RulesVimsottariGraha(this Horoscope h)
 	{
 		var rules = new List<GrahaStrength>
 		{
@@ -111,9 +100,9 @@ public static class FindStronger
 		return rules;
 	}
 
-	public static List<GrahaStrength> RulesStrongerCoLord(Horoscope h)
+	public static List<GrahaStrength> RulesStrongerCoLord(this Horoscope h)
 	{
-		return new (GetStrengthOptions(h).Colord);
+		return new (h.StrengthOptions.Colord);
 	}
 
 	public static OrderedZodiacHouses[] ResultsZodiacKendras(this Grahas grahas, ZodiacHouse zodiacHouse, List<RashiStrength> rules)

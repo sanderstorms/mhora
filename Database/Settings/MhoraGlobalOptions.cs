@@ -22,7 +22,7 @@ using System.Drawing;
 using System.IO;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
-using Mhora.Components.Varga;
+using Mhora.Components.VargaControl;
 using Mhora.Definitions;
 using Mhora.Util;
 using Newtonsoft.Json;

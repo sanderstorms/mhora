@@ -23,7 +23,7 @@ using System.Windows.Forms;
 using Mhora.Components.Controls;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
-using Mhora.Components.Varga;
+using Mhora.Components.VargaControl;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
@@ -92,7 +92,7 @@ public class BasicCalculationsControl : MhoraControl
 		MhoraGlobalOptions.DisplayPrefsChanged += OnRedisplay;
 		options                                =  new UserOptions
 		{
-			DivisionType = new Division(DivisionType.Rasi)
+			DivisionType = DivisionType.Rasi
 		};
 	}
 
@@ -468,16 +468,16 @@ public class BasicCalculationsControl : MhoraControl
 	}
 
 
-	private void Repopulate64NavamsaHelper(Body b, string name, Position bp, Division div)
+	private void Repopulate64NavamsaHelper(Body b, string name, Position bp, DivisionType varga)
 	{
-		var dp = bp.ToDivisionPosition(div);
+		var dp = bp.ToDivisionPosition(varga);
 		var li = new ListViewItem
 		{
 			Text = b.ToString()
 		};
 		li.SubItems.Add(name);
 		li.SubItems.Add(dp.ZodiacHouse.ToString());
-		li.SubItems.Add(h.LordOfZodiacHouse(dp.ZodiacHouse, div, false).Name());
+		li.SubItems.Add(h.LordOfZodiacHouse(dp.ZodiacHouse, varga, false).Name());
 		mList.Items.Add(li);
 	}
 
@@ -532,13 +532,13 @@ public class BasicCalculationsControl : MhoraControl
 			var bpLon = bp.Longitude;
 
 			bp.Longitude = bpLon.Add(30.0 / 9.0 * (64 - 1));
-			Repopulate64NavamsaHelper(b, "64th Navamsa", bp, new Division(DivisionType.Navamsa));
+			Repopulate64NavamsaHelper(b, "64th Navamsa", bp, DivisionType.Navamsa);
 
 			bp.Longitude = bpLon.Add(30.0 / 3.0 * (22 - 1));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana", bp, new Division(DivisionType.DrekkanaParasara));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana (Parivritti)", bp, new Division(DivisionType.DrekkanaParivrittitraya));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana (Somnath)", bp, new Division(DivisionType.DrekkanaSomnath));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana (Jagannath)", bp, new Division(DivisionType.DrekkanaJagannath));
+			Repopulate64NavamsaHelper(b, "22nd Drekkana", bp, DivisionType.DrekkanaParasara);
+			Repopulate64NavamsaHelper(b, "22nd Drekkana (Parivritti)", bp, DivisionType.DrekkanaParivrittitraya);
+			Repopulate64NavamsaHelper(b, "22nd Drekkana (Somnath)", bp, DivisionType.DrekkanaSomnath);
+			Repopulate64NavamsaHelper(b, "22nd Drekkana (Jagannath)", bp, DivisionType.DrekkanaJagannath);
 		}
 
 		ColorAndFontRows(mList);
@@ -560,7 +560,7 @@ public class BasicCalculationsControl : MhoraControl
 			{
 				Text = b.Name()
 			};
-			var dp            = h.GetPosition(b).ToDivisionPosition(new Division(DivisionType.Panchamsa));
+			var dp            = h.GetPosition(b).ToDivisionPosition(DivisionType.Panchamsa);
 			var avastha_index = -1;
 			switch (dp.ZodiacHouse.Index() % 2)
 			{
@@ -904,7 +904,7 @@ public class BasicCalculationsControl : MhoraControl
 			var dp = bp.ToDivisionPosition(options.DivisionType);
 			li.SubItems.Add(dp.ZodiacHouse.ToString());
 			li.SubItems.Add(dp.Part.ToString());
-			li.SubItems.Add(bp.AmsaRuler( options.DivisionType.MultipleDivisions[0].Varga, dp.RulerIndex));
+			li.SubItems.Add(bp.AmsaRuler( options.DivisionType, dp.RulerIndex));
 			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspLower)));
 			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
 
@@ -1187,18 +1187,11 @@ public class BasicCalculationsControl : MhoraControl
 
 	private class UserOptions : ICloneable
 	{
-		[PGNotVisible]
-		public Division DivisionType
+		[PGDisplayName("Division Type")]
+		public DivisionType DivisionType
 		{
 			get;
 			set;
-		}
-
-		[PGDisplayName("Division Type")]
-		public DivisionType UIDivisionType
-		{
-			get => DivisionType.MultipleDivisions[0].Varga;
-			set => DivisionType = new Division(value);
 		}
 
 		public Dasas.NakshatraLord NakshatraLord

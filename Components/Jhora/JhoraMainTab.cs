@@ -19,10 +19,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Mhora.Components.Dasa;
-using Mhora.Components.Panchanga;
-using Mhora.Components.Transit;
-using Mhora.Components.Varga;
+using Mhora.Components.DasaControl;
+using Mhora.Components.PanchangaControl;
+using Mhora.Components.TransitControl;
+using Mhora.Components.VargaControl;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Elements.Dasas.YearlyDasa;
@@ -281,7 +281,7 @@ public class JhoraMainTab : MhoraControl
 
 		if (_mTab.SelectedTab == _tabTithiPravesh && _bTabTithiPraveshLoaded == false)
 		{
-			var dc = new DasaControl(h, new TithiPraveshDasa(h));
+			var dc = new MhoraDasaControl(h, new TithiPraveshDasa(h));
 			dc.LinkToHoroscope      = false;
 			dc.DasaOptions.YearType = ToDate.DateType.TithiPraveshYear;
 			dc.Reset();
@@ -291,12 +291,12 @@ public class JhoraMainTab : MhoraControl
 
 		//if (this.mTab.SelectedTab == tabTajaka && this.bTabTajakaLoaded == false)
 		//{
-		//	this.AddControlToTab(tabTajaka, new DasaControl(h, new TajakaDasa(h)));
+		//	this.AddControlToTab(tabTajaka, new MhoraDasaControl(h, new TajakaDasa(h)));
 		//	this.bTabTajakaLoaded = true;		
 		//}
 		if (_mTab.SelectedTab == _tabPanchanga && _bTabPanchangaLoaded == false)
 		{
-			AddControlToTab(_tabPanchanga, new PanchangaControl(h));
+			AddControlToTab(_tabPanchanga, new MhoraPanchangaControl(h));
 			_bTabPanchangaLoaded = true;
 		}
 	}

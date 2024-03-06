@@ -20,19 +20,19 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Mhora.Components.Varga;
+using Mhora.Components.VargaControl;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Dasas;
 using Mhora.Util;
 
-namespace Mhora.Components.Dasa;
+namespace Mhora.Components.DasaControl;
 
 /// <summary>
-///     Summary description for DasaControl.
+///     Summary description for MhoraDasaControl.
 /// </summary>
-public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
+public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 {
 	private static readonly ToolTip TooltipEvent = new();
 
@@ -97,7 +97,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 	private ToDate       _td;
 
 
-	public DasaControl(Horoscope horoscope, IDasa id)
+	public MhoraDasaControl(Horoscope horoscope, IDasa id)
 	{
 		// This call is required by the Windows.Forms Form Designer.
 		InitializeComponent();
@@ -105,7 +105,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		// TODO: Add any initialization after the InitForm call
 		h           = horoscope;
 		_id    = id;
-		DasaOptions = new Elements.Dasas.Dasa.DasaOptions();
+		DasaOptions = new Dasa.DasaOptions();
 
 		if (h.Info.DefaultYearCompression != 0)
 		{
@@ -120,7 +120,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		_mShowEvents.Checked = MhoraGlobalOptions.Instance.DasaShowEvents;
 		ResetDisplayOptions(MhoraGlobalOptions.Instance);
 
-		var d = (Elements.Dasas.Dasa) _id;
+		var d = (Dasa) _id;
 		d.RecalculateEvent                     += RecalculateEntries;
 		MhoraGlobalOptions.DisplayPrefsChanged += ResetDisplayOptions;
 		h.Changed                         += OnRecalculate;
@@ -137,7 +137,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		//this.LocateChartEvents();
 	}
 
-	public Elements.Dasas.Dasa.DasaOptions DasaOptions
+	public Dasa.DasaOptions DasaOptions
 	{
 		get;
 	}
@@ -156,12 +156,12 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 			if (value)
 			{
 				h.Changed                          += OnRecalculate;
-				((Elements.Dasas.Dasa) _id).Changed += OnDasaChanged;
+				((Dasa) _id).Changed += OnDasaChanged;
 			}
 			else
 			{
 				h.Changed                          -= OnRecalculate;
-				((Elements.Dasas.Dasa) _id).Changed += OnDasaChanged;
+				((Dasa) _id).Changed += OnDasaChanged;
 			}
 		}
 	}
@@ -679,7 +679,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		this._mEntryChartCompressed.Text  =  "Entry Chart (&Compressed)";
 		this._mEntryChartCompressed.Click += new System.EventHandler(this.mEntryChartCompressed_Click);
 		// 
-		// DasaControl
+		// MhoraDasaControl
 		// 
 		this.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
 		this.Controls.Add(this._bGrahaStrengths);
@@ -690,7 +690,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 		this.Controls.Add(this._bPrevCycle);
 		this.Controls.Add(this._dasaInfo);
 		this.Controls.Add(this._dasaItemList);
-		this.Name =  "DasaControl";
+		this.Name =  "MhoraDasaControl";
 		this.Size =  new System.Drawing.Size(440, 312);
 		this.Load += new System.EventHandler(this.DasaControl_Load);
 		this.ResumeLayout(false);
@@ -973,7 +973,7 @@ public class DasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private object SetDasaOptions(object o)
 	{
-		var opts = (Elements.Dasas.Dasa.DasaOptions) o;
+		var opts = (Dasa.DasaOptions) o;
 		DasaOptions.Copy(opts);
 		SetDasaYearType();
 		Reset();

@@ -21,6 +21,7 @@ using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 using Mhora.Tables;
+using Mhora.Util;
 
 namespace Mhora.Elements.Dasas.RasiDasa;
 
@@ -32,7 +33,7 @@ public class MandookaDasa : Dasa, IDasa
 	public MandookaDasa(Horoscope h)
 	{
 		_h       = h;
-		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNavamsaDasaRasi(_h));
+		_options = new RasiDasaUserOptions(_h, _h.RulesNavamsaDasaRasi());
 	}
 
 	public double ParamAyus()
@@ -135,7 +136,7 @@ public class MandookaDasa : Dasa, IDasa
 
 	public string Description()
 	{
-		return "Mandooka Dasa (seeded from) " + _options.Division.NumPartsInDivisionString();
+		return "Mandooka Dasa (seeded from) " + _options.Division.GetEnumDescription();
 	}
 
 	public object GetOptions()

@@ -2,7 +2,7 @@
 using Mhora.Definitions;
 using Mhora.Elements;
 
-namespace Mhora.Components.Varga;
+namespace Mhora.Components.VargaControl;
 
 public class ChartItems
 {

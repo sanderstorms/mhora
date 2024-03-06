@@ -66,6 +66,8 @@ public class Division : ICloneable
 		set => mMultipleDivisions = value;
 	}
 
+	public static implicit operator DivisionType(Division d) => d.MultipleDivisions[0].Varga;
+
 	public object Clone()
 	{
 		var dRet = new Division();

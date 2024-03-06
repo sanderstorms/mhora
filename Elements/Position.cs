@@ -184,7 +184,7 @@ public class Position
 	{
 		Debug.Assert(cusps.Length == 13);
 
-		var zlagna = H.GetPosition(Body.Lagna).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse;
+		var zlagna = H.GetPosition(Body.Lagna).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
 		for (var i = 0; i < 12; i++)
 		{
 			if (Longitude.Sub(cusps[i]).Value < cusps[i + 1].Sub(cusps[i]).Value)
@@ -1199,7 +1199,7 @@ public class Position
 	private DivisionPosition ToDivisionPositionNavamsaDwadasamsa()
 	{
 		var bp = (Position) Clone();
-		bp.Longitude = bp.ExtrapolateLongitude(new Division(DivisionType.Navamsa));
+		bp.Longitude = bp.ExtrapolateLongitude(DivisionType.Navamsa);
 		var dp = bp.ToDivisionPositionDwadasamsa(12);
 		PopulateRegularCusps(108, dp);
 		return dp;
@@ -1208,11 +1208,17 @@ public class Position
 	private DivisionPosition ToDivisionPositionDwadasamsaDwadasamsa()
 	{
 		var bp = (Position) Clone();
-		bp.Longitude = bp.ExtrapolateLongitude(new Division(DivisionType.Dwadasamsa));
+		bp.Longitude = bp.ExtrapolateLongitude(DivisionType.Dwadasamsa);
 		var dp = bp.ToDivisionPositionDwadasamsa(12);
 		PopulateRegularCusps(144, dp);
 		return dp;
 	}
+
+	public DivisionPosition ToDivisionPosition(DivisionType varga)
+	{
+		return ToDivisionPosition(new Division(varga));
+	}
+
 
 	/// <summary>
 	///     Calculated any known Vargas positions. Simply calls the appropriate
@@ -1301,6 +1307,11 @@ public class Position
 
 		Trace.Assert(false, "DivisionPosition Error");
 		return new DivisionPosition(Name, BodyType, ZodiacHouse.Ari, 0, 0, 0);
+	}
+
+	public Longitude ExtrapolateLongitude(DivisionType varga)
+	{
+		return ExtrapolateLongitude(new Division(varga));
 	}
 
 	public Longitude ExtrapolateLongitude(Division d)

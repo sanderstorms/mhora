@@ -55,7 +55,7 @@ namespace Mhora.Elements.Calculation;
 
 public class FindYogas
 {
-	private readonly Division _dtype;
+	private readonly DivisionType _dtype;
 
 	private readonly Horoscope   _h;
 	private readonly ZodiacHouse _zhLagna;
@@ -65,14 +65,14 @@ public class FindYogas
 	private XmlYogaNode _xmlNode;
 
 
-	public FindYogas(Horoscope h, Division dtype)
+	public FindYogas(Horoscope h, DivisionType dtype)
 	{
 		_h       = h;
 		_dtype  = dtype;
 		_zhLagna = _h.GetPosition(Body.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
 	}
 
-	public static void Test(Horoscope h, Division dtype)
+	public static void Test(Horoscope h, DivisionType dtype)
 	{
 		var fy = new FindYogas(h, dtype);
 		//fy.evaluateYoga ("gr<sun> in hse <1st>");
@@ -520,7 +520,7 @@ public class FindYogas
 		}
 	}
 
-	public Division StringToDivision(string s)
+	public DivisionType StringToDivision(string s)
 	{
 		// trim trailing @
 		s = s.Substring(0, s.Length - 1);
@@ -544,7 +544,7 @@ public class FindYogas
 				break;
 		}
 
-		return new Division(dtype);
+		return dtype;
 	}
 
 	public ZodiacHouse StringToRasi(string s)
@@ -641,7 +641,7 @@ public class FindYogas
 		}
 	}
 
-	public string ReplaceBasicNodeTermHelper(Division d, string cat, string val)
+	public string ReplaceBasicNodeTermHelper(DivisionType varga, string cat, string val)
 	{
 		var              tempVal = 0;
 		ZodiacHouse zh;
@@ -673,28 +673,28 @@ public class FindYogas
 				break;
 			case "rasiof:":
 				b = StringToBody(val);
-				return _h.GetPosition(b).ToDivisionPosition(d).ZodiacHouse.ToString().ToLower();
+				return _h.GetPosition(b).ToDivisionPosition(varga).ZodiacHouse.ToString().ToLower();
 			case "lordof:":
 				tempVal = StringToHouse(val);
 				if (tempVal > 0)
 				{
-					return _h.LordOfZodiacHouse(_zhLagna.Add(tempVal), d, false).ToString().ToLower();
+					return _h.LordOfZodiacHouse(_zhLagna.Add(tempVal), varga, false).ToString().ToLower();
 				}
 
 				zh = StringToRasi(val);
-				return _h.LordOfZodiacHouse(zh, d, false).ToString().ToLower();
+				return _h.LordOfZodiacHouse(zh, varga, false).ToString().ToLower();
 			case "simplelordof:":
 				tempVal = StringToHouse(val);
 				if (tempVal > 0)
 				{
-					return _h.LordOfZodiacHouse(_zhLagna.Add(tempVal), d, false).ToString().ToLower();
+					return _h.LordOfZodiacHouse(_zhLagna.Add(tempVal), varga, false).ToString().ToLower();
 				}
 
 				zh = StringToRasi(val);
 				return zh.SimpleLordOfZodiacHouse().ToString().ToLower();
 			case "dispof:":
 				b = StringToBody(val);
-				return _h.LordOfZodiacHouse(_h.GetPosition(b).ToDivisionPosition(d).ZodiacHouse, d, false).ToString().ToLower();
+				return _h.LordOfZodiacHouse(_h.GetPosition(b).ToDivisionPosition(varga).ZodiacHouse, varga, false).ToString().ToLower();
 		}
 
 		return val;
@@ -748,7 +748,7 @@ public class FindYogas
 		return alVals;
 	}
 
-	public string ReplaceBasicNodeTerm(Division d, string sTerm)
+	public string ReplaceBasicNodeTerm(DivisionType varga, string sTerm)
 	{
 		var sDiv   = GetDivision(sTerm);
 		var sCat   = GetCategory(sTerm);
@@ -757,7 +757,7 @@ public class FindYogas
 		var hash = new Hashtable();
 		foreach (string s in alVals)
 		{
-			var sRep = ReplaceBasicNodeTermHelper(d, sCat, s);
+			var sRep = ReplaceBasicNodeTermHelper(varga, sCat, s);
 			if (!hash.ContainsKey(sRep))
 			{
 				hash.Add(sRep, null);
@@ -1032,12 +1032,12 @@ public class FindYogas
 		}
 
 		public Node[]   Children;
-		public Division Dtype;
+		public DivisionType Dtype;
 		public Node     Parent;
 		public string   Term;
 		public EType    Type;
 
-		public Node(Node parent, string term, Division dtype)
+		public Node(Node parent, string term, DivisionType dtype)
 		{
 			Parent   = parent;
 			Term     = term;

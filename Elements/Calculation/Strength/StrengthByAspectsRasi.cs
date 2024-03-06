@@ -47,7 +47,7 @@ public static class AspectsRasi
 	{
 		var ret = 0;
 
-		var bl = grahas.Horoscope.LordOfZodiacHouse(zx, new Division(grahas.Varga), simpleLord);
+		var bl = grahas.Horoscope.LordOfZodiacHouse(zx, grahas.Varga, simpleLord);
 		var zl = grahas [bl].Rashi;
 
 		if (zj.RasiDristi(zx) || zj == zx)

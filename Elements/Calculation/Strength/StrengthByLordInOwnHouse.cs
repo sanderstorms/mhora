@@ -46,7 +46,7 @@ public static class LordInOwnHouse
 		var ret = 0;
 
 		var zh = (zodiacHouse);
-		var bl = grahas.Horoscope.LordOfZodiacHouse(zh, new Division(grahas.Varga), simpleLord);
+		var bl = grahas.Horoscope.LordOfZodiacHouse(zh, grahas.Varga, simpleLord);
 		var pl = grahas [bl];
 		var pj = grahas [Body.Jupiter];
 		var pm = grahas [Body.Mercury];

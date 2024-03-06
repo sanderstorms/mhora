@@ -50,7 +50,7 @@ public class TrikonaDasa : Dasa, IDasa
 	public TrikonaDasa(Horoscope h)
 	{
 		_h       = h;
-		_options = new UserOptions(_h, FindStronger.RulesNavamsaDasaRasi(_h));
+		_options = new UserOptions(_h, _h.RulesNavamsaDasaRasi());
 	}
 
 	public void RecalculateOptions()
@@ -156,11 +156,11 @@ public class TrikonaDasa : Dasa, IDasa
 		Graha graha;
 		if (rashi == ZodiacHouse.Sco)
 		{
-			graha = rashi.GrahaList [_options.ColordSco];
+			graha = rashi.Base [_options.ColordSco];
 		}
 		else if (rashi == ZodiacHouse.Aqu)
 		{
-			graha = rashi.GrahaList[_options.ColordAqu];
+			graha = rashi.Base[_options.ColordAqu];
 		}
 		else
 		{

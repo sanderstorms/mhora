@@ -26,8 +26,8 @@ public static class LordsLongitude
 {
 	public static int StrengthByLordsLongitude(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-		var lora = grahas.Horoscope.LordOfZodiacHouse(za, new Division(grahas.Varga), simpleLord);
-		var lorb = grahas.Horoscope.LordOfZodiacHouse(zb, new Division(grahas.Varga), simpleLord);
+		var lora = grahas.Horoscope.LordOfZodiacHouse(za, grahas.Varga, simpleLord);
+		var lorb = grahas.Horoscope.LordOfZodiacHouse(zb, grahas.Varga, simpleLord);
 		var offa = grahas [lora].HouseOffset;
 		var offb = grahas [lorb].HouseOffset;
 

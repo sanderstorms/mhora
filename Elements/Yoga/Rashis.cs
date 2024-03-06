@@ -5,38 +5,33 @@ using Mhora.Definitions;
 
 namespace Mhora.Elements.Yoga
 {
-	public class Rashis : IReadOnlyCollection<Rashi>
+	public class Rashis : IReadOnlyList<Rashi>
 	{
-		private readonly DivisionType _varga;
-		private readonly List<Rashi>  _rashis;
+		private readonly Grahas      _grahas;
+		private readonly List<Rashi> _rashis;
 
-		internal Rashis (DivisionType varga)
+		internal Rashis (Grahas grahas)
 		{
-			_varga = varga;
+			_grahas = grahas;
 			_rashis = new List<Rashi>();
 			foreach (ZodiacHouse zh in Enum.GetValues(typeof(ZodiacHouse)))
 			{
-				_rashis.Add(new Rashi(zh));
+				_rashis.Add(new Rashi(zh, this));
 			}
 		}
 
-		public DivisionType Varga => _varga;
+		public DivisionType Varga  => _grahas.Varga;
+		public Grahas       Base => _grahas;
 
-		public Rashi this [ZodiacHouse zh]
-		{
-			get => Find(zh);
-		}
+		public Rashi this [ZodiacHouse zh] => Find(zh);
+		public Rashi this[int index] => _rashis [index];
 
-		public Rashis (List<Rashi> rashis)
-		{
-			_rashis = rashis;
-		}
 
-		internal void Examine(Grahas grahaList)
+		internal void Examine()
 		{
 			foreach (var rashi in _rashis)
 			{
-				rashi.Examine(grahaList);
+				rashi.Examine();
 			}
 		}
 

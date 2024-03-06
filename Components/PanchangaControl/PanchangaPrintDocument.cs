@@ -20,16 +20,15 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.Drawing.Printing;
-using Mhora.Components.Varga;
+using Mhora.Components.VargaControl;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Calculation;
-using Mhora.SwissEph;
 using Mhora.Tables;
 using Mhora.Util;
 
-namespace Mhora.Components.Panchanga;
+namespace Mhora.Components.PanchangaControl;
 
 /// <summary>
 ///     Summary description for PanchangaPrintDocument.
@@ -48,7 +47,7 @@ public class PanchangaPrintDocument : PrintDocument
 	private readonly ArrayList              locals;
 
 	private readonly int                          margin_offset = 30;
-	private readonly PanchangaControl.UserOptions opts;
+	private readonly MhoraPanchangaControl.UserOptions opts;
 	private readonly Pen                          p = Pens.Black;
 	public           bool                         bPrintLagna;
 
@@ -86,7 +85,7 @@ public class PanchangaPrintDocument : PrintDocument
 	private int wday_offset;
 	private int wday_width;
 
-	public PanchangaPrintDocument(PanchangaControl.UserOptions _opts, Horoscope _h, PanchangaGlobalMoments _globals, ArrayList _locals)
+	public PanchangaPrintDocument(MhoraPanchangaControl.UserOptions _opts, Horoscope _h, PanchangaGlobalMoments _globals, ArrayList _locals)
 	{
 		h       = _h;
 		opts    = _opts;
@@ -339,9 +338,9 @@ public class PanchangaPrintDocument : PrintDocument
 				for (var j = 0; j < numSMYogas; j++)
 				{
 					var pmi     = (PanchangaMomentInfo) globals.smyogas_ut[local.smyoga_index_start + 1 + j];
-					var sm      = new SunMoonYoga((SunMoonYoga.Name) pmi.info);
+					var sm      = (SunMoonYoga) pmi.info;
 					var mSMYoga = h.Moment(pmi.ut);
-					g.DrawString(sm.value.ToString(), f, b, sm_name_offset, j                                     * f.Height);
+					g.DrawString(sm.ToString(), f, b, sm_name_offset, j                                     * f.Height);
 					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, sm_time_offset, j * f.Height);
 				}
 			}

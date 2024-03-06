@@ -141,7 +141,7 @@ public class MoolaDasa : Dasa, IDasa
 
 		// Count to moola trikona - 1.
 		// Use Aqu / Sco as MT houses for Rahu / Ketu
-		var dpPlt = _h.GetPosition(plt).ToDivisionPosition(new Division(DivisionType.Rasi));
+		var dpPlt = _h.GetPosition(plt).ToDivisionPosition(_options.Dtype);
 		var zhPlt = dpPlt.ZodiacHouse;
 		var zhMt  = plt.GetMoolaTrikonaRasi();
 		if (plt == Body.Rahu)
@@ -187,7 +187,7 @@ public class MoolaDasa : Dasa, IDasa
 	public class UserOptions : ICloneable
 	{
 		private readonly Horoscope _h;
-		public           Division  Dtype = new(DivisionType.Rasi);
+		public           DivisionType  Dtype = DivisionType.Rasi;
 		protected        Body      MSeedBody;
 		private          Grahas    _grahas;
 
@@ -303,12 +303,12 @@ public class MoolaDasa : Dasa, IDasa
 				zh.Add(12)
 			};
 
-			var rules = FindStronger.RulesMoolaDasaRasi(_h);
+			var rules = _h.RulesMoolaDasaRasi();
 			zRet[0] = grahas.GetOrderedHouses(zhK, rules);
 			zRet[1] = grahas.GetOrderedHouses(zhP, rules);
 			zRet[2] = grahas.GetOrderedHouses(zhA, rules);
 
-			grahas = _h.FindGrahas(DivisionType.Rasi);
+			grahas = _h.FindGrahas(Dtype);
 
 			var zhSat = grahas [Body.Saturn].Rashi;
 			var zhKet = grahas [Body.Ketu].Rashi;
@@ -349,7 +349,7 @@ public class MoolaDasa : Dasa, IDasa
 		public void CalculateGrahaStrengths()
 		{
 			var grahas = _h.FindGrahas(Dtype);
-			var rules  = FindStronger.RulesNaisargikaDasaGraha(_h);
+			var rules  = _h.RulesNaisargikaDasaGraha();
 			GrahaStrengths = new OrderedGrahas();
 			foreach (var oz in RasiStrengths)
 			{

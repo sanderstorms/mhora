@@ -18,13 +18,13 @@ public static class CuspTransitSearch
 		return 0.0;
 	}
 
-	public static double TransitSearchDirect(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
+	public static double TransitSearchDirect(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, Ref <bool> bForward)
 	{
-		var bDiscard = true;
+		Ref<bool> bDiscard = new(true);
 
-		var t        = new Transit(h, SearchBody);
+		var graha    = h.FindGrahas(DivisionType.Rasi) [SearchBody];
 		var ut_base  = h.UniversalTime(StartDate);
-		var lon_curr = t.GenericLongitude(ut_base, ref bDiscard);
+		var lon_curr = graha.CalculateLongitude(ut_base, bDiscard);
 
 		double diff = 0;
 		diff = TransitPoint.Sub(lon_curr).Value;
@@ -34,29 +34,32 @@ public static class CuspTransitSearch
 			diff -= 360.0;
 		}
 
-		var ut_diff_approx = diff / 360.0 * DirectSpeed(SearchBody);
-		double found_ut = 0;
+		var    ut_diff_approx = diff / 360.0 * DirectSpeed(SearchBody);
+		double found_ut       = 0;
+		double ut             = 0;
 
 		if (SearchBody == Body.Lagna)
 		{
-			found_ut = t.LinearSearchBinary(ut_base + ut_diff_approx - 3.0 / 24.0, ut_base + ut_diff_approx + 3.0 / 24.0, TransitPoint, t.GenericLongitude);
+			ut       = ut_base + ut_diff_approx - 3.0 / 24.0;
+			found_ut = ut.LinearSearchBinary(ut_base + ut_diff_approx + 3.0 / 24.0, TransitPoint, graha.CalculateLongitude);
 		}
 		else
 		{
-			found_ut = t.LinearSearch(ut_base + ut_diff_approx, TransitPoint, t.GenericLongitude);
+			ut       = ut_base + ut_diff_approx;
+			found_ut = ut.LinearSearch(TransitPoint, graha.CalculateLongitude);
 		}
 
-		FoundLon.Value = t.GenericLongitude(found_ut, ref bForward).Value;
-		bForward       = true;
+		FoundLon.Value = graha.CalculateLongitude(found_ut, bForward).Value;
+		bForward.Value = true;
 		return found_ut;
 	}
 
 
-	public static double TransitSearch(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, ref bool bForward)
+	public static double TransitSearch(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, Ref <bool> bForward)
 	{
 		if (SearchBody == Body.Sun || SearchBody == Body.Moon)
 		{
-			return h.TransitSearchDirect(SearchBody, StartDate, Forward, TransitPoint, FoundLon, ref bForward);
+			return h.TransitSearchDirect(SearchBody, StartDate, Forward, TransitPoint, FoundLon, bForward);
 		}
 
 		if (((int) SearchBody <= (int) Body.Moon || (int) SearchBody > (int) Body.Saturn) && SearchBody != Body.Lagna)
@@ -78,7 +81,7 @@ public static class CuspTransitSearch
 			found_ut = r.GetTransitBackward(julday_ut, TransitPoint);
 		}
 
-		FoundLon.Value = r.GetLon(found_ut, ref bForward).Value;
+		FoundLon.Value = r.GetLon(found_ut, bForward).Value;
 
 		return found_ut;
 	}

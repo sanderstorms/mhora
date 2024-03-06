@@ -134,7 +134,7 @@ public class YogaPraveshDasa : Dasa, IDasa
 			var l     = lMoon.Add(lSun);
 
 			// this seems wrong. Why should we need to go to the next yoga here?
-			var y = l.ToSunMoonYoga().add(2);
+			var y = l.ToSunMoonYoga().Add(2);
 			return y.ToString();
 		}
 

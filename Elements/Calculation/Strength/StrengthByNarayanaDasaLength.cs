@@ -44,7 +44,7 @@ public static class NarayanaDasaLength
 
 	private static int Value(this Grahas grahas, ZodiacHouse zh, bool simpleLord)
 	{
-		var bl = grahas.Horoscope.LordOfZodiacHouse(zh, new Division(grahas.Varga), simpleLord);
+		var bl = grahas.Horoscope.LordOfZodiacHouse(zh, grahas.Varga, simpleLord);
 		return Dasa.NarayanaDasaLength(zh, grahas [bl]);
 	}
 

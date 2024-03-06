@@ -34,7 +34,7 @@ using Mhora.Elements.Yoga;
 using Mhora.Tables;
 using Mhora.Util;
 
-namespace Mhora.Components.Varga;
+namespace Mhora.Components.VargaControl;
 
 /// <summary>
 ///     Summary description for DivisionalChart.
@@ -1979,7 +1979,6 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			Varga      = new Division(DivisionType.Rasi);
 			ViewStyle  = EViewStyle.Normal;
 			ChartStyle = MhoraGlobalOptions.Instance.VargaStyle;
-			Varga      = new Division(DivisionType.Rasi);
 			innerVarga = new Division(DivisionType.Rasi);
 			ShowInner  = false;
 		}

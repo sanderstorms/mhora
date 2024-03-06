@@ -35,7 +35,7 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 	public VimsottariDasa(Horoscope h)
 	{
 		var grahas = h.FindGrahas(DivisionType.BhavaPada);
-		var rules  = FindStronger.RulesVimsottariGraha(h);
+		var rules  = h.RulesVimsottariGraha();
 		Common    = this;
 		Options   = new UserOptions();
 		Horoscope = h;

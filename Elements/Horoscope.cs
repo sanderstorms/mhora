@@ -17,10 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows.Forms;
 using Mhora.Components.Delegates;
 using Mhora.Database.Settings;
@@ -28,7 +26,6 @@ using Mhora.Definitions;
 using Mhora.Elements.Calculation;
 using Mhora.Elements.Yoga;
 using Mhora.SwissEph;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -40,7 +37,6 @@ namespace Mhora.Elements;
 public class Horoscope : ICloneable
 {
 	private readonly Dictionary<DivisionType, Grahas> _grahas = new ();
-	private readonly Dictionary<DivisionType, Rashis> _rashis = new ();
 
 	private          Time                             _sunrise;
 	private          Time                             _sunset;
@@ -169,13 +165,7 @@ public class Horoscope : ICloneable
 
 	public Rashis FindRashis(DivisionType varga)
 	{
-		if (_rashis.TryGetValue(varga, out var rashis) == false)
-		{
-			rashis = new Rashis(varga);
-			_rashis.Add(varga, rashis);
-		}
-
-		return (rashis);
+		return FindGrahas(varga);
 	}
 
 	public Grahas FindGrahas(Division division)
@@ -206,12 +196,12 @@ public class Horoscope : ICloneable
 
 	public event EvtChanged Changed;
 
-	public Body LordOfZodiacHouse(ZodiacHouse zh, Division dtype, bool simpleLord)
+	public Body LordOfZodiacHouse(ZodiacHouse zh, DivisionType varga, bool simpleLord)
 	{
 		if (simpleLord == false)
 		{
-			var grahas = _grahas[dtype.MultipleDivisions[0].Varga];
-			var rules = FindStronger.RulesStrongerCoLord(this);
+			var grahas = _grahas[varga];
+			var rules = this.RulesStrongerCoLord();
 
 			switch (zh)
 			{
@@ -509,10 +499,10 @@ public class Horoscope : ICloneable
 		AddOtherPosition("Ra-Ke m.p", rahPos.Add(90.0));
 		AddOtherPosition("Ke-Ra m.p", rahPos.Add(270.0));
 
-		var l1Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse(), new Division(DivisionType.Rasi), false)).Longitude;
-		var l6Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), new Division(DivisionType.Rasi), false)).Longitude;
-		var l8Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), new Division(DivisionType.Rasi), false)).Longitude;
-		var l12Pos = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), new Division(DivisionType.Rasi), false)).Longitude;
+		var l1Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse(), DivisionType.Rasi, false)).Longitude;
+		var l6Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), DivisionType.Rasi, false)).Longitude;
+		var l8Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), DivisionType.Rasi, false)).Longitude;
+		var l12Pos = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), DivisionType.Rasi, false)).Longitude;
 
 		var mritSatPos   = new Longitude(mandiPos.Value * 8.0 + satPos.Value   * 8.0);
 		var mritJup2Pos  = new Longitude(satPos.Value   * 9.0 + mandiPos.Value * 18.0 + jupPos.Value  * 18.0);

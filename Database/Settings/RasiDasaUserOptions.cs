@@ -33,7 +33,7 @@ public class RasiDasaUserOptions : ICloneable
 	protected Horoscope             H;
 	protected Body                  MCoLordAqu;
 	protected Body                  MCoLordSco;
-	protected Division              MDtype;
+	protected DivisionType          MDtype = DivisionType.Rasi;
 	protected OrderedZodiacHouses   MKetuExceptions;
 	protected List<RashiStrength>   MRules;
 	protected OrderedZodiacHouses   MSaturnExceptions;
@@ -48,7 +48,7 @@ public class RasiDasaUserOptions : ICloneable
 		MSeventhStrengths = new OrderedZodiacHouses[6];
 		MSaturnExceptions = new OrderedZodiacHouses();
 		MKetuExceptions   = new OrderedZodiacHouses();
-		MDtype            = new Division(DivisionType.Rasi);
+		MDtype            = DivisionType.Rasi;
 
 		CalculateCoLords();
 		CalculateExceptions();
@@ -56,18 +56,11 @@ public class RasiDasaUserOptions : ICloneable
 		CalculateSeventhStrengths();
 	}
 
-	[PGNotVisible]
-	public Division Division
+	[PGDisplayName("Division")]
+	public DivisionType Division
 	{
 		get => MDtype;
 		set => MDtype = value;
-	}
-
-	[PGDisplayName("Division")]
-	public DivisionType UiVarga
-	{
-		get => MDtype.MultipleDivisions[0].Varga;
-		set => MDtype = new Division(value);
 	}
 
 	[PropertyOrder(99)]
@@ -132,7 +125,7 @@ public class RasiDasaUserOptions : ICloneable
 	{
 		var uo = new RasiDasaUserOptions(H, MRules)
 		{
-			Division = (Division) Division.Clone(),
+			Division = Division,
 			ColordAqu = ColordAqu,
 			ColordSco = ColordSco,
 			MSeed = MSeed,
@@ -176,7 +169,7 @@ public class RasiDasaUserOptions : ICloneable
 			bRecomputeChanged = true;
 		}
 
-		Division   = (Division) uo.Division.Clone();
+		Division   = uo.Division;
 		ColordAqu  = uo.ColordAqu;
 		ColordSco  = uo.ColordSco;
 		MSeed      = uo.MSeed;
@@ -217,7 +210,7 @@ public class RasiDasaUserOptions : ICloneable
 	public void CalculateCoLords()
 	{
 		var grahas = H.FindGrahas(MDtype);
-		var rules  = FindStronger.RulesStrongerCoLord(H);
+		var rules  = H.RulesStrongerCoLord();
 		MCoLordAqu = grahas.Stronger(Body.Saturn, Body.Rahu, true, rules, out _);
 		MCoLordSco = grahas.Stronger(Body.Mars, Body.Ketu, true, rules, out _);
 	}

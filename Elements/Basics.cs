@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.Text;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
+using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.SwissEph.Helpers;
 using Mhora.Util;
@@ -304,4 +305,33 @@ public static class Basics
 
 		return stdGrahas;
 	}
+
+	public static SunMoonYoga Add(this SunMoonYoga value, int i)
+	{
+		var snum = ((int) value + i - 1).NormalizeInc(1, 27);
+		return (SunMoonYoga) snum;
+	}
+
+	public static SunMoonYoga AddReverse(this SunMoonYoga value, int i)
+	{
+		var snum = ((int) value - i + 1).NormalizeInc(1, 27);
+		return (SunMoonYoga)snum;
+	}
+
+	public static Body Lord(this SunMoonYoga value)
+	{
+		switch ((int) value % 9)
+		{
+			case 1:  return Body.Saturn;
+			case 2:  return Body.Mercury;
+			case 3:  return Body.Ketu;
+			case 4:  return Body.Venus;
+			case 5:  return Body.Sun;
+			case 6:  return Body.Moon;
+			case 7:  return Body.Mars;
+			case 8:  return Body.Rahu;
+			default: return Body.Jupiter;
+		}
+	}
+
 }

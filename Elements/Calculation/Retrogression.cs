@@ -84,7 +84,7 @@ public class Retrogression
 			return GetLagnaTransitBackward(ut, lonToFind);
 		}
 
-		var becomesDirect = true;
+		Ref<bool> becomesDirect = new(true);
 		var utCurr       = ut;
 		var utNext       = ut;
 
@@ -98,7 +98,7 @@ public class Retrogression
 				utStart -= 5.0;
 			}
 
-			utNext = FindNextCuspBackward(utStart, ref becomesDirect);
+			utNext = FindNextCuspBackward(utStart, becomesDirect);
 
 			var bpNext = _h.CalculateSingleBodyPosition(utCurr, _b.SwephBody(), _b, BodyType.Other);
 			var bpCurr = _h.CalculateSingleBodyPosition(utNext, _b.SwephBody(), _b, BodyType.Other);
@@ -194,7 +194,7 @@ public class Retrogression
 		}
 
 
-		var becomesDirect = true;
+		Ref<bool> becomesDirect = new(true);
 		var utCurr       = ut;
 		var utNext       = ut;
 
@@ -208,7 +208,7 @@ public class Retrogression
 				utStart += GetStep();
 			}
 
-			utNext = FindNextCuspForward(utStart, ref becomesDirect);
+			utNext = FindNextCuspForward(utStart, becomesDirect);
 
 			var bpCurr = _h.CalculateSingleBodyPosition(utCurr, _b.SwephBody(), _b, BodyType.Other);
 			var bpNext = _h.CalculateSingleBodyPosition(utNext, _b.SwephBody(), _b, BodyType.Other);
@@ -243,7 +243,7 @@ public class Retrogression
 		return bp.SpeedLongitude;
 	}
 
-	public Longitude GetLon(double ut, ref bool bForward)
+	public Longitude GetLon(double ut, Ref <bool> bForward)
 	{
 		if (_b == Body.Lagna)
 		{
@@ -251,7 +251,7 @@ public class Retrogression
 		}
 
 		var bp = _h.CalculateSingleBodyPosition(ut, _b.SwephBody(), _b, BodyType.Other);
-		bForward = bp.SpeedLongitude >= 0;
+		bForward.Value = (bp.SpeedLongitude >= 0) ? true : false;
 		return bp.Longitude;
 	}
 
@@ -349,7 +349,7 @@ public class Retrogression
 		return utEnd;
 	}
 
-	public double FindNextCuspBackward(double startUt, ref bool becomesDirect)
+	public double FindNextCuspBackward(double startUt, Ref <bool> becomesDirect)
 	{
 		var utStep = 5.0;
 		var bp      = _h.CalculateSingleBodyPosition(startUt, _b.SwephBody(), _b, BodyType.Other);
@@ -360,7 +360,7 @@ public class Retrogression
 			startUt = GotoNextRetroSolarCusp(startUt);
 			var lowerUt  = startUt;
 			var higherUt = startUt;
-			becomesDirect = false;
+			becomesDirect.Value = false;
 			while (true)
 			{
 				lowerUt  = higherUt;
@@ -395,7 +395,7 @@ public class Retrogression
 		{
 			var lowerUt  = startUt;
 			var higherUt = startUt;
-			becomesDirect = true;
+			becomesDirect.Value = true;
 			while (true)
 			{
 				lowerUt  = higherUt;
@@ -423,7 +423,7 @@ public class Retrogression
 		}
 	}
 
-	public double FindNextCuspForward(double startUt, ref bool becomesDirect)
+	public double FindNextCuspForward(double startUt, Ref <bool> becomesDirect)
 	{
 		var utStep = 1.0;
 		var bp      = _h.CalculateSingleBodyPosition(startUt, _b.SwephBody(), _b, BodyType.Other);
@@ -434,7 +434,7 @@ public class Retrogression
 			startUt = GotoNextRetroSolarCusp(startUt);
 			var lowerUt  = startUt;
 			var higherUt = startUt;
-			becomesDirect = false;
+			becomesDirect.Value = false;
 			while (true)
 			{
 				lowerUt  = higherUt;
@@ -454,7 +454,7 @@ public class Retrogression
 
 				if (bpL.SpeedLongitude < 0 && bpH.SpeedLongitude < 0)
 				{
-					return FindNextCuspForward(lowerUt, ref becomesDirect);
+					return FindNextCuspForward(lowerUt, becomesDirect);
 				}
 			}
 
@@ -467,7 +467,7 @@ public class Retrogression
 		{
 			var lowerUt  = startUt;
 			var higherUt = startUt;
-			becomesDirect = true;
+			becomesDirect.Value = true;
 			while (true)
 			{
 				lowerUt  = higherUt;
@@ -484,7 +484,7 @@ public class Retrogression
 
 				if (bpL.SpeedLongitude > 0 && bpH.SpeedLongitude > 0)
 				{
-					return FindNextCuspForward(lowerUt, ref becomesDirect);
+					return FindNextCuspForward(lowerUt, becomesDirect);
 				}
 			}
 

@@ -50,7 +50,7 @@ public class SuDasa : Dasa, IDasa
 	public SuDasa(Horoscope h)
 	{
 		_h       = h;
-		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNarayanaDasaRasi(_h));
+		_options = new RasiDasaUserOptions(_h, _h.RulesNarayanaDasaRasi());
 	}
 
 	public new void DivisionChanged(Division div)

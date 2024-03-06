@@ -20,10 +20,10 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
-using Mhora.Components.Dasa;
-using Mhora.Components.Panchanga;
-using Mhora.Components.Transit;
-using Mhora.Components.Varga;
+using Mhora.Components.DasaControl;
+using Mhora.Components.PanchangaControl;
+using Mhora.Components.TransitControl;
+using Mhora.Components.VargaControl;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
@@ -98,7 +98,7 @@ public class MhoraControlContainer : UserControl
 				mc = new VaraChakra(h);
 				break;
 			case BaseUserOptions.ViewType.Panchanga:
-				mc = new PanchangaControl(h);
+				mc = new MhoraPanchangaControl(h);
 				break;
 			case BaseUserOptions.ViewType.KutaMatching:
 			{
@@ -120,59 +120,59 @@ public class MhoraControlContainer : UserControl
 			}
 				break;
 			case BaseUserOptions.ViewType.DasaVimsottari:
-				mc = new DasaControl(h, new VimsottariDasa(h));
+				mc = new MhoraDasaControl(h, new VimsottariDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaYogini:
-				mc = new DasaControl(h, new YoginiDasa(h));
+				mc = new MhoraDasaControl(h, new YoginiDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaShodashottari:
-				mc = new DasaControl(h, new ShodashottariDasa(h));
+				mc = new MhoraDasaControl(h, new ShodashottariDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaAshtottari:
-				mc = new DasaControl(h, new AshtottariDasa(h));
+				mc = new MhoraDasaControl(h, new AshtottariDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaTithiAshtottari:
-				mc = new DasaControl(h, new TithiAshtottariDasa(h));
+				mc = new MhoraDasaControl(h, new TithiAshtottariDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaKaranaChaturashitiSama:
-				mc = new DasaControl(h, new KaranaChaturashitiSamaDasa(h));
+				mc = new MhoraDasaControl(h, new KaranaChaturashitiSamaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaYogaVimsottari:
-				mc = new DasaControl(h, new YogaVimsottariDasa(h));
+				mc = new MhoraDasaControl(h, new YogaVimsottariDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaLagnaKendradiRasi:
-				mc = new DasaControl(h, new LagnaKendradiRasiDasa(h));
+				mc = new MhoraDasaControl(h, new LagnaKendradiRasiDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaKarakaKendradiGraha:
-				mc = new DasaControl(h, new KarakaKendradiGrahaDasa(h));
+				mc = new MhoraDasaControl(h, new KarakaKendradiGrahaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaKalachakra:
-				mc = new DasaControl(h, new KalachakraDasa(h));
+				mc = new MhoraDasaControl(h, new KalachakraDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaMoola:
-				mc = new DasaControl(h, new MoolaDasa(h));
+				mc = new MhoraDasaControl(h, new MoolaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaNavamsa:
-				mc = new DasaControl(h, new NavamsaDasa(h));
+				mc = new MhoraDasaControl(h, new NavamsaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaMandooka:
-				mc = new DasaControl(h, new MandookaDasa(h));
+				mc = new MhoraDasaControl(h, new MandookaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaChara:
-				mc = new DasaControl(h, new CharaDasa(h));
+				mc = new MhoraDasaControl(h, new CharaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaTrikona:
-				mc = new DasaControl(h, new TrikonaDasa(h));
+				mc = new MhoraDasaControl(h, new TrikonaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaSu:
-				mc = new DasaControl(h, new SuDasa(h));
+				mc = new MhoraDasaControl(h, new SuDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaSudarshanaChakra:
-				mc = new DasaControl(h, new SudarshanaChakraDasa(h));
+				mc = new MhoraDasaControl(h, new SudarshanaChakraDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaMudda:
 			{
-				var dc = new DasaControl(h, new VimsottariDasa(h));
+				var dc = new MhoraDasaControl(h, new VimsottariDasa(h));
 				dc.DasaOptions.YearType    = ToDate.DateType.SolarYear;
 				dc.DasaOptions.YearLength  = 360;
 				dc.DasaOptions.Compression = 1;
@@ -182,7 +182,7 @@ public class MhoraControlContainer : UserControl
 				break;
 			case BaseUserOptions.ViewType.DasaSudarshanaChakraCompressed:
 			{
-				var dc = new DasaControl(h, new SudarshanaChakraDasa(h));
+				var dc = new MhoraDasaControl(h, new SudarshanaChakraDasa(h));
 				dc.DasaOptions.YearType    = ToDate.DateType.SolarYear;
 				dc.DasaOptions.YearLength  = 360;
 				dc.DasaOptions.Compression = 1;
@@ -192,14 +192,14 @@ public class MhoraControlContainer : UserControl
 				break;
 			case BaseUserOptions.ViewType.DasaYogaPraveshVimsottariCompressedYoga:
 			{
-				var dc = new DasaControl(h, new YogaVimsottariDasa(h));
+				var dc = new MhoraDasaControl(h, new YogaVimsottariDasa(h));
 				dc.CompressToYogaPraveshaYearYoga();
 				mc = dc;
 			}
 				break;
 			case BaseUserOptions.ViewType.DasaTithiPraveshAshtottariCompressedTithi:
 			{
-				var dc = new DasaControl(h, new TithiAshtottariDasa(h));
+				var dc = new MhoraDasaControl(h, new TithiAshtottariDasa(h));
 				dc.DasaOptions.YearType = ToDate.DateType.TithiYear;
 				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 				var td_tithi   = new ToDate(h.Info.Jd, ToDate.DateType.TithiYear, 360.0, 0, h);
@@ -220,7 +220,7 @@ public class MhoraControlContainer : UserControl
 				break;
 			case BaseUserOptions.ViewType.DasaTithiPraveshAshtottariCompressedFixed:
 			{
-				var dc         = new DasaControl(h, new TithiAshtottariDasa(h));
+				var dc         = new MhoraDasaControl(h, new TithiAshtottariDasa(h));
 				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 				dc.DasaOptions.YearType   = ToDate.DateType.FixedYear;
 				dc.DasaOptions.YearLength = td_pravesh.AddYears(1).ToJulian() - td_pravesh.AddYears(0).ToJulian();
@@ -236,7 +236,7 @@ public class MhoraControlContainer : UserControl
 				break;
 			case BaseUserOptions.ViewType.DasaTithiPraveshAshtottariCompressedSolar:
 			{
-				var dc         = new DasaControl(h, new TithiAshtottariDasa(h));
+				var dc         = new MhoraDasaControl(h, new TithiAshtottariDasa(h));
 				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 				var ut_start = td_pravesh.AddYears(0).ToUniversalTime();
 				var ut_end   = td_pravesh.AddYears(1).ToUniversalTime();
@@ -267,22 +267,22 @@ public class MhoraControlContainer : UserControl
 			}
 				break;
 			case BaseUserOptions.ViewType.DasaDwadashottari:
-				mc = new DasaControl(h, new DwadashottariDasa(h));
+				mc = new MhoraDasaControl(h, new DwadashottariDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaPanchottari:
-				mc = new DasaControl(h, new PanchottariDasa(h));
+				mc = new MhoraDasaControl(h, new PanchottariDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaShatabdika:
-				mc = new DasaControl(h, new ShatabdikaDasa(h));
+				mc = new MhoraDasaControl(h, new ShatabdikaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaChaturashitiSama:
-				mc = new DasaControl(h, new ChaturashitiSamaDasa(h));
+				mc = new MhoraDasaControl(h, new ChaturashitiSamaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaDwisaptatiSama:
-				mc = new DasaControl(h, new DwisaptatiSamaDasa(h));
+				mc = new MhoraDasaControl(h, new DwisaptatiSamaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaShatTrimshaSama:
-				mc = new DasaControl(h, new ShatTrimshaSamaDasa(h));
+				mc = new MhoraDasaControl(h, new ShatTrimshaSamaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.BasicCalculations:
 				mc = new BasicCalculationsControl(h);
@@ -297,32 +297,32 @@ public class MhoraControlContainer : UserControl
 				mc = new TransitSearch(h);
 				break;
 			case BaseUserOptions.ViewType.NaisargikaRasiDasa:
-				mc = new DasaControl(h, new NaisargikaRasiDasa(h));
+				mc = new MhoraDasaControl(h, new NaisargikaRasiDasa(h));
 				break;
 			case BaseUserOptions.ViewType.NaisargikaGrahaDasa:
-				mc = new DasaControl(h, new NaisargikaGrahaDasa(h));
+				mc = new MhoraDasaControl(h, new NaisargikaGrahaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaNarayana:
-				mc = new DasaControl(h, new NarayanaDasa(h));
+				mc = new MhoraDasaControl(h, new NarayanaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaNarayanaSama:
-				mc = new DasaControl(h, new NarayanaSamaDasa(h));
+				mc = new MhoraDasaControl(h, new NarayanaSamaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaShoola:
-				mc = new DasaControl(h, new ShoolaDasa(h));
+				mc = new MhoraDasaControl(h, new ShoolaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaNiryaanaShoola:
-				mc = new DasaControl(h, new NirayaanaShoolaDasa(h));
+				mc = new MhoraDasaControl(h, new NirayaanaShoolaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaDrig:
-				mc = new DasaControl(h, new DrigDasa(h));
+				mc = new MhoraDasaControl(h, new DrigDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaTajaka:
-				mc = new DasaControl(h, new TajakaDasa(h));
+				mc = new MhoraDasaControl(h, new TajakaDasa(h));
 				break;
 			case BaseUserOptions.ViewType.DasaTithiPravesh:
 			{
-				var dc = new DasaControl(h, new TithiPraveshDasa(h));
+				var dc = new MhoraDasaControl(h, new TithiPraveshDasa(h));
 				dc.DasaOptions.YearType = ToDate.DateType.TithiPraveshYear;
 				dc.LinkToHoroscope      = false;
 				dc.Reset();
@@ -331,7 +331,7 @@ public class MhoraControlContainer : UserControl
 				break;
 			case BaseUserOptions.ViewType.DasaYogaPravesh:
 			{
-				var dc = new DasaControl(h, new YogaPraveshDasa(h));
+				var dc = new MhoraDasaControl(h, new YogaPraveshDasa(h));
 				dc.DasaOptions.YearType = ToDate.DateType.YogaPraveshYear;
 				dc.LinkToHoroscope      = false;
 				dc.Reset();
@@ -340,7 +340,7 @@ public class MhoraControlContainer : UserControl
 				break;
 			case BaseUserOptions.ViewType.DasaNakshatraPravesh:
 			{
-				var dc = new DasaControl(h, new NakshatraPraveshDasa(h));
+				var dc = new MhoraDasaControl(h, new NakshatraPraveshDasa(h));
 				dc.DasaOptions.YearType = ToDate.DateType.NakshatraPraveshYear;
 				dc.LinkToHoroscope      = false;
 				dc.Reset();
@@ -349,7 +349,7 @@ public class MhoraControlContainer : UserControl
 				break;
 			case BaseUserOptions.ViewType.DasaKaranaPravesh:
 			{
-				var dc = new DasaControl(h, new KaranaPraveshDasa(h));
+				var dc = new MhoraDasaControl(h, new KaranaPraveshDasa(h));
 				dc.DasaOptions.YearType = ToDate.DateType.KaranaPraveshYear;
 				dc.LinkToHoroscope      = false;
 				dc.Reset();
@@ -357,7 +357,7 @@ public class MhoraControlContainer : UserControl
 			}
 				break;
 			case BaseUserOptions.ViewType.DasaTattwa:
-				mc = new DasaControl(h, new TattwaDasa(h));
+				mc = new MhoraDasaControl(h, new TattwaDasa(h));
 				break;
 			default:
 				Debug.Assert(false, "Unknown View Internal error");

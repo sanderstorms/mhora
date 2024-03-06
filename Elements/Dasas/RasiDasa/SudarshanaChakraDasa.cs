@@ -58,7 +58,7 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 	{
 		var al    = new ArrayList(12);
 		var start = cycle * ParamAyus();
-		var lzh   = _h.GetPosition(Body.Lagna).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse;
+		var lzh   = _h.GetPosition(Body.Lagna).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
 		for (var i = 1; i <= 12; i++)
 		{
 			var czh = lzh.Add(i);

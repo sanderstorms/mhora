@@ -21,9 +21,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using Mhora.Components.Dasa;
+using Mhora.Components.DasaControl;
 using Mhora.Components.Jhora;
-using Mhora.Components.Varga;
+using Mhora.Components.VargaControl;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
@@ -325,8 +325,8 @@ public class MhoraChild : Form
 		menuLayoutTabbed_Click(sender, e);
 		//this.menuLayoutJhora_Click (sender, e);
 		/*
-		DasaControl dc = //new BasicCalculationsControl(h);
-		    new DasaControl(h, new VimsottariDasa(h));
+		MhoraDasaControl dc = //new BasicCalculationsControl(h);
+		    new MhoraDasaControl(h, new VimsottariDasa(h));
 		MhoraControlContainer c_dc = new MhoraControlContainer(dc);
 
 		DivisionalChart div_rasi = new DivisionalChart(h);
@@ -366,8 +366,8 @@ public class MhoraChild : Form
 		//vd2.options.SeedBody = VimsottariDasa.UserOptions.StartBodyType.Moon;
 		//vd2.options.start_graha = Body.Type.Moon;
 		//vd2.options.start_graha = Body.Type.Moon;
-		DasaControl dc1 = new DasaControl(h, vd1,sp);
-		//DasaControl dc2 = new DasaControl(h, vd2);
+		MhoraDasaControl dc1 = new MhoraDasaControl(h, vd1,sp);
+		//MhoraDasaControl dc2 = new MhoraDasaControl(h, vd2);
 
 		sp.Dock = DockStyle.Top;
 		dc1.Dock = DockStyle.Top;
@@ -499,7 +499,7 @@ public class MhoraChild : Form
 			Controls.Remove(Contents);
 		}
 
-		var dc   = new DasaControl(h, new VimsottariDasa(h));
+		var dc   = new MhoraDasaControl(h, new VimsottariDasa(h));
 		var c_dc = new MhoraControlContainer(dc);
 
 		var div_rasi   = new DivisionalChart(h);
@@ -538,7 +538,7 @@ public class MhoraChild : Form
 		}
 
 		MhoraControl mc = new JhoraMainTab(h);
-		//DasaControl dc = new DasaControl(h, new VimsottariDasa(h));
+		//MhoraDasaControl dc = new MhoraDasaControl(h, new VimsottariDasa(h));
 		var c_dc = new MhoraControlContainer(mc);
 
 		var div_rasi   = new DivisionalChart(h);
@@ -576,7 +576,7 @@ public class MhoraChild : Form
 			Controls.Remove(Contents);
 		}
 
-		var dc1   = new DasaControl(h, new VimsottariDasa(h));
+		var dc1   = new MhoraDasaControl(h, new VimsottariDasa(h));
 		var c_dc1 = new MhoraControlContainer(dc1);
 
 		var dc2   = new BasicCalculationsControl(h);

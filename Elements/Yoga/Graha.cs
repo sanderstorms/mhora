@@ -17,7 +17,7 @@ namespace Mhora.Elements.Yoga
 		private readonly BodyPosition     _bodyPosition;
 		private readonly Angle            _houseOffset;
 		private          Angle            _angle;
-		private          Bhava            _bhava;
+		private          Grahas           _grahas;
 
 		internal Graha(Position position, DivisionPosition dp, Rashi rashi)
 		{
@@ -56,7 +56,8 @@ namespace Mhora.Elements.Yoga
 			OwnHouses    = new List<Rashi>();
 		}
 
-		public static implicit operator Body(Graha graha) => graha.Body;
+		public static implicit operator Body(Graha      graha) => graha.Body;
+		public static implicit operator Grahas(Graha    graha) => graha._grahas;
 
 		public string Name => Body.Name();
 
@@ -65,11 +66,10 @@ namespace Mhora.Elements.Yoga
 			return _dp.ToString();
 		}
 
-		public Grahas Grahas { get; private set; }
 
 		public bool Owns(Bhava bhava)
 		{
-			var rashi = Grahas.Rashis.Find(bhava);
+			var rashi = _grahas.Rashis.Find(bhava);
 			return (Owns(rashi));
 		}
 
@@ -144,7 +144,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsAssociatedBy(Body body)
 		{
-			var graha = Grahas.Find(body);
+			var graha = _grahas.Find(body);
 			return (IsAssociatedBy(graha));
 		}
 
@@ -158,7 +158,7 @@ namespace Mhora.Elements.Yoga
 		{
 			get
 			{
-				foreach (var graha in Grahas.Planets)
+				foreach (var graha in _grahas.Planets)
 				{
 					if (graha.IsFunctionalMalefic)
 					{
@@ -213,7 +213,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsAspecting(Body body)
 		{
-			var graha = Grahas.Find(body);
+			var graha = _grahas.Find(body);
 			return IsAspecting(graha);
 		}
 
@@ -233,7 +233,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsAspectedBy(Body body)
 		{
-			var graha = Grahas.Find(body);
+			var graha = _grahas.Find(body);
 			return IsAspectedBy(graha);
 		}
 
@@ -251,7 +251,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsConjuctWith(Body body)
 		{
-			var graha = Grahas.Find(body);
+			var graha = _grahas.Find(body);
 			return (IsConjuctWith(graha));
 		}
 
@@ -285,7 +285,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsUnderInfluenceOf(Body body)
 		{
-			var graha = Grahas.Find(body);
+			var graha = _grahas.Find(body);
 			return IsUnderInfluenceOf(graha);
 		}
 
@@ -310,7 +310,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsAssociatedWith(Body body)
 		{
-			var graha = Grahas.Find(body);
+			var graha = _grahas.Find(body);
 			return IsAssociatedWith(graha);
 		}
 
@@ -335,7 +335,7 @@ namespace Mhora.Elements.Yoga
 
 				if (Body == Body.Moon)
 				{
-					var sun = Grahas.Find(Body.Sun);
+					var sun = _grahas.Find(Body.Sun);
 					var tithi = _bodyPosition.Longitude.Sub(sun._bodyPosition.Longitude).ToTithi();
 					if (tithi >= Tithi.KrishnaPratipada)
 					{
@@ -346,7 +346,7 @@ namespace Mhora.Elements.Yoga
 
 				if (Body == Body.Mercury)
 				{
-					var jupiter = Grahas.Find(Body.Jupiter);
+					var jupiter = _grahas.Find(Body.Jupiter);
 					if (jupiter.Strength >= 2)
 					{
 						return (true);
@@ -426,7 +426,7 @@ namespace Mhora.Elements.Yoga
 
 					if (rashi.Bhava.IsKendra())
 					{
-						var lagna = Grahas.Find(Body.Lagna);
+						var lagna = _grahas.Find(Body.Lagna);
 						if (lagna.Body.IsFriend(Body))
 						{
 							return (true);
@@ -454,16 +454,17 @@ namespace Mhora.Elements.Yoga
 			}
 		}
 
-		private bool _isRetrograde;
-        public  bool IsRetrograde => _isRetrograde;
+		private readonly bool _isRetrograde;
+        public           bool IsRetrograde => _isRetrograde;
 
 		public BodyType     BodyType     => _position.BodyType;
 		public Body         Body         => _position.Name;
-		public Bhava        Bhava        => _bhava;
+		public Bhava        Bhava        => _rashi.Bhava;
 		public Rashi        Rashi        => _rashi;
 		public BodyPosition BodyPosition => _bodyPosition;
 		public Angle        HouseOffset  => _houseOffset;
 		public Angle        Angle        => _angle;
+		public Horoscope    Horoscope    => _grahas.Horoscope;
 
 
 		public Conditions Conditions { get; private set; }
@@ -476,7 +477,7 @@ namespace Mhora.Elements.Yoga
 				if (_houseLord == null)
 				{
 					var lord = _dp.ZodiacHouse.SimpleLordOfZodiacHouse(); 
-					_houseLord = Grahas.Find(lord);
+					_houseLord = _grahas.Find(lord);
 				}
 
 				return (_houseLord);
@@ -490,17 +491,17 @@ namespace Mhora.Elements.Yoga
 			{
 				if (_before == null)
 				{
-					for (int index = 0; index < Grahas.Count; index++)
+					for (int index = 0; index < _grahas.Count; index++)
 					{
-						if (Grahas[index].Body == Body)
+						if (_grahas[index].Body == Body)
 						{
 							if (index == 0)
 							{
-								_before = Grahas.Last();
+								_before = _grahas.Last();
 							}
 							else
 							{
-								_before = Grahas [index - 1];
+								_before = _grahas[index - 1];
 							}
 							break;
 						}
@@ -517,17 +518,17 @@ namespace Mhora.Elements.Yoga
 			{
 				if (_after == null)
 				{
-					for (int index = 0; index < Grahas.Count; index++)
+					for (int index = 0; index < _grahas.Count; index++)
 					{
-						if (Grahas[index].Body == Body)
+						if (_grahas[index].Body == Body)
 						{
-							if (index == Grahas.Count - 1)
+							if (index == _grahas.Count - 1)
 							{
-								_after = Grahas.First();
+								_after = _grahas.First();
 							}
 							else
 							{
-								_after = Grahas [index + 1];
+								_after = _grahas[index + 1];
 							}
 							break;
 						}
@@ -1088,7 +1089,7 @@ namespace Mhora.Elements.Yoga
 				}
 
 				//The debilitated planet is associated with or aspected by its exaltation sign's lord.
-				var lord = Grahas.Rashis.Find(Body.ExaltationSign()).Lord;
+				var lord = _grahas.Rashis.Find(Body.ExaltationSign()).Lord;
 				if (IsAspectedBy(lord))
 				{
 					return (true);
@@ -1103,7 +1104,7 @@ namespace Mhora.Elements.Yoga
 
 				if (Body != Body.Moon)
 				{
-					var moon  = Grahas.Find(Body.Moon);
+					var moon  = _grahas.Find(Body.Moon);
 					var bhava = (Bhava) lord.Bhava.HousesFrom(moon.Bhava);
 					if (bhava.IsKendra())
 					{
@@ -1129,7 +1130,7 @@ namespace Mhora.Elements.Yoga
 
 				if (Body != Body.Moon)
 				{
-					var moon  = Grahas.Find(Body.Moon);
+					var moon  = _grahas.Find(Body.Moon);
 					var bhava = (Bhava) lord.Bhava.HousesFrom(moon.Bhava);
 					if (bhava.IsKendra())
 					{
@@ -1149,7 +1150,7 @@ namespace Mhora.Elements.Yoga
 
 		public Bhava HouseFrom(Body body)
 		{
-			var graha = Grahas.Find(body);
+			var graha = _grahas.Find(body);
 			return HouseFrom(graha);
 		}
 
@@ -1157,7 +1158,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsBefore(Body body)
 		{
-			var graha = Grahas.Find(body);
+			var graha = _grahas.Find(body);
 			return (IsBefore(graha));
 		}
 
@@ -1165,7 +1166,7 @@ namespace Mhora.Elements.Yoga
 
 		public bool IsAfter(Body body)
 		{
-			var graha = Grahas.Find(body);
+			var graha = _grahas.Find(body);
 			return (IsAfter(graha));
 		}
 
@@ -1173,7 +1174,7 @@ namespace Mhora.Elements.Yoga
 
 		internal void Connect(Grahas grahas)
 		{
-			Grahas = grahas;
+			_grahas = grahas;
 		}
 
 		internal void Examine()
@@ -1206,7 +1207,7 @@ namespace Mhora.Elements.Yoga
 				Conditions |= Conditions.KarakaPlanet;
 			}
 
-			foreach (var rashi in Grahas.Rashis)
+			foreach (var rashi in _grahas.Rashis)
 			{
 				if (Owns(rashi))
 				{
@@ -1214,7 +1215,7 @@ namespace Mhora.Elements.Yoga
 				}
 			}
 
-			foreach (var graha in Grahas)
+			foreach (var graha in _grahas)
 			{
 				if (graha.Body == Body)
 				{
@@ -1293,7 +1294,7 @@ namespace Mhora.Elements.Yoga
 			winner = 0;
 			foreach (GrahaStrength s in rules)
 			{
-				var result = Grahas.GetStronger(this, graha, bSimpleLord, s);
+				var result = _grahas.GetStronger(this, graha, bSimpleLord, s);
 				if (result == 0)
 				{
 					winner++;
@@ -1307,5 +1308,34 @@ namespace Mhora.Elements.Yoga
 		}
 
 
+		public Longitude CalculateLongitude(double ut, Ref <bool> isRetro)
+		{
+			if (this == Body.Lagna)
+			{
+				return new Longitude(Horoscope.Lagna(ut));
+			}
+
+			var bp = Horoscope.CalculateSingleBodyPosition(ut, Body.SwephBody(), Body, BodyType.Other);
+			if (IsTaraGraha)
+			{
+				if (isRetro != null)
+				{
+					if (bp.SpeedLongitude >= 0)
+					{
+						isRetro.Value = false;
+					}
+					else
+					{
+						isRetro.Value = true;
+					}
+				}
+			}
+			else
+			{
+				isRetro.Value = false;
+			}
+
+			return bp.Longitude;
+		}
 	}
 }

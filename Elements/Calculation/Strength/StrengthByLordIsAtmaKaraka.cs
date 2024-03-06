@@ -26,8 +26,8 @@ public static class LordIsAtmaKaraka
 {
 	public static int StrengthByLordIsAtmaKaraka(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb, bool simpleLord)
 	{
-		var lora = grahas.Horoscope.LordOfZodiacHouse(za, new Division(grahas.Varga), simpleLord);
-		var lorb = grahas.Horoscope.LordOfZodiacHouse(zb, new Division(grahas.Varga), simpleLord);
+		var lora = grahas.Horoscope.LordOfZodiacHouse(za, grahas.Varga, simpleLord);
+		var lorb = grahas.Horoscope.LordOfZodiacHouse(zb, grahas.Varga, simpleLord);
 		var ak   = grahas.Karaka8[0];
 		if (lora == ak)
 		{

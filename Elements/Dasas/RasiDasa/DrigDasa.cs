@@ -31,7 +31,7 @@ public class DrigDasa : Dasa, IDasa
 	public DrigDasa(Horoscope h)
 	{
 		_h       = h;
-		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNarayanaDasaRasi(_h));
+		_options = new RasiDasaUserOptions(_h, _h.RulesNarayanaDasaRasi());
 	}
 
 	public double ParamAyus()

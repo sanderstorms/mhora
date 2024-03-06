@@ -48,7 +48,7 @@ public class YogaControl : MhoraControl
 		// This call is required by the Windows Form Designer.
 		InitializeComponent();
 		h               = _h;
-		fy              = new FindYogas(h, new Division(DivisionType.Rasi));
+		fy              = new FindYogas(h, DivisionType.Rasi);
 		mList.BackColor = MhoraGlobalOptions.Instance.ChakraBackgroundColor;
 		AddViewsToContextMenu(mContext);
 		h.Changed += OnRecalculate;

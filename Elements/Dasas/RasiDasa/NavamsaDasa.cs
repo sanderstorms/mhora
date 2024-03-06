@@ -31,7 +31,7 @@ public class NavamsaDasa : Dasa, IDasa
 	public NavamsaDasa(Horoscope h)
 	{
 		_h       = h;
-		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNavamsaDasaRasi(_h));
+		_options = new RasiDasaUserOptions(_h, _h.RulesNavamsaDasaRasi());
 	}
 
 	public double ParamAyus()
@@ -47,7 +47,7 @@ public class NavamsaDasa : Dasa, IDasa
 	public ArrayList Dasa(int cycle)
 	{
 		var al      = new ArrayList(12);
-		var zhSeed = _h.GetPosition(Body.Lagna).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse;
+		var zhSeed = _h.GetPosition(Body.Lagna).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
 
 		if (!zhSeed.IsOdd())
 		{

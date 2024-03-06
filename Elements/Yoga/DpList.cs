@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using Mhora.Definitions;
 
 namespace Mhora.Elements.Yoga
 {
@@ -10,7 +11,7 @@ namespace Mhora.Elements.Yoga
 		public List <DivisionPosition> Varnada     { get;}
 		public List <DivisionPosition> GrahaArudha { get;}
 
-		public DpList(Horoscope h, Division division)
+		public DpList(Horoscope h, DivisionType division)
 		{
 			Positions   = h.PositionList.CalculateDivisionPositions(division);
 			Arudha      = h.CalculateArudhaDivisionPositions(division);

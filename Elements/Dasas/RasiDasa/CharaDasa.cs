@@ -33,7 +33,7 @@ public class CharaDasa : Dasa, IDasa
 	public CharaDasa(Horoscope h)
 	{
 		_h       = h;
-		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNavamsaDasaRasi(_h));
+		_options = new RasiDasaUserOptions(_h, _h.RulesNavamsaDasaRasi());
 	}
 
 	public double ParamAyus()
@@ -135,11 +135,11 @@ public class CharaDasa : Dasa, IDasa
 		Graha lord;
 		if (rashi == ZodiacHouse.Sco)
 		{
-			lord = rashi.GrahaList [_options.ColordSco];
+			lord = rashi.Base [_options.ColordSco];
 		}
 		else if (rashi == ZodiacHouse.Aqu)
 		{
-			lord = rashi.GrahaList[_options.ColordAqu];
+			lord = rashi.Base[_options.ColordAqu];
 		}
 		else
 		{

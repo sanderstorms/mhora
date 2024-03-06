@@ -35,7 +35,7 @@ public class NarayanaDasa : Dasa, IDasa
 	{
 		_h       = h;
 		BSama   = false;
-		Options = new RasiDasaUserOptions(_h, FindStronger.RulesNarayanaDasaRasi(_h));
+		Options = new RasiDasaUserOptions(_h, _h.RulesNarayanaDasaRasi());
 	}
 
 	public void RecalculateOptions()
@@ -243,9 +243,9 @@ public class NarayanaDasa : Dasa, IDasa
 		switch (rashi.ZodiacHouse)
 		{
 			case ZodiacHouse.Aqu: 
-				return rashi.GrahaList [Options.ColordAqu];
+				return rashi.Base [Options.ColordAqu];
 			case ZodiacHouse.Sco: 
-				return rashi.GrahaList [Options.ColordSco];
+				return rashi.Base [Options.ColordSco];
 			default:                   
 				return rashi.Lord;
 		}

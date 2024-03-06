@@ -32,7 +32,7 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 	public NirayaanaShoolaDasa(Horoscope h)
 	{
 		_h       = h;
-		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNarayanaDasaRasi(_h));
+		_options = new RasiDasaUserOptions(_h, _h.RulesNarayanaDasaRasi());
 	}
 
 	public double ParamAyus()

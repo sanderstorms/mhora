@@ -16,8 +16,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using Mhora.Elements;
+namespace Mhora.Components.DasaControl;
 
-namespace Mhora.Components.Delegates;
-
-public delegate Longitude ReturnLon(double ut, ref bool dirForward);
+/// <summary>
+///     An interface which should be used by those whose properties
+///     should be updateable using the mhoraOptions form.
+/// </summary>
+public interface IUpdateable
+{
+	object GetOptions();
+	object SetOptions(object a);
+}

@@ -16,14 +16,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-namespace Mhora.Components.Dasa;
+namespace Mhora.Components.PanchangaControl;
 
-/// <summary>
-///     An interface which should be used by those whose properties
-///     should be updateable using the mhoraOptions form.
-/// </summary>
-public interface IUpdateable
+public class PanchangaMomentInfo
 {
-	object GetOptions();
-	object SetOptions(object a);
+	public int    info;
+	public double ut;
+
+	public PanchangaMomentInfo(double _ut, int _info)
+	{
+		ut   = _ut;
+		info = _info;
+	}
 }

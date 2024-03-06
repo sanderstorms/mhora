@@ -23,7 +23,7 @@ using Mhora.Components.Property;
 using Mhora.Definitions;
 using Mhora.Elements;
 
-namespace Mhora.Components.Transit;
+namespace Mhora.Components.TransitControl;
 
 public class TransitSearchOptions : ICloneable
 {
@@ -39,24 +39,17 @@ public class TransitSearchOptions : ICloneable
 		SearchBody   = Body.Sun;
 		TransitPoint = new Longitude(0.0);
 		Forward      = true;
-		Division     = new Division(DivisionType.Rasi);
+		Division     = DivisionType.Rasi;
 	}
 
-
-	[PGNotVisible]
-	public Division Division
-	{
-		get;
-		set;
-	}
 
 	[Category("Transit Search")]
 	[PropertyOrder(1)]
 	[PGDisplayName("In Vargas")]
-	public DivisionType UIDivision
+	public DivisionType Division
 	{
-		get => Division.MultipleDivisions[0].Varga;
-		set => Division = new Division(value);
+		get;
+		set;
 	}
 
 	[Category("Transit Search")]

@@ -320,7 +320,7 @@ namespace Mhora
 		{
 			var info = new Jhd(fileName).ToHoraInfo();
 			var h = new Horoscope(info, new HoroscopeOptions());
-			if (h.GetPosition(Body.Ketu).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse == h.GetPosition(Body.Lagna).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse)
+			if (h.GetPosition(Body.Ketu).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse == h.GetPosition(Body.Lagna).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse)
 			{
 				return true;
 			}

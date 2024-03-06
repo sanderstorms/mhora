@@ -189,14 +189,14 @@ public class RasiStrengthsControl : Form
 	{
 		switch (cbStrength.SelectedIndex)
 		{
-			case 0:  return FindStronger.RulesNarayanaDasaRasi(h);
-			case 1:  return FindStronger.RulesNaisargikaDasaRasi(h);
-			case 2:  return FindStronger.RulesMoolaDasaRasi(h);
-			case 3:  return FindStronger.RulesKarakaKendradiGrahaDasaRasi(h);
-			case 4:  return FindStronger.RulesNavamsaDasaRasi(h);
-			case 5:  return FindStronger.RulesJaiminiFirstRasi(h);
-			case 6:  return FindStronger.RulesJaiminiSecondRasi(h);
-			default: return FindStronger.RulesNarayanaDasaRasi(h);
+			case 0:  return h.RulesNarayanaDasaRasi();
+			case 1:  return h.RulesNaisargikaDasaRasi();
+			case 2:  return h.RulesMoolaDasaRasi();
+			case 3:  return h.RulesKarakaKendradiGrahaDasaRasi();
+			case 4:  return h.RulesNavamsaDasaRasi();
+			case 5:  return h.RulesJaiminiFirstRasi();
+			case 6:  return h.RulesJaiminiSecondRasi();
+			default: return h.RulesNarayanaDasaRasi();
 		}
 	}
 
@@ -318,21 +318,14 @@ public class RasiStrengthsControl : Form
 	{
 		public UserOptions()
 		{
-			Division = new Division(DivisionType.Rasi);
-		}
-
-		[PGNotVisible]
-		public Division Division
-		{
-			get;
-			set;
+			Division = DivisionType.Rasi;
 		}
 
 		[PGDisplayName("Vargas")]
-		public DivisionType UIDivision
+		public DivisionType Division
 		{
-			get => Division.MultipleDivisions[0].Varga;
-			set => Division = new Division(value);
+			get;
+			set;
 		}
 
 		public object Clone()

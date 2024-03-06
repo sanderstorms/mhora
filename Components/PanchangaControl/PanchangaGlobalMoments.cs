@@ -16,22 +16,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
-using System.Windows.Forms;
-using Mhora.Elements;
+using System.Collections;
 
-namespace Mhora.Components.Transit;
+namespace Mhora.Components.PanchangaControl;
 
-public class TransitItem : ListViewItem
+public class PanchangaGlobalMoments
 {
-	private readonly Horoscope h;
-
-	public TransitItem(Horoscope _h)
-	{
-		h = _h;
-	}
-
-	public Horoscope GetHoroscope()
-	{
-		return h;
-	}
+	public ArrayList karanas_ut    = new();
+	public ArrayList nakshatras_ut = new();
+	public ArrayList smyogas_ut    = new();
+	public ArrayList tithis_ut     = new();
 }

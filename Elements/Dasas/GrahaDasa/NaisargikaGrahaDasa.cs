@@ -80,7 +80,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 	public ArrayList AntarDasa(DasaEntry pdi)
 	{
 		var orderedAntar = new OrderedGrahas();
-		var lzh          = _h.GetPosition(pdi.Graha).ToDivisionPosition(_options.Dtype).ZodiacHouse;
+		var lzh          = _h.GetPosition(pdi.Graha).ToDivisionPosition(_options.Varga).ZodiacHouse;
 		var kendraStart = (int) Basics.NormalizeExcLower((int) lzh % 3, 0, 3);
 		for (var i = kendraStart; i <= 2; i++)
 		{
@@ -111,7 +111,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 				continue;
 			}
 
-			var diff = lzh.NumHousesBetween(_h.GetPosition((Body) orderedAntar.grahas[i]).ToDivisionPosition(_options.Dtype).ZodiacHouse);
+			var diff = lzh.NumHousesBetween(_h.GetPosition((Body) orderedAntar.grahas[i]).ToDivisionPosition(_options.Varga).ZodiacHouse);
 			switch (diff)
 			{
 				case 7:
@@ -218,8 +218,8 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 		var diff = 0;
 		if (_options.Exclude310 || _options.Exclude261112)
 		{
-			var zhDasa  = _h.GetPosition(pdi.Graha).ToDivisionPosition(_options.Dtype).ZodiacHouse;
-			var zhAntar = _h.GetPosition(graha).ToDivisionPosition(_options.Dtype).ZodiacHouse;
+			var zhDasa  = _h.GetPosition(pdi.Graha).ToDivisionPosition(_options.Varga).ZodiacHouse;
+			var zhAntar = _h.GetPosition(graha).ToDivisionPosition(_options.Varga).ZodiacHouse;
 			diff = zhDasa.NumHousesBetween(zhAntar);
 		}
 
@@ -239,17 +239,16 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 	public class UserOptions : ICloneable
 	{
 		private readonly Horoscope              _h;
-		public           Division               Dtype = new(DivisionType.Rasi);
 		protected        Body                   MLordAqu;
 		protected        Body                   MLordSco;
 		private          List<DivisionPosition> _stdDivPos;
 
 		public UserOptions(Horoscope h)
 		{
-			var grahas = h.FindGrahas(Dtype);
+			var grahas = h.FindGrahas(Varga);
 			_h           = h;
-			_stdDivPos = _h.PositionList.CalculateDivisionPositions(Dtype);
-			var rules =  FindStronger.RulesStrongerCoLord(_h);
+			_stdDivPos = _h.PositionList.CalculateDivisionPositions(Varga);
+			var rules =  _h.RulesStrongerCoLord();
 			MLordSco        = grahas.Stronger(Body.Mars, Body.Ketu, true, rules, out _);
 			MLordAqu        = grahas.Stronger(Body.Saturn, Body.Rahu, true, rules, out _);
 			ExcludeNodes    = true;
@@ -259,6 +258,9 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 			CalculateRasiStrengths();
 			CalculateGrahaStrengths();
 		}
+
+		public DivisionType Varga => DivisionType.Rasi;
+
 
 		[Category("1: Colord")]
 		[PropertyOrder(1)]
@@ -353,8 +355,8 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 		public void Recalculate()
 		{
-			var grahas = _h.FindGrahas(Dtype);
-			var rules  = FindStronger.RulesStrongerCoLord(_h);
+			var grahas = _h.FindGrahas(Varga);
+			var rules  = _h.RulesStrongerCoLord();
 			MLordSco = grahas.Stronger(Body.Mars, Body.Ketu, true, rules, out _);
 			MLordAqu = grahas.Stronger(Body.Saturn, Body.Rahu, true, rules, out _);
 			CalculateRasiStrengths();
@@ -391,16 +393,16 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 		public void CalculateRasiStrengths()
 		{
-			var grahas = _h.FindGrahas(Dtype);
+			var grahas = _h.FindGrahas(Varga);
 			var lagna  = grahas [Body.Lagna];
-			var rules  = FindStronger.RulesNaisargikaDasaRasi(_h);
+			var rules  = _h.RulesNaisargikaDasaRasi();
 			RasiStrengths = grahas.ResultsZodiacKendras(lagna.Rashi, rules);
 		}
 
 		public void CalculateGrahaStrengths()
 		{
-			var grahas = _h.FindGrahas(Dtype);
-			var rules = FindStronger.RulesNaisargikaDasaGraha(_h);
+			var grahas = _h.FindGrahas(Varga);
+			var rules = _h.RulesNaisargikaDasaGraha();
 			GrahaStrengths = new OrderedGrahas[3];
 			for (var i = 0; i < RasiStrengths.Length; i++)
 			{

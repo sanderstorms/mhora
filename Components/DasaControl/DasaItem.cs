@@ -22,7 +22,7 @@ using Mhora.Definitions;
 using Mhora.Elements.Dasas;
 using Mhora.Util;
 
-namespace Mhora.Components.Dasa;
+namespace Mhora.Components.DasaControl;
 
 /// <summary>
 ///     Specifies a DasaItem which can be used by any of the Dasa Systems.

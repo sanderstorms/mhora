@@ -20,7 +20,7 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.Drawing.Printing;
-using Mhora.Components.Varga;
+using Mhora.Components.VargaControl;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Dasas;
@@ -549,7 +549,7 @@ public class MhoraPrintDocument : PrintDocument
 		var smLon  = h.GetPosition(Body.Sun).Longitude.Add(h.GetPosition(Body.Moon).Longitude);
 		var smYoga = smLon.ToSunMoonYoga();
 		var bHora  = h.CalculateHora();
-		PrintString(string.Format("{0} Yoga, {1} Hora", smYoga.value, bHora));
+		PrintString(string.Format("{0} Yoga, {1} Hora", smYoga, bHora));
 
 
 		top += pad_height;

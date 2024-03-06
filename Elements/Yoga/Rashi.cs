@@ -7,13 +7,15 @@ namespace Mhora.Elements.Yoga
 {
 	public class Rashi
 	{
+		private readonly Rashis      _rashis;
 		private readonly ZodiacHouse _zh;
 		private          Bhava       _bhava;
 
-		internal Rashi(ZodiacHouse zh)
+		internal Rashi(ZodiacHouse zh, Rashis rashis)
 		{
-			_zh    = zh;
-			Grahas = new List<Graha>();
+			_rashis = rashis;
+			_zh     = zh;
+			Grahas  = new List<Graha>();
 		}
 
 		public static implicit operator ZodiacHouse(Rashi rashi) => rashi.ZodiacHouse;
@@ -23,11 +25,7 @@ namespace Mhora.Elements.Yoga
 			return _zh.Name ();
 		}
 
-		public Grahas GrahaList
-		{
-			get;
-			private set;
-		}
+		public Grahas Base => _rashis.Base;
 
 		public override bool Equals(object obj)
 		{
@@ -52,7 +50,7 @@ namespace Mhora.Elements.Yoga
 			{
 				if (_bhava == Bhava.None)
 				{
-					var lagna  = GrahaList.Find(Body.Lagna).Rashi.ZodiacHouse;
+					var lagna  = Base.Find(Body.Lagna).Rashi.ZodiacHouse;
 					_bhava = (Bhava) lagna.NumHousesBetween(ZodiacHouse);
 				}
 
@@ -65,14 +63,13 @@ namespace Mhora.Elements.Yoga
 			return ZodiacHouse.RasiDristi(zh);
 		}
 
-		public Graha Lord => GrahaList.Find(_zh.LordOfSign());
+		public Graha Lord => Base.Find(_zh.LordOfSign());
 
 		public List<Graha> Grahas { get; set;}
 
-		internal void Examine(Grahas grahaList)
+		internal void Examine()
 		{
-			GrahaList = grahaList;
-			Grahas    = GrahaList.NavaGrahas.FindAll(graha => graha.Rashi == this);
+			Grahas = Base.NavaGrahas.FindAll(graha => graha.Rashi == this);
 		}
 
 		public int CompareTo(Rashi rashi, bool simpleLord, List<RashiStrength> rules, out int winner)
@@ -80,7 +77,7 @@ namespace Mhora.Elements.Yoga
 			winner = 0;
 			foreach (RashiStrength s in rules)
 			{
-				var result = GrahaList.GetStronger(this, rashi, simpleLord, s);
+				var result = Base.GetStronger(this, rashi, simpleLord, s);
 				if (result == 0)
 				{
 					winner++;

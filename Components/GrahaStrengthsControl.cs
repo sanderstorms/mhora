@@ -203,12 +203,12 @@ public class GrahaStrengthsControl : Form
 		{
 			case 0:
 				bSimpleLord = true;
-				return FindStronger.RulesStrongerCoLord(h);
-			case 1:                              return FindStronger.RulesNaisargikaDasaGraha(h);
-			case RVimsottariDasa:                return FindStronger.RulesVimsottariGraha(h);
-			case RKarakaKendradiGrahaDasa:       return FindStronger.RulesKarakaKendradiGrahaDasaGraha(h);
-			case RCoLordKarakaKendradiGrahaDasa: return FindStronger.RulesKarakaKendradiGrahaDasaColord(h);
-			default:                             return FindStronger.RulesStrongerCoLord(h);
+				return h.RulesStrongerCoLord();
+			case 1:                              return h.RulesNaisargikaDasaGraha();
+			case RVimsottariDasa:                return h.RulesVimsottariGraha();
+			case RKarakaKendradiGrahaDasa:       return h.RulesKarakaKendradiGrahaDasaGraha();
+			case RCoLordKarakaKendradiGrahaDasa: return h.RulesKarakaKendradiGrahaDasaColord();
+			default:                             return h.RulesStrongerCoLord();
 		}
 	}
 
@@ -291,7 +291,7 @@ public class GrahaStrengthsControl : Form
 	{
 		if (cbStrength.SelectedIndex == RVimsottariDasa)
 		{
-			options.Division       = new Division(DivisionType.BhavaPada);
+			options.Division       = DivisionType.BhavaPada;
 			cbGraha1.SelectedIndex = (int) Body.Lagna;
 			cbGraha1.SelectedIndex = (int) Body.Moon;
 		}
@@ -362,21 +362,14 @@ public class GrahaStrengthsControl : Form
 	{
 		public UserOptions()
 		{
-			Division = new Division(DivisionType.Rasi);
-		}
-
-		[PGNotVisible]
-		public Division Division
-		{
-			get;
-			set;
+			Division = DivisionType.Rasi;
 		}
 
 		[PGDisplayName("Vargas")]
-		public DivisionType UIDivision
+		public DivisionType Division
 		{
-			get => Division.MultipleDivisions[0].Varga;
-			set => Division = new Division(value);
+			get;
+			set;
 		}
 
 		public object Clone()

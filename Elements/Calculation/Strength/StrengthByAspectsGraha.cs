@@ -44,7 +44,7 @@ public static class AspectsGraha
 	private static int AspectsGrahaStrength(this Grahas grahas, ZodiacHouse zodiacHouse, bool simpleLord)
 	{
 		var val = 0;
-		var bl  = grahas.Horoscope.LordOfZodiacHouse(zodiacHouse, new Division(grahas.Varga), simpleLord);
+		var bl  = grahas.Horoscope.LordOfZodiacHouse(zodiacHouse, grahas.Varga, simpleLord);
 		var dl  = grahas [bl];
 		var dj  = grahas [Body.Jupiter];
 		var dm  = grahas [Body.Mercury];

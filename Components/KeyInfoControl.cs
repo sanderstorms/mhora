@@ -265,7 +265,7 @@ public class KeyInfoControl : MhoraControl
 			var smLon  = h.GetPosition(Body.Sun).Longitude.Add(h.GetPosition(Body.Moon).Longitude);
 			var offset = 360.0 / 27.0 - smLon.ToSunMoonYogaOffset();
 			var smYoga = smLon.ToSunMoonYoga();
-			var smLord = smYoga.getLord();
+			var smLord = smYoga.Lord();
 			var fmt    = string.Format("{0} ({1}) {2:N}% left", smYoga, smLord, offset / (360.0 / 27.0) * 100);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);

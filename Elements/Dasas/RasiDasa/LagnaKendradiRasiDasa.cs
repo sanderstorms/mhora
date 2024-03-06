@@ -34,7 +34,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 	public LagnaKendradiRasiDasa(Horoscope h)
 	{
 		_h       = h;
-		_options = new RasiDasaUserOptions(_h, FindStronger.RulesNarayanaDasaRasi(_h));
+		_options = new RasiDasaUserOptions(_h, _h.RulesNarayanaDasaRasi());
 	}
 
 	public void RecalculateOptions()

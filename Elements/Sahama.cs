@@ -134,7 +134,7 @@ namespace Mhora.Elements
 			al.Add(h.SahamaDnHelper("Mitra", Body.Jupiter, ((Position) al[0]).Longitude, Body.Venus));
 			al.Add(h.SahamaDnHelper("Mahatmya", ((Position) al[0]).Longitude, Body.Mars, Body.Lagna));
 
-			var bLagnaLord = h.LordOfZodiacHouse(zhLagna, new Division(DivisionType.Rasi), false);
+			var bLagnaLord = h.LordOfZodiacHouse(zhLagna, DivisionType.Rasi, false);
 			if (bLagnaLord != Body.Mars)
 			{
 				al.Add(h.SahamaDnHelper("Samartha", Body.Mars, bLagnaLord, Body.Lagna));
@@ -156,18 +156,18 @@ namespace Mhora.Elements
 			al.Add(h.SahamaDnHelper("Kali", Body.Jupiter, Body.Mars, Body.Lagna));
 			al.Add(h.SahamaDnHelper("Bandhu", Body.Mercury, Body.Moon, Body.Lagna));
 			al.Add(h.SahamaHelper("Mrityu", lonBase.Add(8.0   * 30.0), Body.Moon, Body.Lagna));
-			al.Add(h.SahamaHelper("Paradesa", lonBase.Add(9.0 * 30.0), h.LordOfZodiacHouse(zhLagna.Add(9), new Division(DivisionType.Rasi), false), Body.Lagna));
-			al.Add(h.SahamaHelper("Artha", lonBase.Add(2.0    * 30.0), h.LordOfZodiacHouse(zhLagna.Add(2), new Division(DivisionType.Rasi), false), Body.Lagna));
+			al.Add(h.SahamaHelper("Paradesa", lonBase.Add(9.0 * 30.0), h.LordOfZodiacHouse(zhLagna.Add(9), DivisionType.Rasi, false), Body.Lagna));
+			al.Add(h.SahamaHelper("Artha", lonBase.Add(2.0    * 30.0), h.LordOfZodiacHouse(zhLagna.Add(2), DivisionType.Rasi, false), Body.Lagna));
 			al.Add(h.SahamaDnHelper("Paradara", Body.Venus, Body.Sun, Body.Lagna));
 			al.Add(h.SahamaDnHelper("Vanik", Body.Moon, Body.Mercury, Body.Lagna));
 
 			if (bDay)
 			{
-				al.Add(h.SahamaHelper("Karyasiddhi", Body.Saturn, Body.Sun, h.LordOfZodiacHouse(zhSun, new Division(DivisionType.Rasi), false)));
+				al.Add(h.SahamaHelper("Karyasiddhi", Body.Saturn, Body.Sun, h.LordOfZodiacHouse(zhSun, DivisionType.Rasi, false)));
 			}
 			else
 			{
-				al.Add(h.SahamaHelper("Karyasiddhi", Body.Saturn, Body.Moon, h.LordOfZodiacHouse(zhMoon, new Division(DivisionType.Rasi), false)));
+				al.Add(h.SahamaHelper("Karyasiddhi", Body.Saturn, Body.Moon, h.LordOfZodiacHouse(zhMoon, DivisionType.Rasi, false)));
 			}
 
 			al.Add(h.SahamaDnHelper("Vivaha", Body.Venus, Body.Saturn, Body.Lagna));
@@ -180,7 +180,7 @@ namespace Mhora.Elements
 			al.Add(h.SahamaDnHelper("Jalapatana", new Longitude(105.0), Body.Saturn, Body.Lagna));
 			al.Add(h.SahamaDnHelper("Bandhana", ((Position) al[0]).Longitude, Body.Saturn, Body.Lagna));
 			al.Add(h.SahamaDnHelper("Apamrityu", lonBase.Add(8.0 * 30.0), Body.Mars, Body.Lagna));
-			al.Add(h.SahamaHelper("Labha", lonBase.Add(11.0      * 30.0), h.LordOfZodiacHouse(zhLagna.Add(11), new Division(DivisionType.Rasi), false), Body.Lagna));
+			al.Add(h.SahamaHelper("Labha", lonBase.Add(11.0      * 30.0), h.LordOfZodiacHouse(zhLagna.Add(11), DivisionType.Rasi, false), Body.Lagna));
 
 			return al;
 		}

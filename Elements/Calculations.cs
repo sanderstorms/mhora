@@ -75,13 +75,13 @@ namespace Mhora.Elements
 		public static SunMoonYoga ToSunMoonYoga(this Longitude l)
 		{
 			var smIndex = (int) (Math.Floor(l.Value / (360.0 / 27.0)) + 1);
-			var smYoga  = new SunMoonYoga((SunMoonYoga.Name) smIndex);
+			var smYoga  = (SunMoonYoga) smIndex;
 			return smYoga;
 		}
 
 		public static double ToSunMoonYogaBase(this Longitude l)
 		{
-			var num  = (int) l.ToSunMoonYoga().value;
+			var num  = (int) l.ToSunMoonYoga();
 			var cusp = (num - 1) * (360.0 / 27.0);
 			return cusp;
 		}

@@ -42,7 +42,7 @@ public static class LordInDifferentOddity
 
 	private static int OddityValueForZodiacHouse(this Grahas grahas, ZodiacHouse zh, bool simpleLord)
 	{
-		var lname = grahas.Horoscope.LordOfZodiacHouse(zh, new Division(grahas.Varga), simpleLord);
+		var lname = grahas.Horoscope.LordOfZodiacHouse(zh, grahas.Varga, simpleLord);
 		var lbpos = grahas[lname];
 
 		//System.Mhora.Log.Debug("   DiffOddity {0} {1} {2}", zh.ToString(), zh_lor.value.ToString(), (int)zh %2==(int)zh_lor.value%2);

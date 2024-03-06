@@ -24,7 +24,7 @@ using Mhora.Elements;
 using Mhora.Elements.Dasas;
 using Mhora.Util;
 
-namespace Mhora.Components.Dasa;
+namespace Mhora.Components.DasaControl;
 
 /// <summary>
 ///     Summary description for Dasa3Parts.

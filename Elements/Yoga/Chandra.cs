@@ -6,9 +6,9 @@ namespace Mhora.Elements.Yoga
 	public static class Chandra
 	{
 		//Conjuntion between moon and another graha
-		public static bool ChandraGraha(this Grahas grahaList, Body body)
+		public static bool ChandraGraha(this Grahas grahas, Body body)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Conjunct.Count > 0)
 			{
 				foreach (var graha in moon.Conjunct)
@@ -28,11 +28,11 @@ namespace Mhora.Elements.Yoga
 		//They may sepatately or jointly occupy all or any of the houses sixth, seventh, and eighth from the Moon.
 		//The native born with this yoga is a king, minister or commander. This yoga confers on the native prosperity,
 		//health, status, Govt. recognition and dominance over opponents.
-		public static bool ChandraAdhi(this Grahas grahaList)
+		public static bool ChandraAdhi(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 
-			var mercury = grahaList.Find(Body.Mercury);
+			var mercury = grahas.Find(Body.Mercury);
 			if (mercury.IsNaturalMalefic)
 			{
 				return (false);
@@ -45,7 +45,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			var jupiter = grahaList.Find(Body.Jupiter);
+			var jupiter = grahas.Find(Body.Jupiter);
 			houseFromMoon = jupiter.Bhava.HousesFrom(moon.Bhava);
 
 			if ((houseFromMoon < 6) || (houseFromMoon > 8))
@@ -53,7 +53,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas.Find(Body.Venus);
 			houseFromMoon = venus.Bhava.HousesFrom(moon.Bhava);
 
 			if ((houseFromMoon < 6) || (houseFromMoon > 8))
@@ -66,10 +66,10 @@ namespace Mhora.Elements.Yoga
 
 		//When a planet other than the Sun occupies the 12th house from Moon is called Anapha Yoga.
 		//One born in the Anapha yoga is a king, healthy, affable, renowned, capable, pleasant looks and happy.
-		public static bool ChandraAnapha(this Grahas grahaList)
+		public static bool ChandraAnapha(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
-			foreach (var graha in grahaList.Planets)
+			var moon = grahas.Find(Body.Moon);
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.Body == Body.Sun)
 				{
@@ -87,10 +87,10 @@ namespace Mhora.Elements.Yoga
 
 		//When Saturn occupies the 12th house from Moon is called Anapha Yoga.
 		//Owner of vast lands, forests and cattle, of long arms, honoring his words, enjoying the wealth of others, associated with wicked woman.
-		public static bool ChandraAnaphaShani(this Grahas grahaList)
+		public static bool ChandraAnaphaShani(this Grahas grahas)
 		{
-			var moon   = grahaList.Find(Body.Moon);
-			var saturn = grahaList.Find(Body.Saturn);
+			var moon   = grahas.Find(Body.Moon);
+			var saturn = grahas.Find(Body.Saturn);
 
 			if (saturn.Bhava.HousesFrom(moon.Bhava) == 12)
 			{
@@ -102,10 +102,10 @@ namespace Mhora.Elements.Yoga
 
 		//When Mercury occupies the 12th house from Moon is called Anapha Yoga.
 		//Eloquent, a poet, honored by the ruler, versed in music, dance and writing, handsome and renowned. Adverse for the career of one’s progeny.
-		public static bool ChandraAnaphaBuddha(this Grahas grahaList)
+		public static bool ChandraAnaphaBuddha(this Grahas grahas)
 		{
-			var moon    = grahaList.Find(Body.Moon);
-			var mercury = grahaList.Find(Body.Mercury);
+			var moon    = grahas.Find(Body.Moon);
+			var mercury = grahas.Find(Body.Mercury);
 
 			if (mercury.Bhava.HousesFrom(moon.Bhava) == 12)
 			{
@@ -117,10 +117,10 @@ namespace Mhora.Elements.Yoga
 
 		//When Mars occupies the 12th house from Moon is called Anapha Yoga.
 		//Leader of band of thieves, haughty, wrathful, bold, good looking and hurtful to everyone including his mother.
-		public static bool ChandraAnaphaMangal(this Grahas grahaList)
+		public static bool ChandraAnaphaMangal(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
-			var mars = grahaList.Find(Body.Mars);
+			var moon = grahas.Find(Body.Moon);
+			var mars = grahas.Find(Body.Mars);
 
 			if (mars.Bhava.HousesFrom(moon.Bhava) == 12)
 			{
@@ -133,10 +133,10 @@ namespace Mhora.Elements.Yoga
 		//When Jupiter occupies the 12th house from Moon is called Anapha Yoga.
 		//Endowed with strength and virtue, energetic, learned, honored by the king, a poet, wealthy,
 		//opposed to his near & dear. If Jupiter aspects the sixth house from the Lagna, the native is happy & contented.
-		public static bool ChandraAnaphaGuru(this Grahas grahaList)
+		public static bool ChandraAnaphaGuru(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
-			var mars = grahaList.Find(Body.Mars);
+			var moon = grahas.Find(Body.Moon);
+			var mars = grahas.Find(Body.Mars);
 
 			if (mars.Bhava.HousesFrom(moon.Bhava) == 12)
 			{
@@ -148,82 +148,82 @@ namespace Mhora.Elements.Yoga
 
 		//Conjunction between Moon and Mercury.
 		//Pleasant looks, sweet tongued, engaged in virtues deeds, pious, blessed, a poet, kind-hearted, and deeply attached to his wife.
-		public static bool ChandraBuddh(this Grahas grahaList) => grahaList.ChandraGraha(Body.Mercury);
+		public static bool ChandraBuddh(this Grahas grahas) => grahas.ChandraGraha(Body.Mercury);
 
 
 		//Moon and Mercury are Conjunct in lagna.
 		//Comfortable, wise, strong, fortunate, clever, good in looks, very talkative.
-		public static bool ChandraBuddh1(this Grahas grahaList)
+		public static bool ChandraBuddh1(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
 			}
 
-			return (grahaList.ChandraBuddh());
+			return (grahas.ChandraBuddh());
 		}
 
 		//Moon and Mercury are Conjunct in 4th House.
 		//Blessed with his friends, children, comforts, fame and fortune.
-		public static bool ChandraBuddh4(this Grahas grahaList)
+		public static bool ChandraBuddh4(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.SukhaBhava)
 			{
 				return (false);
 			}
 
-			return (grahaList.ChandraBuddh());
+			return (grahas.ChandraBuddh());
 		}
 
 		//Moon and Mercury are Conjunct in 7th House.
 		//llustrious, equivalent to a king, good looking, a poet.
-		public static bool ChandraBuddh7(this Grahas grahaList)
+		public static bool ChandraBuddh7(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.JayaBhava)
 			{
 				return (false);
 			}
 
-			return (grahaList.ChandraBuddh());
+			return (grahas.ChandraBuddh());
 		}
 
 		//Moon and Mercury are Conjunct in 9th House.
 		//Learned in scriptures, bereft of peace, famous, very talkative.
-		public static bool ChandraBuddh9(this Grahas grahaList)
+		public static bool ChandraBuddh9(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.DharmaBhava)
 			{
 				return (false);
 			}
 
-			return (grahaList.ChandraBuddh());
+			return (grahas.ChandraBuddh());
 		}
 
 		//Moon and Mercury are Conjunct in 10th House.
 		//Wealthy, haughty. famous, minister, suffers in old age.
-		public static bool ChandraBuddh10(this Grahas grahaList)
+		public static bool ChandraBuddh10(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.KarmaBhava)
 			{
 				return (false);
 			}
 
-			return (grahaList.ChandraBuddh());
+			return (grahas.ChandraBuddh());
 		}
 
 
 		//When planets other than the Sun occupy both 2 & 12 houses from Moon.
 		//One born in this earns fame through his good speech, learning, virtue. It confers upon the native immense wealth, vehicles, lands.
-		public static bool ChandraDurudhara(this Grahas grahaList, Body body1, Body body2)
+		public static bool ChandraDurudhara(this Grahas grahas, Body body1, Body body2)
 		{
-			var moon   = grahaList.Find(Body.Moon);
-			var graha1 = grahaList.Find(body1);
-			var graha2 = grahaList.Find(body2);
+			var moon   = grahas.Find(Body.Moon);
+			var graha1 = grahas.Find(body1);
+			var graha2 = grahas.Find(body2);
 
 			var graha1Moon = graha1.Bhava.HousesFrom(moon.Bhava);
 			var graha2Moon = graha2.Bhava.HousesFrom(moon.Bhava);
@@ -248,13 +248,13 @@ namespace Mhora.Elements.Yoga
 
 		//When planets other than the Sun occupy both 2 & 12 houses from Moon.
 		//One born in this earns fame through his good speech, learning, virtue. It confers upon the native immense wealth, vehicles, lands.
-		public static bool ChandraDurudhara(this Grahas grahaList)
+		public static bool ChandraDurudhara(this Grahas grahas)
 		{
 			int second  = 0;
 			int twelfth = 0;
 
-			var moon = grahaList.Find(Body.Moon);
-			foreach (var graha in grahaList.Planets)
+			var moon = grahas.Find(Body.Moon);
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.Body == Body.Sun)
 				{
@@ -282,50 +282,50 @@ namespace Mhora.Elements.Yoga
 
 		//When Jupiter and Saturn occupies the 2 and 12th house from Moon.
 		//Blessed with comforts, humble, sweet-tongued, very learned, wealthy, of beautiful looks and a quiet temperament.
-		public static bool ChandraDurudhara1(this Grahas grahaList) => grahaList.ChandraDurudhara(Body.Jupiter, Body.Saturn);
+		public static bool ChandraDurudhara1(this Grahas grahas) => grahas.ChandraDurudhara(Body.Jupiter, Body.Saturn);
 
 		//When Venus and Mars occupies the 2 and 12th house from Moon.
 		//Handsome, Valorous, athletic, argumentative, pious, wealthy, very efficient, blessed with a lovely wife.
-		public static bool ChandraDurudhara2(this Grahas grahaList) => grahaList.ChandraDurudhara(Body.Venus, Body.Mars);
+		public static bool ChandraDurudhara2(this Grahas grahas) => grahas.ChandraDurudhara(Body.Venus, Body.Mars);
 
 		//When Venus and Jupiter occupies the 2 and 12th house from Moon.
 		//Blessed with wisdom and valour, steadfast, prosperous, of a royal mien, very renowned, and guiltless
-		public static bool ChandraDurudhara3(this Grahas grahaList) => grahaList.ChandraDurudhara(Body.Venus, Body.Jupiter);
+		public static bool ChandraDurudhara3(this Grahas grahas) => grahas.ChandraDurudhara(Body.Venus, Body.Jupiter);
 
 		//When Venus and Saturn occupies the 2 and 12th house from Moon.
 		//Clever and wealthy, Favored by the king, of mature thinking, head of his family, liked by women.
-		public static bool ChandraDurudhara4(this Grahas grahaList) => grahaList.ChandraDurudhara(Body.Venus, Body.Saturn);
+		public static bool ChandraDurudhara4(this Grahas grahas) => grahas.ChandraDurudhara(Body.Venus, Body.Saturn);
 
 		//When Mercury and Mars occupies the 2 and 12th house from Moon.	
 		//Untruthful, rich, clever, wicked, faultfinding, avaricious, respected in his own family, and addicted to elderly unchaste women.
-		public static bool ChandraDurudhara5(this Grahas grahaList) => grahaList.ChandraDurudhara(Body.Mercury, Body.Mars);
+		public static bool ChandraDurudhara5(this Grahas grahas) => grahas.ChandraDurudhara(Body.Mercury, Body.Mars);
 
 		//When Mars and Saturn occupies the 2 and 12th house from Moon.	
 		//Addicted to unchaste women, engaged in wicked deeds, easily angered, treacherous, rich, annihilator of enemies, a hoarder, without remorse.
-		public static bool ChandraDurudhara6(this Grahas grahaList) => grahaList.ChandraDurudhara(Body.Saturn, Body.Mars);
+		public static bool ChandraDurudhara6(this Grahas grahas) => grahas.ChandraDurudhara(Body.Saturn, Body.Mars);
 
 		//When Mercury and Venus occupies the 2 and 12th house from Moon.	
 		//Sweet tongued, good in looks, fond of music and dance, heroic in temperament, a minister, commanding respect.
-		public static bool ChandraDurudhara7(this Grahas grahaList) => grahaList.ChandraDurudhara(Body.Mercury, Body.Venus);
+		public static bool ChandraDurudhara7(this Grahas grahas) => grahas.ChandraDurudhara(Body.Mercury, Body.Venus);
 
 		//When Mercury and Saturn occupies the 2 and 12th house from Moon.	
 		//Goes to one country to another country to earn money, revered of poor or moderate learning, opposed to his kith and kin.
-		public static bool ChandraDurudhara8(this Grahas grahaList) => grahaList.ChandraDurudhara(Body.Mercury, Body.Saturn);
+		public static bool ChandraDurudhara8(this Grahas grahas) => grahas.ChandraDurudhara(Body.Mercury, Body.Saturn);
 
 		//Religiously inclined, versed in scriptures, eloquent, wealthy, a poet, a renunciant, highly renowned.
-		public static bool ChandraDurudhara9(this Grahas grahaList) => grahaList.ChandraDurudhara(Body.Mercury, Body.Jupiter);
+		public static bool ChandraDurudhara9(this Grahas grahas) => grahas.ChandraDurudhara(Body.Mercury, Body.Jupiter);
 
 		//Renowned and wealthy, easily angered, generally contended, protector of his dear ones, harassed by his opponents,
 		//accumulator of fortune earned through his own efforts.
-		public static bool ChandraDurudhara10(this Grahas grahaList) => grahaList.ChandraDurudhara(Body.Mars, Body.Jupiter);
+		public static bool ChandraDurudhara10(this Grahas grahas) => grahas.ChandraDurudhara(Body.Mars, Body.Jupiter);
 
 
 		//Conjunction between Moon and Jupiter.
 		//Overpowering, virtuous, famous, intelligent profoundly versed, many friends, engaged in virtuous pursuits, doing good to others,
 		//wealthy, c//onsistent in love, soft spoken, chief of family, fickle- minded.
-		public static bool ChandraGuru(this Grahas grahaList)
+		public static bool ChandraGuru(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Conjunct.Count > 0)
 			{
 				foreach (var graha in moon.Conjunct)
@@ -342,75 +342,75 @@ namespace Mhora.Elements.Yoga
 
 		//Moon and Jupiter are Conjunct in Lagna.
 		//Broad-chested, good-looking, blessed with wife, friends and children.
-		public static bool ChandraGuru1(this Grahas grahaList)
+		public static bool ChandraGuru1(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
 			}
 
-			return (grahaList.ChandraGuru());
+			return (grahas.ChandraGuru());
 		}
 
 		//Moon and Jupiter are Conjunct in 4th house
 		//Equivalent to a king, a minister, illustrious, highly learned.
-		public static bool ChandraGuru4(this Grahas grahaList)
+		public static bool ChandraGuru4(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.SukhaBhava)
 			{
 				return (false);
 			}
 
-			return (grahaList.ChandraGuru());
+			return (grahas.ChandraGuru());
 		}
 
 		//Moon and Jupiter are Conjunct in 7th house
 		//Learned, equal to king, very skilled, a trader, very wealthy.
-		public static bool ChandraGuru7(this Grahas grahaList)
+		public static bool ChandraGuru7(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.JayaBhava)
 			{
 				return (false);
 			}
 
-			return (grahaList.ChandraGuru());
+			return (grahas.ChandraGuru());
 		}
 
 		//Moon and Jupiter are Conjunct in 9th house
 		//Distinguished, fortunate, wealthy, contented in all circumstances.
-		public static bool ChandraGuru9(this Grahas grahaList)
+		public static bool ChandraGuru9(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.DhanaBhava)
 			{
 				return (false);
 			}
 
-			return (grahaList.ChandraGuru());
+			return (grahas.ChandraGuru());
 		}
 
 		//Moon and Jupiter are Conjunct in 10th house
 		//Scholar, wealthy, haughty, renowned, respected by all.
-		public static bool ChandraGuru10(this Grahas grahaList)
+		public static bool ChandraGuru10(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.KarmaBhava)
 			{
 				return (false);
 			}
 
-			return (grahaList.ChandraGuru());
+			return (grahas.ChandraGuru());
 		}
 
 		//All planets aspecting the Moon.
 		//When this happens, the adverse Kemadruma yield place to a highly benefic kalpadruma yoga which bestows all comforts on the native.
-		public static bool ChandraKalpadruma1(this Grahas grahaList)
+		public static bool ChandraKalpadruma1(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
-			foreach (var graha in grahaList.Planets)
+			var moon = grahas.Find(Body.Moon);
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.Body == Body.Moon)
 				{
@@ -426,21 +426,21 @@ namespace Mhora.Elements.Yoga
 			return (true);
 		}
 
-		public static Tithi GetTithi(this Grahas grahaList)
+		public static Tithi GetTithi(this Grahas grahas)
 		{
-			var moon     = grahaList.Find(Body.Moon);
-			var sun      = grahaList.Find(Body.Sun);
+			var moon     = grahas.Find(Body.Moon);
+			var sun      = grahas.Find(Body.Sun);
 			var distance = (Longitude) moon.DistanceFrom(sun);
 			return (distance.ToTithi());
 		}
 
 		//A full Moon occupying the lagna in conjunction with a benefic planet.
 		//When this happens, the adverse Kemadruma yield place to a highly benefic kalpadruma yoga which bestows all comforts on the native
-		public static bool ChandraKalpadruma2(this Grahas grahaList)
+		public static bool ChandraKalpadruma2(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 
-			if (grahaList.GetTithi() != Tithi.Paurnami)
+			if (grahas.GetTithi() != Tithi.Paurnami)
 			{
 				return (false);
 			}
@@ -468,9 +468,9 @@ namespace Mhora.Elements.Yoga
 
 		//A strong Moon in a kendra associated with or aspected by benefices.
 		//When this happens, the adverse Kemadruma yield place to a highly benefic kalpadruma yoga which bestows all comforts on the native.
-		public static bool ChandraKalpadruma3(this Grahas grahaList)
+		public static bool ChandraKalpadruma3(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava.IsKendra() == false)
 			{
 				return (false);
@@ -482,7 +482,7 @@ namespace Mhora.Elements.Yoga
 			}
 
 			int yoga = 0;
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (moon.IsAssociatedWith(graha))
 				{
@@ -518,12 +518,12 @@ namespace Mhora.Elements.Yoga
 
 		//The Moon associated with a benefic planet or located between two benefices and aspected by Jupiter.
 		//When this happens, the adverse Kemadruma yield place to a highly benefic kalpadruma yoga which bestows all comforts on the native.
-		public static bool ChandraKalpadruma4(this Grahas grahaList)
+		public static bool ChandraKalpadruma4(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			int yoga = 0;
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (moon.IsAssociatedWith(graha))
 				{
@@ -569,9 +569,9 @@ namespace Mhora.Elements.Yoga
 
 		//The Moon occupying in the navamsha chart its exaltation sign or the house of a very friendly planet, aspected by Jupiter.
 		//When this happens, the adverse Kemadruma yield place to a highly benefic kalpadruma yoga which bestows all comforts on the native.
-		public static bool ChandraKalpadruma5(this Grahas grahaList)
+		public static bool ChandraKalpadruma5(this Grahas grahas)
 		{
-			var navamsha = grahaList.Horoscope.FindGrahas(DivisionType.Navamsa);
+			var navamsha = grahas.Horoscope.FindGrahas(DivisionType.Navamsa);
 			var moon     = navamsha.Find(Body.Moon);
 			if (moon == null)
 			{
@@ -583,7 +583,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			moon = grahaList.Find(Body.Moon);
+			moon = grahas.Find(Body.Moon);
 			foreach (var graha in moon.AspectFrom)
 			{
 				if (graha.Body == Body.Jupiter)
@@ -597,11 +597,11 @@ namespace Mhora.Elements.Yoga
 
 		//Presence of planets in kendras from the Moon.
 		//When this happens, the adverse Kemadruma yield place to a highly benefic kalpadruma yoga which bestows all comforts on the native.
-		public static bool ChandraKalpadruma6(this Grahas grahaList)
+		public static bool ChandraKalpadruma6(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.Body == Body.Moon)
 				{
@@ -620,9 +620,9 @@ namespace Mhora.Elements.Yoga
 
 		//The Moon exalted in the 10 house and aspected by a benefic.
 		//When this happens, the adverse Kemadruma yield place to a highly benefic kalpadruma yoga which bestows all comforts on the native.
-		public static bool ChandraKalpadruma7(this Grahas grahaList)
+		public static bool ChandraKalpadruma7(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 
 			if (moon.IsExalted == false)
 			{
@@ -648,12 +648,12 @@ namespace Mhora.Elements.Yoga
 
 		//If at birth, Mars and Jupiter be in Tula, the Sun in Kanya and Moon in Mesha,
 		//even if the other planets do not aspect the Moon, the Kemadruma stands cancelled.
-		public static bool ChandraKalpadruma8(this Grahas grahaList)
+		public static bool ChandraKalpadruma8(this Grahas grahas)
 		{
-			var moon    = grahaList.Find(Body.Moon);
-			var mars    = grahaList.Find(Body.Mars);
-			var jupiter = grahaList.Find(Body.Jupiter);
-			var sun     = grahaList.Find(Body.Sun);
+			var moon    = grahas.Find(Body.Moon);
+			var mars    = grahas.Find(Body.Mars);
+			var jupiter = grahas.Find(Body.Jupiter);
+			var sun     = grahas.Find(Body.Sun);
 
 			if (moon.Rashi.ZodiacHouse != ZodiacHouse.Ari)
 			{
@@ -682,20 +682,20 @@ namespace Mhora.Elements.Yoga
 		//A waning Moon in debilitation, with the native born at night time.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom,
 		//wife and mental peace, such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma9(this Grahas grahaList)
+		public static bool ChandraKalpadruma9(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.IsDebilitated == false)
 			{
 				return (false);
 			}
 
-			if (grahaList.GetTithi() < Tithi.KrishnaPratipada)
+			if (grahas.GetTithi() < Tithi.KrishnaPratipada)
 			{
 				return (false);
 			}
 
-			if (grahaList.Horoscope.IsDayBirth())
+			if (grahas.Horoscope.IsDayBirth())
 			{
 				return (false);
 			}
@@ -705,21 +705,21 @@ namespace Mhora.Elements.Yoga
 
 		//Placement of the lord of the 11th house in the 12th house, and a weak 12th lord in the 2nd house, with malefics in the 3rd house.
 		//Such a native lives on food given by others, indulges in base acts, is poor and ever engaged in adultery.
-		public static bool ChandraKalpadruma10(this Grahas grahaList)
+		public static bool ChandraKalpadruma10(this Grahas grahas)
 		{
-			var lord = grahaList.Rashis.Find(Bhava.LabhaBhava).Lord;
+			var lord = grahas.Rashis.Find(Bhava.LabhaBhava).Lord;
 			if (lord.Bhava != Bhava.VyayaBhava)
 			{
 				return (false);
 			}
 
-			lord = grahaList.Rashis.Find(Bhava.VyayaBhava).Lord;
+			lord = grahas.Rashis.Find(Bhava.VyayaBhava).Lord;
 			if (lord.Bhava != Bhava.DhanaBhava)
 			{
 				return (false);
 			}
 
-			var rashi = grahaList.Rashis.Find(Bhava.SahajaBhava);
+			var rashi = grahas.Rashis.Find(Bhava.SahajaBhava);
 			foreach (var graha in rashi.Grahas)
 			{
 				if (graha.IsNaturalMalefic)
@@ -736,26 +736,26 @@ namespace Mhora.Elements.Yoga
 		//in a case where birth takes place during the night time.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace,
 		//such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma11(this Grahas grahaList)
+		public static bool ChandraKalpadruma11(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 
 			if (moon.Bhava != Bhava.MrtyuBhava)
 			{
 				return (false);
 			}
 
-			if (grahaList.GetTithi() < Tithi.KrishnaPratipada)
+			if (grahas.GetTithi() < Tithi.KrishnaPratipada)
 			{
 				return (false);
 			}
 
-			if (grahaList.Horoscope.IsDayBirth())
+			if (grahas.Horoscope.IsDayBirth())
 			{
 				return (false);
 			}
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (moon.IsAssociatedWith(graha))
 				{
@@ -780,19 +780,19 @@ namespace Mhora.Elements.Yoga
 		//This yoga arises when there is no planet in the 2 or 12 from Moon.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace,
 		//such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma12(this Grahas grahaList)
+		public static bool ChandraKalpadruma12(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 
 			var zh    = moon.Rashi.ZodiacHouse.Add(2);
-			var rashi = grahaList.Rashis.Find(zh);
+			var rashi = grahas.Rashis.Find(zh);
 			if (rashi.Grahas.Count != 0)
 			{
 				return (false);
 			}
 
 			zh    = moon.Rashi.ZodiacHouse.Add(12);
-			rashi = grahaList.Rashis.Find(zh);
+			rashi = grahas.Rashis.Find(zh);
 			if (rashi.Grahas.Count != 0)
 			{
 				return (false);
@@ -804,9 +804,9 @@ namespace Mhora.Elements.Yoga
 		//The Moon in the lagna or the 7 house sans Jupiter’s aspect.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom,
 		//wife and mental peace such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma13(this Grahas grahaList)
+		public static bool ChandraKalpadruma13(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if ((moon.Bhava != Bhava.LagnaBhava) && (moon.Bhava != Bhava.JayaBhava))
 			{
 				return (false);
@@ -826,10 +826,10 @@ namespace Mhora.Elements.Yoga
 		//The Moon is in conjunction with the Sun, aspected by a debilitated planet and occupying a malefic navamsha.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace
 		//such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma14(this Grahas grahaList)
+		public static bool ChandraKalpadruma14(this Grahas grahas)
 		{
 			bool yoga = false;
-			var  moon = grahaList.Find(Body.Moon);
+			var  moon = grahas.Find(Body.Moon);
 			foreach (var graha in moon.Conjunct)
 			{
 				if (graha.Body == Body.Sun)
@@ -859,7 +859,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			var navamsa = grahaList.Horoscope.FindGrahas( DivisionType.Navamsa);
+			var navamsa = grahas.Horoscope.FindGrahas( DivisionType.Navamsa);
 
 			moon = navamsa.Find(Body.Moon);
 			if (moon == null)
@@ -877,10 +877,10 @@ namespace Mhora.Elements.Yoga
 
 		//The Moon in the Rahu-Ketu Axis, aspected by a malefic planet.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma15(this Grahas grahaList)
+		public static bool ChandraKalpadruma15(this Grahas grahas)
 		{
 			bool yoga = false;
-			var  moon = grahaList.Find(Body.Moon);
+			var  moon = grahas.Find(Body.Moon);
 			if (moon.Conjunct.Count > 0)
 			{
 				foreach (var graha in moon.Conjunct)
@@ -916,10 +916,10 @@ namespace Mhora.Elements.Yoga
 
 		//The 4 house from the Lagna or the Moon occupied by a malefic planet.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma16(this Grahas grahaList)
+		public static bool ChandraKalpadruma16(this Grahas grahas)
 		{
-			var moon  = grahaList.Find(Body.Moon);
-			var rashi = grahaList.Rashis.Find(Bhava.SukhaBhava);
+			var moon  = grahas.Find(Body.Moon);
+			var rashi = grahas.Rashis.Find(Bhava.SukhaBhava);
 			foreach (var graha in rashi.Grahas)
 			{
 				if (graha.IsNaturalMalefic)
@@ -929,7 +929,7 @@ namespace Mhora.Elements.Yoga
 			}
 
 			var zh = moon.Rashi.ZodiacHouse.Add(4);
-			rashi = grahaList.Rashis.Find(zh);
+			rashi = grahas.Rashis.Find(zh);
 			foreach (var graha in rashi.Grahas)
 			{
 				if (graha.IsNaturalMalefic)
@@ -943,9 +943,9 @@ namespace Mhora.Elements.Yoga
 
 		//The moon in Tula, in the varga of an inimical planet, aspected by an inimical or debilitated planet.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma17(this Grahas grahaList)
+		public static bool ChandraKalpadruma17(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Rashi.ZodiacHouse != ZodiacHouse.Lib)
 			{
 				return (false);
@@ -974,9 +974,9 @@ namespace Mhora.Elements.Yoga
 
 		//The Moon in Chara rashi and Chara navamsha, aspected by an inimical planet, unaspected by Jupiter.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma18(this Grahas grahaList)
+		public static bool ChandraKalpadruma18(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Rashi.ZodiacHouse.IsMoveableSign() == false)
 			{
 				return (false);
@@ -1002,7 +1002,7 @@ namespace Mhora.Elements.Yoga
 			}
 			
 
-			var navamsa = grahaList.Horoscope.FindGrahas( DivisionType.Navamsa);
+			var navamsa = grahas.Horoscope.FindGrahas( DivisionType.Navamsa);
 			moon = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
@@ -1019,15 +1019,15 @@ namespace Mhora.Elements.Yoga
 
 		//A weak Moon conjunct with a malefic planet and occupying, in a night birth, a malefic house or a navamsha, aspected by the lord of the 10th house.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma19(this Grahas grahaList)
+		public static bool ChandraKalpadruma19(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Strength > 0)
 			{
 				return (false);
 			}
 
-			if (grahaList.Horoscope.IsDayBirth())
+			if (grahas.Horoscope.IsDayBirth())
 			{
 				return (false);
 			}
@@ -1047,7 +1047,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			var lord = grahaList.Rashis.Find(Bhava.KarmaBhava).Lord;
+			var lord = grahas.Rashis.Find(Bhava.KarmaBhava).Lord;
 
 			yoga = false;
 			foreach (var graha in moon.AspectFrom)
@@ -1069,7 +1069,7 @@ namespace Mhora.Elements.Yoga
 				return (true);
 			}
 
-			var navamsa = grahaList.Horoscope.FindGrahas( DivisionType.Navamsa);
+			var navamsa = grahas.Horoscope.FindGrahas( DivisionType.Navamsa);
 			moon = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
@@ -1086,16 +1086,16 @@ namespace Mhora.Elements.Yoga
 
 		//A waning Moon debilitated in navamsha, associated with a malefic and aspected by the 9 lord.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
-		public static bool ChandraKalpadruma20(this Grahas grahaList)
+		public static bool ChandraKalpadruma20(this Grahas grahas)
 		{
-			var navamsa = grahaList.Horoscope.FindGrahas( DivisionType.Navamsa);
+			var navamsa = grahas.Horoscope.FindGrahas( DivisionType.Navamsa);
 			var moon    = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
 				throw new Exception("Navamsha not calculated!");
 			}
 
-			var  lord = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var  lord = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
 			bool yoga = false;
 			foreach (var graha in moon.AspectFrom)
 			{
@@ -1111,7 +1111,7 @@ namespace Mhora.Elements.Yoga
 				return (false);
 			}
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.IsNaturalMalefic)
 				{
@@ -1129,221 +1129,221 @@ namespace Mhora.Elements.Yoga
 		//Conjunction between Moon and Mars.
 		//Wealthy, brave, winner in combat, dealer of women, wines and earthenware,
 		//adept in metal craft, suffering from blood disorders, hostile to mother.
-		public static bool ChandraMangal(this Grahas grahaList) => grahaList.ChandraGraha(Body.Mars);
+		public static bool ChandraMangal(this Grahas grahas) => grahas.ChandraGraha(Body.Mars);
 
 		//Moon and mars are Conjunct in Lagna.
 		//Aggressive, suffers from blood and bile disorders.
-		public static bool ChandraMangal1(this Grahas grahaList)
+		public static bool ChandraMangal1(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraMangal();
+			return grahas.ChandraMangal();
 		}
 
 		//Moon and mars are Conjunct in 4th house.
 		//Quarrelsome, poor, bereft of home comforts and mental peace.
-		public static bool ChandraMangal4(this Grahas grahaList)
+		public static bool ChandraMangal4(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.SukhaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraMangal();
+			return grahas.ChandraMangal();
 
 		}
 
 		//Moon and mars are Conjunct in 7th house.
 		//Talkative, desires others wealth and possessions.
-		public static bool ChandraMangal7(this Grahas grahaList)
+		public static bool ChandraMangal7(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.JayaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraMangal();
+			return grahas.ChandraMangal();
 		}
 
 		//Moon and mars are Conjunct in 9th house.
 		//Hostile to mother, bereft of peace, of injured body, wealthy
-		public static bool ChandraMangal9(this Grahas grahaList)
+		public static bool ChandraMangal9(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.DharmaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraMangal();
+			return grahas.ChandraMangal();
 		}
 
 		//Moon and mars are Conjunct in 10th house.
 		//Valorous, blessed with vehicles and material possessions
-		public static bool ChandraMangal10(this Grahas grahaList)
+		public static bool ChandraMangal10(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.KarmaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraMangal();
+			return grahas.ChandraMangal();
 		}
 
 		//Conjunction between Moon and Saturn.
 		//Born of a widow remarried, attached to an old woman, given to pleasures of the flesh,
 		//bereft of grace, wealth and velour, tends horses and elephants.
-		public static bool ChandraShani(this Grahas grahaList) => grahaList.ChandraGraha(Body.Saturn);
+		public static bool ChandraShani(this Grahas grahas) => grahas.ChandraGraha(Body.Saturn);
 
 		//Moon and Saturn are Conjunct in Lagna.
 		//Servile, ugly in looks, greedy, lazy, a sinner.
-		public static bool ChandraShani1(this Grahas grahaList)
+		public static bool ChandraShani1(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.LabhaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraShani();
+			return grahas.ChandraShani();
 		}
 
 		//Moon and Saturn are Conjunct in 4th House.
 		//Profession related to water, precious stones and boating or ships, honored by others.
-		public static bool ChandraShani4(this Grahas grahaList)
+		public static bool ChandraShani4(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.SukhaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraShani();
+			return grahas.ChandraShani();
 		}
 
 		//Moon and Saturn are Conjunct in 7th House.
 		//Headman of a village or a town, bereft of wife.
-		public static bool ChandraShani7(this Grahas grahaList)
+		public static bool ChandraShani7(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.JayaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraShani();
+			return grahas.ChandraShani();
 		}
 
 		//Moon and Saturn are Conjunct in 9th House.
 		//A sinner, follows blemished faith, gives up his mother.
-		public static bool ChandraShani9(this Grahas grahaList)
+		public static bool ChandraShani9(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.DharmaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraShani();
+			return grahas.ChandraShani();
 		}
 
 		//Moon and Saturn are Conjunct in 10th House.
 		//Valorous, blessed with vehicles and material possessions.
-		public static bool ChandraShani10(this Grahas grahaList)
+		public static bool ChandraShani10(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.KarmaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraShani();
+			return grahas.ChandraShani();
 		}
 
 		//Conjunction between Moon and Venus.
 		//Clever in buying and selling, adept in tailoring, weaving and trading of clothes,
 		//Quarrelsome, fond of flowers and perfumes, lazy, sinful, a poet.
-		public static bool ChandraShukra(this Grahas grahaList) => grahaList.ChandraGraha(Body.Venus);
+		public static bool ChandraShukra(this Grahas grahas) => grahas.ChandraGraha(Body.Venus);
 
 		//Moon and Venus are Conjunct in Lagna
 		//Good in looks, devoted to teachers and elders, blessed with good cloths and perfumes, comforted by base women.
-		public static bool ChandraShukra1(this Grahas grahaList)
+		public static bool ChandraShukra1(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraShukra();
+			return grahas.ChandraShukra();
 		}
 
 		//Moon and Venus are Conjunct in 4th house
 		//Comforted by women, earns from sea travel, very likeable.
-		public static bool ChandraShukra4(this Grahas grahaList)
+		public static bool ChandraShukra4(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.SukhaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraShukra();
+			return grahas.ChandraShukra();
 		}
 
 		//Moon and Venus are Conjunct in 7th house
 		//Associates with many women, little wealth, more daughters and few sons, equal to a king, very wise.
-		public static bool ChandraShukra7(this Grahas grahaList)
+		public static bool ChandraShukra7(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.JayaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraShukra();
+			return grahas.ChandraShukra();
 		}
 
 		//Moon and Venus are Conjunct in 9th house
 		//Ailing, husband of a base woman, subservient to one in high position.
-		public static bool ChandraShukra9(this Grahas grahaList)
+		public static bool ChandraShukra9(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.DharmaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraShukra();
+			return grahas.ChandraShukra();
 		}
 
 		//Moon and Venus are Conjunct in 10th house
 		//Very distinguished, high status, forgiving.
-		public static bool ChandraShukra10(this Grahas grahaList)
+		public static bool ChandraShukra10(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
+			var moon = grahas.Find(Body.Moon);
 			if (moon.Bhava != Bhava.KarmaBhava)
 			{
 				return (false);
 			}
 
-			return grahaList.ChandraShukra();
+			return grahas.ChandraShukra();
 		}
 
 		//When a planet other than the Sun occupies the second house from the moon, the resulting yoga is called as Sunapha yoga.
 		//This confers on the native a status equivalent to that of a king, immense wealth, capacity to earn his fortune through his own efforts,
 		//wide renown, inclination towards virtuous deeds, quietude and contentment.
-		public static bool ChandraSunapha(this Grahas grahaList)
+		public static bool ChandraSunapha(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
-			foreach (var graha in grahaList.Planets)
+			var moon = grahas.Find(Body.Moon);
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.Body == Body.Sun)
 				{
@@ -1361,10 +1361,10 @@ namespace Mhora.Elements.Yoga
 		//When Jupiter occupies the second house from the moon, the resulting yoga is called as Sunapha yoga.
 		//Excelling in every branch of learning, preceptor, widely renowned, very wealthy, favored by the ruler,
 		//and blessed with a good family. The native is sinless and long-lived.
-		public static bool ChandraSunaphaGuru(this Grahas grahaList)
+		public static bool ChandraSunaphaGuru(this Grahas grahas)
 		{
-			var moon    = grahaList.Find(Body.Moon);
-			var jupiter = grahaList.Find(Body.Jupiter);
+			var moon    = grahas.Find(Body.Moon);
+			var jupiter = grahas.Find(Body.Jupiter);
 			if (jupiter.Bhava.HousesFrom(moon.Bhava) == 2)
 			{
 				return (true);
@@ -1375,10 +1375,10 @@ namespace Mhora.Elements.Yoga
 
 		//When Mars occupies the second house from the moon, the resulting yoga is called as Sunapha yoga.
 		//The native is valorous, cruel, fierce, wealthy, a king, or a commander, averse to hypocrisy, his son takes to agriculture.
-		public static bool ChandraSunaphaMangal(this Grahas grahaList)
+		public static bool ChandraSunaphaMangal(this Grahas grahas)
 		{
-			var moon    = grahaList.Find(Body.Moon);
-			var mars = grahaList.Find(Body.Mars);
+			var moon    = grahas.Find(Body.Moon);
+			var mars = grahas.Find(Body.Mars);
 			if (mars.Bhava.HousesFrom(moon.Bhava) == 2)
 			{
 				return (true);
@@ -1391,10 +1391,10 @@ namespace Mhora.Elements.Yoga
 		//When Venus occupies the second house from the moon, the resulting yoga is called as Sunapha yoga.
 		//The native is very efficient, brave, good in looks, and honored by the  ruler. He is learned, and blessed with wife,
 		//houses, lands, vehicles, quadrupeds and splendor.
-		public static bool ChandraSunaphaShukra(this Grahas grahaList)
+		public static bool ChandraSunaphaShukra(this Grahas grahas)
 		{
-			var moon = grahaList.Find(Body.Moon);
-			var venus = grahaList.Find(Body.Venus);
+			var moon = grahas.Find(Body.Moon);
+			var venus = grahas.Find(Body.Venus);
 			if (venus.Bhava.HousesFrom(moon.Bhava) == 2)
 			{
 				return (true);
@@ -1407,10 +1407,10 @@ namespace Mhora.Elements.Yoga
 		//When Mercury occupies the second house from the moon, the resulting yoga is called as Sunapha yoga.
 		//Well-versed in scriptures, fine arts and music, immersed in religious pursuits, of good looks and agreeable speech, highly intelligent,
 		//and doing good to others. He earns well and dies of ailments arising from cold.
-		public static bool ChandraSunaphaBuddh(this Grahas grahaList)
+		public static bool ChandraSunaphaBuddh(this Grahas grahas)
 		{
-			var moon  = grahaList.Find(Body.Moon);
-			var mercury = grahaList.Find(Body.Mercury);
+			var moon  = grahas.Find(Body.Moon);
+			var mercury = grahas.Find(Body.Mercury);
 			if (mercury.Bhava.HousesFrom(moon.Bhava) == 2)
 			{
 				return (true);
@@ -1423,10 +1423,10 @@ namespace Mhora.Elements.Yoga
 		//When Saturn occupies the second house from the moon, the resulting yoga is called as Sunapha yoga.
 		//Clever and skillful, held in esteem by the rural and the urban folk alike, wealthy and contented.
 		//The native lives on Goat’s milk. This is not favorable for the mother of the native.
-		public static bool ChandraSunaphaShani(this Grahas grahaList)
+		public static bool ChandraSunaphaShani(this Grahas grahas)
 		{
-			var moon    = grahaList.Find(Body.Moon);
-			var saturn = grahaList.Find(Body.Saturn);
+			var moon    = grahas.Find(Body.Moon);
+			var saturn = grahas.Find(Body.Saturn);
 			if (saturn.Bhava.HousesFrom(moon.Bhava) == 2)
 			{
 				return (true);
@@ -1438,102 +1438,102 @@ namespace Mhora.Elements.Yoga
 
 		//Conjunction between Moon, Mercury, and Jupiter.
 		//Learned, Famous, eloquent, rich, virtuous, sickly, the favorite of king.
-		public static bool ChandraBuddhGuru(this Grahas grahaList) => grahaList.ChandraBuddh() && grahaList.ChandraGuru();
+		public static bool ChandraBuddhGuru(this Grahas grahas) => grahas.ChandraBuddh() && grahas.ChandraGuru();
 
 		//Conjunction between Moon, Mercury, Jupiter and Saturn.
 		//Virtuous, charitable, learned, famous, exceedingly wealthy, counselor of a king.
-		public static bool ChandraBuddhGuruShani(this Grahas grahaList) => grahaList.ChandraBuddhGuru() && grahaList.ChandraShani();
+		public static bool ChandraBuddhGuruShani(this Grahas grahas) => grahas.ChandraBuddhGuru() && grahas.ChandraShani();
 
 		//Moon, Mercury, Jupiter, Venus, and Saturn are conjunct.
 		//Highly respectable, a minister, virtuous, leader of many people.
-		public static bool ChandraBuddhGuruShukraShani(this Grahas grahaList) => grahaList.ChandraBuddhGuruShani() && grahaList.ChandraShukra();
+		public static bool ChandraBuddhGuruShukraShani(this Grahas grahas) => grahas.ChandraBuddhGuruShani() && grahas.ChandraShukra();
 
 		//Conjunction between Moon, Mercury, and Saturn.
 		//Learned, worthy, honored by the ruler, eloquent, sickly, a leader.
-		public static bool ChandraBuddhShani(this Grahas grahaList) => grahaList.ChandraBuddh() && grahaList.ChandraShani();
+		public static bool ChandraBuddhShani(this Grahas grahas) => grahas.ChandraBuddh() && grahas.ChandraShani();
 
 		//Conjunction between Moon, Mercury, and Venus.
 		//Good learning, honorable, mean nature, highly covetous, jealous of others.
-		public static bool ChandraBuddhShukra(this Grahas grahaList) => grahaList.ChandraBuddh() && grahaList.ChandraShukra();
+		public static bool ChandraBuddhShukra(this Grahas grahas) => grahas.ChandraBuddh() && grahas.ChandraShukra();
 
 		//Conjunction between Moon, Mercury, Venus and Saturn.
 		//Adulterous, husband of a wicked woman, learned, hostile to many, of diseased eyes.
-		public static bool ChandraBuddhShukraShani(this Grahas grahaList) => grahaList.ChandraBuddhShukra() && grahaList.ChandraShani();
+		public static bool ChandraBuddhShukraShani(this Grahas grahas) => grahas.ChandraBuddhShukra() && grahas.ChandraShani();
 
 		//Conjunction between Moon, Jupiter, and Saturn.
 		//Versed in scriptures, liked by the ruler, clever, renowned, bereft of illness, leader of a village or a town, attached to older women.
-		public static bool ChandraGuruShani(this Grahas grahaList) => grahaList.ChandraGuru() && grahaList.ChandraShani();
+		public static bool ChandraGuruShani(this Grahas grahas) => grahas.ChandraGuru() && grahas.ChandraShani();
 
 		//Conjunction between Moon, Jupiter, and Venus.
 		//Very good looking, learned, born of a virtues mother, proficient in several arts.
-		public static bool ChandraGuruShukra(this Grahas grahaList) => grahaList.ChandraGuru() && grahaList.ChandraShukra();
+		public static bool ChandraGuruShukra(this Grahas grahas) => grahas.ChandraGuru() && grahas.ChandraShukra();
 
 		//Conjunction between Moon, Jupiter, Venus, and Saturn.
 		//Deprived of mother, truthful, adulterous, uncomfortable, a wanderer, has skin disease.
-		public static bool ChandraGuruShukraShani(this Grahas grahaList) => grahaList.ChandraGuruShukra() && grahaList.ChandraShani();
+		public static bool ChandraGuruShukraShani(this Grahas grahas) => grahas.ChandraGuruShukra() && grahas.ChandraShani();
 
 		//Conjunction between Moon, Mars, and Mercury.
 		//Wicked, humiliated by his own people, bereft of virtue and wealth, without friends throughout his life, a glutton.
-		public static bool ChandraMangalBuddh(this Grahas grahaList) => grahaList.ChandraMangal() && grahaList.ChandraBuddh();
+		public static bool ChandraMangalBuddh(this Grahas grahas) => grahas.ChandraMangal() && grahas.ChandraBuddh();
 
 		//Conjunction between Moon, Mars, Mercury and Jupiter.
 		//Versed in sacred scriptures, a king or a minister, highly renowned.
-		public static bool ChandraMangalBuddhGuru(this Grahas grahaList) => grahaList.ChandraMangalBuddh() && grahaList.ChandraGuru();
+		public static bool ChandraMangalBuddhGuru(this Grahas grahas) => grahas.ChandraMangalBuddh() && grahas.ChandraGuru();
 
 		//Moon, Mars, Mercury, Jupiter, and Saturn are conjunct.
 		//Wicked, poor, living on begged food, suffers night-blindness.
-		public static bool ChandraMangalBuddGuruShani(this Grahas grahaList) => grahaList.ChandraMangalBuddhGuru() && grahaList.ChandraShani();
+		public static bool ChandraMangalBuddGuruShani(this Grahas grahas) => grahas.ChandraMangalBuddhGuru() && grahas.ChandraShani();
 
 		//Moon, Mars, Mercury, Jupiter, and Venus are conjunct.
 		//Virtuous, learned, wealthy, bereft of ailments, with many friends.
-		public static bool ChandraMangalBuddhGuruShukra(this Grahas grahaList) => grahaList.ChandraMangalBuddhGuru() && grahaList.ChandraShukra();
+		public static bool ChandraMangalBuddhGuruShukra(this Grahas grahas) => grahas.ChandraMangalBuddhGuru() && grahas.ChandraShukra();
 
 		//Moon, Mars, Mercury, Jupiter, Venus and Saturn are conjunct.
 		//Pious, famous, lazy, wealthy, a king’s counselor, blessed with many women, undertakes pilgrimages, of ascetic habits.
-		public static bool ChandraMangalBuddhGuruShukraShani(this Grahas grahaList) => grahaList.ChandraMangalBuddhGuruShukra() && grahaList.ChandraShani();
+		public static bool ChandraMangalBuddhGuruShukraShani(this Grahas grahas) => grahas.ChandraMangalBuddhGuruShukra() && grahas.ChandraShani();
 
 		//Conjunction between Moon, Mars, Mercury and Saturn.
 		//Brave, bereft of comforts from his friends, blessed with wife, children and friends.
-		public static bool ChandraMangalBuddhShani(this Grahas grahaList) => grahaList.ChandraMangalBuddh() && grahaList.ChandraShani();
+		public static bool ChandraMangalBuddhShani(this Grahas grahas) => grahas.ChandraMangalBuddh() && grahas.ChandraShani();
 
 		//Conjunction between Moon, Mars, Mercury and Venus.
 		//Quarrelsome, lazy, wicked, hostile to his own people, good in looks, husband of a wicked woman.
-		public static bool ChandraMangalBuddhShukra(this Grahas grahaList) => grahaList.ChandraMangalBuddh() && grahaList.ChandraShukra();
+		public static bool ChandraMangalBuddhShukra(this Grahas grahas) => grahas.ChandraMangalBuddh() && grahas.ChandraShukra();
 
 		//Moon, Mars, Mercury, Venus, and Saturn are conjunct.
 		//Ugly in looks, foolish, a pauper, a eunuch, haughty, serving others.
-		public static bool ChandraMangalBuddhShukraShani(this Grahas grahaList) => grahaList.ChandraMangalBuddhShukra() && grahaList.ChandraShani();
+		public static bool ChandraMangalBuddhShukraShani(this Grahas grahas) => grahas.ChandraMangalBuddhShukra() && grahas.ChandraShani();
 
 		//Conjunction between Moon, Mars, and Jupiter.
 		//Good in looks, lovely face, love-sick, likeable, easily angered, his body is scarred with injuries.
-		public static bool ChandraMangalGuru(this Grahas grahaList) => grahaList.ChandraMangal() && grahaList.ChandraGuru();
+		public static bool ChandraMangalGuru(this Grahas grahas) => grahas.ChandraMangal() && grahas.ChandraGuru();
 
 		//Conjunction between Moon, Mars, Jupiter, and Saturn
 		//Learned, generous, brave, mentally stable, rich, of defective hearing.
-		public static bool ChandraMangalGuruShani(this Grahas grahaList) => grahaList.ChandraMangalGuru() && grahaList.ChandraShani();
+		public static bool ChandraMangalGuruShani(this Grahas grahas) => grahas.ChandraMangalGuru() && grahas.ChandraShani();
 
 		//Conjunction between Moon, Mars, Jupiter and Venus.
 		//Valorous, wealthy, learned, blessed with friends and a lovely wife, defective of a limb.
-		public static bool ChandraMangalGuruShukra(this Grahas grahaList) => grahaList.ChandraMangalGuru() && grahaList.ChandraShukra();
+		public static bool ChandraMangalGuruShukra(this Grahas grahas) => grahas.ChandraMangalGuru() && grahas.ChandraShukra();
 
 		//Moon, Mars, Jupiter, Venus, and Saturn are conjunct
 		//A menial servant, foolish, thievish, living on begged food, shabbily dressed, of disease in the eye.
-		public static bool ChandraMangalGuruShukraShani(this Grahas grahaList) => grahaList.ChandraMangalGuruShukra() && grahaList.ChandraShani();
+		public static bool ChandraMangalGuruShukraShani(this Grahas grahas) => grahas.ChandraMangalGuruShukra() && grahas.ChandraShani();
 
 		//Conjunction between Moon, Mars and Saturn.
 		//Bereft of comforts from mother right from childhood, wicked, fickle- minded, indulges in prohibited deeds.
-		public static bool ChandraMangalShani(this Grahas grahaList) => grahaList.ChandraMangal() && grahaList.ChandraShani();
+		public static bool ChandraMangalShani(this Grahas grahas) => grahas.ChandraMangal() && grahas.ChandraShani();
 		
 		 //Conjunction between Moon, Mars, and Venus.
 		 //Master of an ill-mannered woman, ever a wanderer, fickle-minded, in dread of cold.
-		public static bool ChandraMangalShukra(this Grahas grahaList) => grahaList.ChandraMangal() && grahaList.ChandraShukra();
+		public static bool ChandraMangalShukra(this Grahas grahas) => grahas.ChandraMangal() && grahas.ChandraShukra();
 
 		//Conjunction between Moon, Mars, Venus, and Saturn.
 		//Husband of an immoral woman, ever miserable, courageous, fearless, with eyes like those of a serpent.
-		public static bool ChandraMangalShukraShani(this Grahas grahaList) => grahaList.ChandraMangalShukra() && grahaList.ChandraShani();
+		public static bool ChandraMangalShukraShani(this Grahas grahas) => grahas.ChandraMangalShukra() && grahas.ChandraShani();
 
 		//Conjunction between Moon, Venus, and Saturn.
 		//Proficient writer, coming from a good family, engaged in virtues pursuits, very likeable.
-		public static bool ChandraShukraShani(this Grahas grahaList) => grahaList.ChandraShukra() && grahaList.ChandraShani();
+		public static bool ChandraShukraShani(this Grahas grahas) => grahas.ChandraShukra() && grahas.ChandraShani();
 	}
 }
