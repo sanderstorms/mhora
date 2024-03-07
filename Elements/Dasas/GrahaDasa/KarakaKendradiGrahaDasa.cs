@@ -148,7 +148,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 		// Count to moola trikona - 1.
 		// Use Aqu / Sco as MT houses for Rahu / Ketu
 		//DivisionPosition dp_plt = h.getPosition(plt).toDivisionPosition(new Division(DivisionType.Rasi));
-		var zhMt  = graha.Body.GetMoolaTrikonaRasi();
+		var zhMt  = graha.Body.MooltrikonaSign();
 
 		if (graha == Body.Rahu)
 		{

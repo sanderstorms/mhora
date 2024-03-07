@@ -16,8 +16,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using System;
+using System.Diagnostics;
 using Mhora.Definitions;
-using Mhora.Elements.Yoga;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -194,5 +195,113 @@ public static class Nakshatras
 	{
 		var snum = ((int)value + i - 1).NormalizeInc(1, 28);
 		return (Nakshatra28) snum;
+	}
+
+	public static Nakshatra ToNakshatra(this Longitude l)
+	{
+		var snum = (int) (Math.Floor(l.Value / (360.0 / 27.0)) + 1.0);
+		return (Nakshatra) snum;
+	}
+
+	public static Nakshatra28 ToNakshatra28(this Longitude l)
+	{
+		var snum = (int) (Math.Floor(l.Value / (360.0 / 27.0)) + 1.0);
+
+		var ret = (Nakshatra28) snum;
+		if (snum >= (int) Nakshatra28.Abhijit)
+		{
+			ret = ret.Add(2);
+		}
+
+		if (l.Value >= 270 + (6.0 + 40.0 / 60.0) && l.Value <= 270 + (10.0 + 53.0 / 60.0 + 20.0 / 3600.0))
+		{
+			ret = Nakshatra28.Abhijit;
+		}
+
+		return ret;
+	}
+
+	public static double NakshatraBase(this Longitude l)
+	{
+		var num  = l.ToNakshatra().Index();
+		var cusp = (num - 1) * (360.0 / 27.0);
+		return cusp;
+	}
+
+	public static double NakshatraOffset(this Longitude l)
+	{
+		var znum = l.ToNakshatra().Index();
+		var cusp = (znum - 1) * (360.0 / 27.0);
+		var ret  = l.Value - cusp;
+		Trace.Assert(ret >= 0.0 && ret <= 360.0 / 27.0);
+		return ret;
+	}
+
+	public static double PercentageOfNakshatra(this Longitude l)
+	{
+		var offset = l.NakshatraOffset();
+		var perc   = offset / (360.0 / 27.0) * 100;
+		Trace.Assert(perc >= 0 && perc <= 100);
+		return perc;
+	}
+
+	public static int NakshatraPada(this Longitude l)
+	{
+		var offset = l.NakshatraOffset();
+		var val    = (int) Math.Floor(offset / (360.0 / (27.0 * 4.0))) + 1;
+		Trace.Assert(val >= 1 && val <= 4);
+		return val;
+	}
+
+	public static int AbsoluteNakshatraPada(this Longitude l)
+	{
+		var n = l.ToNakshatra().Index();
+		var p = l.NakshatraPada();
+		return (n - 1) * 4 + p;
+	}
+
+	public static double NakshatraPadaOffset(this Longitude l)
+	{
+		var pnum = l.AbsoluteNakshatraPada();
+		var cusp = (pnum - 1) * (360.0 / (27.0 * 4.0));
+		var ret  = l.Value - cusp;
+		Trace.Assert(ret >= 0.0 && ret <= 360.0 / 27.0);
+		return ret;
+	}
+
+	public static double NakshatraPadaPercentage(this Longitude l)
+	{
+		var offset = l.NakshatraPadaOffset();
+		var perc   = offset / (360.0 / (27.0 * 4.0)) * 100;
+		Trace.Assert(perc >= 0 && perc <= 100);
+		return perc;
+	}
+
+	public static (Nakshatra, int) NakshatraPada(this ZodiacHouse zh)
+	{
+		var total     = (((zh.Index() -1) * 9.0) / 4) + 1;
+		var nakshatra = ((int) (total)).NormalizeInc (1, 27);
+		var pada      = ((int) (total - nakshatra) * 4);
+
+		return ((Nakshatra) nakshatra, pada);
+	}
+
+	public static (Nakshatra, int) AddPada(this Nakshatra nakshatra, int nrOfPadas)
+	{
+		var pada = 1 + nrOfPadas;
+		while (pada > 4)
+		{
+			nakshatra =  nakshatra.Add(2);
+			pada      -= 4;
+		}
+		return (nakshatra, pada);
+	}
+
+	public static (Nakshatra, int) AddPada(this Longitude lon, int nrOfPadas)
+	{
+		var nakshatra = lon.ToNakshatra();
+		var pada      = lon.NakshatraPada();
+
+		return nakshatra.AddPada(pada + nrOfPadas);
 	}
 }

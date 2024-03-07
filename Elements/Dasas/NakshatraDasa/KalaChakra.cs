@@ -147,7 +147,7 @@ namespace Mhora.Elements.Dasas.NakshatraDasa
 	    public static ZodiacHouse DasaPeriod (this Longitude lon, int cycle, out bool savya)
 	    {
 		    var nakshatra = lon.ToNakshatra();
-		    var pada = lon.ToNakshatraPada();
+		    var pada = lon.NakshatraPada();
 		    var zh   = nakshatra.NavamsaRasi(pada, out _);
 
 		    (nakshatra, pada) = zh.NakshatraPada();

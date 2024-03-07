@@ -177,7 +177,7 @@ public class MhoraPrintDocument : PrintDocument
 
 		var s        = string.Empty;
 		var nak      = bp.Longitude.ToNakshatra();
-		var nak_pada = bp.Longitude.ToNakshatraPada();
+		var nak_pada = bp.Longitude.NakshatraPada();
 		s = string.Format("{0} {1}", nak.ToShortString(), nak_pada);
 		g.DrawString(s, f, b, (float) (width / 6 * 2.5), 0);
 
@@ -541,8 +541,8 @@ public class MhoraPrintDocument : PrintDocument
 		// Nakshatra
 		var lmoon = h.GetPosition(Body.Moon).Longitude;
 		var nmoon = lmoon.ToNakshatra();
-		offset = 360.0 / 27.0 - lmoon.ToNakshatraOffset();
-		var pada = lmoon.ToNakshatraPada();
+		offset = 360.0 / 27.0 - lmoon.NakshatraOffset();
+		var pada = lmoon.NakshatraPada();
 		PrintString(string.Format("Nakshatra: {0} {1}  {2:N}% left", nmoon.Name(), pada, offset / (360.0 / 27.0) * 100));
 
 		// Yoga, Hora

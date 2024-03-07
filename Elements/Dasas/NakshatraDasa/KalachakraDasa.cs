@@ -86,7 +86,7 @@ public class KalachakraDasa : Dasa, IDasa
 		}
 
 		/*
-		Angle  nakshatraOffset = mLon.ToNakshatraOffset();
+		Angle  nakshatraOffset = mLon.NakshatraOffset();
 		Angle  unit            = new Angle(3,20, 0.0);
 		double navamsa         = mLon.Value                / unit;
 		Angle  begin           = Math.Floor(navamsa) * unit;
@@ -94,7 +94,7 @@ public class KalachakraDasa : Dasa, IDasa
 
 		var bhogyaSarvayu = (left.TotalArcseconds * 100) / 12000;
 		*/
-		var offsetLength = mLon.ToNakshatraPadaPercentage() / 100.0 * dasaLength;
+		var offsetLength = mLon.NakshatraPadaPercentage() / 100.0 * dasaLength;
 
 		var start   = -offsetLength;
 		int skipped = 0;

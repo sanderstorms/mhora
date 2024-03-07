@@ -19,6 +19,19 @@ namespace Mhora.Util
 			_timeSpan = timeSpan;
 		}
 
+		//1 day or 24 hours = 60 Ghatis
+		public double Ghati => _timeSpan.TotalDays * 60;
+		// 1 Ghati = 60 Vighati (also called Pala or Kala)
+		public double Vighati => Ghati * 60;
+		// 1 Vighati = 60 Linta or (also called Vipala or Vikala)
+		public double Vipala => Vighati * 60;
+		// 1 Lipta = 60 Vilipta
+		public double Vilipta => Vipala * 60;
+		// 1 Vilipta = 60 Para
+		public double Para => Vilipta * 60;
+		// 1 Para = 60 Tatpara
+		public double Tatpara => Para * 60;
+
 		public override string ToString()
 		{
 			return _timeSpan.ToString();

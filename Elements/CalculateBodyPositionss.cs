@@ -589,7 +589,7 @@ namespace Mhora.Elements
 		{
 			var mpos  = h.GetPosition(Body.Moon).Longitude;
 			var lpos  = h.GetPosition(Body.Lagna).Longitude;
-			var sldeg = mpos.ToNakshatraOffset() / (360.0 / 27.0) * 360.0;
+			var sldeg = mpos.NakshatraOffset() / (360.0 / 27.0) * 360.0;
 			var slLon = lpos.Add(sldeg);
 			var bp    = new Position(h, Body.SreeLagna, BodyType.SpecialLagna, slLon, 0, 0, 0, 0, 0);
 			return (bp);

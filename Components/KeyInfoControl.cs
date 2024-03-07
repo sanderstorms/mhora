@@ -243,8 +243,8 @@ public class KeyInfoControl : MhoraControl
 			var lmoon     = h.GetPosition(Body.Moon).Longitude;
 			var nmoon     = lmoon.ToNakshatra();
 			var nmoonLord = VimsottariDasa.NakshatraLord(nmoon);
-			var offset    = 360.0 / 27.0 - lmoon.ToNakshatraOffset();
-			var pada      = lmoon.ToNakshatraPada();
+			var offset    = 360.0 / 27.0 - lmoon.NakshatraOffset();
+			var pada      = lmoon.NakshatraPada();
 			var fmt       = string.Format("{0} {1} ({2}) {3:N}% left", nmoon.Name(), pada, nmoonLord, offset / (360.0 / 27.0) * 100);
 			li = new ListViewItem("Nakshatra");
 			li.SubItems.Add(fmt);

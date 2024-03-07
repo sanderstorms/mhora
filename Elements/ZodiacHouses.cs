@@ -332,6 +332,35 @@ public static class ZodiacHouses
 		}
 	}
 
+
+	/// <summary>
+	///     Specify the Lord of a ZodiacHouse. The owernership of the nodes is not considered
+	/// </summary>
+	/// <param name="zh">The House whose lord should be returned</param>
+	/// <returns>The lord of zh</returns>
+	public static Body SimpleLordOfZodiacHouse(this ZodiacHouse zh)
+	{
+		switch (zh)
+		{
+			case ZodiacHouse.Ari: return Body.Mars;
+			case ZodiacHouse.Tau: return Body.Venus;
+			case ZodiacHouse.Gem: return Body.Mercury;
+			case ZodiacHouse.Can: return Body.Moon;
+			case ZodiacHouse.Leo: return Body.Sun;
+			case ZodiacHouse.Vir: return Body.Mercury;
+			case ZodiacHouse.Lib: return Body.Venus;
+			case ZodiacHouse.Sco: return Body.Mars;
+			case ZodiacHouse.Sag: return Body.Jupiter;
+			case ZodiacHouse.Cap: return Body.Saturn;
+			case ZodiacHouse.Aqu: return Body.Saturn;
+			case ZodiacHouse.Pis: return Body.Jupiter;
+		}
+
+		Trace.Assert(false, string.Format("Basics.SimpleLordOfZodiacHouse for {0} failed", (int) zh));
+		return Body.Other;
+	}
+
+
 	public static ZodiacHouse LordsOtherSign(this ZodiacHouse zodiacHouse)
 	{
 		var ret = ZodiacHouse.Ari;
@@ -587,5 +616,4 @@ public static class ZodiacHouses
 
 		return new Longitude(houseBase.Value + offset * nrOfDivisions);
 	}
-
 }

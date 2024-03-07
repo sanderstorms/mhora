@@ -898,7 +898,7 @@ public class BasicCalculationsControl : MhoraControl
 
 			li.SubItems.Add(longitudeToString(bp.Longitude));
 			li.SubItems.Add(bp.Longitude.ToNakshatra().ToString());
-			li.SubItems.Add(bp.Longitude.ToNakshatraPada().ToString());
+			li.SubItems.Add(bp.Longitude.NakshatraPada().ToString());
 			li.SubItems.Add(getNakLord(bp.Longitude));
 
 			var dp = bp.ToDivisionPosition(options.DivisionType);

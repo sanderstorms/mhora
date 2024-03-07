@@ -143,7 +143,7 @@ public class MoolaDasa : Dasa, IDasa
 		// Use Aqu / Sco as MT houses for Rahu / Ketu
 		var dpPlt = _h.GetPosition(plt).ToDivisionPosition(_options.Dtype);
 		var zhPlt = dpPlt.ZodiacHouse;
-		var zhMt  = plt.GetMoolaTrikonaRasi();
+		var zhMt  = plt.MooltrikonaSign();
 		if (plt == Body.Rahu)
 		{
 			zhMt = ZodiacHouse.Aqu;

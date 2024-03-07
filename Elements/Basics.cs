@@ -102,73 +102,6 @@ public static class Basics
 		return x;
 	}
 
-	public static ZodiacHouse GetMoolaTrikonaRasi(this Body b)
-	{
-		var z = ZodiacHouse.Ari;
-		switch (b)
-		{
-			case Body.Sun:
-				z = ZodiacHouse.Leo;
-				break;
-			case Body.Moon:
-				z = ZodiacHouse.Tau;
-				break;
-			case Body.Mars:
-				z = ZodiacHouse.Ari;
-				break;
-			case Body.Mercury:
-				z = ZodiacHouse.Vir;
-				break;
-			case Body.Jupiter:
-				z = ZodiacHouse.Sag;
-				break;
-			case Body.Venus:
-				z = ZodiacHouse.Lib;
-				break;
-			case Body.Saturn:
-				z = ZodiacHouse.Aqu;
-				break;
-			case Body.Rahu:
-				z = ZodiacHouse.Vir;
-				break;
-			case Body.Ketu:
-				z = ZodiacHouse.Pis;
-				break;
-		}
-
-		return (z);
-	}
-
-
-
-
-	/// <summary>
-	///     Specify the Lord of a ZodiacHouse. The owernership of the nodes is not considered
-	/// </summary>
-	/// <param name="zh">The House whose lord should be returned</param>
-	/// <returns>The lord of zh</returns>
-	public static Body SimpleLordOfZodiacHouse(this ZodiacHouse zh)
-	{
-		switch (zh)
-		{
-			case ZodiacHouse.Ari: return Body.Mars;
-			case ZodiacHouse.Tau: return Body.Venus;
-			case ZodiacHouse.Gem: return Body.Mercury;
-			case ZodiacHouse.Can: return Body.Moon;
-			case ZodiacHouse.Leo: return Body.Sun;
-			case ZodiacHouse.Vir: return Body.Mercury;
-			case ZodiacHouse.Lib: return Body.Venus;
-			case ZodiacHouse.Sco: return Body.Mars;
-			case ZodiacHouse.Sag: return Body.Jupiter;
-			case ZodiacHouse.Cap: return Body.Saturn;
-			case ZodiacHouse.Aqu: return Body.Saturn;
-			case ZodiacHouse.Pis: return Body.Jupiter;
-		}
-
-		Trace.Assert(false, string.Format("Basics.SimpleLordOfZodiacHouse for {0} failed", (int) zh));
-		return Body.Other;
-	}
-
 
 	public static Longitude CalculateBodyLongitude(this Horoscope h, double ut, int ipl)
 	{
@@ -333,5 +266,4 @@ public static class Basics
 			default: return Body.Jupiter;
 		}
 	}
-
 }
