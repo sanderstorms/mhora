@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Collections;
 using System.Diagnostics;
+using Mhora.Calculation;
 using Mhora.Definitions;
 using Mhora.Util;
 
@@ -1198,7 +1199,7 @@ public class Position
 
 	private DivisionPosition ToDivisionPositionNavamsaDwadasamsa()
 	{
-		var bp = (Position) Clone();
+		var bp = Clone();
 		bp.Longitude = bp.ExtrapolateLongitude(DivisionType.Navamsa);
 		var dp = bp.ToDivisionPositionDwadasamsa(12);
 		PopulateRegularCusps(108, dp);
@@ -1207,7 +1208,7 @@ public class Position
 
 	private DivisionPosition ToDivisionPositionDwadasamsaDwadasamsa()
 	{
-		var bp = (Position) Clone();
+		var bp = Clone();
 		bp.Longitude = bp.ExtrapolateLongitude(DivisionType.Dwadasamsa);
 		var dp = bp.ToDivisionPositionDwadasamsa(12);
 		PopulateRegularCusps(144, dp);
@@ -1228,7 +1229,7 @@ public class Position
 	/// <returns>A division Position</returns>
 	public DivisionPosition ToDivisionPosition(Division d)
 	{
-		var              bp = (Position) Clone();
+		var              bp = Clone();
 		DivisionPosition dp = null;
 
 		foreach (var division in d.MultipleDivisions)
@@ -1316,7 +1317,7 @@ public class Position
 
 	public Longitude ExtrapolateLongitude(Division d)
 	{
-		var bp = (Position) Clone();
+		var bp = Clone();
 		foreach (var dSingle in d.MultipleDivisions)
 		{
 			bp.Longitude = ExtrapolateLongitude(dSingle);

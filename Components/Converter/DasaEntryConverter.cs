@@ -20,8 +20,8 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using Mhora.Dasas;
 using Mhora.Definitions;
-using Mhora.Elements.Dasas;
 using Mhora.Util;
 
 namespace Mhora.Components.Converter;

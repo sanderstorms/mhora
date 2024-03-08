@@ -25,13 +25,13 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Chart;
 using Mhora.Components.Property;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Yoga;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Components.VargaControl;

@@ -46,7 +46,7 @@ namespace Mhora.Util
 		/// <param name="degrees">The value of the angle in degrees.</param>
 		public Angle(int degrees)
 		{
-			_value = (decimal)degrees;
+			_value = degrees;
 		}
 
 		/// <summary>
@@ -291,7 +291,7 @@ namespace Mhora.Util
 		/// <returns>The result of the first Angle being added to the second Angle.</returns>
 		public static Angle operator +(Angle a, Angle b)
 		{
-			return (Angle)(a._value + b._value);
+			return a._value + b._value;
 		}
 
 		/// <summary>
@@ -302,7 +302,7 @@ namespace Mhora.Util
 		/// <returns>The result of the second Angle being subtracted from the first Angle.</returns>
 		public static Angle operator -(Angle a, Angle b)
 		{
-			return (Angle)(a._value - b._value);
+			return a._value - b._value;
 		}
 
 		/// <summary>
@@ -313,7 +313,7 @@ namespace Mhora.Util
 		/// <returns>The result of the first Angle being multiplied by the second Angle.</returns>
 		public static Angle operator *(Angle a, Angle b)
 		{
-			return (Angle)(a._value * b._value);
+			return a._value * b._value;
 		}
 
 		/// <summary>
@@ -324,7 +324,7 @@ namespace Mhora.Util
 		/// <returns>The result of the first Angle being divided by the second Angle.</returns>
 		public static Angle operator /(Angle a, Angle b)
 		{
-			return (Angle)(a._value / b._value);
+			return a._value / b._value;
 		}
 
 		/// <summary>
@@ -335,7 +335,7 @@ namespace Mhora.Util
 		/// <returns>The result of the First Angle mod the Second Angle.</returns>
 		public static Angle operator %(Angle a, Angle b)
 		{
-			return (Angle)(a._value % b._value);
+			return a._value % b._value;
 		}
 
 		/// <summary>
@@ -588,7 +588,7 @@ namespace Mhora.Util
 		{
 			int returnValue = 0;
 
-			decimal degreesDecimal = (decimal)angle - (decimal)angle.Degrees;
+			decimal degreesDecimal = (decimal)angle - angle.Degrees;
 
 			if (degreesDecimal < 0)
 			{
@@ -613,8 +613,8 @@ namespace Mhora.Util
 		{
 			decimal returnValue = 0M;
 
-			decimal degreesDecimal = (decimal)angle - (decimal)angle.Degrees;
-			decimal totalMinutes = degreesDecimal * 60;
+			decimal degreesDecimal = (decimal)angle - angle.Degrees;
+			decimal totalMinutes   = degreesDecimal * 60;
 			decimal secondsDecimal = 0;
 
 			if (totalMinutes < 0)

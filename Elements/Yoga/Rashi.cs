@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Mhora.Calculation;
 using Mhora.Definitions;
-using Mhora.Elements.Calculation;
 using Mhora.Util;
 
 namespace Mhora.Elements.Yoga

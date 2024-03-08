@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Mhora.Definitions;
 using Mhora.Util;
-using Newtonsoft.Json.Linq;
 
 namespace Mhora.Elements.Yoga
 {

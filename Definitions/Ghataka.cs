@@ -4,47 +4,47 @@ namespace Mhora.Definitions
 {
 	public static class Ghataka
 	{
-		public static bool Day(ZodiacHouse janmaZodiacHouse, Tables.Hora.Weekday wd)
+		public static bool Day(ZodiacHouse janmaZodiacHouse, Weekday wd)
 		{
 			var ja = janmaZodiacHouse;
-			var gh = Tables.Hora.Weekday.Sunday;
+			var gh = Weekday.Sunday;
 			switch (ja)
 			{
 				case ZodiacHouse.Ari:
-					gh = Tables.Hora.Weekday.Sunday;
+					gh = Weekday.Sunday;
 					break;
 				case ZodiacHouse.Tau:
-					gh = Tables.Hora.Weekday.Saturday;
+					gh = Weekday.Saturday;
 					break;
 				case ZodiacHouse.Gem:
-					gh = Tables.Hora.Weekday.Monday;
+					gh = Weekday.Monday;
 					break;
 				case ZodiacHouse.Can:
-					gh = Tables.Hora.Weekday.Wednesday;
+					gh = Weekday.Wednesday;
 					break;
 				case ZodiacHouse.Leo:
-					gh = Tables.Hora.Weekday.Saturday;
+					gh = Weekday.Saturday;
 					break;
 				case ZodiacHouse.Vir:
-					gh = Tables.Hora.Weekday.Saturday;
+					gh = Weekday.Saturday;
 					break;
 				case ZodiacHouse.Lib:
-					gh = Tables.Hora.Weekday.Thursday;
+					gh = Weekday.Thursday;
 					break;
 				case ZodiacHouse.Sco:
-					gh = Tables.Hora.Weekday.Friday;
+					gh = Weekday.Friday;
 					break;
 				case ZodiacHouse.Sag:
-					gh = Tables.Hora.Weekday.Friday;
+					gh = Weekday.Friday;
 					break;
 				case ZodiacHouse.Cap:
-					gh = Tables.Hora.Weekday.Tuesday;
+					gh = Weekday.Tuesday;
 					break;
 				case ZodiacHouse.Aqu:
-					gh = Tables.Hora.Weekday.Thursday;
+					gh = Weekday.Thursday;
 					break;
 				case ZodiacHouse.Pis:
-					gh = Tables.Hora.Weekday.Friday;
+					gh = Weekday.Friday;
 					break;
 			}
 

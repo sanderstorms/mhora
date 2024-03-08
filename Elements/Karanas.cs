@@ -17,6 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 
+using System;
+using Mhora.Calculation;
 using Mhora.Definitions;
 
 namespace Mhora.Elements;
@@ -59,4 +61,24 @@ public static class Karanas
 			}
 		}
 	}
+
+	public static Karana ToKarana(this Longitude l)
+	{
+		var kIndex = (int) (Math.Floor(l.Value / (360.0 / 60.0)) + 1);
+		var k      = (Karana) kIndex;
+		return k;
+	}
+
+	public static double ToKaranaBase(this Longitude l)
+	{
+		var num  = (int) l.ToKarana();
+		var cusp = (num - 1) * (360.0 / 60.0);
+		return cusp;
+	}
+
+	public static double ToKaranaOffset(this Longitude l)
+	{
+		return l.Value - l.ToKaranaBase();
+	}
+
 }

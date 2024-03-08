@@ -20,11 +20,12 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Components.VargaControl;
+using Mhora.Dasas;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Dasas;
 using Mhora.Util;
 
 namespace Mhora.Components.DasaControl;

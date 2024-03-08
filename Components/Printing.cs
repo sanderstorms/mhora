@@ -20,12 +20,13 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.Drawing.Printing;
+using Mhora.Calculation;
 using Mhora.Components.VargaControl;
+using Mhora.Dasas;
+using Mhora.Dasas.NakshatraDasa;
+using Mhora.Dasas.RasiDasa;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Dasas;
-using Mhora.Elements.Dasas.NakshatraDasa;
-using Mhora.Elements.Dasas.RasiDasa;
 using Mhora.Util;
 
 namespace Mhora.Components;

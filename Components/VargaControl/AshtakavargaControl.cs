@@ -28,7 +28,6 @@ using Mhora.Components.Property;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Components.VargaControl;

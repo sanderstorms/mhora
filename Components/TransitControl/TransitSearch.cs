@@ -19,15 +19,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Components.Property;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
-using Mhora.Tables;
 using Mhora.Util;
-using Retrogression = Mhora.Elements.Calculation.Retrogression;
+using Retrogression = Mhora.Calculation.Retrogression;
 
 namespace Mhora.Components.TransitControl;
 
@@ -1006,13 +1005,13 @@ public class TransitSearch : MhoraControl
 
 		if (bTransitForwardCusp)
 		{
-			opts.TransitPoint = (Longitude) dp.CuspHigher;
+			opts.TransitPoint = dp.CuspHigher;
 			updateOptions();
 			bStartSearch_Click(sender, e);
 		}
 		else
 		{
-			opts.TransitPoint = (Longitude) dp.CuspLower;
+			opts.TransitPoint = dp.CuspLower;
 			updateOptions();
 			bStartSearch_Click(sender, e);
 		}

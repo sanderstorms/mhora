@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Mhora.Calculation;
 using Mhora.Definitions;
 
 namespace Mhora.Elements
@@ -130,9 +130,9 @@ namespace Mhora.Elements
 			al.Add(h.SahamaDnHelper("Sastra", Body.Jupiter, Body.Saturn, Body.Mercury));
 
 			// Variable positions.
-			al.Add(h.SahamaDnHelper("Yasas", Body.Jupiter, ((Position) al[0]).Longitude, Body.Lagna));
-			al.Add(h.SahamaDnHelper("Mitra", Body.Jupiter, ((Position) al[0]).Longitude, Body.Venus));
-			al.Add(h.SahamaDnHelper("Mahatmya", ((Position) al[0]).Longitude, Body.Mars, Body.Lagna));
+			al.Add(h.SahamaDnHelper("Yasas", Body.Jupiter, al[0].Longitude, Body.Lagna));
+			al.Add(h.SahamaDnHelper("Mitra", Body.Jupiter, al[0].Longitude, Body.Venus));
+			al.Add(h.SahamaDnHelper("Mahatmya", al[0].Longitude, Body.Mars, Body.Lagna));
 
 			var bLagnaLord = h.LordOfZodiacHouse(zhLagna, DivisionType.Rasi, false);
 			if (bLagnaLord != Body.Mars)
@@ -173,12 +173,12 @@ namespace Mhora.Elements
 			al.Add(h.SahamaDnHelper("Vivaha", Body.Venus, Body.Saturn, Body.Lagna));
 			al.Add(h.SahamaHelper("Santapa", Body.Saturn, Body.Moon, lonBase.Add(6.0 * 30.0)));
 			al.Add(h.SahamaDnHelper("Sraddha", Body.Venus, Body.Mars, Body.Lagna));
-			al.Add(h.SahamaDnHelper("Preeti", ((Position) al[2]).Longitude, ((Position) al[0]).Longitude, Body.Lagna));
+			al.Add(h.SahamaDnHelper("Preeti", al[2].Longitude, al[0].Longitude, Body.Lagna));
 			al.Add(h.SahamaDnHelper("Jadya", Body.Mars, Body.Saturn, Body.Mercury));
 			al.Add(h.SahamaHelper("Vyapara", Body.Mars, Body.Saturn, Body.Lagna));
 			al.Add(h.SahamaDnHelper("Satru", Body.Mars, Body.Saturn, Body.Lagna));
 			al.Add(h.SahamaDnHelper("Jalapatana", new Longitude(105.0), Body.Saturn, Body.Lagna));
-			al.Add(h.SahamaDnHelper("Bandhana", ((Position) al[0]).Longitude, Body.Saturn, Body.Lagna));
+			al.Add(h.SahamaDnHelper("Bandhana", al[0].Longitude, Body.Saturn, Body.Lagna));
 			al.Add(h.SahamaDnHelper("Apamrityu", lonBase.Add(8.0 * 30.0), Body.Mars, Body.Lagna));
 			al.Add(h.SahamaHelper("Labha", lonBase.Add(11.0      * 30.0), h.LordOfZodiacHouse(zhLagna.Add(11), DivisionType.Rasi, false), Body.Lagna));
 

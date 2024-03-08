@@ -20,11 +20,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Mhora.Components.Delegates;
+using Mhora.Calculation;
 using Mhora.Components.Property;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 
 namespace Mhora.Database.Settings;
 

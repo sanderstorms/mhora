@@ -20,16 +20,14 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Components.Controls;
-using Mhora.Components.Delegates;
 using Mhora.Components.Property;
 using Mhora.Components.VargaControl;
+using Mhora.Dasas.NakshatraDasa;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Dasas;
-using Mhora.Elements.Dasas.NakshatraDasa;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -695,34 +693,34 @@ public class BasicCalculationsControl : MhoraControl
 		switch (options.NakshatraLord)
 		{
 			default:
-			case Dasas.NakshatraLord.Vimsottari:
+			case Dasas.Dasas.NakshatraLord.Vimsottari:
 				id = new VimsottariDasa(h);
 				break;
-			case Dasas.NakshatraLord.Ashtottari:
+			case Dasas.Dasas.NakshatraLord.Ashtottari:
 				id = new AshtottariDasa(h);
 				break;
-			case Dasas.NakshatraLord.Yogini:
+			case Dasas.Dasas.NakshatraLord.Yogini:
 				id = new YoginiDasa(h);
 				break;
-			case Dasas.NakshatraLord.Shodashottari:
+			case Dasas.Dasas.NakshatraLord.Shodashottari:
 				id = new ShodashottariDasa(h);
 				break;
-			case Dasas.NakshatraLord.Dwadashottari:
+			case Dasas.Dasas.NakshatraLord.Dwadashottari:
 				id = new DwadashottariDasa(h);
 				break;
-			case Dasas.NakshatraLord.Panchottari:
+			case Dasas.Dasas.NakshatraLord.Panchottari:
 				id = new PanchottariDasa(h);
 				break;
-			case Dasas.NakshatraLord.Shatabdika:
+			case Dasas.Dasas.NakshatraLord.Shatabdika:
 				id = new ShatabdikaDasa(h);
 				break;
-			case Dasas.NakshatraLord.ChaturashitiSama:
+			case Dasas.Dasas.NakshatraLord.ChaturashitiSama:
 				id = new ChaturashitiSamaDasa(h);
 				break;
-			case Dasas.NakshatraLord.DwisaptatiSama:
+			case Dasas.Dasas.NakshatraLord.DwisaptatiSama:
 				id = new DwisaptatiSamaDasa(h);
 				break;
-			case Dasas.NakshatraLord.ShatTrimshaSama:
+			case Dasas.Dasas.NakshatraLord.ShatTrimshaSama:
 				id = new ShatTrimshaSamaDasa(h);
 				break;
 		}
@@ -1194,7 +1192,7 @@ public class BasicCalculationsControl : MhoraControl
 			set;
 		}
 
-		public Dasas.NakshatraLord NakshatraLord
+		public Dasas.Dasas.NakshatraLord NakshatraLord
 		{
 			get;
 			set;

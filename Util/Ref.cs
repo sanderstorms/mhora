@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Mhora.Util
+﻿namespace Mhora.Util
 {
 	public class Ref<T>
 	{

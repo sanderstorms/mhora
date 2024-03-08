@@ -20,8 +20,8 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Mhora.Dasas;
 using Mhora.Elements;
-using Mhora.Elements.Dasas;
 using Mhora.Util;
 
 namespace Mhora.Components.DasaControl;

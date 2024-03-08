@@ -21,15 +21,14 @@ using System.Collections;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Components.Delegates;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
-using Mhora.Tables;
 using Mhora.Util;
-using Retrogression = Mhora.Elements.Calculation.Retrogression;
+using Retrogression = Mhora.Calculation.Retrogression;
 
 namespace Mhora.Components.PanchangaControl;
 
@@ -398,7 +397,7 @@ public class MhoraPanchangaControl : MhoraControl
 			sunrise_ut = ut_sr
 		};
 		sweph.RevJul(ut, out year, out month, out day, out hour);
-		local.wday = (Hora.Weekday) sweph.DayOfWeek(ut);
+		local.wday = (Weekday) sweph.DayOfWeek(ut);
 
 
 		local.kalas_ut = hCurr.GetKalaCuspsUt();
@@ -755,7 +754,7 @@ public class MhoraPanchangaControl : MhoraControl
 			var sHora = "    ";
 			for (var i = 0; i < 24; i++)
 			{
-				var ib    = (int) Basics.NormalizeExcLower(local.hora_base + i, 0, 7);
+				var ib    = (int) Calculations.NormalizeExcLower(local.hora_base + i, 0, 7);
 				var bHora = h.HoraOrder[ib];
 				sHora = string.Format("{0}{1} hora until {2}. ", sHora, bHora, utTimeToString(local.horas_ut[i + 1], local.sunrise_ut, local.sunrise));
 				if (opts.OneEntryPerLine || i % 4 == 3)
@@ -771,7 +770,7 @@ public class MhoraPanchangaControl : MhoraControl
 			var sKala = "    ";
 			for (var i = 0; i < 16; i++)
 			{
-				var ib    = (int) Basics.NormalizeExcLower(local.kala_base + i, 0, 8);
+				var ib    = (int) Calculations.NormalizeExcLower(local.kala_base + i, 0, 8);
 				var bKala = h.KalaOrder[ib];
 				sKala = string.Format("{0}{1} kala until {2}. ", sKala, bKala, utTimeToString(local.kalas_ut[i + 1], local.sunrise_ut, local.sunrise));
 				if (opts.OneEntryPerLine || i % 4 == 3)

@@ -800,7 +800,7 @@ public class Ashtakavarga
 			0
 		};
 
-		var zl = (ZodiacHouse) _h.GetPosition(Body.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
+		var zl = _h.GetPosition(Body.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
 
 		foreach (var b in GetBodies())
 		{
@@ -871,7 +871,7 @@ public class Ashtakavarga
 
 		var al = new ArrayList();
 
-		var zh = (ZodiacHouse) _h.GetPosition(n).ToDivisionPosition(_dtype).ZodiacHouse;
+		var zh = _h.GetPosition(n).ToDivisionPosition(_dtype).ZodiacHouse;
 		foreach (var i in allBindus[BodyToInt(m)][BodyToInt(n)])
 		{
 			al.Add(zh.Add(i));

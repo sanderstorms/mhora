@@ -1,4 +1,6 @@
-﻿using Mhora.Definitions;
+﻿using System;
+using Mhora.Calculation;
+using Mhora.Definitions;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -190,4 +192,24 @@ public static class Tithis
 
 		return string.Empty;
 	}
+
+	public static Tithi ToTithi(this Longitude l)
+	{
+		var tIndex = (int) (Math.Floor(l.Value / (360.0 / 30.0)) + 1);
+		var t      = tIndex.ToTithi();
+		return t;
+	}
+
+	public static double ToTithiBase(this Longitude l)
+	{
+		var num  = l.ToTithi().Index();
+		var cusp = (num - 1) * (360.0 / 30.0);
+		return cusp;
+	}
+
+	public static double ToTithiOffset(this Longitude l)
+	{
+		return l.Value - l.ToTithiBase();
+	}
+
 }

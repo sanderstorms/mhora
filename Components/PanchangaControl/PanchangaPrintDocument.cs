@@ -24,8 +24,6 @@ using Mhora.Components.VargaControl;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Components.PanchangaControl;

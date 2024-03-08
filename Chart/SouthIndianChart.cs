@@ -65,7 +65,7 @@ public class SouthIndianChart : IDrawChart
 		var dOffset = l.ToZodiacHouseOffset();
 		var iOff    = (int) (dOffset / 30.0 * (Xw / 4));
 		var pBase   = GetZhouseOffset(l.ToZodiacHouse());
-		switch ((ZodiacHouse)zh)
+		switch (zh)
 		{
 			case ZodiacHouse.Ari:
 			case ZodiacHouse.Tau:

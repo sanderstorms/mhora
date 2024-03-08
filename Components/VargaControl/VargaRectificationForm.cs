@@ -21,11 +21,10 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
-using Mhora.Tables;
 using Mhora.Util;
 
 namespace Mhora.Components.VargaControl;

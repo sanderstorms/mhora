@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Mhora.Calculation;
 using Mhora.Definitions;
-using Mhora.Elements.Calculation;
 using Mhora.SwissEph;
 using Mhora.SwissEph.Helpers;
 using Mhora.Util;

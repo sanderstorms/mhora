@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using Genghis.Windows.Forms;
 using Mhora.Components;
 using Mhora.Components.File;
-using Mhora.Components.Jhora;
 using Mhora.Components.SplashScreen;
 using Mhora.Database.Settings;
 using Mhora.Definitions;

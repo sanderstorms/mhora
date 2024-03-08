@@ -1,6 +1,5 @@
 ﻿using System;
 using Mhora.Definitions;
-using Mhora.Elements.Yoga;
 using Mhora.Util;
 
 namespace Mhora.Elements

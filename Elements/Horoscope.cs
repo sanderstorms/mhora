@@ -20,10 +20,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Components.Delegates;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
-using Mhora.Elements.Calculation;
 using Mhora.Elements.Yoga;
 using Mhora.SwissEph;
 using Mhora.Util;
@@ -89,7 +89,7 @@ public class Horoscope : ICloneable
 	}
 
 
-	public Tables.Hora.Weekday LmtWday
+	public Weekday LmtWday
 	{
 		get;
 		private set;
@@ -134,7 +134,7 @@ public class Horoscope : ICloneable
 		set;
 	}
 
-	public Tables.Hora.Weekday Wday
+	public Weekday Wday
 	{
 		get; 
 		private set;
@@ -344,8 +344,8 @@ public class Horoscope : ICloneable
 				this.Set(tret, sweph.SE_SUN, srflag, geopos, 0.0, 0.0, ref tret);
 				sweph.RevJul(tret, out year, out month, out day, out hour);
 				ss = hour + Info.DstOffset.TotalHours;
-				sr = Basics.NormalizeExc(sr, 0.0, 24.0);
-				ss = Basics.NormalizeExc(ss, 0.0, 24.0);
+				sr = Calculations.NormalizeExc(sr, 0.0, 24.0);
+				ss = Calculations.NormalizeExc(ss, 0.0, 24.0);
 				break;
 		}
 	}
@@ -466,7 +466,7 @@ public class Horoscope : ICloneable
 			jd -= 1;
 		}
 
-		Wday = (Tables.Hora.Weekday) sweph.DayOfWeek(jd);
+		Wday = (Weekday) sweph.DayOfWeek(jd);
 
 		jd = sweph.JulDay(m.Year, m.Month, m.Day, 12.0);
 		if (Info.DateOfBirth.Time().TotalHours < LmtSunrise)
@@ -474,7 +474,7 @@ public class Horoscope : ICloneable
 			jd -= 1;
 		}
 
-		LmtWday = (Tables.Hora.Weekday) sweph.DayOfWeek(jd);
+		LmtWday = (Weekday) sweph.DayOfWeek(jd);
 	}
 
 	
@@ -704,7 +704,7 @@ public class Horoscope : ICloneable
 		var s     = t.ToString();
 		Trace.Assert(index >= 0 && index < PositionList.Count, "Horoscope::getPosition 1");
 		Trace.Assert(PositionList[index].GetType() == typeof(Position), "Horoscope::getPosition 2");
-		var bp = (Position) PositionList[b.Index()];
+		var bp = PositionList[b.Index()];
 		if (bp.Name == b)
 		{
 			return bp;
@@ -712,7 +712,7 @@ public class Horoscope : ICloneable
 
 		for (var i = (int) Body.Lagna + 1; i < PositionList.Count; i++)
 		{
-			var position = (Position) PositionList[i];
+			var position = PositionList[i];
 			if (b == position.Name)
 			{
 				return position;
@@ -720,7 +720,7 @@ public class Horoscope : ICloneable
 		}
 
 		Trace.Assert(false, "Basics::GetPosition. Unable to find body");
-		return (Position) PositionList[0];
+		return PositionList[0];
 	}
 
 }
