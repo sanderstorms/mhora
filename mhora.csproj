@@ -196,33 +196,33 @@
     <Compile Include="Dasas\NakshatraDasa\KalaChakra.cs" />
     <Compile Include="Elements\Kutas.cs" />
     <Compile Include="Elements\Sahama.cs" />
-    <Compile Include="Elements\Yoga\Aakriti.cs" />
-    <Compile Include="Elements\Yoga\Buddh.cs" />
-    <Compile Include="Elements\Yoga\Chandra.cs" />
-    <Compile Include="Elements\Yoga\Dhana.cs" />
-    <Compile Include="Elements\Yoga\DpList.cs" />
-    <Compile Include="Elements\Yoga\FindYoga.cs" />
-    <Compile Include="Elements\Yoga\GajaKesari.cs" />
-    <Compile Include="Elements\Yoga\Grahas.cs" />
-    <Compile Include="Elements\Yoga\Guru.cs" />
-    <Compile Include="Elements\Yoga\HariHaraBramha.cs" />
-    <Compile Include="Elements\Yoga\Kalsarpa.cs" />
-    <Compile Include="Elements\Yoga\MahaParivartana.cs" />
-    <Compile Include="Elements\Yoga\Mahapurusha.cs" />
-    <Compile Include="Elements\Yoga\Malika.cs" />
-    <Compile Include="Elements\Yoga\Mangal.cs" />
-    <Compile Include="Elements\Yoga\Raja.cs" />
-    <Compile Include="Elements\Yoga\Rashis.cs" />
-    <Compile Include="Elements\Yoga\Ravi.cs" />
-    <Compile Include="Elements\Yoga\Sankhya.cs" />
-    <Compile Include="Elements\Yoga\Shukra.cs" />
-    <Compile Include="Elements\Yoga\Surya.cs" />
-    <Compile Include="Elements\Yoga\Yoga.cs" />
+    <Compile Include="Yoga\Aakriti.cs" />
+    <Compile Include="Yoga\Buddh.cs" />
+    <Compile Include="Yoga\Chandra.cs" />
+    <Compile Include="Yoga\Dhana.cs" />
+    <Compile Include="Yoga\DpList.cs" />
+    <Compile Include="Yoga\FindYoga.cs" />
+    <Compile Include="Yoga\GajaKesari.cs" />
+    <Compile Include="Yoga\Grahas.cs" />
+    <Compile Include="Yoga\Guru.cs" />
+    <Compile Include="Yoga\HariHaraBramha.cs" />
+    <Compile Include="Yoga\Kalsarpa.cs" />
+    <Compile Include="Yoga\MahaParivartana.cs" />
+    <Compile Include="Yoga\Mahapurusha.cs" />
+    <Compile Include="Yoga\Malika.cs" />
+    <Compile Include="Yoga\Mangal.cs" />
+    <Compile Include="Yoga\Raja.cs" />
+    <Compile Include="Yoga\Rashis.cs" />
+    <Compile Include="Yoga\Ravi.cs" />
+    <Compile Include="Yoga\Sankhya.cs" />
+    <Compile Include="Yoga\Shukra.cs" />
+    <Compile Include="Yoga\Surya.cs" />
+    <Compile Include="Yoga\Yoga.cs" />
     <Compile Include="Elements\ZodiacHouses.cs" />
     <Compile Include="Definitions\Tithi.cs" />
-    <Compile Include="Elements\Yoga\Conditions.cs" />
-    <Compile Include="Elements\Yoga\Graha.cs" />
-    <Compile Include="Elements\Yoga\Rashi.cs" />
+    <Compile Include="Yoga\Conditions.cs" />
+    <Compile Include="Yoga\Graha.cs" />
+    <Compile Include="Yoga\Rashi.cs" />
     <Compile Include="Definitions\ZodiacHouse.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -369,6 +369,9 @@
     <Compile Include="Components\Converter\HMSInfoConverter.cs" />
     <Compile Include="Database\Settings\HoraInfo.cs" />
     <Compile Include="Elements\Horoscope.cs" />
+    <Compile Include="Elements\Horoscope.Calculations.cs">
+      <DependentUpon>Horoscope.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database\Settings\HoroscopeOptions.cs" />
     <Compile Include="Dasas\IDasa.cs" />
     <Compile Include="Chart\IDrawChart.cs" />
@@ -516,7 +519,7 @@
     <Compile Include="Util\Time.cs" />
     <Compile Include="Util\TimeOffset.cs" />
     <Compile Include="Util\TimeUtils.cs" />
-    <Compile Include="Util\ToDate.cs" />
+    <Compile Include="Calculation\ToDate.cs" />
     <Compile Include="Components\TransitControl\TransitItem.cs" />
     <Compile Include="Components\TransitControl\TransitSearch.cs">
       <SubType>UserControl</SubType>

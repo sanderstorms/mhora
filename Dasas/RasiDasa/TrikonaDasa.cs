@@ -22,8 +22,8 @@ using Mhora.Calculation;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Yoga;
 using Mhora.Util;
+using Mhora.Yoga;
 
 namespace Mhora.Dasas.RasiDasa;
 

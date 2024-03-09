@@ -8,7 +8,7 @@ using Mhora.Util;
 
 namespace Mhora.Calculation
 {
-	public static class CalculateBodyPositionss
+	internal static class CalculateBodyPositionss
 	{
 		public static DivisionPosition CalculateDivisionPosition(this Position bp, DivisionType d)
 		{

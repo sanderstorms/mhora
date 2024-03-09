@@ -19,14 +19,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Components.DasaControl;
 using Mhora.Components.PanchangaControl;
-using Mhora.Components.TransitControl;
 using Mhora.Components.VargaControl;
 using Mhora.Dasas.YearlyDasa;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Util;
+using TransitSearch = Mhora.Components.TransitControl.TransitSearch;
 
 namespace Mhora.Components.Jhora;
 

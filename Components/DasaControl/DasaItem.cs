@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Dasas;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
@@ -65,7 +66,7 @@ public class DasaItem : ListViewItem
 			sDateRange = " " + sDateRange;
 		}
 
-		SubItems.Add(sDateRange);
+		SubItems.Add((string) sDateRange);
 		Text                  = Entry.DasaName + id.EntryDescription(Entry, m, m2);
 		SubItems[1].Font      = MhoraGlobalOptions.Instance.FixedWidthFont;
 		SubItems[1].ForeColor = MhoraGlobalOptions.Instance.DasaDateColor;

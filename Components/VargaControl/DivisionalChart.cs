@@ -31,8 +31,8 @@ using Mhora.Components.Property;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Yoga;
 using Mhora.Util;
+using Mhora.Yoga;
 
 namespace Mhora.Components.VargaControl;
 

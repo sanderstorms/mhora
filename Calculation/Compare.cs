@@ -1,7 +1,7 @@
 ﻿using System;
 using Mhora.Calculation.Strength;
 using Mhora.Definitions;
-using Mhora.Elements.Yoga;
+using Mhora.Yoga;
 
 namespace Mhora.Calculation
 {

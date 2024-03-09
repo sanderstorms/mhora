@@ -25,8 +25,8 @@ using Mhora.Components.Property;
 using Mhora.Dasas.NakshatraDasa;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Yoga;
 using Mhora.Util;
+using Mhora.Yoga;
 
 namespace Mhora.Dasas.GrahaDasa;
 

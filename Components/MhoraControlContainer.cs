@@ -20,9 +20,9 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Components.DasaControl;
 using Mhora.Components.PanchangaControl;
-using Mhora.Components.TransitControl;
 using Mhora.Components.VargaControl;
 using Mhora.Dasas.GrahaDasa;
 using Mhora.Dasas.NakshatraDasa;
@@ -34,6 +34,7 @@ using Mhora.Elements;
 using Mhora.Util;
 using Basics = Mhora.Calculation.Basics;
 using Calculations = Mhora.Calculation.Calculations;
+using TransitSearch = Mhora.Components.TransitControl.TransitSearch;
 
 namespace Mhora.Components;
 
