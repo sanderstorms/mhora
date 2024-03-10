@@ -404,12 +404,12 @@ public partial class Horoscope : ICloneable
 
 	
 
-	public double LengthOfDay()
+	public Time LengthOfDay()
 	{
 		return NextSunrise + 24.0 - Sunrise;
 	}
 
-	public double HoursAfterSunrise()
+	public Time HoursAfterSunrise()
 	{
 		var ret = Info.DateOfBirth.Time ().TotalHours - Sunrise;
 		if (ret < 0)
@@ -420,9 +420,9 @@ public partial class Horoscope : ICloneable
 		return ret;
 	}
 
-	public double HoursAfterSunRiseSet()
+	public Time HoursAfterSunRiseSet()
 	{
-		double ret = 0;
+		Time ret;
 		if (IsDayBirth())
 		{
 			ret = Info.DateOfBirth.Time ().TotalHours - Sunrise;

@@ -294,10 +294,10 @@ public class KeyInfoControl : MhoraControl
 			mList.Items.Add(li);
 		}
 		{
-			var ghatisSr = h.HoursAfterSunrise()    * 2.5;
-			var ghatisSs = h.HoursAfterSunRiseSet() * 2.5;
+			var ghatisSr = h.HoursAfterSunrise();
+			var ghatisSs = h.HoursAfterSunRiseSet();
 			li = new ListViewItem("Ghatis");
-			var fmt = string.Format("{0:0.0000} / {1:0.0000}", ghatisSr, ghatisSs);
+			var fmt = string.Format("{0:0.0000} / {1:0.0000}", ghatisSr.Ghati, ghatisSs.Ghati);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}

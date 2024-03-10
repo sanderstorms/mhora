@@ -875,6 +875,7 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Ruler", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Cusp Start", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Cusp End", -2, HorizontalAlignment.Left);
+		mList.Columns.Add("Avastha", -2, HorizontalAlignment.Left);
 
 
 		foreach (Position bp in h.PositionList)
@@ -905,6 +906,14 @@ public class BasicCalculationsControl : MhoraControl
 			li.SubItems.Add(bp.AmsaRuler( options.DivisionType, dp.RulerIndex));
 			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspLower)));
 			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
+			if (bp.BodyType == BodyType.Graha)
+			{
+				li.SubItems.Add(h.SayanadiAvastha(bp.Name).ToString());
+			}
+			else
+			{
+				li.SubItems.Add("");
+			}
 
 			mList.Items.Add(li);
 		}

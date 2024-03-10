@@ -35,7 +35,7 @@ namespace Mhora.Yoga
 				}
 			}
 
-			_grahas.Sort((x, y) => x.BodyPosition.Longitude.CompareTo(y.BodyPosition.Longitude));
+			_grahas.Sort((x, y) => x.Position.Longitude.CompareTo(y.Position.Longitude));
 		}
 
 

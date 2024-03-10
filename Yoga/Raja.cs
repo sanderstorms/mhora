@@ -63,12 +63,12 @@ namespace Mhora.Yoga
 					return (false);
 			}
 
-			if (atmakaraka.IsAspectedByBenefics == false)
+			if (atmakaraka.IsAspectedBy(Nature.Benefic, true) == false)
 			{
 				return (false);
 			}
 
-			if (lord9.IsAspectedByBenefics == false)
+			if (lord9.IsAspectedBy(Nature.Benefic, true) == false)
 			{
 				return (false);
 			}

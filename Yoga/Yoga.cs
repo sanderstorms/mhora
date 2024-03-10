@@ -837,12 +837,12 @@ namespace Mhora.Yoga
 				{
 					if (graha.IsNaturalBenefic)
 					{
-						if (graha.IsAspectedByMalefics)
+						if (graha.IsAspectedBy (Nature.Malefic, true))
 						{
 							return (false);
 						}
 
-						if (graha.IsAssociatedWithMalefics)
+						if (graha.IsAssociatedWith(Nature.Malefic, true))
 						{
 							return (false);
 						}
@@ -955,7 +955,7 @@ namespace Mhora.Yoga
 			}
 
 			var jupiter = grahas.Find(Body.Jupiter);
-			if (jupiter.IsAssociatedWithMalefics)
+			if (jupiter.IsAssociatedWith(Nature.Malefic, true))
 			{
 				return (true);
 			}
@@ -1044,12 +1044,12 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			if (lord1.IsAspectedByBenefics == false)
+			if (lord1.IsAspectedBy(Nature.Benefic, true) == false)
 			{
 				return (false);
 			}
 
-			if (lord12.IsAspectedByBenefics == false)
+			if (lord12.IsAspectedBy(Nature.Benefic, true) == false)
 			{
 				return (false);
 			}

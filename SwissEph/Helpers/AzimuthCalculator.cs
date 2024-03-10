@@ -1,4 +1,5 @@
 ﻿using System;
+using Mhora.Calculation;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Util;
@@ -208,7 +209,7 @@ public class AzimuthCalculator
 	private static (HorizontalCoordinates Coordinates, double JulDay) GetSunriseSunsetAzimuthAndTimeInternal(Horoscope h, DateTime date, GeoPosition position, double pressure, double temperature, int purpose, SweApi sweApi)
 	{
 		var jday        = SweApi.SunriseSunsetJulDay(position, pressure, temperature, date);
-		var sunPosition = SweApi.GetBodyPosition(h, jday, Body.Sun.SwephBody());
+		var sunPosition = h.CalculateSingleBodyPosition(jday, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
 		var azimuth     = SweApi.GetHorizontalCoordinates(jday, position, pressure, temperature, sunPosition);
 
 		// Перевод в круговой счет от N

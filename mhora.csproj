@@ -169,6 +169,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Controls\ListViewColumnSorter.cs" />
+    <Compile Include="Definitions\Element.cs" />
+    <Compile Include="Definitions\GrahaType.cs" />
+    <Compile Include="Definitions\Nature.cs" />
+    <Compile Include="Definitions\Avastha.cs" />
     <Compile Include="Definitions\Body.cs" />
     <Compile Include="Definitions\BodyType.cs" />
     <Compile Include="Definitions\Ghataka.cs" />
@@ -180,6 +184,7 @@
     <Compile Include="Definitions\SunMoonYoga.cs" />
     <Compile Include="Definitions\WeekDay.cs" />
     <Compile Include="Definitions\Yoga.cs" />
+    <Compile Include="Elements\Avasthas.cs" />
     <Compile Include="Elements\Bhavas.cs" />
     <Compile Include="Calculation\CalculateBodyPositionss.cs" />
     <Compile Include="Calculation\Calculations.cs" />
@@ -233,7 +238,6 @@
     <Compile Include="SwissEph\AstroCatalogue.cs" />
     <Compile Include="SwissEph\Helpers\AzimuthCalcResult.cs" />
     <Compile Include="SwissEph\Helpers\AzimuthCalculator.cs" />
-    <Compile Include="SwissEph\Helpers\BodyPosition.cs" />
     <Compile Include="SwissEph\SwephDll.cs" />
     <Compile Include="Util\Angle.cs" />
     <Compile Include="Util\Ref.cs" />

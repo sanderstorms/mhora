@@ -80,6 +80,27 @@ public static class ZodiacHouses
 		return (false);
 	}
 
+	public static Element Element(this ZodiacHouse zodiacHouse)
+	{
+		switch (zodiacHouse)
+		{
+			case ZodiacHouse.Ari:
+			case ZodiacHouse.Leo:
+			case ZodiacHouse.Sag:
+				return (Definitions.Element.Fire);
+			case ZodiacHouse.Tau:
+			case ZodiacHouse.Vir:
+			case ZodiacHouse.Cap:
+				return (Definitions.Element.Earth);
+			case ZodiacHouse.Gem:
+			case ZodiacHouse.Lib:
+			case ZodiacHouse.Aqu:
+				return Definitions.Element.Air; 
+		}
+
+		return Definitions.Element.Water;
+	}
+
 	public static bool IsOdd(this ZodiacHouse zodiacHouse)
 	{
 		switch (zodiacHouse)
