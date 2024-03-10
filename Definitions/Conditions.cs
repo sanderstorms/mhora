@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mhora.Yoga
+namespace Mhora.Definitions
 {
 	[Flags]
 	public enum Conditions : ulong

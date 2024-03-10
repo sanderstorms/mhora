@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Mhora.Calculation;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
+using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 using Mhora.Util;
 

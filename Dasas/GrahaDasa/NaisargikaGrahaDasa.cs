@@ -25,6 +25,7 @@ using Mhora.Calculation;
 using Mhora.Components.Property;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Extensions;
 using Mhora.Util;
 
 namespace Mhora.Dasas.GrahaDasa;

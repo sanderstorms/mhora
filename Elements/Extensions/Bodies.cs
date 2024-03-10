@@ -22,7 +22,7 @@ using Mhora.Calculation;
 using Mhora.Definitions;
 using Mhora.SwissEph;
 
-namespace Mhora.Elements;
+namespace Mhora.Elements.Extensions;
 
 /// <summary>
 ///     A compile-time list of every body we will use in this program

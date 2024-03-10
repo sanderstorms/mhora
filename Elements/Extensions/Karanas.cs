@@ -21,7 +21,7 @@ using System;
 using Mhora.Calculation;
 using Mhora.Definitions;
 
-namespace Mhora.Elements;
+namespace Mhora.Elements.Extensions;
 
 public static class Karanas
 {

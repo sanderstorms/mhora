@@ -1,4 +1,4 @@
-﻿namespace Mhora.Elements;
+﻿namespace Mhora.Elements.Extensions;
 
 public static class Taras
 {

@@ -1,6 +1,7 @@
 using System;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 using Mhora.Util;
 

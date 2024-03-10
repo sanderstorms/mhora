@@ -22,7 +22,7 @@ using Mhora.Calculation;
 using Mhora.Definitions;
 using Mhora.Util;
 
-namespace Mhora.Elements;
+namespace Mhora.Elements.Extensions;
 
 public static class Nakshatras
 {

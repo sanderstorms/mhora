@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 using Mhora.Util;
 

@@ -24,6 +24,7 @@ using Mhora.Calculation;
 using Mhora.Components.Delegates;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
+using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 using Mhora.Util;
 using Mhora.Yoga;

@@ -21,6 +21,7 @@ using System.Collections;
 using System.Diagnostics;
 using Mhora.Calculation;
 using Mhora.Definitions;
+using Mhora.Elements.Extensions;
 using Mhora.Util;
 
 namespace Mhora.Elements;

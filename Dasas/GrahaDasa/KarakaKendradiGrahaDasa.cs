@@ -25,6 +25,7 @@ using Mhora.Components.Property;
 using Mhora.Dasas.NakshatraDasa;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Extensions;
 using Mhora.Util;
 using Mhora.Yoga;
 
@@ -287,7 +288,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 		public void CalculateSeedBody()
 		{
-			var alK = new ArrayList();
+			var alK = new List<KarakaComparer>();
 			for (var i = (int) Body.Sun; i <= (int) Body.Rahu; i++)
 			{
 				var b   = (Body) i;
@@ -298,7 +299,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 			alK.Sort();
 
-			var bpAk = ((KarakaComparer) alK[0]).GetPosition;
+			var bpAk = (alK[0]).GetPosition;
 			SeedBody = bpAk.Name;
 		}
 

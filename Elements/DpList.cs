@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using Mhora.Calculation;
 using Mhora.Definitions;
-using Mhora.Elements;
 
-namespace Mhora.Yoga
+namespace Mhora.Elements
 {
 	public class DpList
 	{

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Mhora.Definitions;
 
-namespace Mhora.Yoga
+namespace Mhora.Elements
 {
 	public class Rashis : IReadOnlyList<Rashi>
 	{

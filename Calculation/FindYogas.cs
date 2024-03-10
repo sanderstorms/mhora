@@ -24,6 +24,7 @@ using System.Windows.Forms;
 using Mhora.Components.Property;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Extensions;
 
 namespace Mhora.Calculation;
 /*

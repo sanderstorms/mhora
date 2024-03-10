@@ -2,11 +2,11 @@
 using System.Linq;
 using Mhora.Calculation;
 using Mhora.Definitions;
-using Mhora.Elements;
+using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 using Mhora.Util;
 
-namespace Mhora.Yoga
+namespace Mhora.Elements
 {
 	public class Graha
 	{

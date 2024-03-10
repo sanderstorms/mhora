@@ -31,6 +31,7 @@ using Mhora.Components.Property;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Extensions;
 using Mhora.Util;
 using Mhora.Yoga;
 
@@ -1011,7 +1012,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void PaintCharaKarakas(Graphics g)
 	{
-		var al = new ArrayList();
+		var al = new List <KarakaComparer>();
 
 		// number of karakas to display
 		var max = 0;
@@ -1038,7 +1039,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		var kindex = new int[max + 1];
 		for (var i = 0; i <= max; i++)
 		{
-			var bp = ((KarakaComparer) al[i]).GetPosition;
+			var bp = (al[i]).GetPosition;
 			kindex[(int) bp.Name] = i;
 		}
 

@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using Mhora.Calculation;
@@ -28,6 +29,7 @@ using Mhora.Dasas.NakshatraDasa;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Extensions;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -420,7 +422,7 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Karakas", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Offset", -2, HorizontalAlignment.Left);
 
-		var al  = new ArrayList();
+		var al  = new List<KarakaComparer>();
 		var max = 0;
 		if (vt == ViewType.ViewCharaKarakas)
 		{
@@ -445,7 +447,7 @@ public class BasicCalculationsControl : MhoraControl
 		for (var i = 0; i < al.Count; i++)
 		{
 			var li = new ListViewItem();
-			var bk = (KarakaComparer) al[i];
+			var bk = al[i];
 			li.Text = bk.GetPosition.Name.Name();
 			if (vt == ViewType.ViewCharaKarakas)
 			{
@@ -847,7 +849,7 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Clear();
 		mList.Items.Clear();
 
-		var al = new ArrayList();
+		var al = new List <KarakaComparer>();
 		for (var i = (int)Body.Sun; i <= (int)Body.Rahu; i++)
 		{
 			var b   = (Body) i;
@@ -860,7 +862,7 @@ public class BasicCalculationsControl : MhoraControl
 		var karaka_indices = new int[9];
 		for (var i = 0; i < al.Count; i++)
 		{
-			var bk = (KarakaComparer) al[i];
+			var bk = al[i];
 			karaka_indices[(int) bk.GetPosition.Name] = i;
 		}
 
