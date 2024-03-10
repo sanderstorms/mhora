@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -71,13 +72,13 @@ public class Division : ICloneable
 	public object Clone()
 	{
 		var dRet = new Division();
-		var al   = new ArrayList();
+		var al   = new List<SingleDivision>();
 		foreach (var dSingle in MultipleDivisions)
 		{
 			al.Add(dSingle.Clone());
 		}
 
-		dRet.MultipleDivisions = (SingleDivision[]) al.ToArray(typeof(SingleDivision));
+		dRet.MultipleDivisions = al.ToArray();
 		return dRet;
 	}
 
@@ -156,7 +157,7 @@ public class Division : ICloneable
 
 	[Serializable]
 	[TypeConverter(typeof(SingleDivisionConverter))]
-	public class SingleDivision : ICloneable
+	public class SingleDivision
 	{
 		private DivisionType mDtype;
 		private int          mNumParts;
@@ -191,7 +192,7 @@ public class Division : ICloneable
 			set => mNumParts = value;
 		}
 
-		public object Clone()
+		public SingleDivision Clone()
 		{
 			return new SingleDivision(Varga, NumParts);
 		}

@@ -27,7 +27,6 @@ using Mhora.Elements;
 using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 using Mhora.Util;
-using Retrogression = Mhora.Calculation.Retrogression;
 
 namespace Mhora.Components.TransitControl;
 

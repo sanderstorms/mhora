@@ -328,8 +328,8 @@ public static class ShadBalas
 			diff -= 7.0;
 		}
 
-		yearLord  = ((Weekday) sweph.DayOfWeek(ut_noon - diff_year)).WeekdayRuler();
-		monthLord = ((Weekday) sweph.DayOfWeek(ut_noon - diff_month)).WeekdayRuler();
+		yearLord  = ((Weekday) sweph.DayOfWeek(ut_noon - diff_year)).Ruler();
+		monthLord = ((Weekday) sweph.DayOfWeek(ut_noon - diff_month)).Ruler();
 	}
 
 	public static double AbdaBala(this Horoscope h, Body b)
@@ -361,7 +361,7 @@ public static class ShadBalas
 	public static double VaraBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
-		if (h.Wday.WeekdayRuler() == b)
+		if (h.Wday.Ruler() == b)
 		{
 			return 45.0;
 		}

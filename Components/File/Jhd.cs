@@ -76,7 +76,7 @@ public class Jhd : IFileToHoraInfo
 			Longitude   = (double) lon,
 			City        = worldCity,
 			FileType    = HoraInfo.EFileType.JagannathaHora,
-			Name = Path.GetFileNameWithoutExtension(_fname)
+			Name        = Path.GetFileNameWithoutExtension(_fname)
 		};
 		return hi;
 	}

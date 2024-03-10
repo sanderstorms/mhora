@@ -17,13 +17,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Mhora.Components.PanchangaControl;
 
 public class PanchangaGlobalMoments
 {
-	public ArrayList karanas_ut    = new();
-	public ArrayList nakshatras_ut = new();
-	public ArrayList smyogas_ut    = new();
-	public ArrayList tithis_ut     = new();
+	public List<PanchangaMomentInfo> karanas_ut    = new();
+	public List<PanchangaMomentInfo> nakshatras_ut = new();
+	public List<PanchangaMomentInfo> smyogas_ut    = new();
+	public List<PanchangaMomentInfo> tithis_ut     = new();
 }

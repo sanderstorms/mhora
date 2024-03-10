@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
-using Mhora.Yoga;
 
 namespace Mhora.Calculation;
 

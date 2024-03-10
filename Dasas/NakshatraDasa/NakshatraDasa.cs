@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Calculation;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
@@ -40,10 +41,10 @@ public abstract class NakshatraDasa : Dasa
 	/// </summary>
 	/// <param name="pdi">The current dasa item whose antardasas should be calculated</param>
 	/// <returns></returns>
-	protected ArrayList _AntarDasa(DasaEntry pdi)
+	protected List<DasaEntry> _AntarDasa(DasaEntry pdi)
 	{
 		var numItems = Common.NumberOfDasaItems();
-		var ditems   = new ArrayList(numItems);
+		var ditems   = new List<DasaEntry> ();
 		var curr     = new DasaEntry(pdi.Graha, pdi.Start, 0, pdi.Level + 1, string.Empty);
 		for (var i = 0; i < numItems; i++)
 		{
@@ -65,9 +66,8 @@ public abstract class NakshatraDasa : Dasa
 	/// <param name="offset">The seed start (eg. 5 for Utpanna)</param>
 	/// <param name="cycle">The cycle number. eg which 120 year cycle? 0 for "current"</param>
 	/// <returns></returns>
-	protected ArrayList _Dasa(Longitude lon, int offset, int cycle)
+	protected List<DasaEntry> _Dasa(Longitude lon, int offset, int cycle)
 	{
-		var ditems         = new ArrayList(Common.NumberOfDasaItems());
 		var n              = lon.ToNakshatra().Add(offset);
 		var g              = Common.LordOfNakshatra(n);
 		var percTraversed = lon.PercentageOfNakshatra();
@@ -79,7 +79,7 @@ public abstract class NakshatraDasa : Dasa
 		return _AntarDasa(di);
 	}
 
-	protected ArrayList _TithiDasa(Longitude lon, int offset, int cycle)
+	protected List<DasaEntry> _TithiDasa(Longitude lon, int offset, int cycle)
 	{
 		//ArrayList ditems = new ArrayList(tithiCommon.numberOfDasaItems());
 		lon = lon.Add(new Longitude(cycle * (offset - 1) * 12.0));
@@ -97,7 +97,7 @@ public abstract class NakshatraDasa : Dasa
 		return _AntarDasa(di);
 	}
 
-	protected ArrayList _YogaDasa(Longitude lon, int offset, int cycle)
+	protected List<DasaEntry> _YogaDasa(Longitude lon, int offset, int cycle)
 	{
 		lon = lon.Add(new Longitude(cycle * (offset - 1) * (360.0 / 27.0)));
 		var g = YogaCommon.LordOfYoga(lon);
@@ -109,7 +109,7 @@ public abstract class NakshatraDasa : Dasa
 		return _AntarDasa(di);
 	}
 
-	protected ArrayList _KaranaDasa(Longitude lon, int offset, int cycle)
+	protected List<DasaEntry> _KaranaDasa(Longitude lon, int offset, int cycle)
 	{
 		lon = lon.Add(new Longitude(cycle * (offset - 1) * (360.0 / 60.0)));
 		var g = KaranaCommon.LordOfKarana(lon);

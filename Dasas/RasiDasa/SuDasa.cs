@@ -17,13 +17,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Calculation;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
 using Mhora.Util;
-using Mhora.Yoga;
 
 namespace Mhora.Dasas.RasiDasa;
 
@@ -72,10 +72,10 @@ public class SuDasa : Dasa, IDasa
 		_options.Recalculate();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		var rashis = _h.FindRashis(_options.Division);
-		var al     = new ArrayList();
+		var al     = new List<DasaEntry> ();
 		var bpSl   = _h.GetPosition(Body.SreeLagna);
 		var zhSeed = bpSl.ToDivisionPosition(_options.Division).ZodiacHouse;
 		zhSeed = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed, zhSeed.Add(7));
@@ -103,15 +103,15 @@ public class SuDasa : Dasa, IDasa
 
 		for (var i = 0; i < 12; i++)
 		{
-			var diFirst    = (DasaEntry) al[i];
+			var diFirst    = al[i];
 			var dasaLength = 12.0 - diFirst.DasaLength;
-			var di          = new DasaEntry(diFirst.ZHouse, dasaLengthSum, dasaLength, 1, diFirst.ZHouse.ToString());
+			var di         = new DasaEntry(diFirst.ZHouse, dasaLengthSum, dasaLength, 1, diFirst.ZHouse.ToString());
 			al.Add(di);
 			dasaLengthSum += dasaLength;
 		}
 
 		TimeOffset cycleLength  = cycle                                        * ParamAyus();
-		var offsetLength = bpSl.Longitude.ToZodiacHouseOffset() / 30.0 * ((DasaEntry) al[0]).DasaLength;
+		var offsetLength = bpSl.Longitude.ToZodiacHouseOffset() / 30.0 * al[0].DasaLength;
 
 		//Mhora.Log.Debug ("Completed {0}, going back {1} of {2} years", bp_sl.longitude.toZodiacHouseOffset() / 30.0,
 		//	offset_length, ((DasaEntry)al[0]).DasaLength);
@@ -126,9 +126,9 @@ public class SuDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
-		var al      = new ArrayList();
+		var al     = new List<DasaEntry> ();
 		var zhSeed = pdi.ZHouse;
 
 		var dasaLength     = pdi.DasaLength / 12.0;

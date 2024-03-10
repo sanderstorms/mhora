@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Calculation;
 using Mhora.Components.Delegates;
 using Mhora.Definitions;
@@ -56,14 +57,14 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 		return _options.Clone();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		var grahas = _h.FindGrahas(DivisionType.Rasi);
 		var l      = grahas.Calc(_h.Info.Jd, Body.Moon, Body.Sun, false);
 		return _YogaDasa(l, 1, cycle);
 	}
 
-	public ArrayList AntarDasa(DasaEntry di)
+	public List<DasaEntry> AntarDasa(DasaEntry di)
 	{
 		return _AntarDasa(di);
 	}

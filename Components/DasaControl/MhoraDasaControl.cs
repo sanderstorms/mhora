@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using Mhora.Calculation;
@@ -881,7 +882,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 	{
 		SetDescriptionLabel();
 		_dasaItemList.Items.Clear();
-		var a = new ArrayList();
+		var a = new List<DasaEntry> ();
 		for (var i = _minCycle; i <= _maxCycle; i++)
 		{
 			var b = _id.Dasa(i);
@@ -1204,11 +1205,11 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 	public void CompressToYogaPraveshaYearYoga()
 	{
 		DasaOptions.YearType = ToDate.DateType.YogaYear;
-		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.YogaPraveshYear, 360.0, 0, h);
-		var tdYoga    = new ToDate(h.Info.Jd, ToDate.DateType.YogaYear, 324.0, 0, h);
+		var    tdPravesh     = new ToDate(h.Info.Jd, ToDate.DateType.YogaPraveshYear, 360.0, 0, h);
+		var    tdYoga        = new ToDate(h.Info.Jd, ToDate.DateType.YogaYear, 324.0, 0, h);
 		var    dateToSurpass = tdPravesh.AddYears(1).ToJulian() - 5;
-		var    dateCurrent    = tdYoga.AddYears(0).ToJulian();
-		double months          = 0;
+		var    dateCurrent   = tdYoga.AddYears(0).ToJulian();
+		double months        = 0;
 		while (dateCurrent < dateToSurpass)
 		{
 			Application.Log.Debug("{0} > {1}", h.Moment(dateCurrent), h.Moment(dateToSurpass));
@@ -1230,19 +1231,19 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 	private void mCompressTithiPraveshaSolar_Click(object sender, EventArgs e)
 	{
 		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
-		var utStart = tdPravesh.AddYears(0).ToUniversalTime();
-		var utEnd   = tdPravesh.AddYears(1).ToUniversalTime();
-		var spStart = h.CalculateSingleBodyPosition(utStart.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
-		var spEnd   = h.CalculateSingleBodyPosition(utEnd.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
-		var lDiff    = spEnd.Longitude.Sub(spStart.Longitude);
-		var diff     = lDiff.Value;
+		var utStart   = tdPravesh.AddYears(0).ToUniversalTime();
+		var utEnd     = tdPravesh.AddYears(1).ToUniversalTime();
+		var spStart   = h.CalculateSingleBodyPosition(utStart.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
+		var spEnd     = h.CalculateSingleBodyPosition(utEnd.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
+		var lDiff     = spEnd.Longitude.Sub(spStart.Longitude);
+		var diff      = lDiff.Value;
 		if (diff < 120.0)
 		{
 			diff += 360.0;
 		}
 
-		DasaOptions.YearType   = ToDate.DateType.SolarYear;
-		DasaOptions.YearLength = diff;
+		DasaOptions.YearType    = ToDate.DateType.SolarYear;
+		DasaOptions.YearLength  = diff;
 		DasaOptions.Compression = 1;
 		Reset();
 	}

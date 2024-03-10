@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -44,7 +45,7 @@ internal class OrderedGrahasConverter : ExpandableObjectConverter
 		var s = (string) value;
 
 		var oz  = new OrderedGrahas();
-		var al  = new ArrayList();
+		var al  = new List<Body>();
 		var arr = s.Split('.', ' ', ':', ',');
 		foreach (var szh_mixed in arr)
 		{
@@ -84,7 +85,7 @@ internal class OrderedGrahasConverter : ExpandableObjectConverter
 			}
 		}
 
-		oz.grahas = (ArrayList) al.Clone();
+		oz.grahas = new (al);
 		return oz;
 	}
 

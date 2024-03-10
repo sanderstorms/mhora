@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
@@ -71,12 +72,12 @@ public class KalachakraDasa : Dasa, IDasa
 	//a sign ruled  by the lord of the movable (chara) sign in trine to the dasha sign.
 	//The first bhukti in any dasha will be of a sign that is ruled by the lord of the movable
 	//sign occurring In trine to the dasha sign
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		var dRasi = new Division(DivisionType.Rasi);
 		var mLon  = _h.GetPosition(Body.Moon).ExtrapolateLongitude(dRasi);
 
-		var al = new ArrayList();
+		var al = new List<DasaEntry> ();
 
 		var dasaLength = 0.0;
 
@@ -131,9 +132,9 @@ public class KalachakraDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
-		var         al = new ArrayList();
+		var         al = new List<DasaEntry> ();
 		ZodiacHouse zh;
 		double      dasaLengthSum = 0;
 

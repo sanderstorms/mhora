@@ -11,11 +11,6 @@ namespace Mhora.Calculation
 {
 	internal static class CalculateBodyPositionss
 	{
-		public static DivisionPosition CalculateDivisionPosition(this Position bp, DivisionType d)
-		{
-			return bp.ToDivisionPosition(d);
-		}
-
 		public static List<DivisionPosition> CalculateDivisionPositions(this List<Position> positionList, DivisionType d)
 		{
 			var al = new List<DivisionPosition>();
@@ -23,7 +18,7 @@ namespace Mhora.Calculation
 			{
 				if (bp.BodyType != BodyType.Other)
 				{
-					al.Add(CalculateDivisionPosition(bp, d));
+					al.Add(bp.ToDivisionPosition(d));
 				}
 			}
 
@@ -53,104 +48,15 @@ namespace Mhora.Calculation
 
 		public static List <DivisionPosition> CalculateGrahaArudhaDivisionPositions(this Horoscope h, DivisionType dtype)
 		{
-			object[][] parameters =
-			{
-				new object[]
-				{
-					ZodiacHouse.Ari,
-					Body.Mars
-				},
-				new object[]
-				{
-					ZodiacHouse.Tau,
-					Body.Venus
-				},
-				new object[]
-				{
-					ZodiacHouse.Gem,
-					Body.Mercury
-				},
-				new object[]
-				{
-					ZodiacHouse.Can,
-					Body.Moon
-				},
-				new object[]
-				{
-					ZodiacHouse.Leo,
-					Body.Sun
-				},
-				new object[]
-				{
-					ZodiacHouse.Vir,
-					Body.Mercury
-				},
-				new object[]
-				{
-					ZodiacHouse.Lib,
-					Body.Venus
-				},
-				new object[]
-				{
-					ZodiacHouse.Sco,
-					Body.Mars
-				},
-				new object[]
-				{
-					ZodiacHouse.Sag,
-					Body.Jupiter
-				},
-				new object[]
-				{
-					ZodiacHouse.Cap,
-					Body.Saturn
-				},
-				new object[]
-				{
-					ZodiacHouse.Aqu,
-					Body.Saturn
-				},
-				new object[]
-				{
-					ZodiacHouse.Pis,
-					Body.Jupiter
-				},
-				new object[]
-				{
-					ZodiacHouse.Sco,
-					Body.Ketu
-				},
-				new object[]
-				{
-					ZodiacHouse.Aqu,
-					Body.Rahu
-				}
-			};
 			var al = new List <DivisionPosition> ();
 
-			for (var i = 0; i < parameters.Length; i++)
+			foreach (var lordship in Arudha.Lord)
 			{
-				al.Add(h.CalculateGrahaArudhaDivisionPosition((Body) parameters[i][1], ((ZodiacHouse) parameters[i][0]), dtype));
+				al.Add(h.CalculateGrahaArudhaDivisionPosition(lordship.Body, lordship.ZodiacHouse, dtype));
 			}
 
 			return al;
 		}
-
-		private static readonly string[] VarnadaStrs =
-		{
-			"VL",
-			"V2",
-			"V3",
-			"V4",
-			"V5",
-			"V6",
-			"V7",
-			"V8",
-			"V9",
-			"V10",
-			"V11",
-			"V12"
-		};
 
 		public static List <DivisionPosition> CalculateVarnadaDivisionPositions(this Horoscope h, DivisionType dtype)
 		{
@@ -206,7 +112,7 @@ namespace Mhora.Calculation
 
 				var divPos = new DivisionPosition(Body.Other, BodyType.Varnada, zhV, 0, 0, 0)
 				{
-					Description = VarnadaStrs[i - 1]
+					Description = Varnada.Name[i - 1]
 				};
 
 				al.Add(divPos);
@@ -218,7 +124,7 @@ namespace Mhora.Calculation
 		private static DivisionPosition CalculateArudhaDivisionPosition(this Horoscope h, ZodiacHouse zh, Body bn, Body aname, DivisionType d, BodyType btype)
 		{
 			var bp    = h.GetPosition(bn);
-			var zhb   = CalculateDivisionPosition(bp, d).ZodiacHouse;
+			var zhb   = bp.ToDivisionPosition(d).ZodiacHouse;
 			var rel   = zh.NumHousesBetween(zhb);
 			var zhsum = zhb.Add(rel);
 			var rel2  = zh.NumHousesBetween(zhsum);
@@ -237,32 +143,15 @@ namespace Mhora.Calculation
 		{
 			var grahas = h.FindGrahas(varga);
 
-			Body[] bnlist =
-			{
-				Body.Other,
-				Body.AL,
-				Body.A2,
-				Body.A3,
-				Body.A4,
-				Body.A5,
-				Body.A6,
-				Body.A7,
-				Body.A8,
-				Body.A9,
-				Body.A10,
-				Body.A11,
-				Body.UL
-			};
-
 			var              fsColord      = h.RulesStrongerCoLord();
 			var              arudhaDivList = new List <DivisionPosition> ();
 			DivisionPosition first, second;
 			for (var j = 1; j <= 12; j++)
 			{
-				var           zlagna     = CalculateDivisionPosition(h.GetPosition(Body.Lagna), varga).ZodiacHouse;
-				var           zh         = zlagna.Add(j);
+				var zlagna     = h.GetPosition(Body.Lagna).ToDivisionPosition(varga).ZodiacHouse;
+				var zh         = zlagna.Add(j);
 				var bnWeaker   = Body.Other;
-				var           bnStronger = zh.SimpleLordOfZodiacHouse();
+				var bnStronger = zh.SimpleLordOfZodiacHouse();
 				if (zh == ZodiacHouse.Aqu)
 				{
 					bnStronger = grahas.Stronger(Body.Rahu, Body.Saturn, true, fsColord, out _);
@@ -274,11 +163,11 @@ namespace Mhora.Calculation
 					bnWeaker   = grahas.Weaker(Body.Ketu, Body.Mars, true, fsColord, out _);
 				}
 
-				first = h.CalculateArudhaDivisionPosition(zh, bnStronger, bnlist[j], varga, BodyType.BhavaArudha);
+				first = h.CalculateArudhaDivisionPosition(zh, bnStronger, Arudha.Position[j], varga, BodyType.BhavaArudha);
 				arudhaDivList.Add(first);
 				if (zh == ZodiacHouse.Aqu || zh == ZodiacHouse.Sco)
 				{
-					second = h.CalculateArudhaDivisionPosition(zh, bnWeaker, bnlist[j], varga, BodyType.BhavaArudhaSecondary);
+					second = h.CalculateArudhaDivisionPosition(zh, bnWeaker, Arudha.Position[j], varga, BodyType.BhavaArudhaSecondary);
 					if (first.ZodiacHouse != second.ZodiacHouse)
 					{
 						arudhaDivList.Add(second);
@@ -288,8 +177,6 @@ namespace Mhora.Calculation
 
 			return arudhaDivList;
 		}
-
-
 
 		public static Body CalculateKala(this Horoscope h, ref int iBase)
 		{
@@ -303,13 +190,13 @@ namespace Mhora.Calculation
 				4,
 				5
 			};
-			var b          = h.Wday.WeekdayRuler();
+			var b          = h.Wday.Ruler();
 			var bdayBirth = h.IsDayBirth();
 
 			var cusps = h.GetKalaCuspsUt();
 			if (h.Options.KalaType == HoroscopeOptions.EHoraType.Lmt)
 			{
-				b          = h.LmtWday.WeekdayRuler();
+				b          = h.LmtWday.Ruler();
 				bdayBirth = h.Info.DateOfBirth.Time().TotalHours > h.LmtSunset || h.Info.DateOfBirth.Time().TotalHours < h.LmtSunrise;
 			}
 
@@ -372,11 +259,11 @@ namespace Mhora.Calculation
 				1,
 				4
 			};
-			var b     = h.Wday.WeekdayRuler();
+			var b     = h.Wday.Ruler();
 			var cusps = h.GetHoraCuspsUt();
 			if (h.Options.HoraType == HoroscopeOptions.EHoraType.Lmt)
 			{
-				b = h.LmtWday.WeekdayRuler();
+				b = h.LmtWday.Ruler();
 			}
 
 			var i = offsets[(int) b];
@@ -404,26 +291,6 @@ namespace Mhora.Calculation
 			}
 
 			return h.HoraOrder[i];
-		}
-
-		private static Body CalculateUpagrahasStart(this Horoscope h)
-		{
-			if (h.IsDayBirth())
-			{
-				return h.Wday.WeekdayRuler();
-			}
-
-			switch (h.Wday)
-			{
-				default:
-				case Weekday.Sunday: return Body.Jupiter;
-				case Weekday.Monday:    return Body.Venus;
-				case Weekday.Tuesday:   return Body.Saturn;
-				case Weekday.Wednesday: return Body.Sun;
-				case Weekday.Thursday:  return Body.Moon;
-				case Weekday.Friday:    return Body.Mars;
-				case Weekday.Saturday:  return Body.Mercury;
-			}
 		}
 
 		private static Position CalculateUpagrahasSingle(this Horoscope h, Body b, double tjd)
@@ -463,7 +330,7 @@ namespace Mhora.Calculation
 
 			var m         = h.Info.DateOfBirth;
 			dStart = dEnd = sweph.JulDay(m.Year, m.Month, m.Day, -h.Info.DstOffset.TotalHours);
-			var bStart    = h.CalculateUpagrahasStart();
+			var bStart    = h.UpagrahasStart();
 
 			if (h.IsDayBirth())
 			{
@@ -552,7 +419,6 @@ namespace Mhora.Calculation
 			var iBase = 0;
 			return h.CalculateKala(ref iBase);
 		}
-
 
 		public static List<Position> CalculateChandraLagnas(this Horoscope h)
 		{

@@ -18,12 +18,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using Mhora.Calculation;
 using Mhora.Dasas;
 using Mhora.Elements;
-using Mhora.Util;
 
 namespace Mhora.Components.DasaControl;
 
@@ -82,16 +82,14 @@ public class Dasa3Parts : Form
 
 		var partLength = _de.DasaLength / 3.0;
 
-		var alParts = new ArrayList();
+		var momentParts = new List<DateTime>();
 		for (var i = 0; i < 4; i++)
 		{
 			var m = _td.AddYears(_de.Start + partLength * i);
-			alParts.Add(m);
+			momentParts.Add(m);
 		}
 
-		var momentParts = (DateTime[]) alParts.ToArray(typeof(DateTime));
-
-		for (var i = 1; i < momentParts.Length; i++)
+		for (var i = 1; i < momentParts.Count; i++)
 		{
 			var fmt = string.Format("Equal Part {0} - {1} to {2}", i, momentParts[i - 1], momentParts[i]);
 			_mList.Items.Add(fmt);

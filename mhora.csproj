@@ -201,6 +201,8 @@
     <Compile Include="Dasas\NakshatraDasa\KalaChakra.cs" />
     <Compile Include="Elements\Extensions\Kutas.cs" />
     <Compile Include="Elements\Extensions\Sahama.cs" />
+    <Compile Include="Elements\Arudha.cs" />
+    <Compile Include="Elements\Varnada.cs" />
     <Compile Include="Yoga\Aakriti.cs" />
     <Compile Include="Yoga\Buddh.cs" />
     <Compile Include="Yoga\Chandra.cs" />

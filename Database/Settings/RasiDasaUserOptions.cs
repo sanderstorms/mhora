@@ -231,7 +231,7 @@ public class RasiDasaUserOptions : ICloneable
 		}
 		else
 		{
-			var rule = new ArrayList
+			var rule = new List<GrahaStrength>()
 			{
 				GrahaStrength.Longitude
 			};
@@ -253,12 +253,12 @@ public class RasiDasaUserOptions : ICloneable
 		{
 			for (var j = 0; j < mList[i].houses.Count; j++)
 			{
-				if ((ZodiacHouse) mList[i].houses[j] == za)
+				if (mList[i].houses[j] == za)
 				{
 					return za;
 				}
 
-				if ((ZodiacHouse) mList[i].houses[j] == zb)
+				if (mList[i].houses[j] == zb)
 				{
 					return zb;
 				}
@@ -272,7 +272,7 @@ public class RasiDasaUserOptions : ICloneable
 	{
 		for (var i = 0; i < MKetuExceptions.houses.Count; i++)
 		{
-			if ((ZodiacHouse) MKetuExceptions.houses[i] == zh)
+			if (MKetuExceptions.houses[i] == zh)
 			{
 				return true;
 			}
@@ -285,7 +285,7 @@ public class RasiDasaUserOptions : ICloneable
 	{
 		for (var i = 0; i < MSaturnExceptions.houses.Count; i++)
 		{
-			if ((ZodiacHouse) MSaturnExceptions.houses[i] == zh)
+			if (MSaturnExceptions.houses[i] == zh)
 			{
 				return true;
 			}

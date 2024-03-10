@@ -66,7 +66,7 @@ public class DasaItem : ListViewItem
 			sDateRange = " " + sDateRange;
 		}
 
-		SubItems.Add((string) sDateRange);
+		SubItems.Add(sDateRange);
 		Text                  = Entry.DasaName + id.EntryDescription(Entry, m, m2);
 		SubItems[1].Font      = MhoraGlobalOptions.Instance.FixedWidthFont;
 		SubItems[1].ForeColor = MhoraGlobalOptions.Instance.DasaDateColor;

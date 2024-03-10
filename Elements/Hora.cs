@@ -19,7 +19,7 @@ public static class Hora
 		"Sunday"
 	};
 
-	public static Weekday BodyToWeekday(this Body b)
+	public static Weekday ToWeekday(this Body b)
 	{
 		switch (b)
 		{
@@ -36,7 +36,7 @@ public static class Hora
 		throw new Exception();
 	}
 
-	public static Body WeekdayRuler(this Weekday w)
+	public static Body Ruler(this Weekday w)
 	{
 		switch (w)
 		{
@@ -53,7 +53,28 @@ public static class Hora
 		}
 	}
 
-	public static string weekdayToShortString(this Weekday w)
+	public static Body UpagrahasStart(this Horoscope h)
+	{
+		if (h.IsDayBirth())
+		{
+			return h.Wday.Ruler();
+		}
+
+		switch (h.Wday)
+		{
+			default:
+			case Weekday.Sunday:    return Body.Jupiter;
+			case Weekday.Monday:    return Body.Venus;
+			case Weekday.Tuesday:   return Body.Saturn;
+			case Weekday.Wednesday: return Body.Sun;
+			case Weekday.Thursday:  return Body.Moon;
+			case Weekday.Friday:    return Body.Mars;
+			case Weekday.Saturday:  return Body.Mercury;
+		}
+	}
+
+
+	public static string ShortString(this Weekday w)
 	{
 		switch (w)
 		{

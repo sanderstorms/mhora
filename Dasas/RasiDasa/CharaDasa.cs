@@ -17,13 +17,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Calculation;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
 using Mhora.Util;
-using Mhora.Yoga;
 
 namespace Mhora.Dasas.RasiDasa;
 
@@ -48,10 +48,10 @@ public class CharaDasa : Dasa, IDasa
 		_options.Recalculate();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		var rashis = _h.FindRashis(_options.Division);
-		var al     = new ArrayList(12);
+		var al     = new List<DasaEntry> ();
 		var zhSeed = _options.GetSeed();
 		zhSeed = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed, zhSeed.Add(7));
 
@@ -81,9 +81,9 @@ public class CharaDasa : Dasa, IDasa
 
 		for (var i = 0; i < 12; i++)
 		{
-			var df          = (DasaEntry) al[i];
+			var df         = al[i];
 			var dasaLength = 12.0 - df.DasaLength;
-			var di          = new DasaEntry(df.ZHouse, dasaLengthSum, dasaLength, 1, df.DasaName);
+			var di         = new DasaEntry(df.ZHouse, dasaLengthSum, dasaLength, 1, df.DasaName);
 			al.Add(di);
 			dasaLengthSum += dasaLength;
 		}
@@ -98,7 +98,7 @@ public class CharaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
 		var nd = new NarayanaDasa(_h)
 		{

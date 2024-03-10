@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Mhora.Calculation;
 using Mhora.Components.Property;
@@ -26,7 +27,6 @@ using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
 using Mhora.Util;
-using Mhora.Yoga;
 
 namespace Mhora.Dasas.GrahaDasa;
 
@@ -53,11 +53,11 @@ public class MoolaDasa : Dasa, IDasa
 		_options.Recalculate();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		var cycleStart = ParamAyus() * cycle;
 		TimeOffset curr        = 0.0;
-		var al          = new ArrayList(24);
+		var al          = new List<DasaEntry> ();
 		foreach (Body b in _options.GrahaStrengths.grahas)
 		{
 			var dasaLength = LengthOfDasa(b);
@@ -68,7 +68,7 @@ public class MoolaDasa : Dasa, IDasa
 		var numDasas = al.Count;
 		for (var i = 0; i < numDasas; i++)
 		{
-			var de         = (DasaEntry) al[i];
+			var de         = al[i];
 			var dasaLength = de.DasaLength - _vd.LengthOfDasa(de.Graha);
 			al.Add(new DasaEntry(de.Graha, cycleStart + curr, dasaLength, 1, de.Graha.ToShortString()));
 			curr += dasaLength;
@@ -77,12 +77,12 @@ public class MoolaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
-		var al   = new ArrayList();
+		var al   = new List<DasaEntry> ();
 		var curr = pdi.Start;
 
-		var bOrder = new ArrayList();
+		var bOrder = new List <Body> ();
 		var bFound = false;
 		foreach (Body b in _options.GrahaStrengths.grahas)
 		{
@@ -266,7 +266,7 @@ public class MoolaDasa : Dasa, IDasa
 
 				for (var j = 0; j < newOpts.RasiStrengths[i].houses.Count; j++)
 				{
-					if ((ZodiacHouse) newOpts.RasiStrengths[i].houses[j] != (ZodiacHouse) RasiStrengths[i].houses[j])
+					if (newOpts.RasiStrengths[i].houses[j] != RasiStrengths[i].houses[j])
 					{
 						newOpts.CalculateGrahaStrengths();
 						return;
@@ -324,7 +324,7 @@ public class MoolaDasa : Dasa, IDasa
 			}
 			else if (zhSat == zhKet && zhSat == zh)
 			{
-				var rule = new ArrayList
+				var rule = new List<GrahaStrength>()
 				{
 					GrahaStrength.Longitude
 				};

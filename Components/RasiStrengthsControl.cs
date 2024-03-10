@@ -253,11 +253,11 @@ public class RasiStrengthsControl : Form
 		var al = GetRules();
 		for (var i = 0; i < al.Count; i++)
 		{
-			var rule = new ArrayList
+			var rule = new List <RashiStrength>
 			{
 				al[i]
 			};
-			var zw        = grahas.Rashis.Stronger(z1, z2, false, al, out winner);
+			var zw        = grahas.Rashis.Stronger(z1, z2, false, rule, out winner);
 			var li        = new ListViewItem();
 			var enumValue = (Enum) al[i];
 			li.Text = string.Format("{0}", enumValue.GetEnumDescription());

@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Calculation;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
@@ -48,10 +49,10 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 		return 144;
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		var rashis = _h.FindRashis(_mDtype);
-		var al     = new ArrayList(24);
+		var al     = new List<DasaEntry> ();
 		int[] order =
 		{
 			1,
@@ -93,9 +94,9 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 
 		for (var i = 0; i < 12; i++)
 		{
-			var deFirst    = (DasaEntry) al[i];
+			var deFirst    = al[i];
 			var dasaLength = 12.0 - deFirst.DasaLength;
-			var de          = new DasaEntry(deFirst.ZHouse, dasaLengthSum, dasaLength, 1, deFirst.DasaName);
+			var de         = new DasaEntry(deFirst.ZHouse, dasaLengthSum, dasaLength, 1, deFirst.DasaName);
 			dasaLengthSum += dasaLength;
 			al.Add(de);
 		}
@@ -103,7 +104,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
 		var nd = new NarayanaDasa(_h)
 		{

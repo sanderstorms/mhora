@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -140,8 +141,8 @@ public class VargaRectificationForm : Form
 		for (var i = 0; i < opts.Divisions.Length; i++)
 		{
 			var dtype = opts.Divisions[i];
-			var al    = new ArrayList();
-			var zal   = new ArrayList();
+			var al    = new List<double>();
+			var zal   = new List <ZodiacHouse> ();
 			//Mhora.Log.Debug ("Calculating cusps for {0} between {1} and {2}", 
 			//	dtype, this.utToMoment(ut_lower), this.utToMoment(ut_higher));
 			var ut_curr = ut_lower - 1.0 / (24.0 * 60.0);
@@ -188,8 +189,8 @@ public class VargaRectificationForm : Form
 				ut_curr += 1.0 / (24.0 * 60.0 * 60.0) * 5.0;
 			}
 
-			momentCusps[i] = (double[]) al.ToArray(typeof(double));
-			zhCusps[i]     = (ZodiacHouse[]) zal.ToArray(typeof(ZodiacHouse));
+			momentCusps[i] = al.ToArray();
+			zhCusps[i]     = zal.ToArray();
 		}
 
 

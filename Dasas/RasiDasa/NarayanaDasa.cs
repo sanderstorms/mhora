@@ -17,13 +17,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Calculation;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
 using Mhora.Util;
-using Mhora.Yoga;
 
 namespace Mhora.Dasas.RasiDasa;
 
@@ -50,7 +50,7 @@ public class NarayanaDasa : Dasa, IDasa
 		return 144;
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		var rashis = _h.FindRashis(Options.Division);
 
@@ -100,7 +100,7 @@ public class NarayanaDasa : Dasa, IDasa
 			12
 		};
 
-		var al       = new ArrayList(24);
+		var al       = new List<DasaEntry> ();
 		var backward = true;
 
 		int[] order;
@@ -160,7 +160,7 @@ public class NarayanaDasa : Dasa, IDasa
 		{
 			for (var i = 0; i < 12; i++)
 			{
-				var di = (DasaEntry) al[i];
+				var di = al[i];
 				var dn = new DasaEntry(di.ZHouse, dasaLengthSum, 12.0 - di.DasaLength, 1, di.ZHouse.ToString());
 				dasaLengthSum += dn.DasaLength;
 				al.Add(dn);
@@ -176,10 +176,10 @@ public class NarayanaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
 		var rashis = _h.FindRashis(Options.Division);
-		var al     = new ArrayList(12);
+		var al     = new List<DasaEntry> ();
 
 		var zhFirst    = pdi.ZHouse;
 		var zhStronger = zhFirst.Add(1);
@@ -187,7 +187,7 @@ public class NarayanaDasa : Dasa, IDasa
 
 		var b        = GetLord(rashis [zhStronger]);
 		var position = _h.GetPosition(b);
-		var dp       = position.CalculateDivisionPosition(Options.Division);
+		var dp       = position.ToDivisionPosition(Options.Division);
 		var first    = dp.ZodiacHouse;
 		var backward = false;
 		if ((int) first % 2 == 0)

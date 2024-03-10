@@ -27,7 +27,6 @@ using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
 using Mhora.Util;
-using Mhora.Yoga;
 
 namespace Mhora.Dasas.GrahaDasa;
 
@@ -54,12 +53,12 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 		_options.Recalculate();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		var        grahas     = _h.FindGrahas(DivisionType.Rasi);
 		var        cycleStart = ParamAyus() * cycle;
 		TimeOffset curr       = 0.0;
-		var        al         = new ArrayList(24);
+		var        al         = new List<DasaEntry> ();
 		foreach (Body b in _options.GrahaStrengths.grahas)
 		{
 			var dasaLength = LengthOfDasa(grahas [b]);
@@ -70,7 +69,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 		var numDasas = al.Count;
 		for (var i = 0; i < numDasas; i++)
 		{
-			var de         = (DasaEntry) al[i];
+			var de         = al[i];
 			var dasaLength = de.DasaLength - _vd.LengthOfDasa(de.Graha);
 			if (dasaLength < 0)
 			{
@@ -84,12 +83,12 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
-		var al   = new ArrayList();
+		var al   = new List<DasaEntry> ();
 		var curr = pdi.Start;
 
-		var bOrder = new ArrayList();
+		var bOrder = new List <Body> ();
 		var bFound = false;
 		foreach (Body b in _options.GrahaStrengths.grahas)
 		{
@@ -351,7 +350,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 			}
 			else if (zhSat == zhKet && zhSat == zh)
 			{
-				var rule = new ArrayList
+				var rule = new List<GrahaStrength>()
 				{
 					GrahaStrength.Longitude
 				};

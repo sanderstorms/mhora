@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Mhora.Calculation;
 using Mhora.Definitions;
@@ -46,12 +47,12 @@ public class DwisaptatiSamaDasa : NakshatraDasa, INakshatraDasa
 		return new object();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		return _Dasa(_h.GetPosition(Body.Moon).Longitude, 1, cycle);
 	}
 
-	public ArrayList AntarDasa(DasaEntry di)
+	public List<DasaEntry> AntarDasa(DasaEntry di)
 	{
 		return _AntarDasa(di);
 	}

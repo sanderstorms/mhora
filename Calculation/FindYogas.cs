@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -157,7 +158,7 @@ public class FindYogas
 
 	public string[] GetComplexTerms(string sInit)
 	{
-		var al = new ArrayList();
+		var al = new List<string>();
 
 		var level = 0;
 		var start = 0;
@@ -202,7 +203,7 @@ public class FindYogas
 			throw new YogasParseException("Unmatched parantheses");
 		}
 
-		return (string[]) al.ToArray(typeof(string));
+		return al.ToArray();
 	}
 
 	public bool CheckBirthTime(string sTime)
@@ -227,7 +228,7 @@ public class FindYogas
 		for (var i = 0; i < simpleTerms.Length; i++)
 		{
 			cats          += " " + GetCategory(simpleTerms[i]);
-			simpleVals[i] =  (string) GetValues(simpleTerms[i])[0];
+			simpleVals[i] =  GetValues(simpleTerms[i])[0];
 		}
 
 		cats = TrimWhitespace(cats);
@@ -730,10 +731,10 @@ public class FindYogas
 		return sTerm;
 	}
 
-	public ArrayList GetValues(string sTerm)
+	public List<string> GetValues(string sTerm)
 	{
 		// Find values. Find : or , on the left
-		var alVals = new ArrayList();
+		var alVals = new List<string>();
 		var mVals  = Regex.Matches(sTerm, "[:,]([^<:,>]*)");
 		if (mVals.Count >= 1)
 		{
@@ -775,7 +776,7 @@ public class FindYogas
 			sNew = "<" + sNew;
 		}
 
-		var alSort = new ArrayList();
+		var alSort = new List <string>();
 		foreach (string s in hash.Keys)
 		{
 			alSort.Add(s);
@@ -891,7 +892,7 @@ public class FindYogas
 		var simpleTerms         = n.Term.Split(' ');
 		var catTerms            = new string[simpleTerms.Length];
 		var simpleTermsValues   = new int[simpleTerms.Length];
-		var simpleTermsRealVals = new ArrayList[simpleTerms.Length];
+		var simpleTermsRealVals = new List<string>[simpleTerms.Length];
 
 		var numExps = 1;
 

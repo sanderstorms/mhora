@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Calculation;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
@@ -46,10 +47,10 @@ public class DrigDasa : Dasa, IDasa
 		_options.Recalculate();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		var rashis  = _h.FindRashis(DivisionType.Rasi);
-		var alOrder = new ArrayList(12);
+		var alOrder = new List<ZodiacHouse>();
 		var zhSeed  = _options.GetSeed().Add(9);
 
 		for (var i = 1; i <= 4; i++)
@@ -57,13 +58,13 @@ public class DrigDasa : Dasa, IDasa
 			DasaHelper(zhSeed.Add(i), alOrder);
 		}
 
-		var al = new ArrayList(12);
+		var al = new List<DasaEntry> ();
 
 		var    dasaLengthSum = 0.0;
 		double dasaLength;
 		for (var i = 0; i < 12; i++)
 		{
-			var zhDasa = (ZodiacHouse) alOrder[i];
+			var zhDasa = alOrder[i];
 			dasaLength = NarayanaDasaLength(zhDasa, rashis[zhDasa].Lord);
 			var di = new DasaEntry(zhDasa, dasaLengthSum, dasaLength, 1, zhDasa.ToString());
 			al.Add(di);
@@ -74,7 +75,7 @@ public class DrigDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
 		var nd = new NarayanaDasa(_h)
 		{
@@ -117,7 +118,7 @@ public class DrigDasa : Dasa, IDasa
 		}
 	}
 
-	public void DasaHelper(ZodiacHouse zh, ArrayList al)
+	public void DasaHelper(ZodiacHouse zh, List<ZodiacHouse> al)
 	{
 		int[] orderMoveable =
 		{

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -135,7 +137,6 @@ namespace Mhora
 			info.DateOfBirth = mNow;
 
 			var _path_split = ofd.FileName.Split('/', '\\');
-			var path_split = new ArrayList(_path_split);
 
 			childCount++;
 			var h = new Horoscope(info, (HoroscopeOptions)MhoraGlobalOptions.Instance.HOptions.Clone());
@@ -172,14 +173,13 @@ namespace Mhora
 			}
 
 			var _path_split = ofd.FileName.Split('/', '\\');
-			var path_split = new ArrayList(_path_split);
 
 			childCount++;
 			var h = new Horoscope(info, new HoroscopeOptions());
 			var child = new MhoraChild(h);
-			child.Text = childCount + " - " + path_split[path_split.Count - 1];
-			child.MdiParent = this;
-			child.Name = child.Text;
+			child.Text         = childCount + " - " + _path_split.Last();
+			child.MdiParent    = this;
+			child.Name         = child.Text;
 			child.mJhdFileName = ofd.FileName;
 
 			child.Show();
@@ -314,18 +314,6 @@ namespace Mhora
 			showMenuGlobalDisplayPrefs();
 		}
 
-
-		private bool checkJhd(string fileName)
-		{
-			var info = new Jhd(fileName).ToHoraInfo();
-			var h = new Horoscope(info, new HoroscopeOptions());
-			if (h.GetPosition(Body.Ketu).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse == h.GetPosition(Body.Lagna).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse)
-			{
-				return true;
-			}
-
-			return false;
-		}
 
 		private void mResetPreferences_Click(object sender, EventArgs e)
 		{

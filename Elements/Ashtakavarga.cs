@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Mhora.Definitions;
 using Mhora.Elements.Extensions;
@@ -860,7 +861,7 @@ public class Ashtakavarga
 		allBindus[6] = BindusSaturn();
 		allBindus[7] = BindusLagna();
 
-		var al = new ArrayList();
+		var al = new List<ZodiacHouse>();
 
 		var zh = _h.GetPosition(n).ToDivisionPosition(_dtype).ZodiacHouse;
 		foreach (var i in allBindus[BodyToInt(m)][BodyToInt(n)])
@@ -868,6 +869,6 @@ public class Ashtakavarga
 			al.Add(zh.Add(i));
 		}
 
-		return (ZodiacHouse[]) al.ToArray(typeof(ZodiacHouse));
+		return al.ToArray();
 	}
 }

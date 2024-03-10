@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Mhora.Components.Converter;
 using Mhora.Definitions;
@@ -27,16 +27,15 @@ namespace Mhora.Calculation;
 [TypeConverter(typeof(OrderedZodiacHousesConverter))]
 public class OrderedZodiacHouses : ICloneable
 {
-	public ArrayList houses;
+	public List<ZodiacHouse> houses = new List<ZodiacHouse>();
 
 	public OrderedZodiacHouses()
 	{
-		houses = new ArrayList();
 	}
 
 	public OrderedZodiacHouses(ZodiacHouse[] rashis)
 	{
-		houses = new () { rashis };
+		houses = new List<ZodiacHouse>(rashis);
 	}
 
 
@@ -44,7 +43,7 @@ public class OrderedZodiacHouses : ICloneable
 	{
 		var oz = new OrderedZodiacHouses
 		{
-			houses = (ArrayList) houses.Clone()
+			houses = new List<ZodiacHouse>(houses)
 		};
 		return oz;
 	}
@@ -52,8 +51,7 @@ public class OrderedZodiacHouses : ICloneable
 	public override string ToString()
 	{
 		var s     = string.Empty;
-		var names = (ZodiacHouse[]) houses.ToArray(typeof(ZodiacHouse));
-		foreach (var zn in names)
+		foreach (var zn in houses)
 		{
 			s += zn + " ";
 		}

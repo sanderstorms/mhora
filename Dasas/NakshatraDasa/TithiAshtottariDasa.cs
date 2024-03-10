@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Mhora.Calculation;
 using Mhora.Components.Delegates;
@@ -59,7 +60,7 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		return _options.Clone();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		var mpos = _h.GetPosition(Body.Moon).Longitude;
 		var spos = _h.GetPosition(Body.Sun).Longitude;
@@ -79,7 +80,7 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		return _TithiDasa(tithi, _options.TithiOffset, cycle);
 	}
 
-	public ArrayList AntarDasa(DasaEntry di)
+	public List<DasaEntry> AntarDasa(DasaEntry di)
 	{
 		return _AntarDasa(di);
 	}

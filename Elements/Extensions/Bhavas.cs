@@ -1,4 +1,5 @@
 ﻿using System;
+using Mhora.Calculation;
 using Mhora.Definitions;
 using Mhora.Util;
 
@@ -460,23 +461,12 @@ namespace Mhora.Elements.Extensions
 
 		public static int HousesFrom(this Bhava bhava, Bhava other)
 		{
-			var houses = bhava.Index() - other.Index()  + 1;
-
-			if (houses <= 0)
-			{
-				houses = 12 + houses;
-			}
-
-			return houses;
+			return (12 - other.HousesFrom(bhava) + 1);
 		}
 
 		public static Bhava Add(this Bhava bhava, int nr)
 		{
-			var result = (bhava.Index() + nr);
-			while (result > 12)
-			{
-				result -= 12;
-			}
+			var result = (bhava.Index() + nr).NormalizeInc(1, 12);
 
 			return (Bhava) result;
 		}

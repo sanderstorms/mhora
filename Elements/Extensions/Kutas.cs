@@ -437,8 +437,8 @@ namespace Mhora.Elements.Extensions
 
 			public static int Nadi(Nakshatra m, Nakshatra n)
 			{
-				var ea = Kutas.KutaNadi(m);
-				var eb = Kutas.KutaNadi(n);
+				var ea = KutaNadi(m);
+				var eb = KutaNadi(n);
 				if (ea != eb)
 				{
 					return 2;

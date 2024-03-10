@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Calculation;
 using Mhora.Definitions;
 using Mhora.Elements;
@@ -49,14 +50,14 @@ public class KaranaChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa, INaksha
 		return new object();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		var mMoon = _h.GetPosition(Body.Moon).Longitude;
 		var mSun  = _h.GetPosition(Body.Sun).Longitude;
 		return _KaranaDasa(mMoon.Sub(mSun), 1, cycle);
 	}
 
-	public ArrayList AntarDasa(DasaEntry di)
+	public List<DasaEntry> AntarDasa(DasaEntry di)
 	{
 		return _AntarDasa(di);
 	}

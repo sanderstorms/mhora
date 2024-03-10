@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Mhora.Calculation;
 using Mhora.Definitions;
@@ -36,22 +37,22 @@ public class Position
 {
 	private static bool      _mbNadiamsaCknCalculated;
 	private static double[]  _mNadiamsaCusps;
-	public         Horoscope H;
+	private        Horoscope _h;
 	public         Body Name;
 	public         string    OtherString;
 	public         BodyType BodyType;
 
 	public Position(Horoscope h, Body aname, BodyType atype, Longitude lon, double lat, double dist, double splon, double splat, double spdist)
 	{
-		Longitude       = lon;
-		Latitude        = lat;
-		Distance        = dist;
+		Longitude      = lon;
+		Latitude       = lat;
+		Distance       = dist;
 		SpeedLongitude = splon;
 		SpeedLatitude  = splat;
 		SpeedDistance  = spdist;
-		Name            = aname;
-		BodyType            = atype;
-		H               = h;
+		Name           = aname;
+		BodyType       = atype;
+		_h              = h;
 		//Mhora.Log.Debug ("{0} {1} {2}", aname.ToString(), lon.value, splon);
 	}
 
@@ -93,7 +94,7 @@ public class Position
 
 	public Position Clone()
 	{
-		var bp = new Position(H, Name, BodyType, Longitude, Latitude, Distance, SpeedLongitude, SpeedLatitude, SpeedDistance)
+		var bp = new Position(_h, Name, BodyType, Longitude, Latitude, Distance, SpeedLongitude, SpeedLatitude, SpeedDistance)
 		{
 			OtherString = OtherString
 		};
@@ -186,7 +187,7 @@ public class Position
 	{
 		Debug.Assert(cusps.Length == 13);
 
-		var zlagna = H.GetPosition(Body.Lagna).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
+		var zlagna = _h.GetPosition(Body.Lagna).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
 		for (var i = 0; i < 12; i++)
 		{
 			if (Longitude.Sub(cusps[i]).Value < cusps[i + 1].Sub(cusps[i]).Value)
@@ -203,7 +204,7 @@ public class Position
 
 	private DivisionPosition ToDivisionPositionBhavaEqual()
 	{
-		var offset = H.GetPosition(Body.Lagna).Longitude.ToZodiacHouseOffset();
+		var offset = _h.GetPosition(Body.Lagna).Longitude.ToZodiacHouseOffset();
 		var cusps  = new Longitude[13];
 		for (var i = 0; i < 12; i++)
 		{
@@ -216,7 +217,7 @@ public class Position
 	private DivisionPosition ToDivisionPositionBhavaPada()
 	{
 		var cusps       = new Longitude[13];
-		var offset      = H.GetPosition(Body.Lagna).Longitude.ToZodiacHouseOffset();
+		var offset      = _h.GetPosition(Body.Lagna).Longitude.ToZodiacHouseOffset();
 		var padasOffset = (int) Math.Floor(offset / (360.0 / 108.0));
 		var startOffset = padasOffset * (360.0 / 108.0);
 
@@ -234,13 +235,13 @@ public class Position
 		var dCusps = new double[13];
 		var ascmc  = new double[10];
 
-		if (hsys != H.SwephHouseSystem)
+		if (hsys != _h.SwephHouseSystem)
 		{
-			H.SwephHouseSystem = hsys;
-			H.PopulateHouseCusps();
+			_h.SwephHouseSystem = hsys;
+			_h.PopulateHouseCusps();
 		}
 
-		return ToBhavaDivisionPositionHouse(H.SwephHouseCusps);
+		return ToBhavaDivisionPositionHouse(_h.SwephHouseCusps);
 	}
 
 	private bool HoraSunDayNight()
@@ -1105,7 +1106,7 @@ public class Position
 			45,
 			60
 		};
-		var alUnsorted = new ArrayList(150);
+		var alUnsorted = new List<double> ();
 		foreach (var iVarga in bases)
 		{
 			for (var i = 0; i < iVarga; i++)
@@ -1116,14 +1117,14 @@ public class Position
 
 		alUnsorted.Add(30.0);
 		alUnsorted.Sort();
-		var alSorted = new ArrayList(150)
+		var alSorted = new List<double>()
 		{
 			0.0
 		};
 
 		for (var i = 0; i < alUnsorted.Count; i++)
 		{
-			if ((double) alUnsorted[i] != (double) alSorted[alSorted.Count - 1])
+			if (alUnsorted[i] != alSorted[alSorted.Count - 1])
 			{
 				alSorted.Add(alUnsorted[i]);
 			}
@@ -1131,7 +1132,7 @@ public class Position
 
 		Debug.Assert(alSorted.Count == 151, string.Format("Found {0} Nadis. Expected 151.", alSorted.Count));
 
-		_mNadiamsaCusps          = (double[]) alSorted.ToArray(typeof(double));
+		_mNadiamsaCusps          = alSorted.ToArray();
 		_mbNadiamsaCknCalculated = true;
 	}
 

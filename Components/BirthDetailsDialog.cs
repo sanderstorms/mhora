@@ -81,7 +81,7 @@ public partial class BirthDetailsDialog : Form
 			var time   = timePicker.Value;
 			var moment = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
 
-			var info   = new HoraInfo()
+			var info   = new HoraInfo
 			{
 				DateOfBirth = moment,
 				Latitude    = MhoraGlobalOptions.Instance.Latitude,

@@ -170,7 +170,7 @@ public static partial class sweph
 
 
 
-	public enum EventType { SOLAR_EVENT_SUNRISE, SOLAR_EVENT_SUNSET, SOLAR_EVENT_MIDNIGHT, SOLAR_EVENT_NOON };
+	public enum EventType { SOLAR_EVENT_SUNRISE, SOLAR_EVENT_SUNSET, SOLAR_EVENT_MIDNIGHT, SOLAR_EVENT_NOON }
 
 	/*****************************************************
 	 **

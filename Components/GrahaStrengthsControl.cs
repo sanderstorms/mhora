@@ -254,7 +254,7 @@ public class GrahaStrengthsControl : Form
 		var al          = GetRules(ref bSimpleLord);
 		for (var i = 0; i < al.Count; i++)
 		{
-			var rule = new ArrayList
+			var rule = new List<GrahaStrength>()
 			{
 				al[i]
 			};

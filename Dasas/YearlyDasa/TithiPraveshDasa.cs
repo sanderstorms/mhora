@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Calculation;
 using Mhora.Definitions;
 using Mhora.Elements;
@@ -54,9 +55,9 @@ public class TithiPraveshDasa : Dasa, IDasa
 		return 60.0;
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
-		var al          = new ArrayList(60);
+		var al         = new List<DasaEntry> ();
 		var cycleStart = cycle * ParamAyus();
 		for (var i = 0; i < 60; i++)
 		{
@@ -89,8 +90,9 @@ public class TithiPraveshDasa : Dasa, IDasa
 		return string.Empty;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
+		List<DasaEntry> al = new List<DasaEntry>();
 		string[] desc =
 		{
 			"  Month: ",
@@ -98,21 +100,19 @@ public class TithiPraveshDasa : Dasa, IDasa
 		};
 		if (pdi.Level == 3)
 		{
-			return new ArrayList();
+			return al;
 		}
 
 		TimeOffset start  = 0.0;
 		TimeOffset length = 0.0;
 		var        level  = 0;
 
-		ArrayList al = null;
 		start = pdi.Start;
 		level = pdi.Level + 1;
 
 		switch (pdi.Level)
 		{
 			case 1:
-				al     = new ArrayList(13);
 				length = pdi.DasaLength / 13.0;
 				//Mhora.Log.Debug("AD length is {0}", length);
 				for (var i = 0; i < 13; i++)
@@ -121,10 +121,8 @@ public class TithiPraveshDasa : Dasa, IDasa
 					al.Add(di);
 					start += length;
 				}
-
-				return al;
+				break;
 			case 2:
-				al     = new ArrayList(30);
 				length = pdi.DasaLength / 30.0;
 				//Mhora.Log.Debug("PD length is {0}", length);
 				for (var i = 0; i < 30; i++)
@@ -134,12 +132,10 @@ public class TithiPraveshDasa : Dasa, IDasa
 					al.Add(di);
 					start += length;
 				}
-
-				return al;
+				break;
 		}
 
-		return new ArrayList();
-		;
+		return (al);
 	}
 
 	public string Description()

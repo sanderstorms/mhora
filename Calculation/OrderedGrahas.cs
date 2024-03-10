@@ -17,11 +17,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Mhora.Components.Converter;
 using Mhora.Definitions;
-using Mhora.Elements;
 using Mhora.Elements.Extensions;
 
 namespace Mhora.Calculation;
@@ -29,18 +28,13 @@ namespace Mhora.Calculation;
 [TypeConverter(typeof(OrderedGrahasConverter))]
 public class OrderedGrahas : ICloneable
 {
-	public ArrayList grahas;
-
-	public OrderedGrahas()
-	{
-		grahas = new ArrayList();
-	}
+	public List <Body> grahas = new List<Body>();
 
 	public object Clone()
 	{
 		var oz = new OrderedGrahas
 		{
-			grahas = (ArrayList) grahas.Clone()
+			grahas = new List<Body>(grahas)
 		};
 		return oz;
 	}

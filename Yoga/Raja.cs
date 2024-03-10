@@ -613,7 +613,7 @@ namespace Mhora.Yoga
 		//This Yoga confers the status of the individual in terms of success recognition and status.
 		public static bool Raja19(this Grahas grahaList)
 		{
-			var lords = new List<Graha>()
+			var lords = new List<Graha>
 			{
 				grahaList.Rashis.Find(Bhava.ShatruBhava).Lord,
 				grahaList.Rashis.Find(Bhava.MrtyuBhava).Lord,

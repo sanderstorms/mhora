@@ -149,7 +149,7 @@ public static class Basics
 		var asc = h.Lagna(juldayUt);
 		stdGrahas.Add(new Position(h, Body.Lagna, BodyType.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
 
-		var istaGhati = Calculations.NormalizeExc(hi.DateOfBirth.Time ().TotalHours - sunrise, 0.0, 24.0) * 2.5;
+		var istaGhati = (hi.DateOfBirth.Time ().TotalHours - sunrise).NormalizeExc(0.0, 24.0) * 2.5;
 		var glLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati        * 30.0));
 		var hlLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30.0 / 2.5));
 		var blLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30.0 / 5.0));

@@ -111,10 +111,8 @@ namespace Mhora.Dasas
 					{
 						return h.IsDayBirth();
 					}
-					else
-					{
-						return (h.IsDayBirth() == false);
-					}
+
+					return (h.IsDayBirth() == false);
 				}
 				return (false);
 			}

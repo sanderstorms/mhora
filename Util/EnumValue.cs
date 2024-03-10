@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace Mhora.Util
 {
 	public class EnumValue

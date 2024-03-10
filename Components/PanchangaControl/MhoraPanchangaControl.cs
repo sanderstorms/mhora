@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
@@ -29,7 +30,6 @@ using Mhora.Elements;
 using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 using Mhora.Util;
-using Retrogression = Mhora.Calculation.Retrogression;
 
 namespace Mhora.Components.PanchangaControl;
 
@@ -80,12 +80,12 @@ public class MhoraPanchangaControl : MhoraControl
 	private PanchangaGlobalMoments globals = new();
 
 
-	private ArrayList               locals = new();
-	public  DelegateComputeFinished m_DelegateComputeFinished;
-	private MenuItem                menuItem1;
-	private MenuItem                menuItem2;
-	private MenuItem                menuItemFilePrintPreview;
-	private MenuItem                menuItemPrintPanchanga;
+	private List<PanchangaLocalMoments> locals = new();
+	public  DelegateComputeFinished     m_DelegateComputeFinished;
+	private MenuItem                    menuItem1;
+	private MenuItem                    menuItem2;
+	private MenuItem                    menuItemFilePrintPreview;
+	private MenuItem                    menuItemPrintPanchanga;
 
 
 	private ListView mList;
@@ -329,7 +329,7 @@ public class MhoraPanchangaControl : MhoraControl
 		};
 
 		globals = new PanchangaGlobalMoments();
-		locals  = new ArrayList();
+		locals  = new List<PanchangaLocalMoments>();
 
 		for (var i = 0; i < opts.NumDays; i++)
 		{
@@ -404,10 +404,10 @@ public class MhoraPanchangaControl : MhoraControl
 		local.kalas_ut = hCurr.GetKalaCuspsUt();
 		if (opts.CalcSpecialKalas)
 		{
-			var bStart = hCurr.Wday.WeekdayRuler();
+			var bStart = hCurr.Wday.Ruler();
 			if (hCurr.Options.KalaType == HoroscopeOptions.EHoraType.Lmt)
 			{
-				bStart = hCurr.LmtWday.WeekdayRuler();
+				bStart = hCurr.LmtWday.Ruler();
 			}
 
 			local.rahu_kala_index   = rahu_kalas[(int) bStart];
@@ -572,7 +572,7 @@ public class MhoraPanchangaControl : MhoraControl
 
 			if (local.tithi_index_start == local.tithi_index_end && local.tithi_index_start >= 0)
 			{
-				var pmi = (PanchangaMomentInfo) globals.tithis_ut[local.tithi_index_start];
+				var pmi = globals.tithis_ut[local.tithi_index_start];
 				var t   = pmi.info.ToTithi();
 				mList.Items.Add(string.Format("{0} - full.", t.GetEnumDescription()));
 			}
@@ -585,7 +585,7 @@ public class MhoraPanchangaControl : MhoraControl
 						continue;
 					}
 
-					var pmi = (PanchangaMomentInfo) globals.tithis_ut[i];
+					var pmi = globals.tithis_ut[i];
 					var t   = pmi.info.ToTithi().AddReverse(2);
 					s_tithi += string.Format("{0} until {1}", t.GetEnumDescription(), utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 
@@ -614,7 +614,7 @@ public class MhoraPanchangaControl : MhoraControl
 
 			if (local.karana_index_start == local.karana_index_end && local.karana_index_start >= 0)
 			{
-				var pmi = (PanchangaMomentInfo) globals.karanas_ut[local.karana_index_start];
+				var pmi = globals.karanas_ut[local.karana_index_start];
 				var k   = (Karana) pmi.info;
 				mList.Items.Add(string.Format("{0} karana - full.", k));
 			}
@@ -627,7 +627,7 @@ public class MhoraPanchangaControl : MhoraControl
 						continue;
 					}
 
-					var pmi = (PanchangaMomentInfo) globals.karanas_ut[i];
+					var pmi = globals.karanas_ut[i];
 					var k   = ((Karana) pmi.info).AddReverse(2);
 					s_karana += string.Format("{0} karana until {1}", k, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 
@@ -656,7 +656,7 @@ public class MhoraPanchangaControl : MhoraControl
 
 			if (local.smyoga_index_start == local.smyoga_index_end && local.smyoga_index_start >= 0)
 			{
-				var pmi = (PanchangaMomentInfo) globals.smyogas_ut[local.smyoga_index_start];
+				var pmi = globals.smyogas_ut[local.smyoga_index_start];
 				var sm  = (SunMoonYoga) pmi.info;
 				mList.Items.Add(string.Format("{0} yoga - full.", sm));
 			}
@@ -669,7 +669,7 @@ public class MhoraPanchangaControl : MhoraControl
 						continue;
 					}
 
-					var pmi = (PanchangaMomentInfo) globals.smyogas_ut[i];
+					var pmi = globals.smyogas_ut[i];
 					var sm  = ((SunMoonYoga) pmi.info).AddReverse(2);
 					s_smyoga += string.Format("{0} yoga until {1}", sm, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 
@@ -698,7 +698,7 @@ public class MhoraPanchangaControl : MhoraControl
 
 			if (local.nakshatra_index_start == local.nakshatra_index_end && local.nakshatra_index_start >= 0)
 			{
-				var pmi = (PanchangaMomentInfo) globals.nakshatras_ut[local.nakshatra_index_start];
+				var pmi = globals.nakshatras_ut[local.nakshatra_index_start];
 				var n   = (Nakshatra) pmi.info;
 				mList.Items.Add(string.Format("{0} - full.", n.Name()));
 			}
@@ -711,7 +711,7 @@ public class MhoraPanchangaControl : MhoraControl
 						continue;
 					}
 
-					var pmi = (PanchangaMomentInfo) globals.nakshatras_ut[i];
+					var pmi = globals.nakshatras_ut[i];
 					var n   = ((Nakshatra) pmi.info).AddReverse(2);
 					s_nak += string.Format("{0} until {1}", n.Name(), utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));
 					if (opts.OneEntryPerLine)
@@ -738,7 +738,7 @@ public class MhoraPanchangaControl : MhoraControl
 			var zBase  = (local.lagna_zh);
 			for (var i = 0; i < 12; i++)
 			{
-				var pmi   = (PanchangaMomentInfo) local.lagnas_ut[i];
+				var pmi   = local.lagnas_ut[i];
 				var zCurr = (ZodiacHouse) pmi.info;
 				zCurr  = zCurr.Add(12);
 				sLagna = string.Format("{0}{1} Lagna until {2}. ", sLagna, zCurr, utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise));

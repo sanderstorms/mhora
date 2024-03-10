@@ -51,9 +51,9 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 		_options.Recalculate();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
-		var al = new ArrayList(36);
+		var al = new List<DasaEntry> ();
 		Body[] order =
 		{
 			Body.Moon,
@@ -78,7 +78,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
 		var orderedAntar = new OrderedGrahas();
 		var lzh          = _h.GetPosition(pdi.Graha).ToDivisionPosition(_options.Varga).ZodiacHouse;
@@ -102,17 +102,17 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 		var size              = orderedAntar.grahas.Count;
 		var antarLengths      = new double[size];
 		var totalAntarLengths = 0.0;
-		var ret               = new ArrayList(size - 1);
+		var ret               = new List<DasaEntry> ();
 
 
 		for (var i = 0; i < size; i++)
 		{
-			if (ExcludeGraha(pdi, (Body) orderedAntar.grahas[i]))
+			if (ExcludeGraha(pdi, orderedAntar.grahas[i]))
 			{
 				continue;
 			}
 
-			var diff = lzh.NumHousesBetween(_h.GetPosition((Body) orderedAntar.grahas[i]).ToDivisionPosition(_options.Varga).ZodiacHouse);
+			var diff = lzh.NumHousesBetween(_h.GetPosition(orderedAntar.grahas[i]).ToDivisionPosition(_options.Varga).ZodiacHouse);
 			switch (diff)
 			{
 				case 7:
@@ -151,7 +151,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 		var curr = pdi.Start;
 		for (var i = 0; i < size; i++)
 		{
-			var bn = (Body) orderedAntar.grahas[i];
+			var bn = orderedAntar.grahas[i];
 
 			if (ExcludeGraha(pdi, bn))
 			{
@@ -383,7 +383,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 				for (var j = 0; j < newOpts.RasiStrengths[i].houses.Count; j++)
 				{
-					if ((ZodiacHouse) newOpts.RasiStrengths[i].houses[j] != (ZodiacHouse) RasiStrengths[i].houses[j])
+					if (newOpts.RasiStrengths[i].houses[j] != RasiStrengths[i].houses[j])
 					{
 						newOpts.CalculateGrahaStrengths();
 						return;

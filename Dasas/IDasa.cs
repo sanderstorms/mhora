@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Components.DasaControl;
 using Mhora.Elements;
 
@@ -29,9 +30,9 @@ namespace Mhora.Dasas;
 /// </summary>
 public interface IDasa : IUpdateable
 {
-	double    ParamAyus();
-	ArrayList Dasa(int                   cycle);
-	ArrayList AntarDasa(DasaEntry        pdi);
+	double          ParamAyus();
+	List<DasaEntry> Dasa(int cycle);
+	List<DasaEntry> AntarDasa(DasaEntry        pdi);
 	string    EntryDescription(DasaEntry de, DateTime start, DateTime end);
 	string    Description();
 	void      DivisionChanged(Division d);

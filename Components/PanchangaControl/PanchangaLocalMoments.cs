@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Definitions;
 using Mhora.Util;
 
@@ -24,25 +25,25 @@ namespace Mhora.Components.PanchangaControl;
 
 public class PanchangaLocalMoments
 {
-	public int         gulika_kala_index;
-	public int         hora_base;
-	public double[]    horas_ut;
-	public int         kala_base;
-	public double[]    kalas_ut;
-	public int         karana_index_end;
-	public int         karana_index_start;
-	public ZodiacHouse lagna_zh;
-	public ArrayList   lagnas_ut = new();
-	public int         nakshatra_index_end;
-	public int         nakshatra_index_start;
-	public int         rahu_kala_index;
-	public int         smyoga_index_end;
-	public int         smyoga_index_start;
-	public Time        sunrise;
-	public double      sunrise_ut;
-	public Time        sunset;
-	public int         tithi_index_end;
-	public int         tithi_index_start;
-	public Weekday     wday;
-	public int         yama_kala_index;
+	public int                       gulika_kala_index;
+	public int                       hora_base;
+	public double[]                  horas_ut;
+	public int                       kala_base;
+	public double[]                  kalas_ut;
+	public int                       karana_index_end;
+	public int                       karana_index_start;
+	public ZodiacHouse               lagna_zh;
+	public List<PanchangaMomentInfo> lagnas_ut = new();
+	public int                       nakshatra_index_end;
+	public int                       nakshatra_index_start;
+	public int                       rahu_kala_index;
+	public int                       smyoga_index_end;
+	public int                       smyoga_index_start;
+	public Time                      sunrise;
+	public double                    sunrise_ut;
+	public Time                      sunset;
+	public int                       tithi_index_end;
+	public int                       tithi_index_start;
+	public Weekday                   wday;
+	public int                       yama_kala_index;
 }

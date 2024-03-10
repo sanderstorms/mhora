@@ -20,7 +20,6 @@ using System;
 using Mhora.Dasas.GrahaDasa;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Yoga;
 
 namespace Mhora.Calculation.Strength;
 

@@ -20,7 +20,6 @@ using System;
 using Mhora.Dasas.NakshatraDasa;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Yoga;
 
 namespace Mhora.Calculation.Strength;
 

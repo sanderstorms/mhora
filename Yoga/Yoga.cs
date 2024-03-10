@@ -816,7 +816,6 @@ namespace Mhora.Yoga
 				}
 				else
 				{
-					continue;
 				}
 			}
 			return (yoga == 0x03);
@@ -1064,7 +1063,7 @@ namespace Mhora.Yoga
 		//as also in sacred scriptures and higher mathematics.
 		public static bool Saraswati(this Grahas grahas)
 		{
-			var list = new List<Graha>()
+			var list = new List<Graha>
 			{
 				grahas.Find(Body.Mercury),
 				grahas.Find(Body.Jupiter),

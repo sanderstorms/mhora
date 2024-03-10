@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using Mhora.Calculation;
@@ -84,12 +85,12 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 		return Options.Clone();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
 		return _Dasa(Horoscope.GetPosition(Options.StartGraha).ExtrapolateLongitude(Options.Div), Options.NakshatraOffset, cycle);
 	}
 
-	public ArrayList AntarDasa(DasaEntry di)
+	public List<DasaEntry> AntarDasa(DasaEntry di)
 	{
 		return _AntarDasa(di);
 	}

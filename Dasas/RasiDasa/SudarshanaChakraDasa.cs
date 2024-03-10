@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
@@ -56,9 +57,9 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 	{
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
-		var al    = new ArrayList(12);
+		var al    = new List<DasaEntry> ();
 		var start = cycle * ParamAyus();
 		var lzh   = _h.GetPosition(Body.Lagna).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
 		for (var i = 1; i <= 12; i++)
@@ -71,9 +72,9 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry de)
+	public List<DasaEntry> AntarDasa(DasaEntry de)
 	{
-		var al     = new ArrayList(12);
+		var al     = new List<DasaEntry> ();
 		var start  = de.Start;
 		var length = de.DasaLength / 12.0;
 		var zh     = de.ZHouse;

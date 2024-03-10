@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -44,7 +45,7 @@ internal class OrderedZodiacHousesConverter : ExpandableObjectConverter
 		var s = (string) value;
 
 		var oz  = new OrderedZodiacHouses();
-		var al  = new ArrayList();
+		var al  = new List<ZodiacHouse>();
 		var arr = s.Split('.', ' ', ':', ',');
 		foreach (var szh_mixed in arr)
 		{
@@ -90,7 +91,7 @@ internal class OrderedZodiacHousesConverter : ExpandableObjectConverter
 			}
 		}
 
-		oz.houses = (ArrayList) al.Clone();
+		oz.houses = new (al);
 		return oz;
 	}
 

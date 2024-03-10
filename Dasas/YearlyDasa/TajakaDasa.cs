@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Util;
@@ -51,9 +52,9 @@ public class TajakaDasa : Dasa, IDasa
 		return 60.0;
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
-		var al          = new ArrayList(60);
+		var al         = new List<DasaEntry> ();
 		var cycleStart = cycle * ParamAyus();
 		for (var i = 0; i < 60; i++)
 		{
@@ -65,7 +66,7 @@ public class TajakaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
 		string[] desc =
 		{
@@ -77,14 +78,14 @@ public class TajakaDasa : Dasa, IDasa
 		};
 		if (pdi.Level == 6)
 		{
-			return new ArrayList();
+			return new List<DasaEntry> ();
 		}
 
 		TimeOffset start  = 0.0;
 		TimeOffset length = 0.0;
 		var        level  = 0;
 
-		var al = new ArrayList(12);
+		var al = new List<DasaEntry> ();
 		start  = pdi.Start;
 		level  = pdi.Level + 1;
 		length = pdi.DasaLength / 12.0;

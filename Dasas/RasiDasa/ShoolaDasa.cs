@@ -17,6 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System.Collections;
+using System.Collections.Generic;
 using Mhora.Calculation;
 using Mhora.Database.Settings;
 using Mhora.Elements;
@@ -45,9 +46,9 @@ public class ShoolaDasa : Dasa, IDasa
 		_options.Recalculate();
 	}
 
-	public ArrayList Dasa(int cycle)
+	public List<DasaEntry> Dasa(int cycle)
 	{
-		var al      = new ArrayList(12);
+		var al     = new List<DasaEntry> ();
 		var zhSeed = _options.GetSeed();
 		zhSeed = _options.FindStrongerRasi(_options.SeventhStrengths, zhSeed, zhSeed.Add(7));
 
@@ -70,9 +71,9 @@ public class ShoolaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public ArrayList AntarDasa(DasaEntry pdi)
+	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
-		var al = new ArrayList(12);
+		var al = new List<DasaEntry> ();
 
 		var zhFirst    = pdi.ZHouse;
 		var zhStronger = zhFirst.Add(1);

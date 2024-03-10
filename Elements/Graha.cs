@@ -30,11 +30,6 @@ namespace Mhora.Elements
 				_houseOffset = 30.0 - _houseOffset;
 			}
 
-			if ((dp.Body != Body.Lagna) && (IsChayaGraha == false))
-			{
-				_digBala = _position.H.DigBala(dp.Body);
-			}
-
 			AspectFrom   = new List<Graha>();
 			AspectTo     = new List<Graha>();
 			MutualAspect = new List<Graha>();
@@ -45,8 +40,8 @@ namespace Mhora.Elements
 			OwnHouses    = new List<Rashi>();
 		}
 
-		public static implicit operator Body(Graha      graha) => graha.Body;
-		public static implicit operator Grahas(Graha    graha) => graha._grahas;
+		public static implicit operator Body  (Graha graha) => graha.Body;
+		public static implicit operator Grahas(Graha graha) => graha._grahas;
 
 		public string Name => Body.Name();
 
@@ -77,6 +72,7 @@ namespace Mhora.Elements
 			return (false);
 		}
 
+		#region Associated
 		//The five major associations are:
 		// 
 		// By mutual exchange of sign, e.g. the Sun in Aries and Mars in Leo,
@@ -115,6 +111,13 @@ namespace Mhora.Elements
 			return (false);
 		}
 
+		public bool IsAssociatedWith(Body body)
+		{
+			var graha = _grahas.Find(body);
+			return IsAssociatedWith(graha);
+		}
+
+
 		public bool IsAssociatedWith(Bhava bhava)
 		{
 			foreach (var graha in Association)
@@ -126,21 +129,6 @@ namespace Mhora.Elements
 			}
 			return (false);
 		}
-
-
-		public bool IsMutualAssosiating(Graha graha) => IsAssociatedBy(graha) && IsAssociatedWith(graha);
-
-		public bool IsAssociatedBy(Body body)
-		{
-			var graha = _grahas.Find(body);
-			return (IsAssociatedBy(graha));
-		}
-
-		public bool IsAssociatedBy(Graha graha)
-		{
-			return graha.IsAssociatedWith(this);
-		}
-
 
 		public bool IsAssociatedWith (Nature nature, bool noChayaGraha)
 		{
@@ -158,6 +146,21 @@ namespace Mhora.Elements
 			return (false);
 		}
 
+		public bool IsMutualAssosiating(Graha graha) => IsAssociatedBy(graha) && IsAssociatedWith(graha);
+
+		public bool IsAssociatedBy(Body body)
+		{
+			var graha = _grahas.Find(body);
+			return (IsAssociatedBy(graha));
+		}
+
+		public bool IsAssociatedBy(Graha graha)
+		{
+			return graha.IsAssociatedWith(this);
+		}
+		#endregion
+
+		#region drishti
 		public bool IsAspectedBy (Nature nature, bool noChayaGraha)
 		{
 			foreach (var graha in AspectFrom)
@@ -178,7 +181,6 @@ namespace Mhora.Elements
 		{
 			return _dp.GrahaDristi(zh);
 		}
-
 
 		public bool IsAspecting(Body body)
 		{
@@ -217,7 +219,9 @@ namespace Mhora.Elements
 			}
 			return (false);
 		}
+		#endregion
 
+		#region conjunct
 		public bool IsConjuctWith(Body body)
 		{
 			var graha = _grahas.Find(body);
@@ -236,6 +240,22 @@ namespace Mhora.Elements
 			return (false);
 		}
 
+		public bool IsConjuctWith(Nature nature, bool noChayaGraha)
+		{
+			foreach (var conjunct in Conjunct)
+			{
+				if (conjunct.Nature == nature)
+				{
+					if ((noChayaGraha == false) || (conjunct.IsChayaGraha == false))
+					{
+						return (true);
+					}
+				}
+			}
+			return (false);
+		}
+
+
 		public bool IsConjunctWithPlanet
 		{
 			get
@@ -251,6 +271,7 @@ namespace Mhora.Elements
 
 			}
 		}
+		#endregion
 
 		public bool IsUnderInfluenceOf(Body body)
 		{
@@ -276,13 +297,6 @@ namespace Mhora.Elements
 			}
 			return (false);
 		}
-
-		public bool IsAssociatedWith(Body body)
-		{
-			var graha = _grahas.Find(body);
-			return IsAssociatedWith(graha);
-		}
-
 
 		public bool IsNaturalBenefic
 		{
@@ -505,7 +519,6 @@ namespace Mhora.Elements
 				return _after;
 			}
 		}
-
 
 		private Graha    _exchange;
 		public  Graha    Exchange => _exchange;
@@ -1029,6 +1042,7 @@ namespace Mhora.Elements
 				return (Rashi == Body.DebilitationSign());
 			}
 		}
+
 		public bool IsExalted
 		{
 			get
@@ -1194,6 +1208,11 @@ namespace Mhora.Elements
 				Conditions |= Conditions.OwnHouse;
 			}
 
+			if ((Body != Body.Lagna) && (IsChayaGraha == false))
+			{
+				_digBala = _grahas.Horoscope.DigBala(Body);
+			}
+
 			_angle       =  (Bhava.Index() - 1) * 30.0;
 			_angle       += _houseOffset;
 
@@ -1278,7 +1297,6 @@ namespace Mhora.Elements
 			}
 			return 0;
 		}
-
 
 		public Longitude CalculateLongitude(double ut, Ref <bool> isRetro)
 		{

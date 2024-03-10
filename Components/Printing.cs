@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
 using Mhora.Calculation;
@@ -43,13 +44,14 @@ public class MhoraPrintDocument : PrintDocument
 	private readonly int  baseVargaPage   = 8;
 	private readonly Font f               = new("Microsoft Sans Serif", 10);
 
-	private readonly Font      f_fix      = new("Courier New", 10);
-	private readonly Font      f_fix_s    = new("Courier New", 8);
-	private readonly Font      f_s        = new("Microsoft Sans Serif", 8);
-	private readonly Font      f_sanskrit = new("Sanskrit 99", 15);
-	private readonly Font      f_u        = new("Microsoft Sans Serif", 10, FontStyle.Underline);
-	private readonly int       pad_height = 10;
-	private          ArrayList alVargas;
+	private readonly Font   f_fix      = new("Courier New", 10);
+	private readonly Font   f_fix_s    = new("Courier New", 8);
+	private readonly Font   f_s        = new("Microsoft Sans Serif", 8);
+	private readonly Font   f_sanskrit = new("Sanskrit 99", 15);
+	private readonly Font   f_u        = new("Microsoft Sans Serif", 10, FontStyle.Underline);
+	private readonly int    pad_height = 10;
+
+	private readonly List<Division> alVargas  = new List<Division>();
 
 
 	private   Graphics  g;
@@ -72,7 +74,6 @@ public class MhoraPrintDocument : PrintDocument
 
 	protected override void OnBeginPrint(PrintEventArgs e)
 	{
-		alVargas = new ArrayList();
 		for (var i = (int) DivisionType.HoraParasara; i <= (int) DivisionType.DwadasamsaDwadasamsa; i++)
 		{
 			alVargas.Add(new Division((DivisionType) i));
@@ -251,7 +252,7 @@ public class MhoraPrintDocument : PrintDocument
 						continue;
 					}
 
-					var deAntar = (DasaEntry) alAntar[j * num_entries_per_line + i];
+					var deAntar = alAntar[j * num_entries_per_line + i];
 					s = GetDasaString(td, deAntar, bGraha);
 					g.DrawString(s, f_fix_s, b, (i + 1) * entry_width - (float) (entry_width * .5), 0);
 				}
@@ -358,8 +359,7 @@ public class MhoraPrintDocument : PrintDocument
 			//s = string.Format("{0} ", mStart.ToDateString());
 			//g.DrawString(s, f_fix, b, width / 6, 0);
 
-			var al_antar = vd.AntarDasa(de);
-			var deAntar  = (DasaEntry[]) al_antar.ToArray(typeof(DasaEntry));
+			var deAntar = vd.AntarDasa(de);
 
 			var aw  = width / 7;
 			var off = -40;
@@ -386,7 +386,7 @@ public class MhoraPrintDocument : PrintDocument
 			return false;
 		}
 
-		dtype = (Division) alVargas[iVarga++];
+		dtype = alVargas[iVarga++];
 		return true;
 	}
 
