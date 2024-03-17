@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Util;
 
 namespace Mhora.Calculation
 {
@@ -32,6 +33,12 @@ namespace Mhora.Calculation
 			return x;
 		}
 
+
+		public static double NormalizeExc(this double x, double lower, double upper)
+		{
+			return (double) NormalizeExc((decimal) x,  (decimal) lower, (decimal) upper);
+		}
+
 		/// <summary>
 		///     Normalize a number between bounds
 		/// </summary>
@@ -40,7 +47,7 @@ namespace Mhora.Calculation
 		/// <param name="upper">The upper bound of normalization</param>
 		/// <returns>
 		///     The normalized value of x, where lower = x <= upper </returns>
-		public static double NormalizeExc(this double x, double lower, double upper)
+		public static decimal NormalizeExc(this decimal x, decimal lower, decimal upper)
 		{
 			var size = upper - lower;
 			while (x > upper)
@@ -57,7 +64,7 @@ namespace Mhora.Calculation
 			return x;
 		}
 
-		public static double NormalizeExcLower(this double x, double lower, double upper)
+		public static decimal NormalizeExcLower(this decimal x, decimal lower, decimal upper)
 		{
 			var size = upper - lower;
 			while (x >= upper)
@@ -74,7 +81,7 @@ namespace Mhora.Calculation
 			return x;
 		}
 
-		public static double Normalize(this Longitude l)
+		public static decimal Normalize(this Longitude l)
 		{
 			return l.Value.NormalizeExcLower(0, 360);
 		}
@@ -112,32 +119,32 @@ namespace Mhora.Calculation
 
 		public static SunMoonYoga ToSunMoonYoga(this Longitude l)
 		{
-			var smIndex = (int) (Math.Floor(l.Value / (360.0 / 27.0)) + 1);
+			var smIndex = (int) (Math.Floor(l.Value / (360M / 27)) + 1);
 			var smYoga  = (SunMoonYoga) smIndex;
 			return smYoga;
 		}
 
-		public static double ToSunMoonYogaBase(this Longitude l)
+		public static decimal ToSunMoonYogaBase(this Longitude l)
 		{
 			var num  = (int) l.ToSunMoonYoga();
-			var cusp = (num - 1) * (360.0 / 27.0);
+			var cusp = (num - 1) * (360M / 27);
 			return cusp;
 		}
 
-		public static double ToSunMoonYogaOffset(this Longitude l)
+		public static decimal ToSunMoonYogaOffset(this Longitude l)
 		{
 			return l.Value - l.ToSunMoonYogaBase();
 		}
 
 		public static SunMoonYoga Add(this SunMoonYoga value, int i)
 		{
-			var snum = ((int) value + i - 1).NormalizeInc(1, 27);
+			var snum = (value.Index() + i - 1).NormalizeInc(1, 27);
 			return (SunMoonYoga) snum;
 		}
 
 		public static SunMoonYoga AddReverse(this SunMoonYoga value, int i)
 		{
-			var snum = ((int) value - i + 1).NormalizeInc(1, 27);
+			var snum = (value.Index() - i + 1).NormalizeInc(1, 27);
 			return (SunMoonYoga)snum;
 		}
 
@@ -164,14 +171,14 @@ namespace Mhora.Calculation
 
 		public static bool CircLonLessThan(this Longitude a, Longitude b)
 		{
-			var bounds = 40.0;
+			var bounds = 40;
 
-			if (a.Value > 360.0 - bounds && b.Value < bounds)
+			if (a.Value > 360 - bounds && b.Value < bounds)
 			{
 				return true;
 			}
 
-			if (a.Value < bounds && b.Value > 360.0 - bounds)
+			if (a.Value < bounds && b.Value > 360 - bounds)
 			{
 				return false;
 			}

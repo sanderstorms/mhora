@@ -46,7 +46,7 @@ namespace Mhora.Util
 		/// <param name="degrees">The value of the angle in degrees.</param>
 		public Angle(int degrees)
 		{
-			_value = degrees;
+			Value = degrees;
 		}
 
 		/// <summary>
@@ -66,7 +66,7 @@ namespace Mhora.Util
 		/// <param name="degrees">The value of the angle in degrees.</param>
 		public Angle(double degrees)
 		{
-			_value = (decimal)degrees;
+			Value = (decimal) degrees;
 		}
 
 		/// <summary>
@@ -693,9 +693,9 @@ namespace Mhora.Util
 		/// </summary>
 		private decimal _value;
 		[JsonProperty]
-		internal double Value
+		internal decimal Value
 		{
-			get => (double) _value;
+			get => _value;
 			set
 			{
 				while (value > 360)
@@ -708,7 +708,7 @@ namespace Mhora.Util
 					value += 360;
 				}
 
-				_value = (decimal) value;
+				_value = value;
 			}
 		}
 

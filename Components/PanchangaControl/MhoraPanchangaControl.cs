@@ -381,7 +381,7 @@ public class MhoraPanchangaControl : MhoraControl
 	{
 		var  grahas = h.FindGrahas(DivisionType.Rasi);
 		Time sunset = new Time();
-		h.PopulateSunrisetCacheHelper(ut - 0.5, ref sunrise, ref sunset, ref ut_sr);
+		ut_sr = h.PopulateSunrisetCacheHelper(ut - 0.5, out sunrise, out sunset);
 
 		sweph.RevJul(ut_sr, out var year, out var month, out var day, out var hour);
 		var moment_ut = h.Moment(ut);
@@ -523,12 +523,13 @@ public class MhoraPanchangaControl : MhoraControl
 		if (opts.CalcHoraCusps)
 		{
 			local.horas_ut = hCurr.GetHoraCuspsUt();
-			hCurr.CalculateHora(ut_sr + 1.0 / 24.0, ref local.hora_base);
+			var dateTime = new JulianDate(ut_sr + 1.0 / 24.0);
+			hCurr.CalculateHora(dateTime, out local.hora_base);
 		}
 
 		if (opts.CalcKalaCusps)
 		{
-			hCurr.CalculateKala(ref local.kala_base);
+			hCurr.CalculateKala(out local.kala_base);
 		}
 
 
@@ -756,7 +757,7 @@ public class MhoraPanchangaControl : MhoraControl
 			for (var i = 0; i < 24; i++)
 			{
 				var ib    = (int) Calculations.NormalizeExcLower(local.hora_base + i, 0, 7);
-				var bHora = h.HoraOrder[ib];
+				var bHora = Bodies.HoraOrder[ib];
 				sHora = string.Format("{0}{1} hora until {2}. ", sHora, bHora, utTimeToString(local.horas_ut[i + 1], local.sunrise_ut, local.sunrise));
 				if (opts.OneEntryPerLine || i % 4 == 3)
 				{
@@ -772,7 +773,7 @@ public class MhoraPanchangaControl : MhoraControl
 			for (var i = 0; i < 16; i++)
 			{
 				var ib    = (int) Calculations.NormalizeExcLower(local.kala_base + i, 0, 8);
-				var bKala = h.KalaOrder[ib];
+				var bKala = Bodies.KalaOrder[ib];
 				sKala = string.Format("{0}{1} kala until {2}. ", sKala, bKala, utTimeToString(local.kalas_ut[i + 1], local.sunrise_ut, local.sunrise));
 				if (opts.OneEntryPerLine || i % 4 == 3)
 				{

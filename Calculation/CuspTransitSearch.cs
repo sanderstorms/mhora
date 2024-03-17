@@ -7,16 +7,16 @@ namespace Mhora.Calculation;
 
 public static class CuspTransitSearch
 {
-	private static double DirectSpeed(Body b)
+	private static decimal DirectSpeed(Body b)
 	{
 		switch (b)
 		{
-			case Body.Sun:   return TimeUtils.SiderealYear.TotalDays;
-			case Body.Moon:  return 28.0;
-			case Body.Lagna: return 1.0;
+			case Body.Sun:   return (decimal) TimeUtils.SiderealYear.TotalDays;
+			case Body.Moon:  return 28;
+			case Body.Lagna: return 1;
 		}
 
-		return 0.0;
+		return 0;
 	}
 
 	public static double TransitSearchDirect(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, Ref <bool> bForward)
@@ -27,26 +27,26 @@ public static class CuspTransitSearch
 		var ut_base  = h.UniversalTime(StartDate);
 		var lon_curr = graha.CalculateLongitude(ut_base, bDiscard);
 
-		double diff = 0;
+		decimal diff = 0;
 		diff = TransitPoint.Sub(lon_curr).Value;
 
 		if (false == Forward)
 		{
-			diff -= 360.0;
+			diff -= 360;
 		}
 
-		var    ut_diff_approx = diff / 360.0 * DirectSpeed(SearchBody);
+		var    ut_diff_approx = diff / 360M * DirectSpeed(SearchBody);
 		double found_ut       = 0;
 		double ut             = 0;
 
 		if (SearchBody == Body.Lagna)
 		{
-			ut       = ut_base + ut_diff_approx - 3.0 / 24.0;
-			found_ut = ut.LinearSearchBinary(ut_base + ut_diff_approx + 3.0 / 24.0, TransitPoint, graha.CalculateLongitude);
+			ut       = ut_base + (double) (ut_diff_approx - 3 / 24M);
+			found_ut = ut.LinearSearchBinary(ut_base + (double) (ut_diff_approx + 3 / 24M), TransitPoint, graha.CalculateLongitude);
 		}
 		else
 		{
-			ut       = ut_base + ut_diff_approx;
+			ut       = ut_base + (double) ut_diff_approx;
 			found_ut = ut.LinearSearch(TransitPoint, graha.CalculateLongitude);
 		}
 

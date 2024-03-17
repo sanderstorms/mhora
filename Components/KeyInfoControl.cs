@@ -227,7 +227,7 @@ public class KeyInfoControl : MhoraControl
 		}
 		{
 			li = new ListViewItem("Weekday");
-			var fmt = string.Format("{0}", h.Wday);
+			var fmt = string.Format("{0} ({1})", h.Wday, h.Info.DateOfBirth.DayLord());
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
@@ -265,30 +265,30 @@ public class KeyInfoControl : MhoraControl
 		{
 			li = new ListViewItem("Yoga");
 			var smLon  = h.GetPosition(Body.Sun).Longitude.Add(h.GetPosition(Body.Moon).Longitude);
-			var offset = 360.0 / 27.0 - smLon.ToSunMoonYogaOffset();
+			var offset = 360M / 27 - smLon.ToSunMoonYogaOffset();
 			var smYoga = smLon.ToSunMoonYoga();
 			var smLord = smYoga.Lord();
-			var fmt    = string.Format("{0} ({1}) {2:N}% left", smYoga, smLord, offset / (360.0 / 27.0) * 100);
+			var fmt    = string.Format("{0} ({1}) {2:N}% left", smYoga, smLord, offset / (360M / 27) * 100);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			li = new ListViewItem("Hora");
-			var b   = h.CalculateHora();
-			var fmt = string.Format("{0}", b);
+			li = new ListViewItem("Hora lord");
+			var b = h.Info.UtcTob.HoraLord();
+			var fmt = $"{b}";
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
 			li = new ListViewItem("Kala");
-			var b   = h.CalculateKala();
+			var b   = h.Info.UtcTob.KalaLord();
 			var fmt = string.Format("{0}", b);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
 			li = new ListViewItem("Muhurta");
-			var mIndex = (int) (Math.Floor(h.HoursAfterSunrise() / h.LengthOfDay() * 30.0) + 1);
+			var mIndex = (int) (Math.Floor(h.HoursAfterSunrise() / h.LengthOfDay () * 30.0) + 1);
 			var m      = (Muhurta) mIndex;
 			var fmt    = string.Format("{0} ({1})", m, m.NakLordOfMuhurta());
 			li.SubItems.Add(fmt);

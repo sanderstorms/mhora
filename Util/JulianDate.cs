@@ -10,7 +10,6 @@ namespace Mhora.Util
 		private readonly int      _yearsBC;
 		private readonly double   _value;
 		private readonly DateTime _date;
-		private readonly Time     _time;
 
 		// The Julian day number is a system of numbering all days continously
 		// within the time range of known human history. It should be familiar
@@ -42,15 +41,13 @@ namespace Mhora.Util
 				year  = 1;
 			}
 
-			_date = new DateTime(year, month, day);
-			_time = hours;
+			_date = new DateTime(year, month, day).AddHours(hours);
 		}
 
 		public JulianDate(DateTime dateTime, int yearsBC = 0)
 		{
 			_yearsBC = yearsBC;
-			_date    = dateTime.Date;
-			_time    = dateTime.Time();
+			_date    = dateTime;
 
 			var year = _date.Year + _yearsBC;
 
@@ -62,11 +59,11 @@ namespace Mhora.Util
 		[JsonProperty]
 		public DateTime Date     => _date;
 		[JsonProperty]
-		public Time     Time     => _time;
+		public Time     Time     => _date.Time();
 
 		public override string ToString()
 		{
-			var dateTime = $"{_date.Add(_time)}";
+			var dateTime = $"{_date}";
 			if (_yearsBC != 0)
 			{
 				return $"{_yearsBC}+{dateTime}";
@@ -98,11 +95,9 @@ namespace Mhora.Util
 
 		public static implicit operator DateTime(JulianDate jd)
 		{
-			return jd.Date.Add(jd.Time);
+			return jd.Date;
 		}
 
-		public static JulianDate operator +(JulianDate jd, Time      offset) => jd.Add (offset);
-		public static JulianDate operator -(JulianDate jd, Time      offset) => jd.Sub (offset);
 		public static bool operator < (JulianDate     jd, JulianDate value)  => jd._value < value._value; 
 		public static bool operator > (JulianDate     jd, JulianDate value)  => jd._value > value._value; 
 		public static bool operator == (JulianDate    jd, JulianDate value)  => jd._value == value._value; 

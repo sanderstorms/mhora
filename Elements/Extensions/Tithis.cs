@@ -195,7 +195,7 @@ public static class Tithis
 
 	public static Tithi ToTithi(this Longitude l)
 	{
-		var tIndex = (int) (Math.Floor(l.Value / (360.0 / 30.0)) + 1);
+		var tIndex = (int) (Math.Floor(l.Value / (360M / 30)) + 1);
 		var t      = tIndex.ToTithi();
 		return t;
 	}
@@ -209,7 +209,7 @@ public static class Tithis
 
 	public static double ToTithiOffset(this Longitude l)
 	{
-		return l.Value - l.ToTithiBase();
+		return (double) l.Value - l.ToTithiBase();
 	}
 
 }

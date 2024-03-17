@@ -550,7 +550,7 @@ public class MhoraPrintDocument : PrintDocument
 		// Yoga, Hora
 		var smLon  = h.GetPosition(Body.Sun).Longitude.Add(h.GetPosition(Body.Moon).Longitude);
 		var smYoga = smLon.ToSunMoonYoga();
-		var bHora  = h.CalculateHora();
+		var bHora  = h.Info.UtcTob.HoraLord();
 		PrintString(string.Format("{0} Yoga, {1} Hora", smYoga, bHora));
 
 

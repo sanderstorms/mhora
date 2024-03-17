@@ -1237,13 +1237,13 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var spEnd     = h.CalculateSingleBodyPosition(utEnd.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
 		var lDiff     = spEnd.Longitude.Sub(spStart.Longitude);
 		var diff      = lDiff.Value;
-		if (diff < 120.0)
+		if (diff < 120)
 		{
-			diff += 360.0;
+			diff += 360;
 		}
 
 		DasaOptions.YearType    = ToDate.DateType.SolarYear;
-		DasaOptions.YearLength  = diff;
+		DasaOptions.YearLength  = (double) diff;
 		DasaOptions.Compression = 1;
 		Reset();
 	}

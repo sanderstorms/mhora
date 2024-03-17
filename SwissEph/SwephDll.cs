@@ -50,6 +50,9 @@ public static class SwephDll
 		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_rise_trans")]
 		public static extern int swe_rise_trans(double tjd_ut, int ipl, string starname, int epheflag, int rsmi, double[] geopos, double atpress, double attemp, ref double tret, StringBuilder serr);
 
+		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_houses")]
+		public static extern int swe_houses(double tjd_ut, double geolat, double geolon, int hsys, double [] cusps, double[] ascmc);
+
 		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_houses_ex")]
 		public static extern int swe_houses_ex(double tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc);
 
@@ -132,6 +135,9 @@ public static class SwephDll
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_houses_ex")]
 		public static extern int swe_houses_ex(double tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc);
+
+		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_houses")]
+		public static extern int swe_houses(double tjd_ut, double geolat, double geolon, int hsys, double [] cusps,  double[] ascmc);
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_day_of_week")]
 		public static extern int swe_day_of_week(double jd);

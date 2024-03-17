@@ -677,7 +677,7 @@ public class BasicCalculationsControl : MhoraControl
 			var    li         = new ListViewItem();
 			var    s1         = string.Format("{0:00}  {1} Tithis", i, Tithis.SpecialNames[i]);
 			li.Text = s1;
-			var s2 = getTithiName(spTithiVal, ref tithi, ref perc);
+			var s2 = getTithiName((double) spTithiVal, ref tithi, ref perc);
 			li.SubItems.Add(s2);
 			var s3 = string.Format("{0:###.##}%", perc);
 			li.SubItems.Add(s3);

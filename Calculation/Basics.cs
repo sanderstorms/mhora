@@ -149,18 +149,18 @@ public static class Basics
 		var asc = h.Lagna(juldayUt);
 		stdGrahas.Add(new Position(h, Body.Lagna, BodyType.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
 
-		var istaGhati = (hi.DateOfBirth.Time ().TotalHours - sunrise).NormalizeExc(0.0, 24.0) * 2.5;
-		var glLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati        * 30.0));
-		var hlLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30.0 / 2.5));
-		var blLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30.0 / 5.0));
+		var istaGhati = ((decimal)(hi.DateOfBirth.Time ().TotalHours - sunrise)).NormalizeExc(0, 24) * 2.5M;
+		var glLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati        * 30));
+		var hlLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30 / 2.5M));
+		var blLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30 / 5.0M));
 
-		var vl = istaGhati * 5.0;
-		while (istaGhati > 12.0)
+		var vl = istaGhati * 5;
+		while (istaGhati > 12)
 		{
-			istaGhati -= 12.0;
+			istaGhati -= 12;
 		}
 
-		var vlLon = stdGrahas[0].Longitude.Add(new Longitude(vl * 30.0));
+		var vlLon = stdGrahas[0].Longitude.Add(new Longitude(vl * 30));
 
 		stdGrahas.Add(new Position(h, Body.BhavaLagna, BodyType.SpecialLagna, blLon, 0, 0, 0, 0, 0));
 		stdGrahas.Add(new Position(h, Body.HoraLagna, BodyType.SpecialLagna, hlLon, 0, 0, 0, 0, 0));

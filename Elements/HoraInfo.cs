@@ -22,12 +22,13 @@ using System.IO;
 using System.Linq;
 using Mhora.Calculation;
 using Mhora.Components.Property;
+using Mhora.Database.Settings;
 using Mhora.Database.World;
 using Mhora.Util;
 using Newtonsoft.Json;
 using SqlNado.Query;
 
-namespace Mhora.Database.Settings;
+namespace Mhora.Elements;
 
 /// <summary>
 ///     A class containing all required input from the user for a given chart

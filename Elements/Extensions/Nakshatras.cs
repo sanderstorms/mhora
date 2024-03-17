@@ -200,13 +200,13 @@ public static class Nakshatras
 
 	public static Nakshatra ToNakshatra(this Longitude l)
 	{
-		var snum = (int) (Math.Floor(l.Value / (360.0 / 27.0)) + 1.0);
+		var snum = (int) (Math.Floor(l.Value / (360M / 27)) + 1);
 		return (Nakshatra) snum;
 	}
 
 	public static Nakshatra28 ToNakshatra28(this Longitude l)
 	{
-		var snum = (int) (Math.Floor(l.Value / (360.0 / 27.0)) + 1.0);
+		var snum = (int) (Math.Floor(l.Value / (360M / 27)) + 1);
 
 		var ret = (Nakshatra28) snum;
 		if (snum >= (int) Nakshatra28.Abhijit)
@@ -214,7 +214,7 @@ public static class Nakshatras
 			ret = ret.Add(2);
 		}
 
-		if (l.Value >= 270 + (6.0 + 40.0 / 60.0) && l.Value <= 270 + (10.0 + 53.0 / 60.0 + 20.0 / 3600.0))
+		if (l.Value >= 270 + (6 + 40 / 60M) && l.Value <= 270 + (10 + 53 / 60M + 20 / 3600M))
 		{
 			ret = Nakshatra28.Abhijit;
 		}
@@ -232,10 +232,10 @@ public static class Nakshatras
 	public static double NakshatraOffset(this Longitude l)
 	{
 		var znum = l.ToNakshatra().Index();
-		var cusp = (znum - 1) * (360.0 / 27.0);
+		var cusp = (znum - 1) * (360 / 27M);
 		var ret  = l.Value - cusp;
-		Trace.Assert(ret >= 0.0 && ret <= 360.0 / 27.0);
-		return ret;
+		Trace.Assert(ret >= 0 && ret <= 360 / 27M);
+		return (double) ret;
 	}
 
 	public static double PercentageOfNakshatra(this Longitude l)
@@ -264,10 +264,10 @@ public static class Nakshatras
 	public static double NakshatraPadaOffset(this Longitude l)
 	{
 		var pnum = l.AbsoluteNakshatraPada();
-		var cusp = (pnum - 1) * (360.0 / (27.0 * 4.0));
+		var cusp = (pnum - 1) * (360 / (27M * 4));
 		var ret  = l.Value - cusp;
-		Trace.Assert(ret >= 0.0 && ret <= 360.0 / 27.0);
-		return ret;
+		Trace.Assert(ret >= 0 && ret <= 360 / 27M);
+		return (double)ret;
 	}
 
 	public static double NakshatraPadaPercentage(this Longitude l)

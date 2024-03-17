@@ -14,7 +14,7 @@ namespace Mhora.Util
 			IsLongitude =isLongitude;
 		}
 
-		public static implicit operator double (DmsPoint dmsPoint) => dmsPoint.Value;
+		public static implicit operator double (DmsPoint dmsPoint) => (double)dmsPoint.Value;
 		public static implicit operator DmsPoint (double degrees) => new DmsPoint(degrees);
 
 		public bool IsLongitude

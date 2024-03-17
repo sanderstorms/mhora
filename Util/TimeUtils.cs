@@ -84,6 +84,31 @@ public static class TimeUtils
 		return sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, (dateTime - h.Info.DstOffset).Time().TotalHours);
 	}
 
+	public static JulianDate Lmt(this JulianDate jd, Horoscope h)
+	{
+		var dateTime = (DateTime) jd;
+		var lmt      = dateTime.Lmt(h);
+		return (new JulianDate (lmt));
+	}
+
+	public static DateTime Lmt(this DateTime dateTime, Horoscope h)
+	{
+		return TimeZoneInfo.ConvertTimeFromUtc(dateTime, h.Info.City.Country.TimeZone.TimeZoneInfo);
+	}
+
+	public static JulianDate Utc(this JulianDate jd, Horoscope h)
+	{
+		var dateTime = (DateTime) jd;
+		var utc      = dateTime.Utc(h);
+		return (new JulianDate (utc));
+	}
+
+	public static DateTime Utc(this DateTime dateTime, Horoscope h)
+	{
+		return TimeZoneInfo.ConvertTimeToUtc(dateTime, h.Info.City.Country.TimeZone.TimeZoneInfo);
+	}
+
+
 	// Return the number of years, months, days, hours,
 	// minutes, seconds, and milliseconds you need to add to
 	// from_date to get to_date.

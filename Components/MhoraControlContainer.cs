@@ -252,7 +252,7 @@ public class MhoraControlContainer : UserControl
 				}
 
 				dc.DasaOptions.YearType   = ToDate.DateType.SolarYear;
-				dc.DasaOptions.YearLength = diff;
+				dc.DasaOptions.YearLength = (double)diff;
 
 				var tuo = (TithiAshtottariDasa.UserOptions) dc.DasaSpecificOptions;
 				tuo.UseTithiRemainder  = true;

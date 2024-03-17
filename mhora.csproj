@@ -171,6 +171,7 @@
     <Compile Include="Components\Controls\ListViewColumnSorter.cs" />
     <Compile Include="Definitions\Element.cs" />
     <Compile Include="Definitions\GrahaType.cs" />
+    <Compile Include="Definitions\Month.cs" />
     <Compile Include="Definitions\Nature.cs" />
     <Compile Include="Definitions\Avastha.cs" />
     <Compile Include="Definitions\Body.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Elements\Extensions\Kutas.cs" />
     <Compile Include="Elements\Extensions\Sahama.cs" />
     <Compile Include="Elements\Arudha.cs" />
+    <Compile Include="Elements\Vara.cs" />
     <Compile Include="Elements\Varnada.cs" />
     <Compile Include="Yoga\Aakriti.cs" />
     <Compile Include="Yoga\Buddh.cs" />
@@ -373,7 +375,7 @@
     <Compile Include="Components\Property\GlobalizedPropertiesWrapper.cs" />
     <Compile Include="Components\Property\GlobalizedPropertyDescriptor.cs" />
     <Compile Include="Components\Converter\HMSInfoConverter.cs" />
-    <Compile Include="Database\Settings\HoraInfo.cs" />
+    <Compile Include="Elements\HoraInfo.cs" />
     <Compile Include="Elements\Horoscope.cs" />
     <Compile Include="Elements\Horoscope.Calculations.cs">
       <DependentUpon>Horoscope.cs</DependentUpon>

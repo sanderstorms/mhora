@@ -37,7 +37,7 @@ public static class ShadBalas
 		Debug.Assert(_b >= (int) Body.Sun && _b <= (int) Body.Saturn);
 	}
 
-	public static double UcchaBala(this Horoscope h, Body b)
+	public static decimal UcchaBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
 		var debLon = b.DebilitationDegree();
@@ -48,7 +48,7 @@ public static class ShadBalas
 			diff = 360 - diff;
 		}
 
-		return diff / 180.0 * 60.0;
+		return diff / 180M * 60;
 	}
 
 	public static bool GetsOjaBala(this Body b)
@@ -130,7 +130,7 @@ public static class ShadBalas
 		return 0;
 	}
 
-	public static double DigBala(this Horoscope h, Body b)
+	public static decimal DigBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
 		int[] powerlessHouse =
@@ -156,7 +156,7 @@ public static class ShadBalas
 			diff = 360 - diff;
 		}
 
-		return diff / 180.0 * 60.0;
+		return diff / 180M * 60;
 	}
 
 	public static double NathonnathaBala(this Horoscope h, Body b)
@@ -196,7 +196,7 @@ public static class ShadBalas
 		return diff;
 	}
 
-	public static double PakshaBala(this Horoscope h, Body b)
+	public static decimal PakshaBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
 
@@ -206,18 +206,18 @@ public static class ShadBalas
 		var diff = mlon.Sub(slon).Value;
 		if (diff > 180)
 		{
-			diff = 360.0 - diff;
+			diff = 360 - diff;
 		}
 
-		var shubha = diff / 3.0;
-		var paapa  = 60.0 - shubha;
+		var shubha = diff / 3M;
+		var paapa  = 60 - shubha;
 
 		switch (b)
 		{
 			case Body.Sun:
 			case Body.Mars:
 			case Body.Saturn: return paapa;
-			case Body.Moon: return shubha * 2.0;
+			case Body.Moon: return shubha * 2;
 			default:
 			case Body.Mercury:
 			case Body.Jupiter:
@@ -372,7 +372,7 @@ public static class ShadBalas
 	public static double HoraBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
-		if (h.CalculateHora() == b)
+		if (h.Info.UtcTob.HoraLord() == b)
 		{
 			return 60.0;
 		}

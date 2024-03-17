@@ -41,32 +41,9 @@ public partial class Horoscope : ICloneable
 	private          Time                             _nextSunrise;
 	private          Time                             _nextSunset;
 
-	public readonly Body[] HoraOrder =
-	{
-		Body.Sun,
-		Body.Venus,
-		Body.Mercury,
-		Body.Moon,
-		Body.Saturn,
-		Body.Jupiter,
-		Body.Mars
-	};
+	public readonly int      Iflag = sweph.SEFLG_SWIEPH | sweph.SEFLG_SPEED | sweph.SEFLG_SIDEREAL;
 
 	public HoraInfo Info { get;}
-
-	public readonly Body[] KalaOrder =
-	{
-		Body.Sun,
-		Body.Mars,
-		Body.Jupiter,
-		Body.Mercury,
-		Body.Venus,
-		Body.Saturn,
-		Body.Moon,
-		Body.Rahu
-	};
-
-	public readonly int Iflag = sweph.SEFLG_SWIEPH | sweph.SEFLG_SPEED | sweph.SEFLG_SIDEREAL;
 
 	public Time LmtOffset
 	{
@@ -242,7 +219,7 @@ public partial class Horoscope : ICloneable
 		return Info.Clone();
 	}
 
-	public Time GetLmtOffset(double baseUt)
+	public Time GetLmtOffset(double baseUt) 
 	{
 		var geopos = new double[3]
 		{
@@ -250,16 +227,17 @@ public partial class Horoscope : ICloneable
 			Info.Latitude,
 			Info.Altitude
 		};
-		double tret        = 0;
-		var    midnightUt = baseUt - Info.DateOfBirth.Time ().TotalDays;
-		this.Lmt(midnightUt, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, ref tret);
-		var lmtNoon1   = tret;
-		var lmtOffset1 = lmtNoon1 - (midnightUt + 12.0 / 24.0);
-		this.Lmt(midnightUt, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, ref tret);
-		var lmtNoon2   = tret;
-		var lmtOffset2 = lmtNoon2 - (midnightUt + 12.0 / 24.0);
 
-		var retLmtOffset = (lmtOffset1 + lmtOffset2) / 2.0;
+		double     tret       = 0;
+		JulianDate midnightUt = baseUt - Info.DateOfBirth.Time ().TotalDays;
+		this.Lmt(midnightUt, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, ref tret);
+		JulianDate lmtNoon1   = tret;
+		Time lmtOffset1 = lmtNoon1 - (midnightUt + 12.0 / 24.0);
+		this.Lmt(midnightUt, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, ref tret);
+		JulianDate lmtNoon2   = tret;
+		Time lmtOffset2 = lmtNoon2 - (midnightUt + 12.0 / 24.0);
+
+		Time retLmtOffset = (lmtOffset1 + lmtOffset2) / 2.0;
 		//Mhora.Log.Debug("LMT: {0}, {1}", lmt_offset_1, lmt_offset_2);
 
 		return retLmtOffset;

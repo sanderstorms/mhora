@@ -1210,7 +1210,7 @@ namespace Mhora.Elements
 
 			if ((Body != Body.Lagna) && (IsChayaGraha == false))
 			{
-				_digBala = _grahas.Horoscope.DigBala(Body);
+				_digBala = (double) _grahas.Horoscope.DigBala(Body);
 			}
 
 			_angle       =  (Bhava.Index() - 1) * 30.0;

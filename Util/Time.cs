@@ -14,10 +14,28 @@ namespace Mhora.Util
 			_timeSpan = TimeSpan.Zero;
 		}
 
+		public Time(int days, double hours)
+		{
+			_timeSpan = TimeSpan.FromDays(days).Add(TimeSpan.FromHours(hours));
+		}
+
+		public Time(double hours)
+		{
+			_timeSpan = TimeSpan.FromHours(hours);
+		}
+
+		public Time(int hours, int minutes, double seconds)
+		{
+			_timeSpan = new TimeSpan(hours, minutes, 0).Add(TimeSpan.FromSeconds(seconds));
+		}
+
 		public Time(TimeSpan timeSpan)
 		{
 			_timeSpan = timeSpan;
 		}
+
+		public double TotalDays  => _timeSpan.TotalDays;
+		public double TotalHours => _timeSpan.TotalHours;
 
 		//1 day or 24 hours = 60 Ghatis
 		public double Ghati => _timeSpan.TotalDays * 60;

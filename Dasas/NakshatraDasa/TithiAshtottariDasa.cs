@@ -69,9 +69,9 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		if (_options.UseTithiRemainder == false)
 		{
 			var offset = tithi.Value;
-			while (offset >= 12.0)
+			while (offset >= 12)
 			{
-				offset -= 12.0;
+				offset -= 12;
 			}
 
 			tithi = tithi.Sub(new Longitude(offset));

@@ -66,12 +66,12 @@ public class ToDate
 
 	public ToDate(double jd, DateType type, double yearLength, double compression, Horoscope h)
 	{
-		_baseUt      = jd;
-		_type        = type;
-		_yearLength  = yearLength;
-		_h           = h;
-		_spos        = _h.GetPosition(Body.Sun).Longitude.Value;
-		_mpos        = _h.GetPosition(Body.Moon).Longitude.Value;
+		_baseUt     = jd;
+		_type       = type;
+		_yearLength = yearLength;
+		_h          = h;
+		_spos       = (double) _h.GetPosition(Body.Sun).Longitude.Value;
+		_mpos       = (double) _h.GetPosition(Body.Moon).Longitude.Value;
 
 		if (compression > 0)
 		{
@@ -124,7 +124,7 @@ public class ToDate
 		jd  = ut.LinearSearch(l, sun.CalculateLongitude);
 		var yogaStart = returnLonFunc(jd, bDiscard).Value;
 		var yogaEnd   = returnLonFunc(_h.Info.Jd, bDiscard).Value;
-		jdSt = jd + (yogaEnd - yogaStart) / 360.0 * 28.0;
+		jdSt = jd + (double) ((yogaEnd - yogaStart) / 360M * 28M);
 		if (yogaEnd < yogaStart)
 		{
 			jdSt += 28.0;

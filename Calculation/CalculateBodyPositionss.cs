@@ -178,7 +178,7 @@ namespace Mhora.Calculation
 			return arudhaDivList;
 		}
 
-		public static Body CalculateKala(this Horoscope h, ref int iBase)
+		public static Body CalculateKala(this Horoscope h, out int iBase)
 		{
 			int[] offsetsDay =
 			{
@@ -220,7 +220,7 @@ namespace Mhora.Calculation
 					i -= 8;
 				}
 
-				return h.KalaOrder[i];
+				return Bodies.KalaOrder[i];
 			}
 
 			//i+=4;
@@ -238,16 +238,10 @@ namespace Mhora.Calculation
 				i -= 8;
 			}
 
-			return h.KalaOrder[i];
+			return Bodies.KalaOrder[i];
 		}
 
-		public static Body CalculateHora(this Horoscope h)
-		{
-			var iBody = 0;
-			return h.CalculateHora(h.Info.Jd, ref iBody);
-		}
-
-		public static Body CalculateHora(this Horoscope h, double baseUt, ref int baseBody)
+		public static Body CalculateHora(this Horoscope h, double baseUt, out int baseBody)
 		{
 			int[] offsets =
 			{
@@ -290,7 +284,7 @@ namespace Mhora.Calculation
 				i -= 7;
 			}
 
-			return h.HoraOrder[i];
+			return Bodies.HoraOrder[i];
 		}
 
 		private static Position CalculateUpagrahasSingle(this Horoscope h, Body b, double tjd)
@@ -414,12 +408,6 @@ namespace Mhora.Calculation
 			return (positionList);
 		}
 
-		public static Body CalculateKala(this Horoscope h)
-		{
-			var iBase = 0;
-			return h.CalculateKala(ref iBase);
-		}
-
 		public static List<Position> CalculateChandraLagnas(this Horoscope h)
 		{
 			var positionList = new List<Position>(); 
@@ -429,18 +417,19 @@ namespace Mhora.Calculation
 
 			//Mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
 
-			var istaGhati = (h.Info.DateOfBirth.Time().TotalHours - h.Sunrise).NormalizeExc(0.0, 24.0) * 2.5;
-			var glLon     = lonBase.Add(new Longitude(istaGhati        * 30.0));
-			var hlLon     = lonBase.Add(new Longitude(istaGhati * 30.0 / 2.5));
-			var blLon     = lonBase.Add(new Longitude(istaGhati * 30.0 / 5.0));
+			var time      = (decimal) (h.Info.DateOfBirth.Time().TotalHours - h.Sunrise);
+			var istaGhati = time.NormalizeExc(0, 24) * 2.5M;
+			var glLon     = lonBase.Add(new Longitude(istaGhati        * 30));
+			var hlLon     = lonBase.Add(new Longitude(istaGhati * 30 / 2.5M));
+			var blLon     = lonBase.Add(new Longitude(istaGhati * 30 / 5M));
 
-			var vl = istaGhati * 5.0;
-			while (istaGhati > 12.0)
+			var vl = istaGhati * 5;
+			while (istaGhati > 12)
 			{
-				istaGhati -= 12.0;
+				istaGhati -= 12;
 			}
 
-			var vlLon = lonBase.Add(new Longitude(vl * 30.0));
+			var vlLon = lonBase.Add(new Longitude(vl * 30));
 
 			positionList.Add(h.AddChandraLagna("Chandra Lagna - GL", glLon));
 			positionList.Add(h.AddChandraLagna("Chandra Lagna - HL", hlLon));

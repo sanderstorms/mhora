@@ -86,14 +86,14 @@ public abstract class NakshatraDasa : Dasa
 		var g = TithiCommon.LordOfTithi(lon);
 
 		var tithiOffset = lon.Value;
-		while (tithiOffset >= 12.0)
+		while (tithiOffset >= 12)
 		{
-			tithiOffset -= 12.0;
+			tithiOffset -= 12;
 		}
 
-		var percTraversed = tithiOffset / 12.0;
-		var start          = cycle * TithiCommon.ParamAyus() - percTraversed * TithiCommon.LengthOfDasa(g);
-		var di             = new DasaEntry(g, start, TithiCommon.ParamAyus(), 0, string.Empty);
+		var percTraversed = tithiOffset / 12;
+		var start         = cycle * TithiCommon.ParamAyus() - (double) percTraversed * TithiCommon.LengthOfDasa(g);
+		var di            = new DasaEntry(g, start, TithiCommon.ParamAyus(), 0, string.Empty);
 		return _AntarDasa(di);
 	}
 
@@ -103,8 +103,8 @@ public abstract class NakshatraDasa : Dasa
 		var g = YogaCommon.LordOfYoga(lon);
 
 		var yogaOffset     = lon.ToSunMoonYogaOffset();
-		var percTraversed = yogaOffset / (360.0 / 27.0);
-		var start          = cycle * Common.ParamAyus() - percTraversed * Common.LengthOfDasa(g);
+		var percTraversed = yogaOffset / (360M / 27);
+		var start          = cycle * Common.ParamAyus() - (double)percTraversed * Common.LengthOfDasa(g);
 		var di             = new DasaEntry(g, start, Common.ParamAyus(), 0, string.Empty);
 		return _AntarDasa(di);
 	}

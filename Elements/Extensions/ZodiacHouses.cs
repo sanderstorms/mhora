@@ -633,7 +633,7 @@ public static class ZodiacHouses
 	public static Longitude DivisionalLongitude(this ZodiacHouse zodiacHouse, Longitude longitude, int nrOfDivisions)
 	{
 		var houseBase = zodiacHouse.Origin ();
-		var div       = 30.0            / nrOfDivisions;
+		var div       = 30M            / nrOfDivisions;
 		var offset    = longitude.Value % div;
 
 		return new Longitude(houseBase.Value + offset * nrOfDivisions);
@@ -641,7 +641,7 @@ public static class ZodiacHouses
 
 	public static ZodiacHouse ToZodiacHouse(this Longitude l)
 	{
-		var znum = (int) (Math.Floor(l.Value / 30.0) + 1.0);
+		var znum = (int) (Math.Floor(l.Value / 30M) + 1);
 		return (ZodiacHouse) znum;
 	}
 
@@ -655,10 +655,10 @@ public static class ZodiacHouses
 	public static double ToZodiacHouseOffset(this Longitude l)
 	{
 		var znum = l.ToZodiacHouse().Index ();
-		var cusp = (znum - 1) * 30.0;
+		var cusp = (znum - 1) * 30M;
 		var ret  = l.Value - cusp;
-		Trace.Assert(ret >= 0.0 && ret <= 30.0);
-		return ret;
+		Trace.Assert(ret >= 0 && ret <= 30);
+		return (double) ret;
 	}
 
 	public static double PercentageOfZodiacHouse(this Longitude l)

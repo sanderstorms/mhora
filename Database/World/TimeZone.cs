@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using Mhora.Util;
 using Newtonsoft.Json;
 
 namespace Mhora.Database.World;
@@ -45,6 +47,41 @@ public class TimeZone
 			}
 
 			return _timeZoneCollection;
+		}
+	}
+
+	public Angle Latitude
+	{
+		get
+		{
+			var str = "0.0";
+			if (location.TryGetValue("latitude", out str))
+			{
+				if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out var latitude))
+				{
+					return latitude;
+				}
+			}
+
+			return 0.0;
+		}
+	}
+
+	public Angle Longitude
+	{
+		get
+		{
+			var str = "0.0";
+			if (location.TryGetValue("longitude", out str))
+			{
+				if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out var longitude))
+				{
+					return longitude;
+				}
+			}
+
+			return 0.0;
+
 		}
 	}
 

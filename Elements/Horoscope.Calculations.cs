@@ -27,14 +27,12 @@ namespace Mhora.Elements
 
 		private void PopulateSunrisetCache()
 		{
-			double sunriseUt   = 0.0;
-
-			PopulateSunrisetCacheHelper(Info.Jd, ref _nextSunrise, ref _nextSunset, ref sunriseUt);
-			PopulateSunrisetCacheHelper(sunriseUt - 1.0 - 1.0 / 24.0, ref _sunrise, ref _sunset, ref sunriseUt);
+			var sunriseUt = PopulateSunrisetCacheHelper(Info.Jd, out _nextSunrise, out _nextSunset);
+			sunriseUt = PopulateSunrisetCacheHelper(sunriseUt - 1.0 - 1.0 / 24.0, out _sunrise, out _sunset);
 			//Debug.WriteLine("Sunrise[t]: " + this.sunrise.ToString() + " " + this.sunrise.ToString(), "Basics");
 		}
 
-		public void PopulateSunrisetCacheHelper(double ut, ref Time sr, ref Time ss, ref double srUt)
+		public JulianDate PopulateSunrisetCacheHelper(JulianDate ut, out Time sr, out Time ss)
 		{
 			var srflag = 0;
 			switch (Options.SunrisePosition)
@@ -71,20 +69,21 @@ namespace Mhora.Elements
 					if (this.Rise(ut, sweph.SE_SUN, srflag, geopos, 0.0, 0.0, ref tret) < 0)
 					{
 						MessageBox.Show("Invalid data");
-						return;
+						tret = ut;
 					}
 
-					srUt = tret;
-					var sunrise = srUt.ToUtc();
+					JulianDate srUt = tret;
 					sweph.RevJul(tret, out year, out month, out day, out hour);
 					sr = hour + Info.DstOffset.TotalHours;
 					this.Set(tret, sweph.SE_SUN, srflag, geopos, 0.0, 0.0, ref tret);
 					sweph.RevJul(tret, out year, out month, out day, out hour);
 					ss = hour + Info.DstOffset.TotalHours;
-					sr = Calculations.NormalizeExc(sr, 0.0, 24.0);
-					ss = Calculations.NormalizeExc(ss, 0.0, 24.0);
-					break;
+					sr = Calculations.NormalizeExc(sr, 0, 24);
+					ss = Calculations.NormalizeExc(ss, 0, 24);
+					return srUt;
 			}
+
+			return (0);
 		}
 
 		private void AddOtherPoints()
@@ -103,7 +102,7 @@ namespace Mhora.Elements
 
 			// add simple midpoints
 			AddOtherPosition("User Specified", new Longitude(Options.CustomBodyLongitude.Value));
-			AddOtherPosition("Brighu Bindu", rahPos.Add(moonPos.Sub(rahPos).Value / 2.0));
+			AddOtherPosition("Brighu Bindu", rahPos.Add((double) (moonPos.Sub(rahPos).Value / 2M)));
 			AddOtherPosition("Muhurta Point", muhurtaPos);
 			AddOtherPosition("Ra-Ke m.p", rahPos.Add(90.0));
 			AddOtherPosition("Ke-Ra m.p", rahPos.Add(270.0));
@@ -113,10 +112,10 @@ namespace Mhora.Elements
 			var l8Pos  = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), DivisionType.Rasi, false)).Longitude;
 			var l12Pos = GetPosition(LordOfZodiacHouse(lagPos.ToZodiacHouse().Add(6), DivisionType.Rasi, false)).Longitude;
 
-			var mritSatPos   = new Longitude(mandiPos.Value * 8.0 + satPos.Value   * 8.0);
-			var mritJup2Pos  = new Longitude(satPos.Value   * 9.0 + mandiPos.Value * 18.0 + jupPos.Value  * 18.0);
-			var mritSun2Pos  = new Longitude(satPos.Value   * 9.0 + mandiPos.Value * 18.0 + sunPos.Value  * 18.0);
-			var mritMoon2Pos = new Longitude(satPos.Value   * 9.0 + mandiPos.Value * 18.0 + moonPos.Value * 18.0);
+			var mritSatPos   = new Longitude(mandiPos.Value * 8 + satPos.Value   * 8);
+			var mritJup2Pos  = new Longitude(satPos.Value   * 9 + mandiPos.Value * 18 + jupPos.Value  * 18);
+			var mritSun2Pos  = new Longitude(satPos.Value   * 9 + mandiPos.Value * 18 + sunPos.Value  * 18);
+			var mritMoon2Pos = new Longitude(satPos.Value   * 9 + mandiPos.Value * 18 + moonPos.Value * 18);
 
 			if (IsDayBirth())
 			{
@@ -162,7 +161,7 @@ namespace Mhora.Elements
 				var offset = middle.Sub(SwephHouseCusps[0]).Value;
 				for (var i = 0; i < 12; i++)
 				{
-					SwephHouseCusps[i] = SwephHouseCusps[i].Sub(offset);
+					SwephHouseCusps[i] = SwephHouseCusps[i].Sub((double) offset);
 				}
 			}
 
@@ -177,6 +176,7 @@ namespace Mhora.Elements
 			sweph.SetEphePath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
 			// Find LMT offset
 			PopulateLmt();
+			var vara = new Vara(this);
 			// Sunrise (depends on lmt)
 			PopulateSunrisetCache();
 			// Basic grahas + Special lagnas (depend on sunrise)
@@ -199,8 +199,6 @@ namespace Mhora.Elements
 			AddOtherPoints();
 			// Add extrapolated special lagnas (depends on sunrise)
 			AddSpecialLagnaPositions();
-			// Hora (depends on weekday)
-			var hora = this.CalculateHora();
 			// Populate house cusps on options refresh
 			PopulateHouseCusps();
 		}
@@ -234,9 +232,9 @@ namespace Mhora.Elements
 			var trisLon    = lagnaLon.Add(moonLon).Add(gulikaLon);
 			var chatusLon  = trisLon.Add(sunLon);
 			var panchasLon = chatusLon.Add(rahuLon);
-			var pranaLon   = new Longitude(lagnaLon.Value  * 5.0).Add(gulikaLon);
-			var dehaLon    = new Longitude(moonLon.Value   * 8.0).Add(gulikaLon);
-			var mrityuLon  = new Longitude(gulikaLon.Value * 7.0).Add(sunLon);
+			var pranaLon   = new Longitude(lagnaLon.Value  * 5).Add(gulikaLon);
+			var dehaLon    = new Longitude(moonLon.Value   * 8).Add(gulikaLon);
+			var mrityuLon  = new Longitude(gulikaLon.Value * 7).Add(sunLon);
 
 			AddOtherPosition("Trih Sphuta", trisLon);
 			AddOtherPosition("Chatuh Sphuta", chatusLon);

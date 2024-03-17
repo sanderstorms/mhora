@@ -177,19 +177,26 @@ public static partial class sweph
 	 **   CalculatorSwe   ---   calcNextSolarEvent
 	 **
 	 ******************************************************/
-	public static double CalcNextSolarEvent(EventType type, JulianDate jd, double lat, double lon)
+	public static double CalcNextSolarEvent(this Horoscope h, EventType type, JulianDate jd)
 	{
-		StringBuilder err  = new StringBuilder();
+		StringBuilder err  = new StringBuilder(256);
 		var           rsmi = new double [3];
 		double        tret = 0;
 		int           flag = 0;
-		/*
-		int flag                                    = 0;
-		if ( ! config->ephem->sunrise_def ) flag    =  SE_BIT_DISC_CENTER;
-		if ( ! config->ephem->sunrise_refrac ) flag |= SE_BIT_NO_REFRACTION;
-		*/
 
-		//int event_flag = 0;
+		switch (h.Options.SunrisePosition)
+		{
+			case HoroscopeOptions.SunrisePositionType.TrueDiscEdge:
+				flag = SE_BIT_NO_REFRACTION;
+				break;
+			case HoroscopeOptions.SunrisePositionType.TrueDiscCenter:
+				flag = SE_BIT_NO_REFRACTION | SE_BIT_DISC_CENTER;
+				break;
+			case HoroscopeOptions.SunrisePositionType.ApparentDiscCenter:
+				flag = SE_BIT_DISC_CENTER;
+				break;
+		}
+
 		switch ( type )
 		{
 			case EventType.SOLAR_EVENT_SUNRISE:
@@ -199,24 +206,24 @@ public static partial class sweph
 				flag |= SE_CALC_SET;
 				break;
 			case EventType.SOLAR_EVENT_NOON:
-				flag |= SE_CALC_ITRANSIT;
+				flag |= SE_CALC_MTRANSIT;
 				break;
 			case EventType.SOLAR_EVENT_MIDNIGHT:
-				flag |= SE_CALC_MTRANSIT;
+				flag |= SE_CALC_ITRANSIT;
 				break;
 		}
 
-		rsmi[0] = lon;
-		rsmi[1] = lat;
-		rsmi[2] = 0;
+		rsmi[0] = h.Info.Longitude;
+		rsmi[1] = h.Info.Latitude;
+		rsmi[2] = h.Info.Altitude;
 
 		if (IntPtr.Size == 4)
 		{
-			SwephDll.Swe32.swe_rise_trans( calcJd( jd ), SE_SUN, string.Empty, 0, flag, rsmi, 0, 0, ref tret, err );
+			SwephDll.Swe32.swe_rise_trans(jd, SE_SUN, string.Empty, h.Iflag, flag, rsmi, 0, 0, ref tret, err );
 		}
 		else
 		{
-			SwephDll.Swe64.swe_rise_trans( calcJd( jd ), SE_SUN, string.Empty, 0, flag, rsmi, 0, 0, ref tret, err );
+			SwephDll.Swe64.swe_rise_trans(jd, SE_SUN, string.Empty, h.Iflag, flag, rsmi, 0, 0, ref tret, err );
 		}
 		return tret;
 	}
@@ -699,6 +706,22 @@ public static partial class sweph
 	}
 
 
+	public static int Houses(double tjd_ut, double geolat, double geolon, int hsys, double[] cusps, double[] ascmc)
+	{
+		int ret;
+
+		if (IntPtr.Size == 4)
+		{
+			ret = SwephDll.Swe32.swe_houses(tjd_ut, geolat, geolon, hsys, cusps, ascmc);
+		}
+		else
+		{
+			ret = SwephDll.Swe64.swe_houses(tjd_ut, geolat, geolon, hsys, cusps, ascmc);
+		}
+
+		return ret;
+	}
+
 	public static int HousesEx(this Horoscope h, JulianDate tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc)
 	{
 		int ret;
@@ -718,24 +741,24 @@ public static partial class sweph
 		// Ascendants defined from 0 to 7 inclusive as per sweph docs
 		for (var i = 1; i <= 12; i++)
 		{
-			cusps[i] = new Longitude(cusps[i]).Add(lOffset).Value;
+			cusps[i] = (double) new Longitude(cusps[i]).Add(lOffset).Value;
 		}
 
 		for (var i = 0; i <= 7; i++)
 		{
-			ascmc[i] = new Longitude(ascmc[i]).Add(lOffset).Value;
+			ascmc[i] = (double) new Longitude(ascmc[i]).Add(lOffset).Value;
 		}
 
 		return ret;
 	}
 
-	public static double Lagna(this Horoscope h, JulianDate tjd_ut)
+	public static decimal Lagna(this Horoscope h, JulianDate tjd_ut)
 	{
 		var hi    = h.Info;
 		var cusps = new double[13];
 		var ascmc = new double[10];
 		var ret   = h.HousesEx(tjd_ut, SEFLG_SIDEREAL, hi.Latitude, hi.Longitude, 'R', cusps, ascmc);
-		return ascmc[0];
+		return (decimal) ascmc[0];
 	}
 
 	/// <summary>

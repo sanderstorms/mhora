@@ -64,7 +64,7 @@ public static class Karanas
 
 	public static Karana ToKarana(this Longitude l)
 	{
-		var kIndex = (int) (Math.Floor(l.Value / (360.0 / 60.0)) + 1);
+		var kIndex = (int) (Math.Floor(l.Value / (360M / 60)) + 1);
 		var k      = (Karana) kIndex;
 		return k;
 	}
@@ -78,7 +78,7 @@ public static class Karanas
 
 	public static double ToKaranaOffset(this Longitude l)
 	{
-		return l.Value - l.ToKaranaBase();
+		return (double) l.Value - l.ToKaranaBase();
 	}
 
 }

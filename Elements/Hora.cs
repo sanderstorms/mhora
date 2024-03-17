@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using Mhora.Calculation;
 using Mhora.Definitions;
+using Mhora.Elements.Extensions;
+using Mhora.Util;
 
 namespace Mhora.Elements;
 
@@ -88,5 +91,140 @@ public static class Hora
 		}
 
 		return string.Empty;
+	}
+
+	public static DayOfWeek DayOfWeek (this Weekday weekday)
+	{
+		switch (weekday)
+		{
+			case Weekday.Sunday:  return System.DayOfWeek.Sunday;
+			case Weekday.Monday : return System.DayOfWeek.Monday;
+			case Weekday.Tuesday: return System.DayOfWeek.Tuesday;
+			case Weekday.Wednesday: return System.DayOfWeek.Wednesday;
+			case Weekday.Thursday:return System.DayOfWeek.Thursday;
+			case Weekday.Friday:return System.DayOfWeek.Friday;
+			case Weekday.Saturday:return System.DayOfWeek.Saturday;
+		}
+		return System.DayOfWeek.Sunday;
+	}
+
+	public static Weekday WeekDay (this DayOfWeek dayOfWeek)
+	{
+		switch (dayOfWeek)
+		{
+			case System.DayOfWeek.Sunday : return Weekday.Sunday;
+			case System.DayOfWeek.Monday : return Weekday.Monday;
+			case System.DayOfWeek.Tuesday : return Weekday.Tuesday;
+			case System.DayOfWeek.Wednesday : return Weekday.Wednesday;
+			case System.DayOfWeek.Thursday : return Weekday.Thursday;
+			case System.DayOfWeek.Friday : return Weekday.Friday;
+			case System.DayOfWeek.Saturday : return Weekday.Saturday;
+		}
+
+		return Weekday.Sunday;
+	}
+
+	public static Body MonthLord (this Month month)
+	{
+		switch (month)
+		{
+			case Month.January:   return Body.Sun;
+			case Month.February:  return Body.Moon;
+			case Month.March:     return Body.Jupiter;
+			case Month.April:     return Body.Rahu;
+			case Month.May:       return Body.Mercury;
+			case Month.June:      return Body.Venus;
+			case Month.July:      return Body.Ketu;
+			case Month.August:    return Body.Saturn;
+			case Month.September: return Body.Mars;
+			case Month.October:   return Body.Sun;
+			case Month.November:  return Body.Sun;
+			case Month.December:  return Body.Jupiter;
+		}
+
+		return (Body.Sun);
+	}
+
+	public static Body DayLord(this DateTime dateTime)
+	{
+		if (dateTime.Hour < 6)
+		{
+			dateTime -= TimeSpan.FromDays(1);
+		}
+		return dateTime.DayOfWeek.WeekDay().Ruler();
+	}
+
+	//The 24 hours starting from the Sun’s movement from Sangyā are divided into 8 yamas,
+	//each spanning for 3 hours. Each half of a yama is known as a kāla, measuring 1½ hours,
+	//thereby creating 16 kālas in a day.  Each kāla is ruled by a planet starting with the day lord
+	//and subsequently it follows the order of the Kāla Cakra from Sun to Rāhu.
+	//The 8 kālas which exist from sunset to sunrise begin with the 7th planet from the vāra lord in the Kāla Cakra.
+	public static Body KalaLord(this DateTime dateTime)
+	{
+		var dayLord = dateTime.DayLord();
+		var index   = Array.IndexOf(Bodies.KalaOrder, dayLord);
+		var hour    = dateTime.Time().TotalHours;
+		var part    = (int) Math.Truncate(hour / 1.5);
+
+		if (hour > 18)
+		{
+			part += 5;
+		}
+		else if (hour >= 6)
+		{
+			part -= 4;
+		}
+
+		var lord = (index + part);
+		lord %= Bodies.KalaOrder.Length;
+
+		return Bodies.KalaOrder[lord];
+	}
+
+	public static Body HoraLord(this DateTime dateTime)
+	{
+		var dayLord = dateTime.DayLord();
+		var index   = Array.IndexOf(Bodies.HoraOrder, dayLord);
+
+		int hour = (dateTime.Hour - 6);
+		if (hour < 0)
+		{
+			hour += 24;
+		}
+
+		var lord = index + (hour % Bodies.HoraOrder.Length);
+		lord %= Bodies.HoraOrder.Length;
+
+		return Bodies.HoraOrder[lord];
+
+	}
+
+	public static Body YearLord(this DateTime dateTime)
+	{
+		Body[] lords =
+		{
+			Body.Rahu, //2011
+			Body.Mercury,
+			Body.Venus,
+			Body.Ketu,
+			Body.Saturn,
+			Body.Mars,
+			Body.Sun,
+			Body.Moon,
+			Body.Jupiter,
+			Body.Moon,
+			Body.Mercury,
+			Body.Moon,
+			Body.Ketu,
+			Body.Saturn,
+			Body.Mars,
+			Body.Sun,
+			Body.Moon,
+			Body.Jupiter,
+			Body.Rahu,
+			Body.Mercury //2030
+		};
+
+		return Body.Sun;
 	}
 }

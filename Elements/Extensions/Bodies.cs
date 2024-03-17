@@ -29,6 +29,29 @@ namespace Mhora.Elements.Extensions;
 /// </summary>
 public static class Bodies
 {
+	public static readonly Body[] HoraOrder =
+	{
+		Body.Sun,
+		Body.Venus,
+		Body.Mercury,
+		Body.Moon,
+		Body.Saturn,
+		Body.Jupiter,
+		Body.Mars
+	};
+
+	public static readonly Body[] KalaOrder =
+	{
+		Body.Sun,
+		Body.Mars,
+		Body.Jupiter,
+		Body.Mercury,
+		Body.Venus,
+		Body.Saturn,
+		Body.Moon,
+		Body.Rahu
+	};
+
 
 	public static readonly string[] Karakas =
 	{

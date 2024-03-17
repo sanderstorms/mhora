@@ -148,7 +148,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Uccha");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(h.UcchaBala(b)));
+				li.SubItems.Add(fmtBala((double) h.UcchaBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -184,7 +184,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("Dik");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(h.DigBala(b)));
+				li.SubItems.Add(fmtBala((double)h.DigBala(b)));
 			}
 
 			mList.Items.Add(li);
@@ -211,7 +211,7 @@ public class BalasControl : MhoraControl
 			var li = new ListViewItem("-> Paksha");
 			foreach (var b in grahas)
 			{
-				li.SubItems.Add(fmtBala(h.PakshaBala(b)));
+				li.SubItems.Add(fmtBala((double)h.PakshaBala(b)));
 			}
 
 			mList.Items.Add(li);

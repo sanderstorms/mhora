@@ -176,7 +176,7 @@ public class Position
 		{
 			if (Longitude.Sub(cusps[i]).Value <= cusps[i + 1].Sub(cusps[i]).Value)
 			{
-				return new DivisionPosition(Name, BodyType, (ZodiacHouse) i + 1, cusps[i].Value, cusps[i + 1].Value, 1);
+				return new DivisionPosition(Name, BodyType, (ZodiacHouse) i + 1, (double) cusps[i].Value, (double) cusps[i + 1].Value, 1);
 			}
 		}
 
@@ -195,11 +195,11 @@ public class Position
 				//Mhora.Log.Debug ("Found {4} - {0} in cusp {3} between {1} and {2}", this.m_lon.value,
 				//	cusps[i].value, cusps[i+1].value, i+1, this.name.ToString());
 
-				return new DivisionPosition(Name, BodyType, zlagna.Add(i + 1), cusps[i].Value, cusps[i + 1].Value, 1);
+				return new DivisionPosition(Name, BodyType, zlagna.Add(i + 1), (double)cusps[i].Value, (double)cusps[i + 1].Value, 1);
 			}
 		}
 
-		return new DivisionPosition(Name, BodyType, zlagna.Add(1), cusps[0].Value, cusps[1].Value, 1);
+		return new DivisionPosition(Name, BodyType, zlagna.Add(1), (double)cusps[0].Value, (double)cusps[1].Value, 1);
 	}
 
 	private DivisionPosition ToDivisionPositionBhavaEqual()
@@ -1237,7 +1237,7 @@ public class Position
 		foreach (var division in d.MultipleDivisions)
 		{
 			dp           = bp.ToDivisionPosition(division);
-			bp.Longitude = bp.ExtrapolateLongitude(division);
+			bp.Longitude = bp.ExtrapolateLongitude(dp);
 		}
 		return dp;
 	}
@@ -1322,21 +1322,21 @@ public class Position
 		var bp = Clone();
 		foreach (var dSingle in d.MultipleDivisions)
 		{
-			bp.Longitude = ExtrapolateLongitude(dSingle);
+			var dp       = bp.ToDivisionPosition(dSingle);
+			bp.Longitude = ExtrapolateLongitude(dp);
 		}
 
 		return bp.Longitude;
 	}
 
-	public Longitude ExtrapolateLongitude(Division.SingleDivision d)
+	public Longitude ExtrapolateLongitude(DivisionPosition dp)
 	{
-		var dp      = ToDivisionPosition(d);
 		var lOffset = Longitude.Sub(dp.CuspLower);
 		var lRange  = new Longitude(dp.CuspHigher).Sub(dp.CuspLower);
 		Trace.Assert(lOffset.Value <= lRange.Value, "Extrapolation internal error: Slice smaller than range. Weird.");
 
-		var newOffset = lOffset.Value / lRange.Value      * 30.0;
-		var newBase   = ((int) dp.ZodiacHouse - 1) * 30.0;
+		var newOffset = lOffset.Value / lRange.Value * 30;
+		var newBase   = ((int) dp.ZodiacHouse - 1) * 30M;
 		return new Longitude(newOffset + newBase);
 	}
 }
