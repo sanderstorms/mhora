@@ -585,7 +585,7 @@ namespace Mhora.Yoga
 		//the placement of the Moon in a favorable navamsha, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
 		public static bool DhanaNight(this Grahas grahas)
 		{
-			if (grahas.Horoscope.IsDayBirth())
+			if (grahas.Horoscope.Vara.IsDayBirth)
 			{
 				return (false);
 			}
@@ -621,7 +621,7 @@ namespace Mhora.Yoga
 		//the placement of the Moon in a favorable navamsha, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
 		public static bool DhanaDay(this Grahas grahas)
 		{
-			if (grahas.Horoscope.IsDayBirth() == false)
+			if (grahas.Horoscope.Vara.IsDayBirth == false)
 			{
 				return (false);
 			}

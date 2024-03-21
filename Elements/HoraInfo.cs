@@ -57,11 +57,11 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	private const string CatEvt = "2: Events";
 	private       double _altitude;
 	
-	private City   _city;
-	private string _country;
-	private Angle  _latitude;
-	private Angle  _longitude;
-	private string _name;
+	private City     _city;
+	private string   _country;
+	private DmsPoint _latitude;
+	private DmsPoint _longitude;
+	private string   _name;
 
 	//public double lon, lat, alt, tz;
 	public double          DefaultYearCompression;
@@ -126,7 +126,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	[Category(CatTob)]
 	[PropertyOrder(2)]
 	[Description("Latitude. Format is 'hh D mm:ss mm:ss'\n Example 23 N 24:00")]
-	public Angle Latitude
+	public DmsPoint Latitude
 	{
 		get => _latitude;
 		set => _latitude = value;
@@ -135,7 +135,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	[Category(CatTob)]
 	[PropertyOrder(3)]
 	[Description("Longitude. Format is 'hh D mm:ss mm:ss'\n Example 23 E 24:00")]
-	public Angle Longitude
+	public DmsPoint Longitude
 	{
 		get => _longitude;
 		set => _longitude = value;

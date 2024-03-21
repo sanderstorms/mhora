@@ -703,7 +703,7 @@ namespace Mhora.Util
 					value -= 360;
 				}
 
-				while (value < 0)
+				while (value < -360)
 				{
 					value += 360;
 				}

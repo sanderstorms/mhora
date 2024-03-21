@@ -31,7 +31,7 @@ namespace Mhora.Elements.Extensions
 		public static Position SahamaHelper(this Horoscope h,  string sahama, Longitude lonB, Longitude lonA, Longitude lonC)
 		{
 			// b-a+c
-			var bDay = h.IsDayBirth();
+			var bDay = h.Vara.IsDayBirth;
 
 			var lonR = lonB.Sub(lonA).Add(lonC);
 			if (lonB.Sub(lonA).Value <= lonC.Sub(lonA).Value)
@@ -49,7 +49,7 @@ namespace Mhora.Elements.Extensions
 		public static Position SahamaDnHelper(this Horoscope h,  string sahama, Longitude lonB, Longitude lonA, Longitude lonC)
 		{
 			// b-a+c
-			var       bDay = h.IsDayBirth();
+			var       bDay = h.Vara.IsDayBirth;
 			Longitude lonR;
 			if (bDay)
 			{
@@ -115,7 +115,7 @@ namespace Mhora.Elements.Extensions
 
 		public static List <Position> CalculateSahamas(this Horoscope h)
 		{
-			var bDay     = h.IsDayBirth();
+			var bDay     = h.Vara.IsDayBirth;
 			var al       = new List <Position>();
 			var lonLagna = h.GetPosition(Body.Lagna).Longitude;
 			var lonBase  = new Longitude(lonLagna.ToZodiacHouseBase());

@@ -210,8 +210,8 @@ public class FindYogas
 	{
 		switch (sTime)
 		{
-			case "day":   return _h.IsDayBirth();
-			case "night": return !_h.IsDayBirth();
+			case "day":   return _h.Vara.IsDayBirth;
+			case "night": return !_h.Vara.IsDayBirth;
 			default:
 				MessageBox.Show("Unknown birth time: " + sTime + GetRuleName());
 				return false;

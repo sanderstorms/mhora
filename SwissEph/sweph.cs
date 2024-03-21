@@ -168,6 +168,25 @@ public static partial class sweph
 		return jd + SwephDll.Swe64.swe_deltat( jd );
 	}
 
+	public static int TimeEqu(JulianDate jd, out double e)
+	{
+		var err = new StringBuilder( 256 );
+		if (IntPtr.Size == 4)
+		{
+			return SwephDll.Swe32.swe_time_equ(jd, out e, err);
+		}
+		return SwephDll.Swe64.swe_time_equ(jd, out e, err);
+	}
+
+	public static double Deltat(double tjd_et)
+	{
+		if (IntPtr.Size == 4)
+		{
+			return SwephDll.Swe32.swe_deltat(tjd_et);
+		}
+
+		return SwephDll.Swe64.swe_deltat(tjd_et);
+	}
 
 
 	public enum EventType { SOLAR_EVENT_SUNRISE, SOLAR_EVENT_SUNSET, SOLAR_EVENT_MIDNIGHT, SOLAR_EVENT_NOON }

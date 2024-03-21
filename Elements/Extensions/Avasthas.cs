@@ -38,7 +38,7 @@ namespace Mhora.Elements.Extensions
 			var nakshatra   = graha.Position.Longitude.ToNakshatra();
 			var houseOffset = (double) graha.HouseOffset;
 			var navamsha = (int) Math.Ceiling(houseOffset / (30.0 / 9));
-			var ghati    = h.HoursAfterSunrise().Ghati;
+			var ghati    = h.Vara.HoursAfterSunrise.Ghati;
 
 			var avastha = nakshatra.Index() * (b.Index() + 1) * navamsha;
 			avastha += moon.Position.Longitude.ToNakshatra().Index();

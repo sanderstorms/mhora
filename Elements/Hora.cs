@@ -58,7 +58,7 @@ public static class Hora
 
 	public static Body UpagrahasStart(this Horoscope h)
 	{
-		if (h.IsDayBirth())
+		if (h.Vara.IsDayBirth)
 		{
 			return h.Wday.Ruler();
 		}

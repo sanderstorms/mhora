@@ -91,6 +91,24 @@ public static class TimeUtils
 		return (new JulianDate (lmt));
 	}
 
+	public static Time LmtOffset (this DateTime dateTime, Horoscope h) //Local Standard Time Meridian (LSTM)
+	{
+		var jd     = new JulianDate(dateTime);
+        var tjd_et = jd + sweph.Deltat(jd);
+        sweph.TimeEqu(tjd_et, out var eot);
+        Time equationOfTime = TimeSpan.FromDays(eot);
+        var  lstm           = (h.Info.City.Country.TimeZone.Offset / 60.0) * 15.0;
+        var  localSolarTime = (double) (4.0 * (h.Info.Longitude - lstm)) + (equationOfTime.TotalHours * 60);
+
+		return TimeSpan.FromMinutes(localSolarTime);
+    }
+
+    public static DateTime Lstm (this DateTime dateTime, Horoscope h) //Local Standard Time Meridian (LSTM)
+    {
+        var offset = dateTime.LmtOffset(h);
+		return (dateTime + offset);
+    }
+
 	public static DateTime Lmt(this DateTime dateTime, Horoscope h)
 	{
 		return TimeZoneInfo.ConvertTimeFromUtc(dateTime, h.Info.City.Country.TimeZone.TimeZoneInfo);

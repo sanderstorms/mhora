@@ -27,9 +27,9 @@ public class PanchangaLocalMoments
 {
 	public int                       gulika_kala_index;
 	public int                       hora_base;
-	public double[]                  horas_ut;
+	public JulianDate[]              horas_ut;
 	public int                       kala_base;
-	public double[]                  kalas_ut;
+	public JulianDate[]              kalas_ut;
 	public int                       karana_index_end;
 	public int                       karana_index_start;
 	public ZodiacHouse               lagna_zh;

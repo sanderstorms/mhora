@@ -36,52 +36,12 @@ public partial class Horoscope : ICloneable
 {
 	private readonly Dictionary<DivisionType, Grahas> _grahas = new ();
 
-	private          Time                             _sunrise;
-	private          Time                             _sunset;
-	private          Time                             _nextSunrise;
-	private          Time                             _nextSunset;
-
 	public readonly int      Iflag = sweph.SEFLG_SWIEPH | sweph.SEFLG_SPEED | sweph.SEFLG_SIDEREAL;
 
 	public HoraInfo Info { get;}
+	public Vara     Vara { get; }
 
-	public Time LmtOffset
-	{
-		get;
-		private set;
-	}
-
-	public Time  LmtSunrise
-	{
-		get;
-		private set;
-	}
-
-	public Time LmtSunset
-	{
-		get;
-		private set;
-	}
-
-
-	public Weekday LmtWday
-	{
-		get;
-		private set;
-	}
-
-	public Time Sunrise => _sunrise;
-	public Time Sunset  => _sunset;
-
-	public Time NextSunrise => _nextSunrise;
-	public Time NextSunset  => _nextSunset;
-	
-	
-	public HoroscopeOptions Options
-	{
-		get;
-		private set;
-	}
+	public HoroscopeOptions Options { get; }
 
 	public List<Position> PositionList
 	{
@@ -117,8 +77,9 @@ public partial class Horoscope : ICloneable
 
 	public Horoscope(HoraInfo info, HoroscopeOptions options)
 	{
-		Options          = options;
-		Info             = info;
+		Options = options;
+		Info    = info;
+		Vara    = new Vara(this);
 		sweph.SetSidMode((int) options.Ayanamsa, 0.0, 0.0);
 		SwephHouseSystem = 'P';
 		PopulateCache();
@@ -239,7 +200,7 @@ public partial class Horoscope : ICloneable
 
 		Time retLmtOffset = (lmtOffset1 + lmtOffset2) / 2.0;
 		//Mhora.Log.Debug("LMT: {0}, {1}", lmt_offset_1, lmt_offset_2);
-
+	
 		return retLmtOffset;
 #if DND
 			// determine offset from ephemeris time
@@ -252,178 +213,42 @@ public partial class Horoscope : ICloneable
 
 
 
-	public double[] GetHoraCuspsUt()
+	public JulianDate[] GetHoraCuspsUt()
 	{
-		double[] cusps = null;
+		JulianDate[] cusps = null;
 		switch (Options.HoraType)
 		{
 			case HoroscopeOptions.EHoraType.Sunriset:
-				cusps = GetSunrisetCuspsUt(12);
+				cusps = Vara.GetSunrisetCuspsUt(12);
 				break;
 			case HoroscopeOptions.EHoraType.SunrisetEqual:
-				cusps = GetSunrisetEqualCuspsUt(12);
+				cusps = Vara.GetSunrisetEqualCuspsUt(12);
 				break;
 			case HoroscopeOptions.EHoraType.Lmt:
-				cusps = GetLmtCuspsUt(12);
+				cusps = Vara.GetLmtCuspsUt(12);
 				break;
 		}
 
 		return cusps;
 	}
 
-	public double[] GetKalaCuspsUt()
+	public JulianDate[] GetKalaCuspsUt()
 	{
-		double[] cusps = null;
+		JulianDate[] cusps = null;
 		switch (Options.KalaType)
 		{
 			case HoroscopeOptions.EHoraType.Sunriset:
-				cusps = GetSunrisetCuspsUt(8);
+				cusps = Vara.GetSunrisetCuspsUt(8);
 				break;
 			case HoroscopeOptions.EHoraType.SunrisetEqual:
-				cusps = GetSunrisetEqualCuspsUt(8);
+				cusps = Vara.GetSunrisetEqualCuspsUt(8);
 				break;
 			case HoroscopeOptions.EHoraType.Lmt:
-				cusps = GetLmtCuspsUt(8);
+				cusps = Vara.GetLmtCuspsUt(8);
 				break;
 		}
 
 		return cusps;
-	}
-
-	public double[] GetSunrisetCuspsUt(int dayParts)
-	{
-		var ret = new double[dayParts * 2 + 1];
-
-		var srUt      = Info.Jd                 - HoursAfterSunrise() / 24.0;
-		var ssUt      = srUt - Sunrise / 24.0 + Sunset              / 24.0;
-		var srNextUt = srUt - Sunrise / 24.0 + NextSunrise        / 24.0 + 1.0;
-
-		var daySpan   = (ssUt      - srUt) / dayParts;
-		var nightSpan = (srNextUt - ssUt) / dayParts;
-
-		for (var i = 0; i < dayParts; i++)
-		{
-			ret[i] = srUt + daySpan * i;
-		}
-
-		for (var i = 0; i <= dayParts; i++)
-		{
-			ret[i + dayParts] = ssUt + nightSpan * i;
-		}
-
-		return ret;
-	}
-
-	public double[] GetSunrisetEqualCuspsUt(int dayParts)
-	{
-		var ret = new double[dayParts * 2 + 1];
-
-		var srUt      = Info.Jd                                  - HoursAfterSunrise() / 24.0;
-		var srNextUt = srUt - Sunrise                  / 24.0 + NextSunrise        / 24.0 + 1.0;
-		var span       = (srNextUt - srUt) / (dayParts * 2);
-
-		for (var i = 0; i <= dayParts * 2; i++)
-		{
-			ret[i] = srUt + span * i;
-		}
-
-		return ret;
-	}
-
-	public double[] GetLmtCuspsUt(int dayParts)
-	{
-		var ret            = new double[dayParts * 2 + 1];
-		var srLmtUt      = Info.Jd                  - HoursAfterSunrise() / 24.0 - Sunrise / 24.0 + 6.0 / 24.0;
-		var srLmtNextUt = srLmtUt                                                             + 1.0;
-		//double sr_lmt_ut = this.info.Jd - this.info.DateOfBirth.time / 24.0 + 6.0 / 24.0;
-		//double sr_lmt_next_ut = sr_lmt_ut + 1.0;
-
-		srLmtUt      += LmtOffset;
-		srLmtNextUt += LmtOffset;
-
-		if (srLmtUt > Info.Jd)
-		{
-			srLmtUt--;
-			srLmtNextUt--;
-		}
-
-
-		var span = (srLmtNextUt - srLmtUt) / (dayParts * 2);
-
-		for (var i = 0; i <= dayParts * 2; i++)
-		{
-			ret[i] = srLmtUt + span * i;
-		}
-
-		return ret;
-	}
-
-	private void CalculateWeekday()
-	{
-		var m  = Info.DateOfBirth;
-		var jd = sweph.JulDay(m.Year, m.Month, m.Day, 12.0);
-		if (Info.DateOfBirth.Time().TotalHours < Sunrise)
-		{
-			jd -= 1;
-		}
-
-		Wday = (Weekday) sweph.DayOfWeek(jd);
-
-		jd = sweph.JulDay(m.Year, m.Month, m.Day, 12.0);
-		if (Info.DateOfBirth.Time().TotalHours < LmtSunrise)
-		{
-			jd -= 1;
-		}
-
-		LmtWday = (Weekday) sweph.DayOfWeek(jd);
-	}
-
-	
-
-	public Time LengthOfDay()
-	{
-		return NextSunrise + 24.0 - Sunrise;
-	}
-
-	public Time HoursAfterSunrise()
-	{
-		var ret = Info.DateOfBirth.Time ().TotalHours - Sunrise;
-		if (ret < 0)
-		{
-			ret += 24.0;
-		}
-
-		return ret;
-	}
-
-	public Time HoursAfterSunRiseSet()
-	{
-		Time ret;
-		if (IsDayBirth())
-		{
-			ret = Info.DateOfBirth.Time ().TotalHours - Sunrise;
-		}
-		else
-		{
-			ret = Info.DateOfBirth.Time ().TotalHours - Sunset;
-		}
-
-		if (ret < 0)
-		{
-			ret += 24.0;
-		}
-
-		return ret;
-	}
-
-	public bool IsDayBirth()
-	{
-		if (Info.DateOfBirth.Time().TotalHours >= Sunrise && Info.DateOfBirth.Time().TotalHours < Sunset)
-		{
-			return true;
-		}
-
-		return false;
 	}
 
 	public void AddOtherPosition(string desc, Longitude lon, Body name)

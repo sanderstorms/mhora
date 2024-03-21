@@ -168,10 +168,10 @@ public static class ShadBalas
 			return 60;
 		}
 
-		var    lmt_midnight = h.LmtOffset * 24.0;
-		var    lmt_noon     = 12.0 + h.LmtOffset * 24.0;
-		double diff         = 0;
-		var    time = h.Info.DateOfBirth.Time().TotalHours;
+		var    lmt_midnight = h.Vara.Midnight.Date.Lstm(h).Time();
+		var    lmt_noon     = h.Vara.Noon.Date.Lstm(h).Time();
+		Time   diff;
+		var    time = h.Info.DateOfBirth.Time();
 		if (time > lmt_noon)
 		{
 			diff = lmt_midnight - time;
@@ -193,7 +193,7 @@ public static class ShadBalas
 			diff = 60 - diff;
 		}
 
-		return diff;
+		return diff.TotalHours;
 	}
 
 	public static decimal PakshaBala(this Horoscope h, Body b)
@@ -229,11 +229,11 @@ public static class ShadBalas
 	{
 		var ret = Body.Jupiter;
 		h.VerifyGraha(b);
-		if (h.IsDayBirth())
+		if (h.Vara.IsDayBirth)
 		{
-			var length = (h.Sunset - h.Sunrise) / 3;
-			var offset = h.Info.DateOfBirth.Time ().TotalHours - h.Sunrise;
-			var part   = (int) Math.Floor(offset / length);
+			var length = h.Vara.DayTime / 3;
+			var offset = (Time) h.Info.DateOfBirth.Time () - h.Vara.Sunrise.Time;
+			var part   = (int) Math.Floor((offset / length).TotalHours);
 			switch (part)
 			{
 				case 0:
@@ -249,14 +249,10 @@ public static class ShadBalas
 		}
 		else
 		{
-			var length = (h.NextSunrise + 24.0 - h.Sunset) / 3;
-			var offset = h.Info.DateOfBirth.Time ().TotalHours - h.Sunset;
-			if (offset < 0)
-			{
-				offset += 24;
-			}
+			var length = h.Vara.NightTime / 3;
+			var offset = h.Info.DateOfBirth - h.Vara.Sunset;
 
-			var part = (int) Math.Floor(offset / length);
+			var part = (int) Math.Floor((offset / length).TotalHours);
 			switch (part)
 			{
 				case 0:

@@ -66,7 +66,7 @@ public static class SwephDll
 		public static extern void swe_set_tid_acc(double t_acc);
 
 		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_time_equ")]
-		public static extern int swe_time_equ(double tjd_et, ref double e, StringBuilder s);
+		public static extern int swe_time_equ(double tjd_et, out double e, StringBuilder s);
 
 		[DllImport("swedll64", CharSet = CharSet.Ansi)]
 		public static extern void swe_set_topo(double geolon, double geolat, double altitude);
@@ -149,7 +149,7 @@ public static class SwephDll
 		public static extern void swe_set_tid_acc(double t_acc);
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_time_equ")]
-		public static extern int swe_time_equ(double tjd_et, ref double e, StringBuilder s);
+		public static extern int swe_time_equ(double tjd_et, out double e, StringBuilder s);
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi)]
 		public static extern void swe_set_topo(double geolon, double geolat, double altitude);

@@ -150,7 +150,7 @@ public class VaraChakra : MhoraControl
 			g.DrawString(bodies[i].Name(), f, b_black, -sz.Width / 2, 0);
 		}
 
-		if (h.IsDayBirth())
+		if (h.Vara.IsDayBirth)
 		{
 		}
 	}

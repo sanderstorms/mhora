@@ -212,14 +212,14 @@ public class KeyInfoControl : MhoraControl
 		mList.Items.Add(li);
 
 		{
-			var hms_srise = (TimeSpan) h.Sunrise;
+			var hms_srise = (TimeSpan) h.Vara.Sunrise.Time;
 			li = new ListViewItem("Sunrise");
 			var fmt = string.Format("{0:00}:{1:00}:{2:00}", hms_srise.Hours, hms_srise.Minutes, hms_srise.Seconds);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			var hms_sset = (TimeSpan)h.Sunset;
+			var hms_sset = (TimeSpan)h.Vara.Sunset.Time;
 			li = new ListViewItem("Sunset");
 			var fmt = string.Format("{0:00}:{1:00}:{2:00}", hms_sset.Hours, hms_sset.Minutes, hms_sset.Seconds);
 			li.SubItems.Add(fmt);
@@ -288,22 +288,22 @@ public class KeyInfoControl : MhoraControl
 		}
 		{
 			li = new ListViewItem("Muhurta");
-			var mIndex = (int) (Math.Floor(h.HoursAfterSunrise() / h.LengthOfDay () * 30.0) + 1);
+			var mIndex = (int) (Math.Floor((h.Vara.HoursAfterSunrise / h.Vara.Length * 30.0).TotalHours) + 1);
 			var m      = (Muhurta) mIndex;
 			var fmt    = string.Format("{0} ({1})", m, m.NakLordOfMuhurta());
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			var ghatisSr = h.HoursAfterSunrise();
-			var ghatisSs = h.HoursAfterSunRiseSet();
+			var ghatisSr = h.Vara.HoursAfterSunrise;
+			var ghatisSs = h.Vara.HoursAfterSunRiseSet;
 			li = new ListViewItem("Ghatis");
 			var fmt = string.Format("{0:0.0000} / {1:0.0000}", ghatisSr.Ghati, ghatisSs.Ghati);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			var vgOff = (int) Math.Ceiling(h.HoursAfterSunRiseSet() * 150.0);
+			var vgOff = (int) Math.Ceiling((h.Vara.HoursAfterSunRiseSet * 150.0).TotalHours);
 			vgOff = vgOff % 9;
 			if (vgOff == 0)
 			{
@@ -317,24 +317,11 @@ public class KeyInfoControl : MhoraControl
 			mList.Items.Add(li);
 		}
 		{
+			var lmtOffset = h.Info.DateOfBirth.LmtOffset(h);
 			li = new ListViewItem("LMT Offset");
-			var e      = h.LmtOffset;
-			var orig_e = e;
-			e =  e < 0 ? -e : e;
-			e *= 24.0;
-			var hour = (int) Math.Floor(e);
-			e = (e - Math.Floor(e)) * 60.0;
-			var min = (int) Math.Floor(e);
-			e = (e - Math.Floor(e)) * 60.0;
-			var prefix = string.Empty;
-			if (orig_e < 0)
-			{
-				prefix = "-";
-			}
 
-			var fmt  = string.Format("{0}{1:00}:{2:00}:{3:00.00}", prefix, hour, min, (double) e);
-			var fmt2 = string.Format(" ({0:00.00} minutes)", (double) h.LmtOffset * 24.0 * 60.0);
-			li.SubItems.Add(fmt + fmt2);
+			var fmt = string.Format(" ({0:00.00} minutes)", lmtOffset.TotalHours * 60);
+			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{

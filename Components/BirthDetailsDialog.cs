@@ -75,7 +75,7 @@ public partial class BirthDetailsDialog : Form
 		get
 		{
 			MhoraGlobalOptions.Instance.City      = City.Name;
-			MhoraGlobalOptions.Instance.Latitude  = City.Latitude;
+			MhoraGlobalOptions.Instance.Latitude  = new DmsPoint(City.Latitude, false);
 			MhoraGlobalOptions.Instance.Longitude = City.Longitude;
 
 			var date   = dateTimePicker.Value;

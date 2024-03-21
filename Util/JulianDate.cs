@@ -58,7 +58,7 @@ namespace Mhora.Util
 		public int YearsBC => _yearsBC;
 		[JsonProperty]
 		public DateTime Date     => _date;
-		[JsonProperty]
+		[JsonIgnore]
 		public Time     Time     => _date.Time();
 
 		public override string ToString()
@@ -98,11 +98,21 @@ namespace Mhora.Util
 			return jd.Date;
 		}
 
-		public static bool operator < (JulianDate     jd, JulianDate value)  => jd._value < value._value; 
-		public static bool operator > (JulianDate     jd, JulianDate value)  => jd._value > value._value; 
-		public static bool operator == (JulianDate    jd, JulianDate value)  => jd._value == value._value; 
-		public static bool operator != (JulianDate    jd, JulianDate value)  => jd._value != value._value; 
-		public static bool operator >= (JulianDate    jd, JulianDate value)  => jd._value >= value._value; 
-		public static bool operator <= (JulianDate    jd, JulianDate value)  => jd._value <= value._value; 
+		public static JulianDate operator +(JulianDate jd, Time time)
+		{
+			return (jd.Add(time));
+		}
+
+		public static JulianDate operator -(JulianDate jd, Time time)
+		{
+			return (jd.Sub(time));
+		}
+
+		public static bool operator < (JulianDate  jd, JulianDate value) => jd._value < value._value; 
+		public static bool operator > (JulianDate  jd, JulianDate value) => jd._value > value._value; 
+		public static bool operator == (JulianDate jd, JulianDate value) => jd._value == value._value; 
+		public static bool operator != (JulianDate jd, JulianDate value) => jd._value != value._value; 
+		public static bool operator >= (JulianDate jd, JulianDate value) => jd._value >= value._value; 
+		public static bool operator <= (JulianDate jd, JulianDate value) => jd._value <= value._value; 
 	}
 }

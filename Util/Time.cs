@@ -34,6 +34,33 @@ namespace Mhora.Util
 			_timeSpan = timeSpan;
 		}
 
+		public Time Add(double hours)
+		{
+			return new Time(_timeSpan.TotalHours + hours);;
+		}
+
+		public Time Sub(double hours)
+		{
+			return new Time(_timeSpan.TotalHours - hours);;
+		}
+
+		public Time Mul(double hours)
+		{
+			return new Time(_timeSpan.TotalHours * hours);
+		}
+
+		public Time Div(double hours)
+		{
+			return new Time(_timeSpan.TotalHours / hours);
+		}
+
+		/*
+		public static Time operator +(Time time, double hours)
+		{
+			return time += new Time(hours);
+		}
+		*/
+
 		public double TotalDays  => _timeSpan.TotalDays;
 		public double TotalHours => _timeSpan.TotalHours;
 
@@ -55,6 +82,66 @@ namespace Mhora.Util
 			return _timeSpan.ToString();
 		}
 
+		public static Time operator +(Time time, Time other)
+		{
+			return time.Add(other.TotalHours);
+		}
+
+		public static Time operator -(Time time, Time other)
+		{
+			return time.Sub(other.TotalHours);
+		}
+
+		public static Time operator /(Time time, Time other)
+		{
+			return time.Div(other.TotalHours);
+		}
+
+		public static Time operator *(Time time, Time other)
+		{
+			return time.Mul(other.TotalHours);
+		}
+
+		public static bool operator < (Time time, Time other)
+		{
+			return time.TotalHours < other.TotalHours;
+		}
+
+		public static bool operator > (Time time, Time other)
+		{
+			return time.TotalHours > other.TotalHours;
+		}
+
+		public static Time operator +(Time time, double hours)
+		{
+			return time.Add(hours);
+		}
+
+		public static Time operator -(Time time, double hours)
+		{
+			return time.Sub(hours);
+		}
+
+		public static Time operator /(Time time, double hours)
+		{
+			return time.Div(hours);
+		}
+
+		public static Time operator *(Time time, double hours)
+		{
+			return time.Mul(hours);
+		}
+
+		public static bool operator < (Time time, double hours)
+		{
+			return time.TotalHours < hours;
+		}
+
+		public static bool operator > (Time time, double hours)
+		{
+			return time.TotalHours > hours;
+		}
+
 		public static implicit operator TimeSpan(Time time)
 		{
 			return time._timeSpan;
@@ -63,11 +150,6 @@ namespace Mhora.Util
 		public static implicit operator Time(TimeSpan timeSpan)
 		{
 			return new Time(timeSpan);
-		}
-
-		public static implicit operator double(Time time)
-		{
-			return time._timeSpan.TotalHours;
 		}
 
 		public static implicit operator Time(double hours)

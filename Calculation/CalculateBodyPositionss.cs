@@ -191,13 +191,13 @@ namespace Mhora.Calculation
 				5
 			};
 			var b          = h.Wday.Ruler();
-			var bdayBirth = h.IsDayBirth();
+			var bdayBirth = h.Vara.IsDayBirth;
 
 			var cusps = h.GetKalaCuspsUt();
 			if (h.Options.KalaType == HoroscopeOptions.EHoraType.Lmt)
 			{
-				b          = h.LmtWday.Ruler();
-				bdayBirth = h.Info.DateOfBirth.Time().TotalHours > h.LmtSunset || h.Info.DateOfBirth.Time().TotalHours < h.LmtSunrise;
+				b          = h.Info.DateOfBirth.Lstm(h).DayLord();
+				bdayBirth = h.Info.DateOfBirth > h.Vara.Sunset.Date.Lstm(h) || h.Info.DateOfBirth < h.Vara.Sunset.Date.Lstm(h);
 			}
 
 			var i = offsetsDay[(int) b];
@@ -257,7 +257,7 @@ namespace Mhora.Calculation
 			var cusps = h.GetHoraCuspsUt();
 			if (h.Options.HoraType == HoroscopeOptions.EHoraType.Lmt)
 			{
-				b = h.LmtWday.Ruler();
+				b = h.Info.DateOfBirth.Lstm(h).DayLord();
 			}
 
 			var i = offsets[(int) b];
@@ -323,18 +323,17 @@ namespace Mhora.Calculation
 			double dStart = 0, dEnd = 0;
 
 			var m         = h.Info.DateOfBirth;
-			dStart = dEnd = sweph.JulDay(m.Year, m.Month, m.Day, -h.Info.DstOffset.TotalHours);
 			var bStart    = h.UpagrahasStart();
 
-			if (h.IsDayBirth())
+			if (h.Vara.IsDayBirth)
 			{
-				dStart += h.Sunrise / 24.0;
-				dEnd   += h.Sunset  / 24.0;
+				dStart = h.Vara.Sunrise;
+				dEnd   = h.Vara.Sunset;
 			}
 			else
 			{
-				dStart += h.Sunset / 24.0;
-				dEnd   += 1.0 + h.Sunrise / 24.0;
+				dStart = h.Vara.Sunset;
+				dEnd   = h.Vara.Sunrise;
 			}
 
 			var dPeriod = (dEnd - dStart) / 8.0;
@@ -417,11 +416,11 @@ namespace Mhora.Calculation
 
 			//Mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
 
-			var time      = (decimal) (h.Info.DateOfBirth.Time().TotalHours - h.Sunrise);
-			var istaGhati = time.NormalizeExc(0, 24) * 2.5M;
+			var time      =  (h.Info.DateOfBirth - h.Vara.Sunrise);
+			var istaGhati = time.TotalHours.NormalizeExc(0, 24) * 2.5;
 			var glLon     = lonBase.Add(new Longitude(istaGhati        * 30));
-			var hlLon     = lonBase.Add(new Longitude(istaGhati * 30 / 2.5M));
-			var blLon     = lonBase.Add(new Longitude(istaGhati * 30 / 5M));
+			var hlLon     = lonBase.Add(new Longitude(istaGhati * 30 / 2.5));
+			var blLon     = lonBase.Add(new Longitude(istaGhati * 30 / 5));
 
 			var vl = istaGhati * 5;
 			while (istaGhati > 12)
@@ -452,11 +451,7 @@ namespace Mhora.Calculation
 		public static Position CalculatePranapada(this Horoscope h)
 		{
 			var spos   = h.GetPosition(Body.Sun).Longitude;
-			var offset = h.Info.DateOfBirth.Time().TotalHours - h.Sunrise;
-			if (offset < 0)
-			{
-				offset += 24.0;
-			}
+			double offset = (h.Info.DateOfBirth - h.Vara.Sunrise).TotalHours;
 
 			offset *= 60.0 * 60.0 / 6.0;
 			Longitude ppos = null;

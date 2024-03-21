@@ -109,10 +109,10 @@ namespace Mhora.Dasas
 					var sun  = hora.Find(Body.Sun);
 					if (sun.Rashi == ZodiacHouse.Leo)
 					{
-						return h.IsDayBirth();
+						return h.Vara.IsDayBirth;
 					}
 
-					return (h.IsDayBirth() == false);
+					return (h.Vara.IsDayBirth == false);
 				}
 				return (false);
 			}

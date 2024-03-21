@@ -11,81 +11,6 @@ namespace Mhora.Elements
 {
 	public partial class Horoscope
 	{
-		private void PopulateLmt()
-		{
-			LmtOffset  = GetLmtOffset(Info.Jd);
-			LmtSunrise = 6.0  + LmtOffset * 24.0;
-			LmtSunset  = 18.0 + LmtOffset * 24.0;
-		}
-
-		public double GetLmtOffsetDays(HoraInfo info, double baseUt)
-		{
-			var utLmtNoon = GetLmtOffset(info.Jd);
-			var utNoon     = info.Jd - info.DateOfBirth.Time ().TotalDays + 12.0 / 24.0;
-			return utLmtNoon - utNoon;
-		}
-
-		private void PopulateSunrisetCache()
-		{
-			var sunriseUt = PopulateSunrisetCacheHelper(Info.Jd, out _nextSunrise, out _nextSunset);
-			sunriseUt = PopulateSunrisetCacheHelper(sunriseUt - 1.0 - 1.0 / 24.0, out _sunrise, out _sunset);
-			//Debug.WriteLine("Sunrise[t]: " + this.sunrise.ToString() + " " + this.sunrise.ToString(), "Basics");
-		}
-
-		public JulianDate PopulateSunrisetCacheHelper(JulianDate ut, out Time sr, out Time ss)
-		{
-			var srflag = 0;
-			switch (Options.SunrisePosition)
-			{
-				case HoroscopeOptions.SunrisePositionType.Lmt:
-					sr = 6.0  + LmtOffset * 24.0;
-					ss = 18.0 + LmtOffset * 24.0;
-					break;
-				case HoroscopeOptions.SunrisePositionType.TrueDiscEdge:
-					srflag = sweph.SE_BIT_NO_REFRACTION;
-					goto default;
-				case HoroscopeOptions.SunrisePositionType.TrueDiscCenter:
-					srflag = sweph.SE_BIT_NO_REFRACTION | sweph.SE_BIT_DISC_CENTER;
-					goto default;
-				case HoroscopeOptions.SunrisePositionType.ApparentDiscCenter:
-					srflag = sweph.SE_BIT_DISC_CENTER;
-					goto default;
-				case HoroscopeOptions.SunrisePositionType.ApparentDiscEdge:
-				default:
-					//int sflag = 0;
-					//if (options.sunrisePosition == HoroscopeOptions.SunrisePositionType.DiscCenter)
-					//	sflag += 256;
-					int year = 0, month = 0, day = 0;
-					var hour = 0.0;
-
-					var geopos = new double[3]
-					{
-						Info.Longitude,
-						Info.Latitude,
-						Info.Altitude
-					};
-					double tret = 0;
-
-					if (this.Rise(ut, sweph.SE_SUN, srflag, geopos, 0.0, 0.0, ref tret) < 0)
-					{
-						MessageBox.Show("Invalid data");
-						tret = ut;
-					}
-
-					JulianDate srUt = tret;
-					sweph.RevJul(tret, out year, out month, out day, out hour);
-					sr = hour + Info.DstOffset.TotalHours;
-					this.Set(tret, sweph.SE_SUN, srflag, geopos, 0.0, 0.0, ref tret);
-					sweph.RevJul(tret, out year, out month, out day, out hour);
-					ss = hour + Info.DstOffset.TotalHours;
-					sr = Calculations.NormalizeExc(sr, 0, 24);
-					ss = Calculations.NormalizeExc(ss, 0, 24);
-					return srUt;
-			}
-
-			return (0);
-		}
-
 		private void AddOtherPoints()
 		{
 			var lagPos     = GetPosition(Body.Lagna).Longitude;
@@ -98,7 +23,7 @@ namespace Mhora.Elements
 			var rahPos     = GetPosition(Body.Rahu).Longitude;
 			var mandiPos   = GetPosition(Body.Maandi).Longitude;
 			var gulikaPos  = GetPosition(Body.Gulika).Longitude;
-			var muhurtaPos = new Longitude(HoursAfterSunrise() / (NextSunrise + 24.0 - Sunrise) * 360.0);
+			var muhurtaPos = new Longitude((Vara.HoursAfterSunrise / (Vara.Length) * 360.0).TotalHours);
 
 			// add simple midpoints
 			AddOtherPosition("User Specified", new Longitude(Options.CustomBodyLongitude.Value));
@@ -117,7 +42,7 @@ namespace Mhora.Elements
 			var mritSun2Pos  = new Longitude(satPos.Value   * 9 + mandiPos.Value * 18 + sunPos.Value  * 18);
 			var mritMoon2Pos = new Longitude(satPos.Value   * 9 + mandiPos.Value * 18 + moonPos.Value * 18);
 
-			if (IsDayBirth())
+			if (Vara.IsDayBirth)
 			{
 				AddOtherPosition("Niryana: Su-Sa sum", sunPos.Add(satPos), Body.MrityuPoint);
 			}
@@ -175,12 +100,8 @@ namespace Mhora.Elements
 			// Try to add new definitions to the end
 			sweph.SetEphePath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
 			// Find LMT offset
-			PopulateLmt();
-			var vara = new Vara(this);
-			// Sunrise (depends on lmt)
-			PopulateSunrisetCache();
 			// Basic grahas + Special lagnas (depend on sunrise)
-			PositionList = this.CalculateBodyPositions(Sunrise);
+			PositionList = this.CalculateBodyPositions(Vara.Sunrise.Time.TotalHours);
 			// Srilagna etc
 			PositionList.Add(this.CalculateSl());
 			PositionList.Add(this.CalculatePranapada());
@@ -188,8 +109,6 @@ namespace Mhora.Elements
 			PositionList.AddRange(this.CalculateSunsUpagrahas());
 			// Upagrahas (depends on sunrise)
 			PositionList.AddRange(this.CalculateUpagrahas());
-			// Weekday (depends on sunrise)
-			CalculateWeekday();
 			// Sahamas
 			_ = FindGrahas(DivisionType.Rasi);
 			PositionList.AddRange (this.CalculateSahamas());
@@ -205,16 +124,12 @@ namespace Mhora.Elements
 
 		public void AddSpecialLagnaPositions()
 		{
-			var diff = Info.DateOfBirth.Time().TotalHours - Sunrise;
-			if (diff < 0)
-			{
-				diff += 24.0;
-			}
+			Time diff = (Info.DateOfBirth - Vara.Sunrise);
 
 			for (var i = 1; i <= 12; i++)
 			{
 				var specialDiff = diff * (i - 1);
-				var tjd         = Info.Jd + specialDiff / 24.0;
+				var tjd         = Info.Jd + specialDiff.TotalDays;
 				var asc         = this.Lagna(tjd);
 				var desc        = string.Format("Special Lagna ({0:00})", i);
 				AddOtherPosition(desc, new Longitude(asc));

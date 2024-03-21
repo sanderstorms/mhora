@@ -224,7 +224,7 @@ public class PanchangaPrintDocument : PrintDocument
 					_f = f_u;
 				}
 
-				g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), _f, b, day_offset + 100 + zh.Index() * time_width, 0);
+				g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise.TotalHours), _f, b, day_offset + 100 + zh.Index() * time_width, 0);
 			}
 
 			local_index = ++i;
@@ -268,7 +268,7 @@ public class PanchangaPrintDocument : PrintDocument
 			var numLines  = 1;
 			var local     = locals[i];
 			var m_sunrise = h.Moment(local.sunrise_ut);
-			var m_sunset  = new DateTime().AddHours(local.sunset);
+			var m_sunset  = new DateTime() + local.sunset;
 
 			g.DrawString(m_sunrise.ToShortDateString(), f, b, day_offset, 0);
 			g.DrawString(local.wday.ShortString(), f, b, wday_offset, 0);
@@ -293,7 +293,7 @@ public class PanchangaPrintDocument : PrintDocument
 					var t      = pmi.info.ToTithi();
 					var mTithi = h.Moment(pmi.ut);
 					g.DrawString(t.ToUnqualifiedString(), f, b, tithi_name_offset, j                           * f.Height);
-					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, tithi_time_offset, j * f.Height);
+					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise.TotalHours), f, b, tithi_time_offset, j * f.Height);
 				}
 			}
 
@@ -315,7 +315,7 @@ public class PanchangaPrintDocument : PrintDocument
 					}
 
 					g.DrawString(k.ToString(), f, b, name_offset, jRow                                      * f.Height);
-					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, time_offset, jRow * f.Height);
+					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise.TotalHours), f, b, time_offset, jRow * f.Height);
 				}
 			}
 
@@ -328,7 +328,7 @@ public class PanchangaPrintDocument : PrintDocument
 					var n    = (Nakshatra) pmi.info;
 					var mNak = h.Moment(pmi.ut);
 					g.DrawString(n.Name(), f, b, nak_name_offset, j                                            * f.Height);
-					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, nak_time_offset, j * f.Height);
+					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise.TotalHours), f, b, nak_time_offset, j * f.Height);
 				}
 			}
 
@@ -341,7 +341,7 @@ public class PanchangaPrintDocument : PrintDocument
 					var sm      = (SunMoonYoga) pmi.info;
 					var mSMYoga = h.Moment(pmi.ut);
 					g.DrawString(sm.ToString(), f, b, sm_name_offset, j                                     * f.Height);
-					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise), f, b, sm_time_offset, j * f.Height);
+					g.DrawString(utTimeToString(pmi.ut, local.sunrise_ut, local.sunrise.TotalHours), f, b, sm_time_offset, j * f.Height);
 				}
 			}
 

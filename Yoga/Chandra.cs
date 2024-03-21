@@ -697,7 +697,7 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			if (grahas.Horoscope.IsDayBirth())
+			if (grahas.Horoscope.Vara.IsDayBirth)
 			{
 				return (false);
 			}
@@ -752,7 +752,7 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			if (grahas.Horoscope.IsDayBirth())
+			if (grahas.Horoscope.Vara.IsDayBirth)
 			{
 				return (false);
 			}
@@ -1029,7 +1029,7 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			if (grahas.Horoscope.IsDayBirth())
+			if (grahas.Horoscope.Vara.IsDayBirth)
 			{
 				return (false);
 			}

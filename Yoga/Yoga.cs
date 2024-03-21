@@ -887,7 +887,7 @@ namespace Mhora.Yoga
 		//The native is blessed with all feminine qualities, grace good fortune, good character, wealth and progeny.
 		public static bool MahaBhagyaNight(this Grahas grahas)
 		{
-			if (grahas.Horoscope.IsDayBirth())
+			if (grahas.Horoscope.Vara.IsDayBirth)
 			{
 				return (false);
 			}
@@ -915,7 +915,7 @@ namespace Mhora.Yoga
 		//On born in this, is pleasant to look at, liberal, widely renowned, lord of lands.
 		public static bool MahaBhagyaDay(this Grahas grahas)
 		{
-			if (grahas.Horoscope.IsDayBirth() == false)
+			if (grahas.Horoscope.Vara.IsDayBirth == false)
 			{
 				return (false);
 			}
