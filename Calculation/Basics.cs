@@ -35,7 +35,7 @@ public static class Basics
 {
 
 
-	public static Longitude CalculateBodyLongitude(this Horoscope h, double ut, int ipl)
+	public static Longitude CalculateBodyLongitude(this Horoscope h, JulianDate ut, int ipl)
 	{
 		var sterr    = new StringBuilder();
 		var position = new double[6];
@@ -68,7 +68,7 @@ public static class Basics
 	/// <param name="body">The local application body name</param>
 	/// <param name="bodyType">The local application body type</param>
 	/// <returns>A BodyPosition class</returns>
-	public static Position CalculateSingleBodyPosition(this Horoscope h, double ut, int ipl, Body body, BodyType bodyType)
+	public static Position CalculateSingleBodyPosition(this Horoscope h, JulianDate ut, int ipl, Body body, BodyType bodyType)
 	{
 		if (body == Body.Lagna)
 		{
@@ -106,7 +106,7 @@ public static class Basics
 	/// </summary>
 	/// <param name="h">The HoraInfo object</param>
 	/// <returns></returns>
-	public static List<Position> CalculateBodyPositions(this Horoscope h, double sunrise)
+	public static List<Position> CalculateBodyPositions(this Horoscope h, JulianDate sunrise)
 	{
 		var hi = h.Info;
 		var o  = h.Options;
@@ -149,10 +149,11 @@ public static class Basics
 		var asc = h.Lagna(juldayUt);
 		stdGrahas.Add(new Position(h, Body.Lagna, BodyType.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
 
-		var istaGhati = ((decimal)(hi.DateOfBirth.Time ().TotalHours - sunrise)).NormalizeExc(0, 24) * 2.5M;
-		var glLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati        * 30));
-		var hlLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30 / 2.5M));
-		var blLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30 / 5.0M));
+		var hoursAfterSunrise = (hi.DateOfBirth - sunrise);
+		var istaGhati         = (hoursAfterSunrise.TotalHours).NormalizeExc(0, 24) * 2.5f;
+		var glLon             = stdGrahas[0].Longitude.Add(new Longitude(istaGhati      * 30));
+		var hlLon             = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30 / 2.5f));
+		var blLon             = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30 / 5.0));
 
 		var vl = istaGhati * 5;
 		while (istaGhati > 12)

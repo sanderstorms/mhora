@@ -195,7 +195,7 @@ public class AzimuthCalculator
 
 		var coord    = GetSunriseSunsetAzimuthAndTimeInternal(h, date, position, pressure, temperature, purpose, sweApi);
 		var dT       = GetAltitudeCorrection(position.Altitude) / (15 * Math.Cos(ToRad(position.Latitude)) * Math.Sin(ToRad(coord.Coordinates.Azimuth)));
-		var timeBase = coord.JulDay.ToUtc();
+		var timeBase = coord.JulDay.Date;
 		var time     = timeBase.AddMinutes(dT);
 		var jday     = time.ToJulian();
 
@@ -207,7 +207,7 @@ public class AzimuthCalculator
 		};
 	}
 
-	private static (HorizontalCoordinates Coordinates, double JulDay) GetSunriseSunsetAzimuthAndTimeInternal(Horoscope h, DateTime date, GeoPosition position, double pressure, double temperature, int purpose, SweApi sweApi)
+	private static (HorizontalCoordinates Coordinates, JulianDate JulDay) GetSunriseSunsetAzimuthAndTimeInternal(Horoscope h, DateTime date, GeoPosition position, double pressure, double temperature, int purpose, SweApi sweApi)
 	{
 		var jday        = SweApi.SunriseSunsetJulDay(position, pressure, temperature, date);
 		var sunPosition = h.CalculateSingleBodyPosition(jday, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);

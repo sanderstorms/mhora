@@ -19,7 +19,7 @@ public static class CuspTransitSearch
 		return 0;
 	}
 
-	public static double TransitSearchDirect(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, Ref <bool> bForward)
+	public static JulianDate TransitSearchDirect(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, Ref <bool> bForward)
 	{
 		Ref<bool> bDiscard = new(true);
 
@@ -35,14 +35,14 @@ public static class CuspTransitSearch
 			diff -= 360;
 		}
 
-		var    ut_diff_approx = diff / 360M * DirectSpeed(SearchBody);
-		double found_ut       = 0;
-		double ut             = 0;
+		var        ut_diff_approx = (double) (diff / 360M * DirectSpeed(SearchBody));
+		JulianDate found_ut;
+		double ut;
 
 		if (SearchBody == Body.Lagna)
 		{
-			ut       = ut_base + (double) (ut_diff_approx - 3 / 24M);
-			found_ut = ut.LinearSearchBinary(ut_base + (double) (ut_diff_approx + 3 / 24M), TransitPoint, graha.CalculateLongitude);
+			ut       = ut_base + (ut_diff_approx - 3 / 24.0);
+			found_ut = ut.LinearSearchBinary(ut_base + (ut_diff_approx + 3 / 24.0), TransitPoint, graha.CalculateLongitude);
 		}
 		else
 		{
@@ -56,7 +56,7 @@ public static class CuspTransitSearch
 	}
 
 
-	public static double TransitSearch(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, Ref <bool> bForward)
+	public static JulianDate TransitSearch(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, Ref <bool> bForward)
 	{
 		if (SearchBody == Body.Sun || SearchBody == Body.Moon)
 		{
@@ -65,12 +65,12 @@ public static class CuspTransitSearch
 
 		if (((int) SearchBody <= (int) Body.Moon || (int) SearchBody > (int) Body.Saturn) && SearchBody != Body.Lagna)
 		{
-			return StartDate.ToJulian();
+			return new JulianDate(StartDate);
 		}
 
 		var r = new Retrogression(h, SearchBody);
 
-		var julday_ut = h.UniversalTime(StartDate);
+		JulianDate julday_ut = h.UniversalTime(StartDate);
 		var found_ut  = julday_ut;
 
 		if (Forward)

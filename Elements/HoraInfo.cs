@@ -77,7 +77,6 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	public HoraInfo()
 	{
 		_tob       = DateTime.Now;
-		_jd        = double.NaN;
 		Longitude  = MhoraGlobalOptions.Instance.Longitude;
 		Latitude   = MhoraGlobalOptions.Instance.Latitude;
 		Altitude   = 0.0;
@@ -88,6 +87,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 
 	public HoraInfo(HoraInfo h)
 	{
+		_tob                   = h._tob;
 		City                   = h.City;
 		Events                 = h.Events;
 		Name                   = h.Name;
@@ -201,15 +201,15 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	[JsonIgnore]
 	public TimeSpan DstOffset => City.Country.TimeZone.TimeZoneInfo.GetUtcOffset(_tob);
 
-	private double _jd = double.NaN;
+	private JulianDate _jd = 0;
 	[JsonIgnore]
-	public double Jd
+	public JulianDate Jd
 	{
 		get
 		{
-			if (double.IsNaN(_jd))
+			if (_jd.IsEmpty)
 			{
-				_jd = UtcTob.ToJulian();
+				_jd = new JulianDate(UtcTob);
 				//_jd += GetLmtOffset(_jd);
 			}
 			return _jd;

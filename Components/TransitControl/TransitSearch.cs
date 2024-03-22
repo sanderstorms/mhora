@@ -435,18 +435,18 @@ public class TransitSearch : MhoraControl
 	}
 
 
-	private Horoscope utToHoroscope(double found_ut, ref DateTime m2)
+	private Horoscope utToHoroscope(JulianDate found_ut, ref DateTime m2)
 	{
 		// turn into horoscope
 		found_ut += h.Info.DstOffset.TotalDays;
-		var m   = found_ut.ToUtc();
+		var m   = found_ut;
 		var inf = new HoraInfo(h.Info)
 		{
 			DateOfBirth = m
 		};
 		var hTransit = new Horoscope(inf, (HoroscopeOptions) h.Options.Clone());
 
-		m2 = (found_ut + 5.0).ToUtc();
+		m2 = (found_ut + 5.0);
 		return hTransit;
 	}
 
@@ -683,7 +683,7 @@ public class TransitSearch : MhoraControl
 
 		// turn into horoscope
 		found_ut += h.Info.DstOffset.TotalDays;
-		var m   = found_ut.ToUtc();
+		var m   = (DateTime) found_ut;
 		var inf = new HoraInfo(h.Info)
 		{
 			DateOfBirth = m
@@ -699,7 +699,7 @@ public class TransitSearch : MhoraControl
 			found_ut -= 5.0;
 		}
 
-		var m2 = found_ut.ToUtc();
+		var m2 = (DateTime)found_ut;
 		opts.StartDate = m2;
 		// add entry to our list
 		var          fmt = hTransit.Info.DateOfBirth.ToString();
@@ -725,7 +725,7 @@ public class TransitSearch : MhoraControl
 		StartSearch(true);
 	}
 
-	private void UpdateDateForNextSearch(double ut)
+	private void UpdateDateForNextSearch(JulianDate ut)
 	{
 		int    year = 0, month = 0, day = 0;
 		double hour = 0;
@@ -740,13 +740,13 @@ public class TransitSearch : MhoraControl
 			ut -= offset;
 		}
 
-		var m2 = ut.ToUtc();
+		var m2 = ut;
 		opts.StartDate = m2;
 		updateOptions();
 	}
 
 
-	private double StartSearch(bool bUpdateDate)
+	private JulianDate StartSearch(bool bUpdateDate)
 	{
 		var  found_lon = opts.TransitPoint;
 		Ref <bool> bForward  = new(true);
@@ -824,11 +824,11 @@ public class TransitSearch : MhoraControl
 			var tiNext       = (TransitItem) mlTransits.Items[nextEntry];
 			var hTransitNext = tiNext.GetHoroscope();
 
-			var ut_diff = hTransitNext.Info.Jd - hTransit.Info.Jd;
-			if (ut_diff > 0)
+			if (hTransitNext.Info.Jd > hTransit.Info.Jd)
 			{
+				var ut_diff = hTransitNext.Info.Jd.Date - hTransit.Info.Jd;
 				hTransit.Info.DefaultYearCompression = 1;
-				hTransit.Info.DefaultYearLength      = ut_diff;
+				hTransit.Info.DefaultYearLength      = ut_diff.TotalDays;
 				hTransit.Info.DefaultYearType        = ToDate.DateType.FixedYear;
 			}
 		}
@@ -853,11 +853,11 @@ public class TransitSearch : MhoraControl
 			var tiPrev       = (TransitItem) mlTransits.Items[prevEntry];
 			var hTransitPrev = tiPrev.GetHoroscope();
 
-			var ut_diff = hTransit.Info.Jd - hTransitPrev.Info.Jd;
-			if (ut_diff > 0)
+			if (hTransit.Info.Jd > hTransitPrev.Info.Jd)
 			{
+				var ut_diff = hTransit.Info.Jd.Date - hTransitPrev.Info.Jd;
 				hTransit.Info.DefaultYearCompression = 1;
-				hTransit.Info.DefaultYearLength      = ut_diff;
+				hTransit.Info.DefaultYearLength      = ut_diff.TotalDays;
 				hTransit.Info.DefaultYearType        = ToDate.DateType.FixedYear;
 			}
 		}

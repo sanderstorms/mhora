@@ -738,7 +738,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 		h2.Info.DateOfBirth = m;
 
 		h2.Info.DefaultYearCompression = 1;
-		h2.Info.DefaultYearLength      = utDiff.TotalHours;
+		h2.Info.DefaultYearLength      = utDiff.TotalDays;
 		h2.Info.DefaultYearType        = ToDate.DateType.FixedYear;
 
 		var mchild = (MhoraChild) ParentForm;
@@ -1252,7 +1252,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 	{
 		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 		DasaOptions.YearType   = ToDate.DateType.FixedYear;
-		DasaOptions.YearLength = tdPravesh.AddYears(1).ToJulian() - tdPravesh.AddYears(0).ToJulian();
+		DasaOptions.YearLength = (tdPravesh.AddYears(1) - tdPravesh.AddYears(0)).TotalDays;
 		Reset();
 	}
 

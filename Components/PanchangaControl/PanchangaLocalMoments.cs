@@ -40,7 +40,7 @@ public class PanchangaLocalMoments
 	public int                       smyoga_index_end;
 	public int                       smyoga_index_start;
 	public Time                      sunrise;
-	public double                    sunrise_ut;
+	public JulianDate                sunrise_ut;
 	public Time                      sunset;
 	public int                       tithi_index_end;
 	public int                       tithi_index_start;

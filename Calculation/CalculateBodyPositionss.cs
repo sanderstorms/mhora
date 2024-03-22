@@ -241,7 +241,7 @@ namespace Mhora.Calculation
 			return Bodies.KalaOrder[i];
 		}
 
-		public static Body CalculateHora(this Horoscope h, double baseUt, out int baseBody)
+		public static Body CalculateHora(this Horoscope h, JulianDate baseUt, out int baseBody)
 		{
 			int[] offsets =
 			{
@@ -287,7 +287,7 @@ namespace Mhora.Calculation
 			return Bodies.HoraOrder[i];
 		}
 
-		private static Position CalculateUpagrahasSingle(this Horoscope h, Body b, double tjd)
+		private static Position CalculateUpagrahasSingle(this Horoscope h, Body b, JulianDate tjd)
 		{
 			var lon = new Longitude(0.0)
 			{
@@ -296,7 +296,7 @@ namespace Mhora.Calculation
 			return new Position(h, b, BodyType.Upagraha, lon, 0, 0, 0, 0, 0);
 		}
 
-		private static Position CalculateMaandiHelper(this Horoscope h, Body b, HoroscopeOptions.EMaandiType mty, double[] jds, double dOffset, int[] bodyOffsets)
+		private static Position CalculateMaandiHelper(this Horoscope h, Body b, HoroscopeOptions.EMaandiType mty, JulianDate[] jds, double dOffset, int[] bodyOffsets)
 		{
 			switch (mty)
 			{
@@ -320,7 +320,7 @@ namespace Mhora.Calculation
 		public static List<Position> CalculateUpagrahas(this Horoscope h)
 		{
 			var positionList = new List<Position>();
-			double dStart = 0, dEnd = 0;
+			JulianDate dStart , dEnd;
 
 			var m         = h.Info.DateOfBirth;
 			var bStart    = h.UpagrahasStart();
@@ -336,10 +336,10 @@ namespace Mhora.Calculation
 				dEnd   = h.Vara.Sunrise;
 			}
 
-			var dPeriod = (dEnd - dStart) / 8.0;
-			var dOffset = dPeriod         / 2.0;
+			Time dPeriod = (dEnd - dStart) / 8.0;
+			Time dOffset = dPeriod         / 2.0;
 
-			var jds = new double[8];
+			var jds = new JulianDate[8];
 			for (var i = 0; i < 8; i++)
 			{
 				jds[i] = dStart + i * dPeriod + dOffset;
@@ -364,10 +364,10 @@ namespace Mhora.Calculation
 					dUpagrahaOffset = 0;
 					break;
 				case HoroscopeOptions.EUpagrahaType.Mid:
-					dUpagrahaOffset = dOffset;
+					dUpagrahaOffset = dOffset.TotalHours;
 					break;
 				case HoroscopeOptions.EUpagrahaType.End:
-					dUpagrahaOffset = dPeriod;
+					dUpagrahaOffset = dPeriod.TotalHours;
 					break;
 			}
 
@@ -377,8 +377,8 @@ namespace Mhora.Calculation
 			positionList.Add(h.CalculateUpagrahasSingle(Body.YamaGhantaka, jds[bodyOffsets[(int) Body.Jupiter]]));
 
 
-			positionList.Add(h.CalculateMaandiHelper(Body.Maandi, h.Options.MaandiType, jds, dOffset, bodyOffsets));
-			positionList.Add(h.CalculateMaandiHelper(Body.Gulika, h.Options.GulikaType, jds, dOffset, bodyOffsets));
+			positionList.Add(h.CalculateMaandiHelper(Body.Maandi, h.Options.MaandiType, jds, dOffset.TotalHours, bodyOffsets));
+			positionList.Add(h.CalculateMaandiHelper(Body.Gulika, h.Options.GulikaType, jds, dOffset.TotalHours, bodyOffsets));
 
 			return (positionList);
 		}

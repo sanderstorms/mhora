@@ -2,6 +2,7 @@ using System;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.SwissEph;
+using Mhora.Util;
 
 namespace Mhora.Calculation;
 
@@ -34,7 +35,7 @@ public class NonLinearTransit
 		}
 	}
 
-	public Longitude GetLongitude(double ut, ref bool bForwardDir)
+	public Longitude GetLongitude(JulianDate ut, ref bool bForwardDir)
 	{
 		var swephBody = BodyNameToSweph(_b);
 		var bp        = _h.CalculateSingleBodyPosition(ut, swephBody, _b, BodyType.Other);
@@ -50,7 +51,7 @@ public class NonLinearTransit
 		return bp.Longitude;
 	}
 
-	public double BinarySearchNormal(double utStart, double utEnd, Longitude lonToFind)
+	public double BinarySearchNormal(JulianDate utStart, double utEnd, Longitude lonToFind)
 	{
 		var bDiscard = true;
 
@@ -77,7 +78,7 @@ public class NonLinearTransit
 		return BinarySearchNormal(utStart, utMiddle, lonToFind);
 	}
 
-	public double BinarySearchRetro(double utStart, double utEnd, Longitude lonToFind)
+	public double BinarySearchRetro(JulianDate utStart, double utEnd, Longitude lonToFind)
 	{
 		if (Math.Abs(utEnd - utStart) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
 		{
@@ -97,7 +98,7 @@ public class NonLinearTransit
 		return BinarySearchRetro(utMiddle, utEnd, lonToFind);
 	}
 
-	public double Forward(double ut, Longitude lonToFind)
+	public double Forward(JulianDate ut, Longitude lonToFind)
 	{
 		while (true)
 		{

@@ -97,11 +97,11 @@ public class VargaRectificationForm : Form
 		Invalidate();
 	}
 
-	private DateTime utToMoment(double found_ut)
+	private DateTime utToMoment(JulianDate found_ut)
 	{
 		// turn into horoscope
 		found_ut += h.Info.DstOffset.TotalDays;
-		var m = found_ut.ToUtc();
+		var m = found_ut;
 		return m;
 	}
 	private void PopulateOptions()

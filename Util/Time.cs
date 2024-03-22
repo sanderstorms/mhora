@@ -54,13 +54,6 @@ namespace Mhora.Util
 			return new Time(_timeSpan.TotalHours / hours);
 		}
 
-		/*
-		public static Time operator +(Time time, double hours)
-		{
-			return time += new Time(hours);
-		}
-		*/
-
 		public double TotalDays  => _timeSpan.TotalDays;
 		public double TotalHours => _timeSpan.TotalHours;
 

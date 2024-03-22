@@ -23,6 +23,7 @@ using Mhora.Components.Property;
 using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
+using Mhora.Util;
 
 namespace Mhora.Dasas;
 
@@ -111,7 +112,7 @@ public abstract class Dasa
 			get => _yearLength;
 			set
 			{
-				if (value >= 0.0)
+				if (_yearLength >= 0.0)
 				{
 					_yearLength = value;
 				}

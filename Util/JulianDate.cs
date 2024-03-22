@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace Mhora.Util
 {
 	[JsonObject]
-	public class JulianDate
+	public class JulianDate : ICloneable
 	{
 		private readonly int      _yearsBC;
 		private readonly double   _value;
@@ -44,6 +44,14 @@ namespace Mhora.Util
 			_date = new DateTime(year, month, day).AddHours(hours);
 		}
 
+		public bool IsEmpty
+		{
+			get
+			{
+				return (_value == 0);
+			}
+		}
+
 		public JulianDate(DateTime dateTime, int yearsBC = 0)
 		{
 			_yearsBC = yearsBC;
@@ -69,6 +77,11 @@ namespace Mhora.Util
 				return $"{_yearsBC}+{dateTime}";
 			}
 			return dateTime;
+		}
+
+		public object Clone()
+		{
+			return new JulianDate(_value);
 		}
 
 		public JulianDate Add(Time offset)
@@ -106,6 +119,16 @@ namespace Mhora.Util
 		public static JulianDate operator -(JulianDate jd, Time time)
 		{
 			return (jd.Sub(time));
+		}
+
+		public static JulianDate operator -(JulianDate jd, double days)
+		{
+			return (new JulianDate(jd._value - days));
+		}
+
+		public static JulianDate operator +(JulianDate jd, double days)
+		{
+			return (new JulianDate(jd._value + days));
 		}
 
 		public static bool operator < (JulianDate  jd, JulianDate value) => jd._value < value._value; 

@@ -101,7 +101,7 @@ namespace Mhora.Elements
 			sweph.SetEphePath(MhoraGlobalOptions.Instance.HOptions.EphemerisPath);
 			// Find LMT offset
 			// Basic grahas + Special lagnas (depend on sunrise)
-			PositionList = this.CalculateBodyPositions(Vara.Sunrise.Time.TotalHours);
+			PositionList = this.CalculateBodyPositions(Vara.Sunrise);
 			// Srilagna etc
 			PositionList.Add(this.CalculateSl());
 			PositionList.Add(this.CalculatePranapada());

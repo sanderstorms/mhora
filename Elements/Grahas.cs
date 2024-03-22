@@ -188,7 +188,7 @@ namespace Mhora.Elements
 			return (this[b2]);
 		}
 
-		public Longitude Calc(double ut, Body body, Body other, bool sub)
+		public Longitude Calc(JulianDate ut, Body body, Body other, bool sub)
 		{
 			var bp1 = Horoscope.CalculateSingleBodyPosition(ut, body.SwephBody(), body, BodyType.Graha);
 			var bp2 = Horoscope.CalculateSingleBodyPosition(ut, other.SwephBody(), other, BodyType.Graha);
@@ -200,9 +200,9 @@ namespace Mhora.Elements
 			return bp1.Longitude.Add(bp2.Longitude);
 		}
 
-		public Func<double, Ref<bool>, Longitude> Calc(Body body, Body other, bool sub)
+		public Func<JulianDate, Ref<bool>, Longitude> Calc(Body body, Body other, bool sub)
 		{
-			Longitude Fnc(double ut, Ref<bool> ret)
+			Longitude Fnc(JulianDate ut, Ref<bool> ret)
 			{
 				ret.Value = false;
 				return Calc(ut, body, other, sub);

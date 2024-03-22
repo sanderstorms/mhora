@@ -1298,7 +1298,7 @@ namespace Mhora.Elements
 			return 0;
 		}
 
-		public Longitude CalculateLongitude(double ut, Ref <bool> isRetro)
+		public Longitude CalculateLongitude(JulianDate ut, Ref <bool> isRetro)
 		{
 			if (this == Body.Lagna)
 			{

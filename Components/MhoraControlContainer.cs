@@ -225,7 +225,7 @@ public class MhoraControlContainer : UserControl
 				var dc         = new MhoraDasaControl(h, new TithiAshtottariDasa(h));
 				var td_pravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
 				dc.DasaOptions.YearType   = ToDate.DateType.FixedYear;
-				dc.DasaOptions.YearLength = td_pravesh.AddYears(1).ToJulian() - td_pravesh.AddYears(0).ToJulian();
+				dc.DasaOptions.YearLength = (td_pravesh.AddYears(1) - td_pravesh.AddYears(0)).TotalDays;
 
 				var tuo = (TithiAshtottariDasa.UserOptions) dc.DasaSpecificOptions;
 				tuo.UseTithiRemainder      = true;

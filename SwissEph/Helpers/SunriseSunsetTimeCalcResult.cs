@@ -1,4 +1,5 @@
 ﻿using System;
+using Mhora.Util;
 
 namespace Mhora.SwissEph.Helpers;
 
@@ -12,7 +13,7 @@ public class SunriseSunsetTimeCalcResult
 	/// <summary>
 	///     Время восхода/захода в формате юлианского дня (UTC).
 	/// </summary>
-	public double JulDay { get; init; }
+	public JulianDate JulDay { get; init; }
 
 	/// <summary>
 	///     Время восхода/захода (UTC).

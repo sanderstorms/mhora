@@ -342,17 +342,10 @@ public class MhoraPanchangaControl : MhoraControl
 		}
 	}
 
-	private DateTime utToMoment(double found_ut)
+	private string utTimeToString(JulianDate ut_event, JulianDate ut_sr, Time sunrise)
 	{
-		// turn into horoscope
-		found_ut += h.Info.DstOffset.TotalDays;
-		return found_ut.ToUtc();
-	}
-
-	private string utTimeToString(double ut_event, Time ut_sr, Time sunrise)
-	{
-		var m   = utToMoment(ut_event);
-		var hms = m.Time ();
+		var m   = ut_event.Utc(h);
+		var hms = m.Date.Time ();
 
 		if (ut_event >= (sunrise - sunrise / 24.0 + 1.0).TotalHours)
 		{
@@ -389,7 +382,7 @@ public class MhoraPanchangaControl : MhoraControl
 		{
 			sunrise = hCurr.Vara.Sunrise.Time,
 			sunset = sunset.Time,
-			sunrise_ut = sunrise
+			sunrise_ut = hCurr.Vara.Sunrise
 		};
 		local.wday = (Weekday) sweph.DayOfWeek(ut);
 
@@ -533,7 +526,7 @@ public class MhoraPanchangaControl : MhoraControl
 	private void DisplayEntry(PanchangaLocalMoments local)
 	{
 		string s;
-		var m = local.sunrise_ut.ToUtc();
+		var m = (DateTime) local.sunrise_ut;
 		mList.Items.Add(string.Format("{0}, {1}", local.wday, m.ToDateString()));
 
 		if (opts.ShowSunriset)

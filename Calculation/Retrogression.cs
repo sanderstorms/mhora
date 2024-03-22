@@ -40,7 +40,7 @@ public class Retrogression
 		}
 	}
 
-	public double GotoNextRetroSolarCusp(double ut)
+	public JulianDate GotoNextRetroSolarCusp(JulianDate ut)
 	{
 		return ut;
 #if DND
@@ -59,7 +59,7 @@ public class Retrogression
 #endif
 	}
 
-	public double FindClosestTransit(double ut, Longitude lonToFind)
+	public JulianDate FindClosestTransit(JulianDate ut, Longitude lonToFind)
 	{
 		var bp = _h.CalculateSingleBodyPosition(ut, _b.SwephBody(), _b, BodyType.Other);
 		while (bp.Longitude.CircLonLessThan(lonToFind))
@@ -79,7 +79,7 @@ public class Retrogression
 		return ut;
 	}
 
-	public double GetTransitBackward(double ut, Longitude lonToFind)
+	public JulianDate GetTransitBackward(JulianDate ut, Longitude lonToFind)
 	{
 		if (_b == Body.Lagna)
 		{
@@ -134,7 +134,7 @@ public class Retrogression
 		return 5.0;
 	}
 
-	public double GetLagnaTransitForward(double ut, Longitude lonToFind)
+	public JulianDate GetLagnaTransitForward(JulianDate ut, Longitude lonToFind)
 	{
 		var utStart = ut;
 		var utEnd   = ut;
@@ -146,8 +146,6 @@ public class Retrogression
 
 			var lonStart = GetLon(utStart);
 			var lonEnd   = GetLon(utEnd);
-
-			var m = utStart.ToUtc();
 
 			//Mhora.Log.Debug ("F {3} Lagna search for {0} between {1} and {2}",
 			//lonToFind, lon_start, lon_end, m);
@@ -161,7 +159,7 @@ public class Retrogression
 		return BinaryLonSearch(utStart, utEnd, lonToFind, true);
 	}
 
-	public double GetLagnaTransitBackward(double ut, Longitude lonToFind)
+	public JulianDate GetLagnaTransitBackward(JulianDate ut, Longitude lonToFind)
 	{
 		var utStart = ut;
 		var utEnd   = ut;
@@ -173,8 +171,6 @@ public class Retrogression
 
 			var lonStart = GetLon(utStart);
 			var lonEnd   = GetLon(utEnd);
-
-			var m = ut.ToUtc();
 
 			//Mhora.Log.Debug ("B {3} Lagna search for {0} between {1} and {2}",
 			//lonToFind, lon_start, lon_end, m);
@@ -188,7 +184,7 @@ public class Retrogression
 		return BinaryLonSearch(utEnd, utStart, lonToFind, true);
 	}
 
-	public double GetTransitForward(double ut, Longitude lonToFind)
+	public JulianDate GetTransitForward(JulianDate ut, Longitude lonToFind)
 	{
 		if (_b == Body.Lagna)
 		{
@@ -245,7 +241,7 @@ public class Retrogression
 		return bp.SpeedLongitude;
 	}
 
-	public Longitude GetLon(double ut, Ref <bool> bForward)
+	public Longitude GetLon(JulianDate ut, Ref <bool> bForward)
 	{
 		if (_b == Body.Lagna)
 		{
@@ -257,13 +253,13 @@ public class Retrogression
 		return bp.Longitude;
 	}
 
-	public Longitude GetLon(double ut)
+	public Longitude GetLon(JulianDate ut)
 	{
 		var bp = _h.CalculateSingleBodyPosition(ut, _b.SwephBody(), _b, BodyType.Other);
 		return bp.Longitude;
 	}
 
-	public double BinaryLonSearch(double utStart, double utEnd, Longitude lonToFind, bool normal)
+	public JulianDate BinaryLonSearch(JulianDate utStart, JulianDate utEnd, Longitude lonToFind, bool normal)
 	{
 		if (Math.Abs(utEnd - utStart) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0 * 60.0))
 		{
@@ -309,7 +305,7 @@ public class Retrogression
 		return BinaryLonSearch(utStart, utMiddle, lonToFind, normal);
 	}
 
-	public double BinaryCuspSearch(double utStart, double utEnd, bool normal)
+	public JulianDate BinaryCuspSearch(JulianDate utStart, JulianDate utEnd, bool normal)
 	{
 		if (Math.Abs(utEnd - utStart) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
 		{
@@ -351,7 +347,7 @@ public class Retrogression
 		return utEnd;
 	}
 
-	public double FindNextCuspBackward(double startUt, Ref <bool> becomesDirect)
+	public JulianDate FindNextCuspBackward(JulianDate startUt, Ref <bool> becomesDirect)
 	{
 		var utStep = 5.0;
 		var bp      = _h.CalculateSingleBodyPosition(startUt, _b.SwephBody(), _b, BodyType.Other);
@@ -425,7 +421,7 @@ public class Retrogression
 		}
 	}
 
-	public double FindNextCuspForward(double startUt, Ref <bool> becomesDirect)
+	public JulianDate FindNextCuspForward(JulianDate startUt, Ref <bool> becomesDirect)
 	{
 		var utStep = 1.0;
 		var bp      = _h.CalculateSingleBodyPosition(startUt, _b.SwephBody(), _b, BodyType.Other);

@@ -180,39 +180,6 @@ public partial class Horoscope : ICloneable
 		return Info.Clone();
 	}
 
-	public Time GetLmtOffset(double baseUt) 
-	{
-		var geopos = new double[3]
-		{
-			Info.Longitude,
-			Info.Latitude,
-			Info.Altitude
-		};
-
-		double     tret       = 0;
-		JulianDate midnightUt = baseUt - Info.DateOfBirth.Time ().TotalDays;
-		this.Lmt(midnightUt, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, ref tret);
-		JulianDate lmtNoon1   = tret;
-		Time lmtOffset1 = lmtNoon1 - (midnightUt + 12.0 / 24.0);
-		this.Lmt(midnightUt, sweph.SE_SUN, sweph.SE_CALC_MTRANSIT, geopos, 0.0, 0.0, ref tret);
-		JulianDate lmtNoon2   = tret;
-		Time lmtOffset2 = lmtNoon2 - (midnightUt + 12.0 / 24.0);
-
-		Time retLmtOffset = (lmtOffset1 + lmtOffset2) / 2.0;
-		//Mhora.Log.Debug("LMT: {0}, {1}", lmt_offset_1, lmt_offset_2);
-	
-		return retLmtOffset;
-#if DND
-			// determine offset from ephemeris time
-			lmt_offset = 0;
-			double tjd_et = baseUT + sweph.swe_deltat(baseUT);
-			System.Text.StringBuilder s = new System.Text.StringBuilder(256);
-			int ret = sweph.swe_time_equ(tjd_et, ref lmt_offset, s);
-#endif
-	}
-
-
-
 	public JulianDate[] GetHoraCuspsUt()
 	{
 		JulianDate[] cusps = null;

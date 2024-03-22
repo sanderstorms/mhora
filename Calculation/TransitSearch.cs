@@ -6,14 +6,14 @@ namespace Mhora.Calculation
 {
 	public static class TransitSearch
 	{
-		public static double LinearSearch(this double approxUt, Longitude lonToFind, Func<double, Ref<bool>, Longitude> func)
+		public static double LinearSearch(this double approxUt, Longitude lonToFind, Func<JulianDate, Ref<bool>, Longitude> func)
 		{
 			var dayStart = LinearSearchApprox(approxUt, lonToFind, func);
 			var dayFound = LinearSearchBinary(dayStart, dayStart + 1.0, lonToFind, func);
 			return dayFound;
 		}
 
-		public static double LinearSearchBinary(this double utStart, double utEnd, Longitude lonToFind, Func<double, Ref<bool>, Longitude> func)
+		public static double LinearSearchBinary(this double utStart, double utEnd, Longitude lonToFind, Func<JulianDate, Ref<bool>, Longitude> func)
 		{
 			Ref<bool> bDiscard = new(true);
 			if (Math.Abs(utEnd - utStart) < 1.0 / (24.0 * 60.0 * 60.0 * 60.0))
@@ -37,7 +37,7 @@ namespace Mhora.Calculation
 			return LinearSearchBinary(utStart, utMiddle, lonToFind, func);
 		}
 
-		public static double LinearSearchApprox(this double approxUt, Longitude lonToFind, Func<double, Ref<bool>, Longitude> func)
+		public static double LinearSearchApprox(this double approxUt, Longitude lonToFind, Func<JulianDate, Ref<bool>, Longitude> func)
 		{
 			Ref<bool> bDiscard = new(true);
 			var       ut       = Math.Floor(approxUt);

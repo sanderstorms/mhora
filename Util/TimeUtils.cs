@@ -62,13 +62,13 @@ public static class TimeUtils
 	public static DateTime StartNextYear(this DateTime dateTime) => new DateTime(dateTime.Year + 1, 1, 1, 0, 0, 0);
 	public static DateTime StartYear    (this DateTime dateTime) => new DateTime(dateTime.Year, 1, 1, 0, 0, 0);
 
-	public static DateTime Moment(this Horoscope h, double tjdUt)
+	public static DateTime Moment(this Horoscope h, JulianDate tjdUt)
 	{
 		tjdUt += h.Info.DstOffset.TotalDays;
-		return tjdUt.ToUtc();
+		return tjdUt;
 	}
 
-	public static double ToJulian(this DateTime dateTime)
+	public static JulianDate ToJulian(this DateTime dateTime)
 	{
 		return sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Time().TotalHours);
 	}
@@ -79,7 +79,7 @@ public static class TimeUtils
 		return new DateTime(year, month, day).AddHours(time);
 	}
 
-	public static double UniversalTime(this Horoscope h, DateTime dateTime)
+	public static JulianDate UniversalTime(this Horoscope h, DateTime dateTime)
 	{
 		return sweph.JulDay(dateTime.Year, dateTime.Month, dateTime.Day, (dateTime - h.Info.DstOffset).Time().TotalHours);
 	}

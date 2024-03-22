@@ -48,7 +48,7 @@ public class ToDate
 	private readonly double    _yearLength;
 	private          TimeSpan  _offset;
 
-	public ToDate(double jd, double yearLength, double compression, Horoscope h)
+	public ToDate(JulianDate jd, double yearLength, double compression, Horoscope h)
 	{
 		_h          = h;
 		_baseUt     = jd;
@@ -89,9 +89,9 @@ public class ToDate
 	}
 
 
-	public DateTime AddPraveshYears(double y, Func<double, Ref<bool>, Longitude> returnLonFunc, int numMonths, int numDays)
+	public DateTime AddPraveshYears(double y, Func<JulianDate, Ref<bool>, Longitude> returnLonFunc, int numMonths, int numDays)
 	{
-		var       jd       = 0.0;
+		JulianDate   jd       = 0.0;
 		int       year     = 0, month  = 0, day    = 0;
 		int       hour     = 0, minute = 0, second = 0;
 		double    dhour    = 0, lon    = 0;
@@ -120,7 +120,7 @@ public class ToDate
 		//Mhora.Log.Debug ("Searching for {0} {1} {2}", tYears, tMonths, tDays);
 		lon = _spos - soff;
 		l   = new Longitude(lon);
-		var ut = _h.Info.Jd + tYears * TimeUtils.SiderealYear.TotalDays;
+		var ut = (double) _h.Info.Jd + tYears * TimeUtils.SiderealYear.TotalDays;
 		jd  = ut.LinearSearch(l, sun.CalculateLongitude);
 		var yogaStart = returnLonFunc(jd, bDiscard).Value;
 		var yogaEnd   = returnLonFunc(_h.Info.Jd, bDiscard).Value;
@@ -143,7 +143,7 @@ public class ToDate
 		jd   =  jdSt.LinearSearch(l, returnLonFunc);
 		jd   += _h.Info.DstOffset.TotalDays;
 
-		return jd.ToUtc();
+		return jd;
 	}
 
 	public DateTime AddYears(TimeOffset years)
@@ -185,7 +185,7 @@ public class ToDate
 	private DateTime AddYearsInternal(double years)
 	{
 		DateTime  start;
-		double    jd;
+		JulianDate jd;
 		double    lon    = 0;
 		var       ut     = 0.0;
 		Longitude l      = null;
@@ -270,6 +270,6 @@ public class ToDate
 				break;
 		}
 
-		return jd.ToUtc();
+		return jd;
 	}
 }

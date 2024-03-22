@@ -16,14 +16,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using Mhora.Util;
+
 namespace Mhora.Components.PanchangaControl;
 
 public class PanchangaMomentInfo
 {
 	public int    info;
-	public double ut;
+	public JulianDate ut;
 
-	public PanchangaMomentInfo(double _ut, int _info)
+	public PanchangaMomentInfo(JulianDate _ut, int _info)
 	{
 		ut   = _ut;
 		info = _info;
