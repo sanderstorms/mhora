@@ -359,7 +359,7 @@ public class BasicCalculationsControl : MhoraControl
 			offset -= 12.0;
 		}
 
-		var t = (int) Math.Floor(val / 12.0) + 1;
+		var t = (int) (val / 12.0).Floor() + 1;
 		tithi = t;
 		perc  = 100 - offset / 12.0 * 100;
 		if (t == 15)
@@ -757,13 +757,13 @@ public class BasicCalculationsControl : MhoraControl
 	{
 		var rasi    = lon.ToZodiacHouse().ToString();
 		var offset  = lon.ToZodiacHouseOffset();
-		var minutes = Math.Floor(offset);
+		var minutes = offset.Floor();
 		offset = (offset - minutes) * 60.0;
-		var seconds = Math.Floor(offset);
+		var seconds = offset.Floor();
 		offset = (offset - seconds) * 60.0;
-		var subsecs = Math.Floor(offset);
+		var subsecs = offset.Floor();
 		offset = (offset - subsecs) * 60.0;
-		var subsubsecs = Math.Floor(offset);
+		var subsubsecs = offset.Floor();
 
 		return string.Format("{0:00} {1} {2:00}:{3:00}:{4:00}", minutes, rasi, seconds, subsecs, subsubsecs);
 	}

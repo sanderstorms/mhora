@@ -438,7 +438,7 @@ public class TransitSearch : MhoraControl
 	private Horoscope utToHoroscope(JulianDate found_ut, ref DateTime m2)
 	{
 		// turn into horoscope
-		found_ut += h.Info.DstOffset.TotalDays;
+		found_ut = found_ut.Lmt(h);
 		var m   = found_ut;
 		var inf = new HoraInfo(h.Info)
 		{
@@ -463,7 +463,7 @@ public class TransitSearch : MhoraControl
 	{
 		switch (b)
 		{
-			case Body.Sun:   return TimeUtils.SiderealYear.TotalDays;
+			case Body.Sun:   return Time.SiderealYear.TotalDays;
 			case Body.Moon:  return 28.0;
 			case Body.Lagna: return 1.0;
 		}
@@ -520,7 +520,7 @@ public class TransitSearch : MhoraControl
 		var          hTransit = utToHoroscope(curr_julday, ref m2);
 		var          fmt      = hTransit.Info.DateOfBirth.ToString();
 		ListViewItem li       = new TransitItem(hTransit);
-		li.Text = string.Format("{0}'s Prog: {2}+{3:00.00} deg", opts.SearchBody, totalProgressionOrig, (int) Math.Floor(totalProgressionOrig / 360.0), new Longitude(totalProgressionOrig).Value);
+		li.Text = string.Format("{0}'s Prog: {2}+{3:00.00} deg", opts.SearchBody, totalProgressionOrig, (int) (totalProgressionOrig / 360.0).Floor (), new Longitude(totalProgressionOrig).Value);
 		li.SubItems.Add(fmt);
 		ApplyLocal(hTransit.Info.DateOfBirth);
 
@@ -541,7 +541,7 @@ public class TransitSearch : MhoraControl
 
 		//Mhora.Log.Debug ("Progression lons are {0} and {1}", lon_start, lon_prog);
 
-		var dExpectedLon = ut_diff * 360.0 / TimeUtils.SiderealYear.TotalDays;
+		var dExpectedLon = ut_diff * 360.0 / Time.SiderealYear.TotalDays;
 		var lon_expected = lon_start.Add(dExpectedLon);
 
 		if (lon_expected.CircLonLessThan(lon_prog))
@@ -573,7 +573,7 @@ public class TransitSearch : MhoraControl
 
 		var dp                = h.GetPosition(opts.SearchBody).ToDivisionPosition(opts.Division);
 		var yearlyProgression = (dp.CuspHigher - dp.CuspLower) / 30.0;
-		var julday_ut         = opts.StartDate.ToJulian();
+		var julday_ut         = (JulianDate) opts.StartDate;
 
 		if (julday_ut <= h.Info.Jd)
 		{
@@ -630,7 +630,7 @@ public class TransitSearch : MhoraControl
 		var          hTransit = utToHoroscope(found_ut, ref m2);
 		var          fmt      = hTransit.Info.DateOfBirth.ToString();
 		ListViewItem li       = new TransitItem(hTransit);
-		li.Text = string.Format("{0}'s Prog: {2}+{3:00.00} deg", opts.SearchBody, totalProgressionOrig, (int) Math.Floor(totalProgressionOrig / 360.0), new Longitude(totalProgressionOrig).Value);
+		li.Text = string.Format("{0}'s Prog: {2}+{3:00.00} deg", opts.SearchBody, totalProgressionOrig, (int) (totalProgressionOrig / 360.0).Floor(), new Longitude(totalProgressionOrig).Value);
 		li.SubItems.Add(fmt);
 		mlTransits.Items.Add(li);
 		updateOptions();
@@ -682,7 +682,7 @@ public class TransitSearch : MhoraControl
 		var     found_lon = r.GetLon(found_ut, bForward);
 
 		// turn into horoscope
-		found_ut += h.Info.DstOffset.TotalDays;
+		found_ut = found_ut.Lmt(h);
 		var m   = (DateTime) found_ut;
 		var inf = new HoraInfo(h.Info)
 		{
@@ -903,7 +903,7 @@ public class TransitSearch : MhoraControl
 		var dp = h2.GetPosition(opts.SearchBody).ToDivisionPosition(opts.Division);
 		opts.TransitPoint = new Longitude(dp.CuspLower);
 
-		var found_ut = StartSearch(false) + h.Info.DstOffset.TotalDays;
+		var found_ut = StartSearch(false).Lmt(h);
 		UpdateDateForNextSearch(found_ut);
 		updateOptions();
 	}
@@ -923,7 +923,7 @@ public class TransitSearch : MhoraControl
 		opts.TransitPoint = new Longitude(dp.CuspHigher);
 		opts.TransitPoint = opts.TransitPoint.Add(1.0 / (60.0 * 60.0 * 60.0));
 
-		var found_ut = StartSearch(false) + h.Info.DstOffset.TotalDays;
+		var found_ut = StartSearch(false).Lmt(h);
 		UpdateDateForNextSearch(found_ut);
 		updateOptions();
 	}

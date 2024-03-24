@@ -40,7 +40,7 @@ namespace Mhora.Calculation
 		public static double LinearSearchApprox(this double approxUt, Longitude lonToFind, Func<JulianDate, Ref<bool>, Longitude> func)
 		{
 			Ref<bool> bDiscard = new(true);
-			var       ut       = Math.Floor(approxUt);
+			var       ut       = approxUt.Floor();
 			var       lon      = func(ut, bDiscard);
 
 			if (lon.CircularLonLessThan(lonToFind))

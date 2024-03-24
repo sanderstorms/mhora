@@ -233,7 +233,7 @@ public static class ShadBalas
 		{
 			var length = h.Vara.DayTime / 3;
 			var offset = (Time) h.Info.DateOfBirth.Time () - h.Vara.Sunrise.Time;
-			var part   = (int) Math.Floor((offset / length).TotalHours);
+			var part   = (int) ((offset / length).TotalHours).Floor();
 			switch (part)
 			{
 				case 0:
@@ -252,7 +252,7 @@ public static class ShadBalas
 			var length = h.Vara.NightTime / 3;
 			var offset = h.Info.DateOfBirth - h.Vara.Sunset;
 
-			var part = (int) Math.Floor((offset / length).TotalHours);
+			var part = (int) ((offset / length).TotalHours).Floor();
 			switch (part)
 			{
 				case 0:
@@ -302,13 +302,13 @@ public static class ShadBalas
 		var diff = ut_noon - ut_arghana;
 		if (diff >= 0)
 		{
-			var quo = Math.Floor(diff / 360.0);
+			int quo = (int) (diff / 360.0).Floor();
 			diff -= quo * 360.0;
 		}
 		else
 		{
 			var pdiff = -diff;
-			var quo   = Math.Ceiling(pdiff / 360.0);
+			var quo   = (pdiff / 360.0).Ceil();
 			diff += quo * 360.0;
 		}
 
@@ -368,7 +368,7 @@ public static class ShadBalas
 	public static double HoraBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
-		if (h.Info.UtcTob.HoraLord() == b)
+		if (h.Vara.HoraLord == b)
 		{
 			return 60.0;
 		}

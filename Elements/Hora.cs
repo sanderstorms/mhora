@@ -164,7 +164,7 @@ public static class Hora
 		var dayLord = dateTime.DayLord();
 		var index   = Array.IndexOf(Bodies.KalaOrder, dayLord);
 		var hour    = dateTime.Time().TotalHours;
-		var part    = (int) Math.Truncate(hour / 1.5);
+		var part    = (int) (hour / 1.5).Floor();
 
 		if (hour > 18)
 		{

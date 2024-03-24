@@ -105,7 +105,7 @@ public class Position
 	{
 		var l      = Longitude;
 		var offset = l.ToZodiacHouseOffset();
-		var part   = (int) Math.Floor(offset / (30.0 / n)) + 1;
+		var part   = (int) (offset / (30.0 / n)).Floor() + 1;
 		Trace.Assert(part >= 1 && part <= n);
 		return part;
 	}
@@ -218,7 +218,7 @@ public class Position
 	{
 		var cusps       = new Longitude[13];
 		var offset      = _h.GetPosition(Body.Lagna).Longitude.ToZodiacHouseOffset();
-		var padasOffset = (int) Math.Floor(offset / (360.0 / 108.0));
+		var padasOffset = (int) (offset / (360.0 / 108.0)).Floor();
 		var startOffset = padasOffset * (360.0 / 108.0);
 
 		for (var i = 0; i < 12; i++)

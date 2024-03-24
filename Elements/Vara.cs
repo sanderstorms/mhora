@@ -13,18 +13,18 @@ namespace Mhora.Elements
 		public Vara(Horoscope h)
 		{
 			Horoscope = h;
-			Jd        = new JulianDate(h.Info.UtcTob);
+			Jd        = h.Info.Jd;
 
 			JulianDate nextSunrise = h.CalcNextSolarEvent(sweph.EventType.SOLAR_EVENT_SUNRISE, Jd);
 
-			IsDayBirth        = CalcSunriseSunset(h, h.Info.Jd, out var sunrise, out var sunset, out var noon, out var midnight);
-			Sunrise           = sunrise.Lmt(h);
-			Sunset            = sunset.Lmt(h);
-			Noon              = noon.Lmt(h);
-			Midnight          = midnight.Lmt(h);
-			NextSunrise       = nextSunrise.Lmt(h);
-			HoursAfterSunrise = Jd.Date - sunrise;
-			HoursAfterSunRiseSet = IsDayBirth ? Jd.Date - sunrise : Jd.Date - sunset;
+			IsDayBirth           = CalcSunriseSunset(h, h.Info.Jd, out var sunrise, out var sunset, out var noon, out var midnight);
+			Sunrise              = sunrise.Lmt(h);
+			Sunset               = sunset.Lmt(h);
+			Noon                 = noon.Lmt(h);
+			Midnight             = midnight.Lmt(h);
+			NextSunrise          = nextSunrise.Lmt(h);
+			HoursAfterSunrise    = Jd.Date - sunrise;
+			HoursAfterSunRiseSet = IsDayBirth ? sunset - Jd.Date : Jd.Date - sunset;
 
 			LmtSunrise = Sunrise.Date.Lstm(h).Time();
 			LmtSunset  = Sunset.Date.Lstm(h).Time();
@@ -182,11 +182,11 @@ namespace Mhora.Elements
 			}
 
 
-			var span = 24.0 / (dayParts * 2);
+			Time span = 24.0 / (dayParts * 2);
 
 			for (var i = 0; i <= dayParts * 2; i++)
 			{
-				ret[i] = srLmtUt + span * i;
+				ret[i] = srLmtUt + (span * i);
 			}
 
 			return ret;

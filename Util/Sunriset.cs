@@ -377,7 +377,7 @@ public static class Sunriset
 	/// <returns></returns>
 	private static double Revolution(double x)
 	{
-		return x - 360.0 * Math.Floor(x * Inv360);
+		return x - 360.0 * (x * Inv360).Floor();
 	}
 
 	/// <summary>
@@ -387,7 +387,7 @@ public static class Sunriset
 	/// <returns></returns>
 	private static double Rev180(double x)
 	{
-		return x - 360.0 * Math.Floor(x * Inv360 + 0.5);
+		return x - 360.0 * (x * Inv360 + 0.5).Floor();
 	}
 
 	/// <summary>

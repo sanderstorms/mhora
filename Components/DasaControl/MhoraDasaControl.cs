@@ -220,7 +220,6 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 		_dasaItemList.Items.Clear();
 		SetDasaYearType();
 		_minCycle = _maxCycle = 0;
-		var compress          = DasaOptions.Compression == 0.0 ? 0.0 : DasaOptions.Compression / _id.ParamAyus();
 
 		var a = _id.Dasa(0);
 		foreach (DasaEntry de in a)
@@ -960,7 +959,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void SetDasaYearType()
 	{
-		var compress = DasaOptions.Compression == 0.0 ? 0.0 : DasaOptions.Compression / _id.ParamAyus();
+		var compress = DasaOptions.Compression == 0.0 ? 0.0 :  _id.ParamAyus() / DasaOptions.Compression;
 		if (DasaOptions.YearType == ToDate.DateType.FixedYear) // ||
 			//mDasaOptions.YearType == ToDate.DateType.TithiYear)
 		{
@@ -1056,13 +1055,13 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mFixedYears365_Click(object sender, EventArgs e)
 	{
-		if (DasaOptions.YearType == ToDate.DateType.FixedYear && DasaOptions.YearLength == TimeUtils.SiderealYear.TotalDays)
+		if (DasaOptions.YearType == ToDate.DateType.FixedYear && DasaOptions.YearLength == Time.SiderealYear.TotalDays)
 		{
 			return;
 		}
 
 		DasaOptions.YearType   = ToDate.DateType.FixedYear;
-		DasaOptions.YearLength = TimeUtils.SiderealYear.TotalDays;
+		DasaOptions.YearLength = Time.SiderealYear.TotalDays;
 		SetDasaYearType();
 		Reset();
 	}
@@ -1207,15 +1206,15 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 		DasaOptions.YearType = ToDate.DateType.YogaYear;
 		var    tdPravesh     = new ToDate(h.Info.Jd, ToDate.DateType.YogaPraveshYear, 360.0, 0, h);
 		var    tdYoga        = new ToDate(h.Info.Jd, ToDate.DateType.YogaYear, 324.0, 0, h);
-		var    dateToSurpass = tdPravesh.AddYears(1).ToJulian() - 5;
-		var    dateCurrent   = tdYoga.AddYears(0).ToJulian();
+		var    dateToSurpass = (JulianDate) tdPravesh.AddYears(1) - 5;
+		var    dateCurrent   = (JulianDate) tdYoga.AddYears(0);
 		double months        = 0;
 		while (dateCurrent < dateToSurpass)
 		{
 			Application.Log.Debug("{0} > {1}", h.Moment(dateCurrent), h.Moment(dateToSurpass));
 
 			months++;
-			dateCurrent = tdYoga.AddYears(months / 12.0).ToJulian();
+			dateCurrent = tdYoga.AddYears(months / 12.0);
 		}
 		DasaOptions.Compression = 1;
 		DasaOptions.YearLength  = (int) months * 27;

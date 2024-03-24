@@ -142,7 +142,7 @@ public class Retrogression
 		while (true)
 		{
 			utStart = utEnd;
-			utEnd   = utStart + 1.0 / 24.0;
+			utEnd   = utStart + TimeSpan.FromHours(1);
 
 			var lonStart = GetLon(utStart);
 			var lonEnd   = GetLon(utEnd);
@@ -167,7 +167,7 @@ public class Retrogression
 		while (true)
 		{
 			utStart = utEnd;
-			utEnd   = utStart - 1.0 / 24.0;
+			utEnd   = utStart - TimeSpan.FromHours(1);
 
 			var lonStart = GetLon(utStart);
 			var lonEnd   = GetLon(utEnd);

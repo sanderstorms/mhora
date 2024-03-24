@@ -100,7 +100,7 @@ public class VargaRectificationForm : Form
 	private DateTime utToMoment(JulianDate found_ut)
 	{
 		// turn into horoscope
-		found_ut += h.Info.DstOffset.TotalDays;
+		found_ut = found_ut.Lmt(h);
 		var m = found_ut;
 		return m;
 	}

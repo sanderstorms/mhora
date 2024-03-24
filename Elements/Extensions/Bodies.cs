@@ -21,6 +21,7 @@ using System.Diagnostics;
 using Mhora.Calculation;
 using Mhora.Definitions;
 using Mhora.SwissEph;
+using Mhora.Util;
 
 namespace Mhora.Elements.Extensions;
 
@@ -29,6 +30,54 @@ namespace Mhora.Elements.Extensions;
 /// </summary>
 public static class Bodies
 {
+	public static readonly Time[] Cycle = new Time[10];
+
+	static Bodies()
+	{
+		Cycle[Body.Lagna.Index()]   = TimeSpan.FromDays(1);
+		Cycle[Body.Moon.Index()]    = TimeSpan.FromDays(27);
+		Cycle[Body.Sun.Index()]     = TimeSpan.FromDays(360);
+		Cycle[Body.Mercury.Index()] = Cycle[Body.Moon.Index()] * 12;
+		Cycle[Body.Venus.Index()]   = Cycle[Body.Moon.Index()] * 12;
+		Cycle[Body.Mars.Index()]    = Cycle[Body.Moon.Index()] * 18;
+		Cycle[Body.Mars.Index()]    = Cycle[Body.Moon.Index()] * 18;
+		Cycle[Body.Jupiter.Index()] = Cycle[Body.Sun.Index()]  * 13;
+		Cycle[Body.Rahu.Index()]    = Cycle[Body.Sun.Index()]  * 18;
+		Cycle[Body.Ketu.Index()]    = Cycle[Body.Sun.Index()]  * 18;
+		Cycle[Body.Saturn.Index()]  = Cycle[Body.Sun.Index()]  * 30;
+	}
+
+	public static Time TransitPeriod(this Body body, Body other)
+	{
+		var transitTime = Cycle[body.Index()];
+
+		if (transitTime > Cycle[other.Index()])
+		{
+			var period = transitTime / Cycle[other.Index()];
+			return Cycle[other.Index()] + period;
+		}
+		return other.TransitPeriod(body);
+	}
+
+	public static TimeSpan ConvertTimeTo(this Body body, Time time, Body other)
+	{
+		var from = Cycle[body.Index()];
+		var to   = Cycle[other.Index()];
+		time /= from;
+		time *= to;
+		return time;
+	}
+
+	public static TimeSpan ConvertTimeFrom(this Body body, Time time, Body other)
+	{
+		var to   = Cycle[body.Index()];
+		var from = Cycle[other.Index()];
+		time /= from;
+		time *= to;
+		return time;
+	}
+
+
 	public static readonly Body[] HoraOrder =
 	{
 		Body.Sun,

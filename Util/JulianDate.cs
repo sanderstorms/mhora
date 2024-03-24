@@ -55,7 +55,7 @@ namespace Mhora.Util
 		public JulianDate(DateTime dateTime, int yearsBC = 0)
 		{
 			_yearsBC = yearsBC;
-			_date    = dateTime;
+			_date    = DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified);
 
 			var year = _date.Year + _yearsBC;
 
@@ -68,6 +68,8 @@ namespace Mhora.Util
 		public DateTime Date     => _date;
 		[JsonIgnore]
 		public Time     Time     => _date.Time();
+		[JsonIgnore]
+		public double Value => _value;
 
 		public override string ToString()
 		{
@@ -104,6 +106,11 @@ namespace Mhora.Util
 		public static implicit operator JulianDate(double jd)
 		{
 			return new JulianDate(jd);
+		}
+
+		public static implicit operator JulianDate(DateTime dateTime)
+		{
+			return new JulianDate(dateTime);
 		}
 
 		public static implicit operator DateTime(JulianDate jd)

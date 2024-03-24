@@ -73,15 +73,15 @@ public class TithiPraveshDasa : Dasa, IDasa
 	{
 		if (pdi.Level == 2)
 		{
-			var l  = _h.CalculateBodyLongitude(start.ToJulian(), Body.Sun.SwephBody());
+			var l  = _h.CalculateBodyLongitude(start, Body.Sun.SwephBody());
 			var zh = l.ToZodiacHouse();
 			return zh.ToString();
 		}
 
 		if (pdi.Level == 3)
 		{
-			var lSun  = _h.CalculateBodyLongitude(start.ToJulian(), Body.Sun.SwephBody());
-			var lMoon = _h.CalculateBodyLongitude(start.ToJulian(), Body.Moon.SwephBody());
+			var lSun  = _h.CalculateBodyLongitude(start, Body.Sun.SwephBody());
+			var lMoon = _h.CalculateBodyLongitude(start, Body.Moon.SwephBody());
 			var l     = lMoon.Sub(lSun);
 			var t     = l.ToTithi();
 			return t.ToString();

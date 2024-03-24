@@ -196,7 +196,7 @@ namespace Mhora.Dasas.NakshatraDasa
 	    public static int DasaPackDirect(this ZodiacHouse zh, int cycle, out ZodiacHouse bhukti)
 	    {
 		    var progression = ((zh.Index() - 1) * 9)                 + 1 + cycle;
-		    var dp          = (int) Math.Ceiling(progression / 12.0) - 1;
+		    var dp          = (int) (progression / 12.0).Ceil() - 1;
 		    
 		    bhukti      = (ZodiacHouse) progression.NormalizeInc(1, 12);
 		    return (dp);
@@ -221,7 +221,7 @@ namespace Mhora.Dasas.NakshatraDasa
 		    var index       = zh.Indirect().Index();
 		    var progression = ((index - 1) * 9) + 1 + cycle;
 
-		    var dp          = (int) Math.Ceiling(progression / 12.0) - 1;
+		    var dp          = (int) (progression / 12.0).Ceil() - 1;
 		    bhukti = (ZodiacHouse)progression.NormalizeInc(1, 12);
 		    bhukti = bhukti.Invert();
 		    return (dp);

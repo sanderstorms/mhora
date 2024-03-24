@@ -193,9 +193,6 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	}
 
 	[JsonIgnore]
-	public DateTime UtcTob => TimeZoneInfo.ConvertTimeToUtc(_tob, City.Country.TimeZone.TimeZoneInfo);
-
-	[JsonIgnore]
 	public TimeSpan UtcOffset => City.Country.TimeZone.TimeZoneInfo.BaseUtcOffset;
 
 	[JsonIgnore]
@@ -209,8 +206,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 		{
 			if (_jd.IsEmpty)
 			{
-				_jd = new JulianDate(UtcTob);
-				//_jd += GetLmtOffset(_jd);
+				_jd = TimeZoneInfo.ConvertTimeToUtc(_tob, City.Country.TimeZone.TimeZoneInfo);
 			}
 			return _jd;
 		}

@@ -11,7 +11,7 @@ public static class CuspTransitSearch
 	{
 		switch (b)
 		{
-			case Body.Sun:   return (decimal) TimeUtils.SiderealYear.TotalDays;
+			case Body.Sun:   return (decimal) Time.SiderealYear.TotalDays;
 			case Body.Moon:  return 28;
 			case Body.Lagna: return 1;
 		}

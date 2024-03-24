@@ -274,21 +274,21 @@ public class KeyInfoControl : MhoraControl
 		}
 		{
 			li = new ListViewItem("Hora lord");
-			var b = h.Info.UtcTob.HoraLord();
+			var b   = h.Vara.HoraLord;
 			var fmt = $"{b}";
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
 			li = new ListViewItem("Kala");
-			var b   = h.Info.UtcTob.KalaLord();
+			var b   = h.Vara.KalaLord;
 			var fmt = string.Format("{0}", b);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
 			li = new ListViewItem("Muhurta");
-			var mIndex = (int) (Math.Floor((h.Vara.HoursAfterSunrise / h.Vara.Length * 30.0).TotalHours) + 1);
+			var mIndex = (int) ((h.Vara.HoursAfterSunrise / h.Vara.Length * 30.0).TotalHours).Floor() + 1;
 			var m      = (Muhurta) mIndex;
 			var fmt    = string.Format("{0} ({1})", m, m.NakLordOfMuhurta());
 			li.SubItems.Add(fmt);
@@ -303,7 +303,7 @@ public class KeyInfoControl : MhoraControl
 			mList.Items.Add(li);
 		}
 		{
-			var vgOff = (int) Math.Ceiling((h.Vara.HoursAfterSunRiseSet * 150.0).TotalHours);
+			var vgOff = (int) ((h.Vara.HoursAfterSunRiseSet * 150.0).TotalHours).Ceil();
 			vgOff = vgOff % 9;
 			if (vgOff == 0)
 			{
@@ -318,29 +318,25 @@ public class KeyInfoControl : MhoraControl
 		}
 		{
 			var lmtOffset = h.Info.DateOfBirth.LmtOffset(h);
-			li = new ListViewItem("LMT Offset");
+			li   = new ListViewItem("LMT Offset");
 
-			var fmt = string.Format(" ({0:00.00} minutes)", lmtOffset.TotalHours * 60);
-			li.SubItems.Add(fmt);
+			var fmt2 = string.Format(" ({0:00.00} minutes)", lmtOffset.TotalMinutes);
+			li.SubItems.Add(lmtOffset + fmt2);
+
 			mList.Items.Add(li);
 		}
 		{
 			li = new ListViewItem("Ayanamsa");
 			var aya      = sweph.GetAyanamsaUT(h.Info.Jd);
-			var aya_hour = (int) Math.Floor(aya);
-			aya = (aya - Math.Floor(aya)) * 60.0;
-			var aya_min = (int) Math.Floor(aya);
-			aya = (aya - Math.Floor(aya)) * 60.0;
+			var aya_hour = (int) aya.Floor();
+			aya = (aya - aya.Floor()) * 60.0;
+			var aya_min = (int) aya.Floor();
+			aya = (aya - aya.Floor()) * 60.0;
+
 			var fmt = string.Format("{0:00}-{1:00}-{2:00.00}", aya_hour, aya_min, aya);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
-		{
-			li = new ListViewItem("Universal Time");
-			li.SubItems.Add(h.Info.Jd.ToString());
-			mList.Items.Add(li);
-		}
-
 
 		ColorAndFontRows(mList);
 	}

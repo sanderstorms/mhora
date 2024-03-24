@@ -149,7 +149,7 @@ public class Jhd : IFileToHoraInfo
 		}
 
 		var dhour = double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture);
-		dhour  = dhour < 0 ? Math.Ceiling(dhour) : Math.Floor(dhour);
+		dhour  = dhour.Floor();
 		hour   = (int) dhour;
 		min = int.Parse(s2.Substring(0, 2));
 		var second = 0.0;

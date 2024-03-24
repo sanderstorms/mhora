@@ -39,7 +39,7 @@ public class ToDate
 		NakshatraPraveshYear
 	}
 
-	private readonly double    _baseUt;
+	private readonly JulianDate _baseUt;
 	private readonly double    _compression;
 	private readonly Horoscope _h;
 	private readonly double    _mpos;
@@ -64,7 +64,7 @@ public class ToDate
 		}
 	}
 
-	public ToDate(double jd, DateType type, double yearLength, double compression, Horoscope h)
+	public ToDate(JulianDate jd, DateType type, double yearLength, double compression, Horoscope h)
 	{
 		_baseUt     = jd;
 		_type       = type;
@@ -111,16 +111,16 @@ public class ToDate
 		tYears  = 0;
 		tMonths = 0;
 		tDays   = 0;
-		tYears  = Math.Floor(years);
-		years  = (years - Math.Floor(years)) * numMonths;
-		tMonths = Math.Floor(years);
-		years  = (years - Math.Floor(years)) * numDays;
+		tYears  = years.Floor();
+		years  = (years - years.Floor()) * numMonths;
+		tMonths = years.Floor();
+		years  = (years - years.Floor()) * numDays;
 		tDays   = years;
 
 		//Mhora.Log.Debug ("Searching for {0} {1} {2}", tYears, tMonths, tDays);
 		lon = _spos - soff;
 		l   = new Longitude(lon);
-		var ut = (double) _h.Info.Jd + tYears * TimeUtils.SiderealYear.TotalDays;
+		var ut = (double) _h.Info.Jd + tYears * Time.SiderealYear.TotalDays;
 		jd  = ut.LinearSearch(l, sun.CalculateLongitude);
 		var yogaStart = returnLonFunc(jd, bDiscard).Value;
 		var yogaEnd   = returnLonFunc(_h.Info.Jd, bDiscard).Value;
@@ -141,7 +141,7 @@ public class ToDate
 		l    =  l.Add(new Longitude(tDays * (360.0 / numDays)));
 		jdSt =  jd + tDays; // * 25.0/30.0;
 		jd   =  jdSt.LinearSearch(l, returnLonFunc);
-		jd   += _h.Info.DstOffset.TotalDays;
+		jd   = jd.Lmt(_h);
 
 		return jd;
 	}
@@ -176,10 +176,14 @@ public class ToDate
 		return AddYears(timeOffset);
 	}
 
-	private DateTime _AddYearsInternal(double ut, double years)
+	private DateTime _AddYearsInternal(JulianDate ut, double years)
 	{
 		years *= _yearLength;
-		return TimeUtils.CalculateDate(ut, years).Add(_offset);
+		var dateTime = ut.Date;
+		var offset   = new TimeOffset(years);
+		dateTime = dateTime.AddYears(offset.Years);
+
+		return dateTime + offset.Remainder;
 	}
 
 	private DateTime AddYearsInternal(double years)
@@ -203,7 +207,7 @@ public class ToDate
 			case DateType.SolarYear:
 				// Turn into years of 360 degrees, and then search
 				l  = new Longitude(_spos);
-				jd = _baseUt.LinearSearch(l, sun.CalculateLongitude);
+				jd = _baseUt.Value.LinearSearch(l, sun.CalculateLongitude);
 				break;
 			case DateType.TithiPraveshYear:
 				return AddPraveshYears(years, grahas.Calc(Body.Moon, Body.Sun, true), 13, 30);
@@ -245,17 +249,17 @@ public class ToDate
 				yogaBase =  yogaBase.Add(new Longitude(yogaDays * (360.0 / 27.0)));
 				ut       =  jd + yogaDays * 28.0 / 30.0;
 				jd       =  ut.LinearSearch(yogaBase, grahas.Calc(Body.Moon, Body.Sun, false));
-				jd       += _h.Info.DstOffset.TotalDays;
+				jd       =  jd.Lmt(_h);
 				break;
 			default:
 				//years = years * yearLength;
 				if (years >= 0)
 				{
-					lon = (years - Math.Floor(years)) * 4320;
+					lon = (years - years.Floor()) * 4320;
 				}
 				else
 				{
-					lon = (years - Math.Ceiling(years)) * 4320;
+					lon = (years - years.Ceil()) * 4320;
 				}
 
 				lon        *= _yearLength / 360.0;

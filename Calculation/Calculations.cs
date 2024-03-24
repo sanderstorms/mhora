@@ -119,7 +119,7 @@ namespace Mhora.Calculation
 
 		public static SunMoonYoga ToSunMoonYoga(this Longitude l)
 		{
-			var smIndex = (int) (Math.Floor(l.Value / (360M / 27)) + 1);
+			var smIndex = (int) (l.Value / (360M / 27)).Floor () + 1;
 			var smYoga  = (SunMoonYoga) smIndex;
 			return smYoga;
 		}

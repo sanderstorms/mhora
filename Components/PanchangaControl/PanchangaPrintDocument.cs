@@ -165,15 +165,9 @@ public class PanchangaPrintDocument : PrintDocument
 		checkForMorePages(e);
 	}
 
-	private DateTime utToMoment(double found_ut)
+	private string utTimeToString(JulianDate ut_event, double ut_sr, double sunrise)
 	{
-		found_ut += h.Info.DstOffset.TotalDays;
-		return found_ut.ToUtc();
-	}
-
-	private string utTimeToString(double ut_event, double ut_sr, double sunrise)
-	{
-		var m   = utToMoment(ut_event);
+		var m   = h.Moment(ut_event);
 		var hms = m.Time ();
 
 		if (ut_event >= ut_sr - sunrise / 24.0 + 1.0)
@@ -299,7 +293,7 @@ public class PanchangaPrintDocument : PrintDocument
 
 			if (opts.CalcKaranaCusps)
 			{
-				numLines = Math.Max(numLines, (int) Math.Ceiling(numKaranas / 2.0));
+				numLines = Math.Max(numLines, (int) (numKaranas / 2.0).Ceil());
 				for (var j = 0; j < numKaranas; j++)
 				{
 					var pmi         = globals.karanas_ut[local.karana_index_start + 1 + j];

@@ -197,13 +197,12 @@ public class AzimuthCalculator
 		var dT       = GetAltitudeCorrection(position.Altitude) / (15 * Math.Cos(ToRad(position.Latitude)) * Math.Sin(ToRad(coord.Coordinates.Azimuth)));
 		var timeBase = coord.JulDay.Date;
 		var time     = timeBase.AddMinutes(dT);
-		var jday     = time.ToJulian();
 
 		return new SunriseSunsetTimeCalcResult
 		{
 			dT       = dT,
 			DateTime = timeBase.AddMinutes(dT),
-			JulDay   = jday
+			JulDay   = time
 		};
 	}
 

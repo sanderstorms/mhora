@@ -34,14 +34,19 @@ namespace Mhora.Util
 			_timeSpan = timeSpan;
 		}
 
+		public Time AddDays(double days)
+		{
+			return new Time(_timeSpan + TimeSpan.FromDays(days));
+		}
+
 		public Time Add(double hours)
 		{
-			return new Time(_timeSpan.TotalHours + hours);;
+			return new Time(_timeSpan.TotalHours + hours);
 		}
 
 		public Time Sub(double hours)
 		{
-			return new Time(_timeSpan.TotalHours - hours);;
+			return new Time(_timeSpan.TotalHours - hours);
 		}
 
 		public Time Mul(double hours)
@@ -54,8 +59,27 @@ namespace Mhora.Util
 			return new Time(_timeSpan.TotalHours / hours);
 		}
 
-		public double TotalDays  => _timeSpan.TotalDays;
-		public double TotalHours => _timeSpan.TotalHours;
+		public static Time SiderealYear    => TimeSpan.FromDays(365.256363004);
+		public static Time TropicalYear    => TimeSpan.FromDays(365.24219);
+		public static Time AnomalisticYear => TimeSpan.FromDays(365.259636);
+
+		public Time Zero => new ();
+		public bool IsZero => _timeSpan.TotalHours == 0;
+		public int Years        => (int) (_timeSpan.TotalDays / 360);
+		public int Days         => _timeSpan.Days % 360;
+		public int Hours        => _timeSpan.Hours;
+		public int Minutes      => _timeSpan.Minutes;
+		public int Seconds      => _timeSpan.Seconds;
+		public int MilliSeconds => _timeSpan.Milliseconds;
+
+		public double TotalSeconds => _timeSpan.TotalSeconds;
+		public double TotalMinutes => _timeSpan.TotalMinutes;
+		public double TotalHours   => _timeSpan.TotalHours;
+		public double TotalDays    => _timeSpan.TotalDays;
+
+		public double TotalMonths   => TotalDays / 30;
+		public double SolarYears    => TotalDays / 360;
+		public double SiderealYears => TotalDays / SiderealYear.TotalDays;
 
 		//1 day or 24 hours = 60 Ghatis
 		public double Ghati => _timeSpan.TotalDays * 60;
@@ -72,7 +96,38 @@ namespace Mhora.Util
 
 		public override string ToString()
 		{
-			return _timeSpan.ToString();
+			var    sign = Math.Sign(TotalHours) < 0 ? "-" : "";
+			string str = string.Empty;
+			if (Hours != 0)
+			{
+				str = _timeSpan.ToString("h'h 'm'm 's's'");
+			}
+			else if (Minutes != 0)
+			{
+				str = _timeSpan.ToString("m'm 's's'");
+			}
+			else if (Seconds != 0)
+			{
+				str = _timeSpan.ToString("s's'");
+			}
+
+			if (MilliSeconds != 0)
+			{
+				var ms = Math.Abs(MilliSeconds);
+				str += $" {ms}ms";
+			}
+
+			if (Days != 0)
+			{
+				var days = Math.Abs(Days);
+				str = $"{days}d " + str;
+			}
+			if (Years != 0)
+			{
+				var years = Math.Abs(Years);
+				str = $"{years}y " + str;
+			}
+			return $"{sign}" + str;
 		}
 
 		public static Time operator +(Time time, Time other)
@@ -164,5 +219,5 @@ namespace Mhora.Util
 		{
 			return _timeSpan.Equals(other);
 		}
-    }
+	}
 }

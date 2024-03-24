@@ -155,7 +155,7 @@ public class SouthIndianChart : IDrawChart
 		var xiw = Hxs  / 4;
 		var yiw = Hsys / 6;
 
-		var row = (int) Math.Floor(n / (double) 3);
+		var row = (int) (n / 3.0).Floor();
 		var col = n - row * 3;
 
 		return new Point(xiw * row / 3, Hys / 4 + yiw * col / 3);
@@ -187,7 +187,7 @@ public class SouthIndianChart : IDrawChart
 		var xiw = Hxs / 4;
 		var yiw = Hys / 4;
 
-		var col = (int) Math.Floor(n / (double) 3);
+		var col = (int) (n / 3.0).Floor();
 		var row = n - col * 3;
 
 		return new Point(xiw * row / 3, yiw * col / 3);

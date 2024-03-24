@@ -16,16 +16,16 @@ namespace Mhora.Util
 		   _remainder = new Time();
 	   }
 
-	   public TimeOffset (DateTime dateTime)
-	   {
-		   _years     = dateTime.Year;
-		   _remainder = dateTime.StartNextYear() - dateTime;
-	   }
-
 	   public TimeOffset (double years)
 	   {
-			_years     = (int) Math.Truncate (years);
-			_remainder = TimeUtils.RemainingDays (years); 
+			_years     = (int) (years).Floor();
+			var remainder = years - _years;
+			_remainder = TimeSpan.FromDays(Time.SiderealYear.TotalDays * remainder);
+			if (Remainder.TotalDays >= 365)
+			{
+				_years++;
+				_remainder -= TimeSpan.FromDays(1);
+			}
 	   }
 
 	   public TimeOffset(TimeOffset offset)
@@ -47,7 +47,7 @@ namespace Mhora.Util
 
 	   public override string ToString()
 	   {
-		   return $"{_years}.{_remainder}";
+		   return $"{_years}y{_remainder}";
 	   }
 
 	   //public static implicit operator double(TimeOffset offset) => offset.TotalYears;
@@ -64,7 +64,7 @@ namespace Mhora.Util
 		   get
 		   {
 			   var result = (double) _years;
-			   result += (_remainder.TotalDays / TimeUtils.SiderealYear.TotalDays);
+			   result += (_remainder.TotalDays / 365);
 			   return (result);
 		   }
 	   }

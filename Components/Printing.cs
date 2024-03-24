@@ -79,7 +79,7 @@ public class MhoraPrintDocument : PrintDocument
 			alVargas.Add(new Division((DivisionType) i));
 		}
 
-		numVargaPages = (int) Math.Ceiling(alVargas.Count / 6.0);
+		numVargaPages = (int) (alVargas.Count / 6.0).Ceil();
 
 		base.OnBeginPrint(e);
 	}
@@ -241,7 +241,7 @@ public class MhoraPrintDocument : PrintDocument
 
 			g.DrawString(s, f, b, 0, 0);
 			var alAntar = id.AntarDasa(de);
-			for (var j = 0; j < (int) Math.Ceiling(alAntar.Count / (double) num_entries_per_line); j++)
+			for (var j = 0; j < (int) (alAntar.Count / (double)num_entries_per_line).Ceil(); j++)
 			{
 				g.ResetTransform();
 				g.TranslateTransform(left, top);
@@ -550,7 +550,7 @@ public class MhoraPrintDocument : PrintDocument
 		// Yoga, Hora
 		var smLon  = h.GetPosition(Body.Sun).Longitude.Add(h.GetPosition(Body.Moon).Longitude);
 		var smYoga = smLon.ToSunMoonYoga();
-		var bHora  = h.Info.UtcTob.HoraLord();
+		var bHora  = h.Vara.HoraLord;
 		PrintString(string.Format("{0} Yoga, {1} Hora", smYoga, bHora));
 
 

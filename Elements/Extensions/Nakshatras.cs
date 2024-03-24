@@ -249,7 +249,7 @@ public static class Nakshatras
 	public static int NakshatraPada(this Longitude l)
 	{
 		var offset = l.NakshatraOffset();
-		var val    = (int) Math.Floor(offset / (360.0 / (27.0 * 4.0))) + 1;
+		var val    = (int) (offset / (360.0 / (27.0 * 4.0))).Floor() + 1;
 		Trace.Assert(val >= 1 && val <= 4);
 		return val;
 	}
