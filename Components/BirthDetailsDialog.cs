@@ -82,12 +82,11 @@ public partial class BirthDetailsDialog : Form
 			var time   = timePicker.Value;
 			var moment = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
 
-			var info   = new HoraInfo
+			var info   = new HoraInfo (City)
 			{
 				DateOfBirth = moment,
 				Latitude    = MhoraGlobalOptions.Instance.Latitude,
 				Longitude   = MhoraGlobalOptions.Instance.Longitude,
-				City        = City,
 			};
 			return info;
 		}
@@ -96,15 +95,17 @@ public partial class BirthDetailsDialog : Form
 			_info                = value;
 			dateTimePicker.Value = value.DateOfBirth;
 			timePicker.Value     = value.DateOfBirth;
-			var query  = Query.From<City>().Where(city => city.Id == value.City.Id).SelectAll();
-			var cities = Application.WorldDb.Load<City>(query.ToString()).ToArray();
-			if (cities.Length > 0)
+			if (value.City != null)
 			{
-				comboBoxCountry.SelectedItem = _countries.Find(country => country.Id == cities[0].Country.Id);
-				comboBoxState.SelectedItem   = _states.Find(state => state.Id        == cities[0].StateId);
-				comboBoxCity.SelectedItem    = _cities.Find(city => city.Id          == cities[0].Id);
+				var query  = Query.From<City>().Where(city => city.Id == value.City.Id).SelectAll();
+				var cities = Application.WorldDb.Load<City>(query.ToString()).ToArray();
+				if (cities.Length > 0)
+				{
+					comboBoxCountry.SelectedItem = _countries.Find(country => country.Id == cities[0].Country.Id);
+					comboBoxState.SelectedItem   = _states.Find(state => state.Id        == cities[0].StateId);
+					comboBoxCity.SelectedItem    = _cities.Find(city => city.Id          == cities[0].Id);
+				}
 			}
-
 		}
 	}
 

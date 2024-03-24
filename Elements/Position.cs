@@ -23,6 +23,7 @@ using System.Diagnostics;
 using Mhora.Calculation;
 using Mhora.Definitions;
 using Mhora.Elements.Extensions;
+using Mhora.SwissEph.Helpers;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -35,14 +36,16 @@ namespace Mhora.Elements;
 /// </summary>
 public class Position
 {
-	private static bool      _mbNadiamsaCknCalculated;
-	private static double[]  _mNadiamsaCusps;
-	private        Horoscope _h;
-	public         Body Name;
-	public         string    OtherString;
-	public         BodyType BodyType;
+	private readonly Horoscope _h;
+	private static   bool      _mbNadiamsaCknCalculated;
+	private static   double[]  _mNadiamsaCusps;
+	public           string    OtherString;
 
-	public Position(Horoscope h, Body aname, BodyType atype, Longitude lon, double lat, double dist, double splon, double splat, double spdist)
+	public readonly  BodyType              BodyType;
+	public readonly  Body                  Name;
+	public readonly  HorizontalCoordinates HorizontalCoordinates;
+
+	public Position(Horoscope h, Body body, BodyType bodyType, Longitude lon, double lat, double dist, double splon, double splat, double spdist)
 	{
 		Longitude      = lon;
 		Latitude       = lat;
@@ -50,10 +53,26 @@ public class Position
 		SpeedLongitude = splon;
 		SpeedLatitude  = splat;
 		SpeedDistance  = spdist;
-		Name           = aname;
-		BodyType       = atype;
-		_h              = h;
-		//Mhora.Log.Debug ("{0} {1} {2}", aname.ToString(), lon.value, splon);
+		Name           = body;
+		BodyType       = bodyType;
+		_h             = h;
+
+		if (BodyType == BodyType.Graha)
+		{
+			var geoPosition = new GeoPosition()
+			{
+				Longitude = h.Info.Longitude,
+				Latitude  = h.Info.Latitude,
+				Altitude  = h.Info.Altitude,
+			};
+
+			HorizontalCoordinates = SweApi.GetHorizontalCoordinates(h.Info.Jd, geoPosition, 0, 0,this);
+		}
+		else
+		{
+			HorizontalCoordinates = new HorizontalCoordinates();
+		}
+		//Mhora.Log.Debug ("{0} {1} {2}", body.ToString(), lon.value, splon);
 	}
 
 	public Longitude Longitude

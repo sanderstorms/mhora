@@ -196,7 +196,16 @@ public class KeyInfoControl : MhoraControl
 		mList.Items.Add(li);
 
 		li = new ListViewItem("Time Zone");
-		li.SubItems.Add(h.Info.City.Country.TimeZone.offsets[0]);
+		Time time = h.Info.DstOffset;
+		var  tz   = string.Empty;
+		if (time > 0)
+		{
+			tz = "+";
+		}
+
+		tz += time.TotalHours;
+
+		li.SubItems.Add(tz);
 		mList.Items.Add(li);
 
 		li = new ListViewItem("Latitude");

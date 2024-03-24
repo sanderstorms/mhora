@@ -26,6 +26,7 @@ using Mhora.Database.World;
 using Mhora.Elements;
 using Mhora.Util;
 using SqlNado.Query;
+using TimeZone = Mhora.Database.World.TimeZone;
 
 namespace Mhora.Components.File;
 
@@ -40,24 +41,25 @@ public class Jhd : IFileToHoraInfo
 
 	public HoraInfo ToHoraInfo()
 	{
-		var  sr        = System.IO.File.OpenText(_fname);
-		var  m         = ReadMomentLine(sr);
-		var  tz        = ReadHmsLineInfo(sr, true, true);
-		var  lon       = ReadHmsLineInfo(sr, true, true);
-		var  lat       = ReadHmsLineInfo(sr, false, false);
-		var  alt       = ReadHmsLineInfo(sr, false, true);
-		var  est       = ReadHmsLineInfo(sr, false, true);
-		var  dst       = ReadHmsLineInfo(sr, false, true);
-		var  i1        = ReadIntLine(sr);
-		var  i2        = ReadIntLine(sr);
-		var  cityName  = sr.ReadLine();
-		var  country   = sr.ReadLine();
-		City worldCity = null;
+		var      sr        = System.IO.File.OpenText(_fname);
+		var      m         = ReadMomentLine(sr);
+		var      tz        = ReadHmsLineInfo(sr, true, true);
+		var      lon       = ReadHmsLineInfo(sr, true, true);
+		var      lat       = ReadHmsLineInfo(sr, false, false);
+		var      alt       = ReadHmsLineInfo(sr, false, true);
+		var      est       = ReadHmsLineInfo(sr, false, true);
+		var      dst       = ReadHmsLineInfo(sr, false, true);
+		var      i1        = ReadIntLine(sr);
+		var      i2        = ReadIntLine(sr);
+		var      cityName  = sr.ReadLine();
+		var      country   = sr.ReadLine();
+		TimeZone timezone  = null;
+		City     worldCity = null;
 
 		var       query  = Query.From<City>().Where(city => city.Name.ToLower() == cityName.ToLower()).SelectAll();
 		var       cities = Application.WorldDb.Load<City>(query.ToString()).ToList();
 
-		if (cities?.Count > 0)
+		if (cities.Count > 0)
 		{
 			worldCity = cities[0];
 			foreach (var city in cities)
@@ -69,13 +71,23 @@ public class Jhd : IFileToHoraInfo
 				}
 			}
 		}
+		else
+		{
+			foreach (var entry in TimeZone.TimeZones.zones)
+			{
+				if (entry.DstOffset.TotalHours == (double) tz.Value)
+				{
+					timezone = entry;
+					break;
+				}
+			}
+		}
 
-		var hi = new HoraInfo
+		var hi = new HoraInfo (worldCity, timezone)
 		{
 			DateOfBirth = m,
 			Latitude    = (double) lat,
 			Longitude   = (double) lon,
-			City        = worldCity,
 			FileType    = HoraInfo.EFileType.JagannathaHora,
 			Name        = Path.GetFileNameWithoutExtension(_fname)
 		};
@@ -86,7 +98,7 @@ public class Jhd : IFileToHoraInfo
 	{
 		var sw = new StreamWriter(_fname, false);
 		WriteMomentLine(sw, h.DateOfBirth);
-		WriteHmsInfoLine(sw, h.City.Country.TimeZone.TimeZoneInfo.BaseUtcOffset.TotalHours);
+		WriteHmsInfoLine(sw, h.TimeZone.TimeZoneInfo.BaseUtcOffset.TotalHours);
 		WriteHmsInfoLine(sw, (double) h.Longitude);
 		WriteHmsInfoLine(sw, (double) h.Latitude);
 		sw.WriteLine("0.000000");

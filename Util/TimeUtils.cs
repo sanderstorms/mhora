@@ -34,7 +34,7 @@ public static class TimeUtils
         var tjd_et = jd + sweph.Deltat(jd);
         sweph.TimeEqu(tjd_et, out var eot);
         Time equationOfTime = TimeSpan.FromDays(eot);
-        var  lstm           = (h.Info.City.Country.TimeZone.Offset / 60.0) * 15.0;
+        var  lstm           = (h.Info.TimeZone.Offset / 60.0) * 15.0;
         var  localSolarTime = (double) (4.0 * (h.Info.Longitude - lstm)) + (equationOfTime.TotalHours * 60);
 
 		return TimeSpan.FromMinutes(localSolarTime);
@@ -57,7 +57,7 @@ public static class TimeUtils
 		{
 			dateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified);
 		}
-		return TimeZoneInfo.ConvertTimeFromUtc(dateTime, h.Info.City.Country.TimeZone.TimeZoneInfo);
+		return TimeZoneInfo.ConvertTimeFromUtc(dateTime, h.Info.TimeZone.TimeZoneInfo);
 	}
 
 	public static JulianDate Utc(this JulianDate jd, Horoscope h)
@@ -72,7 +72,7 @@ public static class TimeUtils
 		{
 			dateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified);
 		}
-		return TimeZoneInfo.ConvertTimeToUtc(dateTime, h.Info.City.Country.TimeZone.TimeZoneInfo);
+		return TimeZoneInfo.ConvertTimeToUtc(dateTime, h.Info.TimeZone.TimeZoneInfo);
 	}
 
 	public static int FromStringMonth(this string s)

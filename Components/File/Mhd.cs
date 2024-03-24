@@ -42,7 +42,7 @@ public class Mhd : IFileToHoraInfo
 	{
 		try
 		{
-			var hi        = new HoraInfo();
+			var hi        = new HoraInfo(null);
 			var sOut      = new FileStream(_fname, FileMode.Open, FileAccess.Read);
 			var formatter = new BinaryFormatter
 			{
@@ -55,7 +55,7 @@ public class Mhd : IFileToHoraInfo
 		catch
 		{
 			MessageBox.Show("Unable to read file");
-			return new HoraInfo();
+			return new HoraInfo(null);
 		}
 	}
 

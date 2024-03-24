@@ -74,21 +74,23 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	private DateTime  _tob;
 	private ChartType _type;
 
-	public HoraInfo()
+	public HoraInfo(City city, Database.World.TimeZone timezone = null)
 	{
-		_tob       = DateTime.Now;
-		Longitude  = MhoraGlobalOptions.Instance.Longitude;
-		Latitude   = MhoraGlobalOptions.Instance.Latitude;
-		Altitude   = 0.0;
-		_type      = ChartType.Birth;
-		FileType   = EFileType.MudgalaHora;
-		_events     = new UserEvent[0];
+		_city = city;
+		_tob          = DateTime.Now;
+		Longitude     = MhoraGlobalOptions.Instance.Longitude;
+		Latitude      = MhoraGlobalOptions.Instance.Latitude;
+		Altitude      = 0.0;
+		_type         = ChartType.Birth;
+		FileType      = EFileType.MudgalaHora;
+		_events       = new UserEvent[0];
+		_timeZoneInfo = timezone;
 	}
 
 	public HoraInfo(HoraInfo h)
 	{
 		_tob                   = h._tob;
-		City                   = h.City;
+		_city                  = h.City;
 		Events                 = h.Events;
 		Name                   = h.Name;
 		Longitude              = h.Longitude;
@@ -185,18 +187,33 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 		}
 	}
 
+ 	[JsonIgnore]
+	public City City => _city;
+
+    [JsonIgnore]
+	private Database.World.TimeZone _timeZoneInfo;
 	[JsonIgnore]
-	public City City
+	public Database.World.TimeZone TimeZone
 	{
-		get => _city;
-		set => _city = value;
+		get
+		{
+			if (_timeZoneInfo != null)
+			{
+				return (_timeZoneInfo);
+			}
+			if (City != null)
+			{
+				return (City.Country.TimeZone);
+			}
+			return new Database.World.TimeZone();
+		}
 	}
 
 	[JsonIgnore]
-	public TimeSpan UtcOffset => City.Country.TimeZone.TimeZoneInfo.BaseUtcOffset;
+	public TimeSpan UtcOffset => TimeZone.TimeZoneInfo.BaseUtcOffset;
 
 	[JsonIgnore]
-	public TimeSpan DstOffset => City.Country.TimeZone.TimeZoneInfo.GetUtcOffset(_tob);
+	public TimeSpan DstOffset => TimeZone.TimeZoneInfo.GetUtcOffset(_tob);
 
 	private JulianDate _jd = 0;
 	[JsonIgnore]
@@ -206,7 +223,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 		{
 			if (_jd.IsEmpty)
 			{
-				_jd = TimeZoneInfo.ConvertTimeToUtc(_tob, City.Country.TimeZone.TimeZoneInfo);
+				_jd = TimeZoneInfo.ConvertTimeToUtc(_tob, TimeZone.TimeZoneInfo);
 			}
 			return _jd;
 		}
@@ -243,7 +260,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 			{
 				Console.WriteLine(e);
 			}
-			return new HoraInfo();
+			return new HoraInfo(null);
 		}
 	}
 }
