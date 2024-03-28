@@ -110,9 +110,9 @@ public class MhoraControlContainer : UserControl
 					if (f is MhoraChild)
 					{
 						var mch = (MhoraChild) f;
-						if (h == h2 && mch.getHoroscope() != h2)
+						if (h == h2 && mch.Horoscope != h2)
 						{
-							h2 = mch.getHoroscope();
+							h2 = mch.Horoscope;
 							break;
 						}
 					}

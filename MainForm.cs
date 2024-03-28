@@ -90,7 +90,7 @@ namespace Mhora
 				return;
 			}
 
-			var child2 = new MhoraChild(curr.getHoroscope());
+			var child2 = new MhoraChild(curr.Horoscope);
 			child2.Text = curr.Text;
 			child2.MdiParent = this;
 			child2.Name = curr.Name;

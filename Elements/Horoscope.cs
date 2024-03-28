@@ -38,8 +38,17 @@ public partial class Horoscope : ICloneable
 
 	public readonly int      Iflag = sweph.SEFLG_SWIEPH | sweph.SEFLG_SPEED | sweph.SEFLG_SIDEREAL;
 
-	public HoraInfo Info { get;}
-	public Vara     Vara { get; }
+	public HoraInfo Info
+	{
+		get;
+		private set;
+	}
+
+	public Vara Vara
+	{
+		get;
+		private set;
+	}
 
 	public HoroscopeOptions Options { get; }
 
@@ -78,12 +87,17 @@ public partial class Horoscope : ICloneable
 	public Horoscope(HoraInfo info, HoroscopeOptions options)
 	{
 		Options = options;
-		Info    = info;
-		Vara    = new Vara(this);
 		sweph.SetSidMode((int) options.Ayanamsa, 0.0, 0.0);
 		SwephHouseSystem = 'P';
-		PopulateCache();
+		SetInfo(info);
 		MhoraGlobalOptions.CalculationPrefsChanged += OnGlobalCalcPrefsChanged;
+	}
+
+	public void SetInfo (HoraInfo info)
+	{
+		Info = info;
+		Vara = new Vara(this);
+		PopulateCache();
 	}
 
 	public object Clone()
@@ -168,16 +182,11 @@ public partial class Horoscope : ICloneable
 		return zh.SimpleLordOfZodiacHouse();
 	}
 
-	public object UpdateHoraInfo(object o)
+	public void UpdateHoraInfo(HoraInfo info)
 	{
-		var i = (HoraInfo) o;
-		Info.DateOfBirth = i.DateOfBirth;
-		Info.Altitude    = i.Altitude;
-		Info.Latitude    = i.Latitude;
-		Info.Longitude   = i.Longitude;
-		Info.Events      = (UserEvent[]) i.Events.Clone();
+		SetInfo(info);
+		Info.Events = (UserEvent[]) info.Events.Clone();
 		OnChanged();
-		return Info.Clone();
 	}
 
 	public JulianDate[] GetHoraCuspsUt()

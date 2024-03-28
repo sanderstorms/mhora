@@ -17,6 +17,3 @@
 [submodule "Lib/SQLinq"]
 	path = Lib/SQLinq
 	url = ../SQLinq.git
-[submodule "Lib/StackXML"]
-	path = Lib/StackXML
-	url = ../StackXML.git

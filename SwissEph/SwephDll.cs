@@ -86,6 +86,19 @@ public static class SwephDll
 		                                    double   attemp,    // atmospheric temperature in degrees Celsius
 		                                    double[] xin,       // array of 3 doubles: position of body in either ecliptical or equatorial coordinates, depending on calc_flag
 		                                    double[] xaz); // return array of 3 doubles, containing azimuth, true altitude, apparent altitude;
+
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_ut(double       JDNDaysUTStart, double[] geopos, double [] datm,   double [] dobs, StringBuilder ObjectName, int TypeEvent, int        iflag,   double[]    dret, StringBuilder serr);
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_pheno_ut(double JDNDaysUT,      double[] geopos, double [] datm, double [] dobs, StringBuilder ObjectName, int TypeEvent, int        helflag, double[]    darr, StringBuilder serr);
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_vis_limit_mag(double     tjdut,          double[] geopos, double[] datm, double [] dobs, StringBuilder ObjectName, int helflag,   double[] dret,    StringBuilder serr);
+		/* the following are secret, for Victor Reijs' */
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_angle(double      tjdut, double [] dgeo, double[] datm, double [] dobs, int helflag, double mag, double azi_obj, double azi_sun, double azi_moon, double alt_moon, double[] dret,     StringBuilder serr);
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_topo_arcus_visionis(double tjdut, double [] dgeo, double[] datm, double[] dobs, int helflag, double mag, double azi_obj, double alt_obj, double azi_sun,  double azi_moon, double     alt_moon, double[]    dret, StringBuilder serr);
+
 	}
 
 	public static class Swe32
@@ -169,5 +182,19 @@ public static class SwephDll
 		                                    double   attemp,    // atmospheric temperature in degrees Celsius
 		                                    double[] xin,       // array of 3 doubles: position of body in either ecliptical or equatorial coordinates, depending on calc_flag
 		                                    double[] xaz); // return array of 3 doubles, containing azimuth, true altitude, apparent altitude;
+		
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_ut(double JDNDaysUTStart, double[] geopos, double [] datm, double [] dobs, StringBuilder ObjectName, int TypeEvent, int    iflag,   double[] dret, StringBuilder serr);
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_pheno_ut(double JDNDaysUT, double [] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int TypeEvent, int    helflag, double[] darr, StringBuilder serr);
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_vis_limit_mag(double tjdut, double[] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int helflag,   double[] dret,    StringBuilder   serr);
+		/* the following are secret, for Victor Reijs' */
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_angle(double tjdut, double[] dgeo, double[] datm, double[] dobs, int helflag, double mag, double azi_obj, double azi_sun, double azi_moon, double alt_moon, double[] dret,     StringBuilder   serr);
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_topo_arcus_visionis(double tjdut, double[] dgeo, double[] datm, double[] dobs, int helflag, double mag, double azi_obj, double alt_obj, double azi_sun,  double azi_moon, double   alt_moon, double[] dret, StringBuilder serr);
+
+		
 	}
 }

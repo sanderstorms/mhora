@@ -169,6 +169,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Controls\ListViewColumnSorter.cs" />
+    <Compile Include="Components\Controls\TimeAdjustment.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\Controls\TimeAdjustment.Designer.cs">
+      <DependentUpon>TimeAdjustment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Definitions\Element.cs" />
     <Compile Include="Definitions\GrahaType.cs" />
     <Compile Include="Definitions\Month.cs" />
@@ -585,6 +591,12 @@
     <EmbeddedResource Include="Components\Controls\ProgressFm.resx">
       <DependentUpon>ProgressFm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Components\Controls\TimeAdjustment.resx">
+      <DependentUpon>TimeAdjustment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MhoraChild.resx">
+      <DependentUpon>MhoraChild.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Components\VargaControl\AshtakavargaControl.resx">
       <DependentUpon>AshtakavargaControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -628,9 +640,6 @@
     <EmbeddedResource Include="Properties\Localization.resx" />
     <EmbeddedResource Include="Components\LongStringEditor.resx">
       <DependentUpon>LongStringEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Components\MhoraChild.resx">
-      <DependentUpon>MhoraChild.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\MhoraControl.resx">
       <DependentUpon>MhoraControl.cs</DependentUpon>

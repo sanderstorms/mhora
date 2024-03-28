@@ -816,6 +816,91 @@ public static partial class sweph
 		return SwephDll.Swe64.swe_sidtime( jd + longitude / 360 );
 	}
 
+	//double tjdstart, /* Julian day number of start date for the search of the heliacal event 
+	// */
+	// double *dgeo /* geographic position (details below) */
+	// dgeo[0]: geographic longitude;
+	// dgeo[1]: geographic latitude;
+	// dgeo[2]: geographic altitude (eye height) in meters.
+	// double *datm, /* atmospheric conditions (details below) */
+	// datm[0]: atmospheric pressure in mbar (hPa) ;
+	// datm[1]: atmospheric temperature in degrees Celsius;
+	// datm[2]: relative humidity in %;
+	// datm[3]: if datm[3]>=1, then it is Meteorological Range [km] ;
+	// if 1>datm[3]>0, then it is the total atmospheric coefficient (ktot) ;
+	// double *dobs, /* observer description (details below) */
+	// dobs[0]: age of observer in years (default = 36)
+	// dobs[1]: Snellen ratio of observers eyes (default = 1 = normal)
+	//The following parameters are only relevant if the flag SE_HELFLAG_OPTICAL_PARAMS is set:
+	// dobs[2]: 0 = monocular, 1 = binocular (actually a boolean)
+	// dobs[3]: telescope magnification: 0 = default to naked eye (binocular), 1 = naked eye
+	// dobs[4]: optical aperture (telescope diameter) in mm
+	// dobs[5]: optical transmission
+	// char *objectname, /* name string of fixed star or planet */
+	// int32 event_type, /* event type (details below) */
+	// event_type = SE_HELIACAL_RISING (1): morning first (exists for all visible planets and stars);
+	// event_type = SE_HELIACAL_SETTING (2): evening last (exists for all visible planets and stars);
+	// event_type = SE_EVENING_FIRST (3): evening first (exists for Mercury, Venus, and the Moon);
+	// event_type = SE_MORNING_LAST (4): morning last (exists for Mercury, Venus, and the Moon)
+	// int32 helflag, /* calculation flag, bitmap (details below) */
+	// double *dret, /* result: array of at least 50 doubles, of which 3 are used at the 
+	// dret[0]: start visibility (Julian day number);
+	// dret[1]: optimum visibility (Julian day number), zero if helflag >= SE_HELFLAG_AV;
+	// dret[2]: end of visibility (Julian day number), zero if helflag >= SE_HELFLAG_AV
+	// moment */
+	// char * serr); /* error string */
+	public static int HeliacalUt(double JDNDaysUTStart, double[] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int TypeEvent, int iflag, double[] dret, StringBuilder serr)
+	{
+		return (0);
+	}
+
+	//double tjd_ut, /* Julian day number */
+	// double *dgeo, /* geographic position (details under swe_heliacal_ut() */
+	// double *datm, /* atmospheric conditions (details under swe_heliacal_ut()) */
+	// double *dobs, /* observer description (details under swe_heliacal_ut()) */
+	// Swiss Ephemeris 2.10 Date and time conversion functions
+	// swephprg.doc ~ 40 ~ i c
+	// char *objectname, /* name string of fixed star or planet */
+	// int32 event_type, /* event type (details under function swe_heliacal_ut()) */
+	// int32 helflag, /* calculation flag, bitmap (details under swe_heliacal_ut()) */
+	// double *darr, /* return array, declare array of 50 doubles */
+	// char *serr); /* error string */
+	//
+	// The return array has the following data:
+	// '0=AltO [deg] topocentric altitude of object (unrefracted)
+	// '1=AppAltO [deg] apparent altitude of object (refracted)
+	// '2=GeoAltO [deg] geocentric altitude of object
+	// '3=AziO [deg] azimuth of object
+	// '4=AltS [deg] topocentric altitude of Sun
+	// '5=AziS [deg] azimuth of Sun
+	// '6=TAVact [deg] actual topocentric arcus visionis
+	// '7=ARCVact [deg] actual (geocentric) arcus visionis
+	// '8=DAZact [deg] actual difference between object's and sun's azimuth
+	// '9=ARCLact [deg] actual longitude difference between object and sun
+	// '10=kact [-] extinction coefficient
+	// '11=minTAV [deg] smallest topocentric arcus visionis
+	// '12=TfistVR [JDN] first time object is visible, according to VR
+	// '13=TbVR [JDN optimum time the object is visible, according to VR
+	// '14=TlastVR [JDN] last time object is visible, according to VR
+	// '15=TbYallop [JDN] best time the object is visible, according to Yallop
+	// '16=WMoon [deg] crescent width of Moon
+	// '17=qYal [-] q-test value of Yallop
+	// '18=qCrit [-] q-test criterion of Yallop
+	// '19=ParO [deg] parallax of object
+	// '20 Magn [-] magnitude of object
+	// '21=RiseO [JDN] rise/set time of object
+	// '22=RiseS [JDN] rise/set time of Sun
+	// '23=Lag [JDN] rise/set time of object minus rise/set time of Sun
+	// '24=TvisVR [JDN] visibility duration
+	// '25=LMoon [deg] crescent length of Moon
+	// '26=CVAact [deg]
+	// '27=Illum [%] new
+	// '28=CVAact [deg] new
+	// '29=MSk [-]
+	public static int HeliacalPhenoUt(double JDNDaysUT, double[] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int TypeEvent, int helflag, double [] darr, StringBuilder serr)
+	{
+		return (0);
+	}
 
 	public static void Azalt(double   tjd_ut,    // UT
 	                         int      calc_flag, // SE_ECL2HOR or SE_EQU2HOR

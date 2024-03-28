@@ -70,12 +70,12 @@ public class KutaMatchingControl : MhoraControl
 			if (f is MhoraChild)
 			{
 				var mch = (MhoraChild) f;
-				if (mch.getHoroscope() == h)
+				if (mch.Horoscope == h)
 				{
 					tbHorMale.Text = mch.Text;
 				}
 
-				if (mch.getHoroscope() == h2)
+				if (mch.Horoscope == h2)
 				{
 					tbHorFemale.Text = mch.Text;
 				}

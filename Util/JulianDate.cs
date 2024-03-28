@@ -140,8 +140,8 @@ namespace Mhora.Util
 
 		public static bool operator < (JulianDate  jd, JulianDate value) => jd._value < value._value; 
 		public static bool operator > (JulianDate  jd, JulianDate value) => jd._value > value._value; 
-		public static bool operator == (JulianDate jd, JulianDate value) => jd._value == value._value; 
-		public static bool operator != (JulianDate jd, JulianDate value) => jd._value != value._value; 
+		public static bool operator == (JulianDate jd, JulianDate value) => jd?._value == value?._value; 
+		public static bool operator != (JulianDate jd, JulianDate value) => jd?._value != value?._value; 
 		public static bool operator >= (JulianDate jd, JulianDate value) => jd._value >= value._value; 
 		public static bool operator <= (JulianDate jd, JulianDate value) => jd._value <= value._value; 
 	}

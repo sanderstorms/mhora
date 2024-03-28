@@ -122,6 +122,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 		set
 		{
 			_tob = value;
+			_jd   = null;
 		}
 	}
 
@@ -187,8 +188,11 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 		}
 	}
 
- 	[JsonIgnore]
-	public City City => _city;
+	[JsonIgnore]
+	public City City
+	{
+		get => (_city);
+	}
 
     [JsonIgnore]
 	private Database.World.TimeZone _timeZoneInfo;
@@ -221,7 +225,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	{
 		get
 		{
-			if (_jd.IsEmpty)
+			if ((_jd == null) || _jd.IsEmpty == true)
 			{
 				_jd = TimeZoneInfo.ConvertTimeToUtc(_tob, TimeZone.TimeZoneInfo);
 			}
