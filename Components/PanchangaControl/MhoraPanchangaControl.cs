@@ -390,7 +390,7 @@ public class MhoraPanchangaControl : MhoraControl
 		local.kalas_ut = hCurr.GetKalaCuspsUt();
 		if (opts.CalcSpecialKalas)
 		{
-			var bStart = hCurr.Wday.Ruler();
+			var bStart = hCurr.Vara.DayLord;
 			if (hCurr.Options.KalaType == HoroscopeOptions.EHoraType.Lmt)
 			{
 				bStart = hCurr.Info.DateOfBirth.Lstm(hCurr).DayLord();

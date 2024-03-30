@@ -52,7 +52,19 @@ namespace Mhora.Elements
 
 		public Graha Find(Karaka7 karaka) => Karaka7[karaka.Index()];
 
-		public Graha Find(Body body) => _grahas.Find(graha => graha == body);
+		public Graha Find(Body body)
+		{
+			var graha = _grahas.Find(graha => graha == body);
+			if (graha == null)
+			{
+				var position = Horoscope.GetPosition(body);
+				var dp       = position.ToDivisionPosition(Varga);
+				graha        = new Graha(position, dp, _rashis.Find(dp.ZodiacHouse));
+				_grahas.Add(graha);
+			}
+
+			return (graha);
+		}
 
 		public List<Graha> NavaGrahas => _grahas.FindAll(graha => graha.BodyType == BodyType.Graha);
 

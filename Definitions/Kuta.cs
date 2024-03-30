@@ -66,7 +66,8 @@
 		public enum Sex
 		{
 			Male,
-			Female
+			Female,
+			Neutral
 		}
 
 		public enum RasiYoni

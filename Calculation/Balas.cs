@@ -357,7 +357,7 @@ public static class ShadBalas
 	public static double VaraBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
-		if (h.Wday.Ruler() == b)
+		if (h.Vara.DayLord == b)
 		{
 			return 45.0;
 		}

@@ -91,6 +91,18 @@ public class MhoraChild : Form
 		h.OnChanged();
 	}
 
+	private void OnAdjustTime(object sender, EventArgs e)
+	{
+		timeAdjustment.Visible ^= true;
+	}
+
+	protected override void OnResize(EventArgs e)
+	{
+		base.OnResize(e);
+		timeAdjustment.Left = Width - timeAdjustment.Width - 10;
+	}
+
+
 	/// <summary>
 	///     Clean up any resources being used.
 	/// </summary>
@@ -830,9 +842,4 @@ public class MhoraChild : Form
 		//this.evaluateYogas();
 		//FindYogas.Test(h, new Division(DivisionType.Rasi));
 	}
-
-    private void OnAdjustTime(object sender, EventArgs e)
-    {
-		timeAdjustment.Visible ^= true;
-    }
 }

@@ -1208,7 +1208,7 @@ namespace Mhora.Elements
 				Conditions |= Conditions.OwnHouse;
 			}
 
-			if ((Body != Body.Lagna) && (IsChayaGraha == false))
+			if ((BodyType == BodyType.Graha) && (IsChayaGraha == false))
 			{
 				_digBala = (double) _grahas.Horoscope.DigBala(Body);
 			}

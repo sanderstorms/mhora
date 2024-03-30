@@ -190,7 +190,7 @@ namespace Mhora.Calculation
 				4,
 				5
 			};
-			var b          = h.Wday.Ruler();
+			var b          = h.Vara.DayLord;
 			var bdayBirth = h.Vara.IsDayBirth;
 
 			var cusps = h.GetKalaCuspsUt();
@@ -253,7 +253,7 @@ namespace Mhora.Calculation
 				1,
 				4
 			};
-			var b     = h.Wday.Ruler();
+			var b     = h.Vara.DayLord;
 			var cusps = h.GetHoraCuspsUt();
 			if (h.Options.HoraType == HoroscopeOptions.EHoraType.Lmt)
 			{
@@ -448,28 +448,53 @@ namespace Mhora.Calculation
 			return (bp);
 		}
 
+		// The difference between Birth time and Sunrise (also called Ishtagati) should be calculated in
+		// Vighatikas and then divided by 15.
+		// If at the time of birth Sun is in a Movable Sign consider the same sign and longitude, if in a fixed
+		// sign, consider the 9th sign with the same longitude and if in a dual sign consider the 5th sign from it
+		// with the same longitude.
+		//
+		// PP = Ishtagati [in minutes] X Rate of PP + Arka-kona
+		// Rate of PP = 1 rasi/6 minutes = 5 degrees/minute
+		//
+		// Sun 6 aqu 54
+		// Sunrise Time on the day of birth of Thakur = 6:31:24 hrs
+		// Time of birth of Thakur = 6:44:00 hrs
+		// Ishtagati = 12:36 minutes = 12.6 minutes
+		// Ishtagati X Rate of PP = 63 degrees = 2s + 3
+		// Arka-kona = 7 degrees of Libra = 6s + 7
+		// Thus, PP = 2s + 3 + 6s + 7 = 8s + 10 = 10 degrees of Sagittarius
+		//
+		// Sun 29 Sg 26
+		// Sunrise Time on the day of birth = 6:42:47 hrs
+		// Time of birth = 6:33:00 hrs
+		// Ishtagati = - 10 minutes
+		// Ishtagati X Rate of PP = - 50 degrees = -1s - 20
+		// Arka-kona = 29 degrees = 12s + 29
+		// Thus, PP = 12s + 29 – 1s – 20 = 9 degrees of Pisces
 		public static Position CalculatePranapada(this Horoscope h)
 		{
-			var spos   = h.GetPosition(Body.Sun).Longitude;
-			double offset = (h.Info.DateOfBirth - h.Vara.Sunrise).TotalHours;
+			var sun       = h.FindGrahas(DivisionType.Rasi) [Body.Sun];
+			var ppMinutes = (h.Vara.HoursAfterSunrise.TotalMinutes * 5); //degrees
+			var arkaKopa  = sun.Position.Longitude;
+			var zh        = sun.Rashi.ZodiacHouse;
 
-			offset *= 60.0 * 60.0 / 6.0;
-			Longitude ppos = null;
-			switch ((int) spos.ToZodiacHouse() % 3)
+			if (zh.IsMoveableSign())
 			{
-				case 1:
-					ppos = spos.Add(offset);
-					break;
-				case 2:
-					ppos = spos.Add(offset + 8.0 * 30.0);
-					break;
-				default:
-				case 0:
-					ppos = spos.Add(offset + 4.0 * 30.0);
-					break;
+				//same;
+			}
+			if (zh.IsFixedSign())
+			{
+				arkaKopa = arkaKopa.Add(30.0 * 8);
+			}
+			else if (zh.IsDualSign())
+			{
+				arkaKopa = arkaKopa.Add(30.0 * 4);
 			}
 
-			var bp = new Position(h, Body.Pranapada, BodyType.SpecialLagna, ppos, 0, 0, 0, 0, 0);
+			var pp = arkaKopa.Add(ppMinutes);
+
+			var bp = new Position(h, Body.Pranapada, BodyType.SpecialLagna, pp, 0, 0, 0, 0, 0);
 			return (bp);
 		}
 

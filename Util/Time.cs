@@ -59,9 +59,41 @@ namespace Mhora.Util
 			return new Time(_timeSpan.TotalHours / hours);
 		}
 
+		// 1 Chatur Yuga = 4,320,000 sidereal years
+		//				 = 1577917828 days
+		// 1 Krita Yuga	 = 1,728,000 sidereal years
+		// 1 Manu		 = 71 Chatur-Yugas + 1 Krita Yuga = 308,448,000 sidereal years
+		// 1 Kalpa		 = 14 Manus + 1 Krita Yuga = 4,320,000,000 sidereal years
+		// 
+		//Kalpa = 30000 sampāta
+		//Anonamalitic motion 387 revolutions per Kalpa
+		public const  int  YugaYears           = 4320000;    //Revolutions sun around the earth
+		public const  int  YugaDays            = 1577917828; //nr of sunrises
+		public static Time SuryasiddhānticYear = TimeSpan.FromDays((double) YugaDays / YugaYears); //365.25875648148144
 		public static Time SiderealYear    => TimeSpan.FromDays(365.256363004);
 		public static Time TropicalYear    => TimeSpan.FromDays(365.24219);
 		public static Time AnomalisticYear => TimeSpan.FromDays(365.259636);
+
+		//365.2563583796296
+		public static Time CalculatedYear
+		{
+			get
+			{
+				double years    = 4320000000;
+				var    kalpa    = 30000;
+				var    anonmaly = 387;
+				var    period   = (years / (kalpa - anonmaly));
+				var    factor   = (double) kalpa / (kalpa - anonmaly);
+				
+				var  diff       = (SuryasiddhānticYear.TotalDays / period);
+				Time totalDays  = TimeSpan.FromDays(SuryasiddhānticYear.TotalDays - diff);
+
+				var days       = new Time(diff);
+				var correction = (days.TotalHours * factor);
+				totalDays += correction;
+				return totalDays;
+			}
+		}
 
 		public Time Zero => new ();
 		public bool IsZero => _timeSpan.TotalHours == 0;
@@ -81,18 +113,22 @@ namespace Mhora.Util
 		public double SolarYears    => TotalDays / 360;
 		public double SiderealYears => TotalDays / SiderealYear.TotalDays;
 
+		// Nimesh = Blink of an Eye or 34000th of a second
+		// 15 Nimesh = 1 Kashtha
+		// 30 Kashtha = 1 Kala
+		// 30 Kala = 1 Kshana
+		// 30 Kshana = 1 Vipal
+		// 60 Vipal = 1 Pal
+		// 60 Pal = 1 Ghati or Nazhika or 24 Minutes
+		// 2.5 Ghati = 1 Hora or 1 Hour
+		// 24 Hora or 60 Ghati = 1 Diva-Ratri or 1 day and night
+
 		//1 day or 24 hours = 60 Ghatis
 		public double Ghati => _timeSpan.TotalDays * 60;
 		// 1 Ghati = 60 Vighati (also called Pala or Kala)
 		public double Vighati => Ghati * 60;
 		// 1 Vighati = 60 Linta or (also called Vipala or Vikala)
 		public double Vipala => Vighati * 60;
-		// 1 Lipta = 60 Vilipta
-		public double Vilipta => Vipala * 60;
-		// 1 Vilipta = 60 Para
-		public double Para => Vilipta * 60;
-		// 1 Para = 60 Tatpara
-		public double Tatpara => Para * 60;
 
 		public override string ToString()
 		{

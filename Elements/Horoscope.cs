@@ -78,12 +78,6 @@ public partial class Horoscope : ICloneable
 		set;
 	}
 
-	public Weekday Wday
-	{
-		get; 
-		private set;
-	}
-
 	public Horoscope(HoraInfo info, HoroscopeOptions options)
 	{
 		Options = options;
@@ -98,6 +92,7 @@ public partial class Horoscope : ICloneable
 		Info = info;
 		Vara = new Vara(this);
 		PopulateCache();
+		CheckBirthTime();
 	}
 
 	public object Clone()
@@ -241,5 +236,238 @@ public partial class Horoscope : ICloneable
 		AddOtherPosition(desc, lon, Body.Other);
 	}
 
+	#region birth time rectification
+	int CheckBirthTime()
+	{
+		int correct = 0;
 
+		if (CheckBirthTime1())
+		{
+			correct++;
+		}
+
+		if (CheckBirthTime2())
+		{
+			correct++;
+		}
+
+		if (CheckBirthTime3())
+		{
+			correct++;
+		}
+
+		if (GetSex1() == GetSex2())
+		{
+			correct++;
+		}
+
+		var lagna = _grahas[DivisionType.Rasi][Body.Lagna];
+		var pp    = _grahas[DivisionType.Rasi][Body.Pranapada];
+
+		if (lagna.HouseFrom(pp) == Bhava.JayaBhava)
+		{
+			correct++;
+		}
+		else if (lagna.HouseFrom(pp).IsTrikona())
+		{
+			correct++;
+		}
+
+		pp =  FindGrahas(DivisionType.Navamsa)[Body.Pranapada];
+		var m9 = FindGrahas(DivisionType.Navamsa)[Body.Moon];
+
+		if (pp.HouseFrom(m9) == Bhava.JayaBhava)
+		{
+			correct++;
+		}
+		else if (pp.HouseFrom(m9).IsTrikona())
+		{
+			correct++;
+		}
+
+		//Check what sign AtmaKaraka planet is in in the Navamsa chart
+		var ak = FindGrahas(DivisionType.Rasi).Find(Karaka8.Atma);
+		var sv = FindGrahas(DivisionType.Navamsa)[ak];
+
+		if (sv.HouseFrom(m9) == Bhava.JayaBhava)
+		{
+			correct++;
+		}
+		else if (sv.HouseFrom(m9).IsTrikona())
+		{
+			correct++;
+		}
+
+
+		return correct;
+	}
+
+
+	bool IsBirthNakshatra (Nakshatra nakshatra, int offset)
+	{
+		if (nakshatra == Nakshatra.Aswini.Add(offset))
+		{
+			return (true);
+		}
+
+		if (nakshatra == Nakshatra.Makha.Add(offset))
+		{
+			return (true);
+		}
+
+		if (nakshatra == Nakshatra.Moola.Add(offset))
+		{
+			return (true);
+		}
+
+		return (false);
+	}
+
+
+	// From the time of sun – rise (LMT) to the given LMT of
+	// birth, note Ghati and Vighati that have elapsed. Convert
+	// this duration of time into Vighatis, multiply by 4 and divide
+	// by 9. The remainder counted from Aswini, Magha and
+	// Moola should give constellation at the time of birth.
+	bool CheckBirthTime1()
+	{
+		var vighati = (int) Vara.HoursAfterSunrise.Vighati * 4;
+		var offset  = (vighati % 9);
+
+		var lagna     = _grahas[DivisionType.Rasi][Body.Lagna];
+		var nakshatra = lagna.Position.Longitude.ToNakshatra();
+
+		if (IsBirthNakshatra(nakshatra, offset))
+		{
+			return (true);
+		}
+
+		return (false);
+	}
+
+	// Convert Isht kala into Vighatis, multiply it by 2, add 5 to
+	// the result if Lagna sign is movable, 10 if fixed and 15 if
+	// dual. Multiply result by 4 and divide by 9 and count the
+	// remainder from Aswini, Magha or Moola to get the birth
+	// constellation.
+	bool CheckBirthTime2()
+	{
+		var vighati = (int) Vara.HoursAfterSunrise.Vighati;
+		vighati *= 2;
+
+		var lagna     = _grahas[DivisionType.Rasi][Body.Lagna];
+		var nakshatra = lagna.Position.Longitude.ToNakshatra();
+
+		if (lagna.Rashi.ZodiacHouse.IsMoveableSign())
+		{
+			vighati += 5;
+		}
+		else if (lagna.Rashi.ZodiacHouse.IsFixedSign())
+		{
+			vighati += 10;
+		}
+		else
+		{
+			vighati += 15;
+		}
+
+		vighati *= 4;
+		var offset = vighati % 9;
+
+		if (IsBirthNakshatra(nakshatra, offset))
+		{
+			return (true);
+		}
+
+		return (false);
+	}
+
+	// Multiply Isht kal into Vighatis by 3 and divide by 7. The
+	// remainder counted from Sunday in order of weak days must
+	// agree with day of birth.
+	bool CheckBirthTime3()
+	{
+		var vighati = (int) Vara.HoursAfterSunrise.Vighati;
+		vighati *= 3;
+
+		var offset    = vighati % 7;
+		var dayOfWeek = (Weekday.Sunday.Index () + offset).NormalizeInc(0, 6);
+
+		if (Vara.WeekDay.Index() == dayOfWeek)
+		{
+			return (true);
+		}
+		return (false);
+	}
+
+
+	// From the time of sun – rise (LMT) to the given LMT of
+	// birth, note Ghati and Vighati that have elapsed. Convert
+	// this duration of time into Vighatis, multiply by 4 and divide
+	// by 9. The remainder counted from Aswini, Magha and
+	// Moola should give constellation at the time of birth.
+	public Kuta.Sex GetSex1()
+	{
+		var vighati = (int) Vara.HoursAfterSunrise.Vighati;
+		vighati %= 225;
+
+		if (vighati <= 15)
+		{
+			return Kuta.Sex.Male;
+		}
+
+		if (vighati <= 45)
+		{
+			return Kuta.Sex.Female;
+		}
+
+		if (vighati <= 90)
+		{
+			return Kuta.Sex.Male;
+		}
+
+		if (vighati <= 150)
+		{
+			return Kuta.Sex.Female;
+		}
+
+		return Kuta.Sex.Male;
+	}
+
+	// The sex of a person is determined by the element ruling at the time of birth.
+	// The five elements repeat after every 90 minutes on any day.
+	// Thus 16 such cyclical repetitions take place in one day. The duration of each
+	//  element is fixed. The sequence and duration of elements is as under:
+	//  Prithvi (6 mnts.), Jal (12 mnts.), Agni (18 mnts.), Vayu (24 mnts.), and Akash (30 mnts.)
+	public Kuta.Sex GetSex2 ()
+	{
+		var hoursAfterBirth = Vara.HoursAfterSunrise.TotalMinutes;
+		var offset          = hoursAfterBirth % 90;
+
+		var element = 6;
+		if (offset < element)
+		{
+			return (Kuta.Sex.Neutral);
+		}
+
+		element += 12;
+		if (offset < element)
+		{
+			return (Kuta.Sex.Female);
+		}
+
+		element += 18;
+		if (offset < element)
+		{
+			return (Kuta.Sex.Male);
+		}
+		element += 24;
+		if (offset < element)
+		{
+			return (Kuta.Sex.Neutral);
+		}
+
+		return (Kuta.Sex.Male);
+	}
+	#endregion
 }

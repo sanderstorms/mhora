@@ -377,7 +377,7 @@ public class KutaMatchingControl : MhoraControl
 		{
 			var li        = new ListViewItem("Ghataka (Day)");
 			var ja        = h.GetPosition(Body.Moon).ToDivisionPosition(dtype).ZodiacHouse;
-			var wd        = h2.Wday;
+			var wd        = h2.Vara.WeekDay;
 			var isGhataka = Ghataka.Day(ja, wd);
 			li.SubItems.Add(ja.ToString());
 			li.SubItems.Add(wd.ToString());

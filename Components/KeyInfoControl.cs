@@ -236,7 +236,7 @@ public class KeyInfoControl : MhoraControl
 		}
 		{
 			li = new ListViewItem("Weekday");
-			var fmt = string.Format("{0} ({1})", h.Wday, h.Info.DateOfBirth.DayLord());
+			var fmt = string.Format("{0} ({1})", h.Vara.WeekDay, h.Info.DateOfBirth.DayLord());
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}

@@ -902,6 +902,24 @@ public static partial class sweph
 		return (0);
 	}
 
+	// attr[0] = phase angle (Earth-planet-sun)	//attr[1] = phase (illumined fraction of disc)
+	// attr[2] = elongation of planet	//attr[3] = apparent diameter of disc	//attr[4] = apparent magnitude
+	// declare as attr[20] at least!
+	public static int PhenoUT(double        tjd_ut, /* time Jul. Day UT */
+	                          int           ipl,    /* planet number */
+	                          int           iflag,  /* ephemeris flag */
+	                          double []     attr,   /* return array, 20 doubles, see below */
+	                          StringBuilder serr)  /* return error string */
+	{
+		if (IntPtr.Size == 4)
+		{
+			return SwephDll.Swe32.swe_pheno_ut(tjd_ut, ipl, iflag, attr, serr);
+		}
+		return SwephDll.Swe64.swe_pheno_ut(tjd_ut, ipl, iflag, attr, serr);
+		
+	}
+
+
 	public static void Azalt(double   tjd_ut,    // UT
 	                         int      calc_flag, // SE_ECL2HOR or SE_EQU2HOR
 	                         double[] geopos,    // array of 3 doubles: geograph. long., lat., height

@@ -60,10 +60,10 @@ public static class Hora
 	{
 		if (h.Vara.IsDayBirth)
 		{
-			return h.Wday.Ruler();
+			return h.Vara.DayLord;
 		}
 
-		switch (h.Wday)
+		switch (h.Vara.WeekDay)
 		{
 			default:
 			case Weekday.Sunday:    return Body.Jupiter;

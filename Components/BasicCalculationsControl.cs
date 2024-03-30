@@ -75,7 +75,7 @@ public class BasicCalculationsControl : MhoraControl
 	private ColumnHeader         Nakshatra;
 	private ColumnHeader         Pada;
 	private ListViewColumnSorter lvwColumnSorter;
-
+	private TimeAdjustment timeAdjustment;
 	private ViewType vt;
 
 	public BasicCalculationsControl(Horoscope _h)
@@ -93,6 +93,8 @@ public class BasicCalculationsControl : MhoraControl
 		{
 			DivisionType = DivisionType.Rasi
 		};
+		timeAdjustment.Horoscope =  _h;
+		timeAdjustment.OnChange  += OnChangeTime;
 	}
 
 	/// <summary>
@@ -107,6 +109,19 @@ public class BasicCalculationsControl : MhoraControl
 
 		base.Dispose(disposing);
 	}
+
+	private void OnChangeTime(DateTime dateTime)
+	{
+		h.Info.DateOfBirth = dateTime;
+		h.OnChanged();
+	}
+
+	private void OnAdjustTime(object sender, EventArgs e)
+	{
+		timeAdjustment.Visible ^= true;
+	}
+
+
 
 #region Component Designer generated code
 
@@ -140,6 +155,7 @@ public class BasicCalculationsControl : MhoraControl
 			this.menuAvasthas = new System.Windows.Forms.MenuItem();
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.menuItem2 = new System.Windows.Forms.MenuItem();
+			this.timeAdjustment = new Mhora.Components.Controls.TimeAdjustment();
 			this.SuspendLayout();
 			// 
 			// mList
@@ -167,13 +183,8 @@ public class BasicCalculationsControl : MhoraControl
 			this.mList.DragDrop += new System.Windows.Forms.DragEventHandler(this.mList_DragDrop);
 			this.mList.DragEnter += new System.Windows.Forms.DragEventHandler(this.mList_DragEnter);
 			this.mList.MouseHover += new System.EventHandler(this.mList_MouseHover);
-			//
-			// Create an instance of a ListView column sorter and assign it
-			// to the ListView control.
-			this.lvwColumnSorter          = new ListViewColumnSorter();
-			this.mList.ListViewItemSorter = lvwColumnSorter;
 			// 
-			// Body
+			// colBody
 			// 
 			this.colBody.Text = "Body";
 			this.colBody.Width = 100;
@@ -322,9 +333,21 @@ public class BasicCalculationsControl : MhoraControl
 			this.menuItem2.Index = 17;
 			this.menuItem2.Text = "-";
 			// 
+			// timeAdjustment
+			// 
+			this.timeAdjustment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.timeAdjustment.Horoscope = null;
+			this.timeAdjustment.Location = new System.Drawing.Point(244, 34);
+			this.timeAdjustment.Margin = new System.Windows.Forms.Padding(4);
+			this.timeAdjustment.Name = "timeAdjustment";
+			this.timeAdjustment.Size = new System.Drawing.Size(248, 38);
+			this.timeAdjustment.TabIndex = 1;
+			this.timeAdjustment.Visible = false;
+			// 
 			// BasicCalculationsControl
 			// 
 			this.ContextMenu = this.calculationsContextMenu;
+			this.Controls.Add(this.timeAdjustment);
 			this.Controls.Add(this.mList);
 			this.Name = "BasicCalculationsControl";
 			this.Size = new System.Drawing.Size(496, 176);
