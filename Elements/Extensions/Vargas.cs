@@ -495,6 +495,7 @@ public static class Vargas
 			case DivisionType.TrimsamsaSimple: return "Simple";
 			case DivisionType.Khavedamsa: return string.Empty;
 			case DivisionType.Akshavedamsa: return string.Empty;
+			case DivisionType.NavaNavamsa: return string.Empty;
 			case DivisionType.Shashtyamsa: return string.Empty;
 			case DivisionType.Ashtottaramsa: return string.Empty;
 			case DivisionType.Nadiamsa: return "Equal Size";
@@ -609,6 +610,7 @@ public static class Vargas
 			case DivisionType.Khavedamsa:    return 40;
 			case DivisionType.Akshavedamsa:  return 45;
 			case DivisionType.Shashtyamsa:   return 60;
+			case DivisionType.NavaNavamsa:   return 81;
 			case DivisionType.Ashtottaramsa: return 108;
 			case DivisionType.Nadiamsa:
 			case DivisionType.NadiamsaCKN: return 150;

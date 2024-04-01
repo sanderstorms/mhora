@@ -150,6 +150,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	private MenuItem    mSaptamsa;
 	private MenuItem    mShashtamsa;
 	private MenuItem    mShashtyamsa;
+	private MenuItem    mNavaNavamsa;
 	private MenuItem    mShodasamsa;
 	private MenuItem    mTrimsamsa;
 	private MenuItem    mTrimsamsaParivritti;
@@ -277,6 +278,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		this.mKhavedamsa                = new System.Windows.Forms.MenuItem();
 		this.mAkshavedamsa              = new System.Windows.Forms.MenuItem();
 		this.mShashtyamsa               = new System.Windows.Forms.MenuItem();
+		this.mNavaNavamsa               = new System.Windows.Forms.MenuItem();
 		this.mAshtottaramsa             = new System.Windows.Forms.MenuItem();
 		this.mNadiamsa                  = new System.Windows.Forms.MenuItem();
 		this.mNadiamsaCKN               = new System.Windows.Forms.MenuItem();
@@ -653,6 +655,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			this.mKhavedamsa,
 			this.mAkshavedamsa,
 			this.mShashtyamsa,
+			this.mNavaNavamsa,
 			this.mAshtottaramsa,
 			this.mNadiamsa,
 			this.mNadiamsaCKN,
@@ -692,28 +695,32 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		this.mShashtyamsa.Index =  4;
 		this.mShashtyamsa.Text  =  "D-60: Shashtyamsa";
 		this.mShashtyamsa.Click += new System.EventHandler(this.mShashtyamsa_Click_1);
+		//mNavaNavamsa
+		this.mNavaNavamsa.Index =  5;
+		this.mNavaNavamsa.Text  =  "D-81: NavaNavamsa";
+		this.mNavaNavamsa.Click += new System.EventHandler(this.mNavaNavamsa_Click);
 		// 
 		// mAshtottaramsa
 		// 
-		this.mAshtottaramsa.Index =  5;
+		this.mAshtottaramsa.Index =  6;
 		this.mAshtottaramsa.Text  =  "D-108: Parivritti Ashtottaramsa";
 		this.mAshtottaramsa.Click += new System.EventHandler(this.menuItem7_Click);
 		// 
 		// mNadiamsa
 		// 
-		this.mNadiamsa.Index =  6;
+		this.mNadiamsa.Index =  7;
 		this.mNadiamsa.Text  =  "D-150: Nadiamsa";
 		this.mNadiamsa.Click += new System.EventHandler(this.mNadiamsa_Click);
 		// 
 		// mNadiamsaCKN
 		// 
-		this.mNadiamsaCKN.Index =  7;
+		this.mNadiamsaCKN.Index =  8;
 		this.mNadiamsaCKN.Text  =  "D-150: Nadiamsa (Variable)";
 		this.mNadiamsaCKN.Click += new System.EventHandler(this.mNadiamsaCKN_Click);
 		// 
 		// menuItem10
 		// 
-		this.menuItem10.Index = 8;
+		this.menuItem10.Index = 9;
 		this.menuItem10.Text  = "-";
 		// 
 		// mNavamsaDwadasamsa
@@ -1722,6 +1729,13 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	private void mShashtyamsa_Click_1(object sender, EventArgs e)
 	{
 		options.Varga = new Division(DivisionType.Shashtyamsa);
+		OnRecalculate(h);
+		Invalidate();
+	}
+
+	private void mNavaNavamsa_Click (object sender, EventArgs e)
+	{
+		options.Varga = new Division(DivisionType.NavaNavamsa);
 		OnRecalculate(h);
 		Invalidate();
 	}

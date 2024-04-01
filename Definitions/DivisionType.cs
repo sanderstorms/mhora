@@ -100,6 +100,9 @@ namespace Mhora.Definitions
 		[Description("D-60: Shashtyamsa")]
 		Shashtyamsa,
 
+		[Description("D-81: Nava Navamsa")]
+		NavaNavamsa,
+
 		[Description("D-108: Ashtottaramsa (Regular)")]
 		Ashtottaramsa,
 

@@ -588,10 +588,21 @@ public class Position
 		return PopulateRegularCusps(n, dp);
 	}
 
-	private DivisionPosition ToDivisionPositionNavamsa()
+	private DivisionPosition ToDivisionPositionNavamsa(int parts)
 	{
+		DivisionPosition dp;
+		if (parts > 9)
+		{
+			var bp = Clone();
+			bp.Longitude = bp.ExtrapolateLongitude(DivisionType.Navamsa);
+			dp = bp.ToDivisionPositionNavamsa(parts / 9);
+			PopulateRegularCusps(81, dp);
+			return (dp);
+		}
+
 		var part = PartOfZodiacHouse(9);
-		var dp   = ToRegularDivisionPosition(9);
+		dp   = ToRegularDivisionPosition(9);
+
 		switch ((int) Longitude.ToZodiacHouse() % 3)
 		{
 			case 1:
@@ -1294,7 +1305,7 @@ public class Position
 			case DivisionType.Saptamsa:                return ToDivisionPositionSaptamsa(7);
 			case DivisionType.Ashtamsa:                return ToRegularDivisionPosition(8);
 			case DivisionType.AshtamsaRaman:           return ToDivisionPositionAshtamsaRaman();
-			case DivisionType.Navamsa:                 return ToDivisionPositionNavamsa();
+			case DivisionType.Navamsa:                 return ToDivisionPositionNavamsa(9);
 			case DivisionType.Dasamsa:                 return ToDivisionPositionDasamsa(10);
 			case DivisionType.Rudramsa:                return ToDivisionPositionRudramsa();
 			case DivisionType.RudramsaRaman:           return ToDivisionPositionRudramsaRaman();
@@ -1308,6 +1319,7 @@ public class Position
 			case DivisionType.TrimsamsaSimple:         return ToDivisionPositionTrimsamsaSimple();
 			case DivisionType.Khavedamsa:              return ToDivisionPositionKhavedamsa();
 			case DivisionType.Akshavedamsa:            return ToDivisionPositionAkshavedamsa(45);
+			case DivisionType.NavaNavamsa:             return ToDivisionPositionNavamsa(81);
 			case DivisionType.Shashtyamsa:             return ToDivisionPositionShashtyamsa();
 			case DivisionType.Ashtottaramsa:           return ToRegularDivisionPosition(108);
 			case DivisionType.Nadiamsa:                return ToDivisionPositionNadiamsa();

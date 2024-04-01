@@ -261,6 +261,7 @@ public partial class Horoscope : ICloneable
 			correct++;
 		}
 
+		//Pranapada lagna will be trine or 7th to lagna.
 		var lagna = _grahas[DivisionType.Rasi][Body.Lagna];
 		var pp    = _grahas[DivisionType.Rasi][Body.Pranapada];
 
@@ -273,6 +274,7 @@ public partial class Horoscope : ICloneable
 			correct++;
 		}
 
+		//Pranapada lagna in Navamsa in trines or 7th to swamsa or navamsa Moon
 		pp =  FindGrahas(DivisionType.Navamsa)[Body.Pranapada];
 		var m9 = FindGrahas(DivisionType.Navamsa)[Body.Moon];
 
@@ -298,16 +300,86 @@ public partial class Horoscope : ICloneable
 			correct++;
 		}
 
-		// The Kunda rectification method is an easy and useful way of rectifying the Lagna within the; 1:30 degree range,
-		// which is useful for rectifying D-20 and D-24.    
-		// Take the longitude of the Lagna, and multiply it by 81.
-		// Remove multiples of 360, and find the Nakshetra indicated by the degree.
-		// The Nakshetra should be in trines to either the Nama(name) Nakshatra or the Chandra(Moon) Nakshatra. 
+		if (CheckKetu60())
+		{
+			correct++;
+		}
 
-		// Rectify D60 chart: Ketu is our past life karma, dropping us in this incarnation. 
-		// Check what sign Ketu is in, and see where the lord has gone. The lord must have rasi-aspect on the Ascendant. 
+		if (CheckKundaLagna())
+		{
+			correct++;
+		}
+
+		if (CheckKundaMoon())
+		{
+			correct++;
+		}
+
+		if (Vara.BirthTatva.Tatva == Tatva.Jal)
+		{
+			correct++;
+		}
+		else if (Vara.BirthTatva.AntaraTatva == Tatva.Jal)
+		{
+			correct++;
+		}
 
 		return correct;
+	}
+
+	//The Kunda should be placed in trines (dharma) or in seventh (dwara) from the Rasi Lagna, to cause creation.
+	//Hence for rectification purposes Kunda should be in trines or seventh from Lagna. 
+	public bool CheckKundaLagna()
+	{
+		var kunda = FindGrahas(DivisionType.NavaNavamsa)[Body.Lagna];
+		var lagna = FindGrahas(DivisionType.Rasi)[Body.Lagna];
+
+		if (lagna.HouseFrom(kunda) == Bhava.JayaBhava)
+		{
+			return (true);
+		}
+
+		if (lagna.HouseFrom(kunda).IsTrikona())
+		{
+			return (true);
+		}
+
+		return (false);
+	}
+
+	//if the Kunda (Navamsa-Navamsa) longitude of Lagna conjunct with the Nakshatra of Natal Moon
+	//or its trine Nakshatras the given BT can be considered correct 
+	public bool CheckKundaMoon()
+	{
+		var kunda = FindGrahas(DivisionType.NavaNavamsa)[Body.Lagna];
+		var moon  = FindGrahas(DivisionType.Rasi)[Body.Moon];
+
+		if (moon.Position.Longitude.ToNakshatra() == kunda.Position.Longitude.ToNakshatra())
+		{
+			return (true);
+		}
+
+		if (moon.HouseFrom(kunda).IsTrikona())
+		{
+			return (true);
+		}
+
+		return (false);
+	}
+
+	// Ketu is our past life karma, dropping us in this incarnation. 
+	// Check what sign Ketu is in, and see where the lord has gone. The lord must have rasi-aspect on the Ascendant. 
+	public bool CheckKetu60()
+	{
+		var ketu  = FindGrahas(DivisionType.Shashtyamsa)[Body.Ketu];
+		var lagna = FindGrahas(DivisionType.Shashtyamsa)[Body.Lagna];
+
+		if (ketu.HouseLord.Rashi.ZodiacHouse.RasiDristi(lagna.Rashi))
+		{
+			return (true);
+		}
+
+		return (false);
 	}
 
 
