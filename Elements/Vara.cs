@@ -1,6 +1,7 @@
 ﻿using Mhora.Definitions;
 using Mhora.Util;
 using System;
+using Mhora.Calculation;
 using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 
@@ -36,9 +37,12 @@ namespace Mhora.Elements
 			var date = sunrise.Date;
 			DayLord  = date.DayLord();
 			WeekDay  = date.DayOfWeek.WeekDay();
-
 			HoraLord = Jd.Date.HoraLord();
 			KalaLord = Jd.Date.KalaLord();
+
+			BirthTatva = CalculateBirthTatva();
+
+			(YamaLord, YamaSpan) = CalculateYamaLord();
 		}
 
 		public Horoscope  Horoscope            {get;}
@@ -60,6 +64,9 @@ namespace Mhora.Elements
 		public Weekday    WeekDay              {get;}
 		public Body       HoraLord             {get;}
 		public Body       KalaLord             {get;}
+		public Body       YamaLord             {get;}
+		public Yama       YamaSpan             {get;}
+		public BirthTatva BirthTatva           {get;}
 
 		public bool CalcSunriseSunset(Horoscope h, JulianDate jd, out JulianDate sunrise, out JulianDate sunset, out JulianDate noon, out JulianDate midnight)
 		{
@@ -191,5 +198,85 @@ namespace Mhora.Elements
 
 			return ret;
 		}
+
+		private (Body, Yama) CalculateYamaLord()
+		{
+			var dayLord  = DayLord;
+			var yamaLen  = Length.TotalHours / 8;
+			var yama     = (int) (HoursAfterSunrise.TotalHours / yamaLen);
+			var yamaSpan = (Yama) yama;
+			var yamaLord = (Body) (dayLord.Index() + yama).NormalizeInc(0, 7);
+			return (yamaLord, yamaSpan);
+		}
+		
+		//The total time for all the five tatwas adds up to 90 minutes or 1 ½ hours. Generally, after sunrise
+		//first 1 ½ hours tatwa cycle will be in the ascending order which is called Aroha cycle. The
+		//descending cycle of 1 ½ hours is called Avaroha cycle and the tatwas climb down top tatwa to the
+		//bottom tatwa.
+		// The special feature is each day starts with specific tatwa according to the week day and continues
+		//in succession in Aroha and Avaroha cycle.
+		// On Sunday or Tuesday the first tatwa is Tejas tatwa of 18 mins and goes in the ascending order 18,
+		//24, 30, 6 and 12 which makes 1 ½ hours. While descending it starts from 12, 6, 30, 24, and 18.
+		// On Wednesday the first tatwa is Prithvi tatwa. On Thursday the first tatwa is Akash tatwa, on
+		//Mondays and Fridays he first tatwa is Jala tatwa, on Saturdays the first tatwa is Vayu tatwa .
+		private BirthTatva CalculateBirthTatva()
+		{
+			var tatva = Tatvas.DayTatva[WeekDay.Index()];
+
+			var  yamaSpan  = Length / 16;
+			var  part      = (int) (HoursAfterSunrise.TotalHours / yamaSpan.TotalHours);
+			Time subPeriod = (HoursAfterSunrise.TotalHours % yamaSpan.TotalHours);
+
+			var yama = (Yama) (part / 2); //Yama is 1/8th of a day
+
+			if ((part % 2) == 1)
+			{
+				tatva = (Tatva) (4 - tatva.Index());
+			}
+
+			bool reverse    = (part % 2) == 1;
+			(subPeriod, yamaSpan, part) = CalculateTatva(ref tatva, yamaSpan, subPeriod, reverse);
+
+			reverse = (part % 2) == 1;
+			var antaraTatva = tatva;
+			CalculateTatva(ref antaraTatva, yamaSpan, subPeriod, reverse);
+
+			return new BirthTatva(yama, tatva, antaraTatva);
+		}
+
+
+		private (Time, Time, int) CalculateTatva(ref Tatva tatva, Time span, Time subPeriod, bool reverse)
+		{
+			Time tatvaPeriod = subPeriod;
+			int  index = 0;
+			for (index = 0; index < 5; index++)
+			{
+				tatvaPeriod = (span / 90) * Tatvas.Duration[tatva.Index()];
+
+				if (subPeriod < tatvaPeriod)
+				{
+					break;
+				}
+				subPeriod -= tatvaPeriod;
+
+				if (reverse)
+				{
+					var bt = (tatva.Index() - 1);
+					if (bt < 0)
+					{
+						bt += 5;
+					}
+
+					tatva = (Tatva) bt;
+				}
+				else
+				{
+					tatva = (Tatva) ((tatva.Index() + 1) % 5);
+				}
+
+			}
+			return (subPeriod, tatvaPeriod, index);
+		}
+
 	}
 }

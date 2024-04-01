@@ -124,11 +124,11 @@ namespace Mhora.Elements
 
 		public void AddSpecialLagnaPositions()
 		{
-			Time diff = (Info.DateOfBirth - Vara.Sunrise);
+			Time ishtaghati = Vara.HoursAfterSunrise;
 
 			for (var i = 1; i <= 12; i++)
 			{
-				var specialDiff = diff * (i - 1);
+				var specialDiff = ishtaghati * (i - 1);
 				var tjd         = Info.Jd + specialDiff.TotalDays;
 				var asc         = this.Lagna(tjd);
 				var desc        = string.Format("Special Lagna ({0:00})", i);

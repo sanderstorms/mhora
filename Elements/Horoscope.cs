@@ -298,6 +298,14 @@ public partial class Horoscope : ICloneable
 			correct++;
 		}
 
+		// The Kunda rectification method is an easy and useful way of rectifying the Lagna within the; 1:30 degree range,
+		// which is useful for rectifying D-20 and D-24.    
+		// Take the longitude of the Lagna, and multiply it by 81.
+		// Remove multiples of 360, and find the Nakshetra indicated by the degree.
+		// The Nakshetra should be in trines to either the Nama(name) Nakshatra or the Chandra(Moon) Nakshatra. 
+
+		// Rectify D60 chart: Ketu is our past life karma, dropping us in this incarnation. 
+		// Check what sign Ketu is in, and see where the lord has gone. The lord must have rasi-aspect on the Ascendant. 
 
 		return correct;
 	}

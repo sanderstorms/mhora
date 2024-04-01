@@ -416,8 +416,7 @@ namespace Mhora.Calculation
 
 			//Mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
 
-			var time      =  (h.Info.DateOfBirth - h.Vara.Sunrise);
-			var istaGhati = time.TotalHours.NormalizeExc(0, 24) * 2.5;
+			var istaGhati = h.Vara.HoursAfterSunrise.Ghati;
 			var glLon     = lonBase.Add(new Longitude(istaGhati        * 30));
 			var hlLon     = lonBase.Add(new Longitude(istaGhati * 30 / 2.5));
 			var blLon     = lonBase.Add(new Longitude(istaGhati * 30 / 5));

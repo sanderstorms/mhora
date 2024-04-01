@@ -189,7 +189,9 @@
     <Compile Include="Definitions\RashiStrength.cs" />
     <Compile Include="Definitions\Relation.cs" />
     <Compile Include="Definitions\SunMoonYoga.cs" />
+    <Compile Include="Definitions\Tatva.cs" />
     <Compile Include="Definitions\WeekDay.cs" />
+    <Compile Include="Definitions\Yama.cs" />
     <Compile Include="Definitions\Yoga.cs" />
     <Compile Include="Elements\Extensions\Avasthas.cs" />
     <Compile Include="Elements\Extensions\Bhavas.cs" />
@@ -209,8 +211,10 @@
     <Compile Include="Elements\Extensions\Kutas.cs" />
     <Compile Include="Elements\Extensions\Sahama.cs" />
     <Compile Include="Elements\Arudha.cs" />
+    <Compile Include="Elements\Extensions\Tatvas.cs" />
     <Compile Include="Elements\Vara.cs" />
     <Compile Include="Elements\Varnada.cs" />
+    <Compile Include="Elements\BirthTatva.cs" />
     <Compile Include="Yoga\Aakriti.cs" />
     <Compile Include="Yoga\Buddh.cs" />
     <Compile Include="Yoga\Chandra.cs" />
