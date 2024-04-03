@@ -114,7 +114,7 @@ namespace Mhora
 			{
 				if (birthDetails.ShowDialog() == DialogResult.OK)
 				{
-					var horoscope = new Horoscope(birthDetails.Info, new HoroscopeOptions());
+					var horoscope = new Horoscope(birthDetails.Info);
 					AddChild(horoscope, birthDetails.ChartName);
 				}
 			}
@@ -139,7 +139,7 @@ namespace Mhora
 			var _path_split = ofd.FileName.Split('/', '\\');
 
 			childCount++;
-			var h = new Horoscope(info, (HoroscopeOptions)MhoraGlobalOptions.Instance.HOptions.Clone());
+			var h = new Horoscope(info);
 
 			//Horoscope h = new Horoscope (info, new HoroscopeOptions());
 			var child = new MhoraChild(h);
@@ -175,7 +175,7 @@ namespace Mhora
 			var _path_split = ofd.FileName.Split('/', '\\');
 
 			childCount++;
-			var h = new Horoscope(info, new HoroscopeOptions());
+			var h     = new Horoscope(info);
 			var child = new MhoraChild(h);
 			child.Text         = childCount + " - " + _path_split.Last();
 			child.MdiParent    = this;

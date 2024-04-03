@@ -118,8 +118,7 @@ public static class Basics
 		var stdGrahas = new List<Position>();
 
 		sweph.SetEphePath(ephePath);
-		var juldayUt = h.UniversalTime(hi.DateOfBirth); // (hi.tob - hi.DstOffset).ToJulian();
-
+		var juldayUt      = h.Info.Jd;
 		var swephRahuBody = sweph.SE_MEAN_NODE;
 		if (o.NodeType == HoroscopeOptions.ENodeType.True)
 		{

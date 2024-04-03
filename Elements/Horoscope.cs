@@ -50,7 +50,11 @@ public partial class Horoscope : ICloneable
 		private set;
 	}
 
-	public HoroscopeOptions Options { get; }
+	public HoroscopeOptions Options
+	{
+		get;
+		private set;
+	}
 
 	public List<Position> PositionList
 	{
@@ -78,10 +82,10 @@ public partial class Horoscope : ICloneable
 		set;
 	}
 
-	public Horoscope(HoraInfo info, HoroscopeOptions options)
+	public Horoscope(HoraInfo info, HoroscopeOptions hOptions = null)
 	{
-		Options = options;
-		sweph.SetSidMode((int) options.Ayanamsa, 0.0, 0.0);
+		Options = hOptions ?? (HoroscopeOptions) MhoraGlobalOptions.Instance.HOptions.Clone();
+		sweph.SetSidMode((int) Options.Ayanamsa, 0.0, 0.0);
 		SwephHouseSystem = 'P';
 		SetInfo(info);
 		MhoraGlobalOptions.CalculationPrefsChanged += OnGlobalCalcPrefsChanged;
@@ -97,7 +101,8 @@ public partial class Horoscope : ICloneable
 
 	public object Clone()
 	{
-		var h = new Horoscope((HoraInfo) Info.Clone(), (HoroscopeOptions) Options.Clone());
+		var h = new Horoscope((HoraInfo) Info.Clone());
+		h.Options = (HoroscopeOptions) Options.Clone();
 		h.StrengthOptions = StrengthOptions.Clone();
 	
 		return h;
