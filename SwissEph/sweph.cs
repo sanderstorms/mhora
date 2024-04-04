@@ -302,7 +302,7 @@ public static partial class sweph
 
 	public struct aya_config
 	{
-		public double t0;
+		public JulianDate t0;
 		public double ayan_t0;
 
 		public aya_config(double t, double ayan)
@@ -314,7 +314,7 @@ public static partial class sweph
 
 	public struct aya_init
 	{
-		public double t0;
+		public JulianDate t0;
 		public double ayan_t0;
 		public bool   t0_is_UT;
 	}
@@ -741,6 +741,37 @@ public static partial class sweph
 		return ret;
 	}
 
+	// hsys =
+	// ‘B’ Alcabitus
+	// ‘Y’ APC houses
+	// ‘X’ Axial rotation system / Meridian system / Zariel
+	// ‘H’ Azimuthal or horizontal system
+	// ‘C’ Campanus
+	// ‘F’ Carter "Poli-Equatorial"
+	// ‘A’ or ‘E’ Equal (cusp 1 is Ascendant)
+	// ‘D’ Equal MC (cusp 10 is MC)
+	// ‘N’ Equal/1=Aries
+	// ‘G’ Gauquelin sector	//		Goelzer -> Krusinski
+	//		Horizontal system -> Azimuthal system
+	// ‘I’ Sunshine (Makransky, solution Treindl)
+	// ‘i’ Sunshine (Makransky, solution Makransky)
+	// ‘K’ Koch
+	// ‘U’ Krusinski-Pisa-Goelzer
+	//		Meridian system -> axial rotation
+	// ‘M’ Morinus
+	//		Neo-Porphyry -> Pullen SD	//		Pisa -> Krusinski
+	// ‘P’ Placidus
+	//		Poli-Equatorial -> Carter
+	// ‘T’ Polich/Page (“topocentric” system)
+	// ‘O’ Porphyrius
+	// ‘L’ Pullen SD (sinusoidal delta) – ex Neo-Porphyry
+	// ‘Q’ Pullen SR (sinusoidal ratio)
+	// ‘R’ Regiomontanus
+	// ‘S’ Sripati
+	//		“Topocentric” system -> Polich/Page
+	// ‘V’ Vehlow equal (Asc. in middle of house 1)
+	// ‘W’ Whole sign
+	//		Zariel -> Axial rotation system
 	public static int HousesEx(this Horoscope h, JulianDate tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc)
 	{
 		int ret;
@@ -902,8 +933,11 @@ public static partial class sweph
 		return (0);
 	}
 
-	// attr[0] = phase angle (Earth-planet-sun)	//attr[1] = phase (illumined fraction of disc)
-	// attr[2] = elongation of planet	//attr[3] = apparent diameter of disc	//attr[4] = apparent magnitude
+	// attr[0] = phase angle (Earth-planet-sun)
+	//attr[1] = phase (illumined fraction of disc)
+	// attr[2] = elongation of planet
+	//attr[3] = apparent diameter of disc
+	//attr[4] = apparent magnitude
 	// declare as attr[20] at least!
 	public static int PhenoUT(double        tjd_ut, /* time Jul. Day UT */
 	                          int           ipl,    /* planet number */

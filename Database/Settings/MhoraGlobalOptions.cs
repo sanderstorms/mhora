@@ -570,12 +570,12 @@ public class MhoraGlobalOptions : MhoraSerializableOptions
 
 	public static void NotifyDisplayChange()
 	{
-		DisplayPrefsChanged(Instance);
+		DisplayPrefsChanged?.Invoke(Instance);
 	}
 
 	public static void NotifyCalculationChange()
 	{
-		CalculationPrefsChanged(Instance.HOptions);
+		CalculationPrefsChanged?.Invoke(Instance.HOptions);
 	}
 
 	private Font AddToFontSizesHelper(Font f, int i)

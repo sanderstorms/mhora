@@ -347,6 +347,13 @@ public class KeyInfoControl : MhoraControl
 			mList.Items.Add(li);
 		}
 
+		{
+			li = new ListViewItem("Birth Time");
+			var fmt = string.Format("Ketu-D60: {0}, Kunda-Mo: {1}, Kunda-La: {2}", h.CheckKetu60(), h.CheckKundaMoon(), h.CheckKundaLagna());
+			li.SubItems.Add(fmt);
+			mList.Items.Add(li);
+		}
+
 		ColorAndFontRows(mList);
 	}
 

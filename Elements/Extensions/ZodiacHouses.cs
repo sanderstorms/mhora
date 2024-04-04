@@ -567,6 +567,11 @@ public static class ZodiacHouses
 		var ma = (int) zodiacHouse   % 3;
 		var mb = (int) b % 3;
 
+		if (zodiacHouse == b)
+		{
+			return (true);
+		}
+
 		switch (ma)
 		{
 			case 1:
