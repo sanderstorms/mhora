@@ -68,6 +68,27 @@ namespace Mhora.Elements
 		public Yama       YamaSpan             {get;}
 		public BirthTatva BirthTatva           {get;}
 
+		public Longitude BhriguBindu
+		{
+			get
+			{
+				var moon = Horoscope.GetPosition(Body.Moon).Longitude;
+				var rahu = Horoscope.GetPosition(Body.Rahu).Longitude;
+				Angle bb;
+				if (rahu < moon)
+				{
+					bb   = rahu.Value + ((rahu - moon) / 2f);
+				}
+				else
+				{
+					bb   = rahu.Value + ((moon - rahu) / 2f);
+				}
+
+				return new Longitude(bb.Value);
+
+			}
+		}
+
 		public bool CalcSunriseSunset(Horoscope h, JulianDate jd, out JulianDate sunrise, out JulianDate sunset, out JulianDate noon, out JulianDate midnight)
 		{
 			bool      daybirth = true;

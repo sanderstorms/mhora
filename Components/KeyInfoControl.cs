@@ -348,6 +348,13 @@ public class KeyInfoControl : MhoraControl
 		}
 
 		{
+			li = new ListViewItem("Bhrigu Bindu");
+			var fmt = string.Format("{0}", h.Vara.BhriguBindu.ToString());
+			li.SubItems.Add(fmt);
+			mList.Items.Add(li);
+		}
+
+		{
 			li = new ListViewItem("Birth Time");
 			var fmt = string.Format("Ketu-D60: {0}, Kunda-Mo: {1}, Kunda-La: {2}", h.CheckKetu60(), h.CheckKundaMoon(), h.CheckKundaLagna());
 			li.SubItems.Add(fmt);
