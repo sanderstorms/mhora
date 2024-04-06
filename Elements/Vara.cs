@@ -74,17 +74,17 @@ namespace Mhora.Elements
 			{
 				var moon = Horoscope.GetPosition(Body.Moon).Longitude;
 				var rahu = Horoscope.GetPosition(Body.Rahu).Longitude;
-				Angle bb;
-				if (rahu < moon)
+				var bb = rahu.Value;
+				if (rahu > moon)
 				{
-					bb   = rahu.Value + ((rahu - moon) / 2f);
+					bb -= ((rahu + 360.0 - moon) / 2.0);
 				}
 				else
 				{
-					bb   = rahu.Value + ((moon - rahu) / 2f);
+					bb += ((rahu - moon) / 2.0);
 				}
 
-				return new Longitude(bb.Value);
+				return new Longitude(bb);
 
 			}
 		}

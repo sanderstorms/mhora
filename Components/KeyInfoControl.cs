@@ -349,7 +349,7 @@ public class KeyInfoControl : MhoraControl
 
 		{
 			li = new ListViewItem("Bhrigu Bindu");
-			var fmt = string.Format("{0}", h.Vara.BhriguBindu.ToString());
+			var fmt = string.Format("{0} - {1}", h.Vara.BhriguBindu.ToString(), h.Vara.BhriguBindu.ToNakshatra());
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}

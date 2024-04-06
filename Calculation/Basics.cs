@@ -148,18 +148,11 @@ public static class Basics
 		var asc = h.Lagna(juldayUt);
 		stdGrahas.Add(new Position(h, Body.Lagna, BodyType.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
 
-		var istaGhati         = h.Vara.HoursAfterSunrise.Ghati;
-		var glLon             = stdGrahas[0].Longitude.Add(new Longitude(istaGhati      * 30));
-		var hlLon             = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30 / 2.5f));
-		var blLon             = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 30 / 5.0));
-
-		var vl = istaGhati * 5;
-		while (istaGhati > 12)
-		{
-			istaGhati -= 12;
-		}
-
-		var vlLon = stdGrahas[0].Longitude.Add(new Longitude(vl * 30));
+		var istaGhati = h.Vara.HoursAfterSunrise.Ghati;
+		var blLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 6));			//bhava = 2 ghati = 30 degrees
+		var hlLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 12));			//hora = 15 degrees
+		var glLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 12 * 2.5));
+		var vlLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 12 * 60));
 
 		stdGrahas.Add(new Position(h, Body.BhavaLagna, BodyType.SpecialLagna, blLon, 0, 0, 0, 0, 0));
 		stdGrahas.Add(new Position(h, Body.HoraLagna, BodyType.SpecialLagna, hlLon, 0, 0, 0, 0, 0));
