@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Mhora.Components.Delegates;
 
@@ -84,7 +85,7 @@ public class GlobalizedPropertiesWrapper : ICustomTypeDescriptor
 
 	public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 	{
-		var orderedProperties = new ArrayList();
+		var orderedProperties = new List<PropertyOrderPair>();
 		var retProps          = new PropertyDescriptorCollection(null);
 		var baseProps         = TypeDescriptor.GetProperties(obj, attributes, true);
 		foreach (PropertyDescriptor oProp in baseProps)

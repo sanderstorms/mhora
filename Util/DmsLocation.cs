@@ -4,7 +4,7 @@
 	{
 		public DmsLocation(double longitude, double latitude)
 		{
-			Longitude = new DmsPoint(longitude, true);
+			Longitude = new DmsPoint(longitude);
 			Latitude  = new DmsPoint(latitude, false);
 		}
 

@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -45,9 +46,9 @@ internal class MomentConverter : ExpandableObjectConverter
 		int day = 1, month = 1, year = 1, hour = 1, min = 1, sec = 1;
 
 		var _arr = s.Split(' ', ':');
-		var arr  = new ArrayList(_arr);
+		var arr  = new List<string>(_arr);
 
-		if ((string) arr[arr.Count - 1] == string.Empty)
+		if (arr[arr.Count - 1] == string.Empty)
 		{
 			arr[arr.Count - 1] = "0";
 		}
@@ -59,12 +60,12 @@ internal class MomentConverter : ExpandableObjectConverter
 				arr.Add("0");
 			}
 
-			day   = int.Parse((string) arr[0]);
-			month = ((string) arr[1]).FromStringMonth ();
-			year  = int.Parse((string) arr[2]);
-			hour  = int.Parse((string) arr[3]);
-			min   = int.Parse((string) arr[4]);
-			sec   = int.Parse((string) arr[5]);
+			day   = int.Parse(arr[0]);
+			month = arr[1].FromStringMonth ();
+			year  = int.Parse(arr[2]);
+			hour  = int.Parse(arr[3]);
+			min   = int.Parse(arr[4]);
+			sec   = int.Parse(arr[5]);
 		}
 
 		//if (day < 1 || day > 31) day = 1;

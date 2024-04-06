@@ -21,11 +21,11 @@ using System.ComponentModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Components.Property;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Calculation;
 
 namespace Mhora.Components;
 
@@ -48,7 +48,7 @@ public class YogaControl : MhoraControl
 		// This call is required by the Windows Form Designer.
 		InitializeComponent();
 		h               = _h;
-		fy              = new FindYogas(h, new Division(DivisionType.Rasi));
+		fy              = new FindYogas(h, DivisionType.Rasi);
 		mList.BackColor = MhoraGlobalOptions.Instance.ChakraBackgroundColor;
 		AddViewsToContextMenu(mContext);
 		h.Changed += OnRecalculate;

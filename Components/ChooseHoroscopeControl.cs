@@ -132,7 +132,7 @@ public class ChooseHoroscopeControl : Form
 				if (((MhoraChild) c).Name == (string) lBox.Items[lBox.SelectedIndex])
 				{
 					var ch = (MhoraChild) c;
-					return ch.getHoroscope();
+					return ch.Horoscope;
 				}
 			}
 		}

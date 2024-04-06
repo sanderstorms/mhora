@@ -24,6 +24,7 @@ using System.Windows.Forms;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Extensions;
 
 namespace Mhora.Components;
 
@@ -149,7 +150,7 @@ public class VaraChakra : MhoraControl
 			g.DrawString(bodies[i].Name(), f, b_black, -sz.Width / 2, 0);
 		}
 
-		if (h.IsDayBirth())
+		if (h.Vara.IsDayBirth)
 		{
 		}
 	}

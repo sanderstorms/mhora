@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using Mhora.Util;
 using Newtonsoft.Json;
 
 namespace Mhora.Database.World;
@@ -48,6 +50,41 @@ public class TimeZone
 		}
 	}
 
+	public Angle Latitude
+	{
+		get
+		{
+			var str = "0.0";
+			if (location.TryGetValue("latitude", out str))
+			{
+				if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out var latitude))
+				{
+					return latitude;
+				}
+			}
+
+			return 0.0;
+		}
+	}
+
+	public Angle Longitude
+	{
+		get
+		{
+			var str = "0.0";
+			if (location.TryGetValue("longitude", out str))
+			{
+				if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out var longitude))
+				{
+					return longitude;
+				}
+			}
+
+			return 0.0;
+
+		}
+	}
+
 	public int Offset
 	{
 		get
@@ -57,17 +94,34 @@ public class TimeZone
 		}
 	}
 
-	public int DstOffset
+	public TimeSpan DstOffset
 	{
 		get
 		{
+			TimeSpan time = TimeSpan.Zero;
 			if (offsets.Count == 2)
 			{
-				var hours = float.Parse(offsets[1]);
-				return (int) (hours * 60);
+				var str  = offsets[1].Split(':');
+
+				if (float.TryParse(str[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var hours))
+				{
+					time = TimeSpan.FromHours(hours);
+				}
+
+				if (str.Length == 2)
+				{
+					if (float.TryParse(str[1], NumberStyles.Any, CultureInfo.InvariantCulture, out var minutes))
+					{
+						if (hours < 0)
+						{
+							minutes = -minutes;
+						}
+						time = time.Add(TimeSpan.FromMinutes(minutes));
+					}
+				}
 			}
 
-			return 0;
+			return (time);
 		}
 	}
 
@@ -110,29 +164,36 @@ public class TimeZone
 
 	private TimeZoneInfo CreateTimezone()
 	{
-		var name         = id.Split('/');
-		var minutes      = Offset;
-		var dst          = DstOffset;
-		var displayName  = id;
-		var standardName = name.Last();
-		var offset       = new TimeSpan(minutes / 60, minutes % 60, 0);
-
-		if (dst == 0)
+		try
 		{
-			return TimeZoneInfo.CreateCustomTimeZone(id, offset, displayName, standardName);
+			var name         = id.Split('/');
+			var minutes      = Offset;
+			var dst          = DstOffset;
+			var displayName  = id;
+			var standardName = name.Last();
+			var offset       = new TimeSpan(minutes / 60, minutes % 60, 0);
+
+			if (dst.TotalHours == 0)
+			{
+				return TimeZoneInfo.CreateCustomTimeZone(id, offset, displayName, standardName);
+			}
+
+			var startTransition = TimeZoneInfo.TransitionTime.CreateFloatingDateRule(new DateTime(1, 1, 1, 4, 0, 0), 10, 2, DayOfWeek.Sunday);
+			var endTransition   = TimeZoneInfo.TransitionTime.CreateFloatingDateRule(new DateTime(1, 1, 1, 3, 0, 0), 3, 2, DayOfWeek.Sunday);
+			// Define adjustment rule
+			var delta      = new TimeSpan(1, 0, 0);
+			var adjustment = TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(new DateTime(1999, 10, 1), DateTime.MaxValue.Date, delta, startTransition, endTransition);
+
+			TimeZoneInfo.AdjustmentRule[] adjustments =
+			{
+				adjustment
+			};
+			return TimeZoneInfo.CreateCustomTimeZone(id, offset, displayName, standardName, standardName + " (DST)", adjustments);
 		}
-
-		var startTransition = TimeZoneInfo.TransitionTime.CreateFloatingDateRule(new DateTime(1, 1, 1, 4, 0, 0), 10, 2, DayOfWeek.Sunday);
-		var endTransition   = TimeZoneInfo.TransitionTime.CreateFloatingDateRule(new DateTime(1, 1, 1, 3, 0, 0), 3, 2, DayOfWeek.Sunday);
-		// Define adjustment rule
-		var delta      = new TimeSpan(1, 0, 0);
-		var adjustment = TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(new DateTime(1999, 10, 1), DateTime.MaxValue.Date, delta, startTransition, endTransition);
-
-		TimeZoneInfo.AdjustmentRule[] adjustments =
+		catch (Exception e)
 		{
-			adjustment
-		};
-		return TimeZoneInfo.CreateCustomTimeZone(id, offset, displayName, standardName, standardName + " (DST)", adjustments);
+			return (TimeZoneInfo.Local);
+		}
 	}
 }
 

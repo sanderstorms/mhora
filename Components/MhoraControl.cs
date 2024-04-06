@@ -20,7 +20,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Mhora.Components.Varga;
+using Mhora.Components.VargaControl;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 

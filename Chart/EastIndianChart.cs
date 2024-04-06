@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System.Drawing;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Extensions;
 
 namespace Mhora.Chart;
 
@@ -68,7 +69,7 @@ public class EastIndianChart : IDrawChart
 		var dOffset = l.ToZodiacHouseOffset();
 		var iOff    = (int) (dOffset / 30.0 * (Xw / 3));
 		var pBase   = GetZhouseOffset(l.ToZodiacHouse());
-		switch ((ZodiacHouse) zh)
+		switch (zh)
 		{
 			case ZodiacHouse.Pis:
 			case ZodiacHouse.Ari:
@@ -97,7 +98,7 @@ public class EastIndianChart : IDrawChart
 
 	public Point GetSingleItemOffset(ZodiacHouse zh, Size itemSize)
 	{
-		switch ((ZodiacHouse) zh)
+		switch (zh)
 		{
 			case ZodiacHouse.Ari: return new Point(90, 0);
 			case ZodiacHouse.Can: return new Point(5, 90);
@@ -120,7 +121,7 @@ public class EastIndianChart : IDrawChart
 		var wi = Xw / 3 / 5;
 		//int yi = (xw/3)/6;
 		Point pret;
-		switch ((ZodiacHouse) zh)
+		switch (zh)
 		{
 			case ZodiacHouse.Gem: return GetSmallGemOffset(n);
 			case ZodiacHouse.Tau:
@@ -182,7 +183,7 @@ public class EastIndianChart : IDrawChart
 	public Point GetZhouseOffset(ZodiacHouse zh)
 	{
 		var iOff = Xw / 3;
-		switch ((ZodiacHouse) zh)
+		switch (zh)
 		{
 			case ZodiacHouse.Ari: return new Point(iOff * 2, 0);
 			case ZodiacHouse.Tau: return new Point(iOff, 0);
@@ -245,7 +246,7 @@ public class EastIndianChart : IDrawChart
 	{
 		var wi = Xw / 3 / 4;
 		var yi = Yw / 3 / 6;
-		switch ((ZodiacHouse) zh)
+		switch (zh)
 		{
 			case ZodiacHouse.Gem: return pret;
 			case ZodiacHouse.Aqu:

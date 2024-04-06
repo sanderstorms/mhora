@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using Mhora.Elements.Hora;
+using Mhora.Components.File;
 using Newtonsoft.Json;
 
 namespace Mhora.Database.Settings;

@@ -46,7 +46,7 @@ namespace Mhora.Util
 		/// <param name="degrees">The value of the angle in degrees.</param>
 		public Angle(int degrees)
 		{
-			_value = (decimal)degrees;
+			Value = degrees;
 		}
 
 		/// <summary>
@@ -66,7 +66,7 @@ namespace Mhora.Util
 		/// <param name="degrees">The value of the angle in degrees.</param>
 		public Angle(double degrees)
 		{
-			_value = (decimal)degrees;
+			Value = (decimal) degrees;
 		}
 
 		/// <summary>
@@ -291,7 +291,7 @@ namespace Mhora.Util
 		/// <returns>The result of the first Angle being added to the second Angle.</returns>
 		public static Angle operator +(Angle a, Angle b)
 		{
-			return (Angle)(a._value + b._value);
+			return a._value + b._value;
 		}
 
 		/// <summary>
@@ -302,7 +302,7 @@ namespace Mhora.Util
 		/// <returns>The result of the second Angle being subtracted from the first Angle.</returns>
 		public static Angle operator -(Angle a, Angle b)
 		{
-			return (Angle)(a._value - b._value);
+			return a._value - b._value;
 		}
 
 		/// <summary>
@@ -313,7 +313,7 @@ namespace Mhora.Util
 		/// <returns>The result of the first Angle being multiplied by the second Angle.</returns>
 		public static Angle operator *(Angle a, Angle b)
 		{
-			return (Angle)(a._value * b._value);
+			return a._value * b._value;
 		}
 
 		/// <summary>
@@ -324,7 +324,7 @@ namespace Mhora.Util
 		/// <returns>The result of the first Angle being divided by the second Angle.</returns>
 		public static Angle operator /(Angle a, Angle b)
 		{
-			return (Angle)(a._value / b._value);
+			return a._value / b._value;
 		}
 
 		/// <summary>
@@ -335,7 +335,7 @@ namespace Mhora.Util
 		/// <returns>The result of the First Angle mod the Second Angle.</returns>
 		public static Angle operator %(Angle a, Angle b)
 		{
-			return (Angle)(a._value % b._value);
+			return a._value % b._value;
 		}
 
 		/// <summary>
@@ -564,18 +564,7 @@ namespace Mhora.Util
 		/// <returns>An integer value representing the whole number portion of the angle.</returns>
 		public static int GetDegrees(Angle angle)
 		{
-			int returnValue = 0;
-
-			if ((decimal)angle < 0)
-			{
-				returnValue = (int)Math.Ceiling((decimal)angle);
-			}
-			else
-			{
-				returnValue = (int)Math.Floor((decimal)angle);
-			}
-
-			return returnValue;
+			return (int)((decimal)angle).Floor();
 		}
 
 		/// <summary>
@@ -586,21 +575,8 @@ namespace Mhora.Util
 		/// <returns>The arcminute of the specified angle.</returns>
 		public static int GetArcminute(Angle angle)
 		{
-			int returnValue = 0;
-
-			decimal degreesDecimal = (decimal)angle - (decimal)angle.Degrees;
-
-			if (degreesDecimal < 0)
-			{
-				returnValue = (int)Math.Ceiling(degreesDecimal * 60M);
-			}
-			else
-			{
-				returnValue = (int)Math.Floor(degreesDecimal * 60M);
-			}
-
-
-			return returnValue;
+			decimal degreesDecimal = (decimal)angle - angle.Degrees;
+			return (int)(degreesDecimal * 60M).Floor();
 		}
 
 		/// <summary>
@@ -613,18 +589,9 @@ namespace Mhora.Util
 		{
 			decimal returnValue = 0M;
 
-			decimal degreesDecimal = (decimal)angle - (decimal)angle.Degrees;
-			decimal totalMinutes = degreesDecimal * 60;
-			decimal secondsDecimal = 0;
-
-			if (totalMinutes < 0)
-			{
-				secondsDecimal = totalMinutes - Math.Ceiling(totalMinutes);
-			}
-			else
-			{
-				secondsDecimal = totalMinutes - Math.Floor(totalMinutes);
-			}
+			decimal degreesDecimal = (decimal)angle - angle.Degrees;
+			decimal totalMinutes   = degreesDecimal * 60;
+			decimal secondsDecimal = totalMinutes - totalMinutes.Floor();
 
 			returnValue = Convert.ToDecimal(secondsDecimal * 60);
 
@@ -693,9 +660,9 @@ namespace Mhora.Util
 		/// </summary>
 		private decimal _value;
 		[JsonProperty]
-		internal double Value
+		internal decimal Value
 		{
-			get => (double) _value;
+			get => _value;
 			set
 			{
 				while (value > 360)
@@ -703,12 +670,12 @@ namespace Mhora.Util
 					value -= 360;
 				}
 
-				while (value < 0)
+				while (value < -360)
 				{
 					value += 360;
 				}
 
-				_value = (decimal) value;
+				_value = value;
 			}
 		}
 

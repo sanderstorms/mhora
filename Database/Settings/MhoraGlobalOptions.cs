@@ -22,7 +22,7 @@ using System.Drawing;
 using System.IO;
 using Mhora.Components.Delegates;
 using Mhora.Components.Property;
-using Mhora.Components.Varga;
+using Mhora.Components.VargaControl;
 using Mhora.Definitions;
 using Mhora.Util;
 using Newtonsoft.Json;
@@ -110,8 +110,8 @@ public class MhoraGlobalOptions : MhoraSerializableOptions
 	private Font _mfVarga;
 	private int  _miDasaShowEventsLevel;
 
-	private Angle           _mLat;
-	private Angle           _mLon;
+	private DmsPoint           _mLat;
+	private DmsPoint           _mLon;
 	private string          _msNotesExtension;
 	public  Size            RasiStrengthsFormSize = new(0, 0);
 	public  StrengthOptions SOptions;
@@ -211,7 +211,7 @@ public class MhoraGlobalOptions : MhoraSerializableOptions
 
 	[PropertyOrder(1)]
 	[Category(CatLocation)]
-	public Angle Latitude
+	public DmsPoint Latitude
 	{
 		get => _mLat;
 		set => _mLat = value;
@@ -219,7 +219,7 @@ public class MhoraGlobalOptions : MhoraSerializableOptions
 
 	[PropertyOrder(2)]
 	[Category(CatLocation)]
-	public Angle Longitude
+	public DmsPoint Longitude
 	{
 		get => _mLon;
 		set => _mLon = value;
@@ -570,12 +570,12 @@ public class MhoraGlobalOptions : MhoraSerializableOptions
 
 	public static void NotifyDisplayChange()
 	{
-		DisplayPrefsChanged(Instance);
+		DisplayPrefsChanged?.Invoke(Instance);
 	}
 
 	public static void NotifyCalculationChange()
 	{
-		CalculationPrefsChanged(Instance.HOptions);
+		CalculationPrefsChanged?.Invoke(Instance.HOptions);
 	}
 
 	private Font AddToFontSizesHelper(Font f, int i)

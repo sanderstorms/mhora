@@ -31,6 +31,7 @@ namespace Mhora.Definitions
 
 		[Description("Sree Lagna")]
 		SreeLagna,
+		[Description("Pranapada Lagna")]
 		Pranapada,
 
 		[Description("Vighati Lagna")]

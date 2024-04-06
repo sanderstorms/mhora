@@ -16,9 +16,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Mhora.Definitions;
+using Mhora.Elements.Extensions;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -43,6 +46,7 @@ public class Ashtakavarga
 	{
 		_h           = h;
 		_dtype = dtype;
+
 		_avBodies = new[]
 		{
 			Body.Sun,
@@ -72,8 +76,10 @@ public class Ashtakavarga
 					Body.Saturn,
 					Body.Lagna
 				};
-				break;
+			break;
+
 			case EKakshya.EkRegular:
+			default:
 				_avBodies = new[]
 				{
 					Body.Saturn,
@@ -85,11 +91,20 @@ public class Ashtakavarga
 					Body.Moon,
 					Body.Lagna
 				};
-				break;
+			break;
 		}
+
 	}
 
-	public int[][] BindusSun()
+	public int BodyToInt(Body b)
+	{
+		return Array.IndexOf(_avBodies, b);
+	}
+
+	public Body[] Bodies => _avBodies;
+
+
+	public static int[][] BindusSun()
 	{
 		int[][] bindus =
 		{
@@ -169,7 +184,7 @@ public class Ashtakavarga
 		return bindus;
 	}
 
-	public int[][] BindusMoon()
+	public static int[][] BindusMoon()
 	{
 		int[][] bindus =
 		{
@@ -250,7 +265,7 @@ public class Ashtakavarga
 		return bindus;
 	}
 
-	public int[][] BindusMars()
+	public static int[][] BindusMars()
 	{
 		int[][] bindus =
 		{
@@ -321,7 +336,7 @@ public class Ashtakavarga
 		return bindus;
 	}
 
-	public int[][] BindusMercury()
+	public static int[][] BindusMercury()
 	{
 		int[][] bindus =
 		{
@@ -407,7 +422,7 @@ public class Ashtakavarga
 		return bindus;
 	}
 
-	public int[][] BindusJupiter()
+	public static int[][] BindusJupiter()
 	{
 		int[][] bindus =
 		{
@@ -495,7 +510,7 @@ public class Ashtakavarga
 		return bindus;
 	}
 
-	public int[][] BindusVenus()
+	public static int[][] BindusVenus()
 	{
 		int[][] bindus =
 		{
@@ -579,7 +594,7 @@ public class Ashtakavarga
 		return bindus;
 	}
 
-	public int[][] BindusSaturn()
+	public static int[][] BindusSaturn()
 	{
 		int[][] bindus =
 		{
@@ -650,7 +665,7 @@ public class Ashtakavarga
 		return bindus;
 	}
 
-	public int[][] BindusLagna()
+	public static int[][] BindusLagna()
 	{
 		int[][] bindus =
 		{
@@ -731,29 +746,6 @@ public class Ashtakavarga
 		return bindus;
 	}
 
-	public int BodyToInt(Body b)
-	{
-		switch (b)
-		{
-			case Body.Sun:     return 0;
-			case Body.Moon:    return 1;
-			case Body.Mars:    return 2;
-			case Body.Mercury: return 3;
-			case Body.Jupiter: return 4;
-			case Body.Venus:   return 5;
-			case Body.Saturn:  return 6;
-			case Body.Lagna:   return 7;
-			default:
-				Trace.Assert(false, "Ashtakavarga:BodyToInt");
-				return 0;
-		}
-	}
-
-	public Body[] GetBodies()
-	{
-		return _avBodies;
-	}
-
 	public int[] GetPav(Body m)
 	{
 		var ret = new int[12]
@@ -771,7 +763,7 @@ public class Ashtakavarga
 			0,
 			0
 		};
-		foreach (var inner in GetBodies())
+		foreach (var inner in Bodies)
 		{
 			foreach (var zh in GetBindus(m, inner))
 			{
@@ -800,9 +792,9 @@ public class Ashtakavarga
 			0
 		};
 
-		var zl = (ZodiacHouse) _h.GetPosition(Body.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
+		var zl = _h.GetPosition(Body.Lagna).ToDivisionPosition(_dtype).ZodiacHouse;
 
-		foreach (var b in GetBodies())
+		foreach (var b in Bodies)
 		{
 			var pav = GetPav(b);
 			Debug.Assert(pav.Length == 12, "Internal error: Pav didn't have 12 entries");
@@ -838,7 +830,7 @@ public class Ashtakavarga
 			0,
 			0
 		};
-		foreach (var b in GetBodies())
+		foreach (var b in Bodies)
 		{
 			// Lagna's bindus are not included in SAV
 			if (b == Body.Lagna)
@@ -869,14 +861,14 @@ public class Ashtakavarga
 		allBindus[6] = BindusSaturn();
 		allBindus[7] = BindusLagna();
 
-		var al = new ArrayList();
+		var al = new List<ZodiacHouse>();
 
-		var zh = (ZodiacHouse) _h.GetPosition(n).ToDivisionPosition(_dtype).ZodiacHouse;
+		var zh = _h.GetPosition(n).ToDivisionPosition(_dtype).ZodiacHouse;
 		foreach (var i in allBindus[BodyToInt(m)][BodyToInt(n)])
 		{
 			al.Add(zh.Add(i));
 		}
 
-		return (ZodiacHouse[]) al.ToArray(typeof(ZodiacHouse));
+		return al.ToArray();
 	}
 }

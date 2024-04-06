@@ -1,6 +1,8 @@
 ﻿using System;
+using Mhora.Calculation;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Extensions;
 using Mhora.Util;
 
 namespace Mhora.SwissEph.Helpers;
@@ -193,22 +195,21 @@ public class AzimuthCalculator
 
 		var coord    = GetSunriseSunsetAzimuthAndTimeInternal(h, date, position, pressure, temperature, purpose, sweApi);
 		var dT       = GetAltitudeCorrection(position.Altitude) / (15 * Math.Cos(ToRad(position.Latitude)) * Math.Sin(ToRad(coord.Coordinates.Azimuth)));
-		var timeBase = coord.JulDay.ToUtc();
+		var timeBase = coord.JulDay.Date;
 		var time     = timeBase.AddMinutes(dT);
-		var jday     = time.ToJulian();
 
 		return new SunriseSunsetTimeCalcResult
 		{
 			dT       = dT,
 			DateTime = timeBase.AddMinutes(dT),
-			JulDay   = jday
+			JulDay   = time
 		};
 	}
 
-	private static (HorizontalCoordinates Coordinates, double JulDay) GetSunriseSunsetAzimuthAndTimeInternal(Horoscope h, DateTime date, GeoPosition position, double pressure, double temperature, int purpose, SweApi sweApi)
+	private static (HorizontalCoordinates Coordinates, JulianDate JulDay) GetSunriseSunsetAzimuthAndTimeInternal(Horoscope h, DateTime date, GeoPosition position, double pressure, double temperature, int purpose, SweApi sweApi)
 	{
 		var jday        = SweApi.SunriseSunsetJulDay(position, pressure, temperature, date);
-		var sunPosition = SweApi.GetBodyPosition(h, jday, Body.Sun.SwephBody());
+		var sunPosition = h.CalculateSingleBodyPosition(jday, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
 		var azimuth     = SweApi.GetHorizontalCoordinates(jday, position, pressure, temperature, sunPosition);
 
 		// Перевод в круговой счет от N

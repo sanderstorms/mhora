@@ -9,7 +9,7 @@ namespace Mhora
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+		private IContainer components = null;
 		private int                childCount;
 		public  MhoraGlobalOptions gOpts;
 		private MenuItem           mDecreaseFontSize;

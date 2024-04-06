@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -46,11 +46,11 @@ internal class HMSInfoConverter : ExpandableObjectConverter
 
 		bool isLongitude = false;
 		var _arr = s.Split('.', ' ', ':','\'');
-		var arr  = new ArrayList(_arr);
+		var arr  = new List <string> (_arr);
 
 		if (arr.Count >= 2)
 		{
-			if ((string) arr[arr.Count - 1] == string.Empty)
+			if (arr[arr.Count - 1] == string.Empty)
 			{
 				arr[arr.Count - 1] = "0";
 			}
@@ -60,8 +60,8 @@ internal class HMSInfoConverter : ExpandableObjectConverter
 				arr.Add("0");
 			}
 
-			hour = int.Parse((string) arr[0]);
-			var sdir = (string) arr[1];
+			hour = int.Parse(arr[0]);
+			var sdir = arr[1];
 			if (sdir == "W" || sdir == "w" || sdir == "S" || sdir == "s")
 			{
 				hour *= -1;
@@ -72,12 +72,12 @@ internal class HMSInfoConverter : ExpandableObjectConverter
 				isLongitude = true;
 			}
 
-			if (int.TryParse((string) arr[2], out min) == false)
+			if (int.TryParse(arr[2], out min) == false)
 			{
 				//todo: warning
 			}
 
-			if (int.TryParse((string) arr[3], out sec) == false)
+			if (int.TryParse(arr[3], out sec) == false)
 			{
 				//todo: warning
 			}

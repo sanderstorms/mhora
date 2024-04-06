@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using Mhora.Definitions;
 using Mhora.Elements;
 using Mhora.Util;
 
@@ -47,8 +46,6 @@ internal class SweApi : IDisposable
 	/// <returns>Время восхода/заката в формате Юлианского дня.</returns>
 	public static double SunriseSunsetJulDay(GeoPosition position, double pressure, double temperature, DateTime date)
 	{
-		var tjd = date.ToJulian();
-
 		var geopos = new[]
 		{
 			position.Longitude,
@@ -83,36 +80,6 @@ internal class SweApi : IDisposable
 	}
 
 	/// <summary>
-	///     Вычисляет позицию Солнца для указанного юлианского дня.
-	/// </summary>
-	/// <param name="jday">Юлианский день. UTC.</param>
-	/// <param name="calcFlag">Тип вычислений. По умолчанию <see cref="sweph.SEFLG_EQUATORIAL" />.</param>
-	/// <returns><see cref="BodyPosition" />.</returns>
-	public static BodyPosition GetBodyPosition(Horoscope h, double jday, int body)
-	{
-		var sterr    = new StringBuilder();
-		var position = new double[6];
-
-		var result = h.CalcUT(jday, body, 0, position);
-
-		//var result = h.CalcUT(jday, body, 0, position, sterr);
-		if (result == sweph.ERR)
-		{
-			throw new SwedllException(sterr.ToString());
-		}
-
-		return new BodyPosition
-		{
-			Longitude      = position[0],
-			Latitude       = position[1],
-			Distance       = position[2],
-			LongitudeSpeed = position[3],
-			LatitudeSpeed  = position[4],
-			DistanceSpeed  = position[5]
-		};
-	}
-
-	/// <summary>
 	///     Расчитывает горизонтальные координаты тела.
 	/// </summary>
 	/// <param name="jday">Юлианский день. UTC.</param>
@@ -124,7 +91,7 @@ internal class SweApi : IDisposable
 	///     <see cref="BodyPosition.Latitude" />.
 	/// </param>
 	/// <returns>Горизонтальные координаты тела.</returns>
-	public static HorizontalCoordinates GetHorizontalCoordinates(double jday, GeoPosition position, double pressure, double temperature, BodyPosition bodyPosition)
+	public static HorizontalCoordinates GetHorizontalCoordinates(double jday, GeoPosition position, double pressure, double temperature, Position bodyPosition)
 	{
 		var geopos = new[]
 		{

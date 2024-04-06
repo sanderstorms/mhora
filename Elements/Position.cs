@@ -18,8 +18,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using Mhora.Calculation;
 using Mhora.Definitions;
+using Mhora.Elements.Extensions;
+using Mhora.SwissEph.Helpers;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -32,25 +36,43 @@ namespace Mhora.Elements;
 /// </summary>
 public class Position
 {
-	private static bool      _mbNadiamsaCknCalculated;
-	private static double[]  _mNadiamsaCusps;
-	public         Horoscope H;
-	public         Body Name;
-	public         string    OtherString;
-	public         BodyType BodyType;
+	private readonly Horoscope _h;
+	private static   bool      _mbNadiamsaCknCalculated;
+	private static   double[]  _mNadiamsaCusps;
+	public           string    OtherString;
 
-	public Position(Horoscope h, Body aname, BodyType atype, Longitude lon, double lat, double dist, double splon, double splat, double spdist)
+	public readonly  BodyType              BodyType;
+	public readonly  Body                  Name;
+	public readonly  HorizontalCoordinates HorizontalCoordinates;
+
+	public Position(Horoscope h, Body body, BodyType bodyType, Longitude lon, double lat, double dist, double splon, double splat, double spdist)
 	{
-		Longitude       = lon;
-		Latitude        = lat;
-		Distance        = dist;
+		Longitude      = lon;
+		Latitude       = lat;
+		Distance       = dist;
 		SpeedLongitude = splon;
 		SpeedLatitude  = splat;
 		SpeedDistance  = spdist;
-		Name            = aname;
-		BodyType            = atype;
-		H               = h;
-		//Mhora.Log.Debug ("{0} {1} {2}", aname.ToString(), lon.value, splon);
+		Name           = body;
+		BodyType       = bodyType;
+		_h             = h;
+
+		if (BodyType == BodyType.Graha)
+		{
+			var geoPosition = new GeoPosition()
+			{
+				Longitude = h.Info.Longitude,
+				Latitude  = h.Info.Latitude,
+				Altitude  = h.Info.Altitude,
+			};
+
+			HorizontalCoordinates = SweApi.GetHorizontalCoordinates(h.Info.Jd, geoPosition, 0, 0,this);
+		}
+		else
+		{
+			HorizontalCoordinates = new HorizontalCoordinates();
+		}
+		//Mhora.Log.Debug ("{0} {1} {2}", body.ToString(), lon.value, splon);
 	}
 
 	public Longitude Longitude
@@ -91,7 +113,7 @@ public class Position
 
 	public Position Clone()
 	{
-		var bp = new Position(H, Name, BodyType, Longitude, Latitude, Distance, SpeedLongitude, SpeedLatitude, SpeedDistance)
+		var bp = new Position(_h, Name, BodyType, Longitude, Latitude, Distance, SpeedLongitude, SpeedLatitude, SpeedDistance)
 		{
 			OtherString = OtherString
 		};
@@ -102,7 +124,7 @@ public class Position
 	{
 		var l      = Longitude;
 		var offset = l.ToZodiacHouseOffset();
-		var part   = (int) Math.Floor(offset / (30.0 / n)) + 1;
+		var part   = (int) (offset / (30.0 / n)).Floor() + 1;
 		Trace.Assert(part >= 1 && part <= n);
 		return part;
 	}
@@ -173,7 +195,7 @@ public class Position
 		{
 			if (Longitude.Sub(cusps[i]).Value <= cusps[i + 1].Sub(cusps[i]).Value)
 			{
-				return new DivisionPosition(Name, BodyType, (ZodiacHouse) i + 1, cusps[i].Value, cusps[i + 1].Value, 1);
+				return new DivisionPosition(Name, BodyType, (ZodiacHouse) i + 1, (double) cusps[i].Value, (double) cusps[i + 1].Value, 1);
 			}
 		}
 
@@ -184,7 +206,7 @@ public class Position
 	{
 		Debug.Assert(cusps.Length == 13);
 
-		var zlagna = H.GetPosition(Body.Lagna).ToDivisionPosition(new Division(DivisionType.Rasi)).ZodiacHouse;
+		var zlagna = _h.GetPosition(Body.Lagna).ToDivisionPosition(DivisionType.Rasi).ZodiacHouse;
 		for (var i = 0; i < 12; i++)
 		{
 			if (Longitude.Sub(cusps[i]).Value < cusps[i + 1].Sub(cusps[i]).Value)
@@ -192,16 +214,16 @@ public class Position
 				//Mhora.Log.Debug ("Found {4} - {0} in cusp {3} between {1} and {2}", this.m_lon.value,
 				//	cusps[i].value, cusps[i+1].value, i+1, this.name.ToString());
 
-				return new DivisionPosition(Name, BodyType, zlagna.Add(i + 1), cusps[i].Value, cusps[i + 1].Value, 1);
+				return new DivisionPosition(Name, BodyType, zlagna.Add(i + 1), (double)cusps[i].Value, (double)cusps[i + 1].Value, 1);
 			}
 		}
 
-		return new DivisionPosition(Name, BodyType, zlagna.Add(1), cusps[0].Value, cusps[1].Value, 1);
+		return new DivisionPosition(Name, BodyType, zlagna.Add(1), (double)cusps[0].Value, (double)cusps[1].Value, 1);
 	}
 
 	private DivisionPosition ToDivisionPositionBhavaEqual()
 	{
-		var offset = H.GetPosition(Body.Lagna).Longitude.ToZodiacHouseOffset();
+		var offset = _h.GetPosition(Body.Lagna).Longitude.ToZodiacHouseOffset();
 		var cusps  = new Longitude[13];
 		for (var i = 0; i < 12; i++)
 		{
@@ -214,8 +236,8 @@ public class Position
 	private DivisionPosition ToDivisionPositionBhavaPada()
 	{
 		var cusps       = new Longitude[13];
-		var offset      = H.GetPosition(Body.Lagna).Longitude.ToZodiacHouseOffset();
-		var padasOffset = (int) Math.Floor(offset / (360.0 / 108.0));
+		var offset      = _h.GetPosition(Body.Lagna).Longitude.ToZodiacHouseOffset();
+		var padasOffset = (int) (offset / (360.0 / 108.0)).Floor();
 		var startOffset = padasOffset * (360.0 / 108.0);
 
 		for (var i = 0; i < 12; i++)
@@ -232,13 +254,13 @@ public class Position
 		var dCusps = new double[13];
 		var ascmc  = new double[10];
 
-		if (hsys != H.SwephHouseSystem)
+		if (hsys != _h.SwephHouseSystem)
 		{
-			H.SwephHouseSystem = hsys;
-			H.PopulateHouseCusps();
+			_h.SwephHouseSystem = hsys;
+			_h.PopulateHouseCusps();
 		}
 
-		return ToBhavaDivisionPositionHouse(H.SwephHouseCusps);
+		return ToBhavaDivisionPositionHouse(_h.SwephHouseCusps);
 	}
 
 	private bool HoraSunDayNight()
@@ -566,10 +588,21 @@ public class Position
 		return PopulateRegularCusps(n, dp);
 	}
 
-	private DivisionPosition ToDivisionPositionNavamsa()
+	private DivisionPosition ToDivisionPositionNavamsa(int parts)
 	{
+		DivisionPosition dp;
+		if (parts > 9)
+		{
+			var bp = Clone();
+			bp.Longitude = bp.ExtrapolateLongitude(DivisionType.Navamsa);
+			dp = bp.ToDivisionPositionNavamsa(parts / 9);
+			PopulateRegularCusps(81, dp);
+			return (dp);
+		}
+
 		var part = PartOfZodiacHouse(9);
-		var dp   = ToRegularDivisionPosition(9);
+		dp   = ToRegularDivisionPosition(9);
+
 		switch ((int) Longitude.ToZodiacHouse() % 3)
 		{
 			case 1:
@@ -1103,7 +1136,7 @@ public class Position
 			45,
 			60
 		};
-		var alUnsorted = new ArrayList(150);
+		var alUnsorted = new List<double> ();
 		foreach (var iVarga in bases)
 		{
 			for (var i = 0; i < iVarga; i++)
@@ -1114,14 +1147,14 @@ public class Position
 
 		alUnsorted.Add(30.0);
 		alUnsorted.Sort();
-		var alSorted = new ArrayList(150)
+		var alSorted = new List<double>()
 		{
 			0.0
 		};
 
 		for (var i = 0; i < alUnsorted.Count; i++)
 		{
-			if ((double) alUnsorted[i] != (double) alSorted[alSorted.Count - 1])
+			if (alUnsorted[i] != alSorted[alSorted.Count - 1])
 			{
 				alSorted.Add(alUnsorted[i]);
 			}
@@ -1129,7 +1162,7 @@ public class Position
 
 		Debug.Assert(alSorted.Count == 151, string.Format("Found {0} Nadis. Expected 151.", alSorted.Count));
 
-		_mNadiamsaCusps          = (double[]) alSorted.ToArray(typeof(double));
+		_mNadiamsaCusps          = alSorted.ToArray();
 		_mbNadiamsaCknCalculated = true;
 	}
 
@@ -1198,8 +1231,8 @@ public class Position
 
 	private DivisionPosition ToDivisionPositionNavamsaDwadasamsa()
 	{
-		var bp = (Position) Clone();
-		bp.Longitude = bp.ExtrapolateLongitude(new Division(DivisionType.Navamsa));
+		var bp = Clone();
+		bp.Longitude = bp.ExtrapolateLongitude(DivisionType.Navamsa);
 		var dp = bp.ToDivisionPositionDwadasamsa(12);
 		PopulateRegularCusps(108, dp);
 		return dp;
@@ -1207,12 +1240,18 @@ public class Position
 
 	private DivisionPosition ToDivisionPositionDwadasamsaDwadasamsa()
 	{
-		var bp = (Position) Clone();
-		bp.Longitude = bp.ExtrapolateLongitude(new Division(DivisionType.Dwadasamsa));
+		var bp = Clone();
+		bp.Longitude = bp.ExtrapolateLongitude(DivisionType.Dwadasamsa);
 		var dp = bp.ToDivisionPositionDwadasamsa(12);
 		PopulateRegularCusps(144, dp);
 		return dp;
 	}
+
+	public DivisionPosition ToDivisionPosition(DivisionType varga)
+	{
+		return ToDivisionPosition(new Division(varga));
+	}
+
 
 	/// <summary>
 	///     Calculated any known Vargas positions. Simply calls the appropriate
@@ -1222,13 +1261,13 @@ public class Position
 	/// <returns>A division Position</returns>
 	public DivisionPosition ToDivisionPosition(Division d)
 	{
-		var              bp = (Position) Clone();
+		var              bp = Clone();
 		DivisionPosition dp = null;
 
 		foreach (var division in d.MultipleDivisions)
 		{
 			dp           = bp.ToDivisionPosition(division);
-			bp.Longitude = bp.ExtrapolateLongitude(division);
+			bp.Longitude = bp.ExtrapolateLongitude(dp);
 		}
 		return dp;
 	}
@@ -1266,7 +1305,7 @@ public class Position
 			case DivisionType.Saptamsa:                return ToDivisionPositionSaptamsa(7);
 			case DivisionType.Ashtamsa:                return ToRegularDivisionPosition(8);
 			case DivisionType.AshtamsaRaman:           return ToDivisionPositionAshtamsaRaman();
-			case DivisionType.Navamsa:                 return ToDivisionPositionNavamsa();
+			case DivisionType.Navamsa:                 return ToDivisionPositionNavamsa(9);
 			case DivisionType.Dasamsa:                 return ToDivisionPositionDasamsa(10);
 			case DivisionType.Rudramsa:                return ToDivisionPositionRudramsa();
 			case DivisionType.RudramsaRaman:           return ToDivisionPositionRudramsaRaman();
@@ -1280,6 +1319,7 @@ public class Position
 			case DivisionType.TrimsamsaSimple:         return ToDivisionPositionTrimsamsaSimple();
 			case DivisionType.Khavedamsa:              return ToDivisionPositionKhavedamsa();
 			case DivisionType.Akshavedamsa:            return ToDivisionPositionAkshavedamsa(45);
+			case DivisionType.NavaNavamsa:             return ToDivisionPositionNavamsa(81);
 			case DivisionType.Shashtyamsa:             return ToDivisionPositionShashtyamsa();
 			case DivisionType.Ashtottaramsa:           return ToRegularDivisionPosition(108);
 			case DivisionType.Nadiamsa:                return ToDivisionPositionNadiamsa();
@@ -1303,26 +1343,31 @@ public class Position
 		return new DivisionPosition(Name, BodyType, ZodiacHouse.Ari, 0, 0, 0);
 	}
 
+	public Longitude ExtrapolateLongitude(DivisionType varga)
+	{
+		return ExtrapolateLongitude(new Division(varga));
+	}
+
 	public Longitude ExtrapolateLongitude(Division d)
 	{
-		var bp = (Position) Clone();
+		var bp = Clone();
 		foreach (var dSingle in d.MultipleDivisions)
 		{
-			bp.Longitude = ExtrapolateLongitude(dSingle);
+			var dp       = bp.ToDivisionPosition(dSingle);
+			bp.Longitude = ExtrapolateLongitude(dp);
 		}
 
 		return bp.Longitude;
 	}
 
-	public Longitude ExtrapolateLongitude(Division.SingleDivision d)
+	public Longitude ExtrapolateLongitude(DivisionPosition dp)
 	{
-		var dp      = ToDivisionPosition(d);
 		var lOffset = Longitude.Sub(dp.CuspLower);
 		var lRange  = new Longitude(dp.CuspHigher).Sub(dp.CuspLower);
 		Trace.Assert(lOffset.Value <= lRange.Value, "Extrapolation internal error: Slice smaller than range. Weird.");
 
-		var newOffset = lOffset.Value / lRange.Value      * 30.0;
-		var newBase   = ((int) dp.ZodiacHouse - 1) * 30.0;
+		var newOffset = lOffset.Value / lRange.Value * 30;
+		var newBase   = ((int) dp.ZodiacHouse - 1) * 30M;
 		return new Longitude(newOffset + newBase);
 	}
 }

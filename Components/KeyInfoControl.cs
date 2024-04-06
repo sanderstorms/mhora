@@ -19,11 +19,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Components.Controls;
+using Mhora.Dasas.NakshatraDasa;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Dasas.NakshatraDasa;
+using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 using Mhora.Util;
 
@@ -194,7 +196,16 @@ public class KeyInfoControl : MhoraControl
 		mList.Items.Add(li);
 
 		li = new ListViewItem("Time Zone");
-		li.SubItems.Add(h.Info.City.Country.TimeZone.offsets[0]);
+		Time time = h.Info.DstOffset;
+		var  tz   = string.Empty;
+		if (time > 0)
+		{
+			tz = "+";
+		}
+
+		tz += time.TotalHours;
+
+		li.SubItems.Add(tz);
 		mList.Items.Add(li);
 
 		li = new ListViewItem("Latitude");
@@ -210,14 +221,14 @@ public class KeyInfoControl : MhoraControl
 		mList.Items.Add(li);
 
 		{
-			var hms_srise = (TimeSpan) h.Sunrise;
+			var hms_srise = (TimeSpan) h.Vara.Sunrise.Time;
 			li = new ListViewItem("Sunrise");
 			var fmt = string.Format("{0:00}:{1:00}:{2:00}", hms_srise.Hours, hms_srise.Minutes, hms_srise.Seconds);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			var hms_sset = (TimeSpan)h.Sunset;
+			var hms_sset = (TimeSpan)h.Vara.Sunset.Time;
 			li = new ListViewItem("Sunset");
 			var fmt = string.Format("{0:00}:{1:00}:{2:00}", hms_sset.Hours, hms_sset.Minutes, hms_sset.Seconds);
 			li.SubItems.Add(fmt);
@@ -225,7 +236,7 @@ public class KeyInfoControl : MhoraControl
 		}
 		{
 			li = new ListViewItem("Weekday");
-			var fmt = string.Format("{0}", h.Wday);
+			var fmt = string.Format("{0} ({1})", h.Vara.WeekDay, h.Info.DateOfBirth.DayLord());
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
@@ -243,8 +254,8 @@ public class KeyInfoControl : MhoraControl
 			var lmoon     = h.GetPosition(Body.Moon).Longitude;
 			var nmoon     = lmoon.ToNakshatra();
 			var nmoonLord = VimsottariDasa.NakshatraLord(nmoon);
-			var offset    = 360.0 / 27.0 - lmoon.ToNakshatraOffset();
-			var pada      = lmoon.ToNakshatraPada();
+			var offset    = 360.0 / 27.0 - lmoon.NakshatraOffset();
+			var pada      = lmoon.NakshatraPada();
 			var fmt       = string.Format("{0} {1} ({2}) {3:N}% left", nmoon.Name(), pada, nmoonLord, offset / (360.0 / 27.0) * 100);
 			li = new ListViewItem("Nakshatra");
 			li.SubItems.Add(fmt);
@@ -263,45 +274,45 @@ public class KeyInfoControl : MhoraControl
 		{
 			li = new ListViewItem("Yoga");
 			var smLon  = h.GetPosition(Body.Sun).Longitude.Add(h.GetPosition(Body.Moon).Longitude);
-			var offset = 360.0 / 27.0 - smLon.ToSunMoonYogaOffset();
+			var offset = 360M / 27 - smLon.ToSunMoonYogaOffset();
 			var smYoga = smLon.ToSunMoonYoga();
-			var smLord = smYoga.getLord();
-			var fmt    = string.Format("{0} ({1}) {2:N}% left", smYoga, smLord, offset / (360.0 / 27.0) * 100);
+			var smLord = smYoga.Lord();
+			var fmt    = string.Format("{0} ({1}) {2:N}% left", smYoga, smLord, offset / (360M / 27) * 100);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			li = new ListViewItem("Hora");
-			var b   = h.CalculateHora();
-			var fmt = string.Format("{0}", b);
+			li = new ListViewItem("Hora lord");
+			var b   = h.Vara.HoraLord;
+			var fmt = $"{b}";
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
 			li = new ListViewItem("Kala");
-			var b   = h.CalculateKala();
+			var b   = h.Vara.KalaLord;
 			var fmt = string.Format("{0}", b);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
 			li = new ListViewItem("Muhurta");
-			var mIndex = (int) (Math.Floor(h.HoursAfterSunrise() / h.LengthOfDay() * 30.0) + 1);
+			var mIndex = (int) ((h.Vara.HoursAfterSunrise / h.Vara.Length * 30.0).TotalHours).Floor() + 1;
 			var m      = (Muhurta) mIndex;
 			var fmt    = string.Format("{0} ({1})", m, m.NakLordOfMuhurta());
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			var ghatisSr = h.HoursAfterSunrise()    * 2.5;
-			var ghatisSs = h.HoursAfterSunRiseSet() * 2.5;
+			var ghatisSr = h.Vara.HoursAfterSunrise;
+			var ghatisSs = h.Vara.HoursAfterSunRiseSet;
 			li = new ListViewItem("Ghatis");
-			var fmt = string.Format("{0:0.0000} / {1:0.0000}", ghatisSr, ghatisSs);
+			var fmt = string.Format("{0:0.0000} / {1:0.0000}", ghatisSr.Ghati, ghatisSs.Ghati);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			var vgOff = (int) Math.Ceiling(h.HoursAfterSunRiseSet() * 150.0);
+			var vgOff = (int) ((h.Vara.HoursAfterSunRiseSet * 150.0).TotalHours).Ceil();
 			vgOff = vgOff % 9;
 			if (vgOff == 0)
 			{
@@ -315,43 +326,40 @@ public class KeyInfoControl : MhoraControl
 			mList.Items.Add(li);
 		}
 		{
-			li = new ListViewItem("LMT Offset");
-			var e      = h.LmtOffset;
-			var orig_e = e;
-			e =  e < 0 ? -e : e;
-			e *= 24.0;
-			var hour = (int) Math.Floor(e);
-			e = (e - Math.Floor(e)) * 60.0;
-			var min = (int) Math.Floor(e);
-			e = (e - Math.Floor(e)) * 60.0;
-			var prefix = string.Empty;
-			if (orig_e < 0)
-			{
-				prefix = "-";
-			}
+			var lmtOffset = h.Info.DateOfBirth.LmtOffset(h);
+			li   = new ListViewItem("LMT Offset");
 
-			var fmt  = string.Format("{0}{1:00}:{2:00}:{3:00.00}", prefix, hour, min, (double) e);
-			var fmt2 = string.Format(" ({0:00.00} minutes)", (double) h.LmtOffset * 24.0 * 60.0);
-			li.SubItems.Add(fmt + fmt2);
+			var fmt2 = string.Format(" ({0:00.00} minutes)", lmtOffset.TotalMinutes);
+			li.SubItems.Add(lmtOffset + fmt2);
+
 			mList.Items.Add(li);
 		}
 		{
 			li = new ListViewItem("Ayanamsa");
 			var aya      = sweph.GetAyanamsaUT(h.Info.Jd);
-			var aya_hour = (int) Math.Floor(aya);
-			aya = (aya - Math.Floor(aya)) * 60.0;
-			var aya_min = (int) Math.Floor(aya);
-			aya = (aya - Math.Floor(aya)) * 60.0;
+			var aya_hour = (int) aya.Floor();
+			aya = (aya - aya.Floor()) * 60.0;
+			var aya_min = (int) aya.Floor();
+			aya = (aya - aya.Floor()) * 60.0;
+
 			var fmt = string.Format("{0:00}-{1:00}-{2:00.00}", aya_hour, aya_min, aya);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
+
 		{
-			li = new ListViewItem("Universal Time");
-			li.SubItems.Add(h.Info.Jd.ToString());
+			li = new ListViewItem("Bhrigu Bindu");
+			var fmt = string.Format("{0} - {1}", h.Vara.BhriguBindu.ToString(), h.Vara.BhriguBindu.ToNakshatra());
+			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 
+		{
+			li = new ListViewItem("Birth Time");
+			var fmt = string.Format("Ketu-D60: {0}, Kunda-Mo: {1}, Kunda-La: {2}", h.CheckKetu60(), h.CheckKundaMoon(), h.CheckKundaLagna());
+			li.SubItems.Add(fmt);
+			mList.Items.Add(li);
+		}
 
 		ColorAndFontRows(mList);
 	}

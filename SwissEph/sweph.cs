@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Text;
+using Mhora.Calculation;
 using Mhora.Database.Settings;
 using Mhora.Elements;
 using Mhora.Util;
@@ -167,28 +168,54 @@ public static partial class sweph
 		return jd + SwephDll.Swe64.swe_deltat( jd );
 	}
 
+	public static int TimeEqu(JulianDate jd, out double e)
+	{
+		var err = new StringBuilder( 256 );
+		if (IntPtr.Size == 4)
+		{
+			return SwephDll.Swe32.swe_time_equ(jd, out e, err);
+		}
+		return SwephDll.Swe64.swe_time_equ(jd, out e, err);
+	}
+
+	public static double Deltat(double tjd_et)
+	{
+		if (IntPtr.Size == 4)
+		{
+			return SwephDll.Swe32.swe_deltat(tjd_et);
+		}
+
+		return SwephDll.Swe64.swe_deltat(tjd_et);
+	}
 
 
-	public enum EventType { SOLAR_EVENT_SUNRISE, SOLAR_EVENT_SUNSET, SOLAR_EVENT_MIDNIGHT, SOLAR_EVENT_NOON };
+	public enum EventType { SOLAR_EVENT_SUNRISE, SOLAR_EVENT_SUNSET, SOLAR_EVENT_MIDNIGHT, SOLAR_EVENT_NOON }
 
 	/*****************************************************
 	 **
 	 **   CalculatorSwe   ---   calcNextSolarEvent
 	 **
 	 ******************************************************/
-	public static double CalcNextSolarEvent(EventType type, JulianDate jd, double lat, double lon)
+	public static double CalcNextSolarEvent(this Horoscope h, EventType type, JulianDate jd)
 	{
-		StringBuilder err  = new StringBuilder();
+		StringBuilder err  = new StringBuilder(256);
 		var           rsmi = new double [3];
 		double        tret = 0;
 		int           flag = 0;
-		/*
-		int flag                                    = 0;
-		if ( ! config->ephem->sunrise_def ) flag    =  SE_BIT_DISC_CENTER;
-		if ( ! config->ephem->sunrise_refrac ) flag |= SE_BIT_NO_REFRACTION;
-		*/
 
-		//int event_flag = 0;
+		switch (h.Options.SunrisePosition)
+		{
+			case HoroscopeOptions.SunrisePositionType.TrueDiscEdge:
+				flag = SE_BIT_NO_REFRACTION;
+				break;
+			case HoroscopeOptions.SunrisePositionType.TrueDiscCenter:
+				flag = SE_BIT_NO_REFRACTION | SE_BIT_DISC_CENTER;
+				break;
+			case HoroscopeOptions.SunrisePositionType.ApparentDiscCenter:
+				flag = SE_BIT_DISC_CENTER;
+				break;
+		}
+
 		switch ( type )
 		{
 			case EventType.SOLAR_EVENT_SUNRISE:
@@ -198,24 +225,24 @@ public static partial class sweph
 				flag |= SE_CALC_SET;
 				break;
 			case EventType.SOLAR_EVENT_NOON:
-				flag |= SE_CALC_ITRANSIT;
+				flag |= SE_CALC_MTRANSIT;
 				break;
 			case EventType.SOLAR_EVENT_MIDNIGHT:
-				flag |= SE_CALC_MTRANSIT;
+				flag |= SE_CALC_ITRANSIT;
 				break;
 		}
 
-		rsmi[0] = lon;
-		rsmi[1] = lat;
-		rsmi[2] = 0;
+		rsmi[0] = h.Info.Longitude;
+		rsmi[1] = h.Info.Latitude;
+		rsmi[2] = h.Info.Altitude;
 
 		if (IntPtr.Size == 4)
 		{
-			SwephDll.Swe32.swe_rise_trans( calcJd( jd ), SE_SUN, string.Empty, 0, flag, rsmi, 0, 0, ref tret, err );
+			SwephDll.Swe32.swe_rise_trans(jd, SE_SUN, string.Empty, h.Iflag, flag, rsmi, 0, 0, ref tret, err );
 		}
 		else
 		{
-			SwephDll.Swe64.swe_rise_trans( calcJd( jd ), SE_SUN, string.Empty, 0, flag, rsmi, 0, 0, ref tret, err );
+			SwephDll.Swe64.swe_rise_trans(jd, SE_SUN, string.Empty, h.Iflag, flag, rsmi, 0, 0, ref tret, err );
 		}
 		return tret;
 	}
@@ -275,7 +302,7 @@ public static partial class sweph
 
 	public struct aya_config
 	{
-		public double t0;
+		public JulianDate t0;
 		public double ayan_t0;
 
 		public aya_config(double t, double ayan)
@@ -287,7 +314,7 @@ public static partial class sweph
 
 	public struct aya_init
 	{
-		public double t0;
+		public JulianDate t0;
 		public double ayan_t0;
 		public bool   t0_is_UT;
 	}
@@ -698,6 +725,53 @@ public static partial class sweph
 	}
 
 
+	public static int Houses(double tjd_ut, double geolat, double geolon, int hsys, double[] cusps, double[] ascmc)
+	{
+		int ret;
+
+		if (IntPtr.Size == 4)
+		{
+			ret = SwephDll.Swe32.swe_houses(tjd_ut, geolat, geolon, hsys, cusps, ascmc);
+		}
+		else
+		{
+			ret = SwephDll.Swe64.swe_houses(tjd_ut, geolat, geolon, hsys, cusps, ascmc);
+		}
+
+		return ret;
+	}
+
+	// hsys =
+	// ‘B’ Alcabitus
+	// ‘Y’ APC houses
+	// ‘X’ Axial rotation system / Meridian system / Zariel
+	// ‘H’ Azimuthal or horizontal system
+	// ‘C’ Campanus
+	// ‘F’ Carter "Poli-Equatorial"
+	// ‘A’ or ‘E’ Equal (cusp 1 is Ascendant)
+	// ‘D’ Equal MC (cusp 10 is MC)
+	// ‘N’ Equal/1=Aries
+	// ‘G’ Gauquelin sector	//		Goelzer -> Krusinski
+	//		Horizontal system -> Azimuthal system
+	// ‘I’ Sunshine (Makransky, solution Treindl)
+	// ‘i’ Sunshine (Makransky, solution Makransky)
+	// ‘K’ Koch
+	// ‘U’ Krusinski-Pisa-Goelzer
+	//		Meridian system -> axial rotation
+	// ‘M’ Morinus
+	//		Neo-Porphyry -> Pullen SD	//		Pisa -> Krusinski
+	// ‘P’ Placidus
+	//		Poli-Equatorial -> Carter
+	// ‘T’ Polich/Page (“topocentric” system)
+	// ‘O’ Porphyrius
+	// ‘L’ Pullen SD (sinusoidal delta) – ex Neo-Porphyry
+	// ‘Q’ Pullen SR (sinusoidal ratio)
+	// ‘R’ Regiomontanus
+	// ‘S’ Sripati
+	//		“Topocentric” system -> Polich/Page
+	// ‘V’ Vehlow equal (Asc. in middle of house 1)
+	// ‘W’ Whole sign
+	//		Zariel -> Axial rotation system
 	public static int HousesEx(this Horoscope h, JulianDate tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc)
 	{
 		int ret;
@@ -717,24 +791,24 @@ public static partial class sweph
 		// Ascendants defined from 0 to 7 inclusive as per sweph docs
 		for (var i = 1; i <= 12; i++)
 		{
-			cusps[i] = new Longitude(cusps[i]).Add(lOffset).Value;
+			cusps[i] = (double) new Longitude(cusps[i]).Add(lOffset).Value;
 		}
 
 		for (var i = 0; i <= 7; i++)
 		{
-			ascmc[i] = new Longitude(ascmc[i]).Add(lOffset).Value;
+			ascmc[i] = (double) new Longitude(ascmc[i]).Add(lOffset).Value;
 		}
 
 		return ret;
 	}
 
-	public static double Lagna(this Horoscope h, JulianDate tjd_ut)
+	public static decimal Lagna(this Horoscope h, JulianDate tjd_ut)
 	{
 		var hi    = h.Info;
 		var cusps = new double[13];
 		var ascmc = new double[10];
 		var ret   = h.HousesEx(tjd_ut, SEFLG_SIDEREAL, hi.Latitude, hi.Longitude, 'R', cusps, ascmc);
-		return ascmc[0];
+		return (decimal) ascmc[0];
 	}
 
 	/// <summary>
@@ -771,6 +845,112 @@ public static partial class sweph
 			return SwephDll.Swe32.swe_sidtime( jd + longitude / 360 );
 		}
 		return SwephDll.Swe64.swe_sidtime( jd + longitude / 360 );
+	}
+
+	//double tjdstart, /* Julian day number of start date for the search of the heliacal event 
+	// */
+	// double *dgeo /* geographic position (details below) */
+	// dgeo[0]: geographic longitude;
+	// dgeo[1]: geographic latitude;
+	// dgeo[2]: geographic altitude (eye height) in meters.
+	// double *datm, /* atmospheric conditions (details below) */
+	// datm[0]: atmospheric pressure in mbar (hPa) ;
+	// datm[1]: atmospheric temperature in degrees Celsius;
+	// datm[2]: relative humidity in %;
+	// datm[3]: if datm[3]>=1, then it is Meteorological Range [km] ;
+	// if 1>datm[3]>0, then it is the total atmospheric coefficient (ktot) ;
+	// double *dobs, /* observer description (details below) */
+	// dobs[0]: age of observer in years (default = 36)
+	// dobs[1]: Snellen ratio of observers eyes (default = 1 = normal)
+	//The following parameters are only relevant if the flag SE_HELFLAG_OPTICAL_PARAMS is set:
+	// dobs[2]: 0 = monocular, 1 = binocular (actually a boolean)
+	// dobs[3]: telescope magnification: 0 = default to naked eye (binocular), 1 = naked eye
+	// dobs[4]: optical aperture (telescope diameter) in mm
+	// dobs[5]: optical transmission
+	// char *objectname, /* name string of fixed star or planet */
+	// int32 event_type, /* event type (details below) */
+	// event_type = SE_HELIACAL_RISING (1): morning first (exists for all visible planets and stars);
+	// event_type = SE_HELIACAL_SETTING (2): evening last (exists for all visible planets and stars);
+	// event_type = SE_EVENING_FIRST (3): evening first (exists for Mercury, Venus, and the Moon);
+	// event_type = SE_MORNING_LAST (4): morning last (exists for Mercury, Venus, and the Moon)
+	// int32 helflag, /* calculation flag, bitmap (details below) */
+	// double *dret, /* result: array of at least 50 doubles, of which 3 are used at the 
+	// dret[0]: start visibility (Julian day number);
+	// dret[1]: optimum visibility (Julian day number), zero if helflag >= SE_HELFLAG_AV;
+	// dret[2]: end of visibility (Julian day number), zero if helflag >= SE_HELFLAG_AV
+	// moment */
+	// char * serr); /* error string */
+	public static int HeliacalUt(double JDNDaysUTStart, double[] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int TypeEvent, int iflag, double[] dret, StringBuilder serr)
+	{
+		return (0);
+	}
+
+	//double tjd_ut, /* Julian day number */
+	// double *dgeo, /* geographic position (details under swe_heliacal_ut() */
+	// double *datm, /* atmospheric conditions (details under swe_heliacal_ut()) */
+	// double *dobs, /* observer description (details under swe_heliacal_ut()) */
+	// Swiss Ephemeris 2.10 Date and time conversion functions
+	// swephprg.doc ~ 40 ~ i c
+	// char *objectname, /* name string of fixed star or planet */
+	// int32 event_type, /* event type (details under function swe_heliacal_ut()) */
+	// int32 helflag, /* calculation flag, bitmap (details under swe_heliacal_ut()) */
+	// double *darr, /* return array, declare array of 50 doubles */
+	// char *serr); /* error string */
+	//
+	// The return array has the following data:
+	// '0=AltO [deg] topocentric altitude of object (unrefracted)
+	// '1=AppAltO [deg] apparent altitude of object (refracted)
+	// '2=GeoAltO [deg] geocentric altitude of object
+	// '3=AziO [deg] azimuth of object
+	// '4=AltS [deg] topocentric altitude of Sun
+	// '5=AziS [deg] azimuth of Sun
+	// '6=TAVact [deg] actual topocentric arcus visionis
+	// '7=ARCVact [deg] actual (geocentric) arcus visionis
+	// '8=DAZact [deg] actual difference between object's and sun's azimuth
+	// '9=ARCLact [deg] actual longitude difference between object and sun
+	// '10=kact [-] extinction coefficient
+	// '11=minTAV [deg] smallest topocentric arcus visionis
+	// '12=TfistVR [JDN] first time object is visible, according to VR
+	// '13=TbVR [JDN optimum time the object is visible, according to VR
+	// '14=TlastVR [JDN] last time object is visible, according to VR
+	// '15=TbYallop [JDN] best time the object is visible, according to Yallop
+	// '16=WMoon [deg] crescent width of Moon
+	// '17=qYal [-] q-test value of Yallop
+	// '18=qCrit [-] q-test criterion of Yallop
+	// '19=ParO [deg] parallax of object
+	// '20 Magn [-] magnitude of object
+	// '21=RiseO [JDN] rise/set time of object
+	// '22=RiseS [JDN] rise/set time of Sun
+	// '23=Lag [JDN] rise/set time of object minus rise/set time of Sun
+	// '24=TvisVR [JDN] visibility duration
+	// '25=LMoon [deg] crescent length of Moon
+	// '26=CVAact [deg]
+	// '27=Illum [%] new
+	// '28=CVAact [deg] new
+	// '29=MSk [-]
+	public static int HeliacalPhenoUt(double JDNDaysUT, double[] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int TypeEvent, int helflag, double [] darr, StringBuilder serr)
+	{
+		return (0);
+	}
+
+	// attr[0] = phase angle (Earth-planet-sun)
+	//attr[1] = phase (illumined fraction of disc)
+	// attr[2] = elongation of planet
+	//attr[3] = apparent diameter of disc
+	//attr[4] = apparent magnitude
+	// declare as attr[20] at least!
+	public static int PhenoUT(double        tjd_ut, /* time Jul. Day UT */
+	                          int           ipl,    /* planet number */
+	                          int           iflag,  /* ephemeris flag */
+	                          double []     attr,   /* return array, 20 doubles, see below */
+	                          StringBuilder serr)  /* return error string */
+	{
+		if (IntPtr.Size == 4)
+		{
+			return SwephDll.Swe32.swe_pheno_ut(tjd_ut, ipl, iflag, attr, serr);
+		}
+		return SwephDll.Swe64.swe_pheno_ut(tjd_ut, ipl, iflag, attr, serr);
+		
 	}
 
 

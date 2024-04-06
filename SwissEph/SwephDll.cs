@@ -50,8 +50,51 @@ public static class SwephDll
 		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_rise_trans")]
 		public static extern int swe_rise_trans(double tjd_ut, int ipl, string starname, int epheflag, int rsmi, double[] geopos, double atpress, double attemp, ref double tret, StringBuilder serr);
 
+		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_houses")]
+		public static extern int swe_houses(double tjd_ut, double geolat, double geolon, int hsys, double [] cusps, double[] ascmc);
+
 		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_houses_ex")]
-		public static extern int swe_houses_ex(double tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc);
+		public static extern int swe_houses_ex(
+			double    tjd_ut, /* Julian day number, UT */
+			int       iflag,  /* 0 or SEFLG_SIDEREAL or SEFLG_RADIANS or SEFLG_NONUT */
+			double    geolat, /* geographic latitude, in degrees */
+			double    geolon, /* geographic longitude, in degrees
+			                   * eastern longitude is positive,
+			                   * western longitude is negative,
+			                   * northern latitude is positive,
+			                   * southern latitude is negative */
+			int       hsys,   /* house method, one-letter case sensitive code (list, see further
+			below) */
+			double [] cusps,  /* array for 13 (or 37 for system G) doubles, explained further below
+			*/
+			double [] ascmc); /* array for 10 doubles, explained further below */
+
+		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_houses_ex2")]
+		public static extern int swe_houses_ex2(
+			double   tjd_ut,      /* Julian day number, UT */
+			int      iflag,       /* 0 or SEFLG_SIDEREAL or SEFLG_RADIANS or SEFLG_NONUT */
+			double   geolat,      /* geographic latitude, in degrees */
+			double   geolon,      /* geographic longitude, in degrees
+			                       * eastern longitude is positive,
+			                       * western longitude is negative,
+			                       * northern latitude is positive,
+			                       * southern latitude is negative */
+			int      hsys,        /* house method, one-letter case sensitive code (list, see further below) */
+			double[] cusps,       /* array for 13 (or 37 for system G) doubles, explained further below*/
+			double[] ascmc,       /* array for 10 doubles, explained further below */
+			double[] cusp_speed,  /* like cusps */
+			double[] ascmc_speed, /* like ascmc */
+			StringBuilder serr);
+
+		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_house_pos")]
+		public static extern double swe_house_pos(
+			double        armc,   /* ARMC */
+			double        geolat, /* geographic latitude, in degrees */
+			double        eps,    /* ecliptic obliquity, in degrees */
+			int           hsys,   /* house method, one of the letters PKRCAV */
+			double []     xpin,   /* array of 2 doubles: ecl. longitude and latitude of the planet */
+			StringBuilder serr); /* return area for error or warning message */
+
 
 		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_day_of_week")]
 		public static extern int swe_day_of_week(double jd);
@@ -63,12 +106,12 @@ public static class SwephDll
 		public static extern void swe_set_tid_acc(double t_acc);
 
 		[DllImport("swedll64", CharSet = CharSet.Ansi, EntryPoint = "swe_time_equ")]
-		public static extern int swe_time_equ(double tjd_et, ref double e, StringBuilder s);
+		public static extern int swe_time_equ(double tjd_et, out double e, StringBuilder s);
 
 		[DllImport("swedll64", CharSet = CharSet.Ansi)]
 		public static extern void swe_set_topo(double geolon, double geolat, double altitude);
 
-		/* sidereal time */
+					/* sidereal time */
 		[DllImport("swedll64", CharSet = CharSet.Ansi)]
 		public static extern double swe_sidtime0(double tjd_ut, double eps, double nut);
 
@@ -83,6 +126,42 @@ public static class SwephDll
 		                                    double   attemp,    // atmospheric temperature in degrees Celsius
 		                                    double[] xin,       // array of 3 doubles: position of body in either ecliptical or equatorial coordinates, depending on calc_flag
 		                                    double[] xaz); // return array of 3 doubles, containing azimuth, true altitude, apparent altitude;
+
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_ut(double       JDNDaysUTStart, double[] geopos, double [] datm,   double [] dobs, StringBuilder ObjectName, int TypeEvent, int        iflag,   double[]    dret, StringBuilder serr);
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_pheno_ut(double JDNDaysUT,      double[] geopos, double [] datm, double [] dobs, StringBuilder ObjectName, int TypeEvent, int        helflag, double[]    darr, StringBuilder serr);
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_vis_limit_mag(double     tjdut,          double[] geopos, double[] datm, double [] dobs, StringBuilder ObjectName, int helflag,   double[] dret,    StringBuilder serr);
+		/* the following are secret, for Victor Reijs' */
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_angle(double      tjdut, double [] dgeo, double[] datm, double [] dobs, int helflag, double mag, double azi_obj, double azi_sun, double azi_moon, double alt_moon, double[] dret,     StringBuilder serr);
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_topo_arcus_visionis(double tjdut, double [] dgeo, double[] datm, double[] dobs, int helflag, double mag, double azi_obj, double alt_obj, double azi_sun,  double azi_moon, double     alt_moon, double[]    dret, StringBuilder serr);
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_pheno_ut(
+			double   tjd_ut, /* time Jul. Day UT */
+			int    ipl,    /* planet number */
+			int    iflag,  /* ephemeris flag */
+			double [] attr,   /* return array, 20 doubles, see below */
+			StringBuilder   serr); /* return error string */
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_pheno(
+			double   tjd_et, /* time Jul. Day ET */
+			int    ipl,    /* planet number */
+			int    iflag,  /* ephemeris flag */
+			double[] attr,   /* return array, 20 doubles, see below */
+			StringBuilder   serr); /* return error string */
+		[DllImport("swedll64", CharSet = CharSet.Ansi)]
+		public static extern int swe_orbit_max_min_true_distance(
+			double        tjd_et,
+			int           ipl,
+			int           iflag,
+			out double    dmax,
+			out double    dmin,
+			out double    dtrue,
+			StringBuilder serr);
+
 	}
 
 	public static class Swe32
@@ -131,7 +210,47 @@ public static class SwephDll
 		public static extern int swe_rise_trans(double tjd_ut, int ipl, string starname, int epheflag, int rsmi, double[] geopos, double atpress, double attemp, ref double tret, StringBuilder serr);
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_houses_ex")]
-		public static extern int swe_houses_ex(double tjd_ut, int iflag, double lat, double lon, int hsys, double[] cusps, double[] ascmc);
+		public static extern int swe_houses_ex(
+			double   tjd_ut, /* Julian day number, UT */
+			int      iflag,  /* 0 or SEFLG_SIDEREAL or SEFLG_RADIANS or SEFLG_NONUT */
+			double   geolat, /* geographic latitude, in degrees */
+			double   geolon, /* geographic longitude, in degrees
+			                  * eastern longitude is positive,
+			                  * western longitude is negative,
+			                  * northern latitude is positive,
+			                  * southern latitude is negative */
+			int      hsys,   /* house method, one-letter case sensitive code (list, see further below) */
+			double [] cusps,  /* array for 13 (or 37 for system G) doubles, explained further below */
+			double [] ascmc); /* array for 10 doubles, explained further below */
+
+		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_houses_ex2")]
+		public static extern int swe_houses_ex2(
+			double        tjd_ut,      /* Julian day number, UT */
+			int           iflag,       /* 0 or SEFLG_SIDEREAL or SEFLG_RADIANS or SEFLG_NONUT */
+			double        geolat,      /* geographic latitude, in degrees */
+			double        geolon,      /* geographic longitude, in degrees
+										* eastern longitude is positive,
+										* western longitude is negative,
+										* northern latitude is positive,
+										* southern latitude is negative */
+			int           hsys,        /* house method, one-letter case sensitive code (list, see further below) */
+			double[]      cusps,       /* array for 13 (or 37 for system G) doubles, explained further below*/
+			double[]      ascmc,       /* array for 10 doubles, explained further below */
+			double[]      cusp_speed,  /* like cusps */
+			double[]      ascmc_speed, /* like ascmc */
+			StringBuilder serr);
+
+		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_house_pos")]
+		public static extern double swe_house_pos(
+			double   armc,   /* ARMC */
+			double   geolat, /* geographic latitude, in degrees */
+			double   eps,    /* ecliptic obliquity, in degrees */
+			int      hsys,   /* house method, one of the letters PKRCAV */
+			double [] xpin,   /* array of 2 doubles: ecl. longitude and latitude of the planet */
+			StringBuilder   serr); /* return area for error or warning message */
+
+		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_houses")]
+		public static extern int swe_houses(double tjd_ut, double geolat, double geolon, int hsys, double [] cusps,  double[] ascmc);
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_day_of_week")]
 		public static extern int swe_day_of_week(double jd);
@@ -143,7 +262,7 @@ public static class SwephDll
 		public static extern void swe_set_tid_acc(double t_acc);
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi, EntryPoint = "swe_time_equ")]
-		public static extern int swe_time_equ(double tjd_et, ref double e, StringBuilder s);
+		public static extern int swe_time_equ(double tjd_et, out double e, StringBuilder s);
 
 		[DllImport("swedll32", CharSet = CharSet.Ansi)]
 		public static extern void swe_set_topo(double geolon, double geolat, double altitude);
@@ -163,5 +282,43 @@ public static class SwephDll
 		                                    double   attemp,    // atmospheric temperature in degrees Celsius
 		                                    double[] xin,       // array of 3 doubles: position of body in either ecliptical or equatorial coordinates, depending on calc_flag
 		                                    double[] xaz); // return array of 3 doubles, containing azimuth, true altitude, apparent altitude;
+		
+		[DllImport("swedll32", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_ut(double JDNDaysUTStart, double[] geopos, double [] datm, double [] dobs, StringBuilder ObjectName, int TypeEvent, int    iflag,   double[] dret, StringBuilder serr);
+		[DllImport("swedll32", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_pheno_ut(double JDNDaysUT, double [] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int TypeEvent, int    helflag, double[] darr, StringBuilder serr);
+		[DllImport("swedll32", CharSet = CharSet.Ansi)]
+		public static extern int swe_vis_limit_mag(double tjdut, double[] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int helflag,   double[] dret,    StringBuilder   serr);
+		/* the following are secret, for Victor Reijs' */
+		[DllImport("swedll32", CharSet = CharSet.Ansi)]
+		public static extern int swe_heliacal_angle(double tjdut, double[] dgeo, double[] datm, double[] dobs, int helflag, double mag, double azi_obj, double azi_sun, double azi_moon, double alt_moon, double[] dret,     StringBuilder   serr);
+		[DllImport("swedll32", CharSet = CharSet.Ansi)]
+		public static extern int swe_topo_arcus_visionis(double tjdut, double[] dgeo, double[] datm, double[] dobs, int helflag, double mag, double azi_obj, double alt_obj, double azi_sun,  double azi_moon, double   alt_moon, double[] dret, StringBuilder serr);
+
+		
+		[DllImport("swedll32", CharSet = CharSet.Ansi)]
+		public static extern int swe_pheno_ut(
+			double        tjd_ut, /* time Jul. Day UT */
+			int           ipl,    /* planet number */
+			int           iflag,  /* ephemeris flag */
+			double []     attr,   /* return array, 20 doubles, see below */
+			StringBuilder serr); /* return error string */
+		[DllImport("swedll32", CharSet = CharSet.Ansi)]
+		public static extern int swe_pheno(
+			double        tjd_et, /* time Jul. Day ET */
+			int           ipl,    /* planet number */
+			int           iflag,  /* ephemeris flag */
+			double[]      attr,   /* return array, 20 doubles, see below */
+			StringBuilder serr); /* return error string */
+
+		[DllImport("swedll32", CharSet = CharSet.Ansi)]
+		public static extern int swe_orbit_max_min_true_distance(
+			double   tjd_et,
+			int    ipl,
+			int    iflag,
+			out double dmax,
+			out double dmin,
+			out double dtrue,
+			StringBuilder serr);
 	}
 }

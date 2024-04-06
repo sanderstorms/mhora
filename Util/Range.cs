@@ -80,14 +80,12 @@ namespace System
         {
             get
             {
-                if (_value < 0)
+	            if (_value < 0)
                 {
                     return ~_value;
                 }
-                else
-                {
-                    return _value;
-                }
+
+	            return _value;
             }
         }
 
@@ -135,7 +133,7 @@ namespace System
         public override string ToString()
         {
             if (IsFromEnd)
-                return "^" + ((uint)Value).ToString();
+                return "^" + ((uint)Value);
 
             return ((uint)Value).ToString();
         }

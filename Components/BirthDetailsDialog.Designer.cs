@@ -1,11 +1,14 @@
-﻿namespace Mhora.Components
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace Mhora.Components
 {
     partial class BirthDetailsDialog
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         #region Windows Form Designer generated code
 
@@ -399,36 +402,36 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControlBirthDetails;
-        private System.Windows.Forms.TabPage tabBirthData;
-        private System.Windows.Forms.TabPage tabEvents;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Label labCity;
-        private System.Windows.Forms.Label labState;
-        private System.Windows.Forms.Label labCountry;
-        private System.Windows.Forms.Label labTime;
-        private System.Windows.Forms.Label labDate;
-        private System.Windows.Forms.Label labGender;
-        private System.Windows.Forms.Label labName;
-        private System.Windows.Forms.Label labTimezone;
-        private System.Windows.Forms.Label labLatitude;
-        private System.Windows.Forms.Label labLongitude;
-        private System.Windows.Forms.Label labDST;
-        private System.Windows.Forms.DateTimePicker dateTimePicker;
-        private System.Windows.Forms.GroupBox groupBoxGender;
-        private System.Windows.Forms.RadioButton rbFemale;
-        private System.Windows.Forms.RadioButton rbMale;
-        private System.Windows.Forms.TextBox txtName;
+        private TabControl                           tabControlBirthDetails;
+        private TabPage                              tabBirthData;
+        private TabPage                              tabEvents;
+        private Button                               btnSave;
+        private Button                               btnCancel;
+        private Label                                labCity;
+        private Label                                labState;
+        private Label                                labCountry;
+        private Label                                labTime;
+        private Label                                labDate;
+        private Label                                labGender;
+        private Label                                labName;
+        private Label                                labTimezone;
+        private Label                                labLatitude;
+        private Label                                labLongitude;
+        private Label                                labDST;
+        private DateTimePicker                       dateTimePicker;
+        private GroupBox                             groupBoxGender;
+        private RadioButton                          rbFemale;
+        private RadioButton                          rbMale;
+        private TextBox                              txtName;
         private TimePicker.Opulos.Core.UI.TimePicker timePicker;
-        private System.Windows.Forms.ComboBox comboBoxState;
-        private System.Windows.Forms.ComboBox comboBoxCountry;
-        private System.Windows.Forms.ComboBox comboBoxCity;
-        private System.Windows.Forms.TextBox txtLatitude;
-        private System.Windows.Forms.TextBox txtLongitude;
-        private System.Windows.Forms.TextBox txtLatitude2;
-        private System.Windows.Forms.TextBox txtLongitude2;
-        private System.Windows.Forms.TextBox txtDst;
-        private System.Windows.Forms.TextBox txtTimezone;
+        private ComboBox                             comboBoxState;
+        private ComboBox                             comboBoxCountry;
+        private ComboBox                             comboBoxCity;
+        private TextBox                              txtLatitude;
+        private TextBox                              txtLongitude;
+        private TextBox                              txtLatitude2;
+        private TextBox                              txtLongitude2;
+        private TextBox                              txtDst;
+        private TextBox                              txtTimezone;
     }
 }

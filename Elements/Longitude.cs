@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.ComponentModel;
 using Mhora.Components.Converter;
+using Mhora.Elements.Extensions;
 using Mhora.Util;
 
 namespace Mhora.Elements;
@@ -43,13 +44,13 @@ public class Longitude : DmsPoint
 		var lon     = this;
 		var rasi    = lon.ToZodiacHouse().ToString();
 		var offset  = lon.ToZodiacHouseOffset();
-		var minutes = Math.Floor(offset);
+		var minutes = offset.Floor();
 		offset = (offset - minutes) * 60.0;
-		var seconds = Math.Floor(offset);
+		var seconds = offset.Floor();
 		offset = (offset - seconds) * 60.0;
-		var subsecs = Math.Floor(offset);
+		var subsecs = offset.Floor();
 		offset = (offset - subsecs) * 60.0;
-		var subsubsecs = Math.Floor(offset);
+		var subsubsecs = offset.Floor();
 
 		return string.Format("{0:00} {1} {2:00}:{3:00}:{4:00}", minutes, rasi, seconds, subsecs, subsubsecs);
 	}

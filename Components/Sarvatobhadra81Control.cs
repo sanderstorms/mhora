@@ -24,7 +24,7 @@ using System.Windows.Forms;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Tables;
+using Mhora.Elements.Extensions;
 
 namespace Mhora.Components;
 

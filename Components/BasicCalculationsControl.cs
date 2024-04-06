@@ -17,19 +17,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Mhora.Calculation;
 using Mhora.Components.Controls;
-using Mhora.Components.Delegates;
 using Mhora.Components.Property;
-using Mhora.Components.Varga;
+using Mhora.Components.VargaControl;
+using Mhora.Dasas.NakshatraDasa;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Dasas;
-using Mhora.Elements.Dasas.NakshatraDasa;
-using Mhora.Tables;
+using Mhora.Elements.Extensions;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -76,7 +75,7 @@ public class BasicCalculationsControl : MhoraControl
 	private ColumnHeader         Nakshatra;
 	private ColumnHeader         Pada;
 	private ListViewColumnSorter lvwColumnSorter;
-
+	private TimeAdjustment timeAdjustment;
 	private ViewType vt;
 
 	public BasicCalculationsControl(Horoscope _h)
@@ -92,8 +91,10 @@ public class BasicCalculationsControl : MhoraControl
 		MhoraGlobalOptions.DisplayPrefsChanged += OnRedisplay;
 		options                                =  new UserOptions
 		{
-			DivisionType = new Division(DivisionType.Rasi)
+			DivisionType = DivisionType.Rasi
 		};
+		timeAdjustment.Horoscope =  _h;
+		timeAdjustment.OnChange  += OnChangeTime;
 	}
 
 	/// <summary>
@@ -108,6 +109,19 @@ public class BasicCalculationsControl : MhoraControl
 
 		base.Dispose(disposing);
 	}
+
+	private void OnChangeTime(DateTime dateTime)
+	{
+		h.Info.DateOfBirth = dateTime;
+		h.OnChanged();
+	}
+
+	private void OnAdjustTime(object sender, EventArgs e)
+	{
+		timeAdjustment.Visible ^= true;
+	}
+
+
 
 #region Component Designer generated code
 
@@ -141,6 +155,7 @@ public class BasicCalculationsControl : MhoraControl
 			this.menuAvasthas = new System.Windows.Forms.MenuItem();
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.menuItem2 = new System.Windows.Forms.MenuItem();
+			this.timeAdjustment = new Mhora.Components.Controls.TimeAdjustment();
 			this.SuspendLayout();
 			// 
 			// mList
@@ -168,13 +183,8 @@ public class BasicCalculationsControl : MhoraControl
 			this.mList.DragDrop += new System.Windows.Forms.DragEventHandler(this.mList_DragDrop);
 			this.mList.DragEnter += new System.Windows.Forms.DragEventHandler(this.mList_DragEnter);
 			this.mList.MouseHover += new System.EventHandler(this.mList_MouseHover);
-			//
-			// Create an instance of a ListView column sorter and assign it
-			// to the ListView control.
-			this.lvwColumnSorter          = new ListViewColumnSorter();
-			this.mList.ListViewItemSorter = lvwColumnSorter;
 			// 
-			// Body
+			// colBody
 			// 
 			this.colBody.Text = "Body";
 			this.colBody.Width = 100;
@@ -323,9 +333,21 @@ public class BasicCalculationsControl : MhoraControl
 			this.menuItem2.Index = 17;
 			this.menuItem2.Text = "-";
 			// 
+			// timeAdjustment
+			// 
+			this.timeAdjustment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.timeAdjustment.Horoscope = null;
+			this.timeAdjustment.Location = new System.Drawing.Point(244, 34);
+			this.timeAdjustment.Margin = new System.Windows.Forms.Padding(4);
+			this.timeAdjustment.Name = "timeAdjustment";
+			this.timeAdjustment.Size = new System.Drawing.Size(248, 38);
+			this.timeAdjustment.TabIndex = 1;
+			this.timeAdjustment.Visible = false;
+			// 
 			// BasicCalculationsControl
 			// 
 			this.ContextMenu = this.calculationsContextMenu;
+			this.Controls.Add(this.timeAdjustment);
 			this.Controls.Add(this.mList);
 			this.Name = "BasicCalculationsControl";
 			this.Size = new System.Drawing.Size(496, 176);
@@ -360,7 +382,7 @@ public class BasicCalculationsControl : MhoraControl
 			offset -= 12.0;
 		}
 
-		var t = (int) Math.Floor(val / 12.0) + 1;
+		var t = (int) (val / 12.0).Floor() + 1;
 		tithi = t;
 		perc  = 100 - offset / 12.0 * 100;
 		if (t == 15)
@@ -422,7 +444,7 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Karakas", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Offset", -2, HorizontalAlignment.Left);
 
-		var al  = new ArrayList();
+		var al  = new List<KarakaComparer>();
 		var max = 0;
 		if (vt == ViewType.ViewCharaKarakas)
 		{
@@ -447,7 +469,7 @@ public class BasicCalculationsControl : MhoraControl
 		for (var i = 0; i < al.Count; i++)
 		{
 			var li = new ListViewItem();
-			var bk = (KarakaComparer) al[i];
+			var bk = al[i];
 			li.Text = bk.GetPosition.Name.Name();
 			if (vt == ViewType.ViewCharaKarakas)
 			{
@@ -468,16 +490,16 @@ public class BasicCalculationsControl : MhoraControl
 	}
 
 
-	private void Repopulate64NavamsaHelper(Body b, string name, Position bp, Division div)
+	private void Repopulate64NavamsaHelper(Body b, string name, Position bp, DivisionType varga)
 	{
-		var dp = bp.ToDivisionPosition(div);
+		var dp = bp.ToDivisionPosition(varga);
 		var li = new ListViewItem
 		{
 			Text = b.ToString()
 		};
 		li.SubItems.Add(name);
 		li.SubItems.Add(dp.ZodiacHouse.ToString());
-		li.SubItems.Add(h.LordOfZodiacHouse(dp.ZodiacHouse, div, false).Name());
+		li.SubItems.Add(h.LordOfZodiacHouse(dp.ZodiacHouse, varga, false).Name());
 		mList.Items.Add(li);
 	}
 
@@ -532,13 +554,13 @@ public class BasicCalculationsControl : MhoraControl
 			var bpLon = bp.Longitude;
 
 			bp.Longitude = bpLon.Add(30.0 / 9.0 * (64 - 1));
-			Repopulate64NavamsaHelper(b, "64th Navamsa", bp, new Division(DivisionType.Navamsa));
+			Repopulate64NavamsaHelper(b, "64th Navamsa", bp, DivisionType.Navamsa);
 
 			bp.Longitude = bpLon.Add(30.0 / 3.0 * (22 - 1));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana", bp, new Division(DivisionType.DrekkanaParasara));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana (Parivritti)", bp, new Division(DivisionType.DrekkanaParivrittitraya));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana (Somnath)", bp, new Division(DivisionType.DrekkanaSomnath));
-			Repopulate64NavamsaHelper(b, "22nd Drekkana (Jagannath)", bp, new Division(DivisionType.DrekkanaJagannath));
+			Repopulate64NavamsaHelper(b, "22nd Drekkana", bp, DivisionType.DrekkanaParasara);
+			Repopulate64NavamsaHelper(b, "22nd Drekkana (Parivritti)", bp, DivisionType.DrekkanaParivrittitraya);
+			Repopulate64NavamsaHelper(b, "22nd Drekkana (Somnath)", bp, DivisionType.DrekkanaSomnath);
+			Repopulate64NavamsaHelper(b, "22nd Drekkana (Jagannath)", bp, DivisionType.DrekkanaJagannath);
 		}
 
 		ColorAndFontRows(mList);
@@ -560,7 +582,7 @@ public class BasicCalculationsControl : MhoraControl
 			{
 				Text = b.Name()
 			};
-			var dp            = h.GetPosition(b).ToDivisionPosition(new Division(DivisionType.Panchamsa));
+			var dp            = h.GetPosition(b).ToDivisionPosition(DivisionType.Panchamsa);
 			var avastha_index = -1;
 			switch (dp.ZodiacHouse.Index() % 2)
 			{
@@ -678,7 +700,7 @@ public class BasicCalculationsControl : MhoraControl
 			var    li         = new ListViewItem();
 			var    s1         = string.Format("{0:00}  {1} Tithis", i, Tithis.SpecialNames[i]);
 			li.Text = s1;
-			var s2 = getTithiName(spTithiVal, ref tithi, ref perc);
+			var s2 = getTithiName((double) spTithiVal, ref tithi, ref perc);
 			li.SubItems.Add(s2);
 			var s3 = string.Format("{0:###.##}%", perc);
 			li.SubItems.Add(s3);
@@ -695,34 +717,34 @@ public class BasicCalculationsControl : MhoraControl
 		switch (options.NakshatraLord)
 		{
 			default:
-			case Dasas.NakshatraLord.Vimsottari:
+			case Dasas.Dasas.NakshatraLord.Vimsottari:
 				id = new VimsottariDasa(h);
 				break;
-			case Dasas.NakshatraLord.Ashtottari:
+			case Dasas.Dasas.NakshatraLord.Ashtottari:
 				id = new AshtottariDasa(h);
 				break;
-			case Dasas.NakshatraLord.Yogini:
+			case Dasas.Dasas.NakshatraLord.Yogini:
 				id = new YoginiDasa(h);
 				break;
-			case Dasas.NakshatraLord.Shodashottari:
+			case Dasas.Dasas.NakshatraLord.Shodashottari:
 				id = new ShodashottariDasa(h);
 				break;
-			case Dasas.NakshatraLord.Dwadashottari:
+			case Dasas.Dasas.NakshatraLord.Dwadashottari:
 				id = new DwadashottariDasa(h);
 				break;
-			case Dasas.NakshatraLord.Panchottari:
+			case Dasas.Dasas.NakshatraLord.Panchottari:
 				id = new PanchottariDasa(h);
 				break;
-			case Dasas.NakshatraLord.Shatabdika:
+			case Dasas.Dasas.NakshatraLord.Shatabdika:
 				id = new ShatabdikaDasa(h);
 				break;
-			case Dasas.NakshatraLord.ChaturashitiSama:
+			case Dasas.Dasas.NakshatraLord.ChaturashitiSama:
 				id = new ChaturashitiSamaDasa(h);
 				break;
-			case Dasas.NakshatraLord.DwisaptatiSama:
+			case Dasas.Dasas.NakshatraLord.DwisaptatiSama:
 				id = new DwisaptatiSamaDasa(h);
 				break;
-			case Dasas.NakshatraLord.ShatTrimshaSama:
+			case Dasas.Dasas.NakshatraLord.ShatTrimshaSama:
 				id = new ShatTrimshaSamaDasa(h);
 				break;
 		}
@@ -758,13 +780,13 @@ public class BasicCalculationsControl : MhoraControl
 	{
 		var rasi    = lon.ToZodiacHouse().ToString();
 		var offset  = lon.ToZodiacHouseOffset();
-		var minutes = Math.Floor(offset);
+		var minutes = offset.Floor();
 		offset = (offset - minutes) * 60.0;
-		var seconds = Math.Floor(offset);
+		var seconds = offset.Floor();
 		offset = (offset - seconds) * 60.0;
-		var subsecs = Math.Floor(offset);
+		var subsecs = offset.Floor();
 		offset = (offset - subsecs) * 60.0;
-		var subsubsecs = Math.Floor(offset);
+		var subsubsecs = offset.Floor();
 
 		return string.Format("{0:00} {1} {2:00}:{3:00}:{4:00}", minutes, rasi, seconds, subsecs, subsubsecs);
 	}
@@ -849,7 +871,7 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Clear();
 		mList.Items.Clear();
 
-		var al = new ArrayList();
+		var al = new List <KarakaComparer>();
 		for (var i = (int)Body.Sun; i <= (int)Body.Rahu; i++)
 		{
 			var b   = (Body) i;
@@ -862,7 +884,7 @@ public class BasicCalculationsControl : MhoraControl
 		var karaka_indices = new int[9];
 		for (var i = 0; i < al.Count; i++)
 		{
-			var bk = (KarakaComparer) al[i];
+			var bk = al[i];
 			karaka_indices[(int) bk.GetPosition.Name] = i;
 		}
 
@@ -877,6 +899,7 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Ruler", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Cusp Start", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Cusp End", -2, HorizontalAlignment.Left);
+		mList.Columns.Add("Avastha", -2, HorizontalAlignment.Left);
 
 
 		foreach (Position bp in h.PositionList)
@@ -898,15 +921,23 @@ public class BasicCalculationsControl : MhoraControl
 
 			li.SubItems.Add(longitudeToString(bp.Longitude));
 			li.SubItems.Add(bp.Longitude.ToNakshatra().ToString());
-			li.SubItems.Add(bp.Longitude.ToNakshatraPada().ToString());
+			li.SubItems.Add(bp.Longitude.NakshatraPada().ToString());
 			li.SubItems.Add(getNakLord(bp.Longitude));
 
 			var dp = bp.ToDivisionPosition(options.DivisionType);
 			li.SubItems.Add(dp.ZodiacHouse.ToString());
 			li.SubItems.Add(dp.Part.ToString());
-			li.SubItems.Add(bp.AmsaRuler( options.DivisionType.MultipleDivisions[0].Varga, dp.RulerIndex));
+			li.SubItems.Add(bp.AmsaRuler( options.DivisionType, dp.RulerIndex));
 			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspLower)));
 			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
+			if (bp.BodyType == BodyType.Graha)
+			{
+				li.SubItems.Add(h.SayanadiAvastha(bp.Name).ToString());
+			}
+			else
+			{
+				li.SubItems.Add("");
+			}
 
 			mList.Items.Add(li);
 		}
@@ -1187,21 +1218,14 @@ public class BasicCalculationsControl : MhoraControl
 
 	private class UserOptions : ICloneable
 	{
-		[PGNotVisible]
-		public Division DivisionType
+		[PGDisplayName("Division Type")]
+		public DivisionType DivisionType
 		{
 			get;
 			set;
 		}
 
-		[PGDisplayName("Division Type")]
-		public DivisionType UIDivisionType
-		{
-			get => DivisionType.MultipleDivisions[0].Varga;
-			set => DivisionType = new Division(value);
-		}
-
-		public Dasas.NakshatraLord NakshatraLord
+		public Dasas.Dasas.NakshatraLord NakshatraLord
 		{
 			get;
 			set;

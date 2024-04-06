@@ -5,12 +5,11 @@ using Newtonsoft.Json;
 namespace Mhora.Util
 {
 	[JsonObject]
-	public class JulianDate
+	public class JulianDate : ICloneable
 	{
 		private readonly int      _yearsBC;
 		private readonly double   _value;
 		private readonly DateTime _date;
-		private readonly Time     _time;
 
 		// The Julian day number is a system of numbering all days continously
 		// within the time range of known human history. It should be familiar
@@ -42,15 +41,21 @@ namespace Mhora.Util
 				year  = 1;
 			}
 
-			_date = new DateTime(year, month, day);
-			_time = hours;
+			_date = new DateTime(year, month, day).AddHours(hours);
+		}
+
+		public bool IsEmpty
+		{
+			get
+			{
+				return (_value == 0);
+			}
 		}
 
 		public JulianDate(DateTime dateTime, int yearsBC = 0)
 		{
 			_yearsBC = yearsBC;
-			_date    = dateTime.Date;
-			_time    = dateTime.Time();
+			_date    = DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified);
 
 			var year = _date.Year + _yearsBC;
 
@@ -61,17 +66,24 @@ namespace Mhora.Util
 		public int YearsBC => _yearsBC;
 		[JsonProperty]
 		public DateTime Date     => _date;
-		[JsonProperty]
-		public Time     Time     => _time;
+		[JsonIgnore]
+		public Time     Time     => _date.Time();
+		[JsonIgnore]
+		public double Value => _value;
 
 		public override string ToString()
 		{
-			var dateTime = $"{_date.Add(_time)}";
+			var dateTime = $"{_date}";
 			if (_yearsBC != 0)
 			{
 				return $"{_yearsBC}+{dateTime}";
 			}
 			return dateTime;
+		}
+
+		public object Clone()
+		{
+			return new JulianDate(_value);
 		}
 
 		public JulianDate Add(Time offset)
@@ -96,18 +108,41 @@ namespace Mhora.Util
 			return new JulianDate(jd);
 		}
 
-		public static implicit operator DateTime(JulianDate jd)
+		public static implicit operator JulianDate(DateTime dateTime)
 		{
-			return jd.Date.Add(jd.Time);
+			return new JulianDate(dateTime);
 		}
 
-		public static JulianDate operator +(JulianDate jd, Time      offset) => jd.Add (offset);
-		public static JulianDate operator -(JulianDate jd, Time      offset) => jd.Sub (offset);
-		public static bool operator < (JulianDate     jd, JulianDate value)  => jd._value < value._value; 
-		public static bool operator > (JulianDate     jd, JulianDate value)  => jd._value > value._value; 
-		public static bool operator == (JulianDate    jd, JulianDate value)  => jd._value == value._value; 
-		public static bool operator != (JulianDate    jd, JulianDate value)  => jd._value != value._value; 
-		public static bool operator >= (JulianDate    jd, JulianDate value)  => jd._value >= value._value; 
-		public static bool operator <= (JulianDate    jd, JulianDate value)  => jd._value <= value._value; 
+		public static implicit operator DateTime(JulianDate jd)
+		{
+			return jd.Date;
+		}
+
+		public static JulianDate operator +(JulianDate jd, Time time)
+		{
+			return (jd.Add(time));
+		}
+
+		public static JulianDate operator -(JulianDate jd, Time time)
+		{
+			return (jd.Sub(time));
+		}
+
+		public static JulianDate operator -(JulianDate jd, double days)
+		{
+			return (new JulianDate(jd._value - days));
+		}
+
+		public static JulianDate operator +(JulianDate jd, double days)
+		{
+			return (new JulianDate(jd._value + days));
+		}
+
+		public static bool operator < (JulianDate  jd, JulianDate value) => jd._value < value._value; 
+		public static bool operator > (JulianDate  jd, JulianDate value) => jd._value > value._value; 
+		public static bool operator == (JulianDate jd, JulianDate value) => jd?._value == value?._value; 
+		public static bool operator != (JulianDate jd, JulianDate value) => jd?._value != value?._value; 
+		public static bool operator >= (JulianDate jd, JulianDate value) => jd._value >= value._value; 
+		public static bool operator <= (JulianDate jd, JulianDate value) => jd._value <= value._value; 
 	}
 }

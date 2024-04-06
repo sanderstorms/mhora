@@ -18,14 +18,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
-using Mhora.Components.Varga;
+using Mhora.Calculation;
+using Mhora.Components.VargaControl;
+using Mhora.Dasas;
+using Mhora.Dasas.NakshatraDasa;
+using Mhora.Dasas.RasiDasa;
 using Mhora.Definitions;
 using Mhora.Elements;
-using Mhora.Elements.Dasas;
-using Mhora.Elements.Dasas.NakshatraDasa;
-using Mhora.Elements.Dasas.RasiDasa;
+using Mhora.Elements.Extensions;
 using Mhora.Util;
 
 namespace Mhora.Components;
@@ -41,13 +44,14 @@ public class MhoraPrintDocument : PrintDocument
 	private readonly int  baseVargaPage   = 8;
 	private readonly Font f               = new("Microsoft Sans Serif", 10);
 
-	private readonly Font      f_fix      = new("Courier New", 10);
-	private readonly Font      f_fix_s    = new("Courier New", 8);
-	private readonly Font      f_s        = new("Microsoft Sans Serif", 8);
-	private readonly Font      f_sanskrit = new("Sanskrit 99", 15);
-	private readonly Font      f_u        = new("Microsoft Sans Serif", 10, FontStyle.Underline);
-	private readonly int       pad_height = 10;
-	private          ArrayList alVargas;
+	private readonly Font   f_fix      = new("Courier New", 10);
+	private readonly Font   f_fix_s    = new("Courier New", 8);
+	private readonly Font   f_s        = new("Microsoft Sans Serif", 8);
+	private readonly Font   f_sanskrit = new("Sanskrit 99", 15);
+	private readonly Font   f_u        = new("Microsoft Sans Serif", 10, FontStyle.Underline);
+	private readonly int    pad_height = 10;
+
+	private readonly List<Division> alVargas  = new List<Division>();
 
 
 	private   Graphics  g;
@@ -70,13 +74,12 @@ public class MhoraPrintDocument : PrintDocument
 
 	protected override void OnBeginPrint(PrintEventArgs e)
 	{
-		alVargas = new ArrayList();
 		for (var i = (int) DivisionType.HoraParasara; i <= (int) DivisionType.DwadasamsaDwadasamsa; i++)
 		{
 			alVargas.Add(new Division((DivisionType) i));
 		}
 
-		numVargaPages = (int) Math.Ceiling(alVargas.Count / 6.0);
+		numVargaPages = (int) (alVargas.Count / 6.0).Ceil();
 
 		base.OnBeginPrint(e);
 	}
@@ -177,7 +180,7 @@ public class MhoraPrintDocument : PrintDocument
 
 		var s        = string.Empty;
 		var nak      = bp.Longitude.ToNakshatra();
-		var nak_pada = bp.Longitude.ToNakshatraPada();
+		var nak_pada = bp.Longitude.NakshatraPada();
 		s = string.Format("{0} {1}", nak.ToShortString(), nak_pada);
 		g.DrawString(s, f, b, (float) (width / 6 * 2.5), 0);
 
@@ -238,7 +241,7 @@ public class MhoraPrintDocument : PrintDocument
 
 			g.DrawString(s, f, b, 0, 0);
 			var alAntar = id.AntarDasa(de);
-			for (var j = 0; j < (int) Math.Ceiling(alAntar.Count / (double) num_entries_per_line); j++)
+			for (var j = 0; j < (int) (alAntar.Count / (double)num_entries_per_line).Ceil(); j++)
 			{
 				g.ResetTransform();
 				g.TranslateTransform(left, top);
@@ -249,7 +252,7 @@ public class MhoraPrintDocument : PrintDocument
 						continue;
 					}
 
-					var deAntar = (DasaEntry) alAntar[j * num_entries_per_line + i];
+					var deAntar = alAntar[j * num_entries_per_line + i];
 					s = GetDasaString(td, deAntar, bGraha);
 					g.DrawString(s, f_fix_s, b, (i + 1) * entry_width - (float) (entry_width * .5), 0);
 				}
@@ -356,8 +359,7 @@ public class MhoraPrintDocument : PrintDocument
 			//s = string.Format("{0} ", mStart.ToDateString());
 			//g.DrawString(s, f_fix, b, width / 6, 0);
 
-			var al_antar = vd.AntarDasa(de);
-			var deAntar  = (DasaEntry[]) al_antar.ToArray(typeof(DasaEntry));
+			var deAntar = vd.AntarDasa(de);
 
 			var aw  = width / 7;
 			var off = -40;
@@ -384,7 +386,7 @@ public class MhoraPrintDocument : PrintDocument
 			return false;
 		}
 
-		dtype = (Division) alVargas[iVarga++];
+		dtype = alVargas[iVarga++];
 		return true;
 	}
 
@@ -530,7 +532,7 @@ public class MhoraPrintDocument : PrintDocument
 		top += width / 2 + pad_height;
 
 		// Birth Details
-		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.Wday, h.Info.DateOfBirth, h.Info.DstOffset, h.Info.Latitude, h.Info.Longitude));
+		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.Vara.WeekDay, h.Info.DateOfBirth, h.Info.DstOffset, h.Info.Latitude, h.Info.Longitude));
 
 		// Tithis
 		var ltithi = h.GetPosition(Body.Moon).Longitude.Sub(h.GetPosition(Body.Sun).Longitude);
@@ -541,15 +543,15 @@ public class MhoraPrintDocument : PrintDocument
 		// Nakshatra
 		var lmoon = h.GetPosition(Body.Moon).Longitude;
 		var nmoon = lmoon.ToNakshatra();
-		offset = 360.0 / 27.0 - lmoon.ToNakshatraOffset();
-		var pada = lmoon.ToNakshatraPada();
+		offset = 360.0 / 27.0 - lmoon.NakshatraOffset();
+		var pada = lmoon.NakshatraPada();
 		PrintString(string.Format("Nakshatra: {0} {1}  {2:N}% left", nmoon.Name(), pada, offset / (360.0 / 27.0) * 100));
 
 		// Yoga, Hora
 		var smLon  = h.GetPosition(Body.Sun).Longitude.Add(h.GetPosition(Body.Moon).Longitude);
 		var smYoga = smLon.ToSunMoonYoga();
-		var bHora  = h.CalculateHora();
-		PrintString(string.Format("{0} Yoga, {1} Hora", smYoga.value, bHora));
+		var bHora  = h.Vara.HoraLord;
+		PrintString(string.Format("{0} Yoga, {1} Hora", smYoga, bHora));
 
 
 		top += pad_height;

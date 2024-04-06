@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Drawing;
 using Mhora.Definitions;
 using Mhora.Elements;
+using Mhora.Elements.Extensions;
 using Mhora.Util;
 
 namespace Mhora.Chart;
