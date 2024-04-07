@@ -2,6 +2,7 @@
 using Mhora.Util;
 using System;
 using Mhora.Calculation;
+using Mhora.Database.Settings;
 using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 
@@ -43,6 +44,7 @@ namespace Mhora.Elements
 			BirthTatva = CalculateBirthTatva();
 
 			(YamaLord, YamaSpan) = CalculateYamaLord();
+			(Gulika, Maandi)     = CalculateGulika();
 		}
 
 		public Horoscope  Horoscope            {get;}
@@ -67,6 +69,8 @@ namespace Mhora.Elements
 		public Body       YamaLord             {get;}
 		public Yama       YamaSpan             {get;}
 		public BirthTatva BirthTatva           {get;}
+		public Longitude  Gulika               {get;}
+		public Longitude  Maandi               {get;}
 
 		public Longitude BhriguBindu
 		{
@@ -87,6 +91,74 @@ namespace Mhora.Elements
 				return new Longitude(bb);
 
 			}
+		}
+
+
+		//The position of Gulika is different for daytime (from sunrise to sunset) and night - time
+		//(from sunset to sunrise). The duration of the day or of the night (as the case may be) is
+		//divided into eight parts.The segment belonging to Saturn is known as Gulika
+		//The cusp of the sign rising at the beginning of the Gulika segment is
+		// considered as Gulika. From this, the chart must be analyzed.
+		public (Longitude, Longitude) CalculateGulika()
+		{
+			var cusps = GetSunrisetCuspsUt(8);
+
+			var dayLord = Horoscope.Info.Jd.Date.DayLord();
+			var index   = Array.IndexOf(Bodies.HoraOrder, dayLord);
+
+			var dayPart   = 0;
+			var nightPart = 0;
+
+			for (; dayPart < 8; dayPart++)
+			{
+				var lord = (index + dayPart) % Bodies.HoraOrder.Length;
+				lord %= Bodies.HoraOrder.Length;
+
+				if (Bodies.HoraOrder[lord] == Body.Saturn)
+				{
+					break;
+				}
+
+			}
+
+			for (; nightPart < 8; nightPart++)
+			{
+				var lord = (index + 8 + nightPart) % Bodies.HoraOrder.Length;
+				lord %= Bodies.HoraOrder.Length;
+
+				if (Bodies.HoraOrder[lord] == Body.Saturn)
+				{
+					break;
+				}
+			}
+
+			Time offset = 0;
+			switch (Horoscope.Options.UpagrahaType)
+			{
+				case HoroscopeOptions.EUpagrahaType.Begin:
+					offset = 0;
+					break;
+				case HoroscopeOptions.EUpagrahaType.Mid:
+					offset = (cusps [1].Time - cusps [0].Time).TotalHours / 2;
+					break;
+				case HoroscopeOptions.EUpagrahaType.End:
+					offset = (cusps [1].Time - cusps [0].Time);
+					break;
+			}
+
+			var day   = cusps[dayPart] + offset;
+			var night = cusps[nightPart + 8] + offset;
+
+
+
+			var gulikaDay   = new Longitude(Horoscope.Lagna(day));
+			var gulikaNight = new Longitude(Horoscope.Lagna(night));
+
+			if (IsDayBirth)
+			{
+				return (gulikaDay, gulikaNight);
+			}
+			return (gulikaNight, gulikaDay);
 		}
 
 		public bool CalcSunriseSunset(Horoscope h, JulianDate jd, out JulianDate sunrise, out JulianDate sunset, out JulianDate noon, out JulianDate midnight)
@@ -265,7 +337,6 @@ namespace Mhora.Elements
 			return new BirthTatva(yama, tatva, antaraTatva);
 		}
 
-
 		private (Time, Time, int) CalculateTatva(ref Tatva tatva, Time span, Time subPeriod, bool reverse)
 		{
 			Time tatvaPeriod = subPeriod;
@@ -298,6 +369,5 @@ namespace Mhora.Elements
 			}
 			return (subPeriod, tatvaPeriod, index);
 		}
-
 	}
 }

@@ -920,6 +920,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 				if (PrintMode == false && dp.HasLongitude)
 				{
+					//Todo: Alternate above and below
 					p = dc.GetBodyTextPosition(dp.Longitude, Size.Round(strSize));
 				}
 			}

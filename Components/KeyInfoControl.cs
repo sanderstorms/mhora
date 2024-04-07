@@ -346,17 +346,27 @@ public class KeyInfoControl : MhoraControl
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
-
 		{
 			li = new ListViewItem("Bhrigu Bindu");
 			var fmt = string.Format("{0} - {1}", h.Vara.BhriguBindu.ToString(), h.Vara.BhriguBindu.ToNakshatra());
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
-
+		{
+			li = new ListViewItem("Birth Tatva");
+			var fmt = string.Format("{0} - {1}", h.Vara.BirthTatva.Tatva, h.Vara.BirthTatva.AntaraTatva);
+			li.SubItems.Add(fmt);
+			mList.Items.Add(li);
+		}
+		{
+			li = new ListViewItem("Birth Time D60 and D81");
+			var fmt = string.Format("Ketu-D60: {0}, Kunda-Mo: {1}, Kunda-La: {2}", h.CheckKetu60(), h.CheckKundaMoon(), h.CheckKundaLagna());
+			li.SubItems.Add(fmt);
+			mList.Items.Add(li);
+		}
 		{
 			li = new ListViewItem("Birth Time");
-			var fmt = string.Format("Ketu-D60: {0}, Kunda-Mo: {1}, Kunda-La: {2}", h.CheckKetu60(), h.CheckKundaMoon(), h.CheckKundaLagna());
+			var fmt = string.Format("PranaPada D9: {0}", h.CheckPranaPadaD9());
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
