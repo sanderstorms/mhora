@@ -36,10 +36,10 @@ namespace Mhora.Elements
 			NightTime = (Length - DayTime);
 
 			var date = sunrise.Date;
-			DayLord  = date.DayLord();
 			WeekDay  = date.DayOfWeek.WeekDay();
+			DayLord  = WeekDay.Ruler();
 			HoraLord = Jd.Date.HoraLord();
-			KalaLord = Jd.Date.KalaLord();
+			KalaLord = CalculateKalaLord(HoursAfterSunrise);
 
 			BirthTatva = CalculateBirthTatva();
 
@@ -94,6 +94,31 @@ namespace Mhora.Elements
 		}
 
 
+		//The 24 hours starting from the Sun’s movement from Sangyā are divided into 8 yamas,
+		//each spanning for 3 hours. Each half of a yama is known as a kāla, measuring 1½ hours,
+		//thereby creating 16 kālas in a day.  Each kāla is ruled by a planet starting with the day lord
+		//and subsequently it follows the order of the Kāla Cakra from Sun to Rāhu.
+		//The 8 kālas which exist from sunset to sunrise begin with the 7th planet from the vāra lord in the Kāla Cakra.
+		public Body CalculateKalaLord(Time hoursAfterSunrise)
+		{
+			var index = Array.IndexOf(Bodies.KalaOrder, DayLord);
+			var hour  = hoursAfterSunrise.TotalHours;
+			var yama  = (Length / 16);
+			var part  = (int) (hour / yama.TotalHours);
+
+			if (part >= 8)
+			{
+				part  -= 8;
+				index += 4;
+			}
+
+			var lord = (index + part);
+			lord %= Bodies.KalaOrder.Length;
+
+			return Bodies.KalaOrder[lord];
+		}
+
+
 		//The position of Gulika is different for daytime (from sunrise to sunset) and night - time
 		//(from sunset to sunrise). The duration of the day or of the night (as the case may be) is
 		//divided into eight parts.The segment belonging to Saturn is known as Gulika
@@ -103,30 +128,22 @@ namespace Mhora.Elements
 		{
 			var cusps = GetSunrisetCuspsUt(8);
 
-			var dayLord = Horoscope.Info.Jd.Date.DayLord();
-			var index   = Array.IndexOf(Bodies.HoraOrder, dayLord);
-
 			var dayPart   = 0;
 			var nightPart = 0;
 
 			for (; dayPart < 8; dayPart++)
 			{
-				var lord = (index + dayPart) % Bodies.HoraOrder.Length;
-				lord %= Bodies.HoraOrder.Length;
-
-				if (Bodies.HoraOrder[lord] == Body.Saturn)
+				var hours = (cusps[dayPart].Date - Sunrise);
+				if (CalculateKalaLord (hours) == Body.Saturn)
 				{
 					break;
 				}
-
 			}
 
 			for (; nightPart < 8; nightPart++)
 			{
-				var lord = (index + 8 + nightPart) % Bodies.HoraOrder.Length;
-				lord %= Bodies.HoraOrder.Length;
-
-				if (Bodies.HoraOrder[lord] == Body.Saturn)
+				var hours = (cusps[dayPart + 8].Date - Sunrise);
+				if (CalculateKalaLord (hours) == Body.Saturn)
 				{
 					break;
 				}
