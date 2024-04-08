@@ -34,6 +34,9 @@ namespace Mhora.Util
 			_timeSpan = timeSpan;
 		}
 
+		public static Time Zero => new Time(0);
+
+
 		public Time AddDays(double days)
 		{
 			return new Time(_timeSpan + TimeSpan.FromDays(days));
@@ -95,7 +98,6 @@ namespace Mhora.Util
 			}
 		}
 
-		public Time Zero => new ();
 		public bool IsZero => _timeSpan.TotalHours == 0;
 		public int Years        => (int) (_timeSpan.TotalDays / 360);
 		public int Days         => _timeSpan.Days % 360;

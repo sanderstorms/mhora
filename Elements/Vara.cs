@@ -41,10 +41,10 @@ namespace Mhora.Elements
 			HoraLord = Jd.Date.HoraLord();
 			KalaLord = CalculateKalaLord(HoursAfterSunrise);
 
-			BirthTatva = CalculateBirthTatva();
-
+			BirthTatva           = CalculateBirthTatva();
+			Gulika               = CalculateUpgraha(Body.Saturn, HoroscopeOptions.EUpagrahaType.Begin);
+			Maandi               = CalculateUpgraha(Body.Saturn, HoroscopeOptions.EUpagrahaType.End);
 			(YamaLord, YamaSpan) = CalculateYamaLord();
-			(Gulika, Maandi)     = CalculateGulika();
 		}
 
 		public Horoscope  Horoscope            {get;}
@@ -119,38 +119,13 @@ namespace Mhora.Elements
 		}
 
 
-		//The position of Gulika is different for daytime (from sunrise to sunset) and night - time
-		//(from sunset to sunrise). The duration of the day or of the night (as the case may be) is
-		//divided into eight parts.The segment belonging to Saturn is known as Gulika
-		//The cusp of the sign rising at the beginning of the Gulika segment is
-		// considered as Gulika. From this, the chart must be analyzed.
-		public (Longitude, Longitude) CalculateGulika()
+		public JulianDate FindKalaCusp(Body body, HoroscopeOptions.EUpagrahaType upagrahaType)
 		{
-			var cusps = GetSunrisetCuspsUt(8);
+			var  cusps  = GetSunrisetEqualCuspsUt(8);
+			var  part   = 0;
+			var  offset = Time.Zero;
 
-			var dayPart   = 0;
-			var nightPart = 0;
-
-			for (; dayPart < 8; dayPart++)
-			{
-				var hours = (cusps[dayPart].Date - Sunrise);
-				if (CalculateKalaLord (hours) == Body.Saturn)
-				{
-					break;
-				}
-			}
-
-			for (; nightPart < 8; nightPart++)
-			{
-				var hours = (cusps[dayPart + 8].Date - Sunrise);
-				if (CalculateKalaLord (hours) == Body.Saturn)
-				{
-					break;
-				}
-			}
-
-			Time offset = 0;
-			switch (Horoscope.Options.UpagrahaType)
+			switch (upagrahaType)
 			{
 				case HoroscopeOptions.EUpagrahaType.Begin:
 					offset = 0;
@@ -163,19 +138,38 @@ namespace Mhora.Elements
 					break;
 			}
 
-			var day   = cusps[dayPart] + offset;
-			var night = cusps[nightPart + 8] + offset;
-
-
-
-			var gulikaDay   = new Longitude(Horoscope.Lagna(day));
-			var gulikaNight = new Longitude(Horoscope.Lagna(night));
-
-			if (IsDayBirth)
+			if (IsDayBirth == false)
 			{
-				return (gulikaDay, gulikaNight);
+				part = 8;
 			}
-			return (gulikaNight, gulikaDay);
+
+			for (var dayPart = part; dayPart < part + 8; dayPart++)
+			{
+				var hours = (cusps[dayPart].Date - Sunrise);
+				if (CalculateKalaLord (hours) == body)
+				{
+					return cusps[dayPart] + offset;
+				}
+			}
+
+			return cusps[0];
+		}
+
+		// The position of Gulika is different for daytime (from sunrise to sunset) and night - time
+		// (from sunset to sunrise). The duration of the day or of the night (as the case may be) is
+		// divided into eight parts.The segment belonging to Saturn is known as Gulika
+		// The cusp of the sign rising at the beginning of the Gulika segment is
+		// considered as Gulika. From this, the chart must be analyzed.
+		//
+		// Mandi Nadi are 26, 22, 18, 14, 10, 6, 2 for each day starting from Sunday. The
+		// differences in duration of day should be considered.
+		// To find the days Mandi Udaya time, The Dina Pramana (day or night) should be
+		// multiplied by Mani Udaya Ghati and expunged by 30. The sign thus arrived is
+		// the Rising sign of Mandi
+		public Longitude CalculateUpgraha(Body body, HoroscopeOptions.EUpagrahaType upagrahaType = HoroscopeOptions.EUpagrahaType.Begin)
+		{
+			var upgraha = FindKalaCusp(body, upagrahaType);
+			return new Longitude(Horoscope.Lagna(upgraha));
 		}
 
 		public bool CalcSunriseSunset(Horoscope h, JulianDate jd, out JulianDate sunrise, out JulianDate sunset, out JulianDate noon, out JulianDate midnight)
