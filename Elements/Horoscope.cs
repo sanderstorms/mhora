@@ -94,9 +94,7 @@ public partial class Horoscope : ICloneable
 	public void SetInfo (HoraInfo info)
 	{
 		Info = info;
-		Vara = new Vara(this);
-		PopulateCache();
-		CheckBirthTime();
+		OnChanged();
 	}
 
 	public object Clone()
@@ -123,7 +121,10 @@ public partial class Horoscope : ICloneable
 
 	public void OnChanged()
 	{
+		Vara = new Vara(this);
+		_grahas.Clear();
 		PopulateCache();
+		CheckBirthTime();
 		OnlySignalChanged();
 	}
 
@@ -189,47 +190,9 @@ public partial class Horoscope : ICloneable
 		OnChanged();
 	}
 
-	public JulianDate[] GetHoraCuspsUt()
-	{
-		JulianDate[] cusps = null;
-		switch (Options.HoraType)
-		{
-			case HoroscopeOptions.EHoraType.Sunriset:
-				cusps = Vara.GetSunrisetCuspsUt(12);
-				break;
-			case HoroscopeOptions.EHoraType.SunrisetEqual:
-				cusps = Vara.GetSunrisetEqualCuspsUt(12);
-				break;
-			case HoroscopeOptions.EHoraType.Lmt:
-				cusps = Vara.GetLmtCuspsUt(12);
-				break;
-		}
-
-		return cusps;
-	}
-
-	public JulianDate[] GetKalaCuspsUt()
-	{
-		JulianDate[] cusps = null;
-		switch (Options.KalaType)
-		{
-			case HoroscopeOptions.EHoraType.Sunriset:
-				cusps = Vara.GetSunrisetCuspsUt(8);
-				break;
-			case HoroscopeOptions.EHoraType.SunrisetEqual:
-				cusps = Vara.GetSunrisetEqualCuspsUt(8);
-				break;
-			case HoroscopeOptions.EHoraType.Lmt:
-				cusps = Vara.GetLmtCuspsUt(8);
-				break;
-		}
-
-		return cusps;
-	}
-
 	public void AddOtherPosition(string desc, Longitude lon, Body name)
 	{
-		var bp = new Position(this, name, BodyType.Other, lon, 0, 0, 0, 0, 0)
+		var bp = new Position(this, name, BodyType.Other, lon)
 		{
 			OtherString = desc
 		};
@@ -266,41 +229,17 @@ public partial class Horoscope : ICloneable
 			correct++;
 		}
 
-		//Pranapada lagna will be trine or 7th to lagna.
-		var lagna = _grahas[DivisionType.Rasi][Body.Lagna];
-		var pp    = _grahas[DivisionType.Rasi][Body.Pranapada];
-
-		if (lagna.HouseFrom(pp) == Bhava.JayaBhava)
-		{
-			correct++;
-		}
-		else if (lagna.HouseFrom(pp).IsTrikona())
+		if (CheckPranaPadaD1())
 		{
 			correct++;
 		}
 
-		//Pranapada lagna in Navamsa in trines or 7th to swamsa or navamsa Moon
-		pp =  FindGrahas(DivisionType.Navamsa)[Body.Pranapada];
-		var m9 = FindGrahas(DivisionType.Navamsa)[Body.Moon];
-
-		if (pp.HouseFrom(m9) == Bhava.JayaBhava)
-		{
-			correct++;
-		}
-		else if (pp.HouseFrom(m9).IsTrikona())
+		if (CheckPranaPadaD9())
 		{
 			correct++;
 		}
 
-		//Check what sign AtmaKaraka planet is in in the Navamsa chart
-		var ak = FindGrahas(DivisionType.Rasi).Find(Karaka8.Atma);
-		var sv = FindGrahas(DivisionType.Navamsa)[ak];
-
-		if (sv.HouseFrom(m9) == Bhava.JayaBhava)
-		{
-			correct++;
-		}
-		else if (sv.HouseFrom(m9).IsTrikona())
+		if (CheckAtmaKaraka())
 		{
 			correct++;
 		}
@@ -330,6 +269,73 @@ public partial class Horoscope : ICloneable
 		}
 
 		return correct;
+	}
+
+	public bool CheckPranaPadaD1()
+	{
+		//Pranapada lagna will be trine or 7th to lagna.
+		var lagna = _grahas[DivisionType.Rasi][Body.Lagna];
+		var pp    = _grahas[DivisionType.Rasi][Body.Pranapada];
+
+		if (lagna.HouseFrom(pp) == Bhava.JayaBhava)
+		{
+			return (true);
+		}
+		if (lagna.HouseFrom(pp).IsTrikona())
+		{
+			return (true);
+		}
+
+		return (false);
+	}
+
+
+	public bool CheckPranaPadaD9()
+	{
+		//Pranapada lagna in Navamsa in trines or 7th to swamsa or navamsa Moon
+		var pp     = FindGrahas(DivisionType.Navamsa)[Body.Pranapada];
+		var mòon   = FindGrahas(DivisionType.Navamsa)[Body.Moon];
+		var swamsa = FindGrahas(DivisionType.Navamsa)[Body.Lagna];
+
+		if (pp.HouseFrom(mòon) == Bhava.JayaBhava)
+		{
+			return (true);
+		}
+		if (pp.HouseFrom(mòon).IsTrikona())
+		{
+			return (true);
+		}
+
+		if (pp.HouseFrom(swamsa) == Bhava.JayaBhava)
+		{
+			return (true);
+		}
+		if (pp.HouseFrom(swamsa).IsTrikona())
+		{
+			return (true);
+		}
+
+
+		return (false);
+	}
+
+	public bool CheckAtmaKaraka()
+	{
+		//Check what sign AtmaKaraka planet is in in the Navamsa chart
+		var ak = FindGrahas(DivisionType.Rasi).Find(Karaka8.Atma);
+		var sv = FindGrahas(DivisionType.Navamsa)[ak];
+		var m9 = FindGrahas(DivisionType.Navamsa)[Body.Moon];
+
+		if (sv.HouseFrom(m9) == Bhava.JayaBhava)
+		{
+			return (true);
+		}
+		if (sv.HouseFrom(m9).IsTrikona())
+		{
+			return (true);
+		}
+
+		return (false);
 	}
 
 	//The Kunda should be placed in trines (dharma) or in seventh (dwara) from the Rasi Lagna, to cause creation.
@@ -498,7 +504,7 @@ public partial class Horoscope : ICloneable
 
 		if (vighati <= 15)
 		{
-			return Kuta.Sex.Male;
+			return Kuta.Sex.Neutral;
 		}
 
 		if (vighati <= 45)
@@ -513,7 +519,7 @@ public partial class Horoscope : ICloneable
 
 		if (vighati <= 150)
 		{
-			return Kuta.Sex.Female;
+			return Kuta.Sex.Neutral;
 		}
 
 		return Kuta.Sex.Male;

@@ -2,6 +2,7 @@
 using Mhora.Util;
 using System;
 using Mhora.Calculation;
+using Mhora.Database.Settings;
 using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 
@@ -35,13 +36,14 @@ namespace Mhora.Elements
 			NightTime = (Length - DayTime);
 
 			var date = sunrise.Date;
-			DayLord  = date.DayLord();
 			WeekDay  = date.DayOfWeek.WeekDay();
+			DayLord  = WeekDay.Ruler();
 			HoraLord = Jd.Date.HoraLord();
-			KalaLord = Jd.Date.KalaLord();
+			KalaLord = CalculateKalaLord(HoursAfterSunrise);
 
-			BirthTatva = CalculateBirthTatva();
-
+			BirthTatva           = CalculateBirthTatva();
+			Gulika               = CalculateUpgraha(Body.Saturn);
+			Maandi               = CalculateUpgraha(Body.Saturn, HoroscopeOptions.EUpagrahaType.End);
 			(YamaLord, YamaSpan) = CalculateYamaLord();
 		}
 
@@ -67,6 +69,8 @@ namespace Mhora.Elements
 		public Body       YamaLord             {get;}
 		public Yama       YamaSpan             {get;}
 		public BirthTatva BirthTatva           {get;}
+		public Longitude  Gulika               {get;}
+		public Longitude  Maandi               {get;}
 
 		public Longitude BhriguBindu
 		{
@@ -89,16 +93,124 @@ namespace Mhora.Elements
 			}
 		}
 
+
+		//The 24 hours starting from the Sun’s movement from Sangyā are divided into 8 yamas,
+		//each spanning for 3 hours. Each half of a yama is known as a kāla, measuring 1½ hours,
+		//thereby creating 16 kālas in a day.  Each kāla is ruled by a planet starting with the day lord
+		//and subsequently it follows the order of the Kāla Cakra from Sun to Rāhu.
+		//The 8 kālas which exist from sunset to sunrise begin with the 7th planet from the vāra lord in the Kāla Cakra.
+		public Body CalculateKalaLord(Time hoursAfterSunrise)
+		{
+			var index = Array.IndexOf(Bodies.KalaOrder, DayLord);
+			var hour  = hoursAfterSunrise.TotalHours;
+			var yama  = (Length / 16);
+			var part  = (int) (hour / yama.TotalHours);
+
+			if (part >= 8)
+			{
+				part  -= 8;
+				index += 4;
+			}
+
+			var lord = (index + part);
+			lord %= Bodies.KalaOrder.Length;
+
+			return Bodies.KalaOrder[lord];
+		}
+
+		public Body CalculateKalaLordCusps(Time hoursAfterSunrise)
+		{
+			var index = Array.IndexOf(Bodies.KalaOrder, DayLord);
+			var cusps = KalaCuspsUt;
+			var jd    = Sunrise.Utc(Horoscope) + hoursAfterSunrise;
+			int part  = 0;
+
+			for (part = 0; part < cusps.Length - 1; part++)
+			{
+				if (cusps[part + 1] > jd)
+				{
+					break;
+				}
+			}
+
+			if (part >= 8)
+			{
+				part  -= 8;
+				index += 4;
+			}
+
+			var lord = (index + part);
+			lord %= Bodies.KalaOrder.Length;
+
+			return Bodies.KalaOrder[lord];
+		}
+
+
+		public JulianDate FindKalaCusp(Body body, HoroscopeOptions.EUpagrahaType upagrahaType)
+		{
+			var  cusps  = GetSunrisetEqualCuspsUt(8);
+			var  part   = 0;
+			var  offset = Time.Zero;
+
+			switch (upagrahaType)
+			{
+				case HoroscopeOptions.EUpagrahaType.Begin:
+					offset = 0;
+					break;
+				case HoroscopeOptions.EUpagrahaType.Mid:
+					offset = (cusps [1].Time - cusps [0].Time).TotalHours / 2;
+					break;
+				case HoroscopeOptions.EUpagrahaType.End:
+					offset = (cusps [1].Time - cusps [0].Time);
+					break;
+			}
+
+			if (IsDayBirth == false)
+			{
+				part = 8;
+			}
+
+			for (var dayPart = part; dayPart < part + 8; dayPart++)
+			{
+				var hours = (cusps[dayPart].Date - Sunrise);
+				if (CalculateKalaLord (hours) == body)
+				{
+					return cusps[dayPart] + offset;
+				}
+			}
+
+			return cusps[0];
+		}
+
+		// The position of Gulika is different for daytime (from sunrise to sunset) and night - time
+		// (from sunset to sunrise). The duration of the day or of the night (as the case may be) is
+		// divided into eight parts.The segment belonging to Saturn is known as Gulika
+		// The cusp of the sign rising at the beginning of the Gulika segment is
+		// considered as Gulika. From this, the chart must be analyzed.
+		//
+		// Mandi Nadi are 26, 22, 18, 14, 10, 6, 2 for each day starting from Sunday. The
+		// differences in duration of day should be considered.
+		// To find the days Mandi Udaya time, The Dina Pramana (day or night) should be
+		// multiplied by Mani Udaya Ghati and expunged by 30. The sign thus arrived is
+		// the Rising sign of Mandi
+		public Longitude CalculateUpgraha(Body body, HoroscopeOptions.EUpagrahaType upagrahaType = HoroscopeOptions.EUpagrahaType.Begin)
+		{
+			var upgraha = FindKalaCusp(body, upagrahaType);
+			return new Longitude(Horoscope.Lagna(upgraha));
+		}
+
+		private double[] _houseCusps;
 		public bool CalcSunriseSunset(Horoscope h, JulianDate jd, out JulianDate sunrise, out JulianDate sunset, out JulianDate noon, out JulianDate midnight)
 		{
 			bool      daybirth = true;
 			double [] r        = new double[6];
-			double[]  cusp     = new double[13];
+			double[]  cusps    = new double[13];
 			double [] ascmc    = new double [10];
 			double[]  rsmi     = new double [3];
 
 			h.Calc(jd, Body.Sun.SwephBody(), 0, r);
-			h.HousesEx(jd, sweph.SEFLG_SIDEREAL, h.Info.Latitude, h.Info.Longitude, h.SwephHouseSystem, cusp, ascmc);
+			h.HousesEx(jd, sweph.SEFLG_SIDEREAL, h.Info.Latitude, h.Info.Longitude, h.SwephHouseSystem, cusps, ascmc);
+			_houseCusps ??= cusps;
 
 			var diff_ascsun = new Angle(ascmc[0] -  r[0] ); // Sun and AC
 			diff_ascsun.Reduce();
@@ -158,6 +270,39 @@ namespace Mhora.Elements
 			noon     = h.CalcNextSolarEvent(sweph.EventType.SOLAR_EVENT_NOON, startjdnoon);
 
 			return (daybirth);
+		}
+
+		private JulianDate [] _horaCusps;
+		public JulianDate[] HoraCuspsUt
+		{
+			get
+			{
+				_horaCusps ??= Horoscope.Options.HoraType switch
+				{
+					HoroscopeOptions.EHoraType.Sunriset      => GetSunrisetCuspsUt(12),
+					HoroscopeOptions.EHoraType.SunrisetEqual => GetSunrisetEqualCuspsUt(12),
+					HoroscopeOptions.EHoraType.Lmt           => GetLmtCuspsUt(12),
+					_                                        => null
+				};
+				return _horaCusps;
+			}
+		}
+
+		private JulianDate[] _kalaCusps;
+		public JulianDate[] KalaCuspsUt
+		{
+			get
+			{
+				_kalaCusps ??= Horoscope.Options.KalaType switch
+                 {
+                     HoroscopeOptions.EHoraType.Sunriset      => GetSunrisetCuspsUt(8),
+                     HoroscopeOptions.EHoraType.SunrisetEqual => GetSunrisetEqualCuspsUt(8),
+                     HoroscopeOptions.EHoraType.Lmt           => GetLmtCuspsUt(8),
+                     _                                        => null
+                 };
+
+				return _kalaCusps;
+			}
 		}
 
 		public JulianDate[] GetSunrisetCuspsUt(int dayParts)
@@ -265,7 +410,6 @@ namespace Mhora.Elements
 			return new BirthTatva(yama, tatva, antaraTatva);
 		}
 
-
 		private (Time, Time, int) CalculateTatva(ref Tatva tatva, Time span, Time subPeriod, bool reverse)
 		{
 			Time tatvaPeriod = subPeriod;
@@ -298,6 +442,5 @@ namespace Mhora.Elements
 			}
 			return (subPeriod, tatvaPeriod, index);
 		}
-
 	}
 }

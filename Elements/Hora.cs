@@ -154,33 +154,6 @@ public static class Hora
 		return dateTime.DayOfWeek.WeekDay().Ruler();
 	}
 
-	//The 24 hours starting from the Sun’s movement from Sangyā are divided into 8 yamas,
-	//each spanning for 3 hours. Each half of a yama is known as a kāla, measuring 1½ hours,
-	//thereby creating 16 kālas in a day.  Each kāla is ruled by a planet starting with the day lord
-	//and subsequently it follows the order of the Kāla Cakra from Sun to Rāhu.
-	//The 8 kālas which exist from sunset to sunrise begin with the 7th planet from the vāra lord in the Kāla Cakra.
-	public static Body KalaLord(this DateTime dateTime)
-	{
-		var dayLord = dateTime.DayLord();
-		var index   = Array.IndexOf(Bodies.KalaOrder, dayLord);
-		var hour    = dateTime.Time().TotalHours;
-		var part    = (int) (hour / 1.5).Floor();
-
-		if (hour > 18)
-		{
-			part += 5;
-		}
-		else if (hour >= 6)
-		{
-			part -= 4;
-		}
-
-		var lord = (index + part);
-		lord %= Bodies.KalaOrder.Length;
-
-		return Bodies.KalaOrder[lord];
-	}
-
 	public static Body HoraLord(this DateTime dateTime)
 	{
 		var dayLord = dateTime.DayLord();

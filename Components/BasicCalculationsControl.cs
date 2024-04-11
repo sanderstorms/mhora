@@ -799,7 +799,7 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Rasi", -2, HorizontalAlignment.Left);
 
 		var lpos = h.GetPosition(Body.Lagna).Longitude;
-		var bp   = new Position(h, Body.Lagna, BodyType.Lagna, lpos, 0, 0, 0, 0, 0);
+		var bp   = new Position(h, Body.Lagna, BodyType.Lagna, lpos);
 		for (var i = 0; i < 12; i++)
 		{
 			var dp = bp.ToDivisionPosition(options.DivisionType);

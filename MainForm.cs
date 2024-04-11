@@ -189,7 +189,6 @@ namespace Mhora
 		{
 			childCount++;
 			var child = new MhoraChild(h);
-			h.OnChanged();
 			child.Text = childCount + " - " + name;
 			child.MdiParent = this;
 			child.Name = child.Text;

@@ -45,7 +45,7 @@ public class Position
 	public readonly  Body                  Name;
 	public readonly  HorizontalCoordinates HorizontalCoordinates;
 
-	public Position(Horoscope h, Body body, BodyType bodyType, Longitude lon, double lat, double dist, double splon, double splat, double spdist)
+	public Position(Horoscope h, Body body, BodyType bodyType, Longitude lon, double lat = 0, double dist = 0, double splon = 0, double splat = 0, double spdist = 0)
 	{
 		Longitude      = lon;
 		Latitude       = lat;

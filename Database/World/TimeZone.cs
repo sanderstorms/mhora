@@ -39,10 +39,6 @@ public class TimeZone
 					{
 						Console.WriteLine(e);
 					}
-					finally
-					{
-						_timezones = new List<TimeZoneInfo>();
-					}
 				}
 			}
 
@@ -178,8 +174,8 @@ public class TimeZone
 				return TimeZoneInfo.CreateCustomTimeZone(id, offset, displayName, standardName);
 			}
 
-			var startTransition = TimeZoneInfo.TransitionTime.CreateFloatingDateRule(new DateTime(1, 1, 1, 4, 0, 0), 10, 2, DayOfWeek.Sunday);
-			var endTransition   = TimeZoneInfo.TransitionTime.CreateFloatingDateRule(new DateTime(1, 1, 1, 3, 0, 0), 3, 2, DayOfWeek.Sunday);
+			var endTransition   = TimeZoneInfo.TransitionTime.CreateFloatingDateRule(new DateTime(1, 1, 1, 4, 0, 0), 10, 2, DayOfWeek.Sunday);
+			var startTransition = TimeZoneInfo.TransitionTime.CreateFloatingDateRule(new DateTime(1, 1, 1, 3, 0, 0), 3, 2, DayOfWeek.Sunday);
 			// Define adjustment rule
 			var delta      = new TimeSpan(1, 0, 0);
 			var adjustment = TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(new DateTime(1999, 10, 1), DateTime.MaxValue.Date, delta, startTransition, endTransition);
