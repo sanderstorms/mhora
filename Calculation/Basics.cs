@@ -72,7 +72,7 @@ public static class Basics
 	{
 		if (body == Body.Lagna)
 		{
-			var b = new Position(h, body, bodyType, new Longitude(h.Lagna(ut)), 0, 0, 0, 0, 0);
+			var b = new Position(h, body, bodyType, new Longitude(h.Lagna(ut)));
 			return b;
 		}
 
@@ -146,18 +146,23 @@ public static class Basics
 		stdGrahas.Add(ketu);
 
 		var asc = h.Lagna(juldayUt);
-		stdGrahas.Add(new Position(h, Body.Lagna, BodyType.Lagna, new Longitude(asc), 0, 0, 0, 0, 0));
+		stdGrahas.Add(new Position(h, Body.Lagna, BodyType.Lagna, new Longitude(asc)));
+
+		//Bhaav    Lagna: changes sign every 5 Ghatees (every 2 hours)
+		//Horaa Lagna: changes sign every 2.5 Ghatees (each hour)
+		//Ghatee   Lagna: changes sign every Ghatee (every 24 min)
+		//Vighatee Lagna: changes sign every Vighatee (every 24 sec)
 
 		var istaGhati = h.Vara.HoursAfterSunrise.Ghati;
 		var blLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 6));			//bhava = 2 ghati = 30 degrees
 		var hlLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 12));			//hora = 15 degrees
 		var glLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 12 * 2.5));
-		var vlLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 12 * 60));
+		var vlLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 12 * 2.5 * 2.5 * 6));
 
-		stdGrahas.Add(new Position(h, Body.BhavaLagna, BodyType.SpecialLagna, blLon, 0, 0, 0, 0, 0));
-		stdGrahas.Add(new Position(h, Body.HoraLagna, BodyType.SpecialLagna, hlLon, 0, 0, 0, 0, 0));
-		stdGrahas.Add(new Position(h, Body.GhatiLagna, BodyType.SpecialLagna, glLon, 0, 0, 0, 0, 0));
-		stdGrahas.Add(new Position(h, Body.VighatiLagna, BodyType.SpecialLagna, vlLon, 0, 0, 0, 0, 0));
+		stdGrahas.Add(new Position(h, Body.BhavaLagna, BodyType.SpecialLagna, blLon));
+		stdGrahas.Add(new Position(h, Body.HoraLagna, BodyType.SpecialLagna, hlLon));
+		stdGrahas.Add(new Position(h, Body.GhatiLagna, BodyType.SpecialLagna, glLon));
+		stdGrahas.Add(new Position(h, Body.VighatiLagna, BodyType.SpecialLagna, vlLon));
 
 
 		return stdGrahas;

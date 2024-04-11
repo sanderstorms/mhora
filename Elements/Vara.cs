@@ -42,7 +42,7 @@ namespace Mhora.Elements
 			KalaLord = CalculateKalaLord(HoursAfterSunrise);
 
 			BirthTatva           = CalculateBirthTatva();
-			Gulika               = CalculateUpgraha(Body.Saturn, HoroscopeOptions.EUpagrahaType.Begin);
+			Gulika               = CalculateUpgraha(Body.Saturn);
 			Maandi               = CalculateUpgraha(Body.Saturn, HoroscopeOptions.EUpagrahaType.End);
 			(YamaLord, YamaSpan) = CalculateYamaLord();
 		}
@@ -118,6 +118,33 @@ namespace Mhora.Elements
 			return Bodies.KalaOrder[lord];
 		}
 
+		public Body CalculateKalaLordCusps(Time hoursAfterSunrise)
+		{
+			var index = Array.IndexOf(Bodies.KalaOrder, DayLord);
+			var cusps = KalaCuspsUt;
+			var jd    = Sunrise.Utc(Horoscope) + hoursAfterSunrise;
+			int part  = 0;
+
+			for (part = 0; part < cusps.Length - 1; part++)
+			{
+				if (cusps[part + 1] > jd)
+				{
+					break;
+				}
+			}
+
+			if (part >= 8)
+			{
+				part  -= 8;
+				index += 4;
+			}
+
+			var lord = (index + part);
+			lord %= Bodies.KalaOrder.Length;
+
+			return Bodies.KalaOrder[lord];
+		}
+
 
 		public JulianDate FindKalaCusp(Body body, HoroscopeOptions.EUpagrahaType upagrahaType)
 		{
@@ -172,16 +199,18 @@ namespace Mhora.Elements
 			return new Longitude(Horoscope.Lagna(upgraha));
 		}
 
+		private double[] _houseCusps;
 		public bool CalcSunriseSunset(Horoscope h, JulianDate jd, out JulianDate sunrise, out JulianDate sunset, out JulianDate noon, out JulianDate midnight)
 		{
 			bool      daybirth = true;
 			double [] r        = new double[6];
-			double[]  cusp     = new double[13];
+			double[]  cusps    = new double[13];
 			double [] ascmc    = new double [10];
 			double[]  rsmi     = new double [3];
 
 			h.Calc(jd, Body.Sun.SwephBody(), 0, r);
-			h.HousesEx(jd, sweph.SEFLG_SIDEREAL, h.Info.Latitude, h.Info.Longitude, h.SwephHouseSystem, cusp, ascmc);
+			h.HousesEx(jd, sweph.SEFLG_SIDEREAL, h.Info.Latitude, h.Info.Longitude, h.SwephHouseSystem, cusps, ascmc);
+			_houseCusps ??= cusps;
 
 			var diff_ascsun = new Angle(ascmc[0] -  r[0] ); // Sun and AC
 			diff_ascsun.Reduce();
@@ -241,6 +270,39 @@ namespace Mhora.Elements
 			noon     = h.CalcNextSolarEvent(sweph.EventType.SOLAR_EVENT_NOON, startjdnoon);
 
 			return (daybirth);
+		}
+
+		private JulianDate [] _horaCusps;
+		public JulianDate[] HoraCuspsUt
+		{
+			get
+			{
+				_horaCusps ??= Horoscope.Options.HoraType switch
+				{
+					HoroscopeOptions.EHoraType.Sunriset      => GetSunrisetCuspsUt(12),
+					HoroscopeOptions.EHoraType.SunrisetEqual => GetSunrisetEqualCuspsUt(12),
+					HoroscopeOptions.EHoraType.Lmt           => GetLmtCuspsUt(12),
+					_                                        => null
+				};
+				return _horaCusps;
+			}
+		}
+
+		private JulianDate[] _kalaCusps;
+		public JulianDate[] KalaCuspsUt
+		{
+			get
+			{
+				_kalaCusps ??= Horoscope.Options.KalaType switch
+                 {
+                     HoroscopeOptions.EHoraType.Sunriset      => GetSunrisetCuspsUt(8),
+                     HoroscopeOptions.EHoraType.SunrisetEqual => GetSunrisetEqualCuspsUt(8),
+                     HoroscopeOptions.EHoraType.Lmt           => GetLmtCuspsUt(8),
+                     _                                        => null
+                 };
+
+				return _kalaCusps;
+			}
 		}
 
 		public JulianDate[] GetSunrisetCuspsUt(int dayParts)

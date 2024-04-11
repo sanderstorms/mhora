@@ -39,7 +39,7 @@ namespace Mhora.Elements.Extensions
 				lonR = lonR.Add(new Longitude(30.0));
 			}
 
-			var bp = new Position(h, Body.Other, BodyType.Sahama, lonR, 0.0, 0.0, 0.0, 0.0, 0.0)
+			var bp = new Position(h, Body.Other, BodyType.Sahama, lonR)
 			{
 				OtherString = sahama
 			};
@@ -65,7 +65,7 @@ namespace Mhora.Elements.Extensions
 				lonR = lonR.Add(new Longitude(30.0));
 			}
 
-			var bp = new Position(h, Body.Other, BodyType.Sahama, lonR, 0.0, 0.0, 0.0, 0.0, 0.0)
+			var bp = new Position(h, Body.Other, BodyType.Sahama, lonR)
 			{
 				OtherString = sahama
 			};

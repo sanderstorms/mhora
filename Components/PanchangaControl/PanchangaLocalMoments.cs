@@ -26,9 +26,7 @@ namespace Mhora.Components.PanchangaControl;
 public class PanchangaLocalMoments
 {
 	public int                       gulika_kala_index;
-	public int                       hora_base;
 	public JulianDate[]              horas_ut;
-	public int                       kala_base;
 	public JulianDate[]              kalas_ut;
 	public int                       karana_index_end;
 	public int                       karana_index_start;

@@ -190,47 +190,9 @@ public partial class Horoscope : ICloneable
 		OnChanged();
 	}
 
-	public JulianDate[] GetHoraCuspsUt()
-	{
-		JulianDate[] cusps = null;
-		switch (Options.HoraType)
-		{
-			case HoroscopeOptions.EHoraType.Sunriset:
-				cusps = Vara.GetSunrisetCuspsUt(12);
-				break;
-			case HoroscopeOptions.EHoraType.SunrisetEqual:
-				cusps = Vara.GetSunrisetEqualCuspsUt(12);
-				break;
-			case HoroscopeOptions.EHoraType.Lmt:
-				cusps = Vara.GetLmtCuspsUt(12);
-				break;
-		}
-
-		return cusps;
-	}
-
-	public JulianDate[] GetKalaCuspsUt()
-	{
-		JulianDate[] cusps = null;
-		switch (Options.KalaType)
-		{
-			case HoroscopeOptions.EHoraType.Sunriset:
-				cusps = Vara.GetSunrisetCuspsUt(8);
-				break;
-			case HoroscopeOptions.EHoraType.SunrisetEqual:
-				cusps = Vara.GetSunrisetEqualCuspsUt(8);
-				break;
-			case HoroscopeOptions.EHoraType.Lmt:
-				cusps = Vara.GetLmtCuspsUt(8);
-				break;
-		}
-
-		return cusps;
-	}
-
 	public void AddOtherPosition(string desc, Longitude lon, Body name)
 	{
-		var bp = new Position(this, name, BodyType.Other, lon, 0, 0, 0, 0, 0)
+		var bp = new Position(this, name, BodyType.Other, lon)
 		{
 			OtherString = desc
 		};

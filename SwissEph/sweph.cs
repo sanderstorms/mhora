@@ -751,7 +751,8 @@ public static partial class sweph
 	// ‘A’ or ‘E’ Equal (cusp 1 is Ascendant)
 	// ‘D’ Equal MC (cusp 10 is MC)
 	// ‘N’ Equal/1=Aries
-	// ‘G’ Gauquelin sector	//		Goelzer -> Krusinski
+	// ‘G’ Gauquelin sector
+	//		Goelzer -> Krusinski
 	//		Horizontal system -> Azimuthal system
 	// ‘I’ Sunshine (Makransky, solution Treindl)
 	// ‘i’ Sunshine (Makransky, solution Makransky)
@@ -759,7 +760,8 @@ public static partial class sweph
 	// ‘U’ Krusinski-Pisa-Goelzer
 	//		Meridian system -> axial rotation
 	// ‘M’ Morinus
-	//		Neo-Porphyry -> Pullen SD	//		Pisa -> Krusinski
+	//		Neo-Porphyry -> Pullen SD
+	//		Pisa -> Krusinski
 	// ‘P’ Placidus
 	//		Poli-Equatorial -> Carter
 	// ‘T’ Polich/Page (“topocentric” system)

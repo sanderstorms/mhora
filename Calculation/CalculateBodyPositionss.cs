@@ -178,122 +178,13 @@ namespace Mhora.Calculation
 			return arudhaDivList;
 		}
 
-		public static Body CalculateKala(this Horoscope h, out int iBase)
-		{
-			int[] offsetsDay =
-			{
-				0,
-				6,
-				1,
-				3,
-				2,
-				4,
-				5
-			};
-			var b          = h.Vara.DayLord;
-			var bdayBirth = h.Vara.IsDayBirth;
-
-			var cusps = h.GetKalaCuspsUt();
-			if (h.Options.KalaType == HoroscopeOptions.EHoraType.Lmt)
-			{
-				b          = h.Info.DateOfBirth.Lstm(h).DayLord();
-				bdayBirth = h.Info.DateOfBirth > h.Vara.Sunset.Date.Lstm(h) || h.Info.DateOfBirth < h.Vara.Sunset.Date.Lstm(h);
-			}
-
-			var i = offsetsDay[(int) b];
-			iBase = i;
-			var j = 0;
-
-			if (bdayBirth)
-			{
-				for (j = 0; j < 8; j++)
-				{
-					if (h.Info.Jd >= cusps[j] && h.Info.Jd < cusps[j + 1])
-					{
-						break;
-					}
-				}
-
-				i += j;
-				while (i >= 8)
-				{
-					i -= 8;
-				}
-
-				return Bodies.KalaOrder[i];
-			}
-
-			//i+=4;
-			for (j = 8; j < 16; j++)
-			{
-				if (h.Info.Jd >= cusps[j] && h.Info.Jd < cusps[j + 1])
-				{
-					break;
-				}
-			}
-
-			i += j;
-			while (i >= 8)
-			{
-				i -= 8;
-			}
-
-			return Bodies.KalaOrder[i];
-		}
-
-		public static Body CalculateHora(this Horoscope h, JulianDate baseUt, out int baseBody)
-		{
-			int[] offsets =
-			{
-				0,
-				3,
-				6,
-				2,
-				5,
-				1,
-				4
-			};
-			var b     = h.Vara.DayLord;
-			var cusps = h.GetHoraCuspsUt();
-			if (h.Options.HoraType == HoroscopeOptions.EHoraType.Lmt)
-			{
-				b = h.Info.DateOfBirth.Lstm(h).DayLord();
-			}
-
-			var i = offsets[(int) b];
-			baseBody = i;
-			var j = 0;
-			//for (j=0; j<23; j++)
-			//{
-			//	Moment m1 = new Moment(cusps[j], this);
-			//	Moment m2 = new Moment(cusps[j+1], this);
-			//	Mhora.Log.Debug ("Seeing if dob is between {0} and {1}", m1, m2);
-			//}
-			for (j = 0; j < 23; j++)
-			{
-				if (baseUt >= cusps[j] && baseUt < cusps[j + 1])
-				{
-					break;
-				}
-			}
-
-			//Mhora.Log.Debug ("Found hora in the {0}th hora", j);
-			i += j;
-			while (i >= 7)
-			{
-				i -= 7;
-			}
-
-			return Bodies.HoraOrder[i];
-		}
-
 		private static Position CalculateUpagrahasSingle(this Horoscope h, Body b, JulianDate tjd)
 		{
 			var lon = new Longitude(0.0)
 			{
 				Value = h.Lagna(tjd)
 			};
-			return new Position(h, b, BodyType.Upagraha, lon, 0, 0, 0, 0, 0);
+			return new Position(h, b, BodyType.Upagraha, lon);
 		}
 
 		private static Position CalculateMaandiHelper(this Horoscope h, Body b, HoroscopeOptions.EMaandiType mty, JulianDate[] jds, double dOffset, int[] bodyOffsets)
@@ -317,86 +208,59 @@ namespace Mhora.Calculation
 			return (null);
 		}
 
+		//There are nine Upagrahas linked to the nine Grahas (planets) which are recognized by Jyotish rules. These are:
+		// 
+		// 1. Kaala  --- Sun
+		// 2. Dhoom --- Moon
+		// 3. Parivesh --- Mars
+		// 4. Ardha Prahar --- Mercury
+		// 5. Yamkantaka --- Jupiter
+		// 6. Vyatipat --- Venus
+		// 7. Gulika --- Saturn
+		// 8. Indradhanush --- Rahu
+		// 9. Upaketu --- Ketu
+		// 
+		// These nine upagrahas are categorised in two categories. The first category has Gulika, Ardha Prahar, Yamkantaka and Kaala.
+		// The second category consists of Dhoom, Vyatipat, Indradhanush and Upaketu.
+		// These two categories of upagrahas are not enemical to each other and they are categorised on the basis of their method of calculation.
+		// 
+		// The Upagrahas in first category are calculated on basis of the points based on set time difference from the actual sunrise and sunset.
+		// Also, these points keep on changing with every day of the week. The second category Upagrahas are also based on set time intervals
+		// from actual sunrise and sunset but their base points always remain constant throughout the week. 
+		// They based on Sun's longitude. All these upagrahas are very malefic in nature.
+		// Any houses occupied by them in rasi chart or divisional charts are spoiled by them.
 		public static List<Position> CalculateUpagrahas(this Horoscope h)
 		{
-			var positionList = new List<Position>();
-			JulianDate dStart , dEnd;
-
-			var m         = h.Info.DateOfBirth;
-			var bStart    = h.UpagrahasStart();
-
-			if (h.Vara.IsDayBirth)
+			var positionList = new List<Position>
 			{
-				dStart = h.Vara.Sunrise;
-				dEnd   = h.Vara.Sunset;
-			}
-			else
-			{
-				dStart = h.Vara.Sunset;
-				dEnd   = h.Vara.Sunrise;
-			}
-
-			Time dPeriod = (dEnd - dStart) / 8.0;
-			Time dOffset = dPeriod         / 2.0;
-
-			var jds = new JulianDate[8];
-			for (var i = 0; i < 8; i++)
-			{
-				jds[i] = dStart + i * dPeriod + dOffset;
-			}
-
-			var bodyOffsets = new int[8];
-			for (var i = 0; i < 8; i++)
-			{
-				var ib = (int) bStart + i;
-				while (ib >= 8)
-				{
-					ib -= 8;
-				}
-
-				bodyOffsets[ib] = i;
-			}
-
-			double dUpagrahaOffset = 0;
-			switch (h.Options.UpagrahaType)
-			{
-				case HoroscopeOptions.EUpagrahaType.Begin:
-					dUpagrahaOffset = 0;
-					break;
-				case HoroscopeOptions.EUpagrahaType.Mid:
-					dUpagrahaOffset = dOffset.TotalHours;
-					break;
-				case HoroscopeOptions.EUpagrahaType.End:
-					dUpagrahaOffset = dPeriod.TotalHours;
-					break;
-			}
-
-			positionList.Add(h.CalculateUpagrahasSingle(Body.Kala, jds[bodyOffsets[(int) Body.Sun]]));
-			positionList.Add(h.CalculateUpagrahasSingle(Body.Mrityu, jds[bodyOffsets[(int) Body.Mars]]));
-			positionList.Add(h.CalculateUpagrahasSingle(Body.ArthaPraharaka, jds[bodyOffsets[(int) Body.Mercury]]));
-			positionList.Add(h.CalculateUpagrahasSingle(Body.YamaGhantaka, jds[bodyOffsets[(int) Body.Jupiter]]));
-
-
-			positionList.Add(h.CalculateMaandiHelper(Body.Maandi, h.Options.MaandiType, jds, dOffset.TotalHours, bodyOffsets));
-			positionList.Add(h.CalculateMaandiHelper(Body.Gulika, h.Options.GulikaType, jds, dOffset.TotalHours, bodyOffsets));
+				new (h, Body.Kala, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Sun)),
+				new (h, Body.ArthaPraharaka, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Mercury)),
+				new (h, Body.YamaGhantaka, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Jupiter)),
+				new (h, Body.Gulika, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Saturn)),
+				new (h, Body.Maandi, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Saturn, HoroscopeOptions.EUpagrahaType.End)),
+				new (h, Body.Mrityu, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Mars))
+			};
 
 			return (positionList);
 		}
 
+		// Upagraha Longitude Formula
+		// Dhuma Sun's longitude + 13320'
+		// Vyatipaata 360º – Dhuma’s longitude
+		// Parivesha Vyatipata's longitude + 180
+		// Indrachaapa 360º – Parivesha’s longitude
+		// Upaketu Indrachaapa’s longitude + 1640'= Sun's longitude – 30
+		// It may be noted that Dhuma and Indrachaapa are apart by 180 and Vyatipaata and Parivesha are apart by 180.
 		public static List<Position> CalculateSunsUpagrahas(this Horoscope h)
 		{
+			var slon         = h.GetPosition(Body.Sun).Longitude;
 			var positionList = new List<Position>();
-			var slon = h.GetPosition(Body.Sun).Longitude;
 
-			var bpDhuma = new Position(h, Body.Dhuma, BodyType.Upagraha, slon.Add(133.0 + 20.0 / 60.0), 0, 0, 0, 0, 0);
-
-			var bpVyatipata = new Position(h, Body.Vyatipata, BodyType.Upagraha, new Longitude(360.0).Sub(bpDhuma.Longitude), 0, 0, 0, 0, 0);
-
-			var bpParivesha = new Position(h, Body.Parivesha, BodyType.Upagraha, bpVyatipata.Longitude.Add(180.0), 0, 0, 0, 0, 0);
-
-			var bpIndrachapa = new Position(h, Body.Indrachapa, BodyType.Upagraha, new Longitude(360.0).Sub(bpParivesha.Longitude), 0, 0, 0, 0, 0);
-
-			var bpUpaketu = new Position(h, Body.Upaketu, BodyType.Upagraha, slon.Sub(30.0), 0, 0, 0, 0, 0);
+			var bpDhuma      = new Position(h, Body.Dhuma, BodyType.Upagraha, slon.Add(133.0 + 20.0 / 60.0));
+			var bpVyatipata  = new Position(h, Body.Vyatipata, BodyType.Upagraha, new Longitude(360.0).Sub(bpDhuma.Longitude));
+			var bpParivesha  = new Position(h, Body.Parivesha, BodyType.Upagraha, bpVyatipata.Longitude.Add(180.0));
+			var bpIndrachapa = new Position(h, Body.Indrachapa, BodyType.Upagraha, new Longitude(360.0).Sub(bpParivesha.Longitude));
+			var bpUpaketu    = new Position(h, Body.Upaketu, BodyType.Upagraha, slon.Sub(30.0));
 
 			positionList.Add(bpDhuma);
 			positionList.Add(bpVyatipata);
@@ -407,6 +271,11 @@ namespace Mhora.Calculation
 			return (positionList);
 		}
 
+
+		//Bhaav    Lagna: changes sign every 5 Ghatees (every 2 hours)
+		//Horaa Lagna: changes sign every 2.5 Ghatees (each hour)
+		//Ghatee   Lagna: changes sign every Ghatee (every 24 min)
+		//Vighatee Lagna: changes sign every Vighatee (every 24 sec)
 		public static List<Position> CalculateChandraLagnas(this Horoscope h)
 		{
 			var positionList = new List<Position>(); 
@@ -417,17 +286,10 @@ namespace Mhora.Calculation
 			//Mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
 
 			var istaGhati = h.Vara.HoursAfterSunrise.Ghati;
-			var glLon     = lonBase.Add(new Longitude(istaGhati        * 30));
-			var hlLon     = lonBase.Add(new Longitude(istaGhati * 30 / 2.5));
 			var blLon     = lonBase.Add(new Longitude(istaGhati * 30 / 5));
-
-			var vl = istaGhati * 5;
-			while (istaGhati > 12)
-			{
-				istaGhati -= 12;
-			}
-
-			var vlLon = lonBase.Add(new Longitude(vl * 30));
+			var hlLon     = lonBase.Add(new Longitude(istaGhati * 30 / 2.5));
+			var glLon     = lonBase.Add(new Longitude(istaGhati      * 30));
+			var vlLon     = lonBase.Add(new Longitude(istaGhati      * 30 * 15));
 
 			positionList.Add(h.AddChandraLagna("Chandra Lagna - GL", glLon));
 			positionList.Add(h.AddChandraLagna("Chandra Lagna - HL", hlLon));
@@ -437,13 +299,21 @@ namespace Mhora.Calculation
 			return (positionList);
 		}
 
+		//Calculation of Shree Lagna - The birth Nakshatra of a native (where Moon is placed in)
+		//is divided into 12 parts, then the distance from the beginning of the Nakshatra to the Moon
+		//is converted into signs and added to the natal Lagna.
 		public static Position CalculateSl(this Horoscope h)
 		{
 			var mpos  = h.GetPosition(Body.Moon).Longitude;
 			var lpos  = h.GetPosition(Body.Lagna).Longitude;
-			var sldeg = mpos.NakshatraOffset() / (360.0 / 27.0) * 360.0;
-			var slLon = lpos.Add(sldeg);
-			var bp    = new Position(h, Body.SreeLagna, BodyType.SpecialLagna, slLon, 0, 0, 0, 0, 0);
+
+			var nakshattra = (360.0 / 27.0); //Nakshattra length
+			var distance   = (mpos.NakshatraOffset() / nakshattra) * 12;
+			var sign       = lpos + (distance  * 30.0);
+			sign.Reduce();
+			var shreeLagna = new Longitude (sign.Value);
+
+			var bp    = new Position(h, Body.SreeLagna, BodyType.SpecialLagna, shreeLagna);
 			return (bp);
 		}
 
@@ -493,13 +363,13 @@ namespace Mhora.Calculation
 
 			var pp = arkaKopa.Add(ppMinutes);
 
-			var bp = new Position(h, Body.Pranapada, BodyType.SpecialLagna, pp, 0, 0, 0, 0, 0);
+			var bp = new Position(h, Body.Pranapada, BodyType.SpecialLagna, pp);
 			return (bp);
 		}
 
 		private static Position AddChandraLagna(this Horoscope h, string desc, Longitude lon)
 		{
-			var bp = new Position(h, Body.Other, BodyType.ChandraLagna, lon, 0, 0, 0, 0, 0)
+			var bp = new Position(h, Body.Other, BodyType.ChandraLagna, lon)
 			{
 				OtherString = desc
 			};
