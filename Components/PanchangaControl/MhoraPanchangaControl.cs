@@ -329,7 +329,14 @@ public class MhoraPanchangaControl : MhoraControl
 
 		for (var i = 0; i < opts.NumDays; i++)
 		{
-			ComputeEntry(ut_start, geopos);
+			try
+			{
+				ComputeEntry(ut_start, geopos);
+			}
+			catch (Exception e)
+			{
+				Application.Log.Exception(e);
+			}
 			ut_start               += 1;
 			mList.Columns[0].Width =  -2;
 		}
@@ -387,128 +394,169 @@ public class MhoraPanchangaControl : MhoraControl
 		local.wday = (Weekday) sweph.DayOfWeek(ut);
 
 
-		local.kalas_ut = hCurr.Vara.HoraCuspsUt;
-		if (opts.CalcSpecialKalas)
+		try
 		{
-			var bStart = hCurr.Vara.DayLord;
-			if (hCurr.Options.KalaType == HoroscopeOptions.EHoraType.Lmt)
+			local.kalas_ut = hCurr.Vara.KalaCuspsUt;
+			if (opts.CalcSpecialKalas)
 			{
-				bStart = hCurr.Info.DateOfBirth.Lstm(hCurr).DayLord();
-			}
+				var bStart = hCurr.Vara.DayLord;
+				if (hCurr.Options.KalaType == HoroscopeOptions.EHoraType.Lmt)
+				{
+					bStart = hCurr.Info.DateOfBirth.Lstm(hCurr).DayLord();
+				}
 
-			local.rahu_kala_index   = rahu_kalas[(int) bStart];
-			local.gulika_kala_index = gulika_kalas[(int) bStart];
-			local.yama_kala_index   = yama_kalas[(int) bStart];
-		}
-
-		if (opts.CalcLagnaCusps)
-		{
-			li = new ListViewItem();
-			var bp_lagna_sr = h.CalculateSingleBodyPosition(sunrise, Body.Lagna.SwephBody(), Body.Lagna, BodyType.Lagna);
-			var dp_lagna_sr = bp_lagna_sr.ToDivisionPosition(DivisionType.Rasi);
-			local.lagna_zh = dp_lagna_sr.ZodiacHouse;
-
-			var bp_lagna_base = new Longitude(bp_lagna_sr.Longitude.ToZodiacHouseBase());
-			var ut_transit    = sunrise;
-			for (var i = 1; i <= 12; i++)
-			{
-				var r = new Retrogression(h, Body.Lagna);
-				ut_transit = r.GetLagnaTransitForward(ut_transit, bp_lagna_base.Add(i * 30.0));
-
-				var pmi = new PanchangaMomentInfo(ut_transit, bp_lagna_sr.Longitude.ToZodiacHouse().Add(i + 1).Index());
-				local.lagnas_ut.Add(pmi);
+				local.rahu_kala_index   = rahu_kalas[(int) bStart];
+				local.gulika_kala_index = gulika_kalas[(int) bStart];
+				local.yama_kala_index   = yama_kalas[(int) bStart];
 			}
 		}
-
-		if (opts.CalcTithiCusps)
+		catch (Exception e)
 		{
-			var tithi_start = grahas.Calc(sunrise, Body.Moon, Body.Sun, true).ToTithi();
-			var tithi_end   = grahas.Calc(sunrise + 1.0, Body.Moon, Body.Sun, true).ToTithi();
-
-			var tithi_curr = tithi_start.Add(1);
-			local.tithi_index_start = globals.tithis_ut.Count - 1;
-			local.tithi_index_end   = globals.tithis_ut.Count - 1;
-
-			while (tithi_start != tithi_end && tithi_curr != tithi_end)
-			{
-				tithi_curr = tithi_curr.Add(2);
-				var dLonToFind = ((double) (int) tithi_curr - 1) * (360.0 / 30.0);
-				var ut_found   = ((double) sunrise).LinearSearchBinary(sunrise + 1.0, new Longitude(dLonToFind), grahas.Calc(Body.Moon, Body.Sun, true));
-
-				globals.tithis_ut.Add(new PanchangaMomentInfo(ut_found, (int) tithi_curr));
-				local.tithi_index_end++;
-			}
+			Console.WriteLine(e);
 		}
 
-
-		if (opts.CalcKaranaCusps)
+		try
 		{
-			var karana_start = grahas.Calc(sunrise, Body.Moon, Body.Sun, true).ToKarana();
-			var karana_end   = grahas.Calc(sunrise + 1.0, Body.Moon, Body.Sun, true).ToKarana();
-
-			var karana_curr = karana_start.Add(1);
-			local.karana_index_start = globals.karanas_ut.Count - 1;
-			local.karana_index_end   = globals.karanas_ut.Count - 1;
-
-			while (karana_start != karana_end && karana_curr != karana_end)
+			if (opts.CalcLagnaCusps)
 			{
-				karana_curr = karana_curr.Add(2);
-				var dLonToFind = ((double) (int) karana_curr - 1) * (360.0 / 60.0);
-				var ut_found   = ((double)sunrise).LinearSearchBinary(sunrise + 1.0, new Longitude(dLonToFind), grahas.Calc(Body.Moon, Body.Sun, true));
+				li = new ListViewItem();
+				var bp_lagna_sr = h.CalculateSingleBodyPosition(sunrise, Body.Lagna.SwephBody(), Body.Lagna, BodyType.Lagna);
+				var dp_lagna_sr = bp_lagna_sr.ToDivisionPosition(DivisionType.Rasi);
+				local.lagna_zh = dp_lagna_sr.ZodiacHouse;
 
-				globals.karanas_ut.Add(new PanchangaMomentInfo(ut_found, (int) karana_curr));
-				local.karana_index_end++;
+				var bp_lagna_base = new Longitude(bp_lagna_sr.Longitude.ToZodiacHouseBase());
+				var ut_transit    = sunrise;
+				for (var i = 1; i <= 12; i++)
+				{
+					var r = new Retrogression(h, Body.Lagna);
+					ut_transit = r.GetLagnaTransitForward(ut_transit, bp_lagna_base.Add(i * 30.0));
+
+					var pmi = new PanchangaMomentInfo(ut_transit, bp_lagna_sr.Longitude.ToZodiacHouse().Add(i + 1).Index());
+					local.lagnas_ut.Add(pmi);
+				}
 			}
 		}
-
-		if (opts.CalcSMYogaCusps)
+		catch (Exception e)
 		{
-			var sm_start = grahas.Calc(sunrise, Body.Moon, Body.Sun, false).ToSunMoonYoga();
-			var sm_end   = grahas.Calc(sunrise + 1.0, Body.Moon, Body.Sun, false).ToSunMoonYoga();
+			Console.WriteLine(e);
+		}
 
-			var sm_curr = sm_start.Add(1);
-			local.smyoga_index_start = globals.smyogas_ut.Count - 1;
-			local.smyoga_index_end   = globals.smyogas_ut.Count - 1;
-
-			while (sm_start != sm_end && sm_curr != sm_end)
+		try
+		{
+			if (opts.CalcTithiCusps)
 			{
-				sm_curr = sm_curr.Add(2);
-				var dLonToFind = ((double) (int) sm_curr - 1) * (360.0 / 27);
-				var ut_found   = ((double)sunrise).LinearSearchBinary(sunrise + 1.0, new Longitude(dLonToFind), grahas.Calc(Body.Moon, Body.Sun, false));
+				var tithi_start = grahas.Calc(sunrise, Body.Moon, Body.Sun, true).ToTithi();
+				var tithi_end   = grahas.Calc(sunrise + 1.0, Body.Moon, Body.Sun, true).ToTithi();
 
-				globals.smyogas_ut.Add(new PanchangaMomentInfo(ut_found, (int) sm_curr));
-				local.smyoga_index_end++;
+				var tithi_curr = tithi_start.Add(1);
+				local.tithi_index_start = globals.tithis_ut.Count - 1;
+				local.tithi_index_end   = globals.tithis_ut.Count - 1;
+
+				while (tithi_start != tithi_end && tithi_curr != tithi_end)
+				{
+					tithi_curr = tithi_curr.Add(2);
+					var dLonToFind = ((double) (int) tithi_curr - 1) * (360.0 / 30.0);
+					var ut_found   = ((double) sunrise).LinearSearchBinary(sunrise + 1.0, new Longitude(dLonToFind), grahas.Calc(Body.Moon, Body.Sun, true));
+
+					globals.tithis_ut.Add(new PanchangaMomentInfo(ut_found, (int) tithi_curr));
+					local.tithi_index_end++;
+				}
 			}
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
 		}
 
 
-		if (opts.CalcNakCusps)
+		try
 		{
-			Ref <bool> bDiscard  = new (true);
-			var        moon      = h.FindGrahas(DivisionType.Rasi) [Body.Moon];
-			var        nak_start = moon.CalculateLongitude(sunrise, bDiscard).ToNakshatra();
-			var        nak_end   = moon.CalculateLongitude(sunrise + 1.0, bDiscard).ToNakshatra();
-
-			local.nakshatra_index_start = globals.nakshatras_ut.Count - 1;
-			local.nakshatra_index_end   = globals.nakshatras_ut.Count - 1;
-
-			var nak_curr = nak_start.Add(1);
-
-			while (nak_start != nak_end && nak_curr != nak_end)
+			if (opts.CalcKaranaCusps)
 			{
-				nak_curr = nak_curr.Add(2);
-				var dLonToFind = ((int) nak_curr - 1) * (360.0 / 27.0);
-				var ut_found   = ((double)sunrise).LinearSearchBinary(sunrise + 1.0, new Longitude(dLonToFind), moon.CalculateLongitude);
+				var karana_start = grahas.Calc(sunrise, Body.Moon, Body.Sun, true).ToKarana();
+				var karana_end   = grahas.Calc(sunrise + 1.0, Body.Moon, Body.Sun, true).ToKarana();
 
-				globals.nakshatras_ut.Add(new PanchangaMomentInfo(ut_found, (int) nak_curr));
-				Application.Log.Debug("Found nakshatra {0}", nak_curr);
-				local.nakshatra_index_end++;
+				var karana_curr = karana_start.Add(1);
+				local.karana_index_start = globals.karanas_ut.Count - 1;
+				local.karana_index_end   = globals.karanas_ut.Count - 1;
+
+				while (karana_start != karana_end && karana_curr != karana_end)
+				{
+					karana_curr = karana_curr.Add(2);
+					var dLonToFind = ((double) (int) karana_curr - 1) * (360.0 / 60.0);
+					var ut_found   = ((double)sunrise).LinearSearchBinary(sunrise + 1.0, new Longitude(dLonToFind), grahas.Calc(Body.Moon, Body.Sun, true));
+
+					globals.karanas_ut.Add(new PanchangaMomentInfo(ut_found, (int) karana_curr));
+					local.karana_index_end++;
+				}
 			}
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+		}
+
+		try
+		{
+			if (opts.CalcSMYogaCusps)
+			{
+				var sm_start = grahas.Calc(sunrise, Body.Moon, Body.Sun, false).ToSunMoonYoga();
+				var sm_end   = grahas.Calc(sunrise + 1.0, Body.Moon, Body.Sun, false).ToSunMoonYoga();
+
+				var sm_curr = sm_start.Add(1);
+				local.smyoga_index_start = globals.smyogas_ut.Count - 1;
+				local.smyoga_index_end   = globals.smyogas_ut.Count - 1;
+
+				while (sm_start != sm_end && sm_curr != sm_end)
+				{
+					sm_curr = sm_curr.Add(2);
+					var dLonToFind = ((double) (int) sm_curr - 1) * (360.0 / 27);
+					var ut_found   = ((double)sunrise).LinearSearchBinary(sunrise + 1.0, new Longitude(dLonToFind), grahas.Calc(Body.Moon, Body.Sun, false));
+
+					globals.smyogas_ut.Add(new PanchangaMomentInfo(ut_found, (int) sm_curr));
+					local.smyoga_index_end++;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+		}
+
+		try
+		{
+			if (opts.CalcNakCusps)
+			{
+				Ref <bool> bDiscard  = new (true);
+				var        moon      = h.FindGrahas(DivisionType.Rasi) [Body.Moon];
+				var        nak_start = moon.CalculateLongitude(sunrise, bDiscard).ToNakshatra();
+				var        nak_end   = moon.CalculateLongitude(sunrise + 1.0, bDiscard).ToNakshatra();
+
+				local.nakshatra_index_start = globals.nakshatras_ut.Count - 1;
+				local.nakshatra_index_end   = globals.nakshatras_ut.Count - 1;
+
+				var nak_curr = nak_start.Add(1);
+
+				while (nak_start != nak_end && nak_curr != nak_end)
+				{
+					nak_curr = nak_curr.Add(2);
+					var dLonToFind = ((int) nak_curr - 1) * (360.0 / 27.0);
+					var ut_found   = ((double)sunrise).LinearSearchBinary(sunrise + 1.0, new Longitude(dLonToFind), moon.CalculateLongitude);
+
+					globals.nakshatras_ut.Add(new PanchangaMomentInfo(ut_found, (int) nak_curr));
+					Application.Log.Debug("Found nakshatra {0}", nak_curr);
+					local.nakshatra_index_end++;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
 		}
 
 		if (opts.CalcHoraCusps)
 		{
-			local.horas_ut = hCurr.Vara.KalaCuspsUt;
+			local.horas_ut = hCurr.Vara.HoraCuspsUt;
 		}
 
 		locals.Add(local);
