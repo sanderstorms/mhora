@@ -120,9 +120,9 @@ namespace Mhora.Elements
 
 			var cusps = GetSunrisetCuspsUt(8);
 
-			var rahuKalam   = cusps[rahu[WeekDay.Index()]];
-			var yamagandam  = cusps[yama[WeekDay.Index()]];
-			var gulikaKalam = cusps[gulika[WeekDay.Index()]];
+			var rahuKalam   = cusps[rahu[WeekDay.Index()] - 1];
+			var yamagandam  = cusps[yama[WeekDay.Index()] - 1];
+			var gulikaKalam = cusps[gulika[WeekDay.Index()] - 1];
 
 			return (rahuKalam, yamagandam, gulikaKalam);
 		}
