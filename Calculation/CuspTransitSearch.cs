@@ -9,14 +9,13 @@ public static class CuspTransitSearch
 {
 	private static decimal DirectSpeed(Body b)
 	{
-		switch (b)
-		{
-			case Body.Sun:   return (decimal) Time.SiderealYear.TotalDays;
-			case Body.Moon:  return 28;
-			case Body.Lagna: return 1;
-		}
-
-		return 0;
+		return b switch
+		       {
+			       Body.Sun   => (decimal) Time.SiderealYear.TotalDays,
+			       Body.Moon  => 28,
+			       Body.Lagna => 1,
+			       _          => 0
+		       };
 	}
 
 	public static JulianDate TransitSearchDirect(this Horoscope h, Body SearchBody, DateTime StartDate, bool Forward, Longitude TransitPoint, Longitude FoundLon, Ref <bool> bForward)

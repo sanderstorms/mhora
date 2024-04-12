@@ -35,11 +35,11 @@ public static class RasisNature
 	public static int StrengthByRasisNature(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
 		int[] vals =
-		{
+		[
 			3,
 			1,
 			2
-		}; // dual, move, fix
+		]; // dual, move, fix
 		var a = NaturalValueForRasi(za);
 		var b = NaturalValueForRasi(zb);
 
@@ -49,11 +49,11 @@ public static class RasisNature
 	public static int NaturalValueForRasi(this ZodiacHouse zha)
 	{
 		int[] vals =
-		{
+		[
 			3,
 			1,
 			2
-		}; // dual, move, fix
+		]; // dual, move, fix
 		return vals[(int) zha % 3];
 	}
 }

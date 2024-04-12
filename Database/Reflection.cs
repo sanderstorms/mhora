@@ -114,21 +114,12 @@ public static class Reflection
 
 	public static Type Type(this MemberInfo member)
 	{
-		Type type = null;
-		switch (member.MemberType)
-		{
-			case MemberTypes.Field:
-			{
-				type = ((FieldInfo) member).FieldType;
-			}
-				break;
-
-			case MemberTypes.Property:
-			{
-				type = ((PropertyInfo) member).PropertyType;
-			}
-				break;
-		}
+		Type type = member.MemberType switch
+		            {
+			            MemberTypes.Field    => ((FieldInfo) member).FieldType,
+			            MemberTypes.Property => ((PropertyInfo) member).PropertyType,
+			            _                    => null
+		            };
 
 		return type;
 	}
@@ -166,12 +157,11 @@ public static class Reflection
 	{
 		var valueX = string.Empty;
 		var valueY = string.Empty;
-		var tokens = value.Split(new[]
-		{
-			",",
-			";",
-			" "
-		}, StringSplitOptions.RemoveEmptyEntries);
+		var tokens = value.Split([
+			                         ",",
+			                         ";",
+			                         " "
+		                         ], StringSplitOptions.RemoveEmptyEntries);
 		if (tokens.Length == 2)
 		{
 			if (value.Contains("="))
@@ -214,10 +204,9 @@ public static class Reflection
 				var parse = type.GetMethod(" Parse", bindingFlags, null, arguments, null);
 				if (parse != null)
 				{
-					parse.Invoke(instance, new object[]
-					{
-						value
-					});
+					parse.Invoke(instance, [
+						                       value
+					                       ]);
 					return true;
 				}
 			}

@@ -54,7 +54,7 @@ public class TattwaDasa : Dasa, IDasa
 
 	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
-		return new List<DasaEntry> ();
+		return [];
 	}
 
 	public string Description()

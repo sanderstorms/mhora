@@ -77,44 +77,42 @@ public static class TimeUtils
 
 	public static int FromStringMonth(this string s)
 	{
-		switch (s)
-		{
-			case "Jan": return 1;
-			case "Feb": return 2;
-			case "Mar": return 3;
-			case "Apr": return 4;
-			case "May": return 5;
-			case "Jun": return 6;
-			case "Jul": return 7;
-			case "Aug": return 8;
-			case "Sep": return 9;
-			case "Oct": return 10;
-			case "Nov": return 11;
-			case "Dec": return 12;
-		}
-
-		return 1;
+		return s switch
+		       {
+			       "Jan" => 1,
+			       "Feb" => 2,
+			       "Mar" => 3,
+			       "Apr" => 4,
+			       "May" => 5,
+			       "Jun" => 6,
+			       "Jul" => 7,
+			       "Aug" => 8,
+			       "Sep" => 9,
+			       "Oct" => 10,
+			       "Nov" => 11,
+			       "Dec" => 12,
+			       _     => 1
+		       };
 	}
 
 	public static string ToStringMonth(this DateTime dateTime)
 	{
-		switch (dateTime.Month)
-		{
-			case 1:  return "Jan";
-			case 2:  return "Feb";
-			case 3:  return "Mar";
-			case 4:  return "Apr";
-			case 5:  return "May";
-			case 6:  return "Jun";
-			case 7:  return "Jul";
-			case 8:  return "Aug";
-			case 9:  return "Sep";
-			case 10: return "Oct";
-			case 11: return "Nov";
-			case 12: return "Dec";
-		}
-
-		return string.Empty;
+		return dateTime.Month switch
+		       {
+			       1  => "Jan",
+			       2  => "Feb",
+			       3  => "Mar",
+			       4  => "Apr",
+			       5  => "May",
+			       6  => "Jun",
+			       7  => "Jul",
+			       8  => "Aug",
+			       9  => "Sep",
+			       10 => "Oct",
+			       11 => "Nov",
+			       12 => "Dec",
+			       _  => string.Empty
+		       };
 	}
 
 	public static string ToString(this DateTime dateTime)

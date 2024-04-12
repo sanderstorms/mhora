@@ -142,7 +142,7 @@ public class Country : SQLiteBaseObject, IComparable
 			}
 			catch (Exception e)
 			{
-				_timeZone ??= new List<TzInfo>();
+				_timeZone ??= [];
 			}
 
 			return _timeZone;

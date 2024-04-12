@@ -201,20 +201,14 @@ public static partial class sweph
 		StringBuilder err  = new StringBuilder(256);
 		var           rsmi = new double [3];
 		double        tret = 0;
-		int           flag = 0;
 
-		switch (h.Options.SunrisePosition)
-		{
-			case HoroscopeOptions.SunrisePositionType.TrueDiscEdge:
-				flag = SE_BIT_NO_REFRACTION;
-				break;
-			case HoroscopeOptions.SunrisePositionType.TrueDiscCenter:
-				flag = SE_BIT_NO_REFRACTION | SE_BIT_DISC_CENTER;
-				break;
-			case HoroscopeOptions.SunrisePositionType.ApparentDiscCenter:
-				flag = SE_BIT_DISC_CENTER;
-				break;
-		}
+		int flag = h.Options.SunrisePosition switch
+		           {
+			           HoroscopeOptions.SunrisePositionType.TrueDiscEdge       => SE_BIT_NO_REFRACTION,
+			           HoroscopeOptions.SunrisePositionType.TrueDiscCenter     => SE_BIT_NO_REFRACTION | SE_BIT_DISC_CENTER,
+			           HoroscopeOptions.SunrisePositionType.ApparentDiscCenter => SE_BIT_DISC_CENTER,
+			           _                                                       => 0
+		           };
 
 		switch ( type )
 		{
@@ -320,312 +314,312 @@ public static partial class sweph
 	}
 
 	public static aya_init[] ayanamsa =
-	{
+	[
 		new()
 		{
-			t0       = 2433282.5,
-			ayan_t0  = 24.042044444,
-			t0_is_UT = false
+		t0       = 2433282.5,
+		ayan_t0  = 24.042044444,
+		t0_is_UT = false
 		}, /* 0: Fagan/Bradley (Default) */
 		/*{J1900, 360 - 337.53953},   * 1: Lahiri (Robert Hand) */
 		new()
 		{
-			t0       = 2435553.5,
-			ayan_t0  = 23.250182778 - 0.004660222,
-			t0_is_UT = false
+		t0       = 2435553.5,
+		ayan_t0  = 23.250182778 - 0.004660222,
+		t0_is_UT = false
 		},
 		/* 1: Lahiri (derived from: Indian
-		 * Astronomical Ephemeris 1989, p. 556;
-		 * the subtracted value is nutation) */
+		* Astronomical Ephemeris 1989, p. 556;
+		* the subtracted value is nutation) */
 		new()
 		{
-			t0       = J1900,
-			ayan_t0  = 360 - 333.58695,
-			t0_is_UT = false
+		t0       = J1900,
+		ayan_t0  = 360 - 333.58695,
+		t0_is_UT = false
 		}, /* 2: Robert DeLuce (Constellational Astrology ... p. 5 */
 		new()
 		{
-			t0       = J1900,
-			ayan_t0  = 360 - 338.98556,
-			t0_is_UT = false
+		t0       = J1900,
+		ayan_t0  = 360 - 338.98556,
+		t0_is_UT = false
 		}, /* 3: B.V. Raman (Robert Hand) */
 		new()
 		{
-			t0       = J1900,
-			ayan_t0  = 360 - 341.33904,
-			t0_is_UT = false
+		t0       = J1900,
+		ayan_t0  = 360 - 341.33904,
+		t0_is_UT = false
 		}, /* 4: Usha/Shashi (Robert Hand) */
 		new()
 		{
-			t0       = J1900,
-			ayan_t0  = 360 - 337.636111,
-			t0_is_UT = false
+		t0       = J1900,
+		ayan_t0  = 360 - 337.636111,
+		t0_is_UT = false
 		}, /* 5: Krishnamurti (Robert Hand) */
 		new()
 		{
-			t0       = J1900,
-			ayan_t0  = 360 - 333.0369024,
-			t0_is_UT = false
+		t0       = J1900,
+		ayan_t0  = 360 - 333.0369024,
+		t0_is_UT = false
 		}, /* 6: Djwhal Khool; (Graham Dawson)
-		    *    Aquarius entered on 1 July 2117 */
+		*    Aquarius entered on 1 July 2117 */
 		new()
 		{
-			t0       = J1900,
-			ayan_t0  = 360 - 338.917778,
-			t0_is_UT = false
+		t0       = J1900,
+		ayan_t0  = 360 - 338.917778,
+		t0_is_UT = false
 		}, /* 7: Shri Yukteshwar; (David Cochrane) */
 		//{2412543.5, 20.91, TRUE},          /* 7: Shri Yukteshwar; (Holy Science, p. xx) */
 		new()
 		{
-			t0       = J1900,
-			ayan_t0  = 360 - 338.634444,
-			t0_is_UT = false
+		t0       = J1900,
+		ayan_t0  = 360 - 338.634444,
+		t0_is_UT = false
 		}, /* 8: J.N. Bhasin; (David Cochrane) */
 		/* 14 Sept. 2018: the following three ayanamshas have been wrong for
-		 * many years */
+		* many years */
 		new()
 		{
-			t0       = 1684532.5,
-			ayan_t0  = -5.66667,
-			t0_is_UT = true
+		t0       = 1684532.5,
+		ayan_t0  = -5.66667,
+		t0_is_UT = true
 		}, /* 9: Babylonian, Kugler 1 */
 		new()
 		{
-			t0       = 1684532.5,
-			ayan_t0  = -4.26667,
-			t0_is_UT = true
+		t0       = 1684532.5,
+		ayan_t0  = -4.26667,
+		t0_is_UT = true
 		}, /*10: Babylonian, Kugler 2 */
 		new()
 		{
-			t0       = 1684532.5,
-			ayan_t0  = -3.41667,
-			t0_is_UT = true
+		t0       = 1684532.5,
+		ayan_t0  = -3.41667,
+		t0_is_UT = true
 		}, /*11: Babylonian, Kugler 3 */
 		new()
 		{
-			t0       = 1684532.5,
-			ayan_t0  = -4.46667,
-			t0_is_UT = true
+		t0       = 1684532.5,
+		ayan_t0  = -4.46667,
+		t0_is_UT = true
 		}, /*12: Babylonian, Huber */
 		/*{1684532.5, -4.56667, TRUE},         *12: Babylonian, Huber (Swisseph has been wrong for many years!) */
 		new()
 		{
-			t0       = 1673941,
-			ayan_t0  = -5.079167,
-			t0_is_UT = true
+		t0       = 1673941,
+		ayan_t0  = -5.079167,
+		t0_is_UT = true
 		}, /*13: Babylonian, Mercier;
-		    *    eta Piscium culminates with zero point */
+		*    eta Piscium culminates with zero point */
 		new()
 		{
-			t0       = 1684532.5,
-			ayan_t0  = -4.44088389,
-			t0_is_UT = true
+		t0       = 1684532.5,
+		ayan_t0  = -4.44088389,
+		t0_is_UT = true
 		}, /*14: t0 is defined by Aldebaran at 15 Taurus */
 		new()
 		{
-			t0       = 1674484,
-			ayan_t0  = -9.33333,
-			t0_is_UT = true
+		t0       = 1674484,
+		ayan_t0  = -9.33333,
+		t0_is_UT = true
 		}, /*15: Hipparchos */
 		new()
 		{
-			t0       = 1927135.8747793,
-			ayan_t0  = 0,
-			t0_is_UT = true
+		t0       = 1927135.8747793,
+		ayan_t0  = 0,
+		t0_is_UT = true
 		}, /*16: Sassanian */
 		//{1746412.236, 0, FALSE},             /*17: Galactic Center at 0 Sagittarius */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*17: Galactic Center at 0 Sagittarius */
 		new()
 		{
-			t0       = J2000,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = J2000,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*18: J2000 */
 		new()
 		{
-			t0       = J1900,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = J1900,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*19: J1900 */
 		new()
 		{
-			t0       = B1950,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = B1950,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*20: B1950 */
 		new()
 		{
-			t0       = 1903396.8128654,
-			ayan_t0  = 0,
-			t0_is_UT = true
+		t0       = 1903396.8128654,
+		ayan_t0  = 0,
+		t0_is_UT = true
 		}, /*21: Suryasiddhanta, assuming
-	                                       ingress of mean Sun into Aries at point
-					       of mean equinox of date on
-					       21.3.499, near noon, Ujjain (75.7684565 E)
-	                                       = 7:30:31.57 UT = 12:33:36 LMT*/
+		ingress of mean Sun into Aries at point
+		of mean equinox of date on
+		21.3.499, near noon, Ujjain (75.7684565 E)
+		= 7:30:31.57 UT = 12:33:36 LMT*/
 		new()
 		{
-			t0       = 1903396.8128654,
-			ayan_t0  = -0.21463395,
-			t0_is_UT = true
+		t0       = 1903396.8128654,
+		ayan_t0  = -0.21463395,
+		t0_is_UT = true
 		}, /*22: Suryasiddhanta, assuming
-					       ingress of mean Sun into Aries at
-					       true position of mean Sun at same epoch */
+		ingress of mean Sun into Aries at
+		true position of mean Sun at same epoch */
 		new()
 		{
-			t0       = 1903396.7895321,
-			ayan_t0  = 0,
-			t0_is_UT = true
+		t0       = 1903396.7895321,
+		ayan_t0  = 0,
+		t0_is_UT = true
 		}, /*23: Aryabhata, same date, but UT 6:56:55.57
-					       analogous 21 */
+		analogous 21 */
 		new()
 		{
-			t0       = 1903396.7895321,
-			ayan_t0  = -0.23763238,
-			t0_is_UT = true
+		t0       = 1903396.7895321,
+		ayan_t0  = -0.23763238,
+		t0_is_UT = true
 		}, /*24: Aryabhata, analogous 22 */
 		new()
 		{
-			t0       = 1903396.8128654,
-			ayan_t0  = -0.79167046,
-			t0_is_UT = true
+		t0       = 1903396.8128654,
+		ayan_t0  = -0.79167046,
+		t0_is_UT = true
 		}, /*25: SS, Revati/zePsc at polar long. 359°50'*/
 		new()
 		{
-			t0       = 1903396.8128654,
-			ayan_t0  = 2.11070444,
-			t0_is_UT = true
+		t0       = 1903396.8128654,
+		ayan_t0  = 2.11070444,
+		t0_is_UT = true
 		}, /*26: SS, Citra/Spica at polar long. 180° */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*27: True Citra (Spica exactly at 0 Libra) */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*28: True Revati (zeta Psc exactly at 29°50' Pisces) */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*29: True Pushya (delta Cnc exactly a 16 Cancer */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*30: R. Gil Brand; Galactic Center at golden section
-	                                       between 0 Sco and 0 Aqu; note: 0° Aqu/Leo is
-					       the symmetric axis of rulerships */
+		between 0 Sco and 0 Aqu; note: 0° Aqu/Leo is
+		the symmetric axis of rulerships */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*31: Galactic Equator IAU 1958, i.e. galactic/ecliptic
-	                                       intersection point based on galactic coordinate system */
+		intersection point based on galactic coordinate system */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*32: Galactic Equator True, i.e. galactic/ecliptic
-	                                       intersection point based on the galactic pole as given in:
-					       Liu/Zhu/Zhang, „Reconsidering the galactic
-					       coordinate system“, A & A No. AA2010, Oct. 2010 */
+		intersection point based on the galactic pole as given in:
+		Liu/Zhu/Zhang, „Reconsidering the galactic
+		coordinate system“, A & A No. AA2010, Oct. 2010 */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*33: Galactic Equator Mula, i.e. galactic/ecliptic
-	                                       intersection point in the middle of lunar mansion Mula */
+		intersection point in the middle of lunar mansion Mula */
 		new()
 		{
-			t0       = 2451079.734892000,
-			ayan_t0  = 30,
-			t0_is_UT = false
+		t0       = 2451079.734892000,
+		ayan_t0  = 30,
+		t0_is_UT = false
 		}, /*34: Skydram/Galactic Alignment (R. Mardyks);
-	                                       autumn equinox aligned with Galactic Equator/Pole */
+		autumn equinox aligned with Galactic Equator/Pole */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*35: Chandra Hari */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*36: Dhruva Galactic Centre Middle of Mula (Ernst Wilhelm) */
 		new()
 		{
-			t0       = 1911797.740782065,
-			ayan_t0  = 0,
-			t0_is_UT = true
+		t0       = 1911797.740782065,
+		ayan_t0  = 0,
+		t0_is_UT = true
 		}, /*37: Kali 3623 = 522 CE, Ujjain (75.7684565),
-		    *    based on Kali midnight and SS year length */
+		*    based on Kali midnight and SS year length */
 		new()
 		{
-			t0       = 1721057.5,
-			ayan_t0  = -3.2,
-			t0_is_UT = true
+		t0       = 1721057.5,
+		ayan_t0  = -3.2,
+		t0_is_UT = true
 		}, /*38: Babylonian (Britton 2010) */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*39: Sunil Sheoran ("Vedic") */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		}, /*40: Galactic Center at 0 Capricon (Cochrane) */
 		new()
 		{
-			t0       = 2451544.5,
-			ayan_t0  = 25.0,
-			t0_is_UT = true
+		t0       = 2451544.5,
+		ayan_t0  = 25.0,
+		t0_is_UT = true
 		}, /*41: "Galactic Equatorial" (N.A. Fiorenza) */
 		new()
 		{
-			t0       = 1775845.5,
-			ayan_t0  = -2.9422,
-			t0_is_UT = true
+		t0       = 1775845.5,
+		ayan_t0  = -2.9422,
+		t0_is_UT = true
 		}, /*42: Vettius Valens (Moon; derived from
-	                                           Holden 1995 p. 12 for epoch of Valens
-						   1 Jan. 150 CE julian) */
+		Holden 1995 p. 12 for epoch of Valens
+		1 Jan. 150 CE julian) */
 		/*{2061539.789532065, 6.83333333, TRUE}, *41: Manjula's Laghumanasa, 10 March 932,
-		 *    12 PM LMT Ujjain (75.7684565 E),
-		 *    ayanamsha = 6°50' */
+		*    12 PM LMT Ujjain (75.7684565 E),
+		*    ayanamsha = 6°50' */
 		new()
 		{
-			t0       = 0,
-			ayan_t0  = 0,
-			t0_is_UT = false
+		t0       = 0,
+		ayan_t0  = 0,
+		t0_is_UT = false
 		} /*42: - */
-	};
+	];
 
 
 	public static aya_config[] aya_param =
-	{
+	[
 		new(2415020.0, 360 - 337.53953), // 1: Lahiri (Robert Hand) 
 		new(2415020.0, 360 - 338.98556), // 3: Raman (Robert Hand) 
 		new(2415020.0, 360 - 337.636111) // 5: Krishnamurti (Robert Hand) 
-	};
+	];
 
 	/*****************************************************
 	 **

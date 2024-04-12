@@ -110,53 +110,46 @@ public class DrigDasa : Dasa, IDasa
 
 	private Body GetLord(ZodiacHouse zh)
 	{
-		switch (zh)
-		{
-			case ZodiacHouse.Aqu: return _options.ColordAqu;
-			case ZodiacHouse.Sco: return _options.ColordSco;
-			default:                   return zh.SimpleLordOfZodiacHouse();
-		}
+		return zh switch
+		       {
+			       ZodiacHouse.Aqu => _options.ColordAqu,
+			       ZodiacHouse.Sco => _options.ColordSco,
+			       _               => zh.SimpleLordOfZodiacHouse()
+		       };
 	}
 
 	public void DasaHelper(ZodiacHouse zh, List<ZodiacHouse> al)
 	{
 		int[] orderMoveable =
-		{
+		[
 			5,
 			8,
 			11
-		};
+		];
 		int[] orderFixed =
-		{
+		[
 			3,
 			6,
 			9
-		};
+		];
 		int[] orderDual =
-		{
+		[
 			4,
 			7,
 			10
-		};
+		];
 		var backward = false;
 		if (!zh.IsOddFooted())
 		{
 			backward = true;
 		}
 
-		int[] order;
-		switch ((int) zh % 3)
-		{
-			case 1:
-				order = orderMoveable;
-				break;
-			case 2:
-				order = orderFixed;
-				break;
-			default:
-				order = orderDual;
-				break;
-		}
+		int[] order = ((int) zh % 3) switch
+		              {
+			              1 => orderMoveable,
+			              2 => orderFixed,
+			              _ => orderDual
+		              };
 
 		al.Add(zh.Add(1));
 		if (!backward)

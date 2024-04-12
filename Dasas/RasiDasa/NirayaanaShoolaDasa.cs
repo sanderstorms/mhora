@@ -120,12 +120,12 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 
 	public double GetDasaLength(ZodiacHouse zh)
 	{
-		switch ((int) zh % 3)
-		{
-			case 1:  return 7.0;
-			case 2:  return 8.0;
-			case 0:  return 9.0;
-			default: throw new Exception();
-		}
+		return ((int) zh % 3) switch
+		       {
+			       1 => 7.0,
+			       2 => 8.0,
+			       0 => 9.0,
+			       _ => throw new Exception()
+		       };
 	}
 }

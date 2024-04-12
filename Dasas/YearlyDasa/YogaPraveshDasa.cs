@@ -72,20 +72,20 @@ public class YogaPraveshDasa : Dasa, IDasa
 	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
 		string[] desc =
-		{
+		[
 			"  Month: ",
 			"    Yoga: "
-		};
+		];
 		if (pdi.Level == 3)
 		{
-			return new List<DasaEntry>();
+			return [];
 		}
 
 		TimeOffset start  = TimeOffset.Zero; 
 		TimeOffset length = 0.0;
 		var        level  = 0;
 
-		List<DasaEntry> al = new ();
+		List<DasaEntry> al = [];
 		start = pdi.Start;
 		level = pdi.Level + 1;
 

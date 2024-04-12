@@ -337,12 +337,12 @@ namespace Mhora.Elements.Extensions
 			var en = KutaVihanga(n);
 
 			Kuta.Vihanga[] order =
-			{
+			[
 				Kuta.Vihanga.Peacock,
 				Kuta.Vihanga.Cock,
 				Kuta.Vihanga.Crow,
 				Kuta.Vihanga.Pingala
-			};
+			];
 			if (em == en)
 			{
 				return Kuta.Dominator.Equal;

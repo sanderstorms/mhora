@@ -33,7 +33,7 @@ public class SuDasa : Dasa, IDasa
 	private readonly RasiDasaUserOptions _options;
 
 	private readonly int[] _order =
-	{
+	[
 		0,
 		1,
 		4,
@@ -47,7 +47,7 @@ public class SuDasa : Dasa, IDasa
 		6,
 		9,
 		12
-	};
+	];
 
 	public SuDasa(Horoscope h)
 	{
@@ -166,11 +166,11 @@ public class SuDasa : Dasa, IDasa
 
 	private Body GetLord(Rashi rashi)
 	{
-		switch (rashi.ZodiacHouse)
-		{
-			case ZodiacHouse.Aqu: return _options.ColordAqu;
-			case ZodiacHouse.Sco: return _options.ColordSco;
-			default:              return rashi.Lord;
-		}
+		return rashi.ZodiacHouse switch
+		       {
+			       ZodiacHouse.Aqu => _options.ColordAqu,
+			       ZodiacHouse.Sco => _options.ColordSco,
+			       _               => rashi.Lord
+		       };
 	}
 }

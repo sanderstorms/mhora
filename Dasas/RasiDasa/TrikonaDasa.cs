@@ -33,7 +33,7 @@ public class TrikonaDasa : Dasa, IDasa
 	private readonly UserOptions _options;
 
 	private readonly int[] _order =
-	{
+	[
 		1,
 		5,
 		9,
@@ -46,7 +46,7 @@ public class TrikonaDasa : Dasa, IDasa
 		4,
 		8,
 		12
-	};
+	];
 
 	public TrikonaDasa(Horoscope h)
 	{

@@ -150,18 +150,18 @@ namespace Mhora.Calculation
 
 		public static Body Lord(this SunMoonYoga value)
 		{
-			switch ((int) value % 9)
-			{
-				case 1:  return Body.Saturn;
-				case 2:  return Body.Mercury;
-				case 3:  return Body.Ketu;
-				case 4:  return Body.Venus;
-				case 5:  return Body.Sun;
-				case 6:  return Body.Moon;
-				case 7:  return Body.Mars;
-				case 8:  return Body.Rahu;
-				default: return Body.Jupiter;
-			}
+			return ((int) value % 9) switch
+			       {
+				       1 => Body.Saturn,
+				       2 => Body.Mercury,
+				       3 => Body.Ketu,
+				       4 => Body.Venus,
+				       5 => Body.Sun,
+				       6 => Body.Moon,
+				       7 => Body.Mars,
+				       8 => Body.Rahu,
+				       _ => Body.Jupiter
+			       };
 		}
 
 		public static bool CircularLonLessThan(this Longitude a, Longitude b)

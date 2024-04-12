@@ -315,22 +315,22 @@ public static class ZodiacHouses
 
 	public static string ToShortString(this ZodiacHouse z)
 	{
-		switch (z)
-		{
-			case ZodiacHouse.Ari: return "Ar";
-			case ZodiacHouse.Tau: return "Ta";
-			case ZodiacHouse.Gem: return "Ge";
-			case ZodiacHouse.Can: return "Cn";
-			case ZodiacHouse.Leo: return "Le";
-			case ZodiacHouse.Vir: return "Vi";
-			case ZodiacHouse.Lib: return "Li";
-			case ZodiacHouse.Sco: return "Sc";
-			case ZodiacHouse.Sag: return "Sg";
-			case ZodiacHouse.Cap: return "Cp";
-			case ZodiacHouse.Aqu: return "Aq";
-			case ZodiacHouse.Pis: return "Pi";
-			default:       return string.Empty;
-		}
+		return z switch
+		       {
+			       ZodiacHouse.Ari => "Ar",
+			       ZodiacHouse.Tau => "Ta",
+			       ZodiacHouse.Gem => "Ge",
+			       ZodiacHouse.Can => "Cn",
+			       ZodiacHouse.Leo => "Le",
+			       ZodiacHouse.Vir => "Vi",
+			       ZodiacHouse.Lib => "Li",
+			       ZodiacHouse.Sco => "Sc",
+			       ZodiacHouse.Sag => "Sg",
+			       ZodiacHouse.Cap => "Cp",
+			       ZodiacHouse.Aqu => "Aq",
+			       ZodiacHouse.Pis => "Pi",
+			       _               => string.Empty
+		       };
 	}
 
 	public static  RiseType RisesWith(this ZodiacHouse zodiacHouse)

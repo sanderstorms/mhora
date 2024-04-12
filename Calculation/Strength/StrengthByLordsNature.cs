@@ -35,11 +35,11 @@ public static class LordsNature
 	public static int StrengthByLordsNature(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
 		int[] vals =
-		{
+		[
 			3,
 			1,
 			2
-		}; // dual, move, fix
+		]; // dual, move, fix
 		var a = grahas.NaturalValueForRasi(za);
 		var b = grahas.NaturalValueForRasi(zb);
 
@@ -52,11 +52,11 @@ public static class LordsNature
 		var zhl = bl.Rashi;
 
 		int[] vals =
-		{
+		[
 			3,
 			1,
 			2
-		}; // dual, move, fix
+		]; // dual, move, fix
 		return vals[(int) zhl.ZodiacHouse % 3];
 	}
 }

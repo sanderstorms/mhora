@@ -3,7 +3,7 @@
 public static class Taras
 {
 	public static readonly int[] SpecialIndices =
-	{
+	[
 		1,
 		10,
 		18,
@@ -15,10 +15,10 @@ public static class Taras
 		19,
 		22,
 		25
-	};
+	];
 
 	public static readonly string[] SpecialNames =
-	{
+	[
 		"Janma",
 		"Karma",
 		"Saamudaayika",
@@ -30,5 +30,5 @@ public static class Taras
 		"Aadhaana",
 		"Vainaasika",
 		"Maanasa"
-	};
+	];
 }

@@ -63,8 +63,7 @@ public static class AstroCatalogue
 	/// </summary>
 	public static IReadOnlyList<IReadOnlyList<double>> DeltaT = new double[2][]
 	{
-		new[]
-		{
+		[
 			-40.0,
 			-35.0,
 			-30.0,
@@ -82,9 +81,8 @@ public static class AstroCatalogue
 			30.0,
 			35.0,
 			40.0
-		},
-		new[]
-		{
+		],
+		[
 			-13.6,
 			-11.9,
 			-10.2,
@@ -102,7 +100,7 @@ public static class AstroCatalogue
 			3.80,
 			4.70,
 			5.50
-		}
+		]
 	};
 
 	/// <summary>
@@ -110,8 +108,7 @@ public static class AstroCatalogue
 	/// </summary>
 	public static IReadOnlyList<IReadOnlyList<double>> DeltaP = new double[2][]
 	{
-		new[]
-		{
+		[
 			960.0,
 			967.0,
 			973.0,
@@ -127,9 +124,8 @@ public static class AstroCatalogue
 			1040.0,
 			1047.0,
 			1053.0
-		},
-		new[]
-		{
+		],
+		[
 			2.000,
 			1.700,
 			1.500,
@@ -145,7 +141,7 @@ public static class AstroCatalogue
 			-1.000,
 			-1.300,
 			-1.600
-		}
+		]
 	};
 
 	/// <summary>
@@ -155,8 +151,7 @@ public static class AstroCatalogue
 	/// </summary>
 	public static IReadOnlyList<IReadOnlyList<double>> K = new double[12][]
 	{
-		new[]
-		{
+		[
 			60,
 			0.04,
 			0.03,
@@ -170,9 +165,8 @@ public static class AstroCatalogue
 			0.03,
 			0.03,
 			0.04
-		},
-		new[]
-		{
+		],
+		[
 			58,
 			0.04,
 			0.03,
@@ -186,9 +180,8 @@ public static class AstroCatalogue
 			0.03,
 			0.03,
 			0.04
-		},
-		new[]
-		{
+		],
+		[
 			56,
 			0.03,
 			0.03,
@@ -202,9 +195,8 @@ public static class AstroCatalogue
 			0.02,
 			0.03,
 			0.03
-		},
-		new[]
-		{
+		],
+		[
 			54,
 			0.03,
 			0.03,
@@ -218,9 +210,8 @@ public static class AstroCatalogue
 			0.02,
 			0.02,
 			0.03
-		},
-		new[]
-		{
+		],
+		[
 			52,
 			0.03,
 			0.02,
@@ -234,9 +225,8 @@ public static class AstroCatalogue
 			0.02,
 			0.02,
 			0.03
-		},
-		new[]
-		{
+		],
+		[
 			50,
 			0.02,
 			0.02,
@@ -250,9 +240,8 @@ public static class AstroCatalogue
 			0.02,
 			0.02,
 			0.02
-		},
-		new[]
-		{
+		],
+		[
 			45,
 			0.02,
 			0.02,
@@ -266,9 +255,8 @@ public static class AstroCatalogue
 			0.02,
 			0.02,
 			0.02
-		},
-		new[]
-		{
+		],
+		[
 			40,
 			0.02,
 			0.02,
@@ -282,9 +270,8 @@ public static class AstroCatalogue
 			0.01,
 			0.01,
 			0.02
-		},
-		new[]
-		{
+		],
+		[
 			30,
 			0.01,
 			0.01,
@@ -298,9 +285,8 @@ public static class AstroCatalogue
 			0.01,
 			0.01,
 			0.01
-		},
-		new[]
-		{
+		],
+		[
 			20,
 			0.01,
 			0.01,
@@ -314,9 +300,8 @@ public static class AstroCatalogue
 			0.01,
 			0.01,
 			0.01
-		},
-		new[]
-		{
+		],
+		[
 			10,
 			0.00,
 			0.00,
@@ -330,9 +315,8 @@ public static class AstroCatalogue
 			0.00,
 			0.00,
 			0.00
-		},
-		new[]
-		{
+		],
+		[
 			00,
 			0.00,
 			0.00,
@@ -346,7 +330,7 @@ public static class AstroCatalogue
 			0.00,
 			0.00,
 			0.00
-		}
+		]
 	};
 
 	/// <summary>
@@ -356,8 +340,7 @@ public static class AstroCatalogue
 	/// </summary>
 	public static IReadOnlyList<IReadOnlyList<double>> Kt = new double[13][]
 	{
-		new[]
-		{
+		[
 			0.0,
 			10,
 			20,
@@ -370,9 +353,8 @@ public static class AstroCatalogue
 			56,
 			58,
 			60
-		},
-		new[]
-		{
+		],
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -385,9 +367,8 @@ public static class AstroCatalogue
 			0.03,
 			0.04,
 			0.04
-		}, // январь
-		new[]
-		{
+		], // январь
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -400,9 +381,8 @@ public static class AstroCatalogue
 			0.03,
 			0.03,
 			0.03
-		},
-		new[]
-		{
+		],
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -415,9 +395,8 @@ public static class AstroCatalogue
 			0.03,
 			0.03,
 			0.03
-		},
-		new[]
-		{
+		],
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -430,9 +409,8 @@ public static class AstroCatalogue
 			0.03,
 			0.03,
 			0.03
-		},
-		new[]
-		{
+		],
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -445,9 +423,8 @@ public static class AstroCatalogue
 			0.03,
 			0.03,
 			0.04
-		},
-		new[]
-		{
+		],
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -460,9 +437,8 @@ public static class AstroCatalogue
 			0.03,
 			0.04,
 			0.05
-		},
-		new[]
-		{
+		],
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -475,9 +451,8 @@ public static class AstroCatalogue
 			0.04,
 			0.04,
 			0.05
-		},
-		new[]
-		{
+		],
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -490,9 +465,8 @@ public static class AstroCatalogue
 			0.03,
 			0.03,
 			0.04
-		},
-		new[]
-		{
+		],
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -505,9 +479,8 @@ public static class AstroCatalogue
 			0.03,
 			0.03,
 			0.03
-		},
-		new[]
-		{
+		],
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -520,9 +493,8 @@ public static class AstroCatalogue
 			0.02,
 			0.03,
 			0.03
-		},
-		new[]
-		{
+		],
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -535,9 +507,8 @@ public static class AstroCatalogue
 			0.03,
 			0.03,
 			0.03
-		},
-		new[]
-		{
+		],
+		[
 			0.0,
 			0.0,
 			0.01,
@@ -550,7 +521,7 @@ public static class AstroCatalogue
 			0.03,
 			0.04,
 			0.04
-		} // декабрь
+		] // декабрь
 	};
 
 	/// <summary>
@@ -560,8 +531,7 @@ public static class AstroCatalogue
 	/// </summary>
 	public static IReadOnlyList<IReadOnlyList<double>> DeltaA = new double[7][]
 	{
-		new[]
-		{
+		[
 			0.0,
 			1.0,
 			1.5,
@@ -595,10 +565,9 @@ public static class AstroCatalogue
 			24.0,
 			25.0,
 			26.0
-		},
+		],
 		/* K = 0.00 */
-		new[]
-		{
+		[
 			0.0,
 			0.0,
 			0.0,
@@ -632,10 +601,9 @@ public static class AstroCatalogue
 			0.00,
 			0.00,
 			0.00
-		},
+		],
 		/* K = 0.01 */
-		new[]
-		{
+		[
 			0.0,
 			0.0,
 			0.0,
@@ -669,10 +637,9 @@ public static class AstroCatalogue
 			0.20,
 			0.20,
 			0.20
-		},
+		],
 		/* K = 0.02 */
-		new[]
-		{
+		[
 			0.0,
 			0.0,
 			0.0,
@@ -706,10 +673,9 @@ public static class AstroCatalogue
 			0.50,
 			0.50,
 			0.50
-		},
+		],
 		/* K = 0.03 */
-		new[]
-		{
+		[
 			0.0,
 			0.1,
 			0.1,
@@ -743,10 +709,9 @@ public static class AstroCatalogue
 			0.70,
 			0.80,
 			0.80
-		},
+		],
 		/* K = 0.04 */
-		new[]
-		{
+		[
 			0.0,
 			0.1,
 			0.1,
@@ -780,10 +745,9 @@ public static class AstroCatalogue
 			1.00,
 			1.00,
 			1.00
-		},
+		],
 		/* K = 0.05 */
-		new[]
-		{
+		[
 			0.0,
 			0.1,
 			0.1,
@@ -817,7 +781,7 @@ public static class AstroCatalogue
 			1.20,
 			1.20,
 			1.20
-		}
+		]
 	};
 
 	/// <summary>

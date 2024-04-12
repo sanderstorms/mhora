@@ -17,26 +17,26 @@ namespace Mhora.Elements
 			}
 		}
 		
-		public static readonly List<Lordship> Lord = new ()
-		{
-			new (ZodiacHouse.Ari, Body.Mars),
-			new (ZodiacHouse.Tau, Body.Venus),
-			new (ZodiacHouse.Gem, Body.Mercury),
-			new	(ZodiacHouse.Can, Body.Moon),
-			new (ZodiacHouse.Leo, Body.Sun),
-			new (ZodiacHouse.Vir, Body.Mercury),
-			new (ZodiacHouse.Lib, Body.Venus),
-			new	(ZodiacHouse.Sco, Body.Mars),
-			new (ZodiacHouse.Sag, Body.Jupiter),
-			new	(ZodiacHouse.Cap, Body.Saturn),
-			new	(ZodiacHouse.Aqu, Body.Saturn),
-			new	(ZodiacHouse.Pis, Body.Jupiter),
-			new	(ZodiacHouse.Sco, Body.Ketu),
-			new	(ZodiacHouse.Aqu, Body.Rahu)
-		};
+		public static readonly List<Lordship> Lord =
+		[
+			new(ZodiacHouse.Ari, Body.Mars),
+			new(ZodiacHouse.Tau, Body.Venus),
+			new(ZodiacHouse.Gem, Body.Mercury),
+			new(ZodiacHouse.Can, Body.Moon),
+			new(ZodiacHouse.Leo, Body.Sun),
+			new(ZodiacHouse.Vir, Body.Mercury),
+			new(ZodiacHouse.Lib, Body.Venus),
+			new(ZodiacHouse.Sco, Body.Mars),
+			new(ZodiacHouse.Sag, Body.Jupiter),
+			new(ZodiacHouse.Cap, Body.Saturn),
+			new(ZodiacHouse.Aqu, Body.Saturn),
+			new(ZodiacHouse.Pis, Body.Jupiter),
+			new(ZodiacHouse.Sco, Body.Ketu),
+			new(ZodiacHouse.Aqu, Body.Rahu)
+		];
 
 		public static Body[] Position =
-		{
+		[
 			Body.Other,
 			Body.AL,
 			Body.A2,
@@ -50,7 +50,7 @@ namespace Mhora.Elements
 			Body.A10,
 			Body.A11,
 			Body.UL
-		};
+		];
 
 	}
 }

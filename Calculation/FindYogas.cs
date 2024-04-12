@@ -1079,7 +1079,7 @@ public class FindYogas
 			}
 			else
 			{
-				al = new ArrayList();
+				al = [];
 			}
 
 			al.Add(nChild);

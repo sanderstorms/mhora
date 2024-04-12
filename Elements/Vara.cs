@@ -41,10 +41,24 @@ namespace Mhora.Elements
 			HoraLord = Jd.Date.HoraLord();
 			KalaLord = CalculateKalaLord(HoursAfterSunrise);
 
+			//	Janma Vighatika Graha
+			// 1. The moment of birth is always considered from the Sunrise or Sunset. So the start of the vighatikas
+			//    for finding the ruler of the moment of birth has to be reckoned from the Sunrise or Sunset based on birth
+			//    happening before of after the Sunset.
+			// 2. The time of birth elapsed after Sunrise of Sunset is converted into Vighatis. (1 Hr = 2.5 Ghati = 150 vighati).
+			// 3. The ruler of the vighatikas is based on the sequence of the lords of the weekdays
+			//    (Su-1, Mo-2, Mars- 3, Me-4, Ju- 5, Ve- 6, Sa- 7, Ra- 8, Ke- 9), starting from Sun.
+			//    To arrive at the lord of the ruler, divide the Vighatis arrived at the previous step by 9
+			//    and round it up to the higher interger and count that number from Sun.
+
+			VighatikaGraha = (Body) (int) (HoursAfterSunRiseSet.Vighati % 9);
+
 			BirthTatva           = CalculateBirthTatva();
 			Gulika               = CalculateUpgraha(Body.Saturn);
 			Maandi               = CalculateUpgraha(Body.Saturn, HoroscopeOptions.EUpagrahaType.End);
 			(YamaLord, YamaSpan) = CalculateYamaLord();
+
+			(RahuKalam, Yamagandam, GulikaKalam) = CalculateKalam();
 		}
 
 		public Horoscope  Horoscope            {get;}
@@ -57,6 +71,9 @@ namespace Mhora.Elements
 		public JulianDate Noon                 {get;}
 		public JulianDate Midnight             {get;}
 		public JulianDate NextSunrise          {get;}
+		public JulianDate RahuKalam            {get;}
+		public JulianDate Yamagandam           {get;}
+		public JulianDate GulikaKalam          {get;}
 		public Time       HoursAfterSunrise    {get;}
 		public Time       HoursAfterSunRiseSet {get;}
 		public Time       Length               {get;}
@@ -67,6 +84,7 @@ namespace Mhora.Elements
 		public Body       HoraLord             {get;}
 		public Body       KalaLord             {get;}
 		public Body       YamaLord             {get;}
+		public Body       VighatikaGraha       {get;}
 		public Yama       YamaSpan             {get;}
 		public BirthTatva BirthTatva           {get;}
 		public Longitude  Gulika               {get;}
@@ -93,6 +111,34 @@ namespace Mhora.Elements
 			}
 		}
 
+		// Find the time of sunrise and sunset of a day in your city.
+		// Divide this duration in 8 equal parts.
+		// On Mondays, 2nd part; on Tuesdays, 7th part; on Wednesdays, 5th part; on Thursdays, 6th part;
+		// on Fridays, 4th part; on Saturdays, 3rd part; and on Sundays, 8th part is called Rahukalam.
+		// Yamagandam: 4 -3 - 2 - 1 - 7 - 6- 5
+		// Gulika	 : 6 - 5 - 4 - 3 - 2 - 1 - 7
+		//  			Rahu Kaal		Yamagandam		Gulika
+		// Monday		7:30 – 9:00		10:30 - 12:00	13:30 – 15:00
+		// Tuesday		15:00 – 16:30	9:00 – 10:30	12:00 – 13:30
+		// Wednesday	12:00 – 13:30	7:30 – 9:00		10:30 – 12:00
+		// Thursday		13:30 – 15:00	6:00 – 7:30		9:00 – 10:30
+		// Friday		10:30 – 12:00	15:00 – 16:30	7:30 – 9:00
+		// Saturday		9:00 – 10:30	13:30 – 15:00	6:00 – 7:30
+		// Sunday		16:30 – 18:00	12:00 – 13:30	15:00 – 16:30
+		private (JulianDate, JulianDate, JulianDate) CalculateKalam()
+		{
+			var rahu   = new [] {2, 7, 5, 6, 4, 3, 8};
+			var yama   = new [] {4, 3, 2, 1, 7, 5, 5};
+			var gulika = new [] {6, 5, 4, 3, 2, 1, 7};
+
+			var cusps = GetSunrisetCuspsUt(8);
+
+			var rahuKalam   = cusps[rahu[WeekDay.Index()] - 1];
+			var yamagandam  = cusps[yama[WeekDay.Index()] - 1];
+			var gulikaKalam = cusps[gulika[WeekDay.Index()] - 1];
+
+			return (rahuKalam, yamagandam, gulikaKalam);
+		}
 
 		//The 24 hours starting from the Sun’s movement from Sangyā are divided into 8 yamas,
 		//each spanning for 3 hours. Each half of a yama is known as a kāla, measuring 1½ hours,
@@ -146,24 +192,20 @@ namespace Mhora.Elements
 		}
 
 
+		//Yama of Sun = Kala Span (of time)		//Yama of Moon = Paridhi Span (of time)		//Yama of Mars = Dhooma Span (of time)
+		//Yama of Mercury = Arthaprahara Span (of time)		//Yama of Jupiter = Yemakandaka Span (of time)		//Yama of Venus = Yamasukra Span (of time)		//Yama of Saturn = Gulika Span (of time)
 		public JulianDate FindKalaCusp(Body body, HoroscopeOptions.EUpagrahaType upagrahaType)
 		{
 			var  cusps  = GetSunrisetEqualCuspsUt(8);
 			var  part   = 0;
-			var  offset = Time.Zero;
 
-			switch (upagrahaType)
-			{
-				case HoroscopeOptions.EUpagrahaType.Begin:
-					offset = 0;
-					break;
-				case HoroscopeOptions.EUpagrahaType.Mid:
-					offset = (cusps [1].Time - cusps [0].Time).TotalHours / 2;
-					break;
-				case HoroscopeOptions.EUpagrahaType.End:
-					offset = (cusps [1].Time - cusps [0].Time);
-					break;
-			}
+			var offset = upagrahaType switch
+			             {
+				             HoroscopeOptions.EUpagrahaType.Begin => 0,
+				             HoroscopeOptions.EUpagrahaType.Mid   => (cusps[1].Time - cusps[0].Time).TotalHours / 2,
+				             HoroscopeOptions.EUpagrahaType.End   => (cusps[1].Time - cusps[0].Time),
+				             _                                    => Time.Zero
+			             };
 
 			if (IsDayBirth == false)
 			{

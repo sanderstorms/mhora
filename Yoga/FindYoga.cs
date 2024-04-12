@@ -9,93 +9,93 @@ namespace Mhora.Yoga
 	{
 		public static bool Find(this Grahas grahas, AakritiYoga yoga)
 		{
-			switch (yoga)
-			{
-				case AakritiYoga.AakritiArdhachandra: return grahas.AakritiArdhachandra();
-				case AakritiYoga.AakritiChakra:       return grahas.AakritiChakra();
-				case AakritiYoga.AakritiChhatra:      return grahas.AakritiChhatra();
-				case AakritiYoga.AakritiDanda:        return grahas.AakritiDanda();
-				case AakritiYoga.AakritiDhanush:      return grahas.AakritiDhanush();
-				case AakritiYoga.AakritiGada:         return grahas.AakritiGada();
-				case AakritiYoga.AakritiHalaArtha:    return grahas.AakritiHalaArtha();
-				case AakritiYoga.AakritiHalaKama:     return grahas.AakritiHalaKama();
-				case AakritiYoga.AakritiHalaMoksha:   return grahas.AakritiHalaMoksha();
-				case AakritiYoga.AakritiKoota:        return grahas.AakritiKoota();
-				case AakritiYoga.AakritiNauka:        return grahas.AakritiNauka();
-				case AakritiYoga.AakritiPakshi:       return grahas.AakritiPakshi();
-				case AakritiYoga.AakritiSamudra:      return grahas.AakritiSamudra();
-				case AakritiYoga.AakritiShakata:      return grahas.AakritiShakata();
-				case AakritiYoga.AakritiShakti:       return grahas.AakritiShakti();
-				case AakritiYoga.AakritiShara:        return grahas.AakritiShara();
-				case AakritiYoga.AakritiShringataka:  return grahas.AakritiShringataka();
-				case AakritiYoga.AakritiVaapi:        return grahas.AakritiVaapi();
-				case AakritiYoga.AakritiVajra:        return grahas.AakritiVajra();
-				case AakritiYoga.AakritiYava:         return grahas.AakritiYava();
-				case AakritiYoga.AakritiYoopa:        return grahas.AakritiYoopa();
-			}
-			return (false);
+			return yoga switch
+			       {
+				       AakritiYoga.AakritiArdhachandra => grahas.AakritiArdhachandra(),
+				       AakritiYoga.AakritiChakra       => grahas.AakritiChakra(),
+				       AakritiYoga.AakritiChhatra      => grahas.AakritiChhatra(),
+				       AakritiYoga.AakritiDanda        => grahas.AakritiDanda(),
+				       AakritiYoga.AakritiDhanush      => grahas.AakritiDhanush(),
+				       AakritiYoga.AakritiGada         => grahas.AakritiGada(),
+				       AakritiYoga.AakritiHalaArtha    => grahas.AakritiHalaArtha(),
+				       AakritiYoga.AakritiHalaKama     => grahas.AakritiHalaKama(),
+				       AakritiYoga.AakritiHalaMoksha   => grahas.AakritiHalaMoksha(),
+				       AakritiYoga.AakritiKoota        => grahas.AakritiKoota(),
+				       AakritiYoga.AakritiNauka        => grahas.AakritiNauka(),
+				       AakritiYoga.AakritiPakshi       => grahas.AakritiPakshi(),
+				       AakritiYoga.AakritiSamudra      => grahas.AakritiSamudra(),
+				       AakritiYoga.AakritiShakata      => grahas.AakritiShakata(),
+				       AakritiYoga.AakritiShakti       => grahas.AakritiShakti(),
+				       AakritiYoga.AakritiShara        => grahas.AakritiShara(),
+				       AakritiYoga.AakritiShringataka  => grahas.AakritiShringataka(),
+				       AakritiYoga.AakritiVaapi        => grahas.AakritiVaapi(),
+				       AakritiYoga.AakritiVajra        => grahas.AakritiVajra(),
+				       AakritiYoga.AakritiYava         => grahas.AakritiYava(),
+				       AakritiYoga.AakritiYoopa        => grahas.AakritiYoopa(),
+				       _                               => (false)
+			       };
 		}
 
 		public static bool Find(this Grahas grahas, ChandraYoga yoga)
 		{
-			switch (yoga)
-			{
-				case ChandraYoga.ChandraAdhi:         return grahas.ChandraAdhi();
-				case ChandraYoga.ChandraAnapha:       return grahas.ChandraAnapha();
-				case ChandraYoga.ChandraDurudhara:    return grahas.ChandraDurudhara();
-				case ChandraYoga.ChandraKalpadruma1:  return grahas.ChandraKalpadruma1();
-				case ChandraYoga.ChandraKalpadruma2:  return grahas.ChandraKalpadruma2();
-				case ChandraYoga.ChandraKalpadruma3:  return grahas.ChandraKalpadruma3();
-				case ChandraYoga.ChandraKalpadruma4:  return grahas.ChandraKalpadruma4();
-				case ChandraYoga.ChandraKalpadruma5:  return grahas.ChandraKalpadruma5();
-				case ChandraYoga.ChandraKalpadruma6:  return grahas.ChandraKalpadruma6();
-				case ChandraYoga.ChandraKalpadruma7:  return grahas.ChandraKalpadruma7();
-				case ChandraYoga.ChandraKalpadruma8:  return grahas.ChandraKalpadruma8();
-				case ChandraYoga.ChandraKalpadruma9:  return grahas.ChandraKalpadruma9();
-				case ChandraYoga.ChandraKalpadruma10: return grahas.ChandraKalpadruma10();
-				case ChandraYoga.ChandraKalpadruma11: return grahas.ChandraKalpadruma11();
-				case ChandraYoga.ChandraKalpadruma12: return grahas.ChandraKalpadruma12();
-				case ChandraYoga.ChandraKalpadruma13: return grahas.ChandraKalpadruma13();
-				case ChandraYoga.ChandraKalpadruma14: return grahas.ChandraKalpadruma14();
-				case ChandraYoga.ChandraKalpadruma15: return grahas.ChandraKalpadruma15();
-				case ChandraYoga.ChandraKalpadruma16: return grahas.ChandraKalpadruma16();
-				case ChandraYoga.ChandraKalpadruma17: return grahas.ChandraKalpadruma17();
-				case ChandraYoga.ChandraKalpadruma18: return grahas.ChandraKalpadruma18();
-				case ChandraYoga.ChandraKalpadruma19: return grahas.ChandraKalpadruma19();
-				case ChandraYoga.ChandraKalpadruma20: return grahas.ChandraKalpadruma20();
-				case ChandraYoga.ChandraSunapha:      return grahas.ChandraSunapha();
-			}
-			return (false);
+			return yoga switch
+			       {
+				       ChandraYoga.ChandraAdhi         => grahas.ChandraAdhi(),
+				       ChandraYoga.ChandraAnapha       => grahas.ChandraAnapha(),
+				       ChandraYoga.ChandraDurudhara    => grahas.ChandraDurudhara(),
+				       ChandraYoga.ChandraKalpadruma1  => grahas.ChandraKalpadruma1(),
+				       ChandraYoga.ChandraKalpadruma2  => grahas.ChandraKalpadruma2(),
+				       ChandraYoga.ChandraKalpadruma3  => grahas.ChandraKalpadruma3(),
+				       ChandraYoga.ChandraKalpadruma4  => grahas.ChandraKalpadruma4(),
+				       ChandraYoga.ChandraKalpadruma5  => grahas.ChandraKalpadruma5(),
+				       ChandraYoga.ChandraKalpadruma6  => grahas.ChandraKalpadruma6(),
+				       ChandraYoga.ChandraKalpadruma7  => grahas.ChandraKalpadruma7(),
+				       ChandraYoga.ChandraKalpadruma8  => grahas.ChandraKalpadruma8(),
+				       ChandraYoga.ChandraKalpadruma9  => grahas.ChandraKalpadruma9(),
+				       ChandraYoga.ChandraKalpadruma10 => grahas.ChandraKalpadruma10(),
+				       ChandraYoga.ChandraKalpadruma11 => grahas.ChandraKalpadruma11(),
+				       ChandraYoga.ChandraKalpadruma12 => grahas.ChandraKalpadruma12(),
+				       ChandraYoga.ChandraKalpadruma13 => grahas.ChandraKalpadruma13(),
+				       ChandraYoga.ChandraKalpadruma14 => grahas.ChandraKalpadruma14(),
+				       ChandraYoga.ChandraKalpadruma15 => grahas.ChandraKalpadruma15(),
+				       ChandraYoga.ChandraKalpadruma16 => grahas.ChandraKalpadruma16(),
+				       ChandraYoga.ChandraKalpadruma17 => grahas.ChandraKalpadruma17(),
+				       ChandraYoga.ChandraKalpadruma18 => grahas.ChandraKalpadruma18(),
+				       ChandraYoga.ChandraKalpadruma19 => grahas.ChandraKalpadruma19(),
+				       ChandraYoga.ChandraKalpadruma20 => grahas.ChandraKalpadruma20(),
+				       ChandraYoga.ChandraSunapha      => grahas.ChandraSunapha(),
+				       _                               => (false)
+			       };
 		}
 
 		public static bool Find(this Grahas grahas, DhanaYoga yoga)
 		{
-			switch (yoga)
-			{
-				case DhanaYoga.DhanaSurya:        return grahas.DhanaSurya();
-				case DhanaYoga.DhanaGuru5th:      return grahas.DhanaGuru5th();
-				case DhanaYoga.DhanaLagna:        return grahas.DhanaLagna();
-				case DhanaYoga.DhanaChandra:      return grahas.DhanaChandra();
-				case DhanaYoga.DanaShukraLagna:   return grahas.DanaShukraLagna();
-				case DhanaYoga.Dhana2ndHouseLord: return grahas.Dhana2ndHouseLord();
-				case DhanaYoga.Dhana5thLord:      return grahas.Dhana5thLord();
-				case DhanaYoga.Dhana9thLord:      return grahas.Dhana9thLord();
-				case DhanaYoga.DhanaBhava:        return grahas.DhanaBhava();
-				case DhanaYoga.DhanaBuddh5th:     return grahas.DhanaBuddh5th();
-				case DhanaYoga.DhanaBuddhLagna:   return grahas.DhanaBuddhLagna();
-				case DhanaYoga.DhanaChandra5th:   return grahas.DhanaChandra5th();
-				case DhanaYoga.DhanaDay:          return grahas.DhanaDay();
-				case DhanaYoga.DhanaGuruLagna:    return grahas.DhanaGuruLagna();
-				case DhanaYoga.DhanaGuru9th:      return grahas.DhanaGuru9th();
-				case DhanaYoga.DhanaMangal5th:    return grahas.DhanaMangal5th();
-				case DhanaYoga.DhanaMangalLagna:  return grahas.DhanaMangalLagna();
-				case DhanaYoga.DhanaShukra5th:    return grahas.DhanaShukra5th();
-				case DhanaYoga.DhanaShani5th:     return grahas.DhanaShani5th();
-				case DhanaYoga.DhanaShaniLagna:   return grahas.DhanaShaniLagna();
-				case DhanaYoga.DhanaSurya5th:     return grahas.DhanaSurya5th();
-				case DhanaYoga.DhanaNight:        return grahas.DhanaNight();
-			}
-			return (false);
+			return yoga switch
+			       {
+				       DhanaYoga.DhanaSurya        => grahas.DhanaSurya(),
+				       DhanaYoga.DhanaGuru5th      => grahas.DhanaGuru5th(),
+				       DhanaYoga.DhanaLagna        => grahas.DhanaLagna(),
+				       DhanaYoga.DhanaChandra      => grahas.DhanaChandra(),
+				       DhanaYoga.DanaShukraLagna   => grahas.DanaShukraLagna(),
+				       DhanaYoga.Dhana2ndHouseLord => grahas.Dhana2ndHouseLord(),
+				       DhanaYoga.Dhana5thLord      => grahas.Dhana5thLord(),
+				       DhanaYoga.Dhana9thLord      => grahas.Dhana9thLord(),
+				       DhanaYoga.DhanaBhava        => grahas.DhanaBhava(),
+				       DhanaYoga.DhanaBuddh5th     => grahas.DhanaBuddh5th(),
+				       DhanaYoga.DhanaBuddhLagna   => grahas.DhanaBuddhLagna(),
+				       DhanaYoga.DhanaChandra5th   => grahas.DhanaChandra5th(),
+				       DhanaYoga.DhanaDay          => grahas.DhanaDay(),
+				       DhanaYoga.DhanaGuruLagna    => grahas.DhanaGuruLagna(),
+				       DhanaYoga.DhanaGuru9th      => grahas.DhanaGuru9th(),
+				       DhanaYoga.DhanaMangal5th    => grahas.DhanaMangal5th(),
+				       DhanaYoga.DhanaMangalLagna  => grahas.DhanaMangalLagna(),
+				       DhanaYoga.DhanaShukra5th    => grahas.DhanaShukra5th(),
+				       DhanaYoga.DhanaShani5th     => grahas.DhanaShani5th(),
+				       DhanaYoga.DhanaShaniLagna   => grahas.DhanaShaniLagna(),
+				       DhanaYoga.DhanaSurya5th     => grahas.DhanaSurya5th(),
+				       DhanaYoga.DhanaNight        => grahas.DhanaNight(),
+				       _                           => (false)
+			       };
 		}
 
 		public static bool Find(this Grahas grahas, GenericYoga yoga)
@@ -201,83 +201,83 @@ namespace Mhora.Yoga
 
 		public static bool Find(this Grahas grahas, MahaParivartanaYoga yoga)
 		{
-			switch (yoga)
-			{
-				case MahaParivartanaYoga.MahaParivartana1:  return grahas.MahaParivartana1();
-				case MahaParivartanaYoga.MahaParivartana2:  return grahas.MahaParivartana2();
-				case MahaParivartanaYoga.MahaParivartana4:  return grahas.MahaParivartana5();
-				case MahaParivartanaYoga.MahaParivartana5:  return grahas.MahaParivartana5();
-				case MahaParivartanaYoga.MahaParivartana7:  return grahas.MahaParivartana7();
-				case MahaParivartanaYoga.MahaParivartana9:  return grahas.MahaParivartana9();
-				case MahaParivartanaYoga.MahaParivartana10: return grahas.MahaParivartana10();
-			}
-			return (false);
+			return yoga switch
+			       {
+				       MahaParivartanaYoga.MahaParivartana1  => grahas.MahaParivartana1(),
+				       MahaParivartanaYoga.MahaParivartana2  => grahas.MahaParivartana2(),
+				       MahaParivartanaYoga.MahaParivartana4  => grahas.MahaParivartana5(),
+				       MahaParivartanaYoga.MahaParivartana5  => grahas.MahaParivartana5(),
+				       MahaParivartanaYoga.MahaParivartana7  => grahas.MahaParivartana7(),
+				       MahaParivartanaYoga.MahaParivartana9  => grahas.MahaParivartana9(),
+				       MahaParivartanaYoga.MahaParivartana10 => grahas.MahaParivartana10(),
+				       _                                     => (false)
+			       };
 		}
 
 		public static bool Find(this Grahas grahas, MahapurushaYoga yoga)
 		{
-			switch (yoga)
-			{
-				case MahapurushaYoga.MahapurushaBhadraBuddh: return grahas.MahapurushaBhadraBuddh();
-				case MahapurushaYoga.MahapurushaHamsa:       return grahas.MahapurushaHamsa();
-				case MahapurushaYoga.MahapurushaMalavya:     return grahas.MahapurushaMalavya();
-				case MahapurushaYoga.MahapurushaRuchaka:     return grahas.MahapurushaRuchaka();
-				case MahapurushaYoga.MahapurushaSasha:       return grahas.MahapurushaSasha();
-			}
-			return (false);
+			return yoga switch
+			       {
+				       MahapurushaYoga.MahapurushaBhadraBuddh => grahas.MahapurushaBhadraBuddh(),
+				       MahapurushaYoga.MahapurushaHamsa       => grahas.MahapurushaHamsa(),
+				       MahapurushaYoga.MahapurushaMalavya     => grahas.MahapurushaMalavya(),
+				       MahapurushaYoga.MahapurushaRuchaka     => grahas.MahapurushaRuchaka(),
+				       MahapurushaYoga.MahapurushaSasha       => grahas.MahapurushaSasha(),
+				       _                                      => (false)
+			       };
 		}
 
 		public static bool Find(this Grahas grahas, MalikaYoga yoga)
 		{
-			switch (yoga)
-			{
-				case MalikaYoga.BhagyaMalika:  return grahas.BhagyaMalika();
-				case MalikaYoga.DhanuMalika:   return grahas.DhanuMalika();
-				case MalikaYoga.KalatraMalika: return grahas.KalatraMalika();
-				case MalikaYoga.KarmaMalika:   return grahas.KarmaMalika();
-				case MalikaYoga.LabhaMalika:   return grahas.LabhaMalika();
-				case MalikaYoga.LagnaMalika:   return grahas.LagnaMalika();
-				case MalikaYoga.PutraMalika:   return grahas.PutraMalika();
-				case MalikaYoga.RandhraMalika: return grahas.RandhraMalika();
-				case MalikaYoga.SatruMalika:   return grahas.SatruMalika();
-				case MalikaYoga.SukhaMalika:   return grahas.SukhaMalika();
-				case MalikaYoga.VrayaMalika:   return grahas.VrayaMalika();
-			}
-			return (false);
+			return yoga switch
+			       {
+				       MalikaYoga.BhagyaMalika  => grahas.BhagyaMalika(),
+				       MalikaYoga.DhanuMalika   => grahas.DhanuMalika(),
+				       MalikaYoga.KalatraMalika => grahas.KalatraMalika(),
+				       MalikaYoga.KarmaMalika   => grahas.KarmaMalika(),
+				       MalikaYoga.LabhaMalika   => grahas.LabhaMalika(),
+				       MalikaYoga.LagnaMalika   => grahas.LagnaMalika(),
+				       MalikaYoga.PutraMalika   => grahas.PutraMalika(),
+				       MalikaYoga.RandhraMalika => grahas.RandhraMalika(),
+				       MalikaYoga.SatruMalika   => grahas.SatruMalika(),
+				       MalikaYoga.SukhaMalika   => grahas.SukhaMalika(),
+				       MalikaYoga.VrayaMalika   => grahas.VrayaMalika(),
+				       _                        => (false)
+			       };
 		}
 
 		public static bool Find(this Grahas grahas, RajaYoga yoga)
 		{
-			switch (yoga)
-			{
-				case RajaYoga.Raja1:              return grahas.Raja1();
-				case RajaYoga.Raja2:              return grahas.Raja2();
-				case RajaYoga.Raja3:              return grahas.Raja3();
-				case RajaYoga.Raja4:              return grahas.Raja4();
-				case RajaYoga.Raja5:              return grahas.Raja5();
-				case RajaYoga.Raja6:              return grahas.Raja6();
-				case RajaYoga.Raja7:              return grahas.Raja7();
-				case RajaYoga.Raja8:              return grahas.Raja8();
-				case RajaYoga.Raja9:              return grahas.Raja9();
-				case RajaYoga.Raja10:             return grahas.Raja10();
-				case RajaYoga.Raja11:             return grahas.Raja11();
-				case RajaYoga.Raja12:             return grahas.Raja12();
-				case RajaYoga.Raja13:             return grahas.Raja13();
-				case RajaYoga.Raja14:             return grahas.Raja14();
-				case RajaYoga.Raja15:             return grahas.Raja15();
-				case RajaYoga.Raja16:             return grahas.Raja16();
-				case RajaYoga.Raja17:             return grahas.Raja17();
-				case RajaYoga.Raja18:             return grahas.Raja18();
-				case RajaYoga.Raja19:             return grahas.Raja19();
-				case RajaYoga.Raja20:             return grahas.Raja20();
-				case RajaYoga.Raja21:             return grahas.Raja21();
-				case RajaYoga.Raja22:             return grahas.Raja22();
-				case RajaYoga.Raja23:             return grahas.Raja23();
-				case RajaYoga.ViparitaHarshaRaja: return grahas.ViparitaHarshaRaja();
-				case RajaYoga.ViparitaSaralaRaja: return grahas.ViparitaSaralaRaja();
-				case RajaYoga.ViparitaVimalaRaja: return grahas.ViparitaVimalaRaja();
-			}
-			return (false);
+			return yoga switch
+			       {
+				       RajaYoga.Raja1              => grahas.Raja1(),
+				       RajaYoga.Raja2              => grahas.Raja2(),
+				       RajaYoga.Raja3              => grahas.Raja3(),
+				       RajaYoga.Raja4              => grahas.Raja4(),
+				       RajaYoga.Raja5              => grahas.Raja5(),
+				       RajaYoga.Raja6              => grahas.Raja6(),
+				       RajaYoga.Raja7              => grahas.Raja7(),
+				       RajaYoga.Raja8              => grahas.Raja8(),
+				       RajaYoga.Raja9              => grahas.Raja9(),
+				       RajaYoga.Raja10             => grahas.Raja10(),
+				       RajaYoga.Raja11             => grahas.Raja11(),
+				       RajaYoga.Raja12             => grahas.Raja12(),
+				       RajaYoga.Raja13             => grahas.Raja13(),
+				       RajaYoga.Raja14             => grahas.Raja14(),
+				       RajaYoga.Raja15             => grahas.Raja15(),
+				       RajaYoga.Raja16             => grahas.Raja16(),
+				       RajaYoga.Raja17             => grahas.Raja17(),
+				       RajaYoga.Raja18             => grahas.Raja18(),
+				       RajaYoga.Raja19             => grahas.Raja19(),
+				       RajaYoga.Raja20             => grahas.Raja20(),
+				       RajaYoga.Raja21             => grahas.Raja21(),
+				       RajaYoga.Raja22             => grahas.Raja22(),
+				       RajaYoga.Raja23             => grahas.Raja23(),
+				       RajaYoga.ViparitaHarshaRaja => grahas.ViparitaHarshaRaja(),
+				       RajaYoga.ViparitaSaralaRaja => grahas.ViparitaSaralaRaja(),
+				       RajaYoga.ViparitaVimalaRaja => grahas.ViparitaVimalaRaja(),
+				       _                           => (false)
+			       };
 		}
 
 		public static uint FindAakritiYoga (this Grahas grahas)

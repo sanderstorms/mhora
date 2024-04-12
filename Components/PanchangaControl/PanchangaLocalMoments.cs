@@ -31,7 +31,7 @@ public class PanchangaLocalMoments
 	public int                       karana_index_end;
 	public int                       karana_index_start;
 	public ZodiacHouse               lagna_zh;
-	public List<PanchangaMomentInfo> lagnas_ut = new();
+	public List<PanchangaMomentInfo> lagnas_ut = [];
 	public int                       nakshatra_index_end;
 	public int                       nakshatra_index_start;
 	public int                       rahu_kala_index;

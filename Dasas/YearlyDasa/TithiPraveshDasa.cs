@@ -92,12 +92,12 @@ public class TithiPraveshDasa : Dasa, IDasa
 
 	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
-		List<DasaEntry> al = new List<DasaEntry>();
+		List<DasaEntry> al = [];
 		string[] desc =
-		{
+		[
 			"  Month: ",
 			"    Tithis: "
-		};
+		];
 		if (pdi.Level == 3)
 		{
 			return al;

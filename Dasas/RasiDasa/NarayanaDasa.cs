@@ -55,7 +55,7 @@ public class NarayanaDasa : Dasa, IDasa
 		var rashis = _h.FindRashis(Options.Division);
 
 		int[] orderMoveable =
-		{
+		[
 			1,
 			2,
 			3,
@@ -68,9 +68,9 @@ public class NarayanaDasa : Dasa, IDasa
 			10,
 			11,
 			12
-		};
+		];
 		int[] orderFixed =
-		{
+		[
 			1,
 			6,
 			11,
@@ -83,9 +83,9 @@ public class NarayanaDasa : Dasa, IDasa
 			10,
 			3,
 			8
-		};
+		];
 		int[] orderDual =
-		{
+		[
 			1,
 			5,
 			9,
@@ -98,24 +98,17 @@ public class NarayanaDasa : Dasa, IDasa
 			4,
 			8,
 			12
-		};
+		];
 
 		var al       = new List<DasaEntry> ();
 		var backward = true;
 
-		int[] order;
-		switch ((int) Options.SeedZodiacHouse % 3)
-		{
-			case 1:
-				order = orderMoveable;
-				break;
-			case 2:
-				order = orderFixed;
-				break;
-			default:
-				order = orderDual;
-				break;
-		}
+		int[] order = ((int) Options.SeedZodiacHouse % 3) switch
+		              {
+			              1 => orderMoveable,
+			              2 => orderFixed,
+			              _ => orderDual
+		              };
 
 		var zhSeed = Options.GetSeed();
 		zhSeed = Options.FindStrongerRasi(Options.SeventhStrengths, zhSeed, zhSeed.Add(7));
@@ -242,15 +235,12 @@ public class NarayanaDasa : Dasa, IDasa
 
 	private Graha GetLord(Rashi rashi)
 	{
-		switch (rashi.ZodiacHouse)
-		{
-			case ZodiacHouse.Aqu: 
-				return rashi.Base [Options.ColordAqu];
-			case ZodiacHouse.Sco: 
-				return rashi.Base [Options.ColordSco];
-			default:                   
-				return rashi.Lord;
-		}
+		return rashi.ZodiacHouse switch
+		       {
+			       ZodiacHouse.Aqu => rashi.Base[Options.ColordAqu],
+			       ZodiacHouse.Sco => rashi.Base[Options.ColordSco],
+			       _               => rashi.Lord
+		       };
 	}
 
 	public int DasaLength(ZodiacHouse zh, Graha graha)

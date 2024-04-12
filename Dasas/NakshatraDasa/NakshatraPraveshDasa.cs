@@ -72,13 +72,13 @@ public class NakshatraPraveshDasa : Dasa, IDasa
 	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
 		string[] desc =
-		{
+		[
 			"  Month: ",
 			"    Yoga: "
-		};
+		];
 		if (pdi.Level == 3)
 		{
-			return new List<DasaEntry> ();
+			return [];
 		}
 
 		TimeOffset start  = 0.0;
@@ -92,7 +92,7 @@ public class NakshatraPraveshDasa : Dasa, IDasa
 		switch (pdi.Level)
 		{
 			case 1:
-				al     = new List<DasaEntry> ();
+				al     = [];
 				length = pdi.DasaLength / 13.0;
 				//Mhora.Log.Debug("AD length is {0}", length);
 				for (var i = 0; i < 15; i++)
@@ -104,7 +104,7 @@ public class NakshatraPraveshDasa : Dasa, IDasa
 
 				return al;
 			case 2:
-				al     = new List<DasaEntry> ();
+				al     = [];
 				length = pdi.DasaLength / 27.0;
 				//Mhora.Log.Debug("PD length is {0}", length);
 				for (var i = 0; i < 27; i++)
@@ -118,7 +118,7 @@ public class NakshatraPraveshDasa : Dasa, IDasa
 				return al;
 		}
 
-		return new List<DasaEntry> ();
+		return [];
 		;
 	}
 

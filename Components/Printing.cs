@@ -51,7 +51,7 @@ public class MhoraPrintDocument : PrintDocument
 	private readonly Font   f_u        = new("Microsoft Sans Serif", 10, FontStyle.Underline);
 	private readonly int    pad_height = 10;
 
-	private readonly List<Division> alVargas  = new List<Division>();
+	private readonly List<Division> alVargas  = [];
 
 
 	private   Graphics  g;

@@ -183,58 +183,55 @@ public class EastIndianChart : IDrawChart
 	public Point GetZhouseOffset(ZodiacHouse zh)
 	{
 		var iOff = Xw / 3;
-		switch (zh)
-		{
-			case ZodiacHouse.Ari: return new Point(iOff * 2, 0);
-			case ZodiacHouse.Tau: return new Point(iOff, 0);
-			case ZodiacHouse.Gem: return new Point(0, 0);
-			case ZodiacHouse.Can: return new Point(0, iOff);
-			case ZodiacHouse.Leo: return new Point(0, iOff    * 2);
-			case ZodiacHouse.Vir: return new Point(0, iOff    * 3);
-			case ZodiacHouse.Lib: return new Point(iOff, iOff * 3);
-			case ZodiacHouse.Sco: return new Point(iOff       * 2, iOff * 3);
-			case ZodiacHouse.Sag: return new Point(iOff       * 3, iOff * 3);
-			case ZodiacHouse.Cap: return new Point(iOff       * 3, iOff * 2);
-			case ZodiacHouse.Aqu: return new Point(iOff       * 3, iOff);
-			case ZodiacHouse.Pis: return new Point(iOff       * 3, 0);
-		}
-
-		return new Point(0, 0);
+		return zh switch
+		       {
+			       ZodiacHouse.Ari => new Point(iOff * 2, 0),
+			       ZodiacHouse.Tau => new Point(iOff, 0),
+			       ZodiacHouse.Gem => new Point(0, 0),
+			       ZodiacHouse.Can => new Point(0, iOff),
+			       ZodiacHouse.Leo => new Point(0, iOff    * 2),
+			       ZodiacHouse.Vir => new Point(0, iOff    * 3),
+			       ZodiacHouse.Lib => new Point(iOff, iOff * 3),
+			       ZodiacHouse.Sco => new Point(iOff       * 2, iOff * 3),
+			       ZodiacHouse.Sag => new Point(iOff       * 3, iOff * 3),
+			       ZodiacHouse.Cap => new Point(iOff       * 3, iOff * 2),
+			       ZodiacHouse.Aqu => new Point(iOff       * 3, iOff),
+			       ZodiacHouse.Pis => new Point(iOff       * 3, 0),
+			       _               => new Point(0, 0)
+		       };
 	}
 
 	public Point GetGemOffset(int n)
 	{
 		var wi = Xw / 3 / 4;
 		var yi = Yw / 3 / 6;
-		switch (n)
-		{
-			case 4: return new Point(0, yi          * 4);
-			case 3: return new Point(wi             * 1, yi * 4);
-			case 8: return new Point(wi             * 2, yi * 4);
-			case 1: return new Point(0, yi          * 3);
-			case 5: return new Point(wi             * 1, yi * 3);
-			case 2: return new Point(0, yi          * 2);
-			case 6: return new Point(wi * 1 - 4, yi * 2);
-			case 7: return new Point(0, yi          * 1);
-		}
-
-		return GetGemOffset(1);
+		return n switch
+		       {
+			       4 => new Point(0, yi          * 4),
+			       3 => new Point(wi             * 1, yi * 4),
+			       8 => new Point(wi             * 2, yi * 4),
+			       1 => new Point(0, yi          * 3),
+			       5 => new Point(wi             * 1, yi * 3),
+			       2 => new Point(0, yi          * 2),
+			       6 => new Point(wi * 1 - 4, yi * 2),
+			       7 => new Point(0, yi          * 1),
+			       _ => GetGemOffset(1)
+		       };
 	}
 
 	public Point GetSmallGemOffset(int n)
 	{
 		var wi = Xw / 3 / 5;
 		var yi = Xw / 3 / 6;
-		switch (n)
-		{
-			case 4: return new Point(0, yi * 5);
-			case 1: return new Point(wi    * 1, yi * 5);
-			case 3: return new Point(wi    * 2, yi * 5);
-			case 2: return new Point(wi    * 3, yi * 5);
-			case 5: return new Point(wi    * 4, yi * 5);
-		}
-
-		return new Point(100, 100);
+		return n switch
+		       {
+			       4 => new Point(0, yi * 5),
+			       1 => new Point(wi    * 1, yi * 5),
+			       3 => new Point(wi    * 2, yi * 5),
+			       2 => new Point(wi    * 3, yi * 5),
+			       5 => new Point(wi    * 4, yi * 5),
+			       _ => new Point(100, 100)
+		       };
 	}
 
 	public Point GetSingleGemOffset()

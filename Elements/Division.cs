@@ -38,26 +38,26 @@ public class Division : ICloneable
 
 	public Division(DivisionType dtype)
 	{
-		mMultipleDivisions = new[]
-		{
+		mMultipleDivisions =
+		[
 			new SingleDivision(dtype)
-		};
+		];
 	}
 
 	public Division(SingleDivision single)
 	{
-		mMultipleDivisions = new[]
-		{
+		mMultipleDivisions =
+		[
 			single
-		};
+		];
 	}
 
 	public Division()
 	{
-		mMultipleDivisions = new[]
-		{
+		mMultipleDivisions =
+		[
 			new SingleDivision(DivisionType.Rasi)
-		};
+		];
 	}
 
 	[PGDisplayName("Composite Division")]

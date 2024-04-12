@@ -7,46 +7,22 @@ namespace Mhora.Definitions
 		public static bool Day(ZodiacHouse janmaZodiacHouse, Weekday wd)
 		{
 			var ja = janmaZodiacHouse;
-			var gh = Weekday.Sunday;
-			switch (ja)
-			{
-				case ZodiacHouse.Ari:
-					gh = Weekday.Sunday;
-					break;
-				case ZodiacHouse.Tau:
-					gh = Weekday.Saturday;
-					break;
-				case ZodiacHouse.Gem:
-					gh = Weekday.Monday;
-					break;
-				case ZodiacHouse.Can:
-					gh = Weekday.Wednesday;
-					break;
-				case ZodiacHouse.Leo:
-					gh = Weekday.Saturday;
-					break;
-				case ZodiacHouse.Vir:
-					gh = Weekday.Saturday;
-					break;
-				case ZodiacHouse.Lib:
-					gh = Weekday.Thursday;
-					break;
-				case ZodiacHouse.Sco:
-					gh = Weekday.Friday;
-					break;
-				case ZodiacHouse.Sag:
-					gh = Weekday.Friday;
-					break;
-				case ZodiacHouse.Cap:
-					gh = Weekday.Tuesday;
-					break;
-				case ZodiacHouse.Aqu:
-					gh = Weekday.Thursday;
-					break;
-				case ZodiacHouse.Pis:
-					gh = Weekday.Friday;
-					break;
-			}
+			var gh = ja switch
+			         {
+				         ZodiacHouse.Ari => Weekday.Sunday,
+				         ZodiacHouse.Tau => Weekday.Saturday,
+				         ZodiacHouse.Gem => Weekday.Monday,
+				         ZodiacHouse.Can => Weekday.Wednesday,
+				         ZodiacHouse.Leo => Weekday.Saturday,
+				         ZodiacHouse.Vir => Weekday.Saturday,
+				         ZodiacHouse.Lib => Weekday.Thursday,
+				         ZodiacHouse.Sco => Weekday.Friday,
+				         ZodiacHouse.Sag => Weekday.Friday,
+				         ZodiacHouse.Cap => Weekday.Tuesday,
+				         ZodiacHouse.Aqu => Weekday.Thursday,
+				         ZodiacHouse.Pis => Weekday.Friday,
+				         _               => Weekday.Sunday
+			         };
 
 			return wd == gh;
 		}
@@ -54,46 +30,22 @@ namespace Mhora.Definitions
 		public static bool Tithi(ZodiacHouse janmaZodiacHouse, Tithi t)
 		{
 			var ja = janmaZodiacHouse;
-			var gh = Tithis.NandaType.Nanda;
-			switch (ja)
-			{
-				case ZodiacHouse.Ari:
-					gh = Tithis.NandaType.Nanda;
-					break;
-				case ZodiacHouse.Tau:
-					gh = Tithis.NandaType.Purna;
-					break;
-				case ZodiacHouse.Gem:
-					gh = Tithis.NandaType.Bhadra;
-					break;
-				case ZodiacHouse.Can:
-					gh = Tithis.NandaType.Bhadra;
-					break;
-				case ZodiacHouse.Leo:
-					gh = Tithis.NandaType.Jaya;
-					break;
-				case ZodiacHouse.Vir:
-					gh = Tithis.NandaType.Purna;
-					break;
-				case ZodiacHouse.Lib:
-					gh = Tithis.NandaType.Rikta;
-					break;
-				case ZodiacHouse.Sco:
-					gh = Tithis.NandaType.Nanda;
-					break;
-				case ZodiacHouse.Sag:
-					gh = Tithis.NandaType.Jaya;
-					break;
-				case ZodiacHouse.Cap:
-					gh = Tithis.NandaType.Rikta;
-					break;
-				case ZodiacHouse.Aqu:
-					gh = Tithis.NandaType.Jaya;
-					break;
-				case ZodiacHouse.Pis:
-					gh = Tithis.NandaType.Purna;
-					break;
-			}
+			var gh = ja switch
+			         {
+				         ZodiacHouse.Ari => Tithis.NandaType.Nanda,
+				         ZodiacHouse.Tau => Tithis.NandaType.Purna,
+				         ZodiacHouse.Gem => Tithis.NandaType.Bhadra,
+				         ZodiacHouse.Can => Tithis.NandaType.Bhadra,
+				         ZodiacHouse.Leo => Tithis.NandaType.Jaya,
+				         ZodiacHouse.Vir => Tithis.NandaType.Purna,
+				         ZodiacHouse.Lib => Tithis.NandaType.Rikta,
+				         ZodiacHouse.Sco => Tithis.NandaType.Nanda,
+				         ZodiacHouse.Sag => Tithis.NandaType.Jaya,
+				         ZodiacHouse.Cap => Tithis.NandaType.Rikta,
+				         ZodiacHouse.Aqu => Tithis.NandaType.Jaya,
+				         ZodiacHouse.Pis => Tithis.NandaType.Purna,
+				         _               => Tithis.NandaType.Nanda
+			         };
 
 			return t.ToNandaType() == gh;
 		}
@@ -101,46 +53,22 @@ namespace Mhora.Definitions
 		public static bool LagnaOpp(ZodiacHouse janma, ZodiacHouse same)
 		{
 			var ja = janma;
-			var gh = ZodiacHouse.Ari;
-			switch (ja)
-			{
-				case ZodiacHouse.Ari:
-					gh = ZodiacHouse.Lib;
-					break;
-				case ZodiacHouse.Tau:
-					gh = ZodiacHouse.Sco;
-					break;
-				case ZodiacHouse.Gem:
-					gh = ZodiacHouse.Cap;
-					break;
-				case ZodiacHouse.Can:
-					gh = ZodiacHouse.Ari;
-					break;
-				case ZodiacHouse.Leo:
-					gh = ZodiacHouse.Can;
-					break;
-				case ZodiacHouse.Vir:
-					gh = ZodiacHouse.Vir;
-					break;
-				case ZodiacHouse.Lib:
-					gh = ZodiacHouse.Pis;
-					break;
-				case ZodiacHouse.Sco:
-					gh = ZodiacHouse.Tau;
-					break;
-				case ZodiacHouse.Sag:
-					gh = ZodiacHouse.Gem;
-					break;
-				case ZodiacHouse.Cap:
-					gh = ZodiacHouse.Leo;
-					break;
-				case ZodiacHouse.Aqu:
-					gh = ZodiacHouse.Sag;
-					break;
-				case ZodiacHouse.Pis:
-					gh = ZodiacHouse.Aqu;
-					break;
-			}
+			var gh = ja switch
+			         {
+				         ZodiacHouse.Ari => ZodiacHouse.Lib,
+				         ZodiacHouse.Tau => ZodiacHouse.Sco,
+				         ZodiacHouse.Gem => ZodiacHouse.Cap,
+				         ZodiacHouse.Can => ZodiacHouse.Ari,
+				         ZodiacHouse.Leo => ZodiacHouse.Can,
+				         ZodiacHouse.Vir => ZodiacHouse.Vir,
+				         ZodiacHouse.Lib => ZodiacHouse.Pis,
+				         ZodiacHouse.Sco => ZodiacHouse.Tau,
+				         ZodiacHouse.Sag => ZodiacHouse.Gem,
+				         ZodiacHouse.Cap => ZodiacHouse.Leo,
+				         ZodiacHouse.Aqu => ZodiacHouse.Sag,
+				         ZodiacHouse.Pis => ZodiacHouse.Aqu,
+				         _               => ZodiacHouse.Ari
+			         };
 
 			return same == gh;
 		}
@@ -148,46 +76,22 @@ namespace Mhora.Definitions
 		public static bool LagnaSame(ZodiacHouse janma, ZodiacHouse same)
 		{
 			var ja = janma;
-			var gh = ZodiacHouse.Ari;
-			switch (ja)
-			{
-				case ZodiacHouse.Ari:
-					gh = ZodiacHouse.Ari;
-					break;
-				case ZodiacHouse.Tau:
-					gh = ZodiacHouse.Tau;
-					break;
-				case ZodiacHouse.Gem:
-					gh = ZodiacHouse.Can;
-					break;
-				case ZodiacHouse.Can:
-					gh = ZodiacHouse.Lib;
-					break;
-				case ZodiacHouse.Leo:
-					gh = ZodiacHouse.Cap;
-					break;
-				case ZodiacHouse.Vir:
-					gh = ZodiacHouse.Pis;
-					break;
-				case ZodiacHouse.Lib:
-					gh = ZodiacHouse.Vir;
-					break;
-				case ZodiacHouse.Sco:
-					gh = ZodiacHouse.Sco;
-					break;
-				case ZodiacHouse.Sag:
-					gh = ZodiacHouse.Sag;
-					break;
-				case ZodiacHouse.Cap:
-					gh = ZodiacHouse.Aqu;
-					break;
-				case ZodiacHouse.Aqu:
-					gh = ZodiacHouse.Gem;
-					break;
-				case ZodiacHouse.Pis:
-					gh = ZodiacHouse.Leo;
-					break;
-			}
+			var gh = ja switch
+			         {
+				         ZodiacHouse.Ari => ZodiacHouse.Ari,
+				         ZodiacHouse.Tau => ZodiacHouse.Tau,
+				         ZodiacHouse.Gem => ZodiacHouse.Can,
+				         ZodiacHouse.Can => ZodiacHouse.Lib,
+				         ZodiacHouse.Leo => ZodiacHouse.Cap,
+				         ZodiacHouse.Vir => ZodiacHouse.Pis,
+				         ZodiacHouse.Lib => ZodiacHouse.Vir,
+				         ZodiacHouse.Sco => ZodiacHouse.Sco,
+				         ZodiacHouse.Sag => ZodiacHouse.Sag,
+				         ZodiacHouse.Cap => ZodiacHouse.Aqu,
+				         ZodiacHouse.Aqu => ZodiacHouse.Gem,
+				         ZodiacHouse.Pis => ZodiacHouse.Leo,
+				         _               => ZodiacHouse.Ari
+			         };
 
 			return same == gh;
 		}
@@ -197,47 +101,22 @@ namespace Mhora.Definitions
 			var ja = janmaZodiacHouse;
 			var ch = chandraZodiacHouse;
 
-			var gh = ZodiacHouse.Ari;
-
-			switch (ja)
-			{
-				case ZodiacHouse.Ari:
-					gh = ZodiacHouse.Ari;
-					break;
-				case ZodiacHouse.Tau:
-					gh = ZodiacHouse.Vir;
-					break;
-				case ZodiacHouse.Gem:
-					gh = ZodiacHouse.Aqu;
-					break;
-				case ZodiacHouse.Can:
-					gh = ZodiacHouse.Leo;
-					break;
-				case ZodiacHouse.Leo:
-					gh = ZodiacHouse.Cap;
-					break;
-				case ZodiacHouse.Vir:
-					gh = ZodiacHouse.Gem;
-					break;
-				case ZodiacHouse.Lib:
-					gh = ZodiacHouse.Sag;
-					break;
-				case ZodiacHouse.Sco:
-					gh = ZodiacHouse.Tau;
-					break;
-				case ZodiacHouse.Sag:
-					gh = ZodiacHouse.Pis;
-					break;
-				case ZodiacHouse.Cap:
-					gh = ZodiacHouse.Leo;
-					break;
-				case ZodiacHouse.Aqu:
-					gh = ZodiacHouse.Sag;
-					break;
-				case ZodiacHouse.Pis:
-					gh = ZodiacHouse.Aqu;
-					break;
-			}
+			var gh = ja switch
+			         {
+				         ZodiacHouse.Ari => ZodiacHouse.Ari,
+				         ZodiacHouse.Tau => ZodiacHouse.Vir,
+				         ZodiacHouse.Gem => ZodiacHouse.Aqu,
+				         ZodiacHouse.Can => ZodiacHouse.Leo,
+				         ZodiacHouse.Leo => ZodiacHouse.Cap,
+				         ZodiacHouse.Vir => ZodiacHouse.Gem,
+				         ZodiacHouse.Lib => ZodiacHouse.Sag,
+				         ZodiacHouse.Sco => ZodiacHouse.Tau,
+				         ZodiacHouse.Sag => ZodiacHouse.Pis,
+				         ZodiacHouse.Cap => ZodiacHouse.Leo,
+				         ZodiacHouse.Aqu => ZodiacHouse.Sag,
+				         ZodiacHouse.Pis => ZodiacHouse.Aqu,
+				         _               => ZodiacHouse.Ari
+			         };
 
 			return ch == gh;
 		}
@@ -245,47 +124,23 @@ namespace Mhora.Definitions
 		public static bool Star(ZodiacHouse janmaZodiacHouse, Nakshatra nak)
 		{
 			var ja = janmaZodiacHouse;
-			var gh = Nakshatra.Aswini;
-			switch (ja)
-			{
-				case ZodiacHouse.Ari:
-					gh = Nakshatra.Makha;
-					break;
-				case ZodiacHouse.Tau:
-					gh = Nakshatra.Hasta;
-					break;
-				case ZodiacHouse.Gem:
-					gh = Nakshatra.Swati;
-					break;
-				case ZodiacHouse.Can:
-					gh = Nakshatra.Anuradha;
-					break;
-				case ZodiacHouse.Leo:
-					gh = Nakshatra.Moola;
-					break;
-				case ZodiacHouse.Vir:
-					gh = Nakshatra.Sravana;
-					break;
-				case ZodiacHouse.Lib:
-					gh = Nakshatra.Satabisha;
-					break;
-				case ZodiacHouse.Sco:
-					gh = Nakshatra.Revati;
-					break;
-				// FIXME dveja nakshatra?????
-				case ZodiacHouse.Sag:
-					gh = Nakshatra.Revati;
-					break;
-				case ZodiacHouse.Cap:
-					gh = Nakshatra.Rohini;
-					break;
-				case ZodiacHouse.Aqu:
-					gh = Nakshatra.Aridra;
-					break;
-				case ZodiacHouse.Pis:
-					gh = Nakshatra.Aslesha;
-					break;
-			}
+			var gh = ja switch
+			         {
+				         ZodiacHouse.Ari => Nakshatra.Makha,
+				         ZodiacHouse.Tau => Nakshatra.Hasta,
+				         ZodiacHouse.Gem => Nakshatra.Swati,
+				         ZodiacHouse.Can => Nakshatra.Anuradha,
+				         ZodiacHouse.Leo => Nakshatra.Moola,
+				         ZodiacHouse.Vir => Nakshatra.Sravana,
+				         ZodiacHouse.Lib => Nakshatra.Satabisha,
+				         ZodiacHouse.Sco => Nakshatra.Revati,
+				         // FIXME dveja nakshatra?????
+				         ZodiacHouse.Sag => Nakshatra.Revati,
+				         ZodiacHouse.Cap => Nakshatra.Rohini,
+				         ZodiacHouse.Aqu => Nakshatra.Aridra,
+				         ZodiacHouse.Pis => Nakshatra.Aslesha,
+				         _               => Nakshatra.Aswini
+			         };
 
 			return nak == gh;
 		}
