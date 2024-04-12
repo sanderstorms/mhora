@@ -41,6 +41,18 @@ namespace Mhora.Elements
 			HoraLord = Jd.Date.HoraLord();
 			KalaLord = CalculateKalaLord(HoursAfterSunrise);
 
+			//	Janma Vighatika Graha
+			// 1. The moment of birth is always considered from the Sunrise or Sunset. So the start of the vighatikas
+			//    for finding the ruler of the moment of birth has to be reckoned from the Sunrise or Sunset based on birth
+			//    happening before of after the Sunset.
+			// 2. The time of birth elapsed after Sunrise of Sunset is converted into Vighatis. (1 Hr = 2.5 Ghati = 150 vighati).
+			// 3. The ruler of the vighatikas is based on the sequence of the lords of the weekdays
+			//    (Su-1, Mo-2, Mars- 3, Me-4, Ju- 5, Ve- 6, Sa- 7, Ra- 8, Ke- 9), starting from Sun.
+			//    To arrive at the lord of the ruler, divide the Vighatis arrived at the previous step by 9
+			//    and round it up to the higher interger and count that number from Sun.
+
+			VighatikaGraha = (Body) (int) (HoursAfterSunRiseSet.Vighati % 9);
+
 			BirthTatva           = CalculateBirthTatva();
 			Gulika               = CalculateUpgraha(Body.Saturn);
 			Maandi               = CalculateUpgraha(Body.Saturn, HoroscopeOptions.EUpagrahaType.End);
@@ -72,6 +84,7 @@ namespace Mhora.Elements
 		public Body       HoraLord             {get;}
 		public Body       KalaLord             {get;}
 		public Body       YamaLord             {get;}
+		public Body       VighatikaGraha       {get;}
 		public Yama       YamaSpan             {get;}
 		public BirthTatva BirthTatva           {get;}
 		public Longitude  Gulika               {get;}
@@ -179,24 +192,20 @@ namespace Mhora.Elements
 		}
 
 
+		//Yama of Sun = Kala Span (of time)		//Yama of Moon = Paridhi Span (of time)		//Yama of Mars = Dhooma Span (of time)
+		//Yama of Mercury = Arthaprahara Span (of time)		//Yama of Jupiter = Yemakandaka Span (of time)		//Yama of Venus = Yamasukra Span (of time)		//Yama of Saturn = Gulika Span (of time)
 		public JulianDate FindKalaCusp(Body body, HoroscopeOptions.EUpagrahaType upagrahaType)
 		{
 			var  cusps  = GetSunrisetEqualCuspsUt(8);
 			var  part   = 0;
-			var  offset = Time.Zero;
 
-			switch (upagrahaType)
-			{
-				case HoroscopeOptions.EUpagrahaType.Begin:
-					offset = 0;
-					break;
-				case HoroscopeOptions.EUpagrahaType.Mid:
-					offset = (cusps [1].Time - cusps [0].Time).TotalHours / 2;
-					break;
-				case HoroscopeOptions.EUpagrahaType.End:
-					offset = (cusps [1].Time - cusps [0].Time);
-					break;
-			}
+			var offset = upagrahaType switch
+			             {
+				             HoroscopeOptions.EUpagrahaType.Begin => 0,
+				             HoroscopeOptions.EUpagrahaType.Mid   => (cusps[1].Time - cusps[0].Time).TotalHours / 2,
+				             HoroscopeOptions.EUpagrahaType.End   => (cusps[1].Time - cusps[0].Time),
+				             _                                    => Time.Zero
+			             };
 
 			if (IsDayBirth == false)
 			{

@@ -97,22 +97,15 @@ namespace Mhora.Elements.Extensions
 				return Definitions.DeeptadiAvasthas.Kopa;
 			}
 
-			switch (graha.Rashi.Lord.Relationship(graha))
-			{
-				case Relation.BestFriend:
-					return Definitions.DeeptadiAvasthas.Mudita;
-				case Relation.Friend:
-					return Definitions.DeeptadiAvasthas.Santa;
-				case Relation.Neutral: 
-					return Definitions.DeeptadiAvasthas.Dina;
-				case Relation.Enemy:
-					return Definitions.DeeptadiAvasthas.Dukhita;
-				case Relation.BitterEnemy: 
-					return Definitions.DeeptadiAvasthas.Khala;
-			}
-
-
-			return Definitions.DeeptadiAvasthas.None;
+			return graha.Rashi.Lord.Relationship(graha) switch
+			       {
+				       Relation.BestFriend  => Definitions.DeeptadiAvasthas.Mudita,
+				       Relation.Friend      => Definitions.DeeptadiAvasthas.Santa,
+				       Relation.Neutral     => Definitions.DeeptadiAvasthas.Dina,
+				       Relation.Enemy       => Definitions.DeeptadiAvasthas.Dukhita,
+				       Relation.BitterEnemy => Definitions.DeeptadiAvasthas.Khala,
+				       _                    => Definitions.DeeptadiAvasthas.None
+			       };
 		}
 
 		public static JagradadiAvasthas JagradadiAvasthas(this Horoscope h, Body b)

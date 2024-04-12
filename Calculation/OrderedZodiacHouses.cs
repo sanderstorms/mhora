@@ -27,7 +27,7 @@ namespace Mhora.Calculation;
 [TypeConverter(typeof(OrderedZodiacHousesConverter))]
 public class OrderedZodiacHouses : ICloneable
 {
-	public List<ZodiacHouse> houses = new List<ZodiacHouse>();
+	public List<ZodiacHouse> houses = [];
 
 	public OrderedZodiacHouses()
 	{
@@ -35,7 +35,7 @@ public class OrderedZodiacHouses : ICloneable
 
 	public OrderedZodiacHouses(ZodiacHouse[] rashis)
 	{
-		houses = new List<ZodiacHouse>(rashis);
+		houses = [..rashis];
 	}
 
 
@@ -43,7 +43,7 @@ public class OrderedZodiacHouses : ICloneable
 	{
 		var oz = new OrderedZodiacHouses
 		{
-			houses = new List<ZodiacHouse>(houses)
+			houses = [..houses]
 		};
 		return oz;
 	}

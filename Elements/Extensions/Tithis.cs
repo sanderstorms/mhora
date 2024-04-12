@@ -120,7 +120,7 @@ public static class Tithis
 
 
 	public static readonly string[] SpecialNames =
-	{
+	[
 		string.Empty,
 		"Janma",
 		"Dhana",
@@ -134,10 +134,10 @@ public static class Tithis
 		"Karma",
 		"Laabha",
 		"Vyaya"
-	};
+	];
 
 	public static readonly string[] Name =
-	{
+	[
 		"Prathama",
 		"Dvitiya",
 		"Tritiya",
@@ -152,7 +152,7 @@ public static class Tithis
 		"Dvadashi",
 		"Trayodashi",
 		"Chaturdashi"
-	};
+	];
 
 	public static string ToUnqualifiedString(this Tithi tithi)
 	{

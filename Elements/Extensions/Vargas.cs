@@ -8,39 +8,39 @@ public static class Vargas
 {
 
 	public static readonly string[] Avasthas =
-	{
+	[
 		"Saisava (child - quarter)",
 		"Kumaara (adolescent - half)",
 		"Yuva (youth - full)",
 		"Vriddha (old - some)",
 		"Mrita (dead - none)"
-	};
+	];
 
 	public static class Rulers
 	{
 		public static readonly string[] Hora =
-		{
+		[
 			"Devaas - Sun",
 			"Pitris - Moon"
-		};
+		];
 
 		public static readonly string[] Drekkana =
-		{
+		[
 			"Naarada",
 			"Agastya",
 			"Durvaasa"
-		};
+		];
 
 		public static readonly string[] Chaturthamsa =
-		{
+		[
 			"Sanaka",
 			"Sanandana",
 			"Sanat Kumaara",
 			"Sanaatana"
-		};
+		];
 
 		public static readonly string[] Saptamsa =
-		{
+		[
 			"Kshaara",
 			"Ksheera",
 			"Dadhi",
@@ -48,17 +48,17 @@ public static class Vargas
 			"Ikshurasa",
 			"Madya",
 			"Shuddha Jala"
-		};
+		];
 
 		public static readonly string[] Navamsa =
-		{
+		[
 			"Deva",
 			"Nara",
 			"Rakshasa"
-		};
+		];
 
 		public static readonly string[] Dasamsa =
-		{
+		[
 			"Indra",
 			"Agni",
 			"Yama",
@@ -69,26 +69,26 @@ public static class Vargas
 			"Ishana",
 			"Brahma",
 			"Ananta"
-		};
+		];
 
 		public static readonly string[] Dwadasamsa =
-		{
+		[
 			"Ganesha",
 			"Ashwini Kumars",
 			"Yama",
 			"Sarpa"
-		};
+		];
 
 		public static readonly string[] Shodasamsa =
-		{
+		[
 			"Brahma",
 			"Vishnu",
 			"Shiva",
 			"Surya"
-		};
+		];
 
 		public static readonly string[] Vimsamsa =
-		{
+		[
 			"Kali",
 			"Gauri",
 			"Jaya",
@@ -129,10 +129,10 @@ public static class Vargas
 			"Bhairavi",
 			"Mangla",
 			"Aparajita"
-		};
+		];
 
 		public static readonly string[] Chaturvimsamsa =
-		{
+		[
 			"Skanda",
 			"Parashudhara",
 			"Anala",
@@ -145,10 +145,10 @@ public static class Vargas
 			"Govinda",
 			"Madana",
 			"Bhima"
-		};
+		];
 
 		public static readonly string[] Nakshatramsa =
-		{
+		[
 			"Ashwini Kumara",
 			"Yama",
 			"Agni",
@@ -176,19 +176,19 @@ public static class Vargas
 			"Ajapata",
 			"Ahirbudhnya",
 			"Pusha"
-		};
+		];
 
 		public static readonly string[] Trimsamsa =
-		{
+		[
 			"Agni",
 			"Vayu",
 			"Indra",
 			"Kubera",
 			"Varuna"
-		};
+		];
 
 		public static readonly string[] Khavedamsa =
-		{
+		[
 			"Vishnu",
 			"Chandra",
 			"Marichi",
@@ -201,17 +201,17 @@ public static class Vargas
 			"Ghandharva",
 			"Kala",
 			"Varuna"
-		};
+		];
 
 		public static readonly string[] Akshavedamsa =
-		{
+		[
 			"Brahma",
 			"Shiva",
 			"Vishnu"
-		};
+		];
 
 		public static readonly string[] Shashtyamsa =
-		{
+		[
 			"Ghora",
 			"Rakshasa",
 			"Deva",
@@ -272,10 +272,10 @@ public static class Vargas
 			"Payodhi",
 			"Bhramana",
 			"Chandrarekha"
-		};
+		];
 
 		public static string[] NadiamsaRajan =
-		{
+		[
 			"Vasudha",
 			"Vaishnavi",
 			"Brahmi",
@@ -300,10 +300,10 @@ public static class Vargas
 			"Jarjharaa",
 			"Dhruva",
 			"TO BE CONTINUED"
-		};
+		];
 
 		public static readonly string[] NadiamsaCKN =
-		{
+		[
 			"Vasudha",
 			"Vaishnavi",
 			"Brahmi",
@@ -454,7 +454,7 @@ public static class Vargas
 			"Paatalini",
 			"Naagapankaja",
 			"Parameswari"
-		};
+		];
 	}
 
 	public static string VariationNameOfDivision(this Division d)
@@ -530,28 +530,27 @@ public static class Vargas
 
 	public static string AmsaRuler(this Position bp, DivisionType varga, int ri)
 	{
-		switch (varga)
-		{
-			case DivisionType.HoraParasara:     return Rulers.Hora[ri];
-			case DivisionType.DrekkanaParasara: return Rulers.Drekkana[ri];
-			case DivisionType.Chaturthamsa:     return Rulers.Chaturthamsa[ri];
-			case DivisionType.Saptamsa:         return Rulers.Saptamsa[ri];
-			case DivisionType.Navamsa:          return Rulers.Navamsa[ri];
-			case DivisionType.Dasamsa:          return Rulers.Dasamsa[ri];
-			case DivisionType.Dwadasamsa:       return Rulers.Dwadasamsa[ri];
-			case DivisionType.Shodasamsa:       return Rulers.Shodasamsa[ri];
-			case DivisionType.Vimsamsa:         return Rulers.Vimsamsa[ri];
-			case DivisionType.Chaturvimsamsa:   return Rulers.Chaturvimsamsa[ri];
-			case DivisionType.Nakshatramsa:     return Rulers.Nakshatramsa[ri];
-			case DivisionType.Trimsamsa:        return Rulers.Trimsamsa[ri];
-			case DivisionType.Khavedamsa:       return Rulers.Khavedamsa[ri];
-			case DivisionType.Akshavedamsa:     return Rulers.Akshavedamsa[ri];
-			case DivisionType.Shashtyamsa:      return Rulers.Shashtyamsa[ri];
-			case DivisionType.Nadiamsa:         return Rulers.NadiamsaCKN[ri];
-			case DivisionType.NadiamsaCKN:      return Rulers.NadiamsaCKN[ri];
-		}
-
-		return string.Empty;
+		return varga switch
+		       {
+			       DivisionType.HoraParasara     => Rulers.Hora[ri],
+			       DivisionType.DrekkanaParasara => Rulers.Drekkana[ri],
+			       DivisionType.Chaturthamsa     => Rulers.Chaturthamsa[ri],
+			       DivisionType.Saptamsa         => Rulers.Saptamsa[ri],
+			       DivisionType.Navamsa          => Rulers.Navamsa[ri],
+			       DivisionType.Dasamsa          => Rulers.Dasamsa[ri],
+			       DivisionType.Dwadasamsa       => Rulers.Dwadasamsa[ri],
+			       DivisionType.Shodasamsa       => Rulers.Shodasamsa[ri],
+			       DivisionType.Vimsamsa         => Rulers.Vimsamsa[ri],
+			       DivisionType.Chaturvimsamsa   => Rulers.Chaturvimsamsa[ri],
+			       DivisionType.Nakshatramsa     => Rulers.Nakshatramsa[ri],
+			       DivisionType.Trimsamsa        => Rulers.Trimsamsa[ri],
+			       DivisionType.Khavedamsa       => Rulers.Khavedamsa[ri],
+			       DivisionType.Akshavedamsa     => Rulers.Akshavedamsa[ri],
+			       DivisionType.Shashtyamsa      => Rulers.Shashtyamsa[ri],
+			       DivisionType.Nadiamsa         => Rulers.NadiamsaCKN[ri],
+			       DivisionType.NadiamsaCKN      => Rulers.NadiamsaCKN[ri],
+			       _                             => string.Empty
+		       };
 	}
 
 	public static string NumPartsInDivisionString(this Division div)
@@ -632,21 +631,21 @@ public static class Vargas
 
 	public static Division[] Shadvargas()
 	{
-		return new[]
-		{
+		return
+		[
 			new Division(DivisionType.Rasi),
 			new Division(DivisionType.HoraParasara),
 			new Division(DivisionType.DrekkanaParasara),
 			new Division(DivisionType.Navamsa),
 			new Division(DivisionType.Dwadasamsa),
 			new Division(DivisionType.Trimsamsa)
-		};
+		];
 	}
 
 	public static Division[] Saptavargas()
 	{
-		return new[]
-		{
+		return
+		[
 			new Division(DivisionType.Rasi),
 			new Division(DivisionType.HoraParasara),
 			new Division(DivisionType.DrekkanaParasara),
@@ -654,13 +653,13 @@ public static class Vargas
 			new Division(DivisionType.Navamsa),
 			new Division(DivisionType.Dwadasamsa),
 			new Division(DivisionType.Trimsamsa)
-		};
+		];
 	}
 
 	public static Division[] Dasavargas()
 	{
-		return new[]
-		{
+		return
+		[
 			new Division(DivisionType.Rasi),
 			new Division(DivisionType.HoraParasara),
 			new Division(DivisionType.DrekkanaParasara),
@@ -671,13 +670,13 @@ public static class Vargas
 			new Division(DivisionType.Shodasamsa),
 			new Division(DivisionType.Trimsamsa),
 			new Division(DivisionType.Shashtyamsa)
-		};
+		];
 	}
 
 	public static Division[] Shodasavargas()
 	{
-		return new[]
-		{
+		return
+		[
 			new Division(DivisionType.Rasi),
 			new Division(DivisionType.HoraParasara),
 			new Division(DivisionType.DrekkanaParasara),
@@ -694,6 +693,6 @@ public static class Vargas
 			new Division(DivisionType.Khavedamsa),
 			new Division(DivisionType.Akshavedamsa),
 			new Division(DivisionType.Shashtyamsa)
-		};
+		];
 	}
 }

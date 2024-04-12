@@ -19,7 +19,7 @@ public class ChartItems
 		{
 			if (_items.TryGetValue(sign, out var dpList) == false)
 			{
-				dpList = new List<DivisionPosition>();
+				dpList = [];
 				_items.Add(sign, dpList);
 			}
 
@@ -40,10 +40,7 @@ public class ChartItems
 		}
 		else
 		{
-			dpList = new List<DivisionPosition>
-			{
-				dp
-			};
+			dpList = [dp];
 			_items.Add(dp.ZodiacHouse, dpList);
 		}
 	}

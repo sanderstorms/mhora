@@ -43,18 +43,18 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 
 	public double ParamAyus()
 	{
-		switch (_options.ParamAyus)
-		{
-			case UserOptions.ParamAyusType.Long:   return 120.0;
-			case UserOptions.ParamAyusType.Middle: return 108.0;
-			default:                               return 96.0;
-		}
+		return _options.ParamAyus switch
+		       {
+			       UserOptions.ParamAyusType.Long   => 120.0,
+			       UserOptions.ParamAyusType.Middle => 108.0,
+			       _                                => 96.0
+		       };
 	}
 
 	public List<DasaEntry> Dasa(int cycle)
 	{
 		int[] order =
-		{
+		[
 			4,
 			2,
 			8,
@@ -67,13 +67,13 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 			7,
 			9,
 			3
-		};
+		];
 		int[] shortLength =
-		{
+		[
 			9,
 			7,
 			8
-		};
+		];
 		var al = new List<DasaEntry> ();
 
 		var    cycleStart = ParamAyus() * cycle;
@@ -106,7 +106,7 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 
 	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
-		return new List<DasaEntry> ();
+		return [];
 	}
 
 	public string Description()

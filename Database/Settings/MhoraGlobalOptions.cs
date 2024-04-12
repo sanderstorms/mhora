@@ -602,20 +602,20 @@ public class MhoraGlobalOptions : MhoraSerializableOptions
 
 	public Color GetBinduColor(Body b)
 	{
-		switch (b)
-		{
-			case Body.Lagna:   return _mcBodyLagna;
-			case Body.Sun:     return _mcBodySun;
-			case Body.Moon:    return _mcBodyMoon;
-			case Body.Mars:    return _mcBodyMars;
-			case Body.Mercury: return _mcBodyMercury;
-			case Body.Jupiter: return _mcBodyJupiter;
-			case Body.Venus:   return _mcBodyVenus;
-			case Body.Saturn:  return _mcBodySaturn;
-			case Body.Rahu:    return _mcBodyRahu;
-			case Body.Ketu:    return _mcBodyKetu;
-			default:                return _mcBodyOther;
-		}
+		return b switch
+		       {
+			       Body.Lagna   => _mcBodyLagna,
+			       Body.Sun     => _mcBodySun,
+			       Body.Moon    => _mcBodyMoon,
+			       Body.Mars    => _mcBodyMars,
+			       Body.Mercury => _mcBodyMercury,
+			       Body.Jupiter => _mcBodyJupiter,
+			       Body.Venus   => _mcBodyVenus,
+			       Body.Saturn  => _mcBodySaturn,
+			       Body.Rahu    => _mcBodyRahu,
+			       Body.Ketu    => _mcBodyKetu,
+			       _            => _mcBodyOther
+		       };
 	}
 
 

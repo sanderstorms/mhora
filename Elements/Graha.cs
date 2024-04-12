@@ -30,14 +30,14 @@ namespace Mhora.Elements
 				_houseOffset = 30.0 - _houseOffset;
 			}
 
-			AspectFrom   = new List<Graha>();
-			AspectTo     = new List<Graha>();
-			MutualAspect = new List<Graha>();
-			Conjunct     = new List<Graha>();
-			RashiDrishti = new List<Graha>();
-			Ownership    = new List<Rashi>();
-			Association  = new List<Graha>();
-			OwnHouses    = new List<Rashi>();
+			AspectFrom   = [];
+			AspectTo     = [];
+			MutualAspect = [];
+			Conjunct     = [];
+			RashiDrishti = [];
+			Ownership    = [];
+			Association  = [];
+			OwnHouses    = [];
 		}
 
 		public static implicit operator Body  (Graha graha) => graha.Body;
@@ -600,18 +600,17 @@ namespace Mhora.Elements
 		{
 			get
 			{
-				switch (Body)
-				{
-					case Body.Sun:     return (Bhava == Bhava.KarmaBhava);
-					case Body.Moon:    return (Bhava == Bhava.SukhaBhava);
-					case Body.Mars:    return (Bhava == Bhava.KarmaBhava);
-					case Body.Mercury: return (Bhava == Bhava.LagnaBhava);
-					case Body.Jupiter: return (Bhava == Bhava.LagnaBhava);
-					case Body.Venus:   return (Bhava == Bhava.SukhaBhava);
-					case Body.Saturn:  return (Bhava == Bhava.JayaBhava );
-				}
-
-				return (false);
+				return Body switch
+				       {
+					       Body.Sun     => (Bhava == Bhava.KarmaBhava),
+					       Body.Moon    => (Bhava == Bhava.SukhaBhava),
+					       Body.Mars    => (Bhava == Bhava.KarmaBhava),
+					       Body.Mercury => (Bhava == Bhava.LagnaBhava),
+					       Body.Jupiter => (Bhava == Bhava.LagnaBhava),
+					       Body.Venus   => (Bhava == Bhava.SukhaBhava),
+					       Body.Saturn  => (Bhava == Bhava.JayaBhava),
+					       _            => (false)
+				       };
 			}
 		}
 

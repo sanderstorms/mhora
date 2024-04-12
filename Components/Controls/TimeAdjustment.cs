@@ -77,17 +77,16 @@ namespace Mhora.Components.Controls
         {
 	        get
 	        {
-		        switch (TimeUnit)
-		        {
-			        case Unit.Seconds:  return Horoscope.Info.DateOfBirth.AddSeconds(TimeValue);
-			        case Unit.Minutes:  return Horoscope.Info.DateOfBirth.AddMinutes(TimeValue);
-			        case Unit.Hours:    return Horoscope.Info.DateOfBirth.AddHours(TimeValue);
-			        case Unit.Days:     return Horoscope.Info.DateOfBirth.AddDays(TimeValue);
-			        case Unit.Months:   return Horoscope.Info.DateOfBirth.AddMonths(TimeValue);
-			        case Unit.Years:    return Horoscope.Info.DateOfBirth.AddYears(TimeValue);
-		        }
-
-		        return (Horoscope.Info.DateOfBirth);
+		        return TimeUnit switch
+		               {
+			               Unit.Seconds => Horoscope.Info.DateOfBirth.AddSeconds(TimeValue),
+			               Unit.Minutes => Horoscope.Info.DateOfBirth.AddMinutes(TimeValue),
+			               Unit.Hours   => Horoscope.Info.DateOfBirth.AddHours(TimeValue),
+			               Unit.Days    => Horoscope.Info.DateOfBirth.AddDays(TimeValue),
+			               Unit.Months  => Horoscope.Info.DateOfBirth.AddMonths(TimeValue),
+			               Unit.Years   => Horoscope.Info.DateOfBirth.AddYears(TimeValue),
+			               _            => (Horoscope.Info.DateOfBirth)
+		               };
 	        }
         }
 

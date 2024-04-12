@@ -239,8 +239,8 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 			var uo = new UserOptions(_h)
 			{
 				GrahaStrengths = (OrderedGrahas) GrahaStrengths.Clone(),
-				RasiStrengths = new List <ZodiacHouse []> (),
-				MSeedBody = MSeedBody
+				RasiStrengths  = [],
+				MSeedBody      = MSeedBody
 			};
 			for (var i = 0; i < 3; i++)
 			{
@@ -358,8 +358,10 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 			}
 
 
-			RasiStrengths    = new List<ZodiacHouse[]>();
-			RasiStrengths.Add(zRet[0]);
+			RasiStrengths    =
+			[
+				zRet[0]
+			];
 			if (bIsForward)
 			{
 				RasiStrengths.Add(zRet[1]);

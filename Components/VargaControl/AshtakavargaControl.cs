@@ -95,8 +95,8 @@ public class AshtakavargaControl : MhoraControl
 		h.Changed                              += OnRecalculate;
 		MhoraGlobalOptions.DisplayPrefsChanged += onRedisplay;
 		av                                     =  new Ashtakavarga(h, userOptions.VargaType);
-		outerBodies = new[]
-		{
+		outerBodies =
+		[
 			Body.Sun,
 			Body.Moon,
 			Body.Mars,
@@ -105,7 +105,7 @@ public class AshtakavargaControl : MhoraControl
 			Body.Venus,
 			Body.Saturn,
 			Body.Lagna
-		};
+		];
 
 		b_black = new SolidBrush(Color.Black);
 
@@ -310,7 +310,7 @@ public class AshtakavargaControl : MhoraControl
 		}
 
 		Body[] bin_body =
-		{
+		[
 			Body.Lagna,
 			Body.Lagna,
 			Body.Sun,
@@ -320,7 +320,7 @@ public class AshtakavargaControl : MhoraControl
 			Body.Jupiter,
 			Body.Venus,
 			Body.Saturn
-		};
+		];
 		var bins = new int[9][];
 
 		if (userOptions.SavType == ESavType.Normal)
@@ -591,7 +591,7 @@ public class AshtakavargaControl : MhoraControl
 	private void DrawChanchaChakra(Graphics g)
 	{
 		string[] sBindus =
-		{
+		[
 			"Su",
 			"Mo",
 			"Ma",
@@ -600,7 +600,7 @@ public class AshtakavargaControl : MhoraControl
 			"Ve",
 			"Sa",
 			"As"
-		};
+		];
 		var   pn_black = new Pen(Color.Black, (float) 0.01);
 		var   pn_grey  = new Pen(Color.LightGray, (float) 0.01);
 		var   pn_dgrey = new Pen(Color.Gray, (float) 0.01);
@@ -726,8 +726,8 @@ public class AshtakavargaControl : MhoraControl
 
 	private void menuSav_Click(object sender, EventArgs e)
 	{
-		outerBodies = new[]
-		{
+		outerBodies =
+		[
 			Body.Sun,
 			Body.Moon,
 			Body.Mars,
@@ -736,7 +736,7 @@ public class AshtakavargaControl : MhoraControl
 			Body.Venus,
 			Body.Saturn,
 			Body.Lagna
-		};
+		];
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
 		Invalidate();
@@ -745,10 +745,10 @@ public class AshtakavargaControl : MhoraControl
 
 	private void menuPavSun_Click(object sender, EventArgs e)
 	{
-		outerBodies = new[]
-		{
+		outerBodies =
+		[
 			Body.Sun
-		};
+		];
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
 		Invalidate();
@@ -757,10 +757,10 @@ public class AshtakavargaControl : MhoraControl
 
 	private void menuPavMoon_Click(object sender, EventArgs e)
 	{
-		outerBodies = new[]
-		{
+		outerBodies =
+		[
 			Body.Moon
-		};
+		];
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
 		Invalidate();
@@ -769,10 +769,10 @@ public class AshtakavargaControl : MhoraControl
 
 	private void menuPavJupiter_Click(object sender, EventArgs e)
 	{
-		outerBodies = new[]
-		{
+		outerBodies =
+		[
 			Body.Jupiter
-		};
+		];
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
 		Invalidate();
@@ -781,10 +781,10 @@ public class AshtakavargaControl : MhoraControl
 
 	private void menuPavMars_Click(object sender, EventArgs e)
 	{
-		outerBodies = new[]
-		{
+		outerBodies =
+		[
 			Body.Mars
-		};
+		];
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
 		Invalidate();
@@ -793,10 +793,10 @@ public class AshtakavargaControl : MhoraControl
 
 	private void menuPavMercury_Click(object sender, EventArgs e)
 	{
-		outerBodies = new[]
-		{
+		outerBodies =
+		[
 			Body.Mercury
-		};
+		];
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
 		Invalidate();
@@ -805,10 +805,10 @@ public class AshtakavargaControl : MhoraControl
 
 	private void menuPavVenus_Click(object sender, EventArgs e)
 	{
-		outerBodies = new[]
-		{
+		outerBodies =
+		[
 			Body.Venus
-		};
+		];
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
 		Invalidate();
@@ -817,10 +817,10 @@ public class AshtakavargaControl : MhoraControl
 
 	private void menuPavSaturn_Click(object sender, EventArgs e)
 	{
-		outerBodies = new[]
-		{
+		outerBodies =
+		[
 			Body.Saturn
-		};
+		];
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
 		Invalidate();
@@ -829,10 +829,10 @@ public class AshtakavargaControl : MhoraControl
 
 	private void menuPavLagna_Click(object sender, EventArgs e)
 	{
-		outerBodies = new[]
-		{
+		outerBodies =
+		[
 			Body.Lagna
-		};
+		];
 		mDisplayStyle = EDisplayStyle.Chancha;
 		DrawToBuffer();
 		Invalidate();

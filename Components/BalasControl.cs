@@ -118,7 +118,7 @@ public class BalasControl : MhoraControl
 	public void Repopulate()
 	{
 		Body[] grahas =
-		{
+		[
 			Body.Sun,
 			Body.Moon,
 			Body.Mars,
@@ -126,7 +126,7 @@ public class BalasControl : MhoraControl
 			Body.Jupiter,
 			Body.Venus,
 			Body.Saturn
-		};
+		];
 		mList.Clear();
 
 		mList.Columns.Add("Bala", 120, HorizontalAlignment.Left);

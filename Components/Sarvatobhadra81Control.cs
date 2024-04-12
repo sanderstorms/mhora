@@ -111,17 +111,16 @@ public class Sarvatobhadra81Control : MhoraControl
 	{
 		var oi4 = (int) (bufferCellSize / (float) 4);
 		var oi2 = (int) (bufferCellSize / (float) 2);
-		switch (item)
-		{
-			case 4: return new Point(0, oi4   * 1);
-			case 1: return new Point(0, oi4   * 2);
-			case 5: return new Point(0, oi4   * 3);
-			case 3: return new Point(oi2, oi4 * 1);
-			case 6: return new Point(oi2, oi4 * 2);
-			case 2: return new Point(oi2, oi4 * 3);
-		}
-
-		return new Point(0, 0);
+		return item switch
+		       {
+			       4 => new Point(0, oi4   * 1),
+			       1 => new Point(0, oi4   * 2),
+			       5 => new Point(0, oi4   * 3),
+			       3 => new Point(oi2, oi4 * 1),
+			       6 => new Point(oi2, oi4 * 2),
+			       2 => new Point(oi2, oi4 * 3),
+			       _ => new Point(0, 0)
+		       };
 	}
 
 	private Point GetItemOffsetCenter()

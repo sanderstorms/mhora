@@ -38,7 +38,7 @@ public class MhoraPanchangaControl : MhoraControl
 	private readonly IContainer components = null;
 
 	private readonly int[] gulika_kalas =
-	{
+	[
 		6,
 		5,
 		4,
@@ -46,12 +46,12 @@ public class MhoraPanchangaControl : MhoraControl
 		2,
 		1,
 		0
-	};
+	];
 
 	private readonly UserOptions opts;
 
 	private readonly int[] rahu_kalas =
-	{
+	[
 		7,
 		1,
 		6,
@@ -59,10 +59,10 @@ public class MhoraPanchangaControl : MhoraControl
 		5,
 		3,
 		2
-	};
+	];
 
 	private readonly int[] yama_kalas =
-	{
+	[
 		4,
 		3,
 		2,
@@ -70,7 +70,7 @@ public class MhoraPanchangaControl : MhoraControl
 		0,
 		6,
 		5
-	};
+	];
 
 	private Button bCompute;
 	private Button bOpts;
@@ -80,7 +80,7 @@ public class MhoraPanchangaControl : MhoraControl
 	private PanchangaGlobalMoments globals = new();
 
 
-	private List<PanchangaLocalMoments> locals = new();
+	private List<PanchangaLocalMoments> locals = [];
 	public  DelegateComputeFinished     m_DelegateComputeFinished;
 	private MenuItem                    menuItem1;
 	private MenuItem                    menuItem2;
@@ -318,14 +318,14 @@ public class MhoraPanchangaControl : MhoraControl
 
 		var ut_start = Math.Floor(h.Info.Jd);
 		double[] geopos =
-		{
+		[
 			h.Info.Longitude,
 			h.Info.Latitude,
 			h.Info.Altitude
-		};
+		];
 
 		globals = new PanchangaGlobalMoments();
-		locals  = new List<PanchangaLocalMoments>();
+		locals  = [];
 
 		for (var i = 0; i < opts.NumDays; i++)
 		{

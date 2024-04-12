@@ -169,7 +169,7 @@ namespace Mhora
 			}
 			else
 			{
-				info = new Mhd(ofd.FileName).ToHoraInfo();
+				info = HoraInfo.Import(ofd.FileName);
 			}
 
 			var _path_split = ofd.FileName.Split('/', '\\');

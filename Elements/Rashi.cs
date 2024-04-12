@@ -16,7 +16,7 @@ namespace Mhora.Elements
 		{
 			_rashis = rashis;
 			_zh     = zh;
-			Grahas  = new List<Graha>();
+			Grahas  = [];
 		}
 
 		public static implicit operator ZodiacHouse(Rashi rashi) => rashi.ZodiacHouse;

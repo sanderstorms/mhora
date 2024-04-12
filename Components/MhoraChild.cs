@@ -556,10 +556,9 @@ public class MhoraChild : Form
 		var sz = Screen.PrimaryScreen.WorkingArea.Height / 2 - 50;
 		sp_lr.Control1.Width  = sz;
 		sp_ud.Control1.Height = sz;
-		Controls.AddRange(new Control[]
-		{
-			sp_lr
-		});
+		Controls.AddRange([
+			                  sp_lr
+		                  ]);
 		Contents = sp_lr;
 	}
 
@@ -595,10 +594,9 @@ public class MhoraChild : Form
 		var sz = Screen.PrimaryScreen.WorkingArea.Height / 2 - 50;
 		sp_lr.Control1.Width  = sz;
 		sp_ud.Control1.Height = sz;
-		Controls.AddRange(new Control[]
-		{
-			sp_lr
-		});
+		Controls.AddRange([
+			                  sp_lr
+		                  ]);
 		Contents = sp_lr;
 	}
 
@@ -641,10 +639,9 @@ public class MhoraChild : Form
 		sp_lr.Control1.Width   = sz;
 		sp_ud.Control1.Height  = sz;
 		sp_ud2.Control1.Height = sz;
-		Controls.AddRange(new Control[]
-		{
-			sp_lr
-		});
+		Controls.AddRange([
+			                  sp_lr
+		                  ]);
 		Contents = sp_lr;
 	}
 
@@ -749,10 +746,9 @@ public class MhoraChild : Form
 		sp_ud2.Control1.Height = sz;
 		sp_ud3.Control1.Height = sz;
 
-		Controls.AddRange(new Control[]
-		{
-			lr1
-		});
+		Controls.AddRange([
+			                  lr1
+		                  ]);
 		Contents = lr1;
 	}
 

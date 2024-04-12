@@ -13,7 +13,7 @@ namespace Mhora.Elements
 		internal Rashis (Grahas grahas)
 		{
 			_grahas = grahas;
-			_rashis = new List<Rashi>();
+			_rashis = [];
 			foreach (ZodiacHouse zh in Enum.GetValues(typeof(ZodiacHouse)))
 			{
 				_rashis.Add(new Rashi(zh, this));

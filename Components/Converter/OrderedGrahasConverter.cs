@@ -85,7 +85,7 @@ internal class OrderedGrahasConverter : ExpandableObjectConverter
 			}
 		}
 
-		oz.grahas = new (al);
+		oz.grahas = [..al];
 		return oz;
 	}
 

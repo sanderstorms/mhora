@@ -542,11 +542,11 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Lord", -2, HorizontalAlignment.Left);
 
         Body[] bodyReferences =
-		{
-            Body.Lagna,
-            Body.Moon,
-            Body.Sun
-		};
+        [
+	        Body.Lagna,
+	        Body.Moon,
+	        Body.Sun
+        ];
 
 		foreach (var b in bodyReferences)
 		{
@@ -583,16 +583,12 @@ public class BasicCalculationsControl : MhoraControl
 				Text = b.Name()
 			};
 			var dp            = h.GetPosition(b).ToDivisionPosition(DivisionType.Panchamsa);
-			var avastha_index = -1;
-			switch (dp.ZodiacHouse.Index() % 2)
-			{
-				case 1:
-					avastha_index = dp.Part;
-					break;
-				case 0:
-					avastha_index = 6 - dp.Part;
-					break;
-			}
+			var avastha_index = (dp.ZodiacHouse.Index() % 2) switch
+			                    {
+				                    1 => dp.Part,
+				                    0 => 6 - dp.Part,
+				                    _ => -1
+			                    };
 
 			li.SubItems.Add(Vargas.Avasthas[avastha_index - 1]);
             mList.Items.Add(li);

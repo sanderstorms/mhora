@@ -63,7 +63,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 	private ChartItems items = new();
 
 	private string[] karakas_s =
-	{
+	[
 		"AK",
 		"AmK",
 		"BK",
@@ -72,10 +72,10 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		"PuK",
 		"JK",
 		"DK"
-	};
+	];
 
 	private string[] karakas_s7 =
-	{
+	[
 		"AK",
 		"AmK",
 		"BK",
@@ -83,7 +83,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		"PiK",
 		"JK",
 		"DK"
-	};
+	];
 
 	private MenuItem    mAkshavedamsa;
 	private MenuItem    mAshtamsa;

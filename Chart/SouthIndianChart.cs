@@ -195,22 +195,21 @@ public class SouthIndianChart : IDrawChart
 
 	private Point GetZhouseOffset(ZodiacHouse zh)
 	{
-		switch (zh.Index())
-		{
-			case 1:  return new Point(Xo + Xw     / 4, Yo + 0);
-			case 2:  return new Point(Xo + Xw * 2 / 4, Yo + 0);
-			case 3:  return new Point(Xo + Xw * 3 / 4, Yo + 0);
-			case 4:  return new Point(Xo + Xw * 3 / 4, Yo + Yw     / 4);
-			case 5:  return new Point(Xo + Xw * 3 / 4, Yo + Yw * 2 / 4);
-			case 6:  return new Point(Xo + Xw * 3 / 4, Yo + Yw * 3 / 4);
-			case 7:  return new Point(Xo + Xw * 2 / 4, Yo + Yw * 3 / 4);
-			case 8:  return new Point(Xo + Xw     / 4, Yo + Yw * 3 / 4);
-			case 9:  return new Point(Xo + 0, Yo          + Yw * 3 / 4);
-			case 10: return new Point(Xo + 0, Yo          + Yw * 2 / 4);
-			case 11: return new Point(Xo + 0, Yo          + Yw * 1 / 4);
-			case 12: return new Point(Xo + 0, Yo);
-		}
-
-		return new Point(0, 0);
+		return zh.Index() switch
+		       {
+			       1  => new Point(Xo + Xw     / 4, Yo + 0),
+			       2  => new Point(Xo + Xw * 2 / 4, Yo + 0),
+			       3  => new Point(Xo + Xw * 3 / 4, Yo + 0),
+			       4  => new Point(Xo + Xw * 3 / 4, Yo + Yw     / 4),
+			       5  => new Point(Xo + Xw * 3 / 4, Yo + Yw * 2 / 4),
+			       6  => new Point(Xo + Xw * 3 / 4, Yo + Yw * 3 / 4),
+			       7  => new Point(Xo + Xw * 2 / 4, Yo + Yw * 3 / 4),
+			       8  => new Point(Xo + Xw     / 4, Yo + Yw * 3 / 4),
+			       9  => new Point(Xo + 0, Yo          + Yw * 3 / 4),
+			       10 => new Point(Xo + 0, Yo          + Yw * 2 / 4),
+			       11 => new Point(Xo + 0, Yo          + Yw * 1 / 4),
+			       12 => new Point(Xo + 0, Yo),
+			       _  => new Point(0, 0)
+		       };
 	}
 }

@@ -3,7 +3,7 @@
 	public static class Varnada
 	{
 		public static readonly string[] Name =
-		{
+		[
 			"VL",
 			"V2",
 			"V3",
@@ -16,6 +16,6 @@
 			"V10",
 			"V11",
 			"V12"
-		};
+		];
 	}
 }

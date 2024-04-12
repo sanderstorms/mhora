@@ -51,8 +51,8 @@ public class NavamsaControl : MhoraControl
 		pn_black                               =  new Pen(Color.Black, (float) 0.1);
 		pn_grey                                =  new Pen(Color.Gray, (float) 0.1);
 		pn_lgrey                               =  new Pen(Color.LightGray, (float) 0.1);
-		nak_s = new string[27]
-		{
+		nak_s =
+		[
 			"Asw",
 			"Bha",
 			"Kri",
@@ -80,7 +80,7 @@ public class NavamsaControl : MhoraControl
 			"PBh",
 			"UBh",
 			"Rev"
-		};
+		];
 		AddViewsToContextMenu(contextMenu);
 		onRedisplay(MhoraGlobalOptions.Instance);
 	}

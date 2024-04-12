@@ -28,139 +28,130 @@ public static class Nakshatras
 {
 
 	public static readonly int[][] TaraAspects =
-	{
-		new[]
-		{
+	[
+		[
 			14,
 			15
-		},
-		new[]
-		{
+		],
+		[
 			14,
-			15
-		},
-		new[]
-		{
+		15
+		],
+		[
 			1,
-			3,
-			7,
-			8,
-			15
-		},
-		new[]
-		{
+		3,
+		7,
+		8,
+		15
+		],
+		[
 			1,
-			15
-		},
-		new[]
-		{
+		15
+		],
+		[
 			10,
-			15,
-			19
-		},
-		new[]
-		{
+		15,
+		19
+		],
+		[
 			1,
-			15
-		},
-		new[]
-		{
+		15
+		],
+		[
 			3,
-			5,
-			15,
-			19
-		},
-		new int[]
-		{
-		}
-	};
+		5,
+		15,
+		19
+		],
+		[
+		]
+	];
 
 	public static string Name(Nakshatra value)
 	{
-		switch (value)
-		{
-			case Nakshatra.Aswini:         return "Aswini";
-			case Nakshatra.Bharani:        return "Bharani";
-			case Nakshatra.Krittika:       return "Krittika";
-			case Nakshatra.Rohini:         return "Rohini";
-			case Nakshatra.Mrigarirsa:     return "Mrigasira";
-			case Nakshatra.Aridra:         return "Ardra";
-			case Nakshatra.Punarvasu:      return "Punarvasu";
-			case Nakshatra.Pushya:         return "Pushyami";
-			case Nakshatra.Aslesha:        return "Aslesha";
-			case Nakshatra.Makha:          return "Makha";
-			case Nakshatra.PoorvaPhalguni: return "P.Phalguni";
-			case Nakshatra.UttaraPhalguni: return "U.Phalguni";
-			case Nakshatra.Hasta:          return "Hasta";
-			case Nakshatra.Chittra:        return "Chitta";
-			case Nakshatra.Swati:          return "Swati";
-			case Nakshatra.Vishaka:        return "Visakha";
-			case Nakshatra.Anuradha:       return "Anuradha";
-			case Nakshatra.Jyestha:        return "Jyeshtha";
-			case Nakshatra.Moola:          return "Moola";
-			case Nakshatra.PoorvaShada:    return "P.Ashada";
-			case Nakshatra.UttaraShada:    return "U.Ashada";
-			case Nakshatra.Sravana:        return "Sravana";
-			case Nakshatra.Dhanishta:      return "Dhanishta";
-			case Nakshatra.Satabisha:      return "Shatabisha";
-			case Nakshatra.PoorvaBhadra:   return "P.Bhadra";
-			case Nakshatra.UttaraBhadra:   return "U.Bhadra";
-			case Nakshatra.Revati:         return "Revati";
-			default:                  return "---";
-		}
+		return value switch
+		       {
+			       Nakshatra.Aswini         => "Aswini",
+			       Nakshatra.Bharani        => "Bharani",
+			       Nakshatra.Krittika       => "Krittika",
+			       Nakshatra.Rohini         => "Rohini",
+			       Nakshatra.Mrigarirsa     => "Mrigasira",
+			       Nakshatra.Aridra         => "Ardra",
+			       Nakshatra.Punarvasu      => "Punarvasu",
+			       Nakshatra.Pushya         => "Pushyami",
+			       Nakshatra.Aslesha        => "Aslesha",
+			       Nakshatra.Makha          => "Makha",
+			       Nakshatra.PoorvaPhalguni => "P.Phalguni",
+			       Nakshatra.UttaraPhalguni => "U.Phalguni",
+			       Nakshatra.Hasta          => "Hasta",
+			       Nakshatra.Chittra        => "Chitta",
+			       Nakshatra.Swati          => "Swati",
+			       Nakshatra.Vishaka        => "Visakha",
+			       Nakshatra.Anuradha       => "Anuradha",
+			       Nakshatra.Jyestha        => "Jyeshtha",
+			       Nakshatra.Moola          => "Moola",
+			       Nakshatra.PoorvaShada    => "P.Ashada",
+			       Nakshatra.UttaraShada    => "U.Ashada",
+			       Nakshatra.Sravana        => "Sravana",
+			       Nakshatra.Dhanishta      => "Dhanishta",
+			       Nakshatra.Satabisha      => "Shatabisha",
+			       Nakshatra.PoorvaBhadra   => "P.Bhadra",
+			       Nakshatra.UttaraBhadra   => "U.Bhadra",
+			       Nakshatra.Revati         => "Revati",
+			       _                        => "---"
+		       };
 	}
 
 	public static string ToShortString(this Nakshatra value)
 	{
-		switch (value)
-		{
-			case Nakshatra.Aswini:         return "Asw";
-			case Nakshatra.Bharani:        return "Bha";
-			case Nakshatra.Krittika:       return "Kri";
-			case Nakshatra.Rohini:         return "Roh";
-			case Nakshatra.Mrigarirsa:     return "Mri";
-			case Nakshatra.Aridra:         return "Ari";
-			case Nakshatra.Punarvasu:      return "Pun";
-			case Nakshatra.Pushya:         return "Pus";
-			case Nakshatra.Aslesha:        return "Asl";
-			case Nakshatra.Makha:          return "Mak";
-			case Nakshatra.PoorvaPhalguni: return "P.Ph";
-			case Nakshatra.UttaraPhalguni: return "U.Ph";
-			case Nakshatra.Hasta:          return "Has";
-			case Nakshatra.Chittra:        return "Chi";
-			case Nakshatra.Swati:          return "Swa";
-			case Nakshatra.Vishaka:        return "Vis";
-			case Nakshatra.Anuradha:       return "Anu";
-			case Nakshatra.Jyestha:        return "Jye";
-			case Nakshatra.Moola:          return "Moo";
-			case Nakshatra.PoorvaShada:    return "P.Ash";
-			case Nakshatra.UttaraShada:    return "U.Ash";
-			case Nakshatra.Sravana:        return "Sra";
-			case Nakshatra.Dhanishta:      return "Dha";
-			case Nakshatra.Satabisha:      return "Sat";
-			case Nakshatra.PoorvaBhadra:   return "P.Bh";
-			case Nakshatra.UttaraBhadra:   return "U.Bh";
-			case Nakshatra.Revati:         return "Rev";
-			default:                  return "---";
-		}
+		return value switch
+		       {
+			       Nakshatra.Aswini         => "Asw",
+			       Nakshatra.Bharani        => "Bha",
+			       Nakshatra.Krittika       => "Kri",
+			       Nakshatra.Rohini         => "Roh",
+			       Nakshatra.Mrigarirsa     => "Mri",
+			       Nakshatra.Aridra         => "Ari",
+			       Nakshatra.Punarvasu      => "Pun",
+			       Nakshatra.Pushya         => "Pus",
+			       Nakshatra.Aslesha        => "Asl",
+			       Nakshatra.Makha          => "Mak",
+			       Nakshatra.PoorvaPhalguni => "P.Ph",
+			       Nakshatra.UttaraPhalguni => "U.Ph",
+			       Nakshatra.Hasta          => "Has",
+			       Nakshatra.Chittra        => "Chi",
+			       Nakshatra.Swati          => "Swa",
+			       Nakshatra.Vishaka        => "Vis",
+			       Nakshatra.Anuradha       => "Anu",
+			       Nakshatra.Jyestha        => "Jye",
+			       Nakshatra.Moola          => "Moo",
+			       Nakshatra.PoorvaShada    => "P.Ash",
+			       Nakshatra.UttaraShada    => "U.Ash",
+			       Nakshatra.Sravana        => "Sra",
+			       Nakshatra.Dhanishta      => "Dha",
+			       Nakshatra.Satabisha      => "Sat",
+			       Nakshatra.PoorvaBhadra   => "P.Bh",
+			       Nakshatra.UttaraBhadra   => "U.Bh",
+			       Nakshatra.Revati         => "Rev",
+			       _                        => "---"
+		       };
 	}
 
 	public static Body Lord(this Nakshatra nakshatra)
 	{
-		switch ((nakshatra.Index() - 1) % 9)
-		{
-			case 0: return Body.Ketu;
-			case 1: return Body.Venus;
-			case 2: return Body.Sun;
-			case 4: return Body.Moon;
-			case 5: return Body.Mars;
-			case 6: return Body.Rahu;
-			case 7: return Body.Jupiter;
-			case 8: return Body.Saturn;
-			case 9: return Body.Mercury;
-		}
-
-		return (Body.Lagna); //not possible
+		return ((nakshatra.Index() - 1) % 9) switch
+		       {
+			       0 => Body.Ketu,
+			       1 => Body.Venus,
+			       2 => Body.Sun,
+			       4 => Body.Moon,
+			       5 => Body.Mars,
+			       6 => Body.Rahu,
+			       7 => Body.Jupiter,
+			       8 => Body.Saturn,
+			       9 => Body.Mercury,
+			       _ => (Body.Lagna) //not possible
+		       };
 	}
 
 	public static ZodiacHouse Pada(this Nakshatra nakshatra, int pada)

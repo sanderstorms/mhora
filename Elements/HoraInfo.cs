@@ -74,6 +74,11 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	private DateTime  _tob;
 	private ChartType _type;
 
+	protected HoraInfo()
+	{
+
+	}
+
 	public HoraInfo(City city, Database.World.TimeZone timezone = null)
 	{
 		_city = city;

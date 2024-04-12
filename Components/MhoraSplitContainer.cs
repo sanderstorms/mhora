@@ -116,12 +116,11 @@ public class MhoraSplitContainer : UserControl
 				else
 				    sp.SplitPosition = this.Height / 2;
 				*/
-				Controls.AddRange(new Control[]
-				{
-					mControl2,
-					sp,
-					Control1
-				});
+				Controls.AddRange([
+					                  mControl2,
+					                  sp,
+					                  Control1
+				                  ]);
 			}
 		}
 	}

@@ -48,16 +48,16 @@ public static class Karanas
 			default:
 			{
 				var vn = ((int) value - 1).NormalizeInc(1, 7);
-				switch (vn)
-				{
-					case 1:  return Body.Sun;
-					case 2:  return Body.Moon;
-					case 3:  return Body.Mars;
-					case 4:  return Body.Mercury;
-					case 5:  return Body.Jupiter;
-					case 6:  return Body.Venus;
-					default: return Body.Saturn;
-				}
+				return vn switch
+				       {
+					       1 => Body.Sun,
+					       2 => Body.Moon,
+					       3 => Body.Mars,
+					       4 => Body.Mercury,
+					       5 => Body.Jupiter,
+					       6 => Body.Venus,
+					       _ => Body.Saturn
+				       };
 			}
 		}
 	}

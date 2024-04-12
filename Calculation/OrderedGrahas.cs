@@ -28,13 +28,13 @@ namespace Mhora.Calculation;
 [TypeConverter(typeof(OrderedGrahasConverter))]
 public class OrderedGrahas : ICloneable
 {
-	public List <Body> grahas = new List<Body>();
+	public List <Body> grahas = [];
 
 	public object Clone()
 	{
 		var oz = new OrderedGrahas
 		{
-			grahas = new List<Body>(grahas)
+			grahas = [..grahas]
 		};
 		return oz;
 	}

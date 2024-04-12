@@ -93,13 +93,13 @@ public class KaranaPraveshDasa : Dasa, IDasa
 	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
 		string[] desc =
-		{
+		[
 			"  Month: ",
 			"    Tithis: "
-		};
+		];
 		if (pdi.Level == 3)
 		{
-			return new List<DasaEntry> ();
+			return [];
 		}
 
 		TimeOffset start  = 0.0;
@@ -113,7 +113,7 @@ public class KaranaPraveshDasa : Dasa, IDasa
 		switch (pdi.Level)
 		{
 			case 1:
-				al     = new List<DasaEntry> ();
+				al     = [];
 				length = pdi.DasaLength / 13.0;
 				//Mhora.Log.Debug("AD length is {0}", length);
 				for (var i = 0; i < 13; i++)
@@ -125,7 +125,7 @@ public class KaranaPraveshDasa : Dasa, IDasa
 
 				return al;
 			case 2:
-				al     = new List<DasaEntry> ();
+				al     = [];
 				length = pdi.DasaLength / 60.0;
 				//Mhora.Log.Debug("PD length is {0}", length);
 				for (var i = 0; i < 60; i++)
@@ -139,7 +139,7 @@ public class KaranaPraveshDasa : Dasa, IDasa
 				return al;
 		}
 
-		return new List<DasaEntry> ();
+		return [];
 	}
 
 	public string Description()

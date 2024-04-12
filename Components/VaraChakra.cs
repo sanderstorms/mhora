@@ -117,7 +117,7 @@ public class VaraChakra : MhoraControl
 	private void DrawChakra(Graphics g)
 	{
 		Body[] bodies =
-		{
+		[
 			Body.Sun,
 			Body.Moon,
 			Body.Mars,
@@ -127,7 +127,7 @@ public class VaraChakra : MhoraControl
 			Body.Saturn,
 			Body.Rahu,
 			Body.Ketu
-		};
+		];
 
 		g.Clear(MhoraGlobalOptions.Instance.ChakraBackgroundColor);
 

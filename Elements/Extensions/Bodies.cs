@@ -79,7 +79,7 @@ public static class Bodies
 
 
 	public static readonly Body[] HoraOrder =
-	{
+	[
 		Body.Sun,
 		Body.Venus,
 		Body.Mercury,
@@ -87,10 +87,10 @@ public static class Bodies
 		Body.Saturn,
 		Body.Jupiter,
 		Body.Mars
-	};
+	];
 
 	public static readonly Body[] KalaOrder =
-	{
+	[
 		Body.Sun,
 		Body.Mars,
 		Body.Jupiter,
@@ -99,11 +99,11 @@ public static class Bodies
 		Body.Saturn,
 		Body.Moon,
 		Body.Rahu
-	};
+	];
 
 
 	public static readonly string[] Karakas =
-	{
+	[
 		"Atma",
 		"Amatya",
 		"Bhratri",
@@ -112,10 +112,10 @@ public static class Bodies
 		"Putra",
 		"Jnaati",
 		"Dara"
-	};
+	];
 
 	public static readonly string[] KarakasS =
-	{
+	[
 		"AK",
 		"AmK",
 		"BK",
@@ -124,10 +124,10 @@ public static class Bodies
 		"PuK",
 		"JK",
 		"DK"
-	};
+	];
 
 	public static readonly string[] Karakas7 =
-	{
+	[
 		"Atma",
 		"Amatya",
 		"Bhratri",
@@ -135,10 +135,10 @@ public static class Bodies
 		"Pitri",
 		"Jnaati",
 		"Dara"
-	};
+	];
 
 	public static readonly string[] KarakasS7 =
-	{
+	[
 		"AK",
 		"AmK",
 		"BK",
@@ -146,10 +146,10 @@ public static class Bodies
 		"PiK",
 		"JK",
 		"DK"
-	};
+	];
 
 	public static readonly int[] LattaAspects =
-	{
+	[
 		12,
 		22,
 		3,
@@ -158,56 +158,41 @@ public static class Bodies
 		5,
 		8,
 		9
-	};
+	];
 
 	public static int SwephBody(this Body b)
 	{
-		switch (b)
-		{
-			case Body.Sun:     return sweph.SE_SUN;
-			case Body.Moon:    return sweph.SE_MOON;
-			case Body.Mars:    return sweph.SE_MARS;
-			case Body.Mercury: return sweph.SE_MERCURY;
-			case Body.Jupiter: return sweph.SE_JUPITER;
-			case Body.Venus:   return sweph.SE_VENUS;
-			case Body.Saturn:  return sweph.SE_SATURN;
-			case Body.Lagna:   return sweph.SE_BIT_NO_REFRACTION;
-			case Body.Rahu:    return sweph.SE_MEAN_NODE;
-			case Body.Ketu:    return sweph.SE_MEAN_NODE;
-
-			default:                    throw new Exception();
-		}
+		return b switch
+		       {
+			       Body.Sun     => sweph.SE_SUN,
+			       Body.Moon    => sweph.SE_MOON,
+			       Body.Mars    => sweph.SE_MARS,
+			       Body.Mercury => sweph.SE_MERCURY,
+			       Body.Jupiter => sweph.SE_JUPITER,
+			       Body.Venus   => sweph.SE_VENUS,
+			       Body.Saturn  => sweph.SE_SATURN,
+			       Body.Lagna   => sweph.SE_BIT_NO_REFRACTION,
+			       Body.Rahu    => sweph.SE_MEAN_NODE,
+			       Body.Ketu    => sweph.SE_MEAN_NODE,
+			       _            => throw new Exception()
+		       };
 	}
 
 	public static Longitude ExaltationDegree(this Body body)
 	{
 		var b = (int) body;
 		Debug.Assert(b >= (int) Body.Sun && b <= (int) Body.Saturn);
-		double d = 0;
-		switch (body)
-		{
-			case Body.Sun:
-				d = 10;
-				break;
-			case Body.Moon:
-				d = 33;
-				break;
-			case Body.Mars:
-				d = 298;
-				break;
-			case Body.Mercury:
-				d = 165;
-				break;
-			case Body.Jupiter:
-				d = 95;
-				break;
-			case Body.Venus:
-				d = 357;
-				break;
-			case Body.Saturn:
-				d = 200;
-				break;
-		}
+		double d = body switch
+		           {
+			           Body.Sun     => 10,
+			           Body.Moon    => 33,
+			           Body.Mars    => 298,
+			           Body.Mercury => 165,
+			           Body.Jupiter => 95,
+			           Body.Venus   => 357,
+			           Body.Saturn  => 200,
+			           _            => 0
+		           };
 
 		return new Longitude(d);
 	}
@@ -219,21 +204,20 @@ public static class Bodies
 
 	public static string Name(this Body b)
 	{
-		switch (b)
-		{
-			case Body.Lagna:   return "Lagna";
-			case Body.Sun:     return "Sun";
-			case Body.Moon:    return "Moon";
-			case Body.Mars:    return "Mars";
-			case Body.Mercury: return "Mercury";
-			case Body.Jupiter: return "Jupiter";
-			case Body.Venus:   return "Venus";
-			case Body.Saturn:  return "Saturn";
-			case Body.Rahu:    return "Rahu";
-			case Body.Ketu:    return "Ketu";
-		}
-
-		return string.Empty;
+		return b switch
+		       {
+			       Body.Lagna   => "Lagna",
+			       Body.Sun     => "Sun",
+			       Body.Moon    => "Moon",
+			       Body.Mars    => "Mars",
+			       Body.Mercury => "Mercury",
+			       Body.Jupiter => "Jupiter",
+			       Body.Venus   => "Venus",
+			       Body.Saturn  => "Saturn",
+			       Body.Rahu    => "Rahu",
+			       Body.Ketu    => "Ketu",
+			       _            => string.Empty
+		       };
 	}
 
 	public static string ToShortString(this Body b)
@@ -461,55 +445,52 @@ public static class Bodies
 
 	public static ZodiacHouse ExaltationSign(this Body body)
 	{
-		switch (body)
-		{
-			case Body.Sun:     return ZodiacHouse.Ari;
-			case Body.Moon:    return ZodiacHouse.Tau;
-			case Body.Mars:    return ZodiacHouse.Cap;
-			case Body.Mercury: return ZodiacHouse.Vir;
-			case Body.Jupiter: return ZodiacHouse.Can;
-			case Body.Venus:   return ZodiacHouse.Pis;
-			case Body.Saturn:  return ZodiacHouse.Lib;
-			case Body.Rahu:    return ZodiacHouse.Gem;
-			case Body.Ketu:    return ZodiacHouse.Sag;
-		}
-
-		throw new Exception("Not a graha");
+		return body switch
+		       {
+			       Body.Sun     => ZodiacHouse.Ari,
+			       Body.Moon    => ZodiacHouse.Tau,
+			       Body.Mars    => ZodiacHouse.Cap,
+			       Body.Mercury => ZodiacHouse.Vir,
+			       Body.Jupiter => ZodiacHouse.Can,
+			       Body.Venus   => ZodiacHouse.Pis,
+			       Body.Saturn  => ZodiacHouse.Lib,
+			       Body.Rahu    => ZodiacHouse.Gem,
+			       Body.Ketu    => ZodiacHouse.Sag,
+			       _            => throw new Exception("Not a graha")
+		       };
 	}
 
 	public static ZodiacHouse DebilitationSign(this Body body)
 	{
-		switch (body)
-		{
-			case Body.Sun:     return ZodiacHouse.Lib;
-			case Body.Moon:    return ZodiacHouse.Sco;
-			case Body.Mars:    return ZodiacHouse.Can;
-			case Body.Mercury: return ZodiacHouse.Pis;
-			case Body.Jupiter: return ZodiacHouse.Cap;
-			case Body.Venus:   return ZodiacHouse.Vir;
-			case Body.Saturn:  return ZodiacHouse.Ari;
-			case Body.Rahu:    return ZodiacHouse.Sag;
-			case Body.Ketu:    return ZodiacHouse.Gem;
-		}
-
-		throw new Exception("Not a graha");
+		return body switch
+		       {
+			       Body.Sun     => ZodiacHouse.Lib,
+			       Body.Moon    => ZodiacHouse.Sco,
+			       Body.Mars    => ZodiacHouse.Can,
+			       Body.Mercury => ZodiacHouse.Pis,
+			       Body.Jupiter => ZodiacHouse.Cap,
+			       Body.Venus   => ZodiacHouse.Vir,
+			       Body.Saturn  => ZodiacHouse.Ari,
+			       Body.Rahu    => ZodiacHouse.Sag,
+			       Body.Ketu    => ZodiacHouse.Gem,
+			       _            => throw new Exception("Not a graha")
+		       };
 	}
 
 	public static ZodiacHouse MooltrikonaSign(this Body body)
 	{
-		switch (body)
-		{
-			case Body.Sun:     return ZodiacHouse.Leo;
-			case Body.Moon:    return ZodiacHouse.Tau;
-			case Body.Mars:    return ZodiacHouse.Ari;
-			case Body.Mercury: return ZodiacHouse.Vir;
-			case Body.Jupiter: return ZodiacHouse.Sag;
-			case Body.Venus:   return ZodiacHouse.Lib;
-			case Body.Saturn:  return ZodiacHouse.Aqu;
-			case Body.Rahu:    return ZodiacHouse.Vir;
-			case Body.Ketu:    return ZodiacHouse.Pis;
-		}
-
-		throw new Exception("Not a graha");
+		return body switch
+		       {
+			       Body.Sun     => ZodiacHouse.Leo,
+			       Body.Moon    => ZodiacHouse.Tau,
+			       Body.Mars    => ZodiacHouse.Ari,
+			       Body.Mercury => ZodiacHouse.Vir,
+			       Body.Jupiter => ZodiacHouse.Sag,
+			       Body.Venus   => ZodiacHouse.Lib,
+			       Body.Saturn  => ZodiacHouse.Aqu,
+			       Body.Rahu    => ZodiacHouse.Vir,
+			       Body.Ketu    => ZodiacHouse.Pis,
+			       _            => throw new Exception("Not a graha")
+		       };
 	}
 }

@@ -96,7 +96,7 @@ public class YoginiDasa : NakshatraDasa, INakshatraDasa
 	public Body LordOfNakshatra(Nakshatra n)
 	{
 		Body[] lords =
-		{
+		[
 			Body.Moon,
 			Body.Sun,
 			Body.Jupiter,
@@ -105,7 +105,7 @@ public class YoginiDasa : NakshatraDasa, INakshatraDasa
 			Body.Saturn,
 			Body.Venus,
 			Body.Rahu
-		};
+		];
 
 		var index = ((int) n + 3) % 8;
 		if (index == 0)

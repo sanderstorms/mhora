@@ -54,7 +54,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 		var rashis = _h.FindRashis(_mDtype);
 		var al     = new List<DasaEntry> ();
 		int[] order =
-		{
+		[
 			1,
 			4,
 			7,
@@ -67,7 +67,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 			6,
 			9,
 			12
-		};
+		];
 		TimeOffset dasaLengthSum = TimeOffset.Zero;
 
 		var zhStart = _options.GetSeed();

@@ -304,21 +304,14 @@ public class GrahaStrengthsControl : Form
 	{
 		if (cbStrength.SelectedIndex == RCoLord)
 		{
-			switch (cbGraha1.SelectedIndex)
-			{
-				case (int) Body.Mars:
-					cbGraha2.SelectedIndex = (int) Body.Ketu;
-					break;
-				case (int) Body.Ketu:
-					cbGraha2.SelectedIndex = (int) Body.Mars;
-					break;
-				case (int) Body.Saturn:
-					cbGraha2.SelectedIndex = (int) Body.Rahu;
-					break;
-				case (int) Body.Rahu:
-					cbGraha2.SelectedIndex = (int) Body.Saturn;
-					break;
-			}
+			cbGraha2.SelectedIndex = cbGraha1.SelectedIndex switch
+			                         {
+				                         (int) Body.Mars   => (int) Body.Ketu,
+				                         (int) Body.Ketu   => (int) Body.Mars,
+				                         (int) Body.Saturn => (int) Body.Rahu,
+				                         (int) Body.Rahu   => (int) Body.Saturn,
+				                         _                 => cbGraha2.SelectedIndex
+			                         };
 		}
 
 		Compute();

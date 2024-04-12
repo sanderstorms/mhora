@@ -69,16 +69,16 @@ public class TajakaDasa : Dasa, IDasa
 	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
 		string[] desc =
-		{
+		[
 			"  Tajaka Month",
 			"    Tajaka 60 hour",
 			"      Tajaka 5 hour",
 			"        Tajaka 25 minute",
 			"          Tajaka 2 minute"
-		};
+		];
 		if (pdi.Level == 6)
 		{
-			return new List<DasaEntry> ();
+			return [];
 		}
 
 		TimeOffset start  = 0.0;

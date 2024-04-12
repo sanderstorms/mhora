@@ -461,14 +461,13 @@ public class TransitSearch : MhoraControl
 
 	private double DirectSpeed(Body b)
 	{
-		switch (b)
-		{
-			case Body.Sun:   return Time.SiderealYear.TotalDays;
-			case Body.Moon:  return 28.0;
-			case Body.Lagna: return 1.0;
-		}
-
-		return 0.0;
+		return b switch
+		       {
+			       Body.Sun   => Time.SiderealYear.TotalDays,
+			       Body.Moon  => 28.0,
+			       Body.Lagna => 1.0,
+			       _          => 0.0
+		       };
 	}
 
 	private void DirectProgression()

@@ -181,9 +181,9 @@ public class TimeZone
 			var adjustment = TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(new DateTime(1999, 10, 1), DateTime.MaxValue.Date, delta, startTransition, endTransition);
 
 			TimeZoneInfo.AdjustmentRule[] adjustments =
-			{
+			[
 				adjustment
-			};
+			];
 			return TimeZoneInfo.CreateCustomTimeZone(id, offset, displayName, standardName, standardName + " (DST)", adjustments);
 		}
 		catch (Exception e)

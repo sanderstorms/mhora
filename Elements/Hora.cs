@@ -12,7 +12,7 @@ public static class Hora
 	// This matches the sweph definitions for easy conversion
 
 	public static readonly string[] Weekdays =
-	{
+	[
 		"Monday",
 		"Tuesday",
 		"Wednesday",
@@ -20,7 +20,7 @@ public static class Hora
 		"Friday",
 		"Saturday",
 		"Sunday"
-	};
+	];
 
 	public static Weekday ToWeekday(this Body b)
 	{
@@ -79,70 +79,67 @@ public static class Hora
 
 	public static string ShortString(this Weekday w)
 	{
-		switch (w)
-		{
-			case Weekday.Sunday:    return "Su";
-			case Weekday.Monday:    return "Mo";
-			case Weekday.Tuesday:   return "Tu";
-			case Weekday.Wednesday: return "We";
-			case Weekday.Thursday:  return "Th";
-			case Weekday.Friday:    return "Fr";
-			case Weekday.Saturday:  return "Sa";
-		}
-
-		return string.Empty;
+		return w switch
+		       {
+			       Weekday.Sunday    => "Su",
+			       Weekday.Monday    => "Mo",
+			       Weekday.Tuesday   => "Tu",
+			       Weekday.Wednesday => "We",
+			       Weekday.Thursday  => "Th",
+			       Weekday.Friday    => "Fr",
+			       Weekday.Saturday  => "Sa",
+			       _                 => string.Empty
+		       };
 	}
 
 	public static DayOfWeek DayOfWeek (this Weekday weekday)
 	{
-		switch (weekday)
-		{
-			case Weekday.Sunday:  return System.DayOfWeek.Sunday;
-			case Weekday.Monday : return System.DayOfWeek.Monday;
-			case Weekday.Tuesday: return System.DayOfWeek.Tuesday;
-			case Weekday.Wednesday: return System.DayOfWeek.Wednesday;
-			case Weekday.Thursday:return System.DayOfWeek.Thursday;
-			case Weekday.Friday:return System.DayOfWeek.Friday;
-			case Weekday.Saturday:return System.DayOfWeek.Saturday;
-		}
-		return System.DayOfWeek.Sunday;
+		return weekday switch
+		       {
+			       Weekday.Sunday    => System.DayOfWeek.Sunday,
+			       Weekday.Monday    => System.DayOfWeek.Monday,
+			       Weekday.Tuesday   => System.DayOfWeek.Tuesday,
+			       Weekday.Wednesday => System.DayOfWeek.Wednesday,
+			       Weekday.Thursday  => System.DayOfWeek.Thursday,
+			       Weekday.Friday    => System.DayOfWeek.Friday,
+			       Weekday.Saturday  => System.DayOfWeek.Saturday,
+			       _                 => System.DayOfWeek.Sunday
+		       };
 	}
 
 	public static Weekday WeekDay (this DayOfWeek dayOfWeek)
 	{
-		switch (dayOfWeek)
-		{
-			case System.DayOfWeek.Sunday : return Weekday.Sunday;
-			case System.DayOfWeek.Monday : return Weekday.Monday;
-			case System.DayOfWeek.Tuesday : return Weekday.Tuesday;
-			case System.DayOfWeek.Wednesday : return Weekday.Wednesday;
-			case System.DayOfWeek.Thursday : return Weekday.Thursday;
-			case System.DayOfWeek.Friday : return Weekday.Friday;
-			case System.DayOfWeek.Saturday : return Weekday.Saturday;
-		}
-
-		return Weekday.Sunday;
+		return dayOfWeek switch
+		       {
+			       System.DayOfWeek.Sunday    => Weekday.Sunday,
+			       System.DayOfWeek.Monday    => Weekday.Monday,
+			       System.DayOfWeek.Tuesday   => Weekday.Tuesday,
+			       System.DayOfWeek.Wednesday => Weekday.Wednesday,
+			       System.DayOfWeek.Thursday  => Weekday.Thursday,
+			       System.DayOfWeek.Friday    => Weekday.Friday,
+			       System.DayOfWeek.Saturday  => Weekday.Saturday,
+			       _                          => Weekday.Sunday
+		       };
 	}
 
 	public static Body MonthLord (this Month month)
 	{
-		switch (month)
-		{
-			case Month.January:   return Body.Sun;
-			case Month.February:  return Body.Moon;
-			case Month.March:     return Body.Jupiter;
-			case Month.April:     return Body.Rahu;
-			case Month.May:       return Body.Mercury;
-			case Month.June:      return Body.Venus;
-			case Month.July:      return Body.Ketu;
-			case Month.August:    return Body.Saturn;
-			case Month.September: return Body.Mars;
-			case Month.October:   return Body.Sun;
-			case Month.November:  return Body.Sun;
-			case Month.December:  return Body.Jupiter;
-		}
-
-		return (Body.Sun);
+		return month switch
+		       {
+			       Month.January   => Body.Sun,
+			       Month.February  => Body.Moon,
+			       Month.March     => Body.Jupiter,
+			       Month.April     => Body.Rahu,
+			       Month.May       => Body.Mercury,
+			       Month.June      => Body.Venus,
+			       Month.July      => Body.Ketu,
+			       Month.August    => Body.Saturn,
+			       Month.September => Body.Mars,
+			       Month.October   => Body.Sun,
+			       Month.November  => Body.Sun,
+			       Month.December  => Body.Jupiter,
+			       _               => (Body.Sun)
+		       };
 	}
 
 	public static Body DayLord(this DateTime dateTime)
@@ -175,7 +172,7 @@ public static class Hora
 	public static Body YearLord(this DateTime dateTime)
 	{
 		Body[] lords =
-		{
+		[
 			Body.Rahu, //2011
 			Body.Mercury,
 			Body.Venus,
@@ -196,7 +193,7 @@ public static class Hora
 			Body.Jupiter,
 			Body.Rahu,
 			Body.Mercury //2030
-		};
+		];
 
 		return Body.Sun;
 	}

@@ -453,33 +453,21 @@ public class Position
 		ZodiacHouse dhouse;
 		var         mod = (int) Longitude.ToZodiacHouse() % 3;
 		// Find moveable sign in trines
-		switch (mod)
-		{
-			case 1:
-				zhm = zh.Add(1);
-				break;
-			case 2:
-				zhm = zh.Add(9);
-				break;
-			default:
-				zhm = zh.Add(5);
-				break;
-		}
+		zhm = mod switch
+		      {
+			      1 => zh.Add(1),
+			      2 => zh.Add(9),
+			      _ => zh.Add(5)
+		      };
 
 		// From moveable sign, 3 parts belong to the trines
 		var part = PartOfZodiacHouse(3);
-		switch (part)
-		{
-			case 1:
-				dhouse = zhm.Add(1);
-				break;
-			case 2:
-				dhouse = zhm.Add(5);
-				break;
-			default:
-				dhouse = zhm.Add(9);
-				break;
-		}
+		dhouse = part switch
+		         {
+			         1 => zhm.Add(1),
+			         2 => zhm.Add(5),
+			         _ => zhm.Add(9)
+		         };
 
 		var dp = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
 		{
@@ -603,18 +591,13 @@ public class Position
 		var part = PartOfZodiacHouse(9);
 		dp   = ToRegularDivisionPosition(9);
 
-		switch ((int) Longitude.ToZodiacHouse() % 3)
-		{
-			case 1:
-				dp.RulerIndex = part;
-				break;
-			case 2:
-				dp.RulerIndex = part + 1;
-				break;
-			case 0:
-				dp.RulerIndex = part + 2;
-				break;
-		}
+		dp.RulerIndex = ((int) Longitude.ToZodiacHouse() % 3) switch
+		                {
+			                1 => part,
+			                2 => part + 1,
+			                0 => part + 2,
+			                _ => dp.RulerIndex
+		                };
 
 		while (dp.RulerIndex > 3)
 		{
@@ -770,19 +753,12 @@ public class Position
 	private DivisionPosition ToDivisionPositionVimsamsa(int n)
 	{
 		var              mod = (int) Longitude.ToZodiacHouse() % 3;
-		ZodiacHouse dhousename;
-		switch (mod)
-		{
-			case 1:
-				dhousename = ZodiacHouse.Ari;
-				break;
-			case 2:
-				dhousename = ZodiacHouse.Sag;
-				break;
-			default:
-				dhousename = ZodiacHouse.Leo;
-				break;
-		}
+		ZodiacHouse dhousename = mod switch
+		                         {
+			                         1 => ZodiacHouse.Ari,
+			                         2 => ZodiacHouse.Sag,
+			                         _ => ZodiacHouse.Leo
+		                         };
 
 		var part   = PartOfZodiacHouse(n);
 		var dhouse = dhousename.Add(part);
@@ -839,22 +815,13 @@ public class Position
 	private DivisionPosition ToDivisionPositionNakshatramsa(int n)
 	{
 		var              mod = (int) Longitude.ToZodiacHouse() % 4;
-		ZodiacHouse dhousename;
-		switch (mod)
-		{
-			case 1:
-				dhousename = ZodiacHouse.Ari;
-				break;
-			case 2:
-				dhousename = ZodiacHouse.Can;
-				break;
-			case 3:
-				dhousename = ZodiacHouse.Lib;
-				break;
-			default:
-				dhousename = ZodiacHouse.Cap;
-				break;
-		}
+		ZodiacHouse dhousename = mod switch
+		                         {
+			                         1 => ZodiacHouse.Ari,
+			                         2 => ZodiacHouse.Can,
+			                         3 => ZodiacHouse.Lib,
+			                         _ => ZodiacHouse.Cap
+		                         };
 
 		var part   = PartOfZodiacHouse(n);
 		var dhouse = dhousename.Add(part);
@@ -1009,19 +976,12 @@ public class Position
 	private DivisionPosition ToDivisionPositionAkshavedamsa(int n)
 	{
 		var              mod = (int) Longitude.ToZodiacHouse() % 3;
-		ZodiacHouse dhousename;
-		switch (mod)
-		{
-			case 1:
-				dhousename = ZodiacHouse.Ari;
-				break;
-			case 2:
-				dhousename = ZodiacHouse.Leo;
-				break;
-			default:
-				dhousename = ZodiacHouse.Sag;
-				break;
-		}
+		ZodiacHouse dhousename = mod switch
+		                         {
+			                         1 => ZodiacHouse.Ari,
+			                         2 => ZodiacHouse.Leo,
+			                         _ => ZodiacHouse.Sag
+		                         };
 
 		var part   = PartOfZodiacHouse(n);
 		var dhouse = dhousename.Add(part);
@@ -1031,18 +991,13 @@ public class Position
 		};
 		if (n == 45)
 		{
-			switch ((int) Longitude.ToZodiacHouse() % 3)
-			{
-				case 1:
-					dp.RulerIndex = part;
-					break;
-				case 2:
-					dp.RulerIndex = part + 1;
-					break;
-				case 0:
-					dp.RulerIndex = part + 2;
-					break;
-			}
+			dp.RulerIndex = ((int) Longitude.ToZodiacHouse() % 3) switch
+			                {
+				                1 => part,
+				                2 => part + 1,
+				                0 => part + 2,
+				                _ => dp.RulerIndex
+			                };
 
 			dp.RulerIndex = dp.RulerIndex.NormalizeInc(1, 3);
 		}
@@ -1094,18 +1049,13 @@ public class Position
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, 150)
 		};
-		switch ((int) Longitude.ToZodiacHouse() % 3)
-		{
-			case 1:
-				dp.RulerIndex = part;
-				break;
-			case 2:
-				dp.RulerIndex = 151 - part;
-				break;
-			case 0:
-				dp.RulerIndex = (75 + part).NormalizeInc(1, 150);
-				break;
-		}
+		dp.RulerIndex = ((int) Longitude.ToZodiacHouse() % 3) switch
+		                {
+			                1 => part,
+			                2 => 151 - part,
+			                0 => (75 + part).NormalizeInc(1, 150),
+			                _ => dp.RulerIndex
+		                };
 
 		return PopulateRegularCusps(150, dp);
 	}
@@ -1118,7 +1068,7 @@ public class Position
 		}
 
 		int[] bases =
-		{
+		[
 			1,
 			2,
 			3,
@@ -1135,7 +1085,7 @@ public class Position
 			40,
 			45,
 			60
-		};
+		];
 		var alUnsorted = new List<double> ();
 		foreach (var iVarga in bases)
 		{
@@ -1210,18 +1160,13 @@ public class Position
 			Longitude = dhouse.DivisionalLongitude(Longitude, 150)
 		};
 
-		switch ((int) Longitude.ToZodiacHouse() % 3)
-		{
-			case 1:
-				dp.RulerIndex = part;
-				break;
-			case 2:
-				dp.RulerIndex = 151 - part;
-				break;
-			case 0:
-				dp.RulerIndex = (75 + part).NormalizeInc(1, 150);
-				break;
-		}
+		dp.RulerIndex = ((int) Longitude.ToZodiacHouse() % 3) switch
+		                {
+			                1 => part,
+			                2 => 151 - part,
+			                0 => (75 + part).NormalizeInc(1, 150),
+			                _ => dp.RulerIndex
+		                };
 
 		dp.CuspLower  = Longitude.ToZodiacHouseBase() + _mNadiamsaCusps[part - 1];
 		dp.CuspHigher = Longitude.ToZodiacHouseBase() + _mNadiamsaCusps[part];

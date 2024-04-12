@@ -22,17 +22,17 @@ public class NonLinearTransit
 
 	public int BodyNameToSweph(Body b)
 	{
-		switch (b)
-		{
-			case Body.Sun:     return sweph.SE_SUN;
-			case Body.Moon:    return sweph.SE_MOON;
-			case Body.Mars:    return sweph.SE_MARS;
-			case Body.Mercury: return sweph.SE_MERCURY;
-			case Body.Jupiter: return sweph.SE_JUPITER;
-			case Body.Venus:   return sweph.SE_VENUS;
-			case Body.Saturn:  return sweph.SE_SATURN;
-			default:                throw new Exception();
-		}
+		return b switch
+		       {
+			       Body.Sun     => sweph.SE_SUN,
+			       Body.Moon    => sweph.SE_MOON,
+			       Body.Mars    => sweph.SE_MARS,
+			       Body.Mercury => sweph.SE_MERCURY,
+			       Body.Jupiter => sweph.SE_JUPITER,
+			       Body.Venus   => sweph.SE_VENUS,
+			       Body.Saturn  => sweph.SE_SATURN,
+			       _            => throw new Exception()
+		       };
 	}
 
 	public Longitude GetLongitude(JulianDate ut, ref bool bForwardDir)

@@ -23,8 +23,8 @@ namespace Mhora.Components.PanchangaControl;
 
 public class PanchangaGlobalMoments
 {
-	public List<PanchangaMomentInfo> karanas_ut    = new();
-	public List<PanchangaMomentInfo> nakshatras_ut = new();
-	public List<PanchangaMomentInfo> smyogas_ut    = new();
-	public List<PanchangaMomentInfo> tithis_ut     = new();
+	public List<PanchangaMomentInfo> karanas_ut    = [];
+	public List<PanchangaMomentInfo> nakshatras_ut = [];
+	public List<PanchangaMomentInfo> smyogas_ut    = [];
+	public List<PanchangaMomentInfo> tithis_ut     = [];
 }

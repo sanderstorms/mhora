@@ -51,7 +51,7 @@ public class MandookaDasa : Dasa, IDasa
 	public List<DasaEntry> Dasa(int cycle)
 	{
 		int[] sequence =
-		{
+		[
 			1,
 			3,
 			5,
@@ -64,7 +64,7 @@ public class MandookaDasa : Dasa, IDasa
 			8,
 			10,
 			12
-		};
+		];
 		var al     = new List<DasaEntry> ();
 		var zhSeed = _options.GetSeed();
 
@@ -163,11 +163,11 @@ public class MandookaDasa : Dasa, IDasa
 
 	public int DasaLength(ZodiacHouse zh)
 	{
-		switch ((int) zh % 3)
-		{
-			case 1:  return 7;
-			case 2:  return 8;
-			default: return 9;
-		}
+		return ((int) zh % 3) switch
+		       {
+			       1 => 7,
+			       2 => 8,
+			       _ => 9
+		       };
 	}
 }

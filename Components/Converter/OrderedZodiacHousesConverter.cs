@@ -91,7 +91,7 @@ internal class OrderedZodiacHousesConverter : ExpandableObjectConverter
 			}
 		}
 
-		oz.houses = new (al);
+		oz.houses = [..al];
 		return oz;
 	}
 

@@ -73,15 +73,15 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return _colord ??= new []
-			{
+			return _colord ??=
+			[
 				GrahaStrength.NotInOwnHouse,
 				GrahaStrength.AspectsRasi,
 				GrahaStrength.Exaltation,
 				GrahaStrength.RasisNature,
 				GrahaStrength.NarayanaDasaLength,
 				GrahaStrength.Longitude
-			};
+			];
 		}
 		set => _colord = value;
 	}
@@ -92,13 +92,13 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return _naisargikaDasaGraha ??= new[]
-			{
+			return _naisargikaDasaGraha ??=
+			[
 				GrahaStrength.Exaltation,
 				GrahaStrength.LordInOwnHouse,
 				GrahaStrength.MoolaTrikona,
 				GrahaStrength.Longitude
-			};
+			];
 		}
 		set => _naisargikaDasaGraha = value;
 	}
@@ -109,8 +109,8 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return _naisargikaDasaRasi ??= new []
-			{
+			return _naisargikaDasaRasi ??=
+			[
 				RashiStrength.Conjunction,
 				RashiStrength.AspectsRasi,
 				RashiStrength.Exaltation,
@@ -118,7 +118,7 @@ public class StrengthOptions : MhoraSerializableOptions
 				RashiStrength.LordIsAtmaKaraka,
 				RashiStrength.LordInDifferentOddity,
 				RashiStrength.Longitude
-			};
+			];
 		}
 		set => _naisargikaDasaRasi = value;
 	}
@@ -129,15 +129,15 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return _navamsaDasaRasi ??= new []
-			{
+			return _navamsaDasaRasi ??=
+			[
 				RashiStrength.AspectsRasi,
 				RashiStrength.Conjunction,
 				RashiStrength.Exaltation,
 				RashiStrength.LordInDifferentOddity,
 				RashiStrength.RasisNature,
 				RashiStrength.LordsLongitude
-			};
+			];
 		}
 		set => _navamsaDasaRasi = value;
 	}
@@ -148,15 +148,15 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return _moolaDasaRasi ??= new []
-			{
+			return _moolaDasaRasi ??=
+			[
 				RashiStrength.Conjunction,
 				RashiStrength.Exaltation,
 				RashiStrength.MoolaTrikona,
 				RashiStrength.OwnHouse,
 				RashiStrength.RasisNature,
 				RashiStrength.LordsLongitude
-			};
+			];
 		}
 		set => _moolaDasaRasi = value;
 	}
@@ -167,15 +167,15 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return _narayanaDasaRasi ??= new []
-			{
+			return _narayanaDasaRasi ??=
+			[
 				RashiStrength.Conjunction,
 				RashiStrength.AspectsRasi,
 				RashiStrength.Exaltation,
 				RashiStrength.LordInDifferentOddity,
 				RashiStrength.RasisNature,
 				RashiStrength.LordsLongitude
-			};
+			];
 		}
 		set => _narayanaDasaRasi = value;
 	}
@@ -186,8 +186,8 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return _karakaKendradiGrahaDasaRasi ??= new []
-			{
+			return _karakaKendradiGrahaDasaRasi ??=
+			[
 				RashiStrength.Conjunction,
 				RashiStrength.AspectsRasi,
 				RashiStrength.Exaltation,
@@ -198,7 +198,7 @@ public class StrengthOptions : MhoraSerializableOptions
 				RashiStrength.Longitude,
 				RashiStrength.LordInDifferentOddity,
 				RashiStrength.KarakaKendradiGrahaDasaLength
-			};
+			];
 		}
 		set => _karakaKendradiGrahaDasaRasi = value;
 	}
@@ -209,13 +209,13 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return _karakaKendradiGrahaDasaGraha??= new []
-			{
+			return _karakaKendradiGrahaDasaGraha??=
+			[
 				GrahaStrength.Exaltation,
 				GrahaStrength.MoolaTrikona,
 				GrahaStrength.OwnHouse,
 				GrahaStrength.Longitude
-			};
+			];
 		}
 		set => _karakaKendradiGrahaDasaGraha = value;
 	}
@@ -228,8 +228,8 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return _karakaKendradiGrahaDasaColord ??= new []
-			{
+			return _karakaKendradiGrahaDasaColord ??=
+			[
 				GrahaStrength.NotInOwnHouse,
 				GrahaStrength.Conjunction,
 				GrahaStrength.AspectsRasi,
@@ -241,7 +241,7 @@ public class StrengthOptions : MhoraSerializableOptions
 				GrahaStrength.Longitude,
 				GrahaStrength.LordInDifferentOddity,
 				GrahaStrength.KarakaKendradiGrahaDasaLength
-			};
+			];
 		}
 		set => _karakaKendradiGrahaDasaColord = value;
 	}
@@ -250,8 +250,8 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return new []
-			{
+			return
+			[
 				RashiStrength.AtmaKaraka,
 				RashiStrength.Conjunction,
 				RashiStrength.Exaltation,
@@ -261,7 +261,7 @@ public class StrengthOptions : MhoraSerializableOptions
 				RashiStrength.LordIsAtmaKaraka,
 				RashiStrength.LordsLongitude,
 				RashiStrength.LordInDifferentOddity
-			};
+			];
 		}
 	}
 
@@ -269,10 +269,10 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return new []
-			{
+			return
+			[
 				RashiStrength.AspectsRasi
-			};
+			];
 		}
 	}
 
@@ -280,11 +280,11 @@ public class StrengthOptions : MhoraSerializableOptions
 	{
 		get
 		{
-			return new []
-			{
+			return
+			[
 				GrahaStrength.KendraConjunction,
 				GrahaStrength.First
-			};
+			];
 		}
 	}
 

@@ -134,7 +134,7 @@ public static class ShadBalas
 	{
 		h.VerifyGraha(b);
 		int[] powerlessHouse =
-		{
+		[
 			4,
 			10,
 			4,
@@ -142,7 +142,7 @@ public static class ShadBalas
 			7,
 			10,
 			1
-		};
+		];
 		var lagLon = h.GetPosition(Body.Lagna).Longitude;
 		var debLon = new Longitude(lagLon.ToZodiacHouseBase());
 		debLon = debLon.Add(powerlessHouse[(int) b] * 30.0 + 15.0);
@@ -234,18 +234,13 @@ public static class ShadBalas
 			var length = h.Vara.DayTime / 3;
 			var offset = (Time) h.Info.DateOfBirth.Time () - h.Vara.Sunrise.Time;
 			var part   = (int) ((offset / length).TotalHours).Floor();
-			switch (part)
-			{
-				case 0:
-					ret = Body.Mercury;
-					break;
-				case 1:
-					ret = Body.Sun;
-					break;
-				case 2:
-					ret = Body.Saturn;
-					break;
-			}
+			ret = part switch
+			      {
+				      0 => Body.Mercury,
+				      1 => Body.Sun,
+				      2 => Body.Saturn,
+				      _ => ret
+			      };
 		}
 		else
 		{
@@ -253,18 +248,13 @@ public static class ShadBalas
 			var offset = h.Info.DateOfBirth - h.Vara.Sunset;
 
 			var part = (int) ((offset / length).TotalHours).Floor();
-			switch (part)
-			{
-				case 0:
-					ret = Body.Moon;
-					break;
-				case 1:
-					ret = Body.Venus;
-					break;
-				case 2:
-					ret = Body.Mars;
-					break;
-			}
+			ret = part switch
+			      {
+				      0 => Body.Moon,
+				      1 => Body.Venus,
+				      2 => Body.Mars,
+				      _ => ret
+			      };
 		}
 
 		if (b == Body.Jupiter || b == ret)
@@ -278,18 +268,17 @@ public static class ShadBalas
 	public static double NaisargikaBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
-		switch (b)
-		{
-			case Body.Sun:     return 60;
-			case Body.Moon:    return 51.43;
-			case Body.Mars:    return 17.14;
-			case Body.Mercury: return 25.70;
-			case Body.Jupiter: return 34.28;
-			case Body.Venus:   return 42.85;
-			case Body.Saturn:  return 8.57;
-		}
-
-		return 0;
+		return b switch
+		       {
+			       Body.Sun     => 60,
+			       Body.Moon    => 51.43,
+			       Body.Mars    => 17.14,
+			       Body.Mercury => 25.70,
+			       Body.Jupiter => 34.28,
+			       Body.Venus   => 42.85,
+			       Body.Saturn  => 8.57,
+			       _            => 0
+		       };
 	}
 
 	public static void KalaHelper(this Horoscope h, ref Body yearLord, ref Body monthLord)

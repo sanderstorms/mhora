@@ -186,17 +186,17 @@ public class RasiStrengthsControl : Form
 
 	private List<RashiStrength> GetRules()
 	{
-		switch (cbStrength.SelectedIndex)
-		{
-			case 0:  return h.RulesNarayanaDasaRasi();
-			case 1:  return h.RulesNaisargikaDasaRasi();
-			case 2:  return h.RulesMoolaDasaRasi();
-			case 3:  return h.RulesKarakaKendradiGrahaDasaRasi();
-			case 4:  return h.RulesNavamsaDasaRasi();
-			case 5:  return h.RulesJaiminiFirstRasi();
-			case 6:  return h.RulesJaiminiSecondRasi();
-			default: return h.RulesNarayanaDasaRasi();
-		}
+		return cbStrength.SelectedIndex switch
+		       {
+			       0 => h.RulesNarayanaDasaRasi(),
+			       1 => h.RulesNaisargikaDasaRasi(),
+			       2 => h.RulesMoolaDasaRasi(),
+			       3 => h.RulesKarakaKendradiGrahaDasaRasi(),
+			       4 => h.RulesNavamsaDasaRasi(),
+			       5 => h.RulesJaiminiFirstRasi(),
+			       6 => h.RulesJaiminiSecondRasi(),
+			       _ => h.RulesNarayanaDasaRasi()
+		       };
 	}
 
 	private void InitializeComboBoxes()

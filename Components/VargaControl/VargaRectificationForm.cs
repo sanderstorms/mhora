@@ -631,21 +631,21 @@ public class VargaRectificationForm : Form
 
 			if (dtype.MultipleDivisions.Length == 1 && dtype.MultipleDivisions[0].Varga != DivisionType.Rasi && dtype.MultipleDivisions[0].Varga != DivisionType.Navamsa)
 			{
-				Divisions = new[]
-				{
+				Divisions =
+				[
 					new Division(DivisionType.Rasi),
 					new Division(DivisionType.Navamsa),
 					dtype
-				};
+				];
 			}
 			else
 			{
-				Divisions = new[]
-				{
+				Divisions =
+				[
 					new Division(DivisionType.Rasi),
 					new Division(DivisionType.Saptamsa),
 					new Division(DivisionType.Navamsa)
-				};
+				];
 			}
 		}
 
@@ -660,15 +660,15 @@ public class VargaRectificationForm : Form
 			get;
 			set;
 		} =
-		{
-			new(DivisionType.Rasi),
-			new(DivisionType.DrekkanaParasara),
-			new(DivisionType.Navamsa),
-			new(DivisionType.Saptamsa),
-			new(DivisionType.Dasamsa),
-			new(DivisionType.Dwadasamsa),
-			new(DivisionType.Shodasamsa)
-		};
+			[
+				new(DivisionType.Rasi),
+				new(DivisionType.DrekkanaParasara),
+				new(DivisionType.Navamsa),
+				new(DivisionType.Saptamsa),
+				new(DivisionType.Dasamsa),
+				new(DivisionType.Dwadasamsa),
+				new(DivisionType.Shodasamsa)
+			];
 
 		public DateTime StartTime
 		{

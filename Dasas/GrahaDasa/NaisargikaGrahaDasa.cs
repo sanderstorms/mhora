@@ -55,7 +55,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 	{
 		var al = new List<DasaEntry> ();
 		Body[] order =
-		{
+		[
 			Body.Moon,
 			Body.Mars,
 			Body.Mercury,
@@ -64,7 +64,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 			Body.Sun,
 			Body.Saturn,
 			Body.Lagna
-		};
+		];
 
 		var cycleStart  = new TimeOffset(ParamAyus() * cycle);
 		var curr        = new TimeOffset();

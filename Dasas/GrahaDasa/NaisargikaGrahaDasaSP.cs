@@ -48,7 +48,7 @@ public class NaisargikaGrahaDasaSp : Dasa, IDasa
 	{
 		var al = new List<DasaEntry> ();
 		Body[] order =
-		{
+		[
 			Body.Moon,
 			Body.Mercury,
 			Body.Mars,
@@ -58,7 +58,7 @@ public class NaisargikaGrahaDasaSp : Dasa, IDasa
 			Body.Ketu,
 			Body.Rahu,
 			Body.Saturn
-		};
+		];
 
 		var cycleStart = ParamAyus() * cycle;
 		var curr        = 0.0;
@@ -76,7 +76,7 @@ public class NaisargikaGrahaDasaSp : Dasa, IDasa
 
 	public List<DasaEntry> AntarDasa(DasaEntry pdi)
 	{
-		return new List<DasaEntry> ();
+		return [];
 	}
 
 	public string Description()

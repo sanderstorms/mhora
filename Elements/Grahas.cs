@@ -21,7 +21,7 @@ namespace Mhora.Elements
 			_horoscope = h;
 			_varga     = varga;
 			_rashis    = new(this);
-			_grahas    = new List<Graha>();
+			_grahas    = [];
 
 			_dpList = h.PositionList.CalculateDivisionPositions(varga);
 

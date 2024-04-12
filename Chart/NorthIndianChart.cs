@@ -377,26 +377,22 @@ public class NorthIndianChart : IDrawChart
 
 	private Point GetBhavaCentre(int bhava)
 	{
-		switch (bhava)
-		{
-			case 12: return new Point(Xo + Xw * 3 / 4, Yo + Yw * 1 / 10);
-			case 1:  return new Point(Xo + Xw * 2 / 4, Yo + Yw * 2 / 8);
-			case 2:  return new Point(Xo + Xw * 1 / 4, Yo + Yw * 1 / 10);
-
-			case 3: return new Point(Xo + Xw * 1 / 10, Yo + Yw * 1 / 4);
-			case 4: return new Point(Xo + Xw * 2 / 8, Yo  + Yw * 2 / 4);
-			case 5: return new Point(Xo + Xw * 1 / 10, Yo + Yw * 3 / 4);
-
-			case 6: return new Point(Xo + Xw * 1 / 4, Yo + Yw * 9 / 10);
-			case 7: return new Point(Xo + Xw * 2 / 4, Yo + Yw * 6 / 8);
-			case 8: return new Point(Xo + Xw * 3 / 4, Yo + Yw * 9 / 10);
-
-			case 9:  return new Point(Xo + Xw * 9 / 10, Yo + Yw * 3 / 4);
-			case 10: return new Point(Xo + Xw * 6 / 8, Yo  + Yw * 2 / 4);
-			case 11: return new Point(Xo + Xw * 9 / 10, Yo + Yw * 1 / 4);
-		}
-
-		return new Point(0, 0);
+		return bhava switch
+		       {
+			       12 => new Point(Xo + Xw * 3 / 4, Yo  + Yw * 1 / 10),
+			       1  => new Point(Xo + Xw * 2 / 4, Yo  + Yw * 2 / 8),
+			       2  => new Point(Xo + Xw * 1 / 4, Yo  + Yw * 1 / 10),
+			       3  => new Point(Xo + Xw * 1 / 10, Yo + Yw * 1 / 4),
+			       4  => new Point(Xo + Xw * 2 / 8, Yo  + Yw * 2 / 4),
+			       5  => new Point(Xo + Xw * 1 / 10, Yo + Yw * 3 / 4),
+			       6  => new Point(Xo + Xw * 1 / 4, Yo  + Yw * 9 / 10),
+			       7  => new Point(Xo + Xw * 2 / 4, Yo  + Yw * 6 / 8),
+			       8  => new Point(Xo + Xw * 3 / 4, Yo  + Yw * 9 / 10),
+			       9  => new Point(Xo + Xw * 9 / 10, Yo + Yw * 3 / 4),
+			       10 => new Point(Xo + Xw * 6 / 8, Yo  + Yw * 2 / 4),
+			       11 => new Point(Xo + Xw * 9 / 10, Yo + Yw * 1 / 4),
+			       _  => new Point(0, 0)
+		       };
 	}
 
 	private Point GetSmallZhouseItemOffset(int bhava, int n)

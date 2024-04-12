@@ -27,37 +27,37 @@ public static class FindStronger
 {
 	public static List<RashiStrength> RulesNaisargikaDasaRasi(this Horoscope h)
 	{
-		return new (h.StrengthOptions.NaisargikaDasaRasi);
+		return [..h.StrengthOptions.NaisargikaDasaRasi];
 	}
 
 	public static List<RashiStrength> RulesNarayanaDasaRasi(this Horoscope h)
 	{
-		return new (h.StrengthOptions.NarayanaDasaRasi);
+		return [..h.StrengthOptions.NarayanaDasaRasi];
 	}
 
 	public static List<RashiStrength> RulesKarakaKendradiGrahaDasaRasi(this Horoscope h)
 	{
-		return new (h.StrengthOptions.KarakaKendradiGrahaDasaRasi);
+		return [..h.StrengthOptions.KarakaKendradiGrahaDasaRasi];
 	}
 
 	public static List<GrahaStrength> RulesKarakaKendradiGrahaDasaGraha(this Horoscope h)
 	{
-		return new (h.StrengthOptions.KarakaKendradiGrahaDasaGraha);
+		return [..h.StrengthOptions.KarakaKendradiGrahaDasaGraha];
 	}
 
 	public static List<GrahaStrength> RulesKarakaKendradiGrahaDasaColord(this Horoscope h)
 	{
-		return new (h.StrengthOptions.KarakaKendradiGrahaDasaColord);
+		return [..h.StrengthOptions.KarakaKendradiGrahaDasaColord];
 	}
 
 	public static List <RashiStrength> RulesMoolaDasaRasi(this Horoscope h)
 	{
-		return new (h.StrengthOptions.MoolaDasaRasi);
+		return [..h.StrengthOptions.MoolaDasaRasi];
 	}
 
 	public static List <RashiStrength> RulesNavamsaDasaRasi(this Horoscope h)
 	{
-		return new (h.StrengthOptions.NavamsaDasaRasi);
+		return [..h.StrengthOptions.NavamsaDasaRasi];
 	}
 
 	public static List<RashiStrength> RulesJaiminiFirstRasi(this Horoscope h)
@@ -88,7 +88,7 @@ public static class FindStronger
 
 	public static List<GrahaStrength> RulesNaisargikaDasaGraha(this Horoscope h)
 	{
-		return new (h.StrengthOptions.NaisargikaDasaGraha);
+		return [..h.StrengthOptions.NaisargikaDasaGraha];
 	}
 
 	public static List<GrahaStrength> RulesVimsottariGraha(this Horoscope h)
@@ -103,7 +103,7 @@ public static class FindStronger
 
 	public static List<GrahaStrength> RulesStrongerCoLord(this Horoscope h)
 	{
-		return new (h.StrengthOptions.Colord);
+		return [..h.StrengthOptions.Colord];
 	}
 
 	public static OrderedZodiacHouses[] ResultsZodiacKendras(this Grahas grahas, ZodiacHouse zodiacHouse, List<RashiStrength> rules)
@@ -169,36 +169,30 @@ public static class FindStronger
 	public static ZodiacHouse[] ResultsFirstSeventhRasis(this Grahas grahas, List<RashiStrength> rules)
 	{
 		var zRet = new ZodiacHouse[12];
-		grahas.GetOrderedRasis(new[]
-		{
-			ZodiacHouse.Ari,
-			ZodiacHouse.Lib
-		}, rules).CopyTo(zRet, 0);
-		grahas.GetOrderedRasis(new[]
-		{
-			ZodiacHouse.Tau,
-			ZodiacHouse.Sco
-		}, rules).CopyTo(zRet, 2);
-		grahas.GetOrderedRasis(new[]
-		{
-			ZodiacHouse.Gem,
-			ZodiacHouse.Sag
-		}, rules).CopyTo(zRet, 4);
-		grahas.GetOrderedRasis(new[]
-		{
-			ZodiacHouse.Can,
-			ZodiacHouse.Cap
-		}, rules).CopyTo(zRet, 6);
-		grahas.GetOrderedRasis(new[]
-		{
-			ZodiacHouse.Leo,
-			ZodiacHouse.Aqu
-		}, rules).CopyTo(zRet, 8);
-		grahas.GetOrderedRasis(new[]
-		{
-			ZodiacHouse.Vir,
-			ZodiacHouse.Pis
-		}, rules).CopyTo(zRet, 10);
+		grahas.GetOrderedRasis([
+			                       ZodiacHouse.Ari,
+			                       ZodiacHouse.Lib
+		                       ], rules).CopyTo(zRet, 0);
+		grahas.GetOrderedRasis([
+			                       ZodiacHouse.Tau,
+			                       ZodiacHouse.Sco
+		                       ], rules).CopyTo(zRet, 2);
+		grahas.GetOrderedRasis([
+			                       ZodiacHouse.Gem,
+			                       ZodiacHouse.Sag
+		                       ], rules).CopyTo(zRet, 4);
+		grahas.GetOrderedRasis([
+			                       ZodiacHouse.Can,
+			                       ZodiacHouse.Cap
+		                       ], rules).CopyTo(zRet, 6);
+		grahas.GetOrderedRasis([
+			                       ZodiacHouse.Leo,
+			                       ZodiacHouse.Aqu
+		                       ], rules).CopyTo(zRet, 8);
+		grahas.GetOrderedRasis([
+			                       ZodiacHouse.Vir,
+			                       ZodiacHouse.Pis
+		                       ], rules).CopyTo(zRet, 10);
 		return zRet;
 	}
 
@@ -206,7 +200,7 @@ public static class FindStronger
 	public static Body[] GetOrderedGrahas(this Grahas grahas, List<GrahaStrength> rules)
 	{
 		Body[] bodies =
-		{
+		[
 			Body.Sun,
 			Body.Moon,
 			Body.Mars,
@@ -216,7 +210,7 @@ public static class FindStronger
 			Body.Saturn,
 			Body.Rahu,
 			Body.Ketu
-		};
+		];
 		return grahas.GetOrderedGrahas(bodies, rules);
 	}
 
@@ -246,7 +240,7 @@ public static class FindStronger
 	public static ZodiacHouse[] GetOrderedRasis(this Grahas grahas, List<RashiStrength> rules)
 	{
 		ZodiacHouse[] rasis =
-		{
+		[
 			ZodiacHouse.Ari,
 			ZodiacHouse.Tau,
 			ZodiacHouse.Gem,
@@ -259,7 +253,7 @@ public static class FindStronger
 			ZodiacHouse.Cap,
 			ZodiacHouse.Aqu,
 			ZodiacHouse.Pis
-		};
+		];
 		return grahas.GetOrderedRasis(rasis, rules);
 	}
 
