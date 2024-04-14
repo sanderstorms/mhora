@@ -470,5 +470,26 @@ namespace Mhora.Elements.Extensions
 
 			return (Bhava) result;
 		}
+
+		public static Body NaisargikaKaraka (this Bhava bhava)
+		{
+			switch (bhava)
+			{
+				case Bhava.LagnaBhava:  return Body.Sun;
+				case Bhava.DhanaBhava:  return Body.Jupiter;
+				case Bhava.SahajaBhava: return Body.Mars;
+				case Bhava.SukhaBhava:  return Body.Moon;
+				case Bhava.PutraBhava:  return Body.Jupiter;
+				case Bhava.ShatruBhava: return Body.Mars;
+				case Bhava.JayaBhava:   return Body.Venus;
+				case Bhava.MrtyuBhava:  return Body.Saturn;
+				case Bhava.DharmaBhava: return Body.Jupiter;
+				case Bhava.KarmaBhava:  return Body.Mercury;
+				case Bhava.LabhaBhava:  return Body.Jupiter;
+				case Bhava.VyayaBhava:  return Body.Saturn;
+			}
+
+			throw new Exception("Invalid bhava");
+		}
 	}
 }

@@ -212,4 +212,20 @@ public static class Tithis
 		return (double) l.Value - l.ToTithiBase();
 	}
 
+	//Dugdha
+	// 1st: Tula,Makara
+	// 2nd: Dhanu,Meena
+	// 3rd: Simha,Makara
+	// 4th: Vrishabha,Kumbha
+	// 5th: Mithuna,Kanya
+	// 6th: Mesha,Simha,
+	// 7th: Karka,Dhanu
+	// 8th: Mithuna,Kanya
+	// 9th: Simha, Vrishchika,
+	// 10th: Simha, Vrishchika,
+	// 11th: Dhanu,Meena
+	// 12th: Tula,Makara
+	// 13th: Vrishabha,Simha
+	// 14th: Mithuna,Kanya,Dhanu,Meena
+
 }

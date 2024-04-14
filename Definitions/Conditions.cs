@@ -10,11 +10,12 @@ namespace Mhora.Definitions
 		Exalted      = 0x00000002,
 		Moolatrikona = 0x00000004,
 		Debilitated  = 0x00000008,
-		MalificRasi  = 0x00000010,
-		BenificRasi  = 0x00000020,
-		Papagraha    = 0x00000040,
-		ShubhaGraha  = 0x00000080,
-		KarakaPlanet = 0x00000100,
+		EnemySign    = 0x00000010,
+		FriendlySign = 0x00000020,
+		KarakaPlanet = 0x00000040,
+		DigBala      = 0x00000080,
+		Combust      = 0x00000100,
+		Eclipsed     = 0x00000200
 	}
 
 }

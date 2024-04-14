@@ -254,7 +254,7 @@ public partial class Horoscope : ICloneable
 			correct++;
 		}
 
-		if (CheckKundaMoon())
+		if (CheckMoon() > 2)
 		{
 			correct++;
 		}
@@ -358,24 +358,55 @@ public partial class Horoscope : ICloneable
 		return (false);
 	}
 
-	//if the Kunda (Navamsa-Navamsa) longitude of Lagna conjunct with the Nakshatra of Natal Moon
+	//if the longitude of Lagna conjunct with the Nakshatra of Natal Moon
 	//or its trine Nakshatras the given BT can be considered correct 
-	public bool CheckKundaMoon()
+	public bool CheckLagnaMoon(DivisionType varga)
 	{
-		var kunda = FindGrahas(DivisionType.NavaNavamsa)[Body.Lagna];
+		var lagna = FindGrahas(varga)[Body.Lagna];
 		var moon  = FindGrahas(DivisionType.Rasi)[Body.Moon];
 
-		if (moon.Position.Longitude.ToNakshatra() == kunda.Position.Longitude.ToNakshatra())
+		if (moon.Position.Longitude.ToNakshatra() == lagna.Position.Longitude.ToNakshatra())
 		{
 			return (true);
 		}
 
-		if (moon.HouseFrom(kunda).IsTrikona())
+		if (moon.HouseFrom(lagna).IsTrikona())
 		{
 			return (true);
 		}
 
 		return (false);
+	}
+
+	//1) The Navamsa longitude of Lagna (Lagna longitude x 9) should fall in the Moon Nakshatra or its trines.
+	//2) The Navamsa-Navamsa longitude of Lagna (Lagna longitude x 81) should fall in the Moon Nakshatra or its trines.
+	//3) The Dwadasamsa longitude of Lagna (Lagna longitude x 12) should fall in the  Moon Nakshatra or its trines.
+	//4) The Navamsa-Dwadasamsa longitude of Lagna (Lagna longitude x 108) should fall in the Moon Nakshatra or its trines.
+	public int CheckMoon()
+	{
+		int correct = 0;
+
+		if (CheckLagnaMoon(DivisionType.Navamsa))
+		{
+			correct++;
+		}
+
+		if (CheckLagnaMoon(DivisionType.NavaNavamsa))
+		{
+			correct++;
+		}
+
+		if (CheckLagnaMoon(DivisionType.Dwadasamsa))
+		{
+			correct++;
+		}
+
+		if (CheckLagnaMoon(DivisionType.NavamsaDwadasamsa))
+		{
+			correct++;
+		}
+
+		return (correct);
 	}
 
 	// Ketu is our past life karma, dropping us in this incarnation. 

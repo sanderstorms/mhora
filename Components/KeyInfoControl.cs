@@ -353,6 +353,12 @@ public class KeyInfoControl : MhoraControl
 			mList.Items.Add(li);
 		}
 		{
+			li = new ListViewItem("Yama lord");
+			var fmt = string.Format("{0} - {1}", h.Vara.YamaLord, h.Vara.YamaSpan);
+			li.SubItems.Add(fmt);
+			mList.Items.Add(li);
+		}
+		{
 			li = new ListViewItem("Birth Tatva");
 			var fmt = string.Format("{0} - {1}", h.Vara.BirthTatva.Tatva, h.Vara.BirthTatva.AntaraTatva);
 			li.SubItems.Add(fmt);
@@ -360,7 +366,7 @@ public class KeyInfoControl : MhoraControl
 		}
 		{
 			li = new ListViewItem("Birth Time D60 and D81");
-			var fmt = string.Format("Ketu-D60: {0}, Kunda-Mo: {1}, Kunda-La: {2}", h.CheckKetu60(), h.CheckKundaMoon(), h.CheckKundaLagna());
+			var fmt = string.Format("Ketu-D60: {0}, Kunda-Mo: {1}, Kunda-La: {2}", h.CheckKetu60(), h.CheckMoon(), h.CheckKundaLagna());
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}

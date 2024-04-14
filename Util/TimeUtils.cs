@@ -34,7 +34,7 @@ public static class TimeUtils
         var tjd_et = jd + sweph.Deltat(jd);
         sweph.TimeEqu(tjd_et, out var eot);
         Time equationOfTime = TimeSpan.FromDays(eot);
-        var  lstm           = (h.Info.TimeZone.Offset / 60.0) * 15.0;
+        var  lstm           = (h.Info.TimeZone.Offset.TotalHours) * 15.0;
         var  localSolarTime = (double) (4.0 * (h.Info.Longitude - lstm)) + (equationOfTime.TotalHours * 60);
 
 		return TimeSpan.FromMinutes(localSolarTime);
@@ -42,8 +42,9 @@ public static class TimeUtils
 
     public static DateTime Lstm (this DateTime dateTime, Horoscope h) //Local Standard Time Meridian (LSTM)
     {
-        var offset = dateTime.LmtOffset(h);
-		return (dateTime + offset);
+	    var lmtOffset = dateTime.LmtOffset(h);
+	    var date   = (dateTime.Utc(h) + h.Info.UtcOffset + lmtOffset);
+		return (date);
     }
 
     public static DateTime Moment(this Horoscope h, JulianDate tjdUt)

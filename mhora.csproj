@@ -409,7 +409,6 @@
     <Compile Include="Elements\Longitude.cs" />
     <Compile Include="Components\Converter\LongitudeConverter.cs" />
     <Compile Include="Dasas\RasiDasa\MandookaDasa.cs" />
-    <Compile Include="Components\File\Mhd.cs" />
     <Compile Include="Components\File\MhoraArrayConverter.cs" />
     <Compile Include="Components\File\MhoraVerifier.cs">
       <SubType>Code</SubType>

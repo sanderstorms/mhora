@@ -52,7 +52,7 @@ namespace Mhora.Definitions
 		ChandraAyurLagna,
 		MrityuPoint,
 		Other,
-		AL,
+		AL,					
 		A2,
 		A3,
 		A4,
@@ -66,4 +66,17 @@ namespace Mhora.Definitions
 		UL
 	}
 
+
+	// A1 Arudha lagna, Pada lagna, Arudha, Pada
+	// A2 Dhanarudha, Vittarudha, Dhana pada, Vitta pada
+	// A3 Bhatrarudha, Bhratri pada, Vikramarudha, Vikrama pada
+	// A4 Matri pada, Vahana pada, Sukha pada, Matrarudha, Vahanarudha, Sukharudha
+	// A5 Mantra pada, Mantrarudha, Putrarudha, Putra pada, Buddhi pada
+	// A6 Roga pada, Satru pada, Rogarudha, Satrarudha
+	// A7 Dara pada, Dararudha
+	// A8 Mrityu pada, Kashta pada, Kashtarudha, Randhrarudha
+	// A9 Bhagya pada, Bhagyarudha, Pitri pada, Pitrarudha, Dharma pada, Guru pada
+	// A10 Karma pada, Karmarudha, Swarga pada, Swargarudha, Rajya pada
+	// A11 Labha pada, Labharudha
+	// A12 Upapada lagna, Upapada, Gaunapada, Vyayarudha, Moksha pada
 }

@@ -1207,6 +1207,25 @@ namespace Mhora.Elements
 				Conditions |= Conditions.OwnHouse;
 			}
 
+			if (FriendlySign)
+			{
+				Conditions |= Conditions.FriendlySign;
+			}
+			else if (EnemySign)
+			{
+				Conditions |= Conditions.EnemySign;
+			}
+
+			if (IsDigBala)
+			{
+				Conditions |= Conditions.DigBala;
+			}
+
+			if (IsCombust)
+			{
+				Conditions |= Conditions.Combust;
+			}
+
 			if ((BodyType == BodyType.Graha) && (IsChayaGraha == false))
 			{
 				_digBala = (double) _grahas.Horoscope.DigBala(Body);

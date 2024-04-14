@@ -192,8 +192,13 @@ namespace Mhora.Elements
 		}
 
 
-		//Yama of Sun = Kala Span (of time)		//Yama of Moon = Paridhi Span (of time)		//Yama of Mars = Dhooma Span (of time)
-		//Yama of Mercury = Arthaprahara Span (of time)		//Yama of Jupiter = Yemakandaka Span (of time)		//Yama of Venus = Yamasukra Span (of time)		//Yama of Saturn = Gulika Span (of time)
+		//Yama of Sun = Kala Span (of time)
+		//Yama of Moon = Paridhi Span (of time)
+		//Yama of Mars = Dhooma Span (of time)
+		//Yama of Mercury = Arthaprahara Span (of time)
+		//Yama of Jupiter = Yemakandaka Span (of time)
+		//Yama of Venus = Yamasukra Span (of time)
+		//Yama of Saturn = Gulika Span (of time)
 		public JulianDate FindKalaCusp(Body body, HoroscopeOptions.EUpagrahaType upagrahaType)
 		{
 			var  cusps  = GetSunrisetEqualCuspsUt(8);

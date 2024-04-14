@@ -890,12 +890,10 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Nakshatra", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Pada", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("NakLord", -1, HorizontalAlignment.Left);
-		mList.Columns.Add(options.DivisionType.ToString(), 100, HorizontalAlignment.Left);
 		mList.Columns.Add("Part", -1, HorizontalAlignment.Left);
-		mList.Columns.Add("Ruler", -1, HorizontalAlignment.Left);
-		mList.Columns.Add("Cusp Start", -1, HorizontalAlignment.Left);
-		mList.Columns.Add("Cusp End", -2, HorizontalAlignment.Left);
-		mList.Columns.Add("Avastha", -2, HorizontalAlignment.Left);
+		mList.Columns.Add("Condition", -1, HorizontalAlignment.Left);
+
+		var parts = options.DivisionType.NumPartsInDivision();
 
 
 		foreach (Position bp in h.PositionList)
@@ -919,16 +917,11 @@ public class BasicCalculationsControl : MhoraControl
 			li.SubItems.Add(bp.Longitude.ToNakshatra().ToString());
 			li.SubItems.Add(bp.Longitude.NakshatraPada().ToString());
 			li.SubItems.Add(getNakLord(bp.Longitude));
-
-			var dp = bp.ToDivisionPosition(options.DivisionType);
-			li.SubItems.Add(dp.ZodiacHouse.ToString());
-			li.SubItems.Add(dp.Part.ToString());
-			li.SubItems.Add(bp.AmsaRuler( options.DivisionType, dp.RulerIndex));
-			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspLower)));
-			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
+			li.SubItems.Add(bp.PartOfZodiacHouse(parts).ToString());
 			if (bp.BodyType == BodyType.Graha)
 			{
-				li.SubItems.Add(h.SayanadiAvastha(bp.Name).ToString());
+				var graha = h.FindGrahas(options.DivisionType)[bp.Name];
+				li.SubItems.Add(graha.Conditions.ToString());
 			}
 			else
 			{

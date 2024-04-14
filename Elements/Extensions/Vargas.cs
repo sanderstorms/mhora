@@ -695,4 +695,79 @@ public static class Vargas
 			new Division(DivisionType.Shashtyamsa)
 		];
 	}
+
+	//D-Chart Karya Rasi / Controlling House Karyesha/Significator
+	// D2 2H Jupiter
+	// D3 3H Mars
+	// D4 4H Mars & Ketu
+	// D5 5H Sun
+	// D6 6H Saturn
+	// D7 5H Jupiter
+	// D8 8H Saturn
+	// D9 7H Venus/Jupiter
+	// D10 10H Saturn, Sun, Mercury & Jupiter
+	// D11 11H Mars, Saturn & Nodes
+	// D12 12H Sun & Moon
+	// D16 4H Venus
+	// D20 8H Ketu
+	// D24 4H Jupiter & Mercury
+	// D30 6H Mars & Saturn
+	// D40 4H Moon
+	// D45 9H Sun
+	// D60 12H
+
+	public static Bhava ControllingHouse(DivisionType divisionType)
+	{
+		return divisionType switch
+		       {
+			       DivisionType.Rasi             => Bhava.LagnaBhava,
+			       DivisionType.HoraParasara     => Bhava.DhanaBhava,
+			       DivisionType.DrekkanaParasara => Bhava.SahajaBhava,
+			       DivisionType.Chaturthamsa     => Bhava.SukhaBhava,
+			       DivisionType.Panchamsa        => Bhava.PutraBhava,
+			       DivisionType.Shashthamsa      => Bhava.ShatruBhava,
+			       DivisionType.Saptamsa         => Bhava.JayaBhava,
+			       DivisionType.Ashtamsa         => Bhava.MrtyuBhava,
+			       DivisionType.Navamsa          => Bhava.DharmaBhava,
+			       DivisionType.Dasamsa          => Bhava.KarmaBhava,
+			       DivisionType.Rudramsa         => Bhava.LabhaBhava,
+			       DivisionType.Dwadasamsa       => Bhava.VyayaBhava,
+			       DivisionType.Shodasamsa       => Bhava.SukhaBhava,
+			       DivisionType.Vimsamsa         => Bhava.MrtyuBhava,
+			       DivisionType.Trimsamsa        => Bhava.ShatruBhava,
+			       DivisionType.Khavedamsa       => Bhava.SukhaBhava,
+			       DivisionType.Akshavedamsa     => Bhava.DharmaBhava,
+				   _							 => Bhava.LagnaBhava
+		       };
+	}
+
+	// Rasi D-1 Existence at the physical level
+	// Hora D-2 Wealth and money
+	// Drekkana D-3 Everything related to brothers and sisters
+	// Chaturthamsa D-4 Residence, houses owned, properties and fortune
+	// Panchamsa D-5 Fame, authority and power
+	// Shashthamsa D-6 Health troubles
+	// Saptamsa D-7 Everything related to children (and grand-children)
+	// Ashtamsa D-8 Sudden and unexpected troubles, litigation etc
+	// Navamsa D-9 Marriage and everything related to spouse(s),  dharma (duty and righteousness),
+	//			interaction with other people, basic skills, inner self
+	// Dasamsa D-10 Career, activities and achievements in society
+	// Rudramsa D-11 Death and destruction
+	// Dwadasamsa D-12 Everything related to parents (also uncles, aunts and grand-parents, i.e. blood-relatives of parents)
+	// Shodasamsa D-16 Vehicles, pleasures, comforts and discomforts
+	// Vimsamsa D-20 Religious activities and spiritual matters
+	// Chaturvimsamsa D-24 Learning, knowledge and education
+	// Nakshatramsa D-27 Strengths and weaknesses, inherent nature
+	// Trimsamsa D-30 Evils and punishment, sub-conscious self, some diseases
+	// Khavedamsa D-40 Auspicious and inauspicious events
+	// Akshavedamsa D-45 All matters
+	// Shashtyamsa D-60 Karma of past life, all matters
+
+
+	//a. The lord of first, 4th and 7th Navamsa is Deva which means the divine lord. It represent the qualities
+	//   of generosity, power, wealth. Native born in this part of Navamsa are generous, religious and powerful.
+	//b. The lord of 2nd, 5th and 8th Navamsa represent Nara which means a man or person of kind, soul and reputed. '
+	//	 Engaged in the pursuits of human welfare.
+	//c. The lords of 3rd, 6th and 9th Navamsa represent the charatertistics of Rakshaha or a demon. This part represent cruel,
+	//	 quarry, violent, selfish and person of a negative qualities.
 }
