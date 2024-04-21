@@ -613,6 +613,55 @@ namespace Mhora.Elements.Extensions
 		// 11H – Inheritance from mother, family disputes, vehicular accidents.
 		// 12H – Problems to children, perverted thinking, sudden gains from speculation, and losses in profession.
 
+		// D9 - Navamsha
+		// 1H - self and this will thus represent one’s commitment to the norms
+		//		of dharma towards self to protect all the creations of this world.
+		// 2H - family, income, speech, emotions, etc. It is equally a trine (5th) to the 10th house indicating
+		//		‘punya karma’ that will be inherited by a person as the 10th house represents the karma stahana.
+		//		This house being the 8th house from the 7th house, so the second bhava of the navamsha represents
+		//		the secret affairs of a person other than marriage. Since Moon exalts in the house as per kaal -
+		//		pursha kundali, it depicts the mind of a person as Moon rules the mind and emotions.
+		// 3H - parakrama, viz, actions and urge to achieve. It shows what a person will like to perform and achieve.
+		//		It equally shows skills, crafts, hobbies and the artistic pursuits of a person. It represents younger
+		//		co - borns as well. It is one of the important ‘up - chhaya house’, the house of growth.
+		// 4H - mother, motherland, society, one’s personal comforts/ discomforts etc.
+		//		It will thus represent one’s commitment to dharma in all such spheres of one’s activities.
+		// 6H - indicated hurdles, bottlenecks, hardships, diseases, court cases etc, as per the main birth chart 
+		//		and applies equally in the navamsha chart as well. This house being the 12th to the 7th house,
+		//		it indicates the hurdles etc, to the marriage and the matrimonial relationship as well.
+		//		It is not always a bad bhava as it 9th and the 10th houses from the 10th house and the 9th house
+		//		of a birth or a navmasha hart as well. Thus known as ‘ardhi - trikona. So it is equally a very important
+		//		house for ones growth and karma. It signifies competitions and will to fight back.
+		//		It is one of the important ‘up - chhaya’ houses, the house of growth.
+		// 7H - spouse and the other family members. Here the family does not mean the immediate family only,
+		//		but it includes the whole family where commitment to dharma (good deeds) needs to be performed
+		//		as the head of the whole family, which includes one’s parents and one’s immediate relatives as well.
+		// 8H - It has all the significations as that of a birth chart for the navamsha chart as well. It being the
+		//		2nd house from the 7th house, thus its marka sthana as well. It is the ‘mangalya sthana’ of a female viz,
+		//		the house of longevity of marriage
+		// 10H - the karma sathana, which is universal dharma where commitment to dharma (good deeds) needs
+		//		to be performed to protect all the creation of the supreme creator. It will include compassion and
+		//		humility to the whole humanity as also to the other lives other than humans (Sarwadharma).
+		//		This bhava (house) creates a bigger karmic influence and responsibility to be performed as a better
+		//		dharma (better deeds).
+		// 11H - being the 2nd house from the 10th house thus its growth and income. It is the house of growth and is
+		//		an important ‘up - chahaya house’, the house of growth. It is an important house of the navamsha chart
+		//		from the growth and the material prosperity point of view. It is the 3rd house from the 9th house,
+		//		thus represents the parakrama house, the house of actions for ones destiny, dharma and Guru and ones father.
+		// 12H - This house has again all the significations of that of a birth chart. It is the house of loss and denial.
+		//		This house signifies the bed comforts as well. It is the house of moksha as well.
+		//		
+		//		The 1st, 5th and the 9th houses from the navamsha lagna are called as navamsha trikonas.
+		//		The trines or the trikonas are otherwise very important houses (bhavas) of the lagna chart and in the
+		//		case of the navamsha chart, these houses are equally very important houses and depict the capabilities
+		//		and the nature of a person. As already mentioned above that the navamsha shows the earned fruits of
+		//		one’s dharma acquired from the previous births, its trines depict such dharmic or adarmic (religious or
+		//		irreligious) traits of a person in this birth, acquired from the previous births. Benefic planets in the
+		//		trines of a navamsha chart show the results as follows:
+		//		Jupiter: Blessings of Lord                     Shiva, Moon: Blessings of Saraswati,
+		//		Mercury: Blessings of Vishnu, Venus: Blessings of Laxmi
+
+
 
 		// D10 - Dashamsha
 		// 1H – The beginning of the career. Perception of career. The strength of your karmas i.e.
