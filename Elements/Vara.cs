@@ -19,14 +19,14 @@ namespace Mhora.Elements
 
 			JulianDate nextSunrise = h.CalcNextSolarEvent(sweph.EventType.SOLAR_EVENT_SUNRISE, Jd);
 
-			IsDayBirth           = CalcSunriseSunset(h, h.Info.Jd, out var sunrise, out var sunset, out var noon, out var midnight);
-			Sunrise              = sunrise.Lmt(h);
-			Sunset               = sunset.Lmt(h);
-			Noon                 = noon.Lmt(h);
-			Midnight             = midnight.Lmt(h);
-			NextSunrise          = nextSunrise.Lmt(h);
-			HoursAfterSunrise    = Jd.Date - sunrise;
-			HoursAfterSunRiseSet = IsDayBirth ? sunset - Jd.Date : Jd.Date - sunset;
+			IsDayBirth   = CalcSunriseSunset(h, h.Info.Jd, out var sunrise, out var sunset, out var noon, out var midnight);
+			Sunrise      = sunrise.Lmt(h);
+			Sunset       = sunset.Lmt(h);
+			Noon         = noon.Lmt(h);
+			Midnight     = midnight.Lmt(h);
+			NextSunrise  = nextSunrise.Lmt(h);
+			Isthaghati   = Jd.Date - sunrise;
+			JanmaVighati = IsDayBirth ? sunset - Jd.Date : Jd.Date - sunset;
 
 			LmtSunrise = Sunrise.Date.Lstm(h).Time();
 			LmtSunset  = Sunset.Date.Lstm(h).Time();
@@ -39,7 +39,7 @@ namespace Mhora.Elements
 			WeekDay  = date.DayOfWeek.WeekDay();
 			DayLord  = WeekDay.Ruler();
 			HoraLord = Jd.Date.HoraLord();
-			KalaLord = CalculateKalaLord(HoursAfterSunrise);
+			KalaLord = CalculateKalaLord(Isthaghati);
 
 			//	Janma Vighatika Graha
 			// 1. The moment of birth is always considered from the Sunrise or Sunset. So the start of the vighatikas
@@ -51,44 +51,44 @@ namespace Mhora.Elements
 			//    To arrive at the lord of the ruler, divide the Vighatis arrived at the previous step by 9
 			//    and round it up to the higher interger and count that number from Sun.
 
-			VighatikaGraha = (Body) (int) (HoursAfterSunRiseSet.Vighati % 9);
+			VighatikaGraha = (Body) (int) (JanmaVighati.Vighati % 9);
 
 			BirthTatva           = CalculateBirthTatva();
 			Gulika               = CalculateUpgraha(Body.Saturn);
-			Maandi               = CalculateUpgraha(Body.Saturn, HoroscopeOptions.EUpagrahaType.End);
+			Maandi               = CalculateUpgraha(Body.Saturn, true, HoroscopeOptions.EUpagrahaType.End);
 			(YamaLord, YamaSpan) = CalculateYamaLord();
 
 			(RahuKalam, Yamagandam, GulikaKalam) = CalculateKalam();
 		}
 
-		public Horoscope  Horoscope            {get;}
-		public JulianDate Jd                   {get;}
-		public Time       LmtSunrise           {get;}
-		public Time       LmtSunset            {get;}
-		public bool       IsDayBirth           {get;}
-		public JulianDate Sunrise              {get;}
-		public JulianDate Sunset               {get;}
-		public JulianDate Noon                 {get;}
-		public JulianDate Midnight             {get;}
-		public JulianDate NextSunrise          {get;}
-		public JulianDate RahuKalam            {get;}
-		public JulianDate Yamagandam           {get;}
-		public JulianDate GulikaKalam          {get;}
-		public Time       HoursAfterSunrise    {get;}
-		public Time       HoursAfterSunRiseSet {get;}
-		public Time       Length               {get;}
-		public Time       DayTime              {get;}
-		public Time       NightTime            {get;}
-		public Body       DayLord              {get;}
-		public Weekday    WeekDay              {get;}
-		public Body       HoraLord             {get;}
-		public Body       KalaLord             {get;}
-		public Body       YamaLord             {get;}
-		public Body       VighatikaGraha       {get;}
-		public Yama       YamaSpan             {get;}
-		public BirthTatva BirthTatva           {get;}
-		public Longitude  Gulika               {get;}
-		public Longitude  Maandi               {get;}
+		public Horoscope  Horoscope      {get;}
+		public JulianDate Jd             {get;}
+		public Time       LmtSunrise     {get;}
+		public Time       LmtSunset      {get;}
+		public bool       IsDayBirth     {get;}
+		public JulianDate Sunrise        {get;}
+		public JulianDate Sunset         {get;}
+		public JulianDate Noon           {get;}
+		public JulianDate Midnight       {get;}
+		public JulianDate NextSunrise    {get;}
+		public JulianDate RahuKalam      {get;}
+		public JulianDate Yamagandam     {get;}
+		public JulianDate GulikaKalam    {get;}
+		public Time       Isthaghati     {get;} //Hours after sunrise
+		public Time       JanmaVighati   {get;} //Hours after sunrise or sunset
+		public Time       Length         {get;}
+		public Time       DayTime        {get;}
+		public Time       NightTime      {get;}
+		public Body       DayLord        {get;}
+		public Weekday    WeekDay        {get;}
+		public Body       HoraLord       {get;}
+		public Body       KalaLord       {get;}
+		public Body       YamaLord       {get;}
+		public Body       VighatikaGraha {get;}
+		public Yama       YamaSpan       {get;}
+		public BirthTatva BirthTatva     {get;}
+		public Longitude  Gulika         {get;}
+		public Longitude  Maandi         {get;}
 
 		public Longitude BhriguBindu
 		{
@@ -145,37 +145,29 @@ namespace Mhora.Elements
 		//thereby creating 16 kālas in a day.  Each kāla is ruled by a planet starting with the day lord
 		//and subsequently it follows the order of the Kāla Cakra from Sun to Rāhu.
 		//The 8 kālas which exist from sunset to sunrise begin with the 7th planet from the vāra lord in the Kāla Cakra.
-		public Body CalculateKalaLord(Time hoursAfterSunrise)
+		public Body CalculateKalaLord(Time hoursAfterSunrise, bool equalParts = true)
 		{
 			var index = Array.IndexOf(Bodies.KalaOrder, DayLord);
 			var hour  = hoursAfterSunrise.TotalHours;
-			var yama  = (Length / 16);
-			var part  = (int) (hour / yama.TotalHours);
-
-			if (part >= 8)
-			{
-				part  -= 8;
-				index += 4;
-			}
-
-			var lord = (index + part);
-			lord %= Bodies.KalaOrder.Length;
-
-			return Bodies.KalaOrder[lord];
-		}
-
-		public Body CalculateKalaLordCusps(Time hoursAfterSunrise)
-		{
-			var index = Array.IndexOf(Bodies.KalaOrder, DayLord);
-			var cusps = KalaCuspsUt;
-			var jd    = Sunrise.Utc(Horoscope) + hoursAfterSunrise;
 			int part  = 0;
 
-			for (part = 0; part < cusps.Length - 1; part++)
+			if (equalParts)
 			{
-				if (cusps[part + 1] > jd)
+				var yama = (Length / 16);
+				part = (int) (hour / yama.TotalHours);
+			}
+			else
+			{
+				if (hoursAfterSunrise > DayTime)
 				{
-					break;
+					var yama = NightTime / 8;
+					hour -= DayTime.TotalHours;
+					part =  (int) (hour / yama.TotalHours) + 8;
+				}
+				else
+				{
+					var yama = DayTime / 8;
+					part = (int) (hour  / yama.TotalHours);
 				}
 			}
 
@@ -191,7 +183,6 @@ namespace Mhora.Elements
 			return Bodies.KalaOrder[lord];
 		}
 
-
 		//Yama of Sun = Kala Span (of time)
 		//Yama of Moon = Paridhi Span (of time)
 		//Yama of Mars = Dhooma Span (of time)
@@ -199,10 +190,10 @@ namespace Mhora.Elements
 		//Yama of Jupiter = Yemakandaka Span (of time)
 		//Yama of Venus = Yamasukra Span (of time)
 		//Yama of Saturn = Gulika Span (of time)
-		public JulianDate FindKalaCusp(Body body, HoroscopeOptions.EUpagrahaType upagrahaType)
+		public JulianDate FindKalaCusp(Body body, bool equalParts, HoroscopeOptions.EUpagrahaType upagrahaType)
 		{
-			var  cusps  = GetSunrisetEqualCuspsUt(8);
-			var  part   = 0;
+			var part  = 0;
+			var cusps = equalParts ? GetSunrisetEqualCuspsUt(8) : GetSunrisetCuspsUt(8);
 
 			var offset = upagrahaType switch
 			             {
@@ -220,7 +211,7 @@ namespace Mhora.Elements
 			for (var dayPart = part; dayPart < part + 8; dayPart++)
 			{
 				var hours = (cusps[dayPart].Date - Sunrise);
-				if (CalculateKalaLord (hours) == body)
+				if (CalculateKalaLord (hours, equalParts) == body)
 				{
 					return cusps[dayPart] + offset;
 				}
@@ -240,9 +231,9 @@ namespace Mhora.Elements
 		// To find the days Mandi Udaya time, The Dina Pramana (day or night) should be
 		// multiplied by Mani Udaya Ghati and expunged by 30. The sign thus arrived is
 		// the Rising sign of Mandi
-		public Longitude CalculateUpgraha(Body body, HoroscopeOptions.EUpagrahaType upagrahaType = HoroscopeOptions.EUpagrahaType.Begin)
+		public Longitude CalculateUpgraha(Body body, bool equalParts = true, HoroscopeOptions.EUpagrahaType upagrahaType = HoroscopeOptions.EUpagrahaType.Begin)
 		{
-			var upgraha = FindKalaCusp(body, upagrahaType);
+			var upgraha = FindKalaCusp(body, equalParts, upagrahaType);
 			return new Longitude(Horoscope.Lagna(upgraha));
 		}
 
@@ -389,7 +380,7 @@ namespace Mhora.Elements
 		public JulianDate[] GetLmtCuspsUt(int dayParts)
 		{
 			var ret         = new JulianDate[dayParts * 2 + 1];
-			var sr          = Jd.Date - HoursAfterSunrise - Sunrise.Time + LmtSunrise;
+			var sr          = Jd.Date - Isthaghati - Sunrise.Time + LmtSunrise;
 			var srLmtUt     = new JulianDate(sr - TimeSpan.FromDays(1));
 			var srLmtNextUt = new JulianDate(sr);
 			//double sr_lmt_ut = this.info.Jd - this.info.DateOfBirth.time / 24.0 + 6.0 / 24.0;
@@ -416,7 +407,7 @@ namespace Mhora.Elements
 		{
 			var dayLord  = DayLord;
 			var yamaLen  = Length.TotalHours / 8;
-			var yama     = (int) (HoursAfterSunrise.TotalHours / yamaLen);
+			var yama     = (int) (Isthaghati.TotalHours / yamaLen);
 			var yamaSpan = (Yama) yama;
 			var yamaLord = (Body) (dayLord.Index() + yama).NormalizeInc(0, 7);
 			return (yamaLord, yamaSpan);
@@ -437,8 +428,8 @@ namespace Mhora.Elements
 			var tatva = Tatvas.DayTatva[WeekDay.Index()];
 
 			var  yamaSpan  = Length / 16;
-			var  part      = (int) (HoursAfterSunrise.TotalHours / yamaSpan.TotalHours);
-			Time subPeriod = (HoursAfterSunrise.TotalHours % yamaSpan.TotalHours);
+			var  part      = (int) (Isthaghati.TotalHours / yamaSpan.TotalHours);
+			Time subPeriod = (Isthaghati.TotalHours % yamaSpan.TotalHours);
 
 			var yama = (Yama) (part / 2); //Yama is 1/8th of a day
 

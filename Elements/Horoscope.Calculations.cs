@@ -23,7 +23,7 @@ namespace Mhora.Elements
 			var rahPos     = GetPosition(Body.Rahu).Longitude;
 			var mandiPos   = GetPosition(Body.Maandi).Longitude;
 			var gulikaPos  = GetPosition(Body.Gulika).Longitude;
-			var muhurtaPos = new Longitude((Vara.HoursAfterSunrise / (Vara.Length) * 360.0).TotalHours);
+			var muhurtaPos = new Longitude((Vara.Isthaghati / (Vara.Length) * 360.0).TotalHours);
 
 			// add simple midpoints
 			AddOtherPosition("User Specified", new Longitude(Options.CustomBodyLongitude.Value));
@@ -124,7 +124,7 @@ namespace Mhora.Elements
 
 		public void AddSpecialLagnaPositions()
 		{
-			Time ishtaghati = Vara.HoursAfterSunrise;
+			Time ishtaghati = Vara.Isthaghati;
 
 			for (var i = 1; i <= 12; i++)
 			{

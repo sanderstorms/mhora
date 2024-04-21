@@ -237,7 +237,7 @@ namespace Mhora.Calculation
 				new (h, Body.ArthaPraharaka, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Mercury)),
 				new (h, Body.YamaGhantaka, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Jupiter)),
 				new (h, Body.Gulika, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Saturn)),
-				new (h, Body.Maandi, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Saturn, HoroscopeOptions.EUpagrahaType.End)),
+				new (h, Body.Maandi, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Saturn, true, HoroscopeOptions.EUpagrahaType.End)),
 				new (h, Body.Mrityu, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Mars))
 			};
 
@@ -285,7 +285,7 @@ namespace Mhora.Calculation
 
 			//Mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
 
-			var istaGhati = h.Vara.HoursAfterSunrise.Ghati;
+			var istaGhati = h.Vara.Isthaghati.Ghati;
 			var blLon     = lonBase.Add(new Longitude(istaGhati * 30 / 5));
 			var hlLon     = lonBase.Add(new Longitude(istaGhati * 30 / 2.5));
 			var glLon     = lonBase.Add(new Longitude(istaGhati      * 30));
@@ -344,7 +344,7 @@ namespace Mhora.Calculation
 		public static Position CalculatePranapada(this Horoscope h)
 		{
 			var sun       = h.FindGrahas(DivisionType.Rasi) [Body.Sun];
-			var ppMinutes = (h.Vara.HoursAfterSunrise.TotalMinutes * 5); //degrees
+			var ppMinutes = (h.Vara.Isthaghati.TotalMinutes * 5); //degrees
 			var arkaKopa  = sun.Position.Longitude;
 			var zh        = sun.Rashi.ZodiacHouse;
 

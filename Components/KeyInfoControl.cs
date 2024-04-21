@@ -297,22 +297,22 @@ public class KeyInfoControl : MhoraControl
 		}
 		{
 			li = new ListViewItem("Muhurta");
-			var mIndex = (int) ((h.Vara.HoursAfterSunrise / h.Vara.Length * 30.0).TotalHours).Floor() + 1;
+			var mIndex = (int) ((h.Vara.Isthaghati / h.Vara.Length * 30.0).TotalHours).Floor() + 1;
 			var m      = (Muhurta) mIndex;
 			var fmt    = string.Format("{0} ({1})", m, m.NakLordOfMuhurta());
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			var ghatisSr = h.Vara.HoursAfterSunrise;
-			var ghatisSs = h.Vara.HoursAfterSunRiseSet;
+			var ghatisSr = h.Vara.Isthaghati;
+			var ghatisSs = h.Vara.JanmaVighati;
 			li = new ListViewItem("Ghatis");
 			var fmt = string.Format("{0:0.0000} / {1:0.0000}", ghatisSr.Ghati, ghatisSs.Ghati);
 			li.SubItems.Add(fmt);
 			mList.Items.Add(li);
 		}
 		{
-			var vgOff = (int) ((h.Vara.HoursAfterSunRiseSet * 150.0).TotalHours).Ceil();
+			var vgOff = (int) ((h.Vara.JanmaVighati * 150.0).TotalHours).Ceil();
 			vgOff = vgOff % 9;
 			if (vgOff == 0)
 			{

@@ -101,6 +101,18 @@ public static class Bodies
 		Body.Rahu
 	];
 
+	public static readonly Body[] WeekDayOrder =
+	[
+		Body.Sun,
+		Body.Moon,
+		Body.Mars,
+		Body.Jupiter,
+		Body.Mercury,
+		Body.Venus,
+		Body.Saturn,
+		Body.Rahu,
+	];
+
 
 	public static readonly string[] Karakas =
 	[

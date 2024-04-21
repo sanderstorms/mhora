@@ -153,7 +153,7 @@ public static class Basics
 		//Ghatee   Lagna: changes sign every Ghatee (every 24 min)
 		//Vighatee Lagna: changes sign every Vighatee (every 24 sec)
 
-		var istaGhati = h.Vara.HoursAfterSunrise.Ghati;
+		var istaGhati = h.Vara.Isthaghati.Ghati;
 		var blLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 6));			//bhava = 2 ghati = 30 degrees
 		var hlLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 12));			//hora = 15 degrees
 		var glLon     = stdGrahas[0].Longitude.Add(new Longitude(istaGhati * 12 * 2.5));

@@ -764,13 +764,13 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 		// if done once, get something usually 2+ minutes off. 
 		// don't know why this is.
-		var offsetSunrise = h2.Vara.HoursAfterSunrise / 24.0;
+		var offsetSunrise = h2.Vara.Isthaghati / 24.0;
 		m                   = h2.Moment(h2.Info.Jd - offsetSunrise.TotalHours);
 		h2.Info.DateOfBirth = m;
 		h2.OnChanged();
 
 		// so do it a second time, getting sunrise + 1 second.
-		offsetSunrise       = h2.Vara.HoursAfterSunrise / 24.0;
+		offsetSunrise       = h2.Vara.Isthaghati / 24.0;
 		m                   = h2.Moment(h2.Info.Jd - offsetSunrise.TotalHours + 1.0 / (24.0 * 60.0 * 60.0));
 		h2.Info.DateOfBirth = m;
 		h2.OnChanged();
