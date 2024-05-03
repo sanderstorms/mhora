@@ -95,6 +95,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	public HoraInfo(HoraInfo h)
 	{
 		_tob                   = h._tob;
+		UseDst                 = h.UseDst;
 		_city                  = h.City;
 		Events                 = h.Events;
 		Name                   = h.Name;
@@ -129,6 +130,12 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 			_tob = value;
 			_jd   = null;
 		}
+	}
+
+	public bool UseDst
+	{
+		get;
+		set;
 	}
 
 	[Category(CatTob)]
@@ -219,10 +226,13 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	}
 
 	[JsonIgnore]
-	public TimeSpan UtcOffset => TimeZone.TimeZoneInfo.BaseUtcOffset;
+	public Time UtcOffset => TimeZone.TimeZoneInfo.BaseUtcOffset;
 
 	[JsonIgnore]
-	public TimeSpan DstOffset => TimeZone.TimeZoneInfo.GetUtcOffset(_tob);
+	public Time DstOffset => TimeZone.TimeZoneInfo.GetUtcOffset(_tob);
+
+	[JsonIgnore]
+	public Time DstCorrection => DstOffset - UtcOffset;
 
 	private JulianDate _jd = 0;
 	[JsonIgnore]
@@ -232,7 +242,12 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 		{
 			if ((_jd == null) || _jd.IsEmpty == true)
 			{
-				_jd = TimeZoneInfo.ConvertTimeToUtc(_tob, TimeZone.TimeZoneInfo);
+				var utc = TimeZoneInfo.ConvertTimeToUtc(_tob, TimeZone.TimeZoneInfo);
+				if (UseDst == false)
+				{
+					utc += DstCorrection;
+				}
+				_jd = utc;
 			}
 			return _jd;
 		}

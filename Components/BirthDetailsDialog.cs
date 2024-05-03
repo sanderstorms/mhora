@@ -87,6 +87,7 @@ public partial class BirthDetailsDialog : Form
 				DateOfBirth = moment,
 				Latitude    = MhoraGlobalOptions.Instance.Latitude,
 				Longitude   = MhoraGlobalOptions.Instance.Longitude,
+				UseDst      = chkUseDst.Checked
 			};
 			return info;
 		}
@@ -95,6 +96,7 @@ public partial class BirthDetailsDialog : Form
 			_info                = value;
 			dateTimePicker.Value = value.DateOfBirth;
 			timePicker.Value     = value.DateOfBirth;
+			chkUseDst.Checked    = value.UseDst;
 			if (value.City != null)
 			{
 				var query  = Query.From<City>().Where(city => city.Id == value.City.Id).SelectAll();

@@ -531,8 +531,13 @@ public class MhoraPrintDocument : PrintDocument
 		dc_nav.DrawChart(g, width / 2, width / 2);
 		top += width / 2 + pad_height;
 
+		Time dstOffset = h.Info.DstOffset;
+		if (h.Info.UseDst == false)
+		{
+			dstOffset -= h.Info.DstCorrection;
+		}
 		// Birth Details
-		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.Vara.WeekDay, h.Info.DateOfBirth, h.Info.DstOffset, h.Info.Latitude, h.Info.Longitude));
+		PrintString(string.Format("{0} {1}. {2}. {3}, {4}.", h.Vara.WeekDay, h.Info.DateOfBirth, dstOffset, h.Info.Latitude, h.Info.Longitude));
 
 		// Tithis
 		var ltithi = h.GetPosition(Body.Moon).Longitude.Sub(h.GetPosition(Body.Sun).Longitude);

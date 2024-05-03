@@ -197,6 +197,10 @@ public class KeyInfoControl : MhoraControl
 
 		li = new ListViewItem("Time Zone");
 		Time time = h.Info.DstOffset;
+		if (h.Info.UseDst == false)
+		{
+			time -= h.Info.DstCorrection;
+		}
 		var  tz   = string.Empty;
 		if (time > 0)
 		{

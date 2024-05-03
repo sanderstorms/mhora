@@ -38,7 +38,8 @@ namespace Mhora.Calculation
 				zhsum = zhsum.Add(10);
 			}
 
-			var dp2 = new DivisionPosition(Body.Other, BodyType.GrahaArudha, zhsum, 0, 0, 0)
+			dp.Cusp.ZodiacHouse = zhsum;
+			var dp2 = new DivisionPosition(Body.Other, BodyType.GrahaArudha, zhsum, dp.Cusp)
 			{
 				//dp2.Longitude   = zhsum.DivisionalLongitude(dp.Longitude, dpl.part);
 				Description = string.Format("{0}{1}", bn.ToShortString(), hse)
@@ -60,9 +61,11 @@ namespace Mhora.Calculation
 
 		public static List <DivisionPosition> CalculateVarnadaDivisionPositions(this Horoscope h, DivisionType dtype)
 		{
-			var al   = new List <DivisionPosition> ();
-			var zhL  = h.GetPosition(Body.Lagna).ToDivisionPosition(dtype).ZodiacHouse;
-			var zhHl = h.GetPosition(Body.HoraLagna).ToDivisionPosition(dtype).ZodiacHouse;
+			var al    = new List <DivisionPosition> ();
+			var lagna = h.GetPosition(Body.Lagna).ToDivisionPosition(dtype);
+			var zhL   = lagna.ZodiacHouse;
+			var hl    = h.GetPosition(Body.HoraLagna).ToDivisionPosition(dtype);
+			var zhHl  = hl.ZodiacHouse;
 
 			var zhAri = ZodiacHouse.Ari;
 			var zhPis = ZodiacHouse.Pis;
@@ -110,7 +113,8 @@ namespace Mhora.Calculation
 					zhV = zhPis.AddReverse(sum);
 				}
 
-				var divPos = new DivisionPosition(Body.Other, BodyType.Varnada, zhV, 0, 0, 0)
+				var cusp = new Cusp(lagna.Longitude, Vargas.NumPartsInDivision(dtype));
+				var divPos = new DivisionPosition(Body.Other, BodyType.Varnada, zhV, cusp)
 				{
 					Description = Varnada.Name[i - 1]
 				};
@@ -133,7 +137,8 @@ namespace Mhora.Calculation
 				zhsum = zhsum.Add(10);
 			}
 
-			var dp = new DivisionPosition(aname, btype, zhsum, 0, 0, 0);
+			var cusp = new Cusp(bp.Longitude, Vargas.NumPartsInDivision(d));
+			var dp    = new DivisionPosition(aname, btype, zhsum, cusp);
 			//dp.Longitude = zhsum.DivisionalLongitude(bp.longitude, dp.part);
 
 			return dp;

@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using System;
 using System.Diagnostics;
 using Mhora.Definitions;
+using Mhora.Divisions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
@@ -37,6 +38,8 @@ public static class ShadBalas
 		Debug.Assert(_b >= (int) Body.Sun && _b <= (int) Body.Saturn);
 	}
 
+	//Check where the planet is placed in respect to its debilitation point. This can be between 0 to 180 degrees.
+	//Divide this value by 3 to derive the Uccha bala in Virupas.
 	public static decimal UcchaBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
@@ -81,6 +84,8 @@ public static class ShadBalas
 		return 15.0;
 	}
 
+	//Oja means odd signs and Yugma means even signs. Thus, as the name imply, this strength is derived from a
+	//planet’s placement in the odd or even signs in the Rashi and Navamsha.
 	public static double OjaYugmaRasyAmsaBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
@@ -93,6 +98,16 @@ public static class ShadBalas
 		return s;
 	}
 
+	//The kendradi bala is the 4th part of Sthan Bala. The strength of the planets in a kundli is determined by
+	//the kendradi bala. Its name suggests that it helps in calculating the strength of planets situated in centre
+	//house and cadent and succeedent houses. According to Vedic astrology, the planets in center houses are the most
+	//powerful with 60 points. Planets that are in cadent houses gets 50% i.e. 30 points and the planets on succeedent
+	//houses get 15 points each. There is no distinction between male and female planets in kendradi bala.
+	// Type					House			Strength
+	// Centre house			1, 4, 7, 10		60
+	// Succeedent houses	2, 5, 8, 11		30
+	// Cadent houses		3, 6, 9, 12		15
+	// 
 	public static double KendraBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
@@ -108,10 +123,17 @@ public static class ShadBalas
 		}
 	}
 
+	//Dreshkkan strength depends on the decanate of planets. Male planets like Sun, Mars and Saturn get 15 points in
+	//the 1st decanate. The female and neutral planets get 15 points in 2nd and 3rd decanate respectively.
+	// Planets			0 to 10 degree	10 to 20 degree	20 to 30 degree
+	// Sun, Mars, Jupiter		15				0				0
+	// Moon, Venus				0				15				0
+	// Mercury, Saturn			0				0				15
 	public static double DrekkanaBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
-		var part = h.GetPosition(b).PartOfZodiacHouse(3);
+		var position = h.GetPosition(b);
+		var part     = position.Longitude.PartOfZodiacHouse(3);
 		if (part == 1 && (b == Body.Sun || b == Body.Jupiter || b == Body.Mars))
 		{
 			return 15.0;
@@ -148,8 +170,6 @@ public static class ShadBalas
 		debLon = debLon.Add(powerlessHouse[(int) b] * 30.0 + 15.0);
 		var posLon = h.GetPosition(b).Longitude;
 
-		Application.Log.Debug("digBala {0} {1} {2}", b, posLon.Value, debLon.Value);
-
 		var diff = posLon.Sub(debLon).Value;
 		if (diff > 180)
 		{
@@ -159,6 +179,12 @@ public static class ShadBalas
 		return diff / 180M * 60;
 	}
 
+	//Day and night strength of planets is determined to know the strength of the location of planets on lord of the
+	//signs and navamsha. Feminine planets like Moon and Venus get 15 points when they are situated in an even sign
+	//and navamsha. Otherwise these planets get 0 points. The male planets like Sun, Mars and Jupiter are neutral and
+	//Mercury and Saturn get 15 points when they are situated on odd sign and navamsha. These planets obtain 0 points otherwise.
+	//Astrologer says that the calculation of sign and navamsha chart should be done separately because from that a planet
+	//gets the highest strength of 30 points.
 	public static double NathonnathaBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);

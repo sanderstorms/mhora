@@ -22,6 +22,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Mhora.Calculation;
 using Mhora.Definitions;
+using Mhora.Divisions;
+using Mhora.Divisions.D2;
 using Mhora.Elements.Extensions;
 using Mhora.SwissEph.Helpers;
 using Mhora.Util;
@@ -120,33 +122,6 @@ public class Position
 		return bp;
 	}
 
-	public int PartOfZodiacHouse(int n)
-	{
-		var l      = Longitude;
-		var offset = l.ToZodiacHouseOffset();
-		var part   = (int) (offset / (30.0 / n)).Floor() + 1;
-		Trace.Assert(part >= 1 && part <= n);
-		return part;
-	}
-
-	private DivisionPosition PopulateRegularCusps(int n, DivisionPosition dp)
-	{
-		var part        = PartOfZodiacHouse(n);
-		var cuspLength = 30.0 / n;
-		dp.CuspLower  =  (part - 1) * cuspLength;
-		dp.CuspLower  += Longitude.ToZodiacHouseBase();
-		dp.CuspHigher =  dp.CuspLower + cuspLength;
-		dp.Part        =  part;
-
-		//if (dp.type == BodyType.Type.Graha || dp.type == BodyType.Type.Lagna)
-		//Mhora.Log.Debug ("D: {0} {1} {2} {3} {4} {5}", 
-		//	n, dp.name, cusp_length,
-		//	dp.cusp_lower, m_lon.value, dp.cusp_higher);
-
-
-		return dp;
-	}
-
 	/// <summary>
 	///     Many of the varga divisions (like navamsa) are regular divisions,
 	///     and can be implemented by a single method. We do this when possible.
@@ -155,11 +130,11 @@ public class Position
 	/// <returns>The DivisionPosition the body falls into</returns>
 	private DivisionPosition ToRegularDivisionPosition(int n)
 	{
+		var cusp     = new Cusp(Longitude, n);
 		var zhouse   = Longitude.ToZodiacHouse().Index();
-		var numParts = (zhouse - 1) * n + PartOfZodiacHouse(n);
+		var numParts = (zhouse - 1) * n + Longitude.PartOfZodiacHouse(n);
 		var divHouse = ZodiacHouse.Ari.Add(numParts);
-		var dp       = new DivisionPosition(Name, BodyType, divHouse, 0, 0, 0);
-		PopulateRegularCusps(n, dp);
+		var dp       = new DivisionPosition(Name, BodyType, divHouse, cusp);
 
 		if (n > 1)
 		{
@@ -175,14 +150,14 @@ public class Position
 
 	private DivisionPosition ToRegularDivisionPositionFromCurrentHouseOddEven(int n)
 	{
-		var zhouse    = (int) Longitude.ToZodiacHouse();
-		var numParts = PartOfZodiacHouse(n);
+		var zhouse   = (int) Longitude.ToZodiacHouse();
+		var numParts = Longitude.PartOfZodiacHouse(n);
 		var divHouse = Longitude.ToZodiacHouse().Add(numParts);
-		var dp        = new DivisionPosition(Name, BodyType, divHouse, 0, 0, 0)
+		var cusp     = new Cusp(Longitude, n);
+		var dp       = new DivisionPosition(Name, BodyType, divHouse, cusp)
 		{
 			Longitude = divHouse.DivisionalLongitude(Longitude, n)
 		};
-		PopulateRegularCusps(n, dp);
 		return dp;
 	}
 
@@ -195,7 +170,8 @@ public class Position
 		{
 			if (Longitude.Sub(cusps[i]).Value <= cusps[i + 1].Sub(cusps[i]).Value)
 			{
-				return new DivisionPosition(Name, BodyType, (ZodiacHouse) i + 1, (double) cusps[i].Value, (double) cusps[i + 1].Value, 1);
+				var cusp2 = new Cusps2(cusps[i], cusps[i + 1], 1, 1);
+				return new DivisionPosition(Name, BodyType, (ZodiacHouse) i + 1, cusp2);
 			}
 		}
 
@@ -214,11 +190,12 @@ public class Position
 				//Mhora.Log.Debug ("Found {4} - {0} in cusp {3} between {1} and {2}", this.m_lon.value,
 				//	cusps[i].value, cusps[i+1].value, i+1, this.name.ToString());
 
-				return new DivisionPosition(Name, BodyType, zlagna.Add(i + 1), (double)cusps[i].Value, (double)cusps[i + 1].Value, 1);
+				var cusp2 = new Cusps2(cusps[i], cusps[i + 1], 1, 1);
+				return new DivisionPosition(Name, BodyType, zlagna.Add(i + 1), cusp2);
 			}
 		}
 
-		return new DivisionPosition(Name, BodyType, zlagna.Add(1), (double)cusps[0].Value, (double)cusps[1].Value, 1);
+		return (null);
 	}
 
 	private DivisionPosition ToDivisionPositionBhavaEqual()
@@ -263,56 +240,6 @@ public class Position
 		return ToBhavaDivisionPositionHouse(_h.SwephHouseCusps);
 	}
 
-	private bool HoraSunDayNight()
-	{
-		if (BodyType == BodyType.Other)
-		{
-			return (false);
-		}
-		var sign = (int) Longitude.ToZodiacHouse();
-		var part = PartOfZodiacHouse(2);
-		if (Longitude.ToZodiacHouse().IsDaySign())
-		{
-			if (part == 1)
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		if (part == 1)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	private bool HoraSunOddEven()
-	{
-		var sign = (int) Longitude.ToZodiacHouse();
-		var part = PartOfZodiacHouse(2);
-		var mod  = sign % 2;
-		switch (mod)
-		{
-			case 1:
-				if (part == 1)
-				{
-					return true;
-				}
-
-				return false;
-			default:
-				if (part == 1)
-				{
-					return false;
-				}
-
-				return true;
-		}
-	}
-
 	private DivisionPosition ToDivisionPositionHoraKashinath()
 	{
 		var daySigns = new int[13]
@@ -350,7 +277,7 @@ public class Position
 
 		ZodiacHouse zh;
 		var        sign = (int) Longitude.ToZodiacHouse();
-		if (HoraSunOddEven())
+		if (Longitude.HoraSunOddEven())
 		{
 			zh = (ZodiacHouse) daySigns[sign];
 		}
@@ -359,11 +286,11 @@ public class Position
 			zh = (ZodiacHouse) nightSigns[sign];
 		}
 
-		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0)
+		var cusp = new Cusp(Longitude, 2);
+		var dp = new DivisionPosition(Name, BodyType, zh, cusp)
 		{
 			Longitude = zh.DivisionalLongitude(Longitude, 2)
 		};
-		PopulateRegularCusps(2, dp);
 		return dp;
 	}
 
@@ -371,24 +298,24 @@ public class Position
 	{
 		var zh = Longitude.ToZodiacHouse();
 
-		Application.Log.Debug("{2} in {3}: OddEven is {0}, DayNight is {1}", HoraSunOddEven(), HoraSunDayNight(), Name, zh);
+		Application.Log.Debug("{2} in {3}: OddEven is {0}, DayNight is {1}", Longitude.HoraSunOddEven(), Longitude.HoraSunDayNight(), Name, zh);
 
-		if (HoraSunDayNight() && false == HoraSunOddEven())
+		if (Longitude.HoraSunDayNight() && false == Longitude.HoraSunOddEven())
 		{
 			zh = zh.Add(7);
 		}
-		else if (false == HoraSunDayNight() && HoraSunOddEven())
+		else if (false == Longitude.HoraSunDayNight() && Longitude.HoraSunOddEven())
 		{
 			zh = zh.Add(7);
 		}
 
 		Application.Log.Debug("{0} ends in {1}", Name, zh);
 
-		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0)
+		var cusp = new Cusp(Longitude, 2);
+		var dp = new DivisionPosition(Name, BodyType, zh, cusp)
 		{
 			Longitude = zh.DivisionalLongitude(Longitude, 2)
 		};
-		PopulateRegularCusps(2, dp);
 		return dp;
 	}
 
@@ -396,7 +323,7 @@ public class Position
 	{
 		ZodiacHouse zh;
 		var        rulerIndex = 0;
-		if (HoraSunOddEven())
+		if (Longitude.HoraSunOddEven())
 		{
 			zh         = ZodiacHouse.Leo;
 			rulerIndex = 1;
@@ -407,12 +334,13 @@ public class Position
 			rulerIndex = 2;
 		}
 
-		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0)
+		var cusp = new Cusp(Longitude, 2);
+		var dp = new DivisionPosition(Name, BodyType, zh, cusp)
 		{
 			Longitude = zh.DivisionalLongitude(Longitude, 2),
 			RulerIndex = rulerIndex
 		};
-		return PopulateRegularCusps(2, dp);
+		return dp;
 	}
 
 	private DivisionPosition ToDivisionPositionDrekanna(int n)
@@ -425,13 +353,13 @@ public class Position
 			9
 		};
 		var zhouse = Longitude.ToZodiacHouse();
-		var part   = PartOfZodiacHouse(n);
+		var part   = Longitude.PartOfZodiacHouse(n);
 		var dhouse = zhouse.Add(offset[part % 3]);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp   = new Cusp(Longitude, n);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, 3)
 		};
-		PopulateRegularCusps(n, dp);
 		if (n == 3)
 		{
 			var rulerIndex = (int) dp.ZodiacHouse % 3;
@@ -461,7 +389,7 @@ public class Position
 		      };
 
 		// From moveable sign, 3 parts belong to the trines
-		var part = PartOfZodiacHouse(3);
+		var part = Longitude.PartOfZodiacHouse(3);
 		dhouse = part switch
 		         {
 			         1 => zhm.Add(1),
@@ -469,17 +397,18 @@ public class Position
 			         _ => zhm.Add(9)
 		         };
 
-		var dp = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp = new Cusp(Longitude, 3);
+		var dp = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, 3)
 		};
-		return PopulateRegularCusps(3, dp);
+		return dp;
 	}
 
 	private DivisionPosition ToDivisionPositionDrekkanaSomnath()
 	{
 		var mod  = (int) Longitude.ToZodiacHouse() % 2;
-		var part = PartOfZodiacHouse(3);
+		var part = Longitude.PartOfZodiacHouse(3);
 		var zh   = Longitude.ToZodiacHouse();
 		var p    = (int) zh;
 
@@ -502,11 +431,12 @@ public class Position
 			zh2 = zh1.AddReverse(numDone + part + 1);
 		}
 
-		var dp = new DivisionPosition(Name, BodyType, zh2, 0, 0, 0)
+		var cusp = new Cusp(Longitude, 3);
+		var dp = new DivisionPosition(Name, BodyType, zh2, cusp)
 		{
 			Longitude = zh2.DivisionalLongitude(Longitude, 3)
 		};
-		return PopulateRegularCusps(3, dp);
+		return dp;
 	}
 
 	private DivisionPosition ToDivisionPositionChaturthamsa(int n)
@@ -520,9 +450,10 @@ public class Position
 			10
 		};
 		var zhouse = Longitude.ToZodiacHouse();
-		var part   = PartOfZodiacHouse(n);
+		var part   = Longitude.PartOfZodiacHouse(n);
 		var dhouse = zhouse.Add(offset[part % 4]);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp   = new Cusp(Longitude, n);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, n)
 		};
@@ -531,24 +462,25 @@ public class Position
 			dp.RulerIndex = part;
 		}
 
-		return PopulateRegularCusps(n, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionShashthamsa(int n)
 	{
 		var mod     = (int) Longitude.ToZodiacHouse() % 2;
 		var dhousen = mod % 2 == 1 ? ZodiacHouse.Ari : ZodiacHouse.Lib;
-		var dhouse  = dhousen.Add(PartOfZodiacHouse(n));
-		var dp      = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var dhouse  = dhousen.Add(Longitude.PartOfZodiacHouse(n));
+		var cusp    = new Cusp(Longitude, n);
+		var dp      = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, n)
 		};
-		return PopulateRegularCusps(n, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionSaptamsa(int n)
 	{
-		var part = PartOfZodiacHouse(n);
+		var part = Longitude.PartOfZodiacHouse(n);
 		var zh   = Longitude.ToZodiacHouse();
 		if (false == zh.IsOdd())
 		{
@@ -556,7 +488,8 @@ public class Position
 		}
 
 		zh = zh.Add(part);
-		var dp = new DivisionPosition(Name, BodyType, zh, 0, 0, 0)
+		var cusp = new Cusp(Longitude, n);
+		var dp = new DivisionPosition(Name, BodyType, zh, cusp)
 		{
 			Longitude = zh.DivisionalLongitude(Longitude, n)
 		};
@@ -573,7 +506,7 @@ public class Position
 			}
 		}
 
-		return PopulateRegularCusps(n, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionNavamsa(int parts)
@@ -584,11 +517,12 @@ public class Position
 			var bp = Clone();
 			bp.Longitude = bp.ExtrapolateLongitude(DivisionType.Navamsa);
 			dp = bp.ToDivisionPositionNavamsa(parts / 9);
-			PopulateRegularCusps(81, dp);
+			var cusp = new Cusp(Longitude, parts);
+			dp = new DivisionPosition(dp.Body, dp.BodyType, dp.ZodiacHouse, cusp);
 			return (dp);
 		}
 
-		var part = PartOfZodiacHouse(9);
+		var part = Longitude.PartOfZodiacHouse(9);
 		dp   = ToRegularDivisionPosition(9);
 
 		dp.RulerIndex = ((int) Longitude.ToZodiacHouse() % 3) switch
@@ -624,12 +558,13 @@ public class Position
 				break;
 		}
 
-		var dhouse = zstart.Add(PartOfZodiacHouse(8));
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var dhouse = zstart.Add(Longitude.PartOfZodiacHouse(8));
+		var cusp   = new Cusp(Longitude, 8);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, 8)
 		};
-		return PopulateRegularCusps(8, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionPanchamsa()
@@ -650,15 +585,16 @@ public class Position
 			ZodiacHouse.Cap,
 			ZodiacHouse.Sco
 		};
-		var part   = PartOfZodiacHouse(5);
+		var part   = Longitude.PartOfZodiacHouse(5);
 		var mod    = (int) Longitude.ToZodiacHouse() % 2;
 		var dhouse = mod % 2 == 1 ? offsetOdd[part - 1] : offsetEven[part - 1];
 		var zh     = dhouse;
-		var dp     = new DivisionPosition(Name, BodyType, zh, 0, 0, 0)
+		var cusp   = new Cusp(Longitude, 5);
+		var dp     = new DivisionPosition(Name, BodyType, zh, cusp)
 		{
 			Longitude = zh.DivisionalLongitude(Longitude, 5)
 		};
-		return PopulateRegularCusps(5, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionRudramsa()
@@ -667,25 +603,28 @@ public class Position
 		var zhouse = Longitude.ToZodiacHouse();
 		var diff   = zari.NumHousesBetween(zhouse);
 		var zstart = zari.AddReverse(diff);
-		var part   = PartOfZodiacHouse(11);
+		var part   = Longitude.PartOfZodiacHouse(11);
 		var zend   = zstart.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, zend, 0, 0, 0)
+		var cusp   = new Cusp(Longitude, 11);
+		var dp     = new DivisionPosition(Name, BodyType, zend, cusp)
 		{
 			Longitude = zend.DivisionalLongitude(Longitude, 11)
 		};
-		return PopulateRegularCusps(11, dp);
+		return dp;
 	}
 
 	private DivisionPosition ToDivisionPositionRudramsaRaman()
 	{
 		var zhstart = Longitude.ToZodiacHouse().Add(12);
-		var part    = PartOfZodiacHouse(11);
+		var part    = Longitude.PartOfZodiacHouse(11);
 		var zend    = zhstart.AddReverse(part);
-		var dp      = new DivisionPosition(Name, BodyType, zend, 0, 0, 0)
+		var cusp    = new Cusp(Longitude, 11);
+		var dp      = new DivisionPosition(Name, BodyType, zend, cusp)
 		{
 			Longitude = zend.DivisionalLongitude(Longitude, 11)
 		};
-		return PopulateRegularCusps(11, dp);
+
+		return dp;
 	}
 
 	private DivisionPosition ToDivisionPositionDasamsa(int n)
@@ -697,9 +636,10 @@ public class Position
 		};
 		var zhouse = Longitude.ToZodiacHouse();
 		var dhouse = zhouse.Add(offset[(int) zhouse % 2]);
-		var part   = PartOfZodiacHouse(n);
+		var part   = Longitude.PartOfZodiacHouse(n);
 		dhouse = dhouse.Add(part);
-		var dp = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
+		var cusp = new Cusp(Longitude, n);
+		var dp    = new DivisionPosition(Name, BodyType, dhouse, cusp);
 		if (n == 10)
 		{
 			if (Longitude.ToZodiacHouse().IsOdd())
@@ -713,15 +653,16 @@ public class Position
 		}
 
 		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
-		return PopulateRegularCusps(n, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionDwadasamsa(int n)
 	{
 		var zhouse = Longitude.ToZodiacHouse();
-		var part   = PartOfZodiacHouse(n);
+		var part   = Longitude.PartOfZodiacHouse(n);
 		var dhouse = zhouse.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0);
+		var cusp   = new Cusp(Longitude, n);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp);
 		if (n == 12)
 		{
 			dp.RulerIndex = part.NormalizeInc(1, 4);
@@ -729,12 +670,12 @@ public class Position
 
 		dp.Longitude = dhouse.DivisionalLongitude(Longitude, n);
 
-		return PopulateRegularCusps(n, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionShodasamsa()
 	{
-		var part  = PartOfZodiacHouse(16);
+		var part  = Longitude.PartOfZodiacHouse(16);
 		var dp    = ToRegularDivisionPosition(16);
 		var ruler = part;
 		if (Longitude.ToZodiacHouse().IsOdd())
@@ -760,18 +701,19 @@ public class Position
 			                         _ => ZodiacHouse.Leo
 		                         };
 
-		var part   = PartOfZodiacHouse(n);
+		var part   = Longitude.PartOfZodiacHouse(n);
 		var dhouse = dhousename.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp   = new Cusp(Longitude, n);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, n)
 		};
-		return PopulateRegularCusps(n, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionVimsamsa()
 	{
-		var part = PartOfZodiacHouse(20);
+		var part = Longitude.PartOfZodiacHouse(20);
 		var dp   = ToRegularDivisionPosition(20);
 		if (Longitude.ToZodiacHouse().IsOdd())
 		{
@@ -789,9 +731,10 @@ public class Position
 	{
 		var mod        = (int) Longitude.ToZodiacHouse() % 2;
 		var dhousename = mod % 2 == 1 ? ZodiacHouse.Leo : ZodiacHouse.Can;
-		var part       = PartOfZodiacHouse(n);
+		var part       = Longitude.PartOfZodiacHouse(n);
 		var dhouse     = dhousename.Add(part);
-		var dp         = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp       = new Cusp(Longitude, n);
+		var dp         = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, n)
 		};
@@ -809,7 +752,7 @@ public class Position
 			dp.RulerIndex = dp.RulerIndex.NormalizeInc(1, 12);
 		}
 
-		return PopulateRegularCusps(n, dp);
+		return dp;
 	}
 
 	private DivisionPosition ToDivisionPositionNakshatramsa(int n)
@@ -823,32 +766,35 @@ public class Position
 			                         _ => ZodiacHouse.Cap
 		                         };
 
-		var part   = PartOfZodiacHouse(n);
+		var part   = Longitude.PartOfZodiacHouse(n);
 		var dhouse = dhousename.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp   = new Cusp(Longitude, n);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, n)
 		};
-		return PopulateRegularCusps(n, dp);
+
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionNakshatramsa()
 	{
 		var dp = ToRegularDivisionPosition(27);
-		dp.RulerIndex = PartOfZodiacHouse(27);
+		dp.RulerIndex = Longitude.PartOfZodiacHouse(27);
 		return dp;
 	}
 
 	private DivisionPosition ToDivisionPositionTrimsamsaSimple()
 	{
 		var zhouse = Longitude.ToZodiacHouse();
-		var part   = PartOfZodiacHouse(30);
+		var part   = Longitude.PartOfZodiacHouse(30);
 		var dhouse = zhouse.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp   = new Cusp(Longitude, 30);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, 30)
 		};
-		return PopulateRegularCusps(30, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionTrimsamsa()
@@ -862,99 +808,95 @@ public class Position
 		var         part        = 0;
 		if (mod == 1)
 		{
-			if (off <= 5)
+			switch (off)
 			{
-				dhouse     = ZodiacHouse.Ari;
-				cuspLower  = 0.0;
-				cuspHigher = 5.0;
-				rulerIndex = 1;
-				part       = 1;
-			}
-			else if (off <= 10)
-			{
-				dhouse     = ZodiacHouse.Aqu;
-				cuspLower  = 5.01;
-				cuspHigher = 10.0;
-				rulerIndex = 2;
-				part       = 2;
-			}
-			else if (off <= 18)
-			{
-				dhouse     = ZodiacHouse.Sag;
-				cuspLower  = 10.01;
-				cuspHigher = 18.0;
-				rulerIndex = 3;
-				part       = 3;
-			}
-			else if (off <= 25)
-			{
-				dhouse     = ZodiacHouse.Gem;
-				cuspLower  = 18.01;
-				cuspHigher = 25.0;
-				rulerIndex = 4;
-				part       = 4;
-			}
-			else
-			{
-				dhouse     = ZodiacHouse.Lib;
-				cuspLower  = 25.01;
-				cuspHigher = 30.0;
-				rulerIndex = 5;
-				part       = 5;
+				case <= 5:
+					dhouse     = ZodiacHouse.Ari;
+					cuspLower  = 0.0;
+					cuspHigher = 5.0;
+					rulerIndex = 1;
+					part       = 1;
+					break;
+				case <= 10:
+					dhouse     = ZodiacHouse.Aqu;
+					cuspLower  = 5.01;
+					cuspHigher = 10.0;
+					rulerIndex = 2;
+					part       = 2;
+					break;
+				case <= 18:
+					dhouse     = ZodiacHouse.Sag;
+					cuspLower  = 10.01;
+					cuspHigher = 18.0;
+					rulerIndex = 3;
+					part       = 3;
+					break;
+				case <= 25:
+					dhouse     = ZodiacHouse.Gem;
+					cuspLower  = 18.01;
+					cuspHigher = 25.0;
+					rulerIndex = 4;
+					part       = 4;
+					break;
+				default:
+					dhouse     = ZodiacHouse.Lib;
+					cuspLower  = 25.01;
+					cuspHigher = 30.0;
+					rulerIndex = 5;
+					part       = 5;
+					break;
 			}
 		}
 		else
 		{
-			if (off <= 5)
+			switch (off)
 			{
-				dhouse     = ZodiacHouse.Tau;
-				cuspLower  = 0.0;
-				cuspHigher = 5.0;
-				rulerIndex = 5;
-				part       = 1;
-			}
-			else if (off <= 12)
-			{
-				dhouse     = ZodiacHouse.Vir;
-				cuspLower  = 5.01;
-				cuspHigher = 12.0;
-				rulerIndex = 4;
-				part       = 2;
-			}
-			else if (off <= 20)
-			{
-				dhouse     = ZodiacHouse.Pis;
-				cuspLower  = 12.01;
-				cuspHigher = 20.0;
-				rulerIndex = 3;
-				part       = 3;
-			}
-			else if (off <= 25)
-			{
-				dhouse     = ZodiacHouse.Cap;
-				cuspLower  = 20.01;
-				cuspHigher = 25.0;
-				rulerIndex = 2;
-				part       = 4;
-			}
-			else
-			{
-				dhouse     = ZodiacHouse.Sco;
-				cuspLower  = 25.01;
-				cuspHigher = 30.0;
-				rulerIndex = 1;
-				part       = 5;
+				case <= 5:
+					dhouse     = ZodiacHouse.Tau;
+					cuspLower  = 0.0;
+					cuspHigher = 5.0;
+					rulerIndex = 5;
+					part       = 1;
+					break;
+				case <= 12:
+					dhouse     = ZodiacHouse.Vir;
+					cuspLower  = 5.01;
+					cuspHigher = 12.0;
+					rulerIndex = 4;
+					part       = 2;
+					break;
+				case <= 20:
+					dhouse     = ZodiacHouse.Pis;
+					cuspLower  = 12.01;
+					cuspHigher = 20.0;
+					rulerIndex = 3;
+					part       = 3;
+					break;
+				case <= 25:
+					dhouse     = ZodiacHouse.Cap;
+					cuspLower  = 20.01;
+					cuspHigher = 25.0;
+					rulerIndex = 2;
+					part       = 4;
+					break;
+				default:
+					dhouse     = ZodiacHouse.Sco;
+					cuspLower  = 25.01;
+					cuspHigher = 30.0;
+					rulerIndex = 1;
+					part       = 5;
+					break;
 			}
 		}
 
 		cuspLower  += Longitude.ToZodiacHouseBase();
 		cuspHigher += Longitude.ToZodiacHouseBase();
 
-		var dp = new DivisionPosition(Name, BodyType, dhouse, cuspLower, cuspHigher, 0)
+		var cusps = new Cusps2(cuspLower, cuspHigher, part, 30);
+		var dp = new DivisionPosition(Name, BodyType, dhouse, cusps)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, 30),
 			RulerIndex = rulerIndex,
-			Part = part
 		};
 		return dp;
 	}
@@ -963,14 +905,15 @@ public class Position
 	{
 		var mod        = (int) Longitude.ToZodiacHouse() % 2;
 		var dhousename = mod % 2 == 1 ? ZodiacHouse.Ari : ZodiacHouse.Lib;
-		var part       = PartOfZodiacHouse(40);
+		var part       = Longitude.PartOfZodiacHouse(40);
 		var dhouse     = dhousename.Add(part);
-		var dp         = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp       = new Cusp(Longitude, 40);
+		var dp         = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, 40),
 			RulerIndex = part.NormalizeInc(1, 12)
 		};
-		return PopulateRegularCusps(40, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionAkshavedamsa(int n)
@@ -983,9 +926,10 @@ public class Position
 			                         _ => ZodiacHouse.Sag
 		                         };
 
-		var part   = PartOfZodiacHouse(n);
+		var part   = Longitude.PartOfZodiacHouse(n);
 		var dhouse = dhousename.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp   = new Cusp(Longitude, n);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, n)
 		};
@@ -1002,15 +946,16 @@ public class Position
 			dp.RulerIndex = dp.RulerIndex.NormalizeInc(1, 3);
 		}
 
-		return PopulateRegularCusps(n, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionShashtyamsa()
 	{
 		var zhouse = Longitude.ToZodiacHouse();
-		var part   = PartOfZodiacHouse(60);
+		var part   = Longitude.PartOfZodiacHouse(60);
 		var dhouse = zhouse.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp   = new Cusp(Longitude, 60);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, 60)
 		};
@@ -1023,7 +968,7 @@ public class Position
 			dp.RulerIndex = 61 - part;
 		}
 
-		return PopulateRegularCusps(60, dp);
+		return (dp);
 	}
 
 	private DivisionPosition ToDivisionPositionNadiamsa()
@@ -1043,9 +988,10 @@ public class Position
 			DivisionPosition dp = new DivisionPosition (name, type, dhouse, 0, 0, 0);
 #endif
 		var zhouse = Longitude.ToZodiacHouse();
-		var part   = PartOfZodiacHouse(150);
+		var part   = Longitude.PartOfZodiacHouse(150);
 		var dhouse = zhouse.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp   = new Cusp(Longitude, 150);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, 150)
 		};
@@ -1057,7 +1003,7 @@ public class Position
 			                _ => dp.RulerIndex
 		                };
 
-		return PopulateRegularCusps(150, dp);
+		return (dp);
 	}
 
 	private void CalculateNadiamsaCusps()
@@ -1119,7 +1065,7 @@ public class Position
 	private DivisionPosition ToDivisionPositionNadiamsaCkn()
 	{
 		CalculateNadiamsaCusps();
-		var part = PartOfZodiacHouse(150) - 10;
+		var part = Longitude.PartOfZodiacHouse(150) - 10;
 		if (part < 0)
 		{
 			part = 0;
@@ -1155,7 +1101,8 @@ public class Position
 
 		var zhouse = Longitude.ToZodiacHouse();
 		var dhouse = zhouse.Add(part);
-		var dp     = new DivisionPosition(Name, BodyType, dhouse, 0, 0, 0)
+		var cusp   = new Cusp(Longitude, 150);
+		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
 			Longitude = dhouse.DivisionalLongitude(Longitude, 150)
 		};
@@ -1168,9 +1115,10 @@ public class Position
 			                _ => dp.RulerIndex
 		                };
 
-		dp.CuspLower  = Longitude.ToZodiacHouseBase() + _mNadiamsaCusps[part - 1];
-		dp.CuspHigher = Longitude.ToZodiacHouseBase() + _mNadiamsaCusps[part];
-		dp.Part        = part;
+		var lower = Longitude.ToZodiacHouseBase() + _mNadiamsaCusps[part - 1];
+		var upper = Longitude.ToZodiacHouseBase() + _mNadiamsaCusps[part];
+		var cusp2 = new Cusps2(lower, upper, part, 150);
+		dp = new DivisionPosition(dp.Body, dp.BodyType, dp.ZodiacHouse, cusp2);
 		return dp;
 	}
 
@@ -1178,8 +1126,9 @@ public class Position
 	{
 		var bp = Clone();
 		bp.Longitude = bp.ExtrapolateLongitude(DivisionType.Navamsa);
-		var dp = bp.ToDivisionPositionDwadasamsa(12);
-		PopulateRegularCusps(108, dp);
+		var dp   = bp.ToDivisionPositionDwadasamsa(12);
+		var cusp = new Cusp(Longitude, 108);
+		dp = new DivisionPosition(dp.Body, dp.BodyType, dp.ZodiacHouse, cusp);
 		return dp;
 	}
 
@@ -1187,8 +1136,9 @@ public class Position
 	{
 		var bp = Clone();
 		bp.Longitude = bp.ExtrapolateLongitude(DivisionType.Dwadasamsa);
-		var dp = bp.ToDivisionPositionDwadasamsa(12);
-		PopulateRegularCusps(144, dp);
+		var dp   = bp.ToDivisionPositionDwadasamsa(12);
+		var cusp = new Cusp(Longitude, 144);
+		dp = new DivisionPosition(dp.Body, dp.BodyType, dp.ZodiacHouse, cusp);
 		return dp;
 	}
 
@@ -1212,7 +1162,7 @@ public class Position
 		foreach (var division in d.MultipleDivisions)
 		{
 			dp           = bp.ToDivisionPosition(division);
-			bp.Longitude = bp.ExtrapolateLongitude(dp);
+			dp.Longitude = bp.ExtrapolateLongitude(dp);
 		}
 		return dp;
 	}
@@ -1224,68 +1174,68 @@ public class Position
 			d.NumParts = 1;
 		}
 
-		switch (d.Varga)
+		return d.Varga switch
 		{
-			case DivisionType.Rasi:                    return ToRegularDivisionPosition(1);
-			case DivisionType.BhavaPada:               return ToDivisionPositionBhavaPada();
-			case DivisionType.BhavaEqual:              return ToDivisionPositionBhavaEqual();
-			case DivisionType.BhavaSripati:            return ToDivisionPositionBhavaHelper('O');
-			case DivisionType.BhavaKoch:               return ToDivisionPositionBhavaHelper('K');
-			case DivisionType.BhavaPlacidus:           return ToDivisionPositionBhavaHelper('P');
-			case DivisionType.BhavaCampanus:           return ToDivisionPositionBhavaHelper('C');
-			case DivisionType.BhavaRegiomontanus:      return ToDivisionPositionBhavaHelper('R');
-			case DivisionType.BhavaAlcabitus:          return ToDivisionPositionBhavaHelper('B');
-			case DivisionType.BhavaAxial:              return ToDivisionPositionBhavaHelper('X');
-			case DivisionType.HoraParivrittiDwaya:     return ToRegularDivisionPosition(2);
-			case DivisionType.HoraKashinath:           return ToDivisionPositionHoraKashinath();
-			case DivisionType.HoraParasara:            return ToDivisionPositionHoraParasara();
-			case DivisionType.HoraJagannath:           return ToDivisionPositionHoraJagannath();
-			case DivisionType.DrekkanaParasara:        return ToDivisionPositionDrekanna(3);
-			case DivisionType.DrekkanaJagannath:       return ToDivisionPositionDrekannaJagannath();
-			case DivisionType.DrekkanaParivrittitraya: return ToRegularDivisionPosition(3);
-			case DivisionType.DrekkanaSomnath:         return ToDivisionPositionDrekkanaSomnath();
-			case DivisionType.Chaturthamsa:            return ToDivisionPositionChaturthamsa(4);
-			case DivisionType.Panchamsa:               return ToDivisionPositionPanchamsa();
-			case DivisionType.Shashthamsa:             return ToDivisionPositionShashthamsa(6);
-			case DivisionType.Saptamsa:                return ToDivisionPositionSaptamsa(7);
-			case DivisionType.Ashtamsa:                return ToRegularDivisionPosition(8);
-			case DivisionType.AshtamsaRaman:           return ToDivisionPositionAshtamsaRaman();
-			case DivisionType.Navamsa:                 return ToDivisionPositionNavamsa(9);
-			case DivisionType.Dasamsa:                 return ToDivisionPositionDasamsa(10);
-			case DivisionType.Rudramsa:                return ToDivisionPositionRudramsa();
-			case DivisionType.RudramsaRaman:           return ToDivisionPositionRudramsaRaman();
-			case DivisionType.Dwadasamsa:              return ToDivisionPositionDwadasamsa(12);
-			case DivisionType.Shodasamsa:              return ToDivisionPositionShodasamsa();
-			case DivisionType.Vimsamsa:                return ToDivisionPositionVimsamsa();
-			case DivisionType.Chaturvimsamsa:          return ToDivisionPositionChaturvimsamsa(24);
-			case DivisionType.Nakshatramsa:            return ToDivisionPositionNakshatramsa();
-			case DivisionType.Trimsamsa:               return ToDivisionPositionTrimsamsa();
-			case DivisionType.TrimsamsaParivritti:     return ToRegularDivisionPosition(30);
-			case DivisionType.TrimsamsaSimple:         return ToDivisionPositionTrimsamsaSimple();
-			case DivisionType.Khavedamsa:              return ToDivisionPositionKhavedamsa();
-			case DivisionType.Akshavedamsa:            return ToDivisionPositionAkshavedamsa(45);
-			case DivisionType.NavaNavamsa:             return ToDivisionPositionNavamsa(81);
-			case DivisionType.Shashtyamsa:             return ToDivisionPositionShashtyamsa();
-			case DivisionType.Ashtottaramsa:           return ToRegularDivisionPosition(108);
-			case DivisionType.Nadiamsa:                return ToDivisionPositionNadiamsa();
-			case DivisionType.NadiamsaCKN:             return ToDivisionPositionNadiamsaCkn();
-			case DivisionType.NavamsaDwadasamsa:       return ToDivisionPositionNavamsaDwadasamsa();
-			case DivisionType.DwadasamsaDwadasamsa:    return ToDivisionPositionDwadasamsaDwadasamsa();
-			case DivisionType.GenericParivritti:       return ToRegularDivisionPosition(d.NumParts);
-			case DivisionType.GenericShashthamsa:      return ToDivisionPositionShashthamsa(d.NumParts);
-			case DivisionType.GenericSaptamsa:         return ToDivisionPositionSaptamsa(d.NumParts);
-			case DivisionType.GenericDasamsa:          return ToDivisionPositionDasamsa(d.NumParts);
-			case DivisionType.GenericDwadasamsa:       return ToDivisionPositionDwadasamsa(d.NumParts);
-			case DivisionType.GenericChaturvimsamsa:   return ToDivisionPositionChaturvimsamsa(d.NumParts);
-			case DivisionType.GenericChaturthamsa:     return ToDivisionPositionChaturthamsa(d.NumParts);
-			case DivisionType.GenericNakshatramsa:     return ToDivisionPositionNakshatramsa(d.NumParts);
-			case DivisionType.GenericDrekkana:         return ToDivisionPositionDrekanna(d.NumParts);
-			case DivisionType.GenericShodasamsa:       return ToDivisionPositionAkshavedamsa(d.NumParts);
-			case DivisionType.GenericVimsamsa:         return ToDivisionPositionVimsamsa(d.NumParts);
-		}
-
+			DivisionType.Rasi                    => ToRegularDivisionPosition(1),
+			DivisionType.BhavaPada               => ToDivisionPositionBhavaPada(),
+			DivisionType.BhavaEqual              => ToDivisionPositionBhavaEqual(),
+			DivisionType.BhavaSripati            => ToDivisionPositionBhavaHelper('O'),
+			DivisionType.BhavaKoch               => ToDivisionPositionBhavaHelper('K'),
+			DivisionType.BhavaPlacidus           => ToDivisionPositionBhavaHelper('P'),
+			DivisionType.BhavaCampanus           => ToDivisionPositionBhavaHelper('C'),
+			DivisionType.BhavaRegiomontanus      => ToDivisionPositionBhavaHelper('R'),
+			DivisionType.BhavaAlcabitus          => ToDivisionPositionBhavaHelper('B'),
+			DivisionType.BhavaAxial              => ToDivisionPositionBhavaHelper('X'),
+			DivisionType.HoraParivrittiDwaya     => ToRegularDivisionPosition(2),
+			DivisionType.HoraKashinath           => ToDivisionPositionHoraKashinath(),
+			DivisionType.HoraParasara            => ToDivisionPositionHoraParasara(),
+			DivisionType.HoraJagannath           => ToDivisionPositionHoraJagannath(),
+			DivisionType.DrekkanaParasara        => ToDivisionPositionDrekanna(3),
+			DivisionType.DrekkanaJagannath       => ToDivisionPositionDrekannaJagannath(),
+			DivisionType.DrekkanaParivrittitraya => ToRegularDivisionPosition(3),
+			DivisionType.DrekkanaSomnath         => ToDivisionPositionDrekkanaSomnath(),
+			DivisionType.Chaturthamsa            => ToDivisionPositionChaturthamsa(4),
+			DivisionType.Panchamsa               => ToDivisionPositionPanchamsa(),
+			DivisionType.Shashthamsa             => ToDivisionPositionShashthamsa(6),
+			DivisionType.Saptamsa                => ToDivisionPositionSaptamsa(7),
+			DivisionType.Ashtamsa                => ToRegularDivisionPosition(8),
+			DivisionType.AshtamsaRaman           => ToDivisionPositionAshtamsaRaman(),
+			DivisionType.Navamsa                 => ToDivisionPositionNavamsa(9),
+			DivisionType.Dasamsa                 => ToDivisionPositionDasamsa(10),
+			DivisionType.Rudramsa                => ToDivisionPositionRudramsa(),
+			DivisionType.RudramsaRaman           => ToDivisionPositionRudramsaRaman(),
+			DivisionType.Dwadasamsa              => ToDivisionPositionDwadasamsa(12),
+			DivisionType.Shodasamsa              => ToDivisionPositionShodasamsa(),
+			DivisionType.Vimsamsa                => ToDivisionPositionVimsamsa(),
+			DivisionType.Chaturvimsamsa          => ToDivisionPositionChaturvimsamsa(24),
+			DivisionType.Nakshatramsa            => ToDivisionPositionNakshatramsa(),
+			DivisionType.Trimsamsa               => ToDivisionPositionTrimsamsa(),
+			DivisionType.TrimsamsaParivritti     => ToRegularDivisionPosition(30),
+			DivisionType.TrimsamsaSimple         => ToDivisionPositionTrimsamsaSimple(),
+			DivisionType.Khavedamsa              => ToDivisionPositionKhavedamsa(),
+			DivisionType.Akshavedamsa            => ToDivisionPositionAkshavedamsa(45),
+			DivisionType.NavaNavamsa             => ToDivisionPositionNavamsa(81),
+			DivisionType.Shashtyamsa             => ToDivisionPositionShashtyamsa(),
+			DivisionType.Ashtottaramsa           => ToRegularDivisionPosition(108),
+			DivisionType.Nadiamsa                => ToDivisionPositionNadiamsa(),
+			DivisionType.NadiamsaCKN             => ToDivisionPositionNadiamsaCkn(),
+			DivisionType.NavamsaDwadasamsa       => ToDivisionPositionNavamsaDwadasamsa(),
+			DivisionType.DwadasamsaDwadasamsa    => ToDivisionPositionDwadasamsaDwadasamsa(),
+			DivisionType.GenericParivritti       => ToRegularDivisionPosition(d.NumParts),
+			DivisionType.GenericShashthamsa      => ToDivisionPositionShashthamsa(d.NumParts),
+			DivisionType.GenericSaptamsa         => ToDivisionPositionSaptamsa(d.NumParts),
+			DivisionType.GenericDasamsa          => ToDivisionPositionDasamsa(d.NumParts),
+			DivisionType.GenericDwadasamsa       => ToDivisionPositionDwadasamsa(d.NumParts),
+			DivisionType.GenericChaturvimsamsa   => ToDivisionPositionChaturvimsamsa(d.NumParts),
+			DivisionType.GenericChaturthamsa     => ToDivisionPositionChaturthamsa(d.NumParts),
+			DivisionType.GenericNakshatramsa     => ToDivisionPositionNakshatramsa(d.NumParts),
+			DivisionType.GenericDrekkana         => ToDivisionPositionDrekanna(d.NumParts),
+			DivisionType.GenericShodasamsa       => ToDivisionPositionAkshavedamsa(d.NumParts),
+			DivisionType.GenericVimsamsa         => ToDivisionPositionVimsamsa(d.NumParts),
+			_                                    => throw new ArgumentOutOfRangeException(),
+		};
 		Trace.Assert(false, "DivisionPosition Error");
-		return new DivisionPosition(Name, BodyType, ZodiacHouse.Ari, 0, 0, 0);
+		return (null);
 	}
 
 	public Longitude ExtrapolateLongitude(DivisionType varga)
@@ -1307,8 +1257,8 @@ public class Position
 
 	public Longitude ExtrapolateLongitude(DivisionPosition dp)
 	{
-		var lOffset = Longitude.Sub(dp.CuspLower);
-		var lRange  = new Longitude(dp.CuspHigher).Sub(dp.CuspLower);
+		var lOffset = Longitude.Sub(dp.Cusp.Lower);
+		var lRange  = dp.Cusp.Upper.Sub(dp.Cusp.Lower);
 		Trace.Assert(lOffset.Value <= lRange.Value, "Extrapolation internal error: Slice smaller than range. Weird.");
 
 		var newOffset = lOffset.Value / lRange.Value * 30;

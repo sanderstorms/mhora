@@ -49,6 +49,7 @@ namespace Mhora.Components
 			this.tabEvents = new System.Windows.Forms.TabPage();
 			this.btnSave = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
+			this.chkUseDst = new System.Windows.Forms.CheckBox();
 			this.tabControlBirthDetails.SuspendLayout();
 			this.tabBirthData.SuspendLayout();
 			this.groupBoxGender.SuspendLayout();
@@ -67,6 +68,7 @@ namespace Mhora.Components
 			// 
 			// tabBirthData
 			// 
+			this.tabBirthData.Controls.Add(this.chkUseDst);
 			this.tabBirthData.Controls.Add(this.txtDst);
 			this.tabBirthData.Controls.Add(this.txtTimezone);
 			this.tabBirthData.Controls.Add(this.txtLatitude2);
@@ -266,7 +268,7 @@ namespace Mhora.Components
 			this.labTimezone.AutoSize = true;
 			this.labTimezone.Location = new System.Drawing.Point(16, 375);
 			this.labTimezone.Name = "labTimezone";
-			this.labTimezone.Size = new System.Drawing.Size(82, 20);
+			this.labTimezone.Size = new System.Drawing.Size(81, 20);
 			this.labTimezone.TabIndex = 9;
 			this.labTimezone.Text = "UtcOffset";
 			// 
@@ -382,6 +384,16 @@ namespace Mhora.Components
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
 			// 
+			// chkUseDst
+			// 
+			this.chkUseDst.AutoSize = true;
+			this.chkUseDst.Location = new System.Drawing.Point(446, 374);
+			this.chkUseDst.Name = "chkUseDst";
+			this.chkUseDst.Size = new System.Drawing.Size(100, 24);
+			this.chkUseDst.TabIndex = 28;
+			this.chkUseDst.Text = "Use DST";
+			this.chkUseDst.UseVisualStyleBackColor = true;
+			// 
 			// BirthDetailsDialog
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -433,5 +445,6 @@ namespace Mhora.Components
         private TextBox                              txtLongitude2;
         private TextBox                              txtDst;
         private TextBox                              txtTimezone;
-    }
+		private CheckBox chkUseDst;
+	}
 }

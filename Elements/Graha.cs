@@ -532,8 +532,6 @@ namespace Mhora.Elements
 		public  List<Graha>  Conjunct     { get; }
 		public  List<Graha>  Association  { get; }
 		public  List<Rashi>  OwnHouses    { get; }
-		private double       _digBala;
-        public  double       DigBala => _digBala;
 
         public bool HasMutualAspectWith(Graha graha) => IsAspectedBy(graha) && graha.IsAspecting(this);
 
@@ -654,10 +652,6 @@ namespace Mhora.Elements
 			get
 			{
 				int strength = 0;
-				if (IsRetrograde)
-                {
-                    strength += 2;
-                }
 				if (IsExalted)
                 {
                     strength += 2;
@@ -666,10 +660,18 @@ namespace Mhora.Elements
                 {
                     strength += 2;
                 }
-				if (DigBala > 30)
-                {
-                    strength += 2;
-                }
+
+				if ((BodyType == BodyType.Graha) && (IsChayaGraha == false))
+				{
+					if (IsRetrograde)
+					{
+						strength += 2;
+					}
+					if (Horoscope.DigBala (Body) > 30)
+					{
+						strength += 2;
+					}
+				}
 
 				int st = 0;
 				foreach (var graha in Conjunct)
@@ -1224,11 +1226,6 @@ namespace Mhora.Elements
 			if (IsCombust)
 			{
 				Conditions |= Conditions.Combust;
-			}
-
-			if ((BodyType == BodyType.Graha) && (IsChayaGraha == false))
-			{
-				_digBala = (double) _grahas.Horoscope.DigBala(Body);
 			}
 
 			_angle       =  (Bhava.Index() - 1) * 30.0;

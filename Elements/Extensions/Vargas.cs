@@ -464,66 +464,65 @@ public static class Vargas
 			return "Composite";
 		}
 
-		switch (d.MultipleDivisions[0].Varga)
+		return d.MultipleDivisions[0].Varga switch
 		{
-			case DivisionType.Rasi:                    return "Rasi";
-			case DivisionType.Navamsa:                 return "Navamsa";
-			case DivisionType.HoraParasara:            return "Parasara";
-			case DivisionType.HoraJagannath:           return "Jagannath";
-			case DivisionType.HoraParivrittiDwaya:     return "Parivritti";
-			case DivisionType.HoraKashinath:           return "Kashinath";
-			case DivisionType.DrekkanaParasara:        return "Parasara";
-			case DivisionType.DrekkanaJagannath:       return "Jagannath";
-			case DivisionType.DrekkanaParivrittitraya: return "Parivritti";
-			case DivisionType.DrekkanaSomnath:         return "Somnath";
-			case DivisionType.Chaturthamsa:            return string.Empty;
-			case DivisionType.Panchamsa:               return string.Empty;
-			case DivisionType.Shashthamsa:             return string.Empty;
-			case DivisionType.Saptamsa:                return string.Empty;
-			case DivisionType.Ashtamsa:                return "Rath";
-			case DivisionType.AshtamsaRaman:           return "Raman";
-			case DivisionType.Dasamsa:                 return string.Empty;
-			case DivisionType.Rudramsa:                return "Rath";
-			case DivisionType.RudramsaRaman:           return "Raman";
-			case DivisionType.Dwadasamsa:              return string.Empty;
-			case DivisionType.Shodasamsa:              return string.Empty;
-			case DivisionType.Vimsamsa:                return string.Empty;
-			case DivisionType.Chaturvimsamsa:          return string.Empty;
-			case DivisionType.Nakshatramsa:            return string.Empty;
-			case DivisionType.Trimsamsa:               return string.Empty;
-			case DivisionType.TrimsamsaParivritti:     return "Parivritti";
-			case DivisionType.TrimsamsaSimple:         return "Simple";
-			case DivisionType.Khavedamsa:              return string.Empty;
-			case DivisionType.Akshavedamsa:            return string.Empty;
-			case DivisionType.NavaNavamsa:             return string.Empty;
-			case DivisionType.Shashtyamsa:             return string.Empty;
-			case DivisionType.Ashtottaramsa:           return string.Empty;
-			case DivisionType.Nadiamsa:                return "Equal Size";
-			case DivisionType.NadiamsaCKN:             return "Chandra Kala";
-			case DivisionType.NavamsaDwadasamsa:       return "Composite";
-			case DivisionType.DwadasamsaDwadasamsa:    return "Composite";
-			case DivisionType.BhavaPada:               return "9 Padas";
-			case DivisionType.BhavaEqual:              return "Equal Houses";
-			case DivisionType.BhavaAlcabitus:          return "Alcabitus";
-			case DivisionType.BhavaAxial:              return "Axial";
-			case DivisionType.BhavaCampanus:           return "Campanus";
-			case DivisionType.BhavaKoch:               return "Koch";
-			case DivisionType.BhavaPlacidus:           return "Placidus";
-			case DivisionType.BhavaRegiomontanus:      return "Regiomontanus";
-			case DivisionType.BhavaSripati:            return "Sripati";
-			case DivisionType.GenericParivritti:       return "Parivritti";
-			case DivisionType.GenericShashthamsa:      return "Regular: Shashtamsa";
-			case DivisionType.GenericSaptamsa:         return "Regular: Saptamsa";
-			case DivisionType.GenericDasamsa:          return "Regular: Dasamsa";
-			case DivisionType.GenericDwadasamsa:       return "Regular: Dwadasamsa";
-			case DivisionType.GenericChaturvimsamsa:   return "Regular: Chaturvimsamsa";
-			case DivisionType.GenericChaturthamsa:     return "Kendra: Chaturtamsa";
-			case DivisionType.GenericNakshatramsa:     return "Kendra: Nakshatramsa";
-			case DivisionType.GenericDrekkana:         return "Trikona: Drekkana";
-			case DivisionType.GenericShodasamsa:       return "Trikona: Shodasamsa";
-			case DivisionType.GenericVimsamsa:         return "Trikona: Vimsamsa";
-		}
-
+			DivisionType.Rasi                    => "Rasi",
+			DivisionType.Navamsa                 => "Navamsa",
+			DivisionType.HoraParasara            => "Parasara",
+			DivisionType.HoraJagannath           => "Jagannath",
+			DivisionType.HoraParivrittiDwaya     => "Parivritti",
+			DivisionType.HoraKashinath           => "Kashinath",
+			DivisionType.DrekkanaParasara        => "Parasara",
+			DivisionType.DrekkanaJagannath       => "Jagannath",
+			DivisionType.DrekkanaParivrittitraya => "Parivritti",
+			DivisionType.DrekkanaSomnath         => "Somnath",
+			DivisionType.Chaturthamsa            => string.Empty,
+			DivisionType.Panchamsa               => string.Empty,
+			DivisionType.Shashthamsa             => string.Empty,
+			DivisionType.Saptamsa                => string.Empty,
+			DivisionType.Ashtamsa                => "Rath",
+			DivisionType.AshtamsaRaman           => "Raman",
+			DivisionType.Dasamsa                 => string.Empty,
+			DivisionType.Rudramsa                => "Rath",
+			DivisionType.RudramsaRaman           => "Raman",
+			DivisionType.Dwadasamsa              => string.Empty,
+			DivisionType.Shodasamsa              => string.Empty,
+			DivisionType.Vimsamsa                => string.Empty,
+			DivisionType.Chaturvimsamsa          => string.Empty,
+			DivisionType.Nakshatramsa            => string.Empty,
+			DivisionType.Trimsamsa               => string.Empty,
+			DivisionType.TrimsamsaParivritti     => "Parivritti",
+			DivisionType.TrimsamsaSimple         => "Simple",
+			DivisionType.Khavedamsa              => string.Empty,
+			DivisionType.Akshavedamsa            => string.Empty,
+			DivisionType.NavaNavamsa             => string.Empty,
+			DivisionType.Shashtyamsa             => string.Empty,
+			DivisionType.Ashtottaramsa           => string.Empty,
+			DivisionType.Nadiamsa                => "Equal Size",
+			DivisionType.NadiamsaCKN             => "Chandra Kala",
+			DivisionType.NavamsaDwadasamsa       => "Composite",
+			DivisionType.DwadasamsaDwadasamsa    => "Composite",
+			DivisionType.BhavaPada               => "9 Padas",
+			DivisionType.BhavaEqual              => "Equal Houses",
+			DivisionType.BhavaAlcabitus          => "Alcabitus",
+			DivisionType.BhavaAxial              => "Axial",
+			DivisionType.BhavaCampanus           => "Campanus",
+			DivisionType.BhavaKoch               => "Koch",
+			DivisionType.BhavaPlacidus           => "Placidus",
+			DivisionType.BhavaRegiomontanus      => "Regiomontanus",
+			DivisionType.BhavaSripati            => "Sripati",
+			DivisionType.GenericParivritti       => "Parivritti",
+			DivisionType.GenericShashthamsa      => "Regular: Shashtamsa",
+			DivisionType.GenericSaptamsa         => "Regular: Saptamsa",
+			DivisionType.GenericDasamsa          => "Regular: Dasamsa",
+			DivisionType.GenericDwadasamsa       => "Regular: Dwadasamsa",
+			DivisionType.GenericChaturvimsamsa   => "Regular: Chaturvimsamsa",
+			DivisionType.GenericChaturthamsa     => "Kendra: Chaturtamsa",
+			DivisionType.GenericNakshatramsa     => "Kendra: Nakshatramsa",
+			DivisionType.GenericDrekkana         => "Trikona: Drekkana",
+			DivisionType.GenericShodasamsa       => "Trikona: Shodasamsa",
+			DivisionType.GenericVimsamsa         => "Trikona: Vimsamsa",
+		};
 		Debug.Assert(false, string.Format("Basics::numPartsInBasics.DivisionType. Unknown Division {0}", d.MultipleDivisions[0].Varga));
 		return string.Empty;
 	}
@@ -577,56 +576,55 @@ public static class Vargas
 
 	public static int NumPartsInDivision(this DivisionType varga)
 	{
-		switch (varga)
-		{
-			case DivisionType.Rasi:    return 1;
-			case DivisionType.Navamsa: return 9;
-			case DivisionType.HoraParasara:
-			case DivisionType.HoraJagannath:
-			case DivisionType.HoraParivrittiDwaya:
-			case DivisionType.HoraKashinath: return 2;
-			case DivisionType.DrekkanaParasara:
-			case DivisionType.DrekkanaJagannath:
-			case DivisionType.DrekkanaParivrittitraya:
-			case DivisionType.DrekkanaSomnath: return 3;
-			case DivisionType.Chaturthamsa: return 4;
-			case DivisionType.Panchamsa:    return 5;
-			case DivisionType.Shashthamsa:  return 6;
-			case DivisionType.Saptamsa:     return 7;
-			case DivisionType.Ashtamsa:
-			case DivisionType.AshtamsaRaman: return 8;
-			case DivisionType.Dasamsa: return 10;
-			case DivisionType.Rudramsa:
-			case DivisionType.RudramsaRaman: return 11;
-			case DivisionType.Dwadasamsa:     return 12;
-			case DivisionType.Shodasamsa:     return 16;
-			case DivisionType.Vimsamsa:       return 20;
-			case DivisionType.Chaturvimsamsa: return 24;
-			case DivisionType.Nakshatramsa:   return 27;
-			case DivisionType.Trimsamsa:
-			case DivisionType.TrimsamsaParivritti:
-			case DivisionType.TrimsamsaSimple: return 30;
-			case DivisionType.Khavedamsa:    return 40;
-			case DivisionType.Akshavedamsa:  return 45;
-			case DivisionType.Shashtyamsa:   return 60;
-			case DivisionType.NavaNavamsa:   return 81;
-			case DivisionType.Ashtottaramsa: return 108;
-			case DivisionType.Nadiamsa:
-			case DivisionType.NadiamsaCKN: return 150;
-			case DivisionType.NavamsaDwadasamsa:    return 108;
-			case DivisionType.DwadasamsaDwadasamsa: return 144;
-			case DivisionType.BhavaPada:
-			case DivisionType.BhavaEqual:
-			case DivisionType.BhavaAlcabitus:
-			case DivisionType.BhavaAxial:
-			case DivisionType.BhavaCampanus:
-			case DivisionType.BhavaKoch:
-			case DivisionType.BhavaPlacidus:
-			case DivisionType.BhavaRegiomontanus:
-			case DivisionType.BhavaSripati: return 1;
-		}
-
-		throw new Exception("Unknown varga type");
+		return varga switch
+		       {
+			       DivisionType.Rasi                    => 1,
+			       DivisionType.Navamsa                 => 9,
+			       DivisionType.HoraParasara            => 2,
+			       DivisionType.HoraJagannath           => 2,
+			       DivisionType.HoraParivrittiDwaya     => 2,
+			       DivisionType.HoraKashinath           => 2,
+			       DivisionType.DrekkanaParasara        => 3,
+			       DivisionType.DrekkanaJagannath       => 3,
+			       DivisionType.DrekkanaParivrittitraya => 3,
+			       DivisionType.DrekkanaSomnath         => 3,
+			       DivisionType.Chaturthamsa            => 4,
+			       DivisionType.Panchamsa               => 5,
+			       DivisionType.Shashthamsa             => 6,
+			       DivisionType.Saptamsa                => 7,
+			       DivisionType.Ashtamsa                => 8,
+			       DivisionType.AshtamsaRaman           => 8,
+			       DivisionType.Dasamsa                 => 10,
+			       DivisionType.Rudramsa                => 11,
+			       DivisionType.RudramsaRaman           => 11,
+			       DivisionType.Dwadasamsa              => 12,
+			       DivisionType.Shodasamsa              => 16,
+			       DivisionType.Vimsamsa                => 20,
+			       DivisionType.Chaturvimsamsa          => 24,
+			       DivisionType.Nakshatramsa            => 27,
+			       DivisionType.Trimsamsa               => 30,
+			       DivisionType.TrimsamsaParivritti     => 30,
+			       DivisionType.TrimsamsaSimple         => 30,
+			       DivisionType.Khavedamsa              => 40,
+			       DivisionType.Akshavedamsa            => 45,
+			       DivisionType.Shashtyamsa             => 60,
+			       DivisionType.NavaNavamsa             => 81,
+			       DivisionType.Ashtottaramsa           => 108,
+			       DivisionType.Nadiamsa                => 150,
+			       DivisionType.NadiamsaCKN             => 150,
+			       DivisionType.NavamsaDwadasamsa       => 108,
+			       DivisionType.DwadasamsaDwadasamsa    => 144,
+			       DivisionType.BhavaPada               => 1,
+			       DivisionType.BhavaEqual              => 1,
+			       DivisionType.BhavaAlcabitus          => 1,
+			       DivisionType.BhavaAxial              => 1,
+			       DivisionType.BhavaCampanus           => 1,
+			       DivisionType.BhavaKoch               => 1,
+			       DivisionType.BhavaPlacidus           => 1,
+			       DivisionType.BhavaRegiomontanus      => 1,
+			       DivisionType.BhavaSripati            => 1,
+			       _                                    => throw new Exception("Unknown varga type")
+		       };
 	}
 
 	public static Division[] Shadvargas()

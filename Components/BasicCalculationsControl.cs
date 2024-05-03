@@ -27,6 +27,7 @@ using Mhora.Components.VargaControl;
 using Mhora.Dasas.NakshatraDasa;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
+using Mhora.Divisions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
 using Mhora.Util;
@@ -585,8 +586,8 @@ public class BasicCalculationsControl : MhoraControl
 			var dp            = h.GetPosition(b).ToDivisionPosition(DivisionType.Panchamsa);
 			var avastha_index = (dp.ZodiacHouse.Index() % 2) switch
 			                    {
-				                    1 => dp.Part,
-				                    0 => 6 - dp.Part,
+				                    1 => dp.Cusp.Part,
+				                    0 => 6 - dp.Cusp.Part,
 				                    _ => -1
 			                    };
 
@@ -801,11 +802,11 @@ public class BasicCalculationsControl : MhoraControl
 			var dp = bp.ToDivisionPosition(options.DivisionType);
 			var li = new ListViewItem
 			{
-				Text = longitudeToString(new Longitude(dp.CuspLower))
+				Text = longitudeToString(dp.Cusp.Lower)
 			};
-			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
+			li.SubItems.Add(longitudeToString(dp.Cusp.Upper));
 			li.SubItems.Add(dp.ZodiacHouse.ToString());
-			bp.Longitude = new Longitude(dp.CuspHigher + 1);
+			bp.Longitude = dp.Cusp.Upper.Add(1.0);
 			mList.Items.Add(li);
 		}
 
@@ -917,7 +918,7 @@ public class BasicCalculationsControl : MhoraControl
 			li.SubItems.Add(bp.Longitude.ToNakshatra().ToString());
 			li.SubItems.Add(bp.Longitude.NakshatraPada().ToString());
 			li.SubItems.Add(getNakLord(bp.Longitude));
-			li.SubItems.Add(bp.PartOfZodiacHouse(parts).ToString());
+			li.SubItems.Add(bp.Longitude.PartOfZodiacHouse(parts).ToString());
 			if (bp.BodyType == BodyType.Graha)
 			{
 				var graha = h.FindGrahas(options.DivisionType)[bp.Name];

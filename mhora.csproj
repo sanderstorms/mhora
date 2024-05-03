@@ -175,6 +175,7 @@
     <Compile Include="Components\Controls\TimeAdjustment.Designer.cs">
       <DependentUpon>TimeAdjustment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Definitions\Bala.cs" />
     <Compile Include="Definitions\Element.cs" />
     <Compile Include="Definitions\GrahaType.cs" />
     <Compile Include="Definitions\Month.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Definitions\WeekDay.cs" />
     <Compile Include="Definitions\Yama.cs" />
     <Compile Include="Definitions\Yoga.cs" />
+    <Compile Include="Divisions\CalculateDivision.cs" />
     <Compile Include="Divisions\D10\Cyclic.cs" />
     <Compile Include="Divisions\D10\Parashari.cs" />
     <Compile Include="Divisions\D11\Cyclic.cs" />
@@ -209,6 +211,7 @@
     <Compile Include="Divisions\D24\SecondMethod.cs" />
     <Compile Include="Divisions\D27\Parashari.cs" />
     <Compile Include="Divisions\D2\Cyclic.cs" />
+    <Compile Include="Divisions\Hora.cs" />
     <Compile Include="Divisions\D2\LabhMandook.cs" />
     <Compile Include="Divisions\D2\Parashari.cs" />
     <Compile Include="Divisions\D2\PoorvaParashari.cs" />
@@ -238,6 +241,7 @@
     <Compile Include="Divisions\D9\Jaimini.cs" />
     <Compile Include="Divisions\D9\Kalchakra.cs" />
     <Compile Include="Divisions\D9\Parashari.cs" />
+    <Compile Include="Elements\Cusp.cs" />
     <Compile Include="Elements\Extensions\Avasthas.cs" />
     <Compile Include="Elements\Extensions\Bhavas.cs" />
     <Compile Include="Calculation\CalculateBodyPositionss.cs" />

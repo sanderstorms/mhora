@@ -58,7 +58,20 @@ public static class TimeUtils
 		{
 			dateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified);
 		}
-		return TimeZoneInfo.ConvertTimeFromUtc(dateTime, h.Info.TimeZone.TimeZoneInfo);
+
+		var lmt = TimeZoneInfo.ConvertTimeFromUtc(dateTime, h.Info.TimeZone.TimeZoneInfo);
+		if (h.Info.UseDst == false)
+		{
+			lmt -= dateTime.DstCorrection(h);
+		}
+
+		return (lmt);
+	}
+
+	public static Time DstCorrection (this DateTime dateTime, Horoscope h)
+	{
+		Time dstOffset = h.Info.TimeZone.TimeZoneInfo.GetUtcOffset(dateTime);
+		return (dstOffset - h.Info.UtcOffset);
 	}
 
 	public static JulianDate Utc(this JulianDate jd, Horoscope h)
@@ -73,7 +86,13 @@ public static class TimeUtils
 		{
 			dateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified);
 		}
-		return TimeZoneInfo.ConvertTimeToUtc(dateTime, h.Info.TimeZone.TimeZoneInfo);
+		var utc = TimeZoneInfo.ConvertTimeToUtc(dateTime, h.Info.TimeZone.TimeZoneInfo);
+		if (h.Info.UseDst == false)
+		{
+			utc += dateTime.DstCorrection (h);
+		}
+
+		return (utc);
 	}
 
 	public static int FromStringMonth(this string s)
