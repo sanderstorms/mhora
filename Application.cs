@@ -75,6 +75,8 @@ internal static class Application
 
 	private const string LogFile = "debug.txt";
 
+	public static MainForm MainForm => new MainForm();
+
 	/// <summary>
 	///     The main entry point for the application.
 	/// </summary>
@@ -96,7 +98,7 @@ internal static class Application
 		Log.Settings.LogFilename = Path.Combine(WorkingDir, LogFile);
 		Log.Settings.FileLogging = FileLoggingMode.SingleLogFile;
 
-		System.Windows.Forms.Application.Run(new MainForm());
+		System.Windows.Forms.Application.Run(MainForm);
 
 		_worldDb.Dispose();
 

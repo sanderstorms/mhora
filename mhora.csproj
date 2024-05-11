@@ -499,7 +499,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Components\MhoraChild.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Components\MhoraControl.cs">
       <SubType>UserControl</SubType>
