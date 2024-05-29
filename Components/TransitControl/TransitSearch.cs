@@ -423,10 +423,7 @@ public class TransitSearch : MhoraControl
 		Reset();
 	}
 
-	public object SetOptions(object o)
-	{
-		return opts.CopyFrom(o);
-	}
+	public object SetOptions(object o) => opts.CopyFrom(o);
 
 	private void bOpts_Click(object sender, EventArgs e)
 	{
@@ -828,7 +825,7 @@ public class TransitSearch : MhoraControl
 				var ut_diff = hTransitNext.Info.Jd.Date - hTransit.Info.Jd;
 				hTransit.Info.DefaultYearCompression = 1;
 				hTransit.Info.DefaultYearLength      = ut_diff.TotalDays;
-				hTransit.Info.DefaultYearType        = ToDate.DateType.FixedYear;
+				hTransit.Info.DefaultYearType        = DateType.FixedYear;
 			}
 		}
 
@@ -857,7 +854,7 @@ public class TransitSearch : MhoraControl
 				var ut_diff = hTransit.Info.Jd.Date - hTransitPrev.Info.Jd;
 				hTransit.Info.DefaultYearCompression = 1;
 				hTransit.Info.DefaultYearLength      = ut_diff.TotalDays;
-				hTransit.Info.DefaultYearType        = ToDate.DateType.FixedYear;
+				hTransit.Info.DefaultYearType        = DateType.FixedYear;
 			}
 		}
 

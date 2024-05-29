@@ -104,51 +104,27 @@ namespace Mhora.Util
 		/// this instance in degrees.
 		/// </summary>
 		[JsonIgnore]
-		public int Degrees
-		{
-			get
-			{
-				return GetDegrees(this);
-			}
-		}
+		public int Degrees => GetDegrees(this);
 
 		/// <summary>
 		/// Gets the arcminute portion of the value of
 		/// this instance in degrees.
 		/// </summary>
 		[JsonIgnore]
-		public int Arcminute
-		{
-			get
-			{
-				return GetArcminute(this);
-			}
-		}
+		public int Arcminute => GetArcminute(this);
 
 		/// <summary>
 		/// Gets the arcsecond portion of the value of
 		/// this instance in degrees.
 		/// </summary>
 		[JsonIgnore]
-		public decimal Arcsecond
-		{
-			get
-			{
-				return GetArcsecond(this);
-			}
-		}
+		public decimal Arcsecond => GetArcsecond(this);
 
 		/// <summary>
 		/// Returns the value of this instance in Radian units.
 		/// </summary>
 		[JsonIgnore]
-		public decimal Radians
-		{
-			get
-			{
-				return ToRadians(_value);
-			}
-		}
+		public decimal Radians => ToRadians(_value);
 
 		/// <summary>
 		/// Returns the value of this instance in Radian units by
@@ -157,10 +133,7 @@ namespace Mhora.Util
 		/// value to Radian units. Note that this value is NOT
 		/// equal to this.Radians * multiplier.
 		/// </summary>
-		public decimal RadiansMultiplied(decimal multiplier)
-		{
-			return ToRadians(_value * multiplier);
-		}
+		public decimal RadiansMultiplied(decimal multiplier) => ToRadians(_value * multiplier);
 
 		/// <summary>
 		/// Returns the value of this instance in Radian units by
@@ -169,23 +142,14 @@ namespace Mhora.Util
 		/// value to Radian units. Note that this value is NOT
 		/// equal to this.Radians / divisor.
 		/// </summary>
-		public decimal RadiansDivided(decimal divisor)
-		{
-			return ToRadians(_value / divisor);
-		}
+		public decimal RadiansDivided(decimal divisor) => ToRadians(_value / divisor);
 
 		/// <summary>
 		/// Gets the full value of this angle expressed only in
 		/// Minutes of arc.
 		/// </summary>
 		[JsonIgnore]
-		public decimal TotalArcminutes
-		{
-			get
-			{
-				return Degrees * 60M + Arcminute + Arcsecond / 60M;
-			}
-		}
+		public decimal TotalArcminutes => Degrees * 60M + Arcminute + Arcsecond / 60M;
 
 		/// <summary>
 		/// Gets the full value of this angle expressed only in
@@ -193,13 +157,7 @@ namespace Mhora.Util
 		/// </summary>
 		[JsonIgnore
 		]
-		public decimal TotalArcseconds
-		{
-			get
-			{
-				return Degrees * 3600M + Arcminute * 60M + Arcsecond;
-			}
-		}
+		public decimal TotalArcseconds => Degrees * 3600M + Arcminute * 60M + Arcsecond;
 
 		/// <summary>
 		/// Normalizes this instance of the angle to between 0 and 360 degrees.
@@ -234,11 +192,9 @@ namespace Mhora.Util
 		///Returns the hash code for this instance.
 		/// </summary>
 		/// <returns>A 32-bit signed integer hash code.</returns>
-		public override int GetHashCode()
-		{
-			return _value.GetHashCode();
-		}
-		#endregion
+		public override int GetHashCode() => _value.GetHashCode();
+
+#endregion
 
 		#region Implicit Conversions
 		/// <summary>
@@ -246,41 +202,30 @@ namespace Mhora.Util
 		/// </summary>
 		/// <param name="angle">The object to convert.</param>
 		/// <returns>The converted object.</returns>
-		public static implicit operator decimal(Angle angle)
-		{
-			return angle._value;
-		}
+		public static implicit operator decimal(Angle angle) => angle._value;
 
 		/// <summary>
 		/// Defines an implicit conversion of a System.Angle object to a System.Double object.
 		/// </summary>
 		/// <param name="angle">The object to convert.</param>
 		/// <returns>The converted object.</returns>
-		public static implicit operator double(Angle angle)
-		{
-			return Convert.ToDouble(angle._value);
-		}
+		public static implicit operator double(Angle angle) => Convert.ToDouble(angle._value);
 
 		/// <summary>
 		/// Defines an implicit conversion of a System.Decimal object to a System.Angle object.
 		/// </summary>
 		/// <param name="degrees">The object to convert.</param>
 		/// <returns>The converted object.</returns>
-		public static implicit operator Angle(decimal degrees)
-		{
-			return new Angle(degrees);
-		}
+		public static implicit operator Angle(decimal degrees) => new(degrees);
 
 		/// <summary>
 		/// Defines an implicit conversion of a System.Double object to a System.Angle object.
 		/// </summary>
 		/// <param name="degrees">The object to convert.</param>
 		/// <returns>The converted object.</returns>
-		public static implicit operator Angle(double degrees)
-		{
-			return new Angle(degrees);
-		}
-		#endregion
+		public static implicit operator Angle(double degrees) => new(degrees);
+
+#endregion
 
 		#region Operators
 		/// <summary>
@@ -289,10 +234,7 @@ namespace Mhora.Util
 		/// <param name="a">The first Angle.</param>
 		/// <param name="b">The second Angle.</param>
 		/// <returns>The result of the first Angle being added to the second Angle.</returns>
-		public static Angle operator +(Angle a, Angle b)
-		{
-			return a._value + b._value;
-		}
+		public static Angle operator +(Angle a, Angle b) => a._value + b._value;
 
 		/// <summary>
 		/// Subtracts one Angle from another.
@@ -300,10 +242,7 @@ namespace Mhora.Util
 		/// <param name="a">The first Angle.</param>
 		/// <param name="b">The second Angle.</param>
 		/// <returns>The result of the second Angle being subtracted from the first Angle.</returns>
-		public static Angle operator -(Angle a, Angle b)
-		{
-			return a._value - b._value;
-		}
+		public static Angle operator -(Angle a, Angle b) => a._value - b._value;
 
 		/// <summary>
 		/// Multiplies two Angles.
@@ -311,10 +250,7 @@ namespace Mhora.Util
 		/// <param name="a">The first Angle.</param>
 		/// <param name="b">The second Angle.</param>
 		/// <returns>The result of the first Angle being multiplied by the second Angle.</returns>
-		public static Angle operator *(Angle a, Angle b)
-		{
-			return a._value * b._value;
-		}
+		public static Angle operator *(Angle a, Angle b) => a._value * b._value;
 
 		/// <summary>
 		/// Divides two Angles.
@@ -322,10 +258,7 @@ namespace Mhora.Util
 		/// <param name="a">The first Angle.</param>
 		/// <param name="b">The second Angle.</param>
 		/// <returns>The result of the first Angle being divided by the second Angle.</returns>
-		public static Angle operator /(Angle a, Angle b)
-		{
-			return a._value / b._value;
-		}
+		public static Angle operator /(Angle a, Angle b) => a._value / b._value;
 
 		/// <summary>
 		/// Calculates the modulo of two Angles.
@@ -333,10 +266,7 @@ namespace Mhora.Util
 		/// <param name="a">The first Angle.</param>
 		/// <param name="b">The second Angle.</param>
 		/// <returns>The result of the First Angle mod the Second Angle.</returns>
-		public static Angle operator %(Angle a, Angle b)
-		{
-			return a._value % b._value;
-		}
+		public static Angle operator %(Angle a, Angle b) => a._value % b._value;
 
 		/// <summary>
 		/// Increments an Angle by 1 degree.
@@ -410,10 +340,7 @@ namespace Mhora.Util
 		/// <param name="a">The first Angle.</param>
 		/// <param name="b">The second Angle.</param>
 		/// <returns>True if the first Angle is greater than the second Angle, False otherwise.</returns>
-		public static bool operator >(Angle a, Angle b)
-		{
-			return a._value > b._value;
-		}
+		public static bool operator >(Angle a, Angle b) => a._value > b._value;
 
 		/// <summary>
 		/// Determines one Angle is greater than or equal to another Angle.
@@ -421,10 +348,7 @@ namespace Mhora.Util
 		/// <param name="a">The first Angle.</param>
 		/// <param name="b">The second Angle.</param>
 		/// <returns>True if the first Angle is greater than or equal to the second Angle, False otherwise.</returns>
-		public static bool operator >=(Angle a, Angle b)
-		{
-			return a._value >= b._value;
-		}
+		public static bool operator >=(Angle a, Angle b) => a._value >= b._value;
 
 		/// <summary>
 		/// Determines one Angle is less than another Angle.
@@ -432,10 +356,7 @@ namespace Mhora.Util
 		/// <param name="a">The first Angle.</param>
 		/// <param name="b">The second Angle.</param>
 		/// <returns>True if the first Angle is less than the second Angle, False otherwise.</returns>
-		public static bool operator <(Angle a, Angle b)
-		{
-			return a._value < b._value;
-		}
+		public static bool operator <(Angle a, Angle b) => a._value < b._value;
 
 		/// <summary>
 		/// Determines one Angle is less than or equal to another Angle.
@@ -443,10 +364,7 @@ namespace Mhora.Util
 		/// <param name="a">The first Angle.</param>
 		/// <param name="b">The second Angle.</param>
 		/// <returns>True if the first Angle is less than or equal to the second Angle, False otherwise.</returns>
-		public static bool operator <=(Angle a, Angle b)
-		{
-			return a._value <= b._value;
-		}
+		public static bool operator <=(Angle a, Angle b) => a._value <= b._value;
 
 		/// <summary>
 		/// Reverses the direction of an Angle by adding 180 degrees.
@@ -472,13 +390,7 @@ namespace Mhora.Util
 		/// <summary>
 		/// Represents the empty Angle. This field is read-only.
 		/// </summary>
-		public static Angle Empty
-		{
-			get
-			{
-				return new Angle(0M);
-			}
-		}
+		public static Angle Empty => new(0M);
 
 		/// <summary>
 		/// Converts the value of an angle specified in degree, arcminute and arcsecond
@@ -562,10 +474,7 @@ namespace Mhora.Util
 		/// </summary>
 		/// <param name="angle">An instance of System.Angle.</param>
 		/// <returns>An integer value representing the whole number portion of the angle.</returns>
-		public static int GetDegrees(Angle angle)
-		{
-			return (int)((decimal)angle).Floor();
-		}
+		public static int GetDegrees(Angle angle) => (int)((decimal)angle).Floor();
 
 		/// <summary>
 		/// A minute of arc, arcminute, is a unit of angular measurement equal to one sixtieth (1⁄60) of one degree. This method
@@ -719,10 +628,7 @@ namespace Mhora.Util
 		/// Converts the value of this instance to its equivalent string representation.
 		/// </summary>
 		/// <returns>The string representation of the value of this instance.</returns>
-		public override string ToString()
-		{
-			return ToShortFormat();
-		}
+		public override string ToString() => ToShortFormat();
 
 		/// <summary>
 		/// The string representation of the value of this instance using the common
@@ -730,21 +636,16 @@ namespace Mhora.Util
 		/// zero.
 		/// </summary>
 		/// <returns>The short format string representation of the value of this instance.</returns>
-		public string ToShortFormat()
-		{
-			return _value.ToString("0°.0000####", CultureInfo.InvariantCulture);
-		}
+		public string ToShortFormat() => _value.ToString("0°.0000####", CultureInfo.InvariantCulture);
 
 		/// <summary>
 		/// The string representation of the value of this instance displayed in degrees, arcminutes
 		/// and arcseonds.
 		/// </summary>
 		/// <returns>The long format string representation of the value of this instance.</returns>
-		public string ToLongFormat()
-		{
-			return $"{Degrees:0}°{Math.Abs(Arcminute):0}´{Math.Abs(Arcsecond):0}´´";
-		}
-		#endregion
+		public string ToLongFormat() => $"{Degrees:0}°{Math.Abs(Arcminute):0}´{Math.Abs(Arcsecond):0}´´";
+
+#endregion
 
 		#region IComparable
 		/// <summary>

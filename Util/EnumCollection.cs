@@ -7,15 +7,9 @@ namespace Mhora.Util
 	public class EnumCollection : ICollection<EnumValue>
 	{
 		private List<EnumValue>        _values;
-		public  IEnumerator<EnumValue> GetEnumerator()
-		{
-			throw new NotImplementedException();
-		}
+		public  IEnumerator<EnumValue> GetEnumerator() => throw new NotImplementedException();
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		public void Add(EnumValue item)
 		{
@@ -27,10 +21,7 @@ namespace Mhora.Util
 			_values.Clear();
 		}
 
-		public bool Contains(EnumValue item)
-		{
-			return _values.Contains(item);
-		}
+		public bool Contains(EnumValue item) => _values.Contains(item);
 
 		public void CopyTo(EnumValue[] array, int arrayIndex)
 		{

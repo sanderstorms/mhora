@@ -63,10 +63,7 @@ public class KalachakraDasa : Dasa, IDasa
 		_h = h;
 	}
 
-	public double ParamAyus()
-	{
-		return 144;
-	}
+	public double ParamAyus() => 144;
 
 	//In any dasha there are bhukties of nine signs ruled by mine lords in the usual sequence starting from
 	//a sign ruled  by the lord of the movable (chara) sign in trine to the dasha sign.
@@ -180,20 +177,11 @@ public class KalachakraDasa : Dasa, IDasa
 		return (al);
 	}
 
-	public string Description()
-	{
-		return "Kalachakra Dasa";
-	}
+	public string Description() => "Kalachakra Dasa";
 
-	public object GetOptions()
-	{
-		return new object();
-	}
+	public object GetOptions() => new();
 
-	public object SetOptions(object o)
-	{
-		return o;
-	}
+	public object SetOptions(object o) => o;
 
 	public void RecalculateOptions()
 	{

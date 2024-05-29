@@ -79,10 +79,7 @@ public class DivisionPosition
 		private set;
 	}
 
-	public override string ToString()
-	{
-		return string.Format("{0} ({1})", Description, ZodiacHouse);
-	}
+	public override string ToString() => string.Format("{0} ({1})", Description, ZodiacHouse);
 
 	public bool IsInMoolaTrikona()
 	{

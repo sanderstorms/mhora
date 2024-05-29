@@ -45,10 +45,7 @@ namespace Mhora.Elements
 
 		public string Name => Body.Name();
 
-		public override string ToString()
-		{
-			return _dp.ToString();
-		}
+		public override string ToString() => _dp.ToString();
 
 		public bool Owns(Bhava bhava)
 		{
@@ -154,11 +151,9 @@ namespace Mhora.Elements
 			return (IsAssociatedBy(graha));
 		}
 
-		public bool IsAssociatedBy(Graha graha)
-		{
-			return graha.IsAssociatedWith(this);
-		}
-		#endregion
+		public bool IsAssociatedBy(Graha graha) => graha.IsAssociatedWith(this);
+
+#endregion
 
 		#region drishti
 		public bool IsAspectedBy (Nature nature, bool noChayaGraha)
@@ -177,10 +172,7 @@ namespace Mhora.Elements
 			return (false);
 		}
 
-		public bool HasDrishtiOn(ZodiacHouse zh)
-		{
-			return _dp.GrahaDristi(zh);
-		}
+		public bool HasDrishtiOn(ZodiacHouse zh) => _dp.GrahaDristi(zh);
 
 		public bool IsAspecting(Body body)
 		{
@@ -1080,13 +1072,7 @@ namespace Mhora.Elements
 			}
 		}
 
-		public bool IsEcliped
-		{
-			get
-			{
-				return IsCombust; //Todo: proper definition
-			}
-		}
+		public bool IsEcliped => IsCombust; //Todo: proper definition
 
 		//When a Neecha - Bhanga Yoga is present,the debilitation gets cancelled and is said to produce benefic results.
 		public bool NeechaBhanga

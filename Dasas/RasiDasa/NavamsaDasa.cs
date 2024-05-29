@@ -37,10 +37,7 @@ public class NavamsaDasa : Dasa, IDasa
 		_options = new RasiDasaUserOptions(_h, _h.RulesNavamsaDasaRasi());
 	}
 
-	public double ParamAyus()
-	{
-		return 108;
-	}
+	public double ParamAyus() => 108;
 
 	public void RecalculateOptions()
 	{
@@ -100,15 +97,9 @@ public class NavamsaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public string Description()
-	{
-		return "Navamsa Dasa";
-	}
+	public string Description() => "Navamsa Dasa";
 
-	public object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public object GetOptions() => _options.Clone();
 
 	public object SetOptions(object a)
 	{

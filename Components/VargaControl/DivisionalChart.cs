@@ -1960,7 +1960,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			[Description("East Indian Square (Sun)")]
 			EastIndian,
 
-			[Description("North Indian Diamond (Sun)")]
+			[Description("North Indian Diamond (Moon)")]
 			NorthIndian
 		}
 

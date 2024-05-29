@@ -48,8 +48,5 @@ public static class NarayanaDasaLength
 		return Dasa.NarayanaDasaLength(zh, grahas [bl]);
 	}
 
-	private static int Value(this Grahas grahas, Body bm, bool simpleLord)
-	{
-		return grahas.Value(grahas [bm].Rashi, simpleLord);
-	}
+	private static int Value(this Grahas grahas, Body bm, bool simpleLord) => grahas.Value(grahas [bm].Rashi, simpleLord);
 }

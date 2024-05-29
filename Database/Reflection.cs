@@ -147,10 +147,7 @@ public static class Reflection
 		return member.Type() == type;
 	}
 
-	public static bool IsStruct(this Type type)
-	{
-		return type.IsValueType && type.IsEnum == false && type.IsPrimitive == false;
-	}
+	public static bool IsStruct(this Type type) => type.IsValueType && type.IsEnum == false && type.IsPrimitive == false;
 
 
 	public static (string, string) ParseTuple(string value)

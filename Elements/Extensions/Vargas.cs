@@ -627,72 +627,60 @@ public static class Vargas
 		       };
 	}
 
-	public static Division[] Shadvargas()
-	{
-		return
-		[
-			new Division(DivisionType.Rasi),
-			new Division(DivisionType.HoraParasara),
-			new Division(DivisionType.DrekkanaParasara),
-			new Division(DivisionType.Navamsa),
-			new Division(DivisionType.Dwadasamsa),
-			new Division(DivisionType.Trimsamsa)
-		];
-	}
+	public static Division[] Shadvargas() =>
+	[
+		new Division(DivisionType.Rasi),
+		new Division(DivisionType.HoraParasara),
+		new Division(DivisionType.DrekkanaParasara),
+		new Division(DivisionType.Navamsa),
+		new Division(DivisionType.Dwadasamsa),
+		new Division(DivisionType.Trimsamsa)
+	];
 
-	public static Division[] Saptavargas()
-	{
-		return
-		[
-			new Division(DivisionType.Rasi),
-			new Division(DivisionType.HoraParasara),
-			new Division(DivisionType.DrekkanaParasara),
-			new Division(DivisionType.Saptamsa),
-			new Division(DivisionType.Navamsa),
-			new Division(DivisionType.Dwadasamsa),
-			new Division(DivisionType.Trimsamsa)
-		];
-	}
+	public static Division[] Saptavargas() =>
+	[
+		new Division(DivisionType.Rasi),
+		new Division(DivisionType.HoraParasara),
+		new Division(DivisionType.DrekkanaParasara),
+		new Division(DivisionType.Saptamsa),
+		new Division(DivisionType.Navamsa),
+		new Division(DivisionType.Dwadasamsa),
+		new Division(DivisionType.Trimsamsa)
+	];
 
-	public static Division[] Dasavargas()
-	{
-		return
-		[
-			new Division(DivisionType.Rasi),
-			new Division(DivisionType.HoraParasara),
-			new Division(DivisionType.DrekkanaParasara),
-			new Division(DivisionType.Saptamsa),
-			new Division(DivisionType.Navamsa),
-			new Division(DivisionType.Dasamsa),
-			new Division(DivisionType.Dwadasamsa),
-			new Division(DivisionType.Shodasamsa),
-			new Division(DivisionType.Trimsamsa),
-			new Division(DivisionType.Shashtyamsa)
-		];
-	}
+	public static Division[] Dasavargas() =>
+	[
+		new Division(DivisionType.Rasi),
+		new Division(DivisionType.HoraParasara),
+		new Division(DivisionType.DrekkanaParasara),
+		new Division(DivisionType.Saptamsa),
+		new Division(DivisionType.Navamsa),
+		new Division(DivisionType.Dasamsa),
+		new Division(DivisionType.Dwadasamsa),
+		new Division(DivisionType.Shodasamsa),
+		new Division(DivisionType.Trimsamsa),
+		new Division(DivisionType.Shashtyamsa)
+	];
 
-	public static Division[] Shodasavargas()
-	{
-		return
-		[
-			new Division(DivisionType.Rasi),
-			new Division(DivisionType.HoraParasara),
-			new Division(DivisionType.DrekkanaParasara),
-			new Division(DivisionType.Chaturthamsa),
-			new Division(DivisionType.Saptamsa),
-			new Division(DivisionType.Navamsa),
-			new Division(DivisionType.Dasamsa),
-			new Division(DivisionType.Dwadasamsa),
-			new Division(DivisionType.Shodasamsa),
-			new Division(DivisionType.Vimsamsa),
-			new Division(DivisionType.Chaturvimsamsa),
-			new Division(DivisionType.Nakshatramsa),
-			new Division(DivisionType.Trimsamsa),
-			new Division(DivisionType.Khavedamsa),
-			new Division(DivisionType.Akshavedamsa),
-			new Division(DivisionType.Shashtyamsa)
-		];
-	}
+	public static Division[] Shodasavargas() =>
+	[
+		new Division(DivisionType.Rasi),
+		new Division(DivisionType.HoraParasara),
+		new Division(DivisionType.DrekkanaParasara),
+		new Division(DivisionType.Chaturthamsa),
+		new Division(DivisionType.Saptamsa),
+		new Division(DivisionType.Navamsa),
+		new Division(DivisionType.Dasamsa),
+		new Division(DivisionType.Dwadasamsa),
+		new Division(DivisionType.Shodasamsa),
+		new Division(DivisionType.Vimsamsa),
+		new Division(DivisionType.Chaturvimsamsa),
+		new Division(DivisionType.Nakshatramsa),
+		new Division(DivisionType.Trimsamsa),
+		new Division(DivisionType.Khavedamsa),
+		new Division(DivisionType.Akshavedamsa),
+		new Division(DivisionType.Shashtyamsa)
+	];
 
 	//D-Chart Karya Rasi / Controlling House Karyesha/Significator
 	// D2 2H Jupiter

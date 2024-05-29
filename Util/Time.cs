@@ -37,30 +37,15 @@ namespace Mhora.Util
 		public static Time Zero => new Time(0);
 
 
-		public Time AddDays(double days)
-		{
-			return new Time(_timeSpan + TimeSpan.FromDays(days));
-		}
+		public Time AddDays(double days) => new(_timeSpan + TimeSpan.FromDays(days));
 
-		public Time Add(double hours)
-		{
-			return new Time(_timeSpan.TotalHours + hours);
-		}
+		public Time Add(double hours) => new(_timeSpan.TotalHours + hours);
 
-		public Time Sub(double hours)
-		{
-			return new Time(_timeSpan.TotalHours - hours);
-		}
+		public Time Sub(double hours) => new(_timeSpan.TotalHours - hours);
 
-		public Time Mul(double hours)
-		{
-			return new Time(_timeSpan.TotalHours * hours);
-		}
+		public Time Mul(double hours) => new(_timeSpan.TotalHours * hours);
 
-		public Time Div(double hours)
-		{
-			return new Time(_timeSpan.TotalHours / hours);
-		}
+		public Time Div(double hours) => new(_timeSpan.TotalHours / hours);
 
 		// 1 Chatur Yuga = 4,320,000 sidereal years
 		//				 = 1577917828 days
@@ -168,94 +153,40 @@ namespace Mhora.Util
 			return $"{sign}" + str;
 		}
 
-		public static Time operator +(Time time, Time other)
-		{
-			return time.Add(other.TotalHours);
-		}
+		public static Time operator +(Time time, Time other) => time.Add(other.TotalHours);
 
-		public static Time operator -(Time time, Time other)
-		{
-			return time.Sub(other.TotalHours);
-		}
+		public static Time operator -(Time time, Time other) => time.Sub(other.TotalHours);
 
-		public static Time operator /(Time time, Time other)
-		{
-			return time.Div(other.TotalHours);
-		}
+		public static Time operator /(Time time, Time other) => time.Div(other.TotalHours);
 
-		public static Time operator *(Time time, Time other)
-		{
-			return time.Mul(other.TotalHours);
-		}
+		public static Time operator *(Time time, Time other) => time.Mul(other.TotalHours);
 
-		public static bool operator < (Time time, Time other)
-		{
-			return time.TotalHours < other.TotalHours;
-		}
+		public static bool operator < (Time time, Time other) => time.TotalHours < other.TotalHours;
 
-		public static bool operator > (Time time, Time other)
-		{
-			return time.TotalHours > other.TotalHours;
-		}
+		public static bool operator > (Time time, Time other) => time.TotalHours > other.TotalHours;
 
-		public static Time operator +(Time time, double hours)
-		{
-			return time.Add(hours);
-		}
+		public static Time operator +(Time time, double hours) => time.Add(hours);
 
-		public static Time operator -(Time time, double hours)
-		{
-			return time.Sub(hours);
-		}
+		public static Time operator -(Time time, double hours) => time.Sub(hours);
 
-		public static Time operator /(Time time, double hours)
-		{
-			return time.Div(hours);
-		}
+		public static Time operator /(Time time, double hours) => time.Div(hours);
 
-		public static Time operator *(Time time, double hours)
-		{
-			return time.Mul(hours);
-		}
+		public static Time operator *(Time time, double hours) => time.Mul(hours);
 
-		public static bool operator < (Time time, double hours)
-		{
-			return time.TotalHours < hours;
-		}
+		public static bool operator < (Time time, double hours) => time.TotalHours < hours;
 
-		public static bool operator > (Time time, double hours)
-		{
-			return time.TotalHours > hours;
-		}
+		public static bool operator > (Time time, double hours) => time.TotalHours > hours;
 
-		public static implicit operator TimeSpan(Time time)
-		{
-			return time._timeSpan;
-		}
+		public static implicit operator TimeSpan(Time time) => time._timeSpan;
 
-		public static implicit operator Time(TimeSpan timeSpan)
-		{
-			return new Time(timeSpan);
-		}
+		public static implicit operator Time(TimeSpan timeSpan) => new(timeSpan);
 
-		public static implicit operator Time(double hours)
-		{
-			return TimeSpan.FromHours(hours);
-		}
+		public static implicit operator Time(double hours) => TimeSpan.FromHours(hours);
 
-		public int CompareTo(object   obj)
-		{
-			return _timeSpan.CompareTo(obj);
-		}
+		public int CompareTo(object   obj) => _timeSpan.CompareTo(obj);
 
-		public int CompareTo(TimeSpan other)
-		{
-			return _timeSpan.CompareTo(other);
-		}
+		public int CompareTo(TimeSpan other) => _timeSpan.CompareTo(other);
 
-		public bool Equals(TimeSpan other)
-		{
-			return _timeSpan.Equals(other);
-		}
+		public bool Equals(TimeSpan other) => _timeSpan.Equals(other);
 	}
 }

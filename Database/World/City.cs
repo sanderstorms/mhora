@@ -97,10 +97,7 @@ public class City : SQLiteBaseObject, IComparable
 		return 0;
 	}
 
-	public override string ToString()
-	{
-		return $"{Name} ({State.Name}";
-	}
+	public override string ToString() => $"{Name} ({State.Name}";
 }
 //CREATE TABLE `cities` (
 //    `id` integer NOT NULL PRIMARY KEY AUTOINCREMENT

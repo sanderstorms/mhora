@@ -876,10 +876,7 @@ public static partial class sweph
 	// dret[2]: end of visibility (Julian day number), zero if helflag >= SE_HELFLAG_AV
 	// moment */
 	// char * serr); /* error string */
-	public static int HeliacalUt(double JDNDaysUTStart, double[] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int TypeEvent, int iflag, double[] dret, StringBuilder serr)
-	{
-		return (0);
-	}
+	public static int HeliacalUt(double JDNDaysUTStart, double[] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int TypeEvent, int iflag, double[] dret, StringBuilder serr) => (0);
 
 	//double tjd_ut, /* Julian day number */
 	// double *dgeo, /* geographic position (details under swe_heliacal_ut() */
@@ -924,10 +921,7 @@ public static partial class sweph
 	// '27=Illum [%] new
 	// '28=CVAact [deg] new
 	// '29=MSk [-]
-	public static int HeliacalPhenoUt(double JDNDaysUT, double[] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int TypeEvent, int helflag, double [] darr, StringBuilder serr)
-	{
-		return (0);
-	}
+	public static int HeliacalPhenoUt(double JDNDaysUT, double[] geopos, double[] datm, double[] dobs, StringBuilder ObjectName, int TypeEvent, int helflag, double [] darr, StringBuilder serr) => (0);
 
 	// attr[0] = phase angle (Earth-planet-sun)
 	//attr[1] = phase (illumined fraction of disc)

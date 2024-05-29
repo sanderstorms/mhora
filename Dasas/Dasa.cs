@@ -69,10 +69,7 @@ public abstract class Dasa
 		Changed?.Invoke(this);
 	}
 
-	public string EntryDescription(DasaEntry de, DateTime start, DateTime end)
-	{
-		return string.Empty;
-	}
+	public string EntryDescription(DasaEntry de, DateTime start, DateTime end) => string.Empty;
 
 	public class DasaOptions : ICloneable
 	{
@@ -81,13 +78,13 @@ public abstract class Dasa
 
 		public DasaOptions()
 		{
-			YearType     = ToDate.DateType.SolarYear;
+			YearType     = DateType.SolarYear;
 			_yearLength  = 360.0;
 			_compression = 0.0;
 		}
 
 		[PGDisplayName("Year Type")]
-		public ToDate.DateType YearType
+		public DateType YearType
 		{
 			get;
 			set;

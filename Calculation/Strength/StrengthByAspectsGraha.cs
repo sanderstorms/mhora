@@ -68,8 +68,5 @@ public static class AspectsGraha
 		return val;
 	}
 
-	private static int AspectsGrahaStrength(this Grahas grahas, Body bm, bool simpleLord)
-	{
-		return grahas.AspectsGrahaStrength(grahas.Find(bm).Rashi, simpleLord);
-	}
+	private static int AspectsGrahaStrength(this Grahas grahas, Body bm, bool simpleLord) => grahas.AspectsGrahaStrength(grahas.Find(bm).Rashi, simpleLord);
 }

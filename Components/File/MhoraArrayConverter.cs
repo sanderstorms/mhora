@@ -24,15 +24,9 @@ namespace Mhora.Components.File;
 
 internal class MhoraArrayConverter : ArrayConverter
 {
-	public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-	{
-		return base.CanConvertFrom(context, sourceType);
-	}
+	public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) => base.CanConvertFrom(context, sourceType);
 
-	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-	{
-		return base.ConvertFrom(context, culture, value);
-	}
+	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) => base.ConvertFrom(context, culture, value);
 
 	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
 	{

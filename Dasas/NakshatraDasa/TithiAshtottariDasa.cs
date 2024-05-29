@@ -47,10 +47,7 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		_ad         = new AshtottariDasa(_h);
 	}
 
-	public override object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public override object GetOptions() => _options.Clone();
 
 	public override object SetOptions(object a)
 	{
@@ -80,35 +77,17 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		return _TithiDasa(tithi, _options.TithiOffset, cycle);
 	}
 
-	public List<DasaEntry> AntarDasa(DasaEntry di)
-	{
-		return _AntarDasa(di);
-	}
+	public List<DasaEntry> AntarDasa(DasaEntry di) => _AntarDasa(di);
 
-	public string Description()
-	{
-		return string.Format("({0}) Tithis Ashtottari Dasa", _options.TithiOffset);
-	}
+	public string Description() => string.Format("({0}) Tithis Ashtottari Dasa", _options.TithiOffset);
 
-	public double ParamAyus()
-	{
-		return _ad.ParamAyus();
-	}
+	public double ParamAyus() => _ad.ParamAyus();
 
-	public int NumberOfDasaItems()
-	{
-		return _ad.NumberOfDasaItems();
-	}
+	public int NumberOfDasaItems() => _ad.NumberOfDasaItems();
 
-	public DasaEntry NextDasaLord(DasaEntry di)
-	{
-		return _ad.NextDasaLord(di);
-	}
+	public DasaEntry NextDasaLord(DasaEntry di) => _ad.NextDasaLord(di);
 
-	public TimeOffset LengthOfDasa(Body plt)
-	{
-		return _ad.LengthOfDasa(plt);
-	}
+	public TimeOffset LengthOfDasa(Body plt) => _ad.LengthOfDasa(plt);
 
 	public Body LordOfNakshatra(Nakshatra n)
 	{
@@ -116,10 +95,7 @@ public class TithiAshtottariDasa : NakshatraDasa, INakshatraDasa, INakshatraTith
 		return Body.Sun;
 	}
 
-	public Body LordOfTithi(Longitude l)
-	{
-		return l.ToTithi().GetLord();
-	}
+	public Body LordOfTithi(Longitude l) => l.ToTithi().GetLord();
 
 	public class UserOptions : ICloneable
 	{

@@ -69,10 +69,7 @@ public class Region : SQLiteBaseObject, IComparable
 		return 0;
 	}
 
-	public override string ToString()
-	{
-		return Name;
-	}
+	public override string ToString() => Name;
 }
 
 //CREATE TABLE `regions` (

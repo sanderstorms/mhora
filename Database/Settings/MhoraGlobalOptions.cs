@@ -578,10 +578,7 @@ public class MhoraGlobalOptions : MhoraSerializableOptions
 		CalculationPrefsChanged?.Invoke(Instance.HOptions);
 	}
 
-	private Font AddToFontSizesHelper(Font f, int i)
-	{
-		return new Font(f.FontFamily, f.SizeInPoints + i);
-	}
+	private Font AddToFontSizesHelper(Font f, int i) => new(f.FontFamily, f.SizeInPoints + i);
 
 	private void AddToFontSizes(int i)
 	{

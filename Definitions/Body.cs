@@ -18,6 +18,9 @@ namespace Mhora.Definitions
 		Rahu    = 7,
 		Ketu    = 8,
 		Lagna   = 9,
+		Uranus  = 10,
+		Pluto   = 11,
+		Neptune = 12,
 
 		// And now, we're no longer uptight about the ordering :-)
 		[Description("Bhava Lagna")]

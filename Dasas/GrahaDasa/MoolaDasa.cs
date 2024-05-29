@@ -43,10 +43,7 @@ public class MoolaDasa : Dasa, IDasa
 		_vd      = new VimsottariDasa(_h);
 	}
 
-	public double ParamAyus()
-	{
-		return 120.0;
-	}
+	public double ParamAyus() => 120.0;
 
 	public void RecalculateOptions()
 	{
@@ -116,15 +113,9 @@ public class MoolaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public string Description()
-	{
-		return string.Format("Moola Dasa seeded from {0}", _options.SeedBody);
-	}
+	public string Description() => string.Format("Moola Dasa seeded from {0}", _options.SeedBody);
 
-	public object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public object GetOptions() => _options.Clone();
 
 	public object SetOptions(object a)
 	{

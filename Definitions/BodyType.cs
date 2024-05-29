@@ -4,7 +4,7 @@
 	{
 		Lagna,
 		Graha,
-		NonLunarNode,
+		OuterPlanet,
 		SpecialLagna,
 		ChandraLagna,
 		BhavaArudha,

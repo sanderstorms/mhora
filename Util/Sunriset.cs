@@ -97,46 +97,22 @@ public static class Sunriset
 	/// <param name="m"></param>
 	/// <param name="d"></param>
 	/// <returns></returns>
-	private static long DaysSince2000Jan0(int y, int m, int d)
-	{
-		return 367L * y - 7 * (y + (m + 9) / 12) / 4 + 275 * m / 9 + d - 730530L;
-	}
+	private static long DaysSince2000Jan0(int y, int m, int d) => 367L * y - 7 * (y + (m + 9) / 12) / 4 + 275 * m / 9 + d - 730530L;
 
 	/* The trigonometric functions in degrees */
-	private static double Sind(double x)
-	{
-		return Math.Sin(x * DegRad);
-	}
+	private static double Sind(double x) => Math.Sin(x * DegRad);
 
-	private static double Cosd(double x)
-	{
-		return Math.Cos(x * DegRad);
-	}
+	private static double Cosd(double x) => Math.Cos(x * DegRad);
 
-	private static double Tand(double x)
-	{
-		return Math.Tan(x * DegRad);
-	}
+	private static double Tand(double x) => Math.Tan(x * DegRad);
 
-	private static double Atand(double x)
-	{
-		return RadDeg * Math.Atan(x);
-	}
+	private static double Atand(double x) => RadDeg * Math.Atan(x);
 
-	private static double Asind(double x)
-	{
-		return RadDeg * Math.Asin(x);
-	}
+	private static double Asind(double x) => RadDeg * Math.Asin(x);
 
-	private static double Acosd(double x)
-	{
-		return RadDeg * Math.Acos(x);
-	}
+	private static double Acosd(double x) => RadDeg * Math.Acos(x);
 
-	private static double Atan2d(double y, double x)
-	{
-		return RadDeg * Math.Atan2(y, x);
-	}
+	private static double Atan2d(double y, double x) => RadDeg * Math.Atan2(y, x);
 
 	/// <summary>
 	///     The "workhorse" function for sun rise/set times
@@ -375,20 +351,14 @@ public static class Sunriset
 	/// </summary>
 	/// <param name="x"></param>
 	/// <returns></returns>
-	private static double Revolution(double x)
-	{
-		return x - 360.0 * (x * Inv360).Floor();
-	}
+	private static double Revolution(double x) => x - 360.0 * (x * Inv360).Floor();
 
 	/// <summary>
 	///     Reduce angle to within +180..+180 degrees
 	/// </summary>
 	/// <param name="x"></param>
 	/// <returns></returns>
-	private static double Rev180(double x)
-	{
-		return x - 360.0 * (x * Inv360 + 0.5).Floor();
-	}
+	private static double Rev180(double x) => x - 360.0 * (x * Inv360 + 0.5).Floor();
 
 	/// <summary>
 	///     This function computes GMST0, the Greenwich Mean Sidereal Time

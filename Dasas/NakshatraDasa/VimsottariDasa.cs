@@ -56,10 +56,7 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 		h.Changed += ChangedHoroscope;
 	}
 
-	public override object GetOptions()
-	{
-		return Options.Clone();
-	}
+	public override object GetOptions() => Options.Clone();
 
 	public override object SetOptions(object a)
 	{
@@ -85,45 +82,21 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 		return Options.Clone();
 	}
 
-	public List<DasaEntry> Dasa(int cycle)
-	{
-		return _Dasa(Horoscope.GetPosition(Options.StartGraha).ExtrapolateLongitude(Options.Div), Options.NakshatraOffset, cycle);
-	}
+	public List<DasaEntry> Dasa(int cycle) => _Dasa(Horoscope.GetPosition(Options.StartGraha).ExtrapolateLongitude(Options.Div), Options.NakshatraOffset, cycle);
 
-	public List<DasaEntry> AntarDasa(DasaEntry di)
-	{
-		return _AntarDasa(di);
-	}
+	public List<DasaEntry> AntarDasa(DasaEntry di) => _AntarDasa(di);
 
-	public string Description()
-	{
-		return "Vimsottari Dasa Seeded from " + Options.SeedBody;
-	}
+	public string Description() => "Vimsottari Dasa Seeded from " + Options.SeedBody;
 
-	public double ParamAyus()
-	{
-		return 120.0;
-	}
+	public double ParamAyus() => 120.0;
 
-	public int NumberOfDasaItems()
-	{
-		return 9;
-	}
+	public int NumberOfDasaItems() => 9;
 
-	public DasaEntry NextDasaLord(DasaEntry di)
-	{
-		return new DasaEntry(NextDasaLordHelper(di.Graha), 0, 0, di.Level, string.Empty);
-	}
+	public DasaEntry NextDasaLord(DasaEntry di) => new(NextDasaLordHelper(di.Graha), 0, 0, di.Level, string.Empty);
 
-	public TimeOffset LengthOfDasa(Body plt)
-	{
-		return DasaLength(plt);
-	}
+	public TimeOffset LengthOfDasa(Body plt) => DasaLength(plt);
 
-	public Body LordOfNakshatra(Nakshatra n)
-	{
-		return NakshatraLord(n);
-	}
+	public Body LordOfNakshatra(Nakshatra n) => NakshatraLord(n);
 
 	public new void DivisionChanged(Division div)
 	{
@@ -140,40 +113,36 @@ public class VimsottariDasa : NakshatraDasa, INakshatraDasa
 
 	private Body NextDasaLordHelper(Body b)
 	{
-		switch (b)
-		{
-			case Body.Sun:     return Body.Moon;
-			case Body.Moon:    return Body.Mars;
-			case Body.Mars:    return Body.Rahu;
-			case Body.Rahu:    return Body.Jupiter;
-			case Body.Jupiter: return Body.Saturn;
-			case Body.Saturn:  return Body.Mercury;
-			case Body.Mercury: return Body.Ketu;
-			case Body.Ketu:    return Body.Venus;
-			case Body.Venus:   return Body.Sun;
-		}
-
-		Trace.Assert(false, "VimsottariDasa::NextDasaLord");
-		return Body.Lagna;
+		return b switch
+	       {
+		       Body.Sun     => Body.Moon,
+		       Body.Moon    => Body.Mars,
+		       Body.Mars    => Body.Rahu,
+		       Body.Rahu    => Body.Jupiter,
+		       Body.Jupiter => Body.Saturn,
+		       Body.Saturn  => Body.Mercury,
+		       Body.Mercury => Body.Ketu,
+		       Body.Ketu    => Body.Venus,
+		       Body.Venus   => Body.Sun,
+		       _            => throw new ArgumentOutOfRangeException(nameof(b), b, null)
+	       };
 	}
 
 	public static double DasaLength(Body plt)
 	{
-		switch (plt)
-		{
-			case Body.Sun:     return 6;
-			case Body.Moon:    return 10;
-			case Body.Mars:    return 7;
-			case Body.Rahu:    return 18;
-			case Body.Jupiter: return 16;
-			case Body.Saturn:  return 19;
-			case Body.Mercury: return 17;
-			case Body.Ketu:    return 7;
-			case Body.Venus:   return 20;
-		}
-
-		Trace.Assert(false, "Vimsottari::LengthOfDasa");
-		return 0;
+		return plt switch
+	       {
+		       Body.Sun     => 6,
+		       Body.Moon    => 10,
+		       Body.Mars    => 7,
+		       Body.Rahu    => 18,
+		       Body.Jupiter => 16,
+		       Body.Saturn  => 19,
+		       Body.Mercury => 17,
+		       Body.Ketu    => 7,
+		       Body.Venus   => 20,
+		       _            => throw new ArgumentOutOfRangeException(nameof(plt), plt, null)
+	       };
 	}
 
 	public static Body NakshatraLord(Nakshatra n)

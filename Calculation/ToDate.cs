@@ -27,18 +27,6 @@ namespace Mhora.Calculation;
 
 public class ToDate
 {
-	public enum DateType
-	{
-		FixedYear,
-		SolarYear,
-		TithiYear,
-		YogaYear,
-		TithiPraveshYear,
-		KaranaPraveshYear,
-		YogaPraveshYear,
-		NakshatraPraveshYear
-	}
-
 	private readonly JulianDate _baseUt;
 	private readonly double    _compression;
 	private readonly Horoscope _h;

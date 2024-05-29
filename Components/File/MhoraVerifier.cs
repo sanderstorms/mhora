@@ -26,10 +26,7 @@ namespace Mhora.Components.File;
 /// </summary>
 public class MhoraVerifier
 {
-	public static bool GoodHash(string key, string hash)
-	{
-		return GetHash(key) == hash;
-	}
+	public static bool GoodHash(string key, string hash) => GetHash(key) == hash;
 
 	public static string GetHash(string s)
 	{

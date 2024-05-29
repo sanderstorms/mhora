@@ -33,55 +33,25 @@ public class GlobalizedPropertiesWrapper : ICustomTypeDescriptor
 		obj = _obj;
 	}
 
-	public string GetClassName()
-	{
-		return TypeDescriptor.GetClassName(obj, true);
-	}
+	public string GetClassName() => TypeDescriptor.GetClassName(obj, true);
 
-	public AttributeCollection GetAttributes()
-	{
-		return TypeDescriptor.GetAttributes(obj, true);
-	}
+	public AttributeCollection GetAttributes() => TypeDescriptor.GetAttributes(obj, true);
 
-	public string GetComponentName()
-	{
-		return TypeDescriptor.GetComponentName(obj, true);
-	}
+	public string GetComponentName() => TypeDescriptor.GetComponentName(obj, true);
 
-	public TypeConverter GetConverter()
-	{
-		return TypeDescriptor.GetConverter(obj, true);
-	}
+	public TypeConverter GetConverter() => TypeDescriptor.GetConverter(obj, true);
 
-	public EventDescriptor GetDefaultEvent()
-	{
-		return TypeDescriptor.GetDefaultEvent(obj, true);
-	}
+	public EventDescriptor GetDefaultEvent() => TypeDescriptor.GetDefaultEvent(obj, true);
 
-	public PropertyDescriptor GetDefaultProperty()
-	{
-		return TypeDescriptor.GetDefaultProperty(obj, true);
-	}
+	public PropertyDescriptor GetDefaultProperty() => TypeDescriptor.GetDefaultProperty(obj, true);
 
-	public object GetEditor(Type editorBaseType)
-	{
-		return TypeDescriptor.GetEditor(obj, editorBaseType, true);
-	}
+	public object GetEditor(Type editorBaseType) => TypeDescriptor.GetEditor(obj, editorBaseType, true);
 
-	public EventDescriptorCollection GetEvents(Attribute[] attributes)
-	{
-		return TypeDescriptor.GetEvents(obj, attributes, true);
-	}
+	public EventDescriptorCollection GetEvents(Attribute[] attributes) => TypeDescriptor.GetEvents(obj, attributes, true);
 
-	public EventDescriptorCollection GetEvents()
-	{
-		return TypeDescriptor.GetEvents(obj, true);
-	}
+	public EventDescriptorCollection GetEvents() => TypeDescriptor.GetEvents(obj, true);
 
-	public object GetPropertyOwner(PropertyDescriptor pd)
-	{
-		return obj;
-	}
+	public object GetPropertyOwner(PropertyDescriptor pd) => obj;
 
 	public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 	{
@@ -136,10 +106,7 @@ public class GlobalizedPropertiesWrapper : ICustomTypeDescriptor
 		return baseProps;
 	}
 
-	public object GetWrappedObject()
-	{
-		return obj;
-	}
+	public object GetWrappedObject() => obj;
 
 	public bool IsPropertyVisible(PropertyDescriptor prop)
 	{

@@ -617,11 +617,11 @@ public class BasicCalculationsControl : MhoraControl
 
 			if (dirForward)
 			{
-				l = n.Add(Bodies.LattaAspects[i]);
+				l = n.Add(Nakshatras.LattaAspects[i]);
 			}
 			else
 			{
-				l = n.AddReverse(Bodies.LattaAspects[i]);
+				l = n.AddReverse(Nakshatras.LattaAspects[i]);
 			}
 
 			var nak_fmt = string.Empty;
@@ -639,7 +639,7 @@ public class BasicCalculationsControl : MhoraControl
 			}
 
 			var li  = new ListViewItem(b.Name());
-			var fmt = string.Format("{0:00}-{1}", Bodies.LattaAspects[i], l);
+			var fmt = string.Format("{0:00}-{1}", Nakshatras.LattaAspects[i], l);
 			li.SubItems.Add(fmt);
 			li.SubItems.Add(nak_fmt);
 			mList.Items.Add(li);
@@ -708,46 +708,23 @@ public class BasicCalculationsControl : MhoraControl
 		ResizeColumns();
 	}
 
-	private string getNakLord(Longitude l)
+	private Body GetNakLord(Longitude l)
 	{
-		INakshatraDasa id = null;
-		switch (options.NakshatraLord)
-		{
-			default:
-			case Dasas.Dasas.NakshatraLord.Vimsottari:
-				id = new VimsottariDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Ashtottari:
-				id = new AshtottariDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Yogini:
-				id = new YoginiDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Shodashottari:
-				id = new ShodashottariDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Dwadashottari:
-				id = new DwadashottariDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Panchottari:
-				id = new PanchottariDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Shatabdika:
-				id = new ShatabdikaDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.ChaturashitiSama:
-				id = new ChaturashitiSamaDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.DwisaptatiSama:
-				id = new DwisaptatiSamaDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.ShatTrimshaSama:
-				id = new ShatTrimshaSamaDasa(h);
-				break;
-		}
-
-		var b = id.LordOfNakshatra(l.ToNakshatra());
-		return b.ToString();
+		var nakshatra = l.ToNakshatra();
+		return options.NakshatraLord switch
+	       {
+		       NakshatraLord.Vimsottari       => VimsottariDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Ashtottari       => AshtottariDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Yogini           => YoginiDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Shodashottari    => ShodashottariDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Dwadashottari    => DwadashottariDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Panchottari      => PanchottariDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Shatabdika       => ShatabdikaDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.ChaturashitiSama => ChaturashitiSamaDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.DwisaptatiSama   => DwisaptatiSamaDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.ShatTrimshaSama  => ShatTrimshaSamaDasa.NakshatraLord(nakshatra),
+		       _                              => VimsottariDasa.NakshatraLord(nakshatra)
+	       };
 	}
 
 	private void RepopulateHouseCusps()
@@ -917,7 +894,7 @@ public class BasicCalculationsControl : MhoraControl
 			li.SubItems.Add(longitudeToString(bp.Longitude));
 			li.SubItems.Add(bp.Longitude.ToNakshatra().ToString());
 			li.SubItems.Add(bp.Longitude.NakshatraPada().ToString());
-			li.SubItems.Add(getNakLord(bp.Longitude));
+			li.SubItems.Add(GetNakLord(bp.Longitude).ToString());
 			li.SubItems.Add(bp.Longitude.PartOfZodiacHouse(parts).ToString());
 			if (bp.BodyType == BodyType.Graha)
 			{
@@ -1215,7 +1192,7 @@ public class BasicCalculationsControl : MhoraControl
 			set;
 		}
 
-		public Dasas.Dasas.NakshatraLord NakshatraLord
+		public NakshatraLord NakshatraLord
 		{
 			get;
 			set;

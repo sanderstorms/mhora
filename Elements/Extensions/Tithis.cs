@@ -17,10 +17,7 @@ public static class Tithis
 	}
 
 
-	public static Tithi ToTithi(this int index)
-	{
-		return (Tithi) index.NormalizeInc(1, 30);
-	}
+	public static Tithi ToTithi(this int index) => (Tithi) index.NormalizeInc(1, 30);
 
 	public static NandaType ToNandaType(this Tithi tithi)
 	{
@@ -207,10 +204,7 @@ public static class Tithis
 		return cusp;
 	}
 
-	public static double ToTithiOffset(this Longitude l)
-	{
-		return (double) l.Value - l.ToTithiBase();
-	}
+	public static double ToTithiOffset(this Longitude l) => (double) l.Value - l.ToTithiBase();
 
 	//Dugdha
 	// 1st: Tula,Makara

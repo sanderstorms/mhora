@@ -44,10 +44,7 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 		_vd         = new VimsottariDasa(_h);
 	}
 
-	public override object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public override object GetOptions() => _options.Clone();
 
 	public override object SetOptions(object a)
 	{
@@ -64,35 +61,17 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 		return _YogaDasa(l, 1, cycle);
 	}
 
-	public List<DasaEntry> AntarDasa(DasaEntry di)
-	{
-		return _AntarDasa(di);
-	}
+	public List<DasaEntry> AntarDasa(DasaEntry di) => _AntarDasa(di);
 
-	public string Description()
-	{
-		return "Yoga Vimsottari Dasa";
-	}
+	public string Description() => "Yoga Vimsottari Dasa";
 
-	public double ParamAyus()
-	{
-		return _vd.ParamAyus();
-	}
+	public double ParamAyus() => _vd.ParamAyus();
 
-	public int NumberOfDasaItems()
-	{
-		return _vd.NumberOfDasaItems();
-	}
+	public int NumberOfDasaItems() => _vd.NumberOfDasaItems();
 
-	public DasaEntry NextDasaLord(DasaEntry di)
-	{
-		return _vd.NextDasaLord(di);
-	}
+	public DasaEntry NextDasaLord(DasaEntry di) => _vd.NextDasaLord(di);
 
-	public TimeOffset LengthOfDasa(Body plt)
-	{
-		return _vd.LengthOfDasa(plt);
-	}
+	public TimeOffset LengthOfDasa(Body plt) => _vd.LengthOfDasa(plt);
 
 	public Body LordOfNakshatra(Nakshatra n)
 	{
@@ -100,10 +79,7 @@ public class YogaVimsottariDasa : NakshatraDasa, INakshatraDasa, INakshatraYogaD
 		return Body.Lagna;
 	}
 
-	public Body LordOfYoga(Longitude l)
-	{
-		return l.ToSunMoonYoga().Lord();
-	}
+	public Body LordOfYoga(Longitude l) => l.ToSunMoonYoga().Lord();
 
 	public class UserOptions : ICloneable
 	{

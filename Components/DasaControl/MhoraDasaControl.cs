@@ -738,7 +738,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 		h2.Info.DefaultYearCompression = 1;
 		h2.Info.DefaultYearLength      = utDiff.TotalDays;
-		h2.Info.DefaultYearType        = ToDate.DateType.FixedYear;
+		h2.Info.DefaultYearType        = DateType.FixedYear;
 
 		var mchild = (MhoraChild) ParentForm;
 		var mcont  = (MainForm) ParentForm.ParentForm;
@@ -942,13 +942,13 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 	private void mVimsottari_Click(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaVimsottari);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaVimsottari);
 	}
 
 	private void mAshtottari_Click(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaAshtottari);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaAshtottari);
 	}
 
 
@@ -960,8 +960,8 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 	private void SetDasaYearType()
 	{
 		var compress = DasaOptions.Compression == 0.0 ? 0.0 :  _id.ParamAyus() / DasaOptions.Compression;
-		if (DasaOptions.YearType == ToDate.DateType.FixedYear) // ||
-			//mDasaOptions.YearType == ToDate.DateType.TithiYear)
+		if (DasaOptions.YearType == DateType.FixedYear) // ||
+			//mDasaOptions.YearType == DateType.TithiYear)
 		{
 			_td = new ToDate(h.Info.Jd, DasaOptions.YearLength, compress, h);
 		}
@@ -1055,12 +1055,12 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mFixedYears365_Click(object sender, EventArgs e)
 	{
-		if (DasaOptions.YearType == ToDate.DateType.FixedYear && DasaOptions.YearLength == Time.SiderealYear.TotalDays)
+		if (DasaOptions.YearType == DateType.FixedYear && DasaOptions.YearLength == Time.SiderealYear.TotalDays)
 		{
 			return;
 		}
 
-		DasaOptions.YearType   = ToDate.DateType.FixedYear;
+		DasaOptions.YearType   = DateType.FixedYear;
 		DasaOptions.YearLength = Time.SiderealYear.TotalDays;
 		SetDasaYearType();
 		Reset();
@@ -1068,12 +1068,12 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mTithiYears_Click(object sender, EventArgs e)
 	{
-		if (DasaOptions.YearType == ToDate.DateType.TithiYear && DasaOptions.YearLength == 360.0)
+		if (DasaOptions.YearType == DateType.TithiYear && DasaOptions.YearLength == 360.0)
 		{
 			return;
 		}
 
-		DasaOptions.YearType   = ToDate.DateType.TithiYear;
+		DasaOptions.YearType   = DateType.TithiYear;
 		DasaOptions.YearLength = 360.0;
 		SetDasaYearType();
 		Reset();
@@ -1081,12 +1081,12 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mSolarYears_Click(object sender, EventArgs e)
 	{
-		if (DasaOptions.YearType == ToDate.DateType.SolarYear && DasaOptions.YearLength == 360.0)
+		if (DasaOptions.YearType == DateType.SolarYear && DasaOptions.YearLength == 360.0)
 		{
 			return;
 		}
 
-		DasaOptions.YearType   = ToDate.DateType.SolarYear;
+		DasaOptions.YearType   = DateType.SolarYear;
 		DasaOptions.YearLength = 360.0;
 		SetDasaYearType();
 		Reset();
@@ -1094,12 +1094,12 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mFixedYears360_Click(object sender, EventArgs e)
 	{
-		if (DasaOptions.YearType == ToDate.DateType.FixedYear && DasaOptions.YearLength == 360.0)
+		if (DasaOptions.YearType == DateType.FixedYear && DasaOptions.YearLength == 360.0)
 		{
 			return;
 		}
 
-		DasaOptions.YearType   = ToDate.DateType.FixedYear;
+		DasaOptions.YearType   = DateType.FixedYear;
 		DasaOptions.YearLength = 360.0;
 		SetDasaYearType();
 		Reset();
@@ -1143,51 +1143,51 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mCompressSolar_Click(object sender, EventArgs e)
 	{
-		if (DasaOptions.Compression == 1 && DasaOptions.YearType == ToDate.DateType.SolarYear && DasaOptions.YearLength == 360)
+		if (DasaOptions.Compression == 1 && DasaOptions.YearType == DateType.SolarYear && DasaOptions.YearLength == 360)
 		{
 			return;
 		}
 
 		DasaOptions.Compression = 1;
 		DasaOptions.YearLength  = 360.0;
-		DasaOptions.YearType    = ToDate.DateType.SolarYear;
+		DasaOptions.YearType    = DateType.SolarYear;
 		SetDasaYearType();
 		Reset();
 	}
 
 	private void mCompressLunar_Click(object sender, EventArgs e)
 	{
-		if (DasaOptions.Compression == 1 && DasaOptions.YearType == ToDate.DateType.TithiYear && DasaOptions.YearLength == 360)
+		if (DasaOptions.Compression == 1 && DasaOptions.YearType == DateType.TithiYear && DasaOptions.YearLength == 360)
 		{
 			return;
 		}
 
 		DasaOptions.Compression = 1;
 		DasaOptions.YearLength  = 360.0;
-		DasaOptions.YearType    = ToDate.DateType.TithiYear;
+		DasaOptions.YearType    = DateType.TithiYear;
 		SetDasaYearType();
 		Reset();
 	}
 
 	private void mCompressYoga_Click(object sender, EventArgs e)
 	{
-		if (DasaOptions.Compression == 1 && DasaOptions.YearType == ToDate.DateType.YogaYear && DasaOptions.YearLength == 324)
+		if (DasaOptions.Compression == 1 && DasaOptions.YearType == DateType.YogaYear && DasaOptions.YearLength == 324)
 		{
 			return;
 		}
 
 		DasaOptions.Compression = 1;
 		DasaOptions.YearLength  = 324;
-		DasaOptions.YearType    = ToDate.DateType.YogaYear;
+		DasaOptions.YearType    = DateType.YogaYear;
 		SetDasaYearType();
 		Reset();
 	}
 
 	private void mCompressTithiPraveshaTithi_Click(object sender, EventArgs e)
 	{
-		DasaOptions.YearType = ToDate.DateType.TithiYear;
-		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
-		var tdTithi   = new ToDate(h.Info.Jd, ToDate.DateType.TithiYear, 360.0, 0, h);
+		DasaOptions.YearType = DateType.TithiYear;
+		var tdPravesh = new ToDate(h.Info.Jd, DateType.TithiPraveshYear, 360.0, 0, h);
+		var tdTithi   = new ToDate(h.Info.Jd, DateType.TithiYear, 360.0, 0, h);
 		if (tdTithi.AddYears(1).ToJulian() + 15.0 < tdPravesh.AddYears(1).ToJulian())
 		{
 			DasaOptions.YearLength = 390;
@@ -1203,9 +1203,9 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	public void CompressToYogaPraveshaYearYoga()
 	{
-		DasaOptions.YearType = ToDate.DateType.YogaYear;
-		var    tdPravesh     = new ToDate(h.Info.Jd, ToDate.DateType.YogaPraveshYear, 360.0, 0, h);
-		var    tdYoga        = new ToDate(h.Info.Jd, ToDate.DateType.YogaYear, 324.0, 0, h);
+		DasaOptions.YearType = DateType.YogaYear;
+		var    tdPravesh     = new ToDate(h.Info.Jd, DateType.YogaPraveshYear, 360.0, 0, h);
+		var    tdYoga        = new ToDate(h.Info.Jd, DateType.YogaYear, 324.0, 0, h);
 		var    dateToSurpass = (JulianDate) tdPravesh.AddYears(1) - 5;
 		var    dateCurrent   = (JulianDate) tdYoga.AddYears(0);
 		double months        = 0;
@@ -1229,7 +1229,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mCompressTithiPraveshaSolar_Click(object sender, EventArgs e)
 	{
-		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
+		var tdPravesh = new ToDate(h.Info.Jd, DateType.TithiPraveshYear, 360.0, 0, h);
 		var utStart   = tdPravesh.AddYears(0).ToUniversalTime();
 		var utEnd     = tdPravesh.AddYears(1).ToUniversalTime();
 		var spStart   = h.CalculateSingleBodyPosition(utStart.Time().TotalHours, Body.Sun.SwephBody(), Body.Sun, BodyType.Graha);
@@ -1241,7 +1241,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 			diff += 360;
 		}
 
-		DasaOptions.YearType    = ToDate.DateType.SolarYear;
+		DasaOptions.YearType    = DateType.SolarYear;
 		DasaOptions.YearLength  = (double) diff;
 		DasaOptions.Compression = 1;
 		Reset();
@@ -1249,8 +1249,8 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mCompressedTithiPraveshaFixed_Click(object sender, EventArgs e)
 	{
-		var tdPravesh = new ToDate(h.Info.Jd, ToDate.DateType.TithiPraveshYear, 360.0, 0, h);
-		DasaOptions.YearType   = ToDate.DateType.FixedYear;
+		var tdPravesh = new ToDate(h.Info.Jd, DateType.TithiPraveshYear, 360.0, 0, h);
+		DasaOptions.YearType   = DateType.FixedYear;
 		DasaOptions.YearLength = (tdPravesh.AddYears(1) - tdPravesh.AddYears(0)).TotalDays;
 		Reset();
 	}

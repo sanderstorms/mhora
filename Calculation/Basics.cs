@@ -138,6 +138,9 @@ public static class Basics
 		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_JUPITER, Body.Jupiter, BodyType.Graha));
 		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_VENUS, Body.Venus, BodyType.Graha));
 		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_SATURN, Body.Saturn, BodyType.Graha));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_URANUS, Body.Uranus, BodyType.OuterPlanet));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_NEPTUNE, Body.Neptune, BodyType.OuterPlanet));
+		stdGrahas.Add(h.CalculateSingleBodyPosition(juldayUt, sweph.SE_PLUTO, Body.Pluto, BodyType.OuterPlanet));
 		var rahu = h.CalculateSingleBodyPosition(juldayUt, swephRahuBody, Body.Rahu, BodyType.Graha);
 
 		var ketu = h.CalculateSingleBodyPosition(juldayUt, swephRahuBody, Body.Ketu, BodyType.Graha);

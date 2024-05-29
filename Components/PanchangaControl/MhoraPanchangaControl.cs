@@ -240,10 +240,7 @@ public class MhoraPanchangaControl : MhoraControl
 		bResultsInvalid = true;
 	}
 
-	public object SetOptions(object o)
-	{
-		return opts.CopyFrom(o);
-	}
+	public object SetOptions(object o) => opts.CopyFrom(o);
 
 	private void bOpts_Click(object sender, EventArgs e)
 	{

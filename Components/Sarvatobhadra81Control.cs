@@ -123,15 +123,9 @@ public class Sarvatobhadra81Control : MhoraControl
 		       };
 	}
 
-	private Point GetItemOffsetCenter()
-	{
-		return new Point(bufferCellSize / 2, bufferCellSize / 2);
-	}
+	private Point GetItemOffsetCenter() => new(bufferCellSize / 2, bufferCellSize / 2);
 
-	private Point GetCell(int x, int y)
-	{
-		return new Point((x - 1) * bufferCellSize, (y - 1) * bufferCellSize);
-	}
+	private Point GetCell(int x, int y) => new((x - 1) * bufferCellSize, (y - 1) * bufferCellSize);
 
 	private Point GetCellInRectangle(int width, int offset, int cellNumber)
 	{

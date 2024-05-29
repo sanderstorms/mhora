@@ -38,10 +38,7 @@ public class MandookaDasa : Dasa, IDasa
 		_options = new RasiDasaUserOptions(_h, _h.RulesNavamsaDasaRasi());
 	}
 
-	public double ParamAyus()
-	{
-		return 96;
-	}
+	public double ParamAyus() => 96;
 
 	public void RecalculateOptions()
 	{
@@ -136,15 +133,9 @@ public class MandookaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public string Description()
-	{
-		return "Mandooka Dasa (seeded from) " + _options.Division.GetEnumDescription();
-	}
+	public string Description() => "Mandooka Dasa (seeded from) " + _options.Division.GetEnumDescription();
 
-	public object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public object GetOptions() => _options.Clone();
 
 	public object SetOptions(object a)
 	{

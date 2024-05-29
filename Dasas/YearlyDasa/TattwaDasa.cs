@@ -33,10 +33,7 @@ public class TattwaDasa : Dasa, IDasa
 		_h = h;
 	}
 
-	public double ParamAyus()
-	{
-		return 1.0 / 24.0 / 60.0;
-	}
+	public double ParamAyus() => 1.0 / 24.0 / 60.0;
 
 	public void RecalculateOptions()
 	{
@@ -52,25 +49,13 @@ public class TattwaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public List<DasaEntry> AntarDasa(DasaEntry pdi)
-	{
-		return [];
-	}
+	public List<DasaEntry> AntarDasa(DasaEntry pdi) => [];
 
-	public string Description()
-	{
-		return "Tattwa Dasa";
-	}
+	public string Description() => "Tattwa Dasa";
 
-	public object GetOptions()
-	{
-		return new object();
-	}
+	public object GetOptions() => new();
 
-	public object SetOptions(object o)
-	{
-		return o;
-	}
+	public object SetOptions(object o) => o;
 
 	public class UserOptions
 	{

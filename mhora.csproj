@@ -176,9 +176,11 @@
       <DependentUpon>TimeAdjustment.cs</DependentUpon>
     </Compile>
     <Compile Include="Definitions\Bala.cs" />
+    <Compile Include="Definitions\DateType.cs" />
     <Compile Include="Definitions\Element.cs" />
     <Compile Include="Definitions\GrahaType.cs" />
     <Compile Include="Definitions\Month.cs" />
+    <Compile Include="Definitions\NakshatraLord.cs" />
     <Compile Include="Definitions\Nature.cs" />
     <Compile Include="Definitions\Avastha.cs" />
     <Compile Include="Definitions\Body.cs" />
@@ -191,6 +193,7 @@
     <Compile Include="Definitions\Relation.cs" />
     <Compile Include="Definitions\SunMoonYoga.cs" />
     <Compile Include="Definitions\Tatva.cs" />
+    <Compile Include="Definitions\MhoraViewType.cs" />
     <Compile Include="Definitions\WeekDay.cs" />
     <Compile Include="Definitions\Yama.cs" />
     <Compile Include="Definitions\Yoga.cs" />
@@ -499,7 +502,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Components\MhoraChild.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Components\MhoraControl.cs">
       <SubType>UserControl</SubType>
@@ -772,7 +775,6 @@
     <None Include="Database\TimeZones.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
     <None Include="Properties\app.config" />
   </ItemGroup>
   <ItemGroup />

@@ -613,15 +613,9 @@ public static class ZodiacHouses
 		return ((ZodiacHouse) znum);
 	}
 
-	public static int Normalize(this ZodiacHouse zodiacHouse)
-	{
-		return zodiacHouse.Index ().NormalizeInc(1, 12);
-	}
+	public static int Normalize(this ZodiacHouse zodiacHouse) => zodiacHouse.Index ().NormalizeInc(1, 12);
 
-	public static int NumHousesBetweenReverse(this ZodiacHouse zodiacHouse, ZodiacHouse zrel)
-	{
-		return (14 - zodiacHouse.NumHousesBetween(zrel)).NormalizeInc(1, 12);
-	}
+	public static int NumHousesBetweenReverse(this ZodiacHouse zodiacHouse, ZodiacHouse zrel) => (14 - zodiacHouse.NumHousesBetween(zrel)).NormalizeInc(1, 12);
 
 	public static int NumHousesBetween(this ZodiacHouse zodiacHouse, ZodiacHouse zrel)
 	{
@@ -630,10 +624,7 @@ public static class ZodiacHouses
 		return ret;
 	}
 
-	public static Longitude Origin (this ZodiacHouse zodiacHouse)
-	{
-		return new Longitude((zodiacHouse.Index() - 1) * 30.0);
-	}
+	public static Longitude Origin (this ZodiacHouse zodiacHouse) => new((zodiacHouse.Index() - 1) * 30.0);
 
 	public static Longitude DivisionalLongitude(this ZodiacHouse zodiacHouse, Longitude longitude, int nrOfDivisions)
 	{

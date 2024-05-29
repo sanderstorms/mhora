@@ -248,10 +248,7 @@ public class AzimuthCalculator
 	/// </summary>
 	/// <param name="altitude">Высота над уровнем моря в метрах.</param>
 	/// <returns>Поправка по высоте</returns>
-	private static double GetAltitudeCorrection(double altitude)
-	{
-		return -1.76 * Math.Sqrt(altitude);
-	}
+	private static double GetAltitudeCorrection(double altitude) => -1.76 * Math.Sqrt(altitude);
 
 	/// <summary>
 	///     Расчитывает поправку по широте.
@@ -262,10 +259,7 @@ public class AzimuthCalculator
 	/// <param name="lLatitude">Левое табличное значение широты.</param>
 	/// <param name="latitude">Широта наблюдателя.</param>
 	/// <returns>Поправку по широте для значения азимута.</returns>
-	private double GetLatitudeCorrection(double lAzimuth, double rAzimuth, double lLatitude, double rLatitude, double latitude)
-	{
-		return (rAzimuth - lAzimuth) / (rLatitude - lLatitude) * (latitude - lLatitude);
-	}
+	private double GetLatitudeCorrection(double lAzimuth, double rAzimuth, double lLatitude, double rLatitude, double latitude) => (rAzimuth - lAzimuth) / (rLatitude - lLatitude) * (latitude - lLatitude);
 
 	/// <summary>
 	///     Расчитывает поправку по долготе.
@@ -302,10 +296,7 @@ public class AzimuthCalculator
 	/// <param name="dh">Сумма поправок за высоту, давление и температуру.</param>
 	/// <param name="azimuth">Азимут.</param>
 	/// <returns>Поправку по широте для значения азимута.</returns>
-	private double GetAzimuthCorrection(double latitude, double dh, double azimuth)
-	{
-		return 0.017 * Math.Tan(ToRad(latitude)) * (dh / 60d) / Math.Sin(ToRad(azimuth));
-	}
+	private double GetAzimuthCorrection(double latitude, double dh, double azimuth) => 0.017 * Math.Tan(ToRad(latitude)) * (dh / 60d) / Math.Sin(ToRad(azimuth));
 
 	/// <summary>
 	///     Расчитывает поправку для расчета азимута нижнего края по азимуту верзнего Края солнца.
@@ -325,10 +316,7 @@ public class AzimuthCalculator
 		return purpose == sweph.SE_CALC_RISE ? correction : -correction;
 	}
 
-	private static double ToRad(double angle)
-	{
-		return angle * Math.PI / 180d;
-	}
+	private static double ToRad(double angle) => angle * Math.PI / 180d;
 
 #endregion
 }

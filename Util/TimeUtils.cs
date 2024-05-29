@@ -11,15 +11,9 @@ public static class TimeUtils
 		var time = (dateTime - dateTime.Date);
 		return (time);
 	}
-	public static JulianDate ToJulian(this DateTime dateTime)
-	{
-		return new JulianDate(dateTime);
-	}
+	public static JulianDate ToJulian(this DateTime dateTime) => new(dateTime);
 
-	public static JulianDate UniversalTime(this Horoscope h, DateTime dateTime)
-	{
-		return dateTime.Utc(h);
-	}
+	public static JulianDate UniversalTime(this Horoscope h, DateTime dateTime) => dateTime.Utc(h);
 
 	public static JulianDate Lmt(this JulianDate jd, Horoscope h)
 	{
@@ -47,12 +41,9 @@ public static class TimeUtils
 		return (date);
     }
 
-    public static DateTime Moment(this Horoscope h, JulianDate tjdUt)
-    {
-	    return tjdUt.Date.Lmt(h);
-    }
+    public static DateTime Moment(this Horoscope h, JulianDate tjdUt) => tjdUt.Date.Lmt(h);
 
-	public static DateTime Lmt(this DateTime dateTime, Horoscope h)
+    public static DateTime Lmt(this DateTime dateTime, Horoscope h)
 	{
 		if (dateTime.Kind != DateTimeKind.Unspecified)
 		{
@@ -135,10 +126,7 @@ public static class TimeUtils
 		       };
 	}
 
-	public static string ToString(this DateTime dateTime)
-	{
-		return (dateTime.Day < 10 ? "0" : string.Empty) + dateTime.Day + " " + ToStringMonth(dateTime) + " " + dateTime.Year + " " + (dateTime.Hour < 10 ? "0" : string.Empty) + dateTime.Hour + ":" + (dateTime.Minute < 10 ? "0" : string.Empty) + dateTime.Minute + ":" + (dateTime.Second < 10 ? "0" : string.Empty) + dateTime.Second;
-	}
+	public static string ToString(this DateTime dateTime) => (dateTime.Day < 10 ? "0" : string.Empty) + dateTime.Day + " " + ToStringMonth(dateTime) + " " + dateTime.Year + " " + (dateTime.Hour < 10 ? "0" : string.Empty) + dateTime.Hour + ":" + (dateTime.Minute < 10 ? "0" : string.Empty) + dateTime.Minute + ":" + (dateTime.Second < 10 ? "0" : string.Empty) + dateTime.Second;
 
 	public static string ToShortDateString(this DateTime dateTime)
 	{
@@ -146,15 +134,9 @@ public static class TimeUtils
 		return string.Format("{0:00}-{1:00}-{2:00}", dateTime.Day, dateTime.Month, year);
 	}
 
-	public static string ToDateString(this DateTime dateTime)
-	{
-		return string.Format("{0:00} {1} {2}", dateTime.Day, ToStringMonth(dateTime), dateTime.Year);
-	}
+	public static string ToDateString(this DateTime dateTime) => string.Format("{0:00} {1} {2}", dateTime.Day, ToStringMonth(dateTime), dateTime.Year);
 
-	public static string ToTimeString(this DateTime dateTime)
-	{
-		return dateTime.ToTimeString(false);
-	}
+	public static string ToTimeString(this DateTime dateTime) => dateTime.ToTimeString(false);
 
 	public static string ToTimeString(this DateTime dateTime, bool bDisplaySeconds)
 	{
@@ -171,19 +153,13 @@ public static class TimeUtils
 
 	// Convert radian angle to degrees
 
-	public static double RadToDeg(double angleRad)
-	{
-		return 180.0 * angleRad / Math.PI;
-	}
+	public static double RadToDeg(double angleRad) => 180.0 * angleRad / Math.PI;
 
 	//*********************************************************************/
 
 	// Convert degree angle to radians
 
-	public static double DegToRad(double angleDeg)
-	{
-		return Math.PI * angleDeg / 180.0;
-	}
+	public static double DegToRad(double angleDeg) => Math.PI * angleDeg / 180.0;
 
 
 	/// <summary>
@@ -210,10 +186,7 @@ public static class TimeUtils
 		return jd;
 	}
 
-	public static double CalcJd(this DateTime date)
-	{
-		return CalcJd(date.Year, date.Month, date.Day);
-	}
+	public static double CalcJd(this DateTime date) => CalcJd(date.Year, date.Month, date.Day);
 
 	//***********************************************************************/
 	//* Name: calcTimeJulianCent	
@@ -582,10 +555,7 @@ public static class TimeUtils
 	//***********************************************************************/
 
 	[Obsolete("calcSunriseUTCWithFraction is deprecated, please use calcSunRiseUTC instead.", true)]
-	public static double CalcSunriseUtc(double jd, double latitude, double longitude)
-	{
-		return CalcSunRiseUtcWithFraction(jd, latitude, longitude);
-	}
+	public static double CalcSunriseUtc(double jd, double latitude, double longitude) => CalcSunRiseUtcWithFraction(jd, latitude, longitude);
 
 	[Obsolete("calcSunRiseUTCWithFraction is deprecated because noo work yet :), please use calcSunRiseUTC instead.")]
 	public static double CalcSunRiseUtcWithFraction(double jd, double latitude, double longitude)

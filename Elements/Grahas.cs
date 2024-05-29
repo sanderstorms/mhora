@@ -115,15 +115,9 @@ namespace Mhora.Elements
 			return (true);
 		}
 
-		public IEnumerator<Graha> GetEnumerator()
-		{
-			return (_grahas.GetEnumerator());
-		}
+		public IEnumerator<Graha> GetEnumerator() => (_grahas.GetEnumerator());
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		public int Count => _grahas.Count;
 
@@ -133,10 +127,7 @@ namespace Mhora.Elements
 
 		public List<DivisionPosition> DivisionPositions => _dpList;
 
-		public List<Graha> FindAll(Predicate<Graha> func)
-		{
-			return (_grahas.FindAll(func));
-		}
+		public List<Graha> FindAll(Predicate<Graha> func) => (_grahas.FindAll(func));
 
 		public int Compare(Body b1, Body b2, bool simpleLord, ArrayList rules, out int winner)
 		{
@@ -150,10 +141,7 @@ namespace Mhora.Elements
 			return (Compare(b1, b2, simpleLord, strength, out winner));
 		}
 
-		public int Compare(Body b1, Body b2, bool simpleLord, List<GrahaStrength> rules, out int winner)
-		{
-			return this[b1].CompareTo(this[b2], simpleLord, rules, out winner);
-		}
+		public int Compare(Body b1, Body b2, bool simpleLord, List<GrahaStrength> rules, out int winner) => this[b1].CompareTo(this[b2], simpleLord, rules, out winner);
 
 		public Graha Stronger(Body b1, Body b2, bool simpleLord, ArrayList rules, out int winner)
 		{

@@ -196,10 +196,7 @@ public class RasiDasaUserOptions : ICloneable
 		}
 	}
 
-	public ZodiacHouse GetSeed()
-	{
-		return MSeed.Add(SeedHouse);
-	}
+	public ZodiacHouse GetSeed() => MSeed.Add(SeedHouse);
 
 	public void CalculateSeed()
 	{

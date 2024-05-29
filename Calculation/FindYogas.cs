@@ -208,14 +208,12 @@ public class FindYogas
 
 	public bool CheckBirthTime(string sTime)
 	{
-		switch (sTime)
-		{
-			case "day":   return _h.Vara.IsDayBirth;
-			case "night": return !_h.Vara.IsDayBirth;
-			default:
-				MessageBox.Show("Unknown birth time: " + sTime + GetRuleName());
-				return false;
-		}
+		return sTime switch
+		       {
+			       "day"   => _h.Vara.IsDayBirth,
+			       "night" => !_h.Vara.IsDayBirth,
+			       _       => false
+		       };
 	}
 
 	public bool EvaluateNode(Node n)
@@ -388,10 +386,7 @@ public class FindYogas
 		return bRet;
 	}
 
-	public bool ReduceTree()
-	{
-		return ReduceTree(RootNode);
-	}
+	public bool ReduceTree() => ReduceTree(RootNode);
 
 	public void GenerateSimpleParseTreeForNode(Queue q, Node n)
 	{
@@ -552,24 +547,22 @@ public class FindYogas
 
 	public ZodiacHouse StringToRasi(string s)
 	{
-		switch (s)
-		{
-			case "ari": return ZodiacHouse.Ari;
-			case "tau": return ZodiacHouse.Tau;
-			case "gem": return ZodiacHouse.Gem;
-			case "can": return ZodiacHouse.Can;
-			case "leo": return ZodiacHouse.Leo;
-			case "vir": return ZodiacHouse.Vir;
-			case "lib": return ZodiacHouse.Lib;
-			case "sco": return ZodiacHouse.Sco;
-			case "sag": return ZodiacHouse.Sag;
-			case "cap": return ZodiacHouse.Cap;
-			case "aqu": return ZodiacHouse.Aqu;
-			case "pis": return ZodiacHouse.Pis;
-			default:
-				MessageBox.Show("Unknown rasi: " + s + GetRuleName());
-				return ZodiacHouse.Ari;
-		}
+		return s switch
+	       {
+		       "ari" => ZodiacHouse.Ari,
+		       "tau" => ZodiacHouse.Tau,
+		       "gem" => ZodiacHouse.Gem,
+		       "can" => ZodiacHouse.Can,
+		       "leo" => ZodiacHouse.Leo,
+		       "vir" => ZodiacHouse.Vir,
+		       "lib" => ZodiacHouse.Lib,
+		       "sco" => ZodiacHouse.Sco,
+		       "sag" => ZodiacHouse.Sag,
+		       "cap" => ZodiacHouse.Cap,
+		       "aqu" => ZodiacHouse.Aqu,
+		       "pis" => ZodiacHouse.Pis,
+		       _     => ZodiacHouse.Ari
+	       };
 	}
 
 	public int StringToHouse(string s)

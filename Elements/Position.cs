@@ -1142,10 +1142,7 @@ public class Position
 		return dp;
 	}
 
-	public DivisionPosition ToDivisionPosition(DivisionType varga)
-	{
-		return ToDivisionPosition(new Division(varga));
-	}
+	public DivisionPosition ToDivisionPosition(DivisionType varga) => ToDivisionPosition(new Division(varga));
 
 
 	/// <summary>
@@ -1238,10 +1235,7 @@ public class Position
 		return (null);
 	}
 
-	public Longitude ExtrapolateLongitude(DivisionType varga)
-	{
-		return ExtrapolateLongitude(new Division(varga));
-	}
+	public Longitude ExtrapolateLongitude(DivisionType varga) => ExtrapolateLongitude(new Division(varga));
 
 	public Longitude ExtrapolateLongitude(Division d)
 	{

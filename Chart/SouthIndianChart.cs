@@ -45,20 +45,11 @@ public class SouthIndianChart : IDrawChart
 
 	public bool SeparateGrahaHandling => false;
 
-	public Point GetInnerSquareOffset()
-	{
-		return new Point(Xw / 4, Yw / 4);
-	}
+	public Point GetInnerSquareOffset() => new(Xw / 4, Yw / 4);
 
-	public int GetLength()
-	{
-		return Xw;
-	}
+	public int GetLength() => Xw;
 
-	public Point GetBodyTextPosition(Longitude l, Size itemSize)
-	{
-		return Point.Empty;
-	}
+	public Point GetBodyTextPosition(Longitude l, Size itemSize) => Point.Empty;
 
 	public Point GetBodyPosition(Longitude l)
 	{

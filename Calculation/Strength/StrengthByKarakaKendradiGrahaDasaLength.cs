@@ -54,8 +54,5 @@ public static class KarakaKendradiGrahaDasaLength
 		return length;
 	}
 
-	private static double KarakaKendradiGrahaDasaLengthStrength(this Grahas grahas, Body b)
-	{
-		return KarakaKendradiGrahaDasa.LengthOfDasa(grahas [b]);
-	}
+	private static double KarakaKendradiGrahaDasaLengthStrength(this Grahas grahas, Body b) => KarakaKendradiGrahaDasa.LengthOfDasa(grahas [b]);
 }

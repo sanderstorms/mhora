@@ -36,14 +36,9 @@ internal class DivisionConverter : ExpandableObjectConverter
 		return base.CanConvertFrom(context, t);
 	}
 
-	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
-	{
-		return new Division(DivisionType.Rasi);
-	}
+	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value) => new Division(DivisionType.Rasi);
 
-	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
-	{
+	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType) =>
 		//Trace.Assert (destType == typeof(string) && value is Division, "DivisionConverter::ConvertTo 1");
-		return "Vargas";
-	}
+		"Vargas";
 }

@@ -459,10 +459,7 @@ namespace Mhora.Elements.Extensions
 			return houses;
 		}
 
-		public static int HousesFrom(this Bhava bhava, Bhava other)
-		{
-			return (other.HousesTo(bhava));
-		}
+		public static int HousesFrom(this Bhava bhava, Bhava other) => (other.HousesTo(bhava));
 
 		public static Bhava Add(this Bhava bhava, int nr)
 		{

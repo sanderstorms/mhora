@@ -104,20 +104,11 @@ public class NaisargikaRasiDasa : Dasa, IDasa
 		return al;
 	}
 
-	public List<DasaEntry> AntarDasa(DasaEntry pdi)
-	{
-		return [];
-	}
+	public List<DasaEntry> AntarDasa(DasaEntry pdi) => [];
 
-	public string Description()
-	{
-		return "Naisargika Rasi Dasa";
-	}
+	public string Description() => "Naisargika Rasi Dasa";
 
-	public object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public object GetOptions() => _options.Clone();
 
 	public object SetOptions(object a)
 	{

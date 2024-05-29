@@ -25,6 +25,7 @@ using Mhora.Components.PanchangaControl;
 using Mhora.Components.VargaControl;
 using Mhora.Dasas.YearlyDasa;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
 using TransitSearch = Mhora.Components.TransitControl.TransitSearch;
 
@@ -256,10 +257,10 @@ public class JhoraMainTab : MhoraControl
 			switch (h.Info.Type)
 			{
 				case HoraInfo.ChartType.TithiPravesh:
-					mc.ViewControl(MhoraControlContainer.BaseUserOptions.ViewType.DasaTithiPraveshAshtottariCompressedTithi);
+					mc.ViewControl(MhoraViewType.DasaTithiPraveshAshtottariCompressedTithi);
 					break;
 				default:
-					mc.ViewControl(MhoraControlContainer.BaseUserOptions.ViewType.DasaVimsottari);
+					mc.ViewControl(MhoraViewType.DasaVimsottari);
 					break;
 			}
 
@@ -283,7 +284,7 @@ public class JhoraMainTab : MhoraControl
 		{
 			var dc = new MhoraDasaControl(h, new TithiPraveshDasa(h));
 			dc.LinkToHoroscope      = false;
-			dc.DasaOptions.YearType = ToDate.DateType.TithiPraveshYear;
+			dc.DasaOptions.YearType = DateType.TithiPraveshYear;
 			dc.Reset();
 			AddControlToTab(_tabTithiPravesh, dc);
 			_bTabTithiPraveshLoaded = true;

@@ -54,25 +54,16 @@ public class GlobalizedPropertyDescriptor : PropertyDescriptor
 
 	public override Type PropertyType => basePropertyDescriptor.PropertyType;
 
-	public override bool CanResetValue(object component)
-	{
-		return basePropertyDescriptor.CanResetValue(component);
-	}
+	public override bool CanResetValue(object component) => basePropertyDescriptor.CanResetValue(component);
 
-	public override object GetValue(object component)
-	{
-		return basePropertyDescriptor.GetValue(component);
-	}
+	public override object GetValue(object component) => basePropertyDescriptor.GetValue(component);
 
 	public override void ResetValue(object component)
 	{
 		basePropertyDescriptor.ResetValue(component);
 	}
 
-	public override bool ShouldSerializeValue(object component)
-	{
-		return basePropertyDescriptor.ShouldSerializeValue(component);
-	}
+	public override bool ShouldSerializeValue(object component) => basePropertyDescriptor.ShouldSerializeValue(component);
 
 	public override void SetValue(object component, object value)
 	{

@@ -96,10 +96,7 @@ public class SubRegion : SQLiteBaseObject, IComparable
 		return 0;
 	}
 
-	public override string ToString()
-	{
-		return Name;
-	}
+	public override string ToString() => Name;
 }
 //CREATE TABLE `subregions` (
 //    `id` integer NOT NULL PRIMARY KEY AUTOINCREMENT

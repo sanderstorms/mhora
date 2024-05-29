@@ -91,17 +91,11 @@ public class NorthIndianChart : IDrawChart
 		BodyOffset[11].Y = _offset;
 	}
 
-	public int GetLength()
-	{
-		return Xw;
-	}
+	public int GetLength() => Xw;
 
 	public bool SeparateGrahaHandling => true;
 
-	public Point GetInnerSquareOffset()
-	{
-		return new Point(0, 0);
-	}
+	public Point GetInnerSquareOffset() => new(0, 0);
 
 	public void DrawOutline(Graphics g)
 	{

@@ -129,20 +129,11 @@ public partial class Horoscope : ICloneable
 	}
 
 
-	public Rashis FindRashis(Division division)
-	{
-		return (FindRashis(division.MultipleDivisions[0].Varga));
-	}
+	public Rashis FindRashis(Division division) => (FindRashis(division.MultipleDivisions[0].Varga));
 
-	public Rashis FindRashis(DivisionType varga)
-	{
-		return FindGrahas(varga);
-	}
+	public Rashis FindRashis(DivisionType varga) => FindGrahas(varga);
 
-	public Grahas FindGrahas(Division division)
-	{
-		return (FindGrahas(division.MultipleDivisions[0].Varga));
-	}
+	public Grahas FindGrahas(Division division) => (FindGrahas(division.MultipleDivisions[0].Varga));
 
 	public Grahas FindGrahas(DivisionType varga)
 	{
@@ -279,7 +270,8 @@ public partial class Horoscope : ICloneable
 	//if lagna stays in same sign when sun increases 1' of arc, then the IG decreases 1/6th of a ghati = - 0.1666 ghati ( = 24mn/6 = - 4mn)
 	//if lagna stays in same sign when sun increases 0'10’ of arc the IG decreases 1/36th of a ghati = - 0.02777 ghati ( = 24mn/36 = - 40sec)
 	//if lagna stays in same sign when sun increases 0'01’ of arc the IG decreases 1/360th of a ghati = - 0.002777 ghati ( = 24mn/360 = - 4sec)
-	//if ayanamsa increases 45’ of arc then sun longitude will be + 45’  so IG will increasey ¾ of 146 = +2/9 Ghatis= +0.2222 Gh. = +5.33mn.= +5mn & 20 sec	//if ayanamsa decreases 45’ of arc then sun longitude will be - 45’  so IG will decreasey ¾ of 146 = -2/9 Ghatis= -0.2222 Gh. = -5.33mn.= -5mn & 20 sec
+	//if ayanamsa increases 45’ of arc then sun longitude will be + 45’  so IG will increasey ¾ of 146 = +2/9 Ghatis= +0.2222 Gh. = +5.33mn.= +5mn & 20 sec
+	//if ayanamsa decreases 45’ of arc then sun longitude will be - 45’  so IG will decreasey ¾ of 146 = -2/9 Ghatis= -0.2222 Gh. = -5.33mn.= -5mn & 20 sec
 	public bool CheckSunLagna()
 	{
 		var maxDiff    = (0.1666 * 6) / 30;

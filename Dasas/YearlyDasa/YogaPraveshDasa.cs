@@ -36,24 +36,15 @@ public class YogaPraveshDasa : Dasa, IDasa
 		_h = h;
 	}
 
-	public object GetOptions()
-	{
-		return new object();
-	}
+	public object GetOptions() => new();
 
-	public object SetOptions(object a)
-	{
-		return new object();
-	}
+	public object SetOptions(object a) => new();
 
 	public void RecalculateOptions()
 	{
 	}
 
-	public double ParamAyus()
-	{
-		return 60.0;
-	}
+	public double ParamAyus() => 60.0;
 
 	public List<DasaEntry> Dasa(int cycle)
 	{
@@ -142,8 +133,5 @@ public class YogaPraveshDasa : Dasa, IDasa
 		return string.Empty;
 	}
 
-	public string Description()
-	{
-		return "Yoga Pravesh Chart Dasa";
-	}
+	public string Description() => "Yoga Pravesh Chart Dasa";
 }

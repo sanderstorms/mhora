@@ -40,15 +40,9 @@ namespace Mhora.Util
 		   _remainder = remainder;
 	   }
 
-	   public TimeOffset Clone()
-	   {
-		   return (new TimeOffset(this));
-	   }
+	   public TimeOffset Clone() => (new(this));
 
-	   public override string ToString()
-	   {
-		   return $"{_years}y{_remainder}";
-	   }
+	   public override string ToString() => $"{_years}y{_remainder}";
 
 	   //public static implicit operator double(TimeOffset offset) => offset.TotalYears;
 
