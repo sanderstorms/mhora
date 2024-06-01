@@ -141,10 +141,10 @@ public partial class Horoscope : ICloneable
 		{
 			grahas = new Grahas(this, varga);
 			_grahas.Add(varga, grahas);
+			grahas.Examine();
 		}
 		try
 		{
-			grahas.Examine();
 			return (grahas);
 		}
 		catch (Exception e)

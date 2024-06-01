@@ -37,7 +37,6 @@ namespace Mhora.Elements
 			RashiDrishti = [];
 			Ownership    = [];
 			Association  = [];
-			OwnHouses    = [];
 		}
 
 		public static implicit operator Body  (Graha graha) => graha.Body;
@@ -537,16 +536,16 @@ namespace Mhora.Elements
 		        {
 			        return (false);
 		        }
-		        if (OwnHouses.Count == 1)
+		        if (Ownership.Count == 1)
 		        {
 			        return false;
 		        }
 
-		        if (OwnHouses[0].Bhava.IsKendra() && OwnHouses[1].Bhava.IsTrikona())
+		        if (Ownership[0].Bhava.IsKendra() && Ownership[1].Bhava.IsTrikona())
 		        {
 			        return (true);
 		        }
-		        if (OwnHouses[0].Bhava.IsTrikona() && OwnHouses[1].Bhava.IsKendra())
+		        if (Ownership[0].Bhava.IsTrikona() && Ownership[1].Bhava.IsKendra())
 		        {
 			        return (true);
 		        }
@@ -1072,7 +1071,9 @@ namespace Mhora.Elements
 			}
 		}
 
-		public bool IsEcliped => IsCombust; //Todo: proper definition
+		public bool IsEcliped      => IsCombust; //Todo: proper definition
+		public bool PushkarNavamsa => Position.PushkarNavamsa();
+		public bool PushkaraBhaga  => Position.PushkaraBhaga();
 
 		//When a Neecha - Bhanga Yoga is present,the debilitation gets cancelled and is said to produce benefic results.
 		public bool NeechaBhanga
@@ -1177,6 +1178,14 @@ namespace Mhora.Elements
 
 		internal void Examine()
 		{
+			foreach (var rashi in _grahas.Rashis)
+			{
+				if (Owns(rashi))
+				{
+					Ownership.Add(rashi);
+				}
+			}
+
 			if (IsDebilitated)
 			{
 				Conditions |= Conditions.Debilitated;
@@ -1216,6 +1225,19 @@ namespace Mhora.Elements
 				Conditions |= Conditions.Combust;
 			}
 
+			if (_grahas.Varga == DivisionType.Rasi)
+			{
+				if (PushkarNavamsa)
+				{
+					Conditions |= Conditions.PushkarNavamsa;
+				}
+
+				if (PushkaraBhaga)
+				{
+					Conditions |= Conditions.PushkaraBhaga;
+				}
+			}
+
 			_angle       =  (Bhava.Index() - 1) * 30.0;
 			_angle       += _houseOffset;
 
@@ -1224,13 +1246,21 @@ namespace Mhora.Elements
 				Conditions |= Conditions.KarakaPlanet;
 			}
 
-			foreach (var rashi in _grahas.Rashis)
+			if (IsFunctionalBenefic)
 			{
-				if (Owns(rashi))
-				{
-					Ownership.Add(rashi);
-				}
+				Conditions |= Conditions.FunctionalBenefic;
 			}
+
+			if (IsFunctionalMalefic)
+			{
+				Conditions |= Conditions.FunctionalMalefic;
+			}
+
+			if (YogaKaraka)
+			{
+				Conditions |= Conditions.YogaKaraka;
+			}
+
 
 			foreach (var graha in _grahas)
 			{

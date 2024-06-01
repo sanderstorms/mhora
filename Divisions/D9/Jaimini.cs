@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mhora.Divisions.D9
 {
-	//D9 - Jaimini Navamsha	
+	//D9 - Jaimini Navamsa	
 	//Part	Degrees	Ari, Leo, Sag	Tau, Vir, Cap	Gem, Lib, Aqu	Can, Sco, Pis
 	//1		3⁰ - 20'	Ari				Cap				Lib				Can
 	//2		6⁰ - 40'	Tau				Sag				Sco				Gem

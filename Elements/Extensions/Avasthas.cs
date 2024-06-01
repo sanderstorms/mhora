@@ -37,10 +37,10 @@ namespace Mhora.Elements.Extensions
 
 			var nakshatra   = graha.Position.Longitude.ToNakshatra();
 			var houseOffset = (double) graha.HouseOffset;
-			var navamsha = (int) (houseOffset / (30.0 / 9)).Ceil();
+			var navamsa = (int) (houseOffset / (30.0 / 9)).Ceil();
 			var ghati    = h.Vara.Isthaghati.Ghati;
 
-			var avastha = nakshatra.Index() * (b.Index() + 1) * navamsha;
+			var avastha = nakshatra.Index() * (b.Index() + 1) * navamsa;
 			avastha += moon.Position.Longitude.ToNakshatra().Index();
 			avastha += (int) (ghati).Ceil();
 			avastha += lagna.Rashi.ZodiacHouse.Index();

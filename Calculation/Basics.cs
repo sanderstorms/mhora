@@ -33,8 +33,6 @@ namespace Mhora.Calculation;
 /// </summary>
 public static class Basics
 {
-
-
 	public static Longitude CalculateBodyLongitude(this Horoscope h, JulianDate ut, int ipl)
 	{
 		var sterr    = new StringBuilder();

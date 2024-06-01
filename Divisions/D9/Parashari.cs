@@ -6,27 +6,27 @@ using System.Threading.Tasks;
 
 namespace Mhora.Divisions.D9
 {
-	//D9 - Parashari Navamsha
+	//D9 - Parashari Navamsa
 	//
 	//Method1:
-	//Triad	Signs	Sequence of Navamsha
+	//Triad	Signs	Sequence of Navamsa
 	//Fiery		Ari, Leo, Sag	Ari, Tau, Gem, Can, Leo, Vir, Lib, Sco, Sag
 	//Earthy	Tau, Vir, Cap	Cap, Aqu, Pis, Ari, Tau, Gem, Can, Leo, Vir
 	//Ariy		Gem, Lib, Aqu	Lib, Sco, Sag, Cap, Aqu, Pis, Ari, Tau, Gem
 	//Watery	Can, Sco, Pis	Can, Leo, Vir, Lib, Sco, Sag, Cap, Aqu, Pis
 	//
 	//Method2:
-	//For movable signs, the first navamsha occupy the sign itself. For fixed signs, the first navamsha
-	//occupy the ninth sign from itself. For dual signs, the first navamsha occupy the fifth sign from itself.
-	//The other navamsha follows in direct order.
+	//For movable signs, the first navamsa occupy the sign itself. For fixed signs, the first navamsa
+	//occupy the ninth sign from itself. For dual signs, the first navamsa occupy the fifth sign from itself.
+	//The other navamsa follows in direct order.
 	//
 	//Method3:
 	//Multiply the longitude of the planet (including sign) by nine. Expunge multiples of 12 signs.
-	//The resultant is the longitude of the planet in navamsha.
+	//The resultant is the longitude of the planet in navamsa.
 	//
 	//Method4:
-	//Multiply the the number of completed signs by 9. Add the number of navamsha occupied in the sign.
-	//Expunge multiples of twelve from the sum. The reminder will be the sign occupied in navamsha.
+	//Multiply the the number of completed signs by 9. Add the number of navamsa occupied in the sign.
+	//Expunge multiples of twelve from the sum. The reminder will be the sign occupied in navamsa.
 	//
 	//Part	Degrees	Ari, Leo, Sag	Tau, Vir, Cap	Gem, Lib, Aqu	Can, Sco, Pis
 	//1		3⁰ - 20'	Ari				Cap				Lib				Can

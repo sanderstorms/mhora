@@ -85,7 +85,7 @@ public static class ShadBalas
 	}
 
 	//Oja means odd signs and Yugma means even signs. Thus, as the name imply, this strength is derived from a
-	//planet’s placement in the odd or even signs in the Rashi and Navamsha.
+	//planet’s placement in the odd or even signs in the Rashi and Navamsa.
 	public static double OjaYugmaRasyAmsaBala(this Horoscope h, Body b)
 	{
 		h.VerifyGraha(b);
@@ -180,10 +180,10 @@ public static class ShadBalas
 	}
 
 	//Day and night strength of planets is determined to know the strength of the location of planets on lord of the
-	//signs and navamsha. Feminine planets like Moon and Venus get 15 points when they are situated in an even sign
-	//and navamsha. Otherwise these planets get 0 points. The male planets like Sun, Mars and Jupiter are neutral and
-	//Mercury and Saturn get 15 points when they are situated on odd sign and navamsha. These planets obtain 0 points otherwise.
-	//Astrologer says that the calculation of sign and navamsha chart should be done separately because from that a planet
+	//signs and navamsa. Feminine planets like Moon and Venus get 15 points when they are situated in an even sign
+	//and navamsa. Otherwise these planets get 0 points. The male planets like Sun, Mars and Jupiter are neutral and
+	//Mercury and Saturn get 15 points when they are situated on odd sign and navamsa. These planets obtain 0 points otherwise.
+	//Astrologer says that the calculation of sign and navamsa chart should be done separately because from that a planet
 	//gets the highest strength of 30 points.
 	public static double NathonnathaBala(this Horoscope h, Body b)
 	{

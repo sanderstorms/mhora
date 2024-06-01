@@ -19,8 +19,8 @@ namespace Mhora.Definitions
 	public enum ShtanaBala
 	{
 		UcchaBala			= 0x01,	//exaltation
-		SaptaVargiyaBala	= 0x02, //Rashi, Hora, Drekkana, Saptamsha, Navamsha, Dwadasamsha and Trimsamsha 
-		OjaYugmaBala		= 0x04,	//planet’s placement in the odd or even signs in the Rashi and Navamsha.
+		SaptaVargiyaBala	= 0x02, //Rashi, Hora, Drekkana, Saptamsha, Navamsa, Dwadasamsha and Trimsamsha 
+		OjaYugmaBala		= 0x04,	//planet’s placement in the odd or even signs in the Rashi and Navamsa.
 		KendradiBala		= 0x08,	//Kendra - full strength, Panapara - half Apoklimas - quarter strength
 		DrekkanaBala		= 0x10,	//Strength of planet being in male or female drekkana
 	}

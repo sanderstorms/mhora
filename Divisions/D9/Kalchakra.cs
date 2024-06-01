@@ -14,7 +14,7 @@ namespace Mhora.Divisions.D9
 	//Rohini, Magha, Vishakha, Shravan					Sco	Lib	Vir	Can
 	//Mrigshira, P.Phalguni, Anuradha, Dhanishta		Leo	Gem	Tau	Ari
 	//Ardra, U.Phalguni, Jyeshtha, Shatbhisha			Pis	Aqu	Cap	Sag
-	//Navamsha table
+	//Navamsa table
 	//Part	Deg			Ari	Tau	Gem	Can	Leo	Vir	Lib	Sco	Sag	Cap	Aqu	Pis
 	//1		3⁰-20'		Ari	Cap	Tau	Can	Sco	Aqu	Lib	Can	Ari	Cap	Tau	Can
 	//2		6⁰-40'		Tau	Aqu	Ari	Leo	Lib	Cap	Sco	Leo	Tau	Aqu	Ari	Leo

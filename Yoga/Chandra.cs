@@ -569,15 +569,15 @@ namespace Mhora.Yoga
 			return (false);
 		}
 
-		//The Moon occupying in the navamsha chart its exaltation sign or the house of a very friendly planet, aspected by Jupiter.
+		//The Moon occupying in the navamsa chart its exaltation sign or the house of a very friendly planet, aspected by Jupiter.
 		//When this happens, the adverse Kemadruma yield place to a highly benefic kalpadruma yoga which bestows all comforts on the native.
 		public static bool ChandraKalpadruma5(this Grahas grahas)
 		{
-			var navamsha = grahas.Horoscope.FindGrahas(DivisionType.Navamsa);
-			var moon     = navamsha.Find(Body.Moon);
+			var navamsa = grahas.Horoscope.FindGrahas(DivisionType.Navamsa);
+			var moon     = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
-				throw new Exception("Navamsha not calculated!");
+				throw new Exception("Navamsa not calculated!");
 			}
 
 			if ((moon.IsExalted == false) && (moon.FriendlySign == false))
@@ -825,7 +825,7 @@ namespace Mhora.Yoga
 			return (true);
 		}
 
-		//The Moon is in conjunction with the Sun, aspected by a debilitated planet and occupying a malefic navamsha.
+		//The Moon is in conjunction with the Sun, aspected by a debilitated planet and occupying a malefic navamsa.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace
 		//such a native suffers misery, failures, physical illness.
 		public static bool ChandraKalpadruma14(this Grahas grahas)
@@ -974,7 +974,7 @@ namespace Mhora.Yoga
 			return (false);
 		}
 
-		//The Moon in Chara rashi and Chara navamsha, aspected by an inimical planet, unaspected by Jupiter.
+		//The Moon in Chara rashi and Chara navamsa, aspected by an inimical planet, unaspected by Jupiter.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
 		public static bool ChandraKalpadruma18(this Grahas grahas)
 		{
@@ -1008,7 +1008,7 @@ namespace Mhora.Yoga
 			moon = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
-				throw new Exception("Navamsha not calculated!");
+				throw new Exception("Navamsa not calculated!");
 			}
 
 			if (moon.Rashi.ZodiacHouse.IsMoveableSign())
@@ -1019,7 +1019,7 @@ namespace Mhora.Yoga
 			return (false);
 		}
 
-		//A weak Moon conjunct with a malefic planet and occupying, in a night birth, a malefic house or a navamsha, aspected by the lord of the 10th house.
+		//A weak Moon conjunct with a malefic planet and occupying, in a night birth, a malefic house or a navamsa, aspected by the lord of the 10th house.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
 		public static bool ChandraKalpadruma19(this Grahas grahas)
 		{
@@ -1075,7 +1075,7 @@ namespace Mhora.Yoga
 			moon = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
-				throw new Exception("Navamsha not calculated!");
+				throw new Exception("Navamsa not calculated!");
 			}
 
 			if (moon.EnemySign)
@@ -1086,7 +1086,7 @@ namespace Mhora.Yoga
 			return (false);
 		}
 
-		//A waning Moon debilitated in navamsha, associated with a malefic and aspected by the 9 lord.
+		//A waning Moon debilitated in navamsa, associated with a malefic and aspected by the 9 lord.
 		//One born in this yoga is bereft of health, wealth, learning, wisdom, wife and mental peace, such a native suffers misery, failures, physical illness.
 		public static bool ChandraKalpadruma20(this Grahas grahas)
 		{
@@ -1094,7 +1094,7 @@ namespace Mhora.Yoga
 			var moon    = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
-				throw new Exception("Navamsha not calculated!");
+				throw new Exception("Navamsa not calculated!");
 			}
 
 			var  lord = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
