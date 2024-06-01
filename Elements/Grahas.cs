@@ -5,6 +5,7 @@ using Mhora.Calculation;
 using Mhora.Definitions;
 using Mhora.Elements.Extensions;
 using Mhora.Util;
+using Mhora.Yoga;
 
 namespace Mhora.Elements
 {
@@ -100,6 +101,12 @@ namespace Mhora.Elements
 			}
 		}
 
+		public FindYoga.Yogas Yogas
+		{
+			get;
+			private set;
+		}
+
 		internal bool Examine()
 		{
 			foreach (var graha in _grahas)
@@ -111,7 +118,9 @@ namespace Mhora.Elements
 			{
 				graha.Examine();
 			}
-			
+
+			Yogas = this.FindYogas();
+
 			return (true);
 		}
 

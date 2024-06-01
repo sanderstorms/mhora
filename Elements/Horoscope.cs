@@ -25,6 +25,7 @@ using Mhora.Definitions;
 using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 using Mhora.Util;
+using Mhora.Yoga;
 
 namespace Mhora.Elements;
 

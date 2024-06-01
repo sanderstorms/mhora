@@ -7,6 +7,88 @@ namespace Mhora.Yoga
 {
 	public static class FindYoga
 	{
+		public struct Yogas
+		{
+			public AakritiYoga         AakritiYoga;
+			public ChandraYoga         ChandraYoga;
+			public DhanaYoga           DhanaYoga;
+			public GenericYoga         GenericYoga;
+			public MahaParivartanaYoga MahaParivartanaYoga;
+			public MahapurushaYoga     MahapurushaYoga;
+			public MalikaYoga          MalikaYoga;
+			public RajaYoga            RajaYoga;
+		}
+
+		public static Yogas FindYogas(this Grahas grahas)
+		{
+			var yogas = new Yogas();
+			foreach (AakritiYoga yoga in Enum.GetValues(typeof(AakritiYoga)))
+			{
+				if (grahas.Find(yoga))
+				{
+					yogas.AakritiYoga |= yoga;
+				}
+			}
+
+			foreach (ChandraYoga yoga in Enum.GetValues(typeof(ChandraYoga)))
+			{
+				if (grahas.Find(yoga))
+				{
+					yogas.ChandraYoga |= yoga;
+				}
+			}
+
+			foreach (DhanaYoga yoga in Enum.GetValues(typeof(DhanaYoga)))
+			{
+				if (grahas.Find(yoga))
+				{
+					yogas.DhanaYoga |= yoga;
+				}
+			}
+
+			foreach (GenericYoga yoga in Enum.GetValues(typeof(GenericYoga)))
+			{
+				if (grahas.Find(yoga))
+				{
+					yogas.GenericYoga |= yoga;
+				}
+			}
+
+			foreach (MahaParivartanaYoga yoga in Enum.GetValues(typeof(MahaParivartanaYoga)))
+			{
+				if (grahas.Find(yoga))
+				{
+					yogas.MahaParivartanaYoga |= yoga;
+				}
+			}
+
+			foreach (MahapurushaYoga yoga in Enum.GetValues(typeof(MahapurushaYoga)))
+			{
+				if (grahas.Find(yoga))
+				{
+					yogas.MahapurushaYoga |= yoga;
+				}
+			}
+
+			foreach (MalikaYoga yoga in Enum.GetValues(typeof(MalikaYoga)))
+			{
+				if (grahas.Find(yoga))
+				{
+					yogas.MalikaYoga |= yoga;
+				}
+			}
+
+			foreach (RajaYoga yoga in Enum.GetValues(typeof(RajaYoga)))
+			{
+				if (grahas.Find(yoga))
+				{
+					yogas.RajaYoga |= yoga;
+				}
+			}
+
+			return (yogas);
+		}
+
 		public static bool Find(this Grahas grahas, AakritiYoga yoga)
 		{
 			return yoga switch

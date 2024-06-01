@@ -325,6 +325,7 @@ namespace Mhora.Elements
 					{
 						return (true);
 					}
+
 					if (Bhava.IsDushtana())
 					{
 						return (false);
@@ -638,29 +639,34 @@ namespace Mhora.Elements
 		// 
 		// 6	
 		// RA/KE Eclipse			
+		private int _strength = int.MinValue;
 		public int Strength
 		{
 			get
 			{
-				int strength = 0;
+				if (_strength != int.MinValue)
+				{
+					return (_strength);
+				}
+				_strength = 0;
 				if (IsExalted)
                 {
-                    strength += 2;
+                    _strength += 2;
                 }
 				else if (IsInOwnHouse)
                 {
-                    strength += 2;
+                    _strength += 2;
                 }
 
 				if ((BodyType == BodyType.Graha) && (IsChayaGraha == false))
 				{
 					if (IsRetrograde)
 					{
-						strength += 2;
+						_strength += 2;
 					}
 					if (Horoscope.DigBala (Body) > 30)
 					{
-						strength += 2;
+						_strength += 2;
 					}
 				}
 
@@ -688,38 +694,38 @@ namespace Mhora.Elements
 						st--;
 						if (graha.Body == Body.Sun)
 						{
-							strength--;
+							_strength--;
 						}
 					}
 				}
 
 				if (st > 0)
 				{
-					strength++;
+					_strength++;
 				}
 				else if (st < 0)
 				{
-					strength--;
+					_strength--;
 				}
 
 				if (IsDebilitated)
 				{
-					strength -= 2;
+					_strength -= 2;
 				}
 
 				if (GrahaYuda)
 				{
 					if (WinnerOfWar)
 					{
-						strength += 1;
+						_strength += 1;
 					}
 					else
 					{
-						strength -= 1;
+						_strength -= 1;
 					}
 				}
 
-				return (strength);
+				return (_strength);
 			}
 		}
 
