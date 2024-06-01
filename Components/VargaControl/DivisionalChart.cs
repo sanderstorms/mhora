@@ -1707,9 +1707,9 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 		foreach (Position bp in h.PositionList)
 		{
 			var dp      = bp.ToDivisionPosition(options.Varga);
-			var lLower  = new Longitude(dp.CuspLower);
+			var lLower  = dp.Cusp.Lower;
 			var lOffset = bp.Longitude.Sub(lLower);
-			var lRange  = new Longitude(dp.CuspHigher).Sub(lLower);
+			var lRange  = dp.Cusp.Upper.Sub(lLower);
 			Trace.Assert(lOffset.Value <= lRange.Value, "Extrapolation internal error: Slice smaller than range. Weird.");
 
 			var newOffset = (double) (lOffset / lRange      * 30.0);
@@ -1960,7 +1960,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 			[Description("East Indian Square (Sun)")]
 			EastIndian,
 
-			[Description("North Indian Diamond (Sun)")]
+			[Description("North Indian Diamond (Moon)")]
 			NorthIndian
 		}
 

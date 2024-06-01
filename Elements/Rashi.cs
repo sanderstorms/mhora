@@ -21,10 +21,7 @@ namespace Mhora.Elements
 
 		public static implicit operator ZodiacHouse(Rashi rashi) => rashi.ZodiacHouse;
 
-		public override string ToString()
-		{
-			return _zh.Name ();
-		}
+		public override string ToString() => _zh.Name ();
 
 		public Grahas Base => _rashis.Base;
 
@@ -59,10 +56,7 @@ namespace Mhora.Elements
 			}
 		}
 
-		public bool HasDirshtiOn(ZodiacHouse zh)
-		{
-			return ZodiacHouse.RasiDristi(zh);
-		}
+		public bool HasDirshtiOn(ZodiacHouse zh) => ZodiacHouse.RasiDristi(zh);
 
 		public Graha Lord => Base.Find(_zh.LordOfSign());
 

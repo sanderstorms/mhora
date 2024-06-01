@@ -44,13 +44,7 @@ public partial class BirthDetailsDialog : Form
 	}
 
 
-	public string ChartName
-	{
-		get
-		{
-			return txtName.Text;
-		}
-	}
+	public string ChartName => txtName.Text;
 
 	public Country Country
 	{
@@ -87,6 +81,7 @@ public partial class BirthDetailsDialog : Form
 				DateOfBirth = moment,
 				Latitude    = MhoraGlobalOptions.Instance.Latitude,
 				Longitude   = MhoraGlobalOptions.Instance.Longitude,
+				UseDst      = chkUseDst.Checked
 			};
 			return info;
 		}
@@ -95,6 +90,7 @@ public partial class BirthDetailsDialog : Form
 			_info                = value;
 			dateTimePicker.Value = value.DateOfBirth;
 			timePicker.Value     = value.DateOfBirth;
+			chkUseDst.Checked    = value.UseDst;
 			if (value.City != null)
 			{
 				var query  = Query.From<City>().Where(city => city.Id == value.City.Id).SelectAll();
@@ -119,7 +115,7 @@ public partial class BirthDetailsDialog : Form
 				{
 					BeginInvoke(LookupCity);
 				}
-					return true;
+				return true;
 
 				case Keys.Back:
 				{
@@ -134,7 +130,7 @@ public partial class BirthDetailsDialog : Form
 						});
 					}
 				}
-					break;
+				break;
 			}
 		}
 

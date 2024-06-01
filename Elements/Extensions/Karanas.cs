@@ -76,9 +76,5 @@ public static class Karanas
 		return cusp;
 	}
 
-	public static double ToKaranaOffset(this Longitude l)
-	{
-		return (double) l.Value - l.ToKaranaBase();
-	}
-
+	public static double ToKaranaOffset(this Longitude l) => (double) l.Value - l.ToKaranaBase();
 }

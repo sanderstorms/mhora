@@ -73,6 +73,10 @@ internal static class Application
 		_worldDb = new SQLiteDatabase("world.db");
 	}
 
+	private const string LogFile = "debug.txt";
+
+	public static MainForm MainForm => new MainForm();
+
 	/// <summary>
 	///     The main entry point for the application.
 	/// </summary>
@@ -86,10 +90,15 @@ internal static class Application
 		System.Windows.Forms.Application.EnableVisualStyles();
 		System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
-		Log.Settings.LogFilename = Path.Combine(WorkingDir, "debug.txt");
+		if (File.Exists(LogFile))
+		{
+			File.Delete(LogFile);
+		}
+
+		Log.Settings.LogFilename = Path.Combine(WorkingDir, LogFile);
 		Log.Settings.FileLogging = FileLoggingMode.SingleLogFile;
 
-		System.Windows.Forms.Application.Run(new MainForm());
+		System.Windows.Forms.Application.Run(MainForm);
 
 		_worldDb.Dispose();
 

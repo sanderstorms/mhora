@@ -246,47 +246,29 @@ public class StrengthOptions : MhoraSerializableOptions
 		set => _karakaKendradiGrahaDasaColord = value;
 	}
 
-	public static RashiStrength[] JaiminiFirstRasi
-	{
-		get
-		{
-			return
-			[
-				RashiStrength.AtmaKaraka,
-				RashiStrength.Conjunction,
-				RashiStrength.Exaltation,
-				RashiStrength.MoolaTrikona,
-				RashiStrength.OwnHouse,
-				RashiStrength.RasisNature,
-				RashiStrength.LordIsAtmaKaraka,
-				RashiStrength.LordsLongitude,
-				RashiStrength.LordInDifferentOddity
-			];
-		}
-	}
+	public static RashiStrength[] JaiminiFirstRasi =>
+	[
+		RashiStrength.AtmaKaraka,
+		RashiStrength.Conjunction,
+		RashiStrength.Exaltation,
+		RashiStrength.MoolaTrikona,
+		RashiStrength.OwnHouse,
+		RashiStrength.RasisNature,
+		RashiStrength.LordIsAtmaKaraka,
+		RashiStrength.LordsLongitude,
+		RashiStrength.LordInDifferentOddity
+	];
 
-	public static RashiStrength [] JaiminiSecondRasi
-	{
-		get
-		{
-			return
-			[
-				RashiStrength.AspectsRasi
-			];
-		}
-	}
+	public static RashiStrength [] JaiminiSecondRasi =>
+	[
+		RashiStrength.AspectsRasi
+	];
 
-	public static GrahaStrength [] VimsottariGraha
-	{
-		get
-		{
-			return
-			[
-				GrahaStrength.KendraConjunction,
-				GrahaStrength.First
-			];
-		}
-	}
+	public static GrahaStrength [] VimsottariGraha =>
+	[
+		GrahaStrength.KendraConjunction,
+		GrahaStrength.First
+	];
 
 
 	public StrengthOptions Clone()

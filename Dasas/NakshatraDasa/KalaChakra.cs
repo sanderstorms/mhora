@@ -188,10 +188,7 @@ namespace Mhora.Dasas.NakshatraDasa
 		    return zh.LordsOtherSign();
 	    }
 
-	    public static ZodiacHouse Invert(this ZodiacHouse zh)
-	    {
-		    return (ZodiacHouse) (12 - (zh.Index() - 1));
-	    }
+	    public static ZodiacHouse Invert(this ZodiacHouse zh) => (ZodiacHouse) (12 - (zh.Index() - 1));
 
 	    public static int DasaPackDirect(this ZodiacHouse zh, int cycle, out ZodiacHouse bhukti)
 	    {
@@ -247,22 +244,17 @@ namespace Mhora.Dasas.NakshatraDasa
 
         public static double DasaLength(this ZodiacHouse zh)
         {
-            switch (zh)
-            {
-                case ZodiacHouse.Ari:
-                case ZodiacHouse.Sco: return 7;
-                case ZodiacHouse.Tau:
-                case ZodiacHouse.Lib: return 16;
-                case ZodiacHouse.Gem:
-                case ZodiacHouse.Vir: return 9;
-                case ZodiacHouse.Can: return 21;
-                case ZodiacHouse.Leo: return 5;
-                case ZodiacHouse.Sag:
-                case ZodiacHouse.Pis: return 10;
-                case ZodiacHouse.Cap:
-                case ZodiacHouse.Aqu: return 4;
-                default: throw new Exception("KalachakraDasa::DasaLength");
-            }
-		}
+	        return zh switch
+               {
+	               ZodiacHouse.Ari or ZodiacHouse.Sco => 7,
+	               ZodiacHouse.Tau or ZodiacHouse.Lib => 16,
+	               ZodiacHouse.Gem or ZodiacHouse.Vir => 9,
+	               ZodiacHouse.Can                    => 21,
+	               ZodiacHouse.Leo                    => 5,
+	               ZodiacHouse.Sag or ZodiacHouse.Pis => 10,
+	               ZodiacHouse.Cap or ZodiacHouse.Aqu => 4,
+	               _                                  => throw new Exception("KalachakraDasa::DasaLength")
+               };
+        }
 	}
 }

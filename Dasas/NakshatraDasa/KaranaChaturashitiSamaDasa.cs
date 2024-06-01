@@ -40,15 +40,9 @@ public class KaranaChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa, INaksha
 		_cd          = new ChaturashitiSamaDasa(_h);
 	}
 
-	public override object GetOptions()
-	{
-		return new object();
-	}
+	public override object GetOptions() => new();
 
-	public override object SetOptions(object a)
-	{
-		return new object();
-	}
+	public override object SetOptions(object a) => new();
 
 	public List<DasaEntry> Dasa(int cycle)
 	{
@@ -57,43 +51,19 @@ public class KaranaChaturashitiSamaDasa : NakshatraDasa, INakshatraDasa, INaksha
 		return _KaranaDasa(mMoon.Sub(mSun), 1, cycle);
 	}
 
-	public List<DasaEntry> AntarDasa(DasaEntry di)
-	{
-		return _AntarDasa(di);
-	}
+	public List<DasaEntry> AntarDasa(DasaEntry di) => _AntarDasa(di);
 
-	public string Description()
-	{
-		return "Karana Chaturashiti-Sama Dasa";
-	}
+	public string Description() => "Karana Chaturashiti-Sama Dasa";
 
-	public double ParamAyus()
-	{
-		return _cd.ParamAyus();
-	}
+	public double ParamAyus() => _cd.ParamAyus();
 
-	public int NumberOfDasaItems()
-	{
-		return _cd.NumberOfDasaItems();
-	}
+	public int NumberOfDasaItems() => _cd.NumberOfDasaItems();
 
-	public DasaEntry NextDasaLord(DasaEntry di)
-	{
-		return _cd.NextDasaLord(di);
-	}
+	public DasaEntry NextDasaLord(DasaEntry di) => _cd.NextDasaLord(di);
 
-	public TimeOffset LengthOfDasa(Body plt)
-	{
-		return _cd.LengthOfDasa(plt);
-	}
+	public TimeOffset LengthOfDasa(Body plt) => _cd.LengthOfDasa(plt);
 
-	public Body LordOfNakshatra(Nakshatra n)
-	{
-		return _cd.LordOfNakshatra(n);
-	}
+	public Body LordOfNakshatra(Nakshatra n) => _cd.LordOfNakshatra(n);
 
-	public Body LordOfKarana(Longitude l)
-	{
-		return l.ToKarana().GetLord();
-	}
+	public Body LordOfKarana(Longitude l) => l.ToKarana().GetLord();
 }

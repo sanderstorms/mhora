@@ -62,10 +62,7 @@ public class SuDasa : Dasa, IDasa
 		SetOptions(newOpts);
 	}
 
-	public double ParamAyus()
-	{
-		return 144;
-	}
+	public double ParamAyus() => 144;
 
 	public void RecalculateOptions()
 	{
@@ -146,15 +143,9 @@ public class SuDasa : Dasa, IDasa
 		return al;
 	}
 
-	public string Description()
-	{
-		return "Sudasa";
-	}
+	public string Description() => "Sudasa";
 
-	public object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public object GetOptions() => _options.Clone();
 
 	public object SetOptions(object a)
 	{

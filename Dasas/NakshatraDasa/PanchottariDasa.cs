@@ -16,6 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,64 +38,38 @@ public class PanchottariDasa : NakshatraDasa, INakshatraDasa
 		_h = h;
 	}
 
-	public override object GetOptions()
-	{
-		return new object();
-	}
+	public override object GetOptions() => new();
 
-	public override object SetOptions(object a)
-	{
-		return new object();
-	}
+	public override object SetOptions(object a) => new();
 
-	public List<DasaEntry> Dasa(int cycle)
-	{
-		return _Dasa(_h.GetPosition(Body.Moon).Longitude, 1, cycle);
-	}
+	public List<DasaEntry> Dasa(int cycle) => _Dasa(_h.GetPosition(Body.Moon).Longitude, 1, cycle);
 
-	public List<DasaEntry> AntarDasa(DasaEntry di)
-	{
-		return _AntarDasa(di);
-	}
+	public List<DasaEntry> AntarDasa(DasaEntry di) => _AntarDasa(di);
 
-	public string Description()
-	{
-		return "Panchottari Dasa";
-	}
+	public string Description() => "Panchottari Dasa";
 
-	public double ParamAyus()
-	{
-		return 105.0;
-	}
+	public double ParamAyus() => 105.0;
 
-	public int NumberOfDasaItems()
-	{
-		return 7;
-	}
+	public int NumberOfDasaItems() => 7;
 
-	public DasaEntry NextDasaLord(DasaEntry di)
-	{
-		return new DasaEntry(NextDasaLordHelper(di.Graha), 0, 0, di.Level, string.Empty);
-	}
+	public DasaEntry NextDasaLord(DasaEntry di) => new(NextDasaLordHelper(di.Graha), 0, 0, di.Level, string.Empty);
 
 	public TimeOffset LengthOfDasa(Body plt)
 	{
-		switch (plt)
-		{
-			case Body.Sun:     return 12;
-			case Body.Mercury: return 13;
-			case Body.Saturn:  return 14;
-			case Body.Mars:    return 15;
-			case Body.Venus:   return 16;
-			case Body.Moon:    return 17;
-			case Body.Jupiter: return 18;
-		}
-
-		Trace.Assert(false, "Panchottari::LengthOfDasa");
-		return 0;
+		return plt switch
+	       {
+		       Body.Sun     => 12,
+		       Body.Mercury => 13,
+		       Body.Saturn  => 14,
+		       Body.Mars    => 15,
+		       Body.Venus   => 16,
+		       Body.Moon    => 17,
+		       Body.Jupiter => 18,
+		       _            => throw new ArgumentOutOfRangeException(nameof(plt), plt, null)
+	       };
 	}
 
-	public Body LordOfNakshatra(Nakshatra n)
+	public static Body NakshatraLord(Nakshatra n)
 	{
 		var lords = new Body[7]
 		{
@@ -113,20 +88,20 @@ public class PanchottariDasa : NakshatraDasa, INakshatraDasa
 		return lords[diffOff];
 	}
 
+	public Body LordOfNakshatra(Nakshatra n) => NakshatraLord(n);
+
 	private Body NextDasaLordHelper(Body b)
 	{
-		switch (b)
-		{
-			case Body.Sun:     return Body.Mercury;
-			case Body.Mercury: return Body.Saturn;
-			case Body.Saturn:  return Body.Mars;
-			case Body.Mars:    return Body.Venus;
-			case Body.Venus:   return Body.Moon;
-			case Body.Moon:    return Body.Jupiter;
-			case Body.Jupiter: return Body.Sun;
-		}
-
-		Trace.Assert(false, "DwadashottariDasa::NextDasaLord");
-		return Body.Lagna;
+		return b switch
+		       {
+			       Body.Sun     => Body.Mercury,
+			       Body.Mercury => Body.Saturn,
+			       Body.Saturn  => Body.Mars,
+			       Body.Mars    => Body.Venus,
+			       Body.Venus   => Body.Moon,
+			       Body.Moon    => Body.Jupiter,
+			       Body.Jupiter => Body.Sun,
+			       _            => throw new IndexOutOfRangeException()
+		       };
 	}
 }

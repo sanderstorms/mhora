@@ -29,43 +29,28 @@ public static class Nakshatras
 
 	public static readonly int[][] TaraAspects =
 	[
-		[
-			14,
-			15
-		],
-		[
-			14,
-		15
-		],
-		[
-			1,
+		[14, 15],				//Sun
+		[14, 15],				//Moon
+		[1, 3, 7, 8, 15],		//Mars
+		[1, 15],				//Mercury
+		[10, 15, 19],			//Jupiter
+		[1, 15],				//Venus
+		[3, 5, 15, 19],			//Saturn
+		[]
+	];
+
+	public static readonly int[] LattaAspects =
+	[
+		12,
+		22,
 		3,
 		7,
-		8,
-		15
-		],
-		[
-			1,
-		15
-		],
-		[
-			10,
-		15,
-		19
-		],
-		[
-			1,
-		15
-		],
-		[
-			3,
+		6,
 		5,
-		15,
-		19
-		],
-		[
-		]
+		8,
+		9
 	];
+
 
 	public static string Name(Nakshatra value)
 	{
@@ -161,10 +146,7 @@ public static class Nakshatras
 	}
 
 
-	public static int Normalize(this Nakshatra value)
-	{
-		return ((int) value).NormalizeInc(1, 27);
-	}
+	public static int Normalize(this Nakshatra value) => ((int) value).NormalizeInc(1, 27);
 
 	public static Nakshatra Add(this Nakshatra value, int i)
 	{
@@ -178,10 +160,7 @@ public static class Nakshatras
 		return (Nakshatra) snum;
 	}
 
-	public static int Normalize(this Nakshatra28 value)
-	{
-		return ((int)value).NormalizeInc(1, 28);
-	}
+	public static int Normalize(this Nakshatra28 value) => ((int)value).NormalizeInc(1, 28);
 
 	public static Nakshatra28 Add(this Nakshatra28 value, int i)
 	{

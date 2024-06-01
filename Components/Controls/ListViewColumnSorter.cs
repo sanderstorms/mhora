@@ -78,14 +78,8 @@ public class ListViewColumnSorter : IComparer
     /// </summary>
     public int SortColumn
     {
-        set
-        {
-            ColumnToSort = value;
-        }
-        get
-        {
-            return ColumnToSort;
-        }
+        set => ColumnToSort = value;
+        get => ColumnToSort;
     }
 
     /// <summary>
@@ -93,14 +87,8 @@ public class ListViewColumnSorter : IComparer
     /// </summary>
     public SortOrder Order
     {
-        set
-        {
-            OrderOfSort = value;
-        }
-        get
-        {
-            return OrderOfSort;
-        }
+        set => OrderOfSort = value;
+        get => OrderOfSort;
     }
 
 }}

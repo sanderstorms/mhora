@@ -22,6 +22,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Mhora.Components.VargaControl;
 using Mhora.Database.Settings;
+using Mhora.Definitions;
 using Mhora.Elements;
 
 namespace Mhora.Components;
@@ -97,7 +98,7 @@ public class MhoraControl : UserControl
 #endregion
 
 
-	public void ViewControl(MhoraControlContainer.BaseUserOptions.ViewType vt)
+	public void ViewControl(MhoraViewType vt)
 	{
 		((MhoraControlContainer) Parent).h = h;
 		((MhoraControlContainer) Parent).SetView(vt);
@@ -106,229 +107,229 @@ public class MhoraControl : UserControl
 	protected void ViewVimsottariDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaVimsottari);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaVimsottari);
 	}
 
 	protected void ViewYogaVimsottariDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaYogaVimsottari);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaYogaVimsottari);
 	}
 
 	protected void ViewKaranaChaturashitiSamaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaKaranaChaturashitiSama);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaKaranaChaturashitiSama);
 	}
 
 	protected void ViewAshtottariDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaAshtottari);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaAshtottari);
 	}
 
 	protected void ViewTithiPraveshAshtottariDasaTithi(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaTithiPraveshAshtottariCompressedTithi);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaTithiPraveshAshtottariCompressedTithi);
 	}
 
 	protected void ViewTithiPraveshAshtottariDasaSolar(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaTithiPraveshAshtottariCompressedSolar);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaTithiPraveshAshtottariCompressedSolar);
 	}
 
 	protected void ViewTithiPraveshAshtottariDasaFixed(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaTithiPraveshAshtottariCompressedFixed);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaTithiPraveshAshtottariCompressedFixed);
 	}
 
 	protected void ViewTithiAshtottariDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaTithiAshtottari);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaTithiAshtottari);
 	}
 
 	protected void ViewYogaPraveshVimsottariDasaYoga(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaYogaPraveshVimsottariCompressedYoga);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaYogaPraveshVimsottariCompressedYoga);
 	}
 
 	protected void ViewShodashottariDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaShodashottari);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaShodashottari);
 	}
 
 	protected void ViewDwadashottariDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaDwadashottari);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaDwadashottari);
 	}
 
 	protected void ViewPanchottariDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaPanchottari);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaPanchottari);
 	}
 
 	protected void ViewShatabdikaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaShatabdika);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaShatabdika);
 	}
 
 	protected void ViewChaturashitiSamaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaChaturashitiSama);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaChaturashitiSama);
 	}
 
 	protected void ViewDwisaptatiSamaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaDwisaptatiSama);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaDwisaptatiSama);
 	}
 
 	protected void ViewShatTrimshaSamaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaShatTrimshaSama);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaShatTrimshaSama);
 	}
 
 	protected void ViewYoginiDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaYogini);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaYogini);
 	}
 
 	protected void ViewKalachakraDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaKalachakra);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaKalachakra);
 	}
 
 	protected void ViewNaisargikaGrahaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.NaisargikaGrahaDasa);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.NaisargikaGrahaDasa);
 	}
 
 	protected void ViewKarakaKendradiGrahaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaKarakaKendradiGraha);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaKarakaKendradiGraha);
 	}
 
 	protected void ViewMoolaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaMoola);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaMoola);
 	}
 
 	protected void ViewNaisargikaRasiDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.NaisargikaRasiDasa);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.NaisargikaRasiDasa);
 	}
 
 	protected void ViewNarayanaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaNarayana);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaNarayana);
 	}
 
 	protected void ViewNarayanaSamaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaNarayanaSama);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaNarayanaSama);
 	}
 
 	protected void ViewShoolaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaShoola);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaShoola);
 	}
 
 	protected void ViewNiryaanaShoolaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaNiryaanaShoola);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaNiryaanaShoola);
 	}
 
 	protected void ViewSuDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaSu);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaSu);
 	}
 
 	protected void ViewNavamsaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaNavamsa);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaNavamsa);
 	}
 
 	protected void ViewMandookaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaMandooka);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaMandooka);
 	}
 
 	protected void ViewCharaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaChara);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaChara);
 	}
 
 	protected void ViewTrikonaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaTrikona);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaTrikona);
 	}
 
 	protected void ViewDrigDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaDrig);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaDrig);
 	}
 
 	protected void ViewSudarshanaChakraDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaSudarshanaChakra);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaSudarshanaChakra);
 	}
 
 	protected void ViewLagnaKendradiRasiDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaLagnaKendradiRasi);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaLagnaKendradiRasi);
 	}
 
 	protected void ViewSudarshanaChakraDasaCompressed(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaSudarshanaChakraCompressed);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaSudarshanaChakraCompressed);
 	}
 
 	protected void ViewMuddaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaMudda);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaMudda);
 	}
 
 	protected void ViewTajakaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaTajaka);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaTajaka);
 	}
 
 	protected void ViewTattwaDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaTattwa);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaTattwa);
 	}
 
 	protected void ControlCopyToClipboard(object sender, EventArgs e)
@@ -343,91 +344,91 @@ public class MhoraControl : UserControl
 	protected void ViewTithiPraveshDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaTithiPravesh);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaTithiPravesh);
 	}
 
 	protected void ViewYogaPraveshDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaYogaPravesh);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaYogaPravesh);
 	}
 
 	protected void ViewNakshatraPraveshDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaNakshatraPravesh);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaNakshatraPravesh);
 	}
 
 	protected void ViewKaranaPraveshDasa(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaKaranaPravesh);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaKaranaPravesh);
 	}
 
 	protected void ViewKeyInfo(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.KeyInfo);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.KeyInfo);
 	}
 
 	protected void ViewBasicCalculations(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.BasicCalculations);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.BasicCalculations);
 	}
 
 	protected void ViewDivisionalChart(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DivisionalChart);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DivisionalChart);
 	}
 
 	protected void ViewBalas(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.Balas);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.Balas);
 	}
 
 	protected void ViewAshtakavarga(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.Ashtakavarga);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.Ashtakavarga);
 	}
 
 	protected void ViewKutaMatching(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.KutaMatching);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.KutaMatching);
 	}
 
 	protected void ViewNavamsaCircle(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.NavamsaCircle);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.NavamsaCircle);
 	}
 
 	protected void ViewVaraChakra(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.VaraChakra);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.VaraChakra);
 	}
 
 	protected void ViewSarvatobhadraChakra(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.ChakraSarvatobhadra81);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.ChakraSarvatobhadra81);
 	}
 
 	protected void ViewTransitsSearch(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.TransitSearch);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.TransitSearch);
 	}
 
 	protected void ViewPanchanga(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.Panchanga);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.Panchanga);
 	}
 
 	protected void SplitViewHorizontal(object sender, EventArgs e)
@@ -616,11 +617,11 @@ public class MhoraControl : UserControl
 	private void mDasa_Click(object sender, EventArgs e)
 	{
 		((MhoraControlContainer) Parent).h = h;
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DasaVimsottari);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DasaVimsottari);
 	}
 
 	private void mDivisionalChart_Click(object sender, EventArgs e)
 	{
-		((MhoraControlContainer) Parent).SetView(MhoraControlContainer.BaseUserOptions.ViewType.DivisionalChart);
+		((MhoraControlContainer) Parent).SetView(MhoraViewType.DivisionalChart);
 	}
 }

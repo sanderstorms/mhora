@@ -175,9 +175,12 @@
     <Compile Include="Components\Controls\TimeAdjustment.Designer.cs">
       <DependentUpon>TimeAdjustment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Definitions\Bala.cs" />
+    <Compile Include="Definitions\DateType.cs" />
     <Compile Include="Definitions\Element.cs" />
     <Compile Include="Definitions\GrahaType.cs" />
     <Compile Include="Definitions\Month.cs" />
+    <Compile Include="Definitions\NakshatraLord.cs" />
     <Compile Include="Definitions\Nature.cs" />
     <Compile Include="Definitions\Avastha.cs" />
     <Compile Include="Definitions\Body.cs" />
@@ -190,9 +193,58 @@
     <Compile Include="Definitions\Relation.cs" />
     <Compile Include="Definitions\SunMoonYoga.cs" />
     <Compile Include="Definitions\Tatva.cs" />
+    <Compile Include="Definitions\MhoraViewType.cs" />
     <Compile Include="Definitions\WeekDay.cs" />
     <Compile Include="Definitions\Yama.cs" />
     <Compile Include="Definitions\Yoga.cs" />
+    <Compile Include="Divisions\CalculateDivision.cs" />
+    <Compile Include="Divisions\D10\Cyclic.cs" />
+    <Compile Include="Divisions\D10\Parashari.cs" />
+    <Compile Include="Divisions\D11\Cyclic.cs" />
+    <Compile Include="Divisions\D11\SecondMethod.cs" />
+    <Compile Include="Divisions\D11\ThirdMethod.cs" />
+    <Compile Include="Divisions\D12\Cyclic.cs" />
+    <Compile Include="Divisions\D12\Parashari.cs" />
+    <Compile Include="Divisions\D16\Matreshwar.cs" />
+    <Compile Include="Divisions\D16\Parashari.cs" />
+    <Compile Include="Divisions\D16\ThirdMethod.cs" />
+    <Compile Include="Divisions\D20\Parashari.cs" />
+    <Compile Include="Divisions\D24\Cyclical.cs" />
+    <Compile Include="Divisions\D24\Parashari.cs" />
+    <Compile Include="Divisions\D24\SecondMethod.cs" />
+    <Compile Include="Divisions\D27\Parashari.cs" />
+    <Compile Include="Divisions\D2\Cyclic.cs" />
+    <Compile Include="Divisions\Hora.cs" />
+    <Compile Include="Divisions\D2\LabhMandook.cs" />
+    <Compile Include="Divisions\D2\Parashari.cs" />
+    <Compile Include="Divisions\D2\PoorvaParashari.cs" />
+    <Compile Include="Divisions\D2\SunMoon.cs" />
+    <Compile Include="Divisions\D2\Venktesh.cs" />
+    <Compile Include="Divisions\D2\VikramMandook.cs" />
+    <Compile Include="Divisions\D30\Parashari.cs" />
+    <Compile Include="Divisions\D30\Varanasi.cs" />
+    <Compile Include="Divisions\D3\Cyclical.cs" />
+    <Compile Include="Divisions\D3\Garga.cs" />
+    <Compile Include="Divisions\D3\Parashari.cs" />
+    <Compile Include="Divisions\D3\Somnath.cs" />
+    <Compile Include="Divisions\D3\Tajik.cs" />
+    <Compile Include="Divisions\D3\Varanasi.cs" />
+    <Compile Include="Divisions\D40\Cyclic.cs" />
+    <Compile Include="Divisions\D40\Parashari.cs" />
+    <Compile Include="Divisions\D45\Cyclic.cs" />
+    <Compile Include="Divisions\D45\Parashari.cs" />
+    <Compile Include="Divisions\D4\Cyclic.cs" />
+    <Compile Include="Divisions\D4\Parashari.cs" />
+    <Compile Include="Divisions\D5\Cyclic.cs" />
+    <Compile Include="Divisions\D5\Hadda.cs" />
+    <Compile Include="Divisions\D6\Cyclic.cs" />
+    <Compile Include="Divisions\D7\Parashari.cs" />
+    <Compile Include="Divisions\D8\Cyclic.cs" />
+    <Compile Include="Divisions\D8\Raman.cs" />
+    <Compile Include="Divisions\D9\Jaimini.cs" />
+    <Compile Include="Divisions\D9\Kalchakra.cs" />
+    <Compile Include="Divisions\D9\Parashari.cs" />
+    <Compile Include="Elements\Cusp.cs" />
     <Compile Include="Elements\Extensions\Avasthas.cs" />
     <Compile Include="Elements\Extensions\Bhavas.cs" />
     <Compile Include="Calculation\CalculateBodyPositionss.cs" />
@@ -409,7 +461,6 @@
     <Compile Include="Elements\Longitude.cs" />
     <Compile Include="Components\Converter\LongitudeConverter.cs" />
     <Compile Include="Dasas\RasiDasa\MandookaDasa.cs" />
-    <Compile Include="Components\File\Mhd.cs" />
     <Compile Include="Components\File\MhoraArrayConverter.cs" />
     <Compile Include="Components\File\MhoraVerifier.cs">
       <SubType>Code</SubType>
@@ -724,7 +775,6 @@
     <None Include="Database\TimeZones.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
     <None Include="Properties\app.config" />
   </ItemGroup>
   <ItemGroup />

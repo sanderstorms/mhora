@@ -25,13 +25,7 @@ namespace Mhora.Calculation.Strength;
 // Stronger Graha is the first one
 public static class First
 {
-	public static int StrengthByFirst(this Grahas grahas, Body m, Body n)
-	{
-		return 1;
-	}
+	public static int StrengthByFirst(this Grahas grahas, Body m, Body n) => 1;
 
-	public static int StrengthByFirst(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
-	{
-		return 1;
-	}
+	public static int StrengthByFirst(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb) => 1;
 }

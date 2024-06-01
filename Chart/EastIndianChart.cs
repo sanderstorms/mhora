@@ -34,10 +34,7 @@ public class EastIndianChart : IDrawChart
 		_pnBlack = new Pen(Color.Black, (float) 0.1);
 	}
 
-	public int GetLength()
-	{
-		return Xw;
-	}
+	public int GetLength() => Xw;
 
 	public bool SeparateGrahaHandling => false;
 
@@ -53,15 +50,9 @@ public class EastIndianChart : IDrawChart
 		g.DrawLine(_pnBlack, Xw                * 2     / 3, Yw * 2 / 3, Xw, Yw);
 	}
 
-	public Point GetInnerSquareOffset()
-	{
-		return new Point(Xw / 3, Yw / 3);
-	}
+	public Point GetInnerSquareOffset() => new(Xw / 3, Yw / 3);
 
-	public Point GetBodyTextPosition(Longitude l, Size itemSize)
-	{
-		return Point.Empty;
-	}
+	public Point GetBodyTextPosition(Longitude l, Size itemSize) => Point.Empty;
 
 	public Point GetBodyPosition(Longitude l)
 	{
@@ -234,10 +225,7 @@ public class EastIndianChart : IDrawChart
 		       };
 	}
 
-	public Point GetSingleGemOffset()
-	{
-		return new Point(Xw / 3 / 4, Xw / 3 * 2 / 3);
-	}
+	public Point GetSingleGemOffset() => new(Xw / 3 / 4, Xw / 3 * 2 / 3);
 
 	public Point FromGemOffset(ZodiacHouse zh, Point pret)
 	{

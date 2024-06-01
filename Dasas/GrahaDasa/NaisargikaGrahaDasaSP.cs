@@ -35,10 +35,7 @@ public class NaisargikaGrahaDasaSp : Dasa, IDasa
 		_options = new UserOptions();
 	}
 
-	public double ParamAyus()
-	{
-		return 108.0;
-	}
+	public double ParamAyus() => 108.0;
 
 	public void RecalculateOptions()
 	{
@@ -74,20 +71,11 @@ public class NaisargikaGrahaDasaSp : Dasa, IDasa
 		return al;
 	}
 
-	public List<DasaEntry> AntarDasa(DasaEntry pdi)
-	{
-		return [];
-	}
+	public List<DasaEntry> AntarDasa(DasaEntry pdi) => [];
 
-	public string Description()
-	{
-		return "Naisargika Graha Dasa (SP)";
-	}
+	public string Description() => "Naisargika Graha Dasa (SP)";
 
-	public object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public object GetOptions() => _options.Clone();
 
 	public object SetOptions(object a)
 	{

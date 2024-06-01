@@ -24,6 +24,7 @@ using Mhora.Calculation;
 using Mhora.Components.Property;
 using Mhora.Database.Settings;
 using Mhora.Database.World;
+using Mhora.Definitions;
 using Mhora.Util;
 using Newtonsoft.Json;
 using SqlNado.Query;
@@ -66,7 +67,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	//public double lon, lat, alt, tz;
 	public double          DefaultYearCompression;
 	public double          DefaultYearLength;
-	public ToDate.DateType DefaultYearType = ToDate.DateType.FixedYear;
+	public DateType DefaultYearType = DateType.FixedYear;
 
 	private UserEvent[] _events;
 	public  EFileType   FileType;
@@ -95,6 +96,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	public HoraInfo(HoraInfo h)
 	{
 		_tob                   = h._tob;
+		UseDst                 = h.UseDst;
 		_city                  = h.City;
 		Events                 = h.Events;
 		Name                   = h.Name;
@@ -106,10 +108,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 		DefaultYearType        = h.DefaultYearType;
 	}
 
-	public object Clone()
-	{
-		return new HoraInfo(this);
-	}
+	public object Clone() => new HoraInfo(this);
 
 	public ChartType Type
 	{
@@ -129,6 +128,12 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 			_tob = value;
 			_jd   = null;
 		}
+	}
+
+	public bool UseDst
+	{
+		get;
+		set;
 	}
 
 	[Category(CatTob)]
@@ -178,10 +183,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	[JsonProperty]
 	private int CityId
 	{
-		get
-		{
-			return City.Id;
-		}
+		get => City.Id;
 		set
 		{
 			var query  = Query.From<City>().Where(city => city.Id == value).SelectAll();
@@ -194,12 +196,9 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	}
 
 	[JsonIgnore]
-	public City City
-	{
-		get => (_city);
-	}
+	public City City => (_city);
 
-    [JsonIgnore]
+	[JsonIgnore]
 	private Database.World.TimeZone _timeZoneInfo;
 	[JsonIgnore]
 	public Database.World.TimeZone TimeZone
@@ -219,10 +218,13 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	}
 
 	[JsonIgnore]
-	public TimeSpan UtcOffset => TimeZone.TimeZoneInfo.BaseUtcOffset;
+	public Time UtcOffset => TimeZone.TimeZoneInfo.BaseUtcOffset;
 
 	[JsonIgnore]
-	public TimeSpan DstOffset => TimeZone.TimeZoneInfo.GetUtcOffset(_tob);
+	public Time DstOffset => TimeZone.TimeZoneInfo.GetUtcOffset(_tob);
+
+	[JsonIgnore]
+	public Time DstCorrection => DstOffset - UtcOffset;
 
 	private JulianDate _jd = 0;
 	[JsonIgnore]
@@ -232,7 +234,12 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 		{
 			if ((_jd == null) || _jd.IsEmpty == true)
 			{
-				_jd = TimeZoneInfo.ConvertTimeToUtc(_tob, TimeZone.TimeZoneInfo);
+				var utc = TimeZoneInfo.ConvertTimeToUtc(_tob, TimeZone.TimeZoneInfo);
+				if (UseDst == false)
+				{
+					utc += DstCorrection;
+				}
+				_jd = utc;
 			}
 			return _jd;
 		}

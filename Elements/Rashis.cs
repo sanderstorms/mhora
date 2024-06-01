@@ -48,15 +48,9 @@ namespace Mhora.Elements
 		}
 
 
-		public  IEnumerator<Rashi> GetEnumerator()
-		{
-			return (_rashis.GetEnumerator());
-		}
+		public  IEnumerator<Rashi> GetEnumerator() => (_rashis.GetEnumerator());
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		public int Count => _rashis.Count;
 
@@ -73,10 +67,7 @@ namespace Mhora.Elements
 		}
 
 
-		public int Compare(ZodiacHouse zha, ZodiacHouse zhb, bool simpleLord, List<RashiStrength> rules, out int winner)
-		{
-			return this[zha].CompareTo(this[zhb], simpleLord, rules, out winner);
-		}
+		public int Compare(ZodiacHouse zha, ZodiacHouse zhb, bool simpleLord, List<RashiStrength> rules, out int winner) => this[zha].CompareTo(this[zhb], simpleLord, rules, out winner);
 
 		public Rashi Stronger(ZodiacHouse zha, ZodiacHouse zhb, bool simpleLord, ArrayList rules, out int winner)
 		{

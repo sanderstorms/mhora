@@ -82,10 +82,7 @@ public class Division : ICloneable
 		return dRet;
 	}
 
-	public override string ToString()
-	{
-		return this.NumPartsInDivisionString();
-	}
+	public override string ToString() => this.NumPartsInDivisionString();
 
 	public override bool Equals(object obj)
 	{
@@ -97,10 +94,7 @@ public class Division : ICloneable
 		return base.Equals(obj);
 	}
 
-	public static bool operator !=(Division d1, Division d2)
-	{
-		return !(d1 == d2);
-	}
+	public static bool operator !=(Division d1, Division d2) => !(d1 == d2);
 
 	public static bool operator ==(Division d1, Division d2)
 	{
@@ -192,14 +186,8 @@ public class Division : ICloneable
 			set => mNumParts = value;
 		}
 
-		public SingleDivision Clone()
-		{
-			return new SingleDivision(Varga, NumParts);
-		}
+		public SingleDivision Clone() => new(Varga, NumParts);
 
-		public override string ToString()
-		{
-			return mDtype + " " + mNumParts;
-		}
+		public override string ToString() => mDtype + " " + mNumParts;
 	}
 }

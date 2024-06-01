@@ -41,10 +41,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 		_options = new UserOptions(_h);
 	}
 
-	public double ParamAyus()
-	{
-		return 120.0;
-	}
+	public double ParamAyus() => 120.0;
 
 	public void RecalculateOptions()
 	{
@@ -167,15 +164,9 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 		return ret;
 	}
 
-	public string Description()
-	{
-		return "Naisargika Graha Dasa (SR)";
-	}
+	public string Description() => "Naisargika Graha Dasa (SR)";
 
-	public object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public object GetOptions() => _options.Clone();
 
 	public object SetOptions(object a)
 	{
@@ -188,20 +179,18 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 	public double LengthOfDasa(Body plt)
 	{
-		switch (plt)
-		{
-			case Body.Sun:     return 20;
-			case Body.Moon:    return 1;
-			case Body.Mars:    return 2;
-			case Body.Mercury: return 9;
-			case Body.Jupiter: return 18;
-			case Body.Venus:   return 20;
-			case Body.Saturn:  return 50;
-			case Body.Lagna:   return 0;
-		}
-
-		Trace.Assert(false, "NaisargikaGrahaDasa::LengthOfDasa");
-		return 0;
+		return plt switch
+		       {
+			       Body.Sun     => 20,
+			       Body.Moon    => 1,
+			       Body.Mars    => 2,
+			       Body.Mercury => 9,
+			       Body.Jupiter => 18,
+			       Body.Venus   => 20,
+			       Body.Saturn  => 50,
+			       Body.Lagna   => 0,
+			       _            => throw new IndexOutOfRangeException()
+		       };
 	}
 
 	private bool ExcludeGraha(DasaEntry pdi, Body graha)

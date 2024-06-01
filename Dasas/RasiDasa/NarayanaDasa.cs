@@ -45,10 +45,7 @@ public class NarayanaDasa : Dasa, IDasa
 		Options.Recalculate();
 	}
 
-	public double ParamAyus()
-	{
-		return 144;
-	}
+	public double ParamAyus() => 144;
 
 	public List<DasaEntry> Dasa(int cycle)
 	{
@@ -209,15 +206,9 @@ public class NarayanaDasa : Dasa, IDasa
 		return al;
 	}
 
-	public string Description()
-	{
-		return "Narayana Dasa for " + Options.Division + " seeded from " + Options.SeedZodiacHouse;
-	}
+	public string Description() => "Narayana Dasa for " + Options.Division + " seeded from " + Options.SeedZodiacHouse;
 
-	public object GetOptions()
-	{
-		return Options.Clone();
-	}
+	public object GetOptions() => Options.Clone();
 
 	public object SetOptions(object a)
 	{

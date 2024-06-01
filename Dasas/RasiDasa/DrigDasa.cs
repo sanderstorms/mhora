@@ -37,10 +37,7 @@ public class DrigDasa : Dasa, IDasa
 		_options = new RasiDasaUserOptions(_h, _h.RulesNarayanaDasaRasi());
 	}
 
-	public double ParamAyus()
-	{
-		return 144;
-	}
+	public double ParamAyus() => 144;
 
 	public void RecalculateOptions()
 	{
@@ -84,15 +81,9 @@ public class DrigDasa : Dasa, IDasa
 		return nd.AntarDasa(pdi);
 	}
 
-	public string Description()
-	{
-		return "Drig Dasa" + " seeded from " + _options.SeedZodiacHouse;
-	}
+	public string Description() => "Drig Dasa" + " seeded from " + _options.SeedZodiacHouse;
 
-	public object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public object GetOptions() => _options.Clone();
 
 	public object SetOptions(object a)
 	{

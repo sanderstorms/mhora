@@ -16,6 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******/
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,45 +37,21 @@ public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 		_h      = horoscope;
 	}
 
-	public override object GetOptions()
-	{
-		return new object();
-	}
+	public override object GetOptions() => new();
 
-	public override object SetOptions(object a)
-	{
-		return new object();
-	}
+	public override object SetOptions(object a) => new();
 
-	public List<DasaEntry> Dasa(int cycle)
-	{
-		return _Dasa(_h.GetPosition(Body.Moon).Longitude, 1, cycle);
-	}
+	public List<DasaEntry> Dasa(int cycle) => _Dasa(_h.GetPosition(Body.Moon).Longitude, 1, cycle);
 
-	public List<DasaEntry> AntarDasa(DasaEntry di)
-	{
-		return _AntarDasa(di);
-	}
+	public List<DasaEntry> AntarDasa(DasaEntry di) => _AntarDasa(di);
 
-	public string Description()
-	{
-		return "Ashtottari Dasa";
-	}
+	public string Description() => "Ashtottari Dasa";
 
-	public double ParamAyus()
-	{
-		return 108.0;
-	}
+	public double ParamAyus() => 108.0;
 
-	public int NumberOfDasaItems()
-	{
-		return 8;
-	}
+	public int NumberOfDasaItems() => 8;
 
-	public DasaEntry NextDasaLord(DasaEntry di)
-	{
-		return new DasaEntry(NextDasaLordHelper(di.Graha), TimeOffset.Zero, 0, di.Level, string.Empty);
-	}
+	public DasaEntry NextDasaLord(DasaEntry di) => new(NextDasaLordHelper(di.Graha), TimeOffset.Zero, 0, di.Level, string.Empty);
 
 	public TimeOffset LengthOfDasa(Body plt)
 	{
@@ -88,64 +65,60 @@ public class AshtottariDasa : NakshatraDasa, INakshatraDasa
 			case Body.Jupiter: return 19;
 			case Body.Rahu:    return 12;
 			case Body.Venus:   return 21;
+			default:           throw new IndexOutOfRangeException();
 		}
-
-		Trace.Assert(false, "Ashtottari::LengthOfDasa");
-		return 0;
 	}
 
-	public Body LordOfNakshatra(Nakshatra n)
+	public static Body NakshatraLord(Nakshatra n)
 	{
-		switch (n)
-		{
-			case Nakshatra.Aswini:         return Body.Rahu;
-			case Nakshatra.Bharani:        return Body.Rahu;
-			case Nakshatra.Krittika:       return Body.Venus;
-			case Nakshatra.Rohini:         return Body.Venus;
-			case Nakshatra.Mrigarirsa:     return Body.Venus;
-			case Nakshatra.Aridra:         return Body.Sun;
-			case Nakshatra.Punarvasu:      return Body.Sun;
-			case Nakshatra.Pushya:         return Body.Sun;
-			case Nakshatra.Aslesha:        return Body.Sun;
-			case Nakshatra.Makha:          return Body.Moon;
-			case Nakshatra.PoorvaPhalguni: return Body.Moon;
-			case Nakshatra.UttaraPhalguni: return Body.Moon;
-			case Nakshatra.Hasta:          return Body.Mars;
-			case Nakshatra.Chittra:        return Body.Mars;
-			case Nakshatra.Swati:          return Body.Mars;
-			case Nakshatra.Vishaka:        return Body.Mars;
-			case Nakshatra.Anuradha:       return Body.Mercury;
-			case Nakshatra.Jyestha:        return Body.Mercury;
-			case Nakshatra.Moola:          return Body.Mercury;
-			case Nakshatra.PoorvaShada:    return Body.Saturn;
-			case Nakshatra.UttaraShada:    return Body.Saturn;
-			case Nakshatra.Sravana:        return Body.Saturn;
-			case Nakshatra.Dhanishta:      return Body.Jupiter;
-			case Nakshatra.Satabisha:      return Body.Jupiter;
-			case Nakshatra.PoorvaBhadra:   return Body.Jupiter;
-			case Nakshatra.UttaraBhadra:   return Body.Rahu;
-			case Nakshatra.Revati:         return Body.Rahu;
-		}
-
-		Trace.Assert(false, "AshtottariDasa::NakshatraLord");
-		return Body.Lagna;
+		return n switch
+		       {
+			       Nakshatra.Aswini         => Body.Rahu,
+			       Nakshatra.Bharani        => Body.Rahu,
+			       Nakshatra.Krittika       => Body.Venus,
+			       Nakshatra.Rohini         => Body.Venus,
+			       Nakshatra.Mrigarirsa     => Body.Venus,
+			       Nakshatra.Aridra         => Body.Sun,
+			       Nakshatra.Punarvasu      => Body.Sun,
+			       Nakshatra.Pushya         => Body.Sun,
+			       Nakshatra.Aslesha        => Body.Sun,
+			       Nakshatra.Makha          => Body.Moon,
+			       Nakshatra.PoorvaPhalguni => Body.Moon,
+			       Nakshatra.UttaraPhalguni => Body.Moon,
+			       Nakshatra.Hasta          => Body.Mars,
+			       Nakshatra.Chittra        => Body.Mars,
+			       Nakshatra.Swati          => Body.Mars,
+			       Nakshatra.Vishaka        => Body.Mars,
+			       Nakshatra.Anuradha       => Body.Mercury,
+			       Nakshatra.Jyestha        => Body.Mercury,
+			       Nakshatra.Moola          => Body.Mercury,
+			       Nakshatra.PoorvaShada    => Body.Saturn,
+			       Nakshatra.UttaraShada    => Body.Saturn,
+			       Nakshatra.Sravana        => Body.Saturn,
+			       Nakshatra.Dhanishta      => Body.Jupiter,
+			       Nakshatra.Satabisha      => Body.Jupiter,
+			       Nakshatra.PoorvaBhadra   => Body.Jupiter,
+			       Nakshatra.UttaraBhadra   => Body.Rahu,
+			       Nakshatra.Revati         => Body.Rahu,
+			       _                        => throw new IndexOutOfRangeException()
+		       };
 	}
+
+	public Body LordOfNakshatra(Nakshatra n) => NakshatraLord(n);
 
 	private Body NextDasaLordHelper(Body b)
 	{
-		switch (b)
-		{
-			case Body.Sun:     return Body.Moon;
-			case Body.Moon:    return Body.Mars;
-			case Body.Mars:    return Body.Mercury;
-			case Body.Mercury: return Body.Saturn;
-			case Body.Saturn:  return Body.Jupiter;
-			case Body.Jupiter: return Body.Rahu;
-			case Body.Rahu:    return Body.Venus;
-			case Body.Venus:   return Body.Sun;
-		}
-
-		Trace.Assert(false, "AshtottariDasa::NextDasaLord");
-		return Body.Lagna;
+		return b switch
+	       {
+		       Body.Sun     => Body.Moon,
+		       Body.Moon    => Body.Mars,
+		       Body.Mars    => Body.Mercury,
+		       Body.Mercury => Body.Saturn,
+		       Body.Saturn  => Body.Jupiter,
+		       Body.Jupiter => Body.Rahu,
+		       Body.Rahu    => Body.Venus,
+		       Body.Venus   => Body.Sun,
+		       _            => throw new ArgumentOutOfRangeException(nameof(b), b, null)
+	       };
 	}
 }

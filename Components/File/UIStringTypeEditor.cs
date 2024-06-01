@@ -42,8 +42,5 @@ public class UiStringTypeEditor : UITypeEditor
 		return le.EditorText;
 	}
 
-	public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
-	{
-		return UITypeEditorEditStyle.Modal;
-	}
+	public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context) => UITypeEditorEditStyle.Modal;
 }

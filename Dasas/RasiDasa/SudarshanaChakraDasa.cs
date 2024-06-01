@@ -33,25 +33,13 @@ public class SudarshanaChakraDasa : Dasa, IDasa
 		_h = h;
 	}
 
-	public double ParamAyus()
-	{
-		return 12;
-	}
+	public double ParamAyus() => 12;
 
-	public string Description()
-	{
-		return "Sudarshana Chakra Dasa";
-	}
+	public string Description() => "Sudarshana Chakra Dasa";
 
-	public object GetOptions()
-	{
-		return new object();
-	}
+	public object GetOptions() => new();
 
-	public object SetOptions(object o)
-	{
-		return o;
-	}
+	public object SetOptions(object o) => o;
 
 	public void RecalculateOptions()
 	{

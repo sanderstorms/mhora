@@ -44,13 +44,7 @@ namespace Mhora.Util
 			_date = new DateTime(year, month, day).AddHours(hours);
 		}
 
-		public bool IsEmpty
-		{
-			get
-			{
-				return (_value == 0);
-			}
-		}
+		public bool IsEmpty => (_value == 0);
 
 		public JulianDate(DateTime dateTime, int yearsBC = 0)
 		{
@@ -81,10 +75,7 @@ namespace Mhora.Util
 			return dateTime;
 		}
 
-		public object Clone()
-		{
-			return new JulianDate(_value);
-		}
+		public object Clone() => new JulianDate(_value);
 
 		public JulianDate Add(Time offset)
 		{
@@ -98,45 +89,21 @@ namespace Mhora.Util
 			return new JulianDate(dateTime.Subtract(offset));
 		}
 		
-		public static implicit operator double(JulianDate jd)
-		{
-			return jd._value;
-		}
-		
-		public static implicit operator JulianDate(double jd)
-		{
-			return new JulianDate(jd);
-		}
+		public static implicit operator double(JulianDate jd) => jd._value;
 
-		public static implicit operator JulianDate(DateTime dateTime)
-		{
-			return new JulianDate(dateTime);
-		}
+		public static implicit operator JulianDate(double jd) => new(jd);
 
-		public static implicit operator DateTime(JulianDate jd)
-		{
-			return jd.Date;
-		}
+		public static implicit operator JulianDate(DateTime dateTime) => new(dateTime);
 
-		public static JulianDate operator +(JulianDate jd, Time time)
-		{
-			return (jd.Add(time));
-		}
+		public static implicit operator DateTime(JulianDate jd) => jd.Date;
 
-		public static JulianDate operator -(JulianDate jd, Time time)
-		{
-			return (jd.Sub(time));
-		}
+		public static JulianDate operator +(JulianDate jd, Time time) => (jd.Add(time));
 
-		public static JulianDate operator -(JulianDate jd, double days)
-		{
-			return (new JulianDate(jd._value - days));
-		}
+		public static JulianDate operator -(JulianDate jd, Time time) => (jd.Sub(time));
 
-		public static JulianDate operator +(JulianDate jd, double days)
-		{
-			return (new JulianDate(jd._value + days));
-		}
+		public static JulianDate operator -(JulianDate jd, double days) => (new(jd._value - days));
+
+		public static JulianDate operator +(JulianDate jd, double days) => (new(jd._value + days));
 
 		public static bool operator < (JulianDate  jd, JulianDate value) => jd._value < value._value; 
 		public static bool operator > (JulianDate  jd, JulianDate value) => jd._value > value._value; 

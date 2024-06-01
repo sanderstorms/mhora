@@ -37,7 +37,6 @@ namespace Mhora.Elements
 			RashiDrishti = [];
 			Ownership    = [];
 			Association  = [];
-			OwnHouses    = [];
 		}
 
 		public static implicit operator Body  (Graha graha) => graha.Body;
@@ -45,10 +44,7 @@ namespace Mhora.Elements
 
 		public string Name => Body.Name();
 
-		public override string ToString()
-		{
-			return _dp.ToString();
-		}
+		public override string ToString() => _dp.ToString();
 
 		public bool Owns(Bhava bhava)
 		{
@@ -154,11 +150,9 @@ namespace Mhora.Elements
 			return (IsAssociatedBy(graha));
 		}
 
-		public bool IsAssociatedBy(Graha graha)
-		{
-			return graha.IsAssociatedWith(this);
-		}
-		#endregion
+		public bool IsAssociatedBy(Graha graha) => graha.IsAssociatedWith(this);
+
+#endregion
 
 		#region drishti
 		public bool IsAspectedBy (Nature nature, bool noChayaGraha)
@@ -177,10 +171,7 @@ namespace Mhora.Elements
 			return (false);
 		}
 
-		public bool HasDrishtiOn(ZodiacHouse zh)
-		{
-			return _dp.GrahaDristi(zh);
-		}
+		public bool HasDrishtiOn(ZodiacHouse zh) => _dp.GrahaDristi(zh);
 
 		public bool IsAspecting(Body body)
 		{
@@ -334,6 +325,7 @@ namespace Mhora.Elements
 					{
 						return (true);
 					}
+
 					if (Bhava.IsDushtana())
 					{
 						return (false);
@@ -532,8 +524,6 @@ namespace Mhora.Elements
 		public  List<Graha>  Conjunct     { get; }
 		public  List<Graha>  Association  { get; }
 		public  List<Rashi>  OwnHouses    { get; }
-		private double       _digBala;
-        public  double       DigBala => _digBala;
 
         public bool HasMutualAspectWith(Graha graha) => IsAspectedBy(graha) && graha.IsAspecting(this);
 
@@ -547,16 +537,16 @@ namespace Mhora.Elements
 		        {
 			        return (false);
 		        }
-		        if (OwnHouses.Count == 1)
+		        if (Ownership.Count == 1)
 		        {
 			        return false;
 		        }
 
-		        if (OwnHouses[0].Bhava.IsKendra() && OwnHouses[1].Bhava.IsTrikona())
+		        if (Ownership[0].Bhava.IsKendra() && Ownership[1].Bhava.IsTrikona())
 		        {
 			        return (true);
 		        }
-		        if (OwnHouses[0].Bhava.IsTrikona() && OwnHouses[1].Bhava.IsKendra())
+		        if (Ownership[0].Bhava.IsTrikona() && Ownership[1].Bhava.IsKendra())
 		        {
 			        return (true);
 		        }
@@ -649,27 +639,36 @@ namespace Mhora.Elements
 		// 
 		// 6	
 		// RA/KE Eclipse			
+		private int _strength = int.MinValue;
 		public int Strength
 		{
 			get
 			{
-				int strength = 0;
-				if (IsRetrograde)
-                {
-                    strength += 2;
-                }
+				if (_strength != int.MinValue)
+				{
+					return (_strength);
+				}
+				_strength = 0;
 				if (IsExalted)
                 {
-                    strength += 2;
+                    _strength += 2;
                 }
 				else if (IsInOwnHouse)
                 {
-                    strength += 2;
+                    _strength += 2;
                 }
-				if (DigBala > 30)
-                {
-                    strength += 2;
-                }
+
+				if ((BodyType == BodyType.Graha) && (IsChayaGraha == false))
+				{
+					if (IsRetrograde)
+					{
+						_strength += 2;
+					}
+					if (Horoscope.DigBala (Body) > 30)
+					{
+						_strength += 2;
+					}
+				}
 
 				int st = 0;
 				foreach (var graha in Conjunct)
@@ -695,38 +694,38 @@ namespace Mhora.Elements
 						st--;
 						if (graha.Body == Body.Sun)
 						{
-							strength--;
+							_strength--;
 						}
 					}
 				}
 
 				if (st > 0)
 				{
-					strength++;
+					_strength++;
 				}
 				else if (st < 0)
 				{
-					strength--;
+					_strength--;
 				}
 
 				if (IsDebilitated)
 				{
-					strength -= 2;
+					_strength -= 2;
 				}
 
 				if (GrahaYuda)
 				{
 					if (WinnerOfWar)
 					{
-						strength += 1;
+						_strength += 1;
 					}
 					else
 					{
-						strength -= 1;
+						_strength -= 1;
 					}
 				}
 
-				return (strength);
+				return (_strength);
 			}
 		}
 
@@ -1078,19 +1077,20 @@ namespace Mhora.Elements
 			}
 		}
 
-		public bool IsEcliped
-		{
-			get
-			{
-				return IsCombust; //Todo: proper definition
-			}
-		}
+		public bool IsEcliped      => IsCombust; //Todo: proper definition
+		public bool PushkarNavamsa => Position.PushkarNavamsa();
+		public bool PushkaraBhaga  => Position.PushkaraBhaga();
 
 		//When a Neecha - Bhanga Yoga is present,the debilitation gets cancelled and is said to produce benefic results.
 		public bool NeechaBhanga
 		{
 			get
 			{
+				if (BodyType != BodyType.Graha)
+				{
+					return (false);
+				}
+
 				if (IsDebilitated == false)
 				{
 					return (false);
@@ -1103,6 +1103,11 @@ namespace Mhora.Elements
 					return (true);
 				}
 
+				if (IsAssociatedWith(lord))
+				{
+					return (true);
+				}
+
 				//The lord of the house where the planet is Exalted (I.e. the Exaltation lord of the planet)
 				//is in kendra from the lagna or the Moon.
 				if (lord.Bhava.IsKendra())
@@ -1110,44 +1115,36 @@ namespace Mhora.Elements
 					return (true);
 				}
 
-				if (Body != Body.Moon)
-				{
-					var moon  = _grahas.Find(Body.Moon);
-					var bhava = (Bhava) lord.Bhava.HousesFrom(moon.Bhava);
-					if (bhava.IsKendra())
-					{
-						return (true);
-					}
-				}
-
-				//The debilitated planet is associated with or aspected by its debilitation sign's lord.
-				foreach (var graha in MutualAspect)
-				{
-					if (graha.IsDebilitated)
-					{
-						return (true);
-					}
-				}
-
-				//The lord of the house where the planet is debilitated (I.e. the debilitation lord of the planet)
-				//is in kendra from the lagna or the Moon
-				if (Rashi.Lord.Bhava.IsKendra())
+				if (lord.HouseFrom(Body.Moon).IsKendra())
 				{
 					return (true);
 				}
 
-				if (Body != Body.Moon)
+				//The debilitated planet is associated with or aspected by its debilitation sign's lord.
+				lord = _grahas.Rashis.Find(Body.DebilitationSign()).Lord;
+				if (IsAssociatedWith(lord))
 				{
-					var moon  = _grahas.Find(Body.Moon);
-					var bhava = (Bhava) lord.Bhava.HousesFrom(moon.Bhava);
-					if (bhava.IsKendra())
-					{
-						return (true);
-					}
+					return (true);
+				}
+
+				if (IsAspectedBy(lord))
+				{
+					return (true);
+				}
+
+				//The lord of the house where the planet is debilitated (I.e. the debilitation lord of the planet)
+				//is in kendra from the lagna or the Moon
+				if (lord.Bhava.IsKendra())
+				{
+					return (true);
+				}
+				if (lord.HouseFrom(Body.Moon).IsKendra())
+				{
+					return (true);
 				}
 
 				//The debilitated planet exchanges houses with its debilitation sign's lord.
-				if (Exchange == Rashi.Lord)
+				if (Exchange == lord)
 				{
 					return (true);
 				}
@@ -1187,6 +1184,14 @@ namespace Mhora.Elements
 
 		internal void Examine()
 		{
+			foreach (var rashi in _grahas.Rashis)
+			{
+				if (Owns(rashi))
+				{
+					Ownership.Add(rashi);
+				}
+			}
+
 			if (IsDebilitated)
 			{
 				Conditions |= Conditions.Debilitated;
@@ -1207,9 +1212,36 @@ namespace Mhora.Elements
 				Conditions |= Conditions.OwnHouse;
 			}
 
-			if ((BodyType == BodyType.Graha) && (IsChayaGraha == false))
+			if (FriendlySign)
 			{
-				_digBala = (double) _grahas.Horoscope.DigBala(Body);
+				Conditions |= Conditions.FriendlySign;
+			}
+			else if (EnemySign)
+			{
+				Conditions |= Conditions.EnemySign;
+			}
+
+			if (IsDigBala)
+			{
+				Conditions |= Conditions.DigBala;
+			}
+
+			if (IsCombust)
+			{
+				Conditions |= Conditions.Combust;
+			}
+
+			if (_grahas.Varga == DivisionType.Rasi)
+			{
+				if (PushkarNavamsa)
+				{
+					Conditions |= Conditions.PushkarNavamsa;
+				}
+
+				if (PushkaraBhaga)
+				{
+					Conditions |= Conditions.PushkaraBhaga;
+				}
 			}
 
 			_angle       =  (Bhava.Index() - 1) * 30.0;
@@ -1220,13 +1252,21 @@ namespace Mhora.Elements
 				Conditions |= Conditions.KarakaPlanet;
 			}
 
-			foreach (var rashi in _grahas.Rashis)
+			if (IsFunctionalBenefic)
 			{
-				if (Owns(rashi))
-				{
-					Ownership.Add(rashi);
-				}
+				Conditions |= Conditions.FunctionalBenefic;
 			}
+
+			if (IsFunctionalMalefic)
+			{
+				Conditions |= Conditions.FunctionalMalefic;
+			}
+
+			if (YogaKaraka)
+			{
+				Conditions |= Conditions.YogaKaraka;
+			}
+
 
 			foreach (var graha in _grahas)
 			{

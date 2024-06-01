@@ -38,7 +38,8 @@ namespace Mhora.Calculation
 				zhsum = zhsum.Add(10);
 			}
 
-			var dp2 = new DivisionPosition(Body.Other, BodyType.GrahaArudha, zhsum, 0, 0, 0)
+			dp.Cusp.ZodiacHouse = zhsum;
+			var dp2 = new DivisionPosition(Body.Other, BodyType.GrahaArudha, zhsum, dp.Cusp)
 			{
 				//dp2.Longitude   = zhsum.DivisionalLongitude(dp.Longitude, dpl.part);
 				Description = string.Format("{0}{1}", bn.ToShortString(), hse)
@@ -60,9 +61,11 @@ namespace Mhora.Calculation
 
 		public static List <DivisionPosition> CalculateVarnadaDivisionPositions(this Horoscope h, DivisionType dtype)
 		{
-			var al   = new List <DivisionPosition> ();
-			var zhL  = h.GetPosition(Body.Lagna).ToDivisionPosition(dtype).ZodiacHouse;
-			var zhHl = h.GetPosition(Body.HoraLagna).ToDivisionPosition(dtype).ZodiacHouse;
+			var al    = new List <DivisionPosition> ();
+			var lagna = h.GetPosition(Body.Lagna).ToDivisionPosition(dtype);
+			var zhL   = lagna.ZodiacHouse;
+			var hl    = h.GetPosition(Body.HoraLagna).ToDivisionPosition(dtype);
+			var zhHl  = hl.ZodiacHouse;
 
 			var zhAri = ZodiacHouse.Ari;
 			var zhPis = ZodiacHouse.Pis;
@@ -110,7 +113,8 @@ namespace Mhora.Calculation
 					zhV = zhPis.AddReverse(sum);
 				}
 
-				var divPos = new DivisionPosition(Body.Other, BodyType.Varnada, zhV, 0, 0, 0)
+				var cusp = new Cusp(lagna.Longitude, Vargas.NumPartsInDivision(dtype));
+				var divPos = new DivisionPosition(Body.Other, BodyType.Varnada, zhV, cusp)
 				{
 					Description = Varnada.Name[i - 1]
 				};
@@ -133,7 +137,8 @@ namespace Mhora.Calculation
 				zhsum = zhsum.Add(10);
 			}
 
-			var dp = new DivisionPosition(aname, btype, zhsum, 0, 0, 0);
+			var cusp = new Cusp(bp.Longitude, Vargas.NumPartsInDivision(d));
+			var dp    = new DivisionPosition(aname, btype, zhsum, cusp);
 			//dp.Longitude = zhsum.DivisionalLongitude(bp.longitude, dp.part);
 
 			return dp;
@@ -237,7 +242,7 @@ namespace Mhora.Calculation
 				new (h, Body.ArthaPraharaka, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Mercury)),
 				new (h, Body.YamaGhantaka, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Jupiter)),
 				new (h, Body.Gulika, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Saturn)),
-				new (h, Body.Maandi, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Saturn, HoroscopeOptions.EUpagrahaType.End)),
+				new (h, Body.Maandi, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Saturn, true, HoroscopeOptions.EUpagrahaType.End)),
 				new (h, Body.Mrityu, BodyType.Upagraha, h.Vara.CalculateUpgraha(Body.Mars))
 			};
 
@@ -285,7 +290,7 @@ namespace Mhora.Calculation
 
 			//Mhora.Log.Debug ("Starting Chandra Ayur Lagna from {0}", lon_base);
 
-			var istaGhati = h.Vara.HoursAfterSunrise.Ghati;
+			var istaGhati = h.Vara.Isthaghati.Ghati;
 			var blLon     = lonBase.Add(new Longitude(istaGhati * 30 / 5));
 			var hlLon     = lonBase.Add(new Longitude(istaGhati * 30 / 2.5));
 			var glLon     = lonBase.Add(new Longitude(istaGhati      * 30));
@@ -344,7 +349,7 @@ namespace Mhora.Calculation
 		public static Position CalculatePranapada(this Horoscope h)
 		{
 			var sun       = h.FindGrahas(DivisionType.Rasi) [Body.Sun];
-			var ppMinutes = (h.Vara.HoursAfterSunrise.TotalMinutes * 5); //degrees
+			var ppMinutes = (h.Vara.Isthaghati.TotalMinutes * 5); //degrees
 			var arkaKopa  = sun.Position.Longitude;
 			var zh        = sun.Rashi.ZodiacHouse;
 

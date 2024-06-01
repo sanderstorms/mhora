@@ -1,4 +1,4 @@
-/******
+﻿/******
 Copyright (C) 2005 Ajit Krishnan (http://www.mudgala.com)
 
 This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@ using Mhora.Definitions;
 using Mhora.Elements.Extensions;
 using Mhora.SwissEph;
 using Mhora.Util;
+using Mhora.Yoga;
 
 namespace Mhora.Elements;
 
@@ -129,20 +130,11 @@ public partial class Horoscope : ICloneable
 	}
 
 
-	public Rashis FindRashis(Division division)
-	{
-		return (FindRashis(division.MultipleDivisions[0].Varga));
-	}
+	public Rashis FindRashis(Division division) => (FindRashis(division.MultipleDivisions[0].Varga));
 
-	public Rashis FindRashis(DivisionType varga)
-	{
-		return FindGrahas(varga);
-	}
+	public Rashis FindRashis(DivisionType varga) => FindGrahas(varga);
 
-	public Grahas FindGrahas(Division division)
-	{
-		return (FindGrahas(division.MultipleDivisions[0].Varga));
-	}
+	public Grahas FindGrahas(Division division) => (FindGrahas(division.MultipleDivisions[0].Varga));
 
 	public Grahas FindGrahas(DivisionType varga)
 	{
@@ -150,10 +142,10 @@ public partial class Horoscope : ICloneable
 		{
 			grahas = new Grahas(this, varga);
 			_grahas.Add(varga, grahas);
+			grahas.Examine();
 		}
 		try
 		{
-			grahas.Examine();
 			return (grahas);
 		}
 		catch (Exception e)
@@ -209,6 +201,11 @@ public partial class Horoscope : ICloneable
 	{
 		int correct = 0;
 
+		if (CheckSunLagna())
+		{
+			correct++;
+		}
+
 		if (CheckBirthTime1())
 		{
 			correct++;
@@ -254,7 +251,7 @@ public partial class Horoscope : ICloneable
 			correct++;
 		}
 
-		if (CheckKundaMoon())
+		if (CheckMoon() > 2)
 		{
 			correct++;
 		}
@@ -269,6 +266,46 @@ public partial class Horoscope : ICloneable
 		}
 
 		return correct;
+	}
+
+	//if lagna stays in same sign when sun increases 1' of arc, then the IG decreases 1/6th of a ghati = - 0.1666 ghati ( = 24mn/6 = - 4mn)
+	//if lagna stays in same sign when sun increases 0'10’ of arc the IG decreases 1/36th of a ghati = - 0.02777 ghati ( = 24mn/36 = - 40sec)
+	//if lagna stays in same sign when sun increases 0'01’ of arc the IG decreases 1/360th of a ghati = - 0.002777 ghati ( = 24mn/360 = - 4sec)
+	//if ayanamsa increases 45’ of arc then sun longitude will be + 45’  so IG will increasey ¾ of 146 = +2/9 Ghatis= +0.2222 Gh. = +5.33mn.= +5mn & 20 sec
+	//if ayanamsa decreases 45’ of arc then sun longitude will be - 45’  so IG will decreasey ¾ of 146 = -2/9 Ghatis= -0.2222 Gh. = -5.33mn.= -5mn & 20 sec
+	public bool CheckSunLagna()
+	{
+		var maxDiff    = (0.1666 * 6) / 30;
+		var lagna      = FindGrahas (DivisionType.Rasi)[Body.Lagna];
+		var sun        = FindGrahas (DivisionType.Rasi)[Body.Sun];
+		var ishtaghati = Vara.Isthaghati.Ghati;
+		var sunOffset  = sun.Position.Longitude.ToZodiacHouseOffset();
+		var offset     = ((ishtaghati * 6) + sunOffset) / 30;
+		var bhava      = lagna.Bhava.HousesFrom(sun.Bhava);
+
+		var diff =  Math.Abs((offset + 1) - bhava);
+
+		if (diff < maxDiff)
+		{
+			return (true);
+		}
+
+		if (sunOffset < 0.5)
+		{
+			if ((diff - 1) < maxDiff)
+			{
+				return (true);
+			}
+		}
+		else if (sunOffset > 29.5)
+		{
+			if ((diff + 1) < maxDiff)
+			{
+				return (true);
+			}
+		}
+
+		return (false);
 	}
 
 	public bool CheckPranaPadaD1()
@@ -294,14 +331,14 @@ public partial class Horoscope : ICloneable
 	{
 		//Pranapada lagna in Navamsa in trines or 7th to swamsa or navamsa Moon
 		var pp     = FindGrahas(DivisionType.Navamsa)[Body.Pranapada];
-		var m�on   = FindGrahas(DivisionType.Navamsa)[Body.Moon];
+		var mòon   = FindGrahas(DivisionType.Navamsa)[Body.Moon];
 		var swamsa = FindGrahas(DivisionType.Navamsa)[Body.Lagna];
 
-		if (pp.HouseFrom(m�on) == Bhava.JayaBhava)
+		if (pp.HouseFrom(mòon) == Bhava.JayaBhava)
 		{
 			return (true);
 		}
-		if (pp.HouseFrom(m�on).IsTrikona())
+		if (pp.HouseFrom(mòon).IsTrikona())
 		{
 			return (true);
 		}
@@ -358,24 +395,55 @@ public partial class Horoscope : ICloneable
 		return (false);
 	}
 
-	//if the Kunda (Navamsa-Navamsa) longitude of Lagna conjunct with the Nakshatra of Natal Moon
+	//if the longitude of Lagna conjunct with the Nakshatra of Natal Moon
 	//or its trine Nakshatras the given BT can be considered correct 
-	public bool CheckKundaMoon()
+	public bool CheckLagnaMoon(DivisionType varga)
 	{
-		var kunda = FindGrahas(DivisionType.NavaNavamsa)[Body.Lagna];
+		var lagna = FindGrahas(varga)[Body.Lagna];
 		var moon  = FindGrahas(DivisionType.Rasi)[Body.Moon];
 
-		if (moon.Position.Longitude.ToNakshatra() == kunda.Position.Longitude.ToNakshatra())
+		if (moon.Position.Longitude.ToNakshatra() == lagna.Position.Longitude.ToNakshatra())
 		{
 			return (true);
 		}
 
-		if (moon.HouseFrom(kunda).IsTrikona())
+		if (moon.HouseFrom(lagna).IsTrikona())
 		{
 			return (true);
 		}
 
 		return (false);
+	}
+
+	//1) The Navamsa longitude of Lagna (Lagna longitude x 9) should fall in the Moon Nakshatra or its trines.
+	//2) The Navamsa-Navamsa longitude of Lagna (Lagna longitude x 81) should fall in the Moon Nakshatra or its trines.
+	//3) The Dwadasamsa longitude of Lagna (Lagna longitude x 12) should fall in the  Moon Nakshatra or its trines.
+	//4) The Navamsa-Dwadasamsa longitude of Lagna (Lagna longitude x 108) should fall in the Moon Nakshatra or its trines.
+	public int CheckMoon()
+	{
+		int correct = 0;
+
+		if (CheckLagnaMoon(DivisionType.Navamsa))
+		{
+			correct++;
+		}
+
+		if (CheckLagnaMoon(DivisionType.NavaNavamsa))
+		{
+			correct++;
+		}
+
+		if (CheckLagnaMoon(DivisionType.Dwadasamsa))
+		{
+			correct++;
+		}
+
+		if (CheckLagnaMoon(DivisionType.NavamsaDwadasamsa))
+		{
+			correct++;
+		}
+
+		return (correct);
 	}
 
 	// Ketu is our past life karma, dropping us in this incarnation. 
@@ -415,14 +483,14 @@ public partial class Horoscope : ICloneable
 	}
 
 
-	// From the time of sun � rise (LMT) to the given LMT of
+	// From the time of sun – rise (LMT) to the given LMT of
 	// birth, note Ghati and Vighati that have elapsed. Convert
 	// this duration of time into Vighatis, multiply by 4 and divide
 	// by 9. The remainder counted from Aswini, Magha and
 	// Moola should give constellation at the time of birth.
 	bool CheckBirthTime1()
 	{
-		var vighati = (int) Vara.HoursAfterSunrise.Vighati * 4;
+		var vighati = (int) Vara.Isthaghati.Vighati * 4;
 		var offset  = (vighati % 9);
 
 		var lagna     = _grahas[DivisionType.Rasi][Body.Lagna];
@@ -443,7 +511,7 @@ public partial class Horoscope : ICloneable
 	// constellation.
 	bool CheckBirthTime2()
 	{
-		var vighati = (int) Vara.HoursAfterSunrise.Vighati;
+		var vighati = (int) Vara.Isthaghati.Vighati;
 		vighati *= 2;
 
 		var lagna     = _grahas[DivisionType.Rasi][Body.Lagna];
@@ -478,7 +546,7 @@ public partial class Horoscope : ICloneable
 	// agree with day of birth.
 	bool CheckBirthTime3()
 	{
-		var vighati = (int) Vara.HoursAfterSunrise.Vighati;
+		var vighati = (int) Vara.Isthaghati.Vighati;
 		vighati *= 3;
 
 		var offset    = vighati % 7;
@@ -492,14 +560,14 @@ public partial class Horoscope : ICloneable
 	}
 
 
-	// From the time of sun � rise (LMT) to the given LMT of
+	// From the time of sun – rise (LMT) to the given LMT of
 	// birth, note Ghati and Vighati that have elapsed. Convert
 	// this duration of time into Vighatis, multiply by 4 and divide
 	// by 9. The remainder counted from Aswini, Magha and
 	// Moola should give constellation at the time of birth.
 	public Kuta.Sex GetSex1()
 	{
-		var vighati = (int) Vara.HoursAfterSunrise.Vighati;
+		var vighati = (int) Vara.Isthaghati.Vighati;
 		vighati %= 225;
 
 		if (vighati <= 15)
@@ -532,7 +600,7 @@ public partial class Horoscope : ICloneable
 	//  Prithvi (6 mnts.), Jal (12 mnts.), Agni (18 mnts.), Vayu (24 mnts.), and Akash (30 mnts.)
 	public Kuta.Sex GetSex2 ()
 	{
-		var hoursAfterBirth = Vara.HoursAfterSunrise.TotalMinutes;
+		var hoursAfterBirth = Vara.Isthaghati.TotalMinutes;
 		var offset          = hoursAfterBirth % 90;
 
 		var element = 6;

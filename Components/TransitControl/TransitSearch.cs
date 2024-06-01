@@ -423,10 +423,7 @@ public class TransitSearch : MhoraControl
 		Reset();
 	}
 
-	public object SetOptions(object o)
-	{
-		return opts.CopyFrom(o);
-	}
+	public object SetOptions(object o) => opts.CopyFrom(o);
 
 	private void bOpts_Click(object sender, EventArgs e)
 	{
@@ -571,7 +568,7 @@ public class TransitSearch : MhoraControl
 		}
 
 		var dp                = h.GetPosition(opts.SearchBody).ToDivisionPosition(opts.Division);
-		var yearlyProgression = (dp.CuspHigher - dp.CuspLower) / 30.0;
+		var yearlyProgression = (dp.Cusp.Upper - dp.Cusp.Lower) / 30.0;
 		var julday_ut         = (JulianDate) opts.StartDate;
 
 		if (julday_ut <= h.Info.Jd)
@@ -828,7 +825,7 @@ public class TransitSearch : MhoraControl
 				var ut_diff = hTransitNext.Info.Jd.Date - hTransit.Info.Jd;
 				hTransit.Info.DefaultYearCompression = 1;
 				hTransit.Info.DefaultYearLength      = ut_diff.TotalDays;
-				hTransit.Info.DefaultYearType        = ToDate.DateType.FixedYear;
+				hTransit.Info.DefaultYearType        = DateType.FixedYear;
 			}
 		}
 
@@ -857,7 +854,7 @@ public class TransitSearch : MhoraControl
 				var ut_diff = hTransit.Info.Jd.Date - hTransitPrev.Info.Jd;
 				hTransit.Info.DefaultYearCompression = 1;
 				hTransit.Info.DefaultYearLength      = ut_diff.TotalDays;
-				hTransit.Info.DefaultYearType        = ToDate.DateType.FixedYear;
+				hTransit.Info.DefaultYearType        = DateType.FixedYear;
 			}
 		}
 
@@ -900,7 +897,7 @@ public class TransitSearch : MhoraControl
 		h2.Info.DateOfBirth = opts.StartDate;
 		h2.OnChanged();
 		var dp = h2.GetPosition(opts.SearchBody).ToDivisionPosition(opts.Division);
-		opts.TransitPoint = new Longitude(dp.CuspLower);
+		opts.TransitPoint = dp.Cusp.Lower;
 
 		var found_ut = StartSearch(false).Lmt(h);
 		UpdateDateForNextSearch(found_ut);
@@ -919,7 +916,7 @@ public class TransitSearch : MhoraControl
 		h2.Info.DateOfBirth = opts.StartDate;
 		h2.OnChanged();
 		var dp = h2.GetPosition(opts.SearchBody).ToDivisionPosition(opts.Division);
-		opts.TransitPoint = new Longitude(dp.CuspHigher);
+		opts.TransitPoint = dp.Cusp.Upper;
 		opts.TransitPoint = opts.TransitPoint.Add(1.0 / (60.0 * 60.0 * 60.0));
 
 		var found_ut = StartSearch(false).Lmt(h);
@@ -969,13 +966,13 @@ public class TransitSearch : MhoraControl
 			var found_lon = r.GetLon(found_ut, bForward);
 
 
-			if (new Longitude(dp.CuspHigher).IsBetween(bp.Longitude, found_lon))
+			if (dp.Cusp.Upper.IsBetween(bp.Longitude, found_lon))
 			{
 				bTransitForwardCusp = true;
 				break;
 			}
 
-			if (new Longitude(dp.CuspLower).IsBetween(found_lon, bp.Longitude))
+			if (dp.Cusp.Lower.IsBetween(found_lon, bp.Longitude))
 			{
 				bTransitForwardCusp = false;
 				break;
@@ -1004,13 +1001,13 @@ public class TransitSearch : MhoraControl
 
 		if (bTransitForwardCusp)
 		{
-			opts.TransitPoint = dp.CuspHigher;
+			opts.TransitPoint = dp.Cusp.Upper;
 			updateOptions();
 			bStartSearch_Click(sender, e);
 		}
 		else
 		{
-			opts.TransitPoint = dp.CuspLower;
+			opts.TransitPoint = dp.Cusp.Lower;
 			updateOptions();
 			bStartSearch_Click(sender, e);
 		}

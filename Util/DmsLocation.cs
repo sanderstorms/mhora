@@ -11,9 +11,6 @@
 		public DmsPoint Latitude  { get; set; }
 		public DmsPoint Longitude { get; set; }
 
-		public override string ToString()
-		{
-			return $"{Latitude.String}, {Longitude.String}";
-		}
+		public override string ToString() => $"{Latitude.String}, {Longitude.String}";
 	}
 }

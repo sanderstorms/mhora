@@ -27,6 +27,7 @@ using Mhora.Components.VargaControl;
 using Mhora.Dasas.NakshatraDasa;
 using Mhora.Database.Settings;
 using Mhora.Definitions;
+using Mhora.Divisions;
 using Mhora.Elements;
 using Mhora.Elements.Extensions;
 using Mhora.Util;
@@ -585,8 +586,8 @@ public class BasicCalculationsControl : MhoraControl
 			var dp            = h.GetPosition(b).ToDivisionPosition(DivisionType.Panchamsa);
 			var avastha_index = (dp.ZodiacHouse.Index() % 2) switch
 			                    {
-				                    1 => dp.Part,
-				                    0 => 6 - dp.Part,
+				                    1 => dp.Cusp.Part,
+				                    0 => 6 - dp.Cusp.Part,
 				                    _ => -1
 			                    };
 
@@ -616,11 +617,11 @@ public class BasicCalculationsControl : MhoraControl
 
 			if (dirForward)
 			{
-				l = n.Add(Bodies.LattaAspects[i]);
+				l = n.Add(Nakshatras.LattaAspects[i]);
 			}
 			else
 			{
-				l = n.AddReverse(Bodies.LattaAspects[i]);
+				l = n.AddReverse(Nakshatras.LattaAspects[i]);
 			}
 
 			var nak_fmt = string.Empty;
@@ -638,7 +639,7 @@ public class BasicCalculationsControl : MhoraControl
 			}
 
 			var li  = new ListViewItem(b.Name());
-			var fmt = string.Format("{0:00}-{1}", Bodies.LattaAspects[i], l);
+			var fmt = string.Format("{0:00}-{1}", Nakshatras.LattaAspects[i], l);
 			li.SubItems.Add(fmt);
 			li.SubItems.Add(nak_fmt);
 			mList.Items.Add(li);
@@ -707,46 +708,23 @@ public class BasicCalculationsControl : MhoraControl
 		ResizeColumns();
 	}
 
-	private string getNakLord(Longitude l)
+	private Body GetNakLord(Longitude l)
 	{
-		INakshatraDasa id = null;
-		switch (options.NakshatraLord)
-		{
-			default:
-			case Dasas.Dasas.NakshatraLord.Vimsottari:
-				id = new VimsottariDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Ashtottari:
-				id = new AshtottariDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Yogini:
-				id = new YoginiDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Shodashottari:
-				id = new ShodashottariDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Dwadashottari:
-				id = new DwadashottariDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Panchottari:
-				id = new PanchottariDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.Shatabdika:
-				id = new ShatabdikaDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.ChaturashitiSama:
-				id = new ChaturashitiSamaDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.DwisaptatiSama:
-				id = new DwisaptatiSamaDasa(h);
-				break;
-			case Dasas.Dasas.NakshatraLord.ShatTrimshaSama:
-				id = new ShatTrimshaSamaDasa(h);
-				break;
-		}
-
-		var b = id.LordOfNakshatra(l.ToNakshatra());
-		return b.ToString();
+		var nakshatra = l.ToNakshatra();
+		return options.NakshatraLord switch
+	       {
+		       NakshatraLord.Vimsottari       => VimsottariDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Ashtottari       => AshtottariDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Yogini           => YoginiDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Shodashottari    => ShodashottariDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Dwadashottari    => DwadashottariDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Panchottari      => PanchottariDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.Shatabdika       => ShatabdikaDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.ChaturashitiSama => ChaturashitiSamaDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.DwisaptatiSama   => DwisaptatiSamaDasa.NakshatraLord(nakshatra),
+		       NakshatraLord.ShatTrimshaSama  => ShatTrimshaSamaDasa.NakshatraLord(nakshatra),
+		       _                              => VimsottariDasa.NakshatraLord(nakshatra)
+	       };
 	}
 
 	private void RepopulateHouseCusps()
@@ -801,11 +779,11 @@ public class BasicCalculationsControl : MhoraControl
 			var dp = bp.ToDivisionPosition(options.DivisionType);
 			var li = new ListViewItem
 			{
-				Text = longitudeToString(new Longitude(dp.CuspLower))
+				Text = longitudeToString(dp.Cusp.Lower)
 			};
-			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
+			li.SubItems.Add(longitudeToString(dp.Cusp.Upper));
 			li.SubItems.Add(dp.ZodiacHouse.ToString());
-			bp.Longitude = new Longitude(dp.CuspHigher + 1);
+			bp.Longitude = dp.Cusp.Upper.Add(1.0);
 			mList.Items.Add(li);
 		}
 
@@ -890,12 +868,10 @@ public class BasicCalculationsControl : MhoraControl
 		mList.Columns.Add("Nakshatra", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("Pada", -1, HorizontalAlignment.Left);
 		mList.Columns.Add("NakLord", -1, HorizontalAlignment.Left);
-		mList.Columns.Add(options.DivisionType.ToString(), 100, HorizontalAlignment.Left);
 		mList.Columns.Add("Part", -1, HorizontalAlignment.Left);
-		mList.Columns.Add("Ruler", -1, HorizontalAlignment.Left);
-		mList.Columns.Add("Cusp Start", -1, HorizontalAlignment.Left);
-		mList.Columns.Add("Cusp End", -2, HorizontalAlignment.Left);
-		mList.Columns.Add("Avastha", -2, HorizontalAlignment.Left);
+		mList.Columns.Add("Condition", -1, HorizontalAlignment.Left);
+
+		var parts = options.DivisionType.NumPartsInDivision();
 
 
 		foreach (Position bp in h.PositionList)
@@ -918,17 +894,12 @@ public class BasicCalculationsControl : MhoraControl
 			li.SubItems.Add(longitudeToString(bp.Longitude));
 			li.SubItems.Add(bp.Longitude.ToNakshatra().ToString());
 			li.SubItems.Add(bp.Longitude.NakshatraPada().ToString());
-			li.SubItems.Add(getNakLord(bp.Longitude));
-
-			var dp = bp.ToDivisionPosition(options.DivisionType);
-			li.SubItems.Add(dp.ZodiacHouse.ToString());
-			li.SubItems.Add(dp.Part.ToString());
-			li.SubItems.Add(bp.AmsaRuler( options.DivisionType, dp.RulerIndex));
-			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspLower)));
-			li.SubItems.Add(longitudeToString(new Longitude(dp.CuspHigher)));
+			li.SubItems.Add(GetNakLord(bp.Longitude).ToString());
+			li.SubItems.Add(bp.Longitude.PartOfZodiacHouse(parts).ToString());
 			if (bp.BodyType == BodyType.Graha)
 			{
-				li.SubItems.Add(h.SayanadiAvastha(bp.Name).ToString());
+				var graha = h.FindGrahas(options.DivisionType)[bp.Name];
+				li.SubItems.Add(graha.Conditions.ToString());
 			}
 			else
 			{
@@ -1221,7 +1192,7 @@ public class BasicCalculationsControl : MhoraControl
 			set;
 		}
 
-		public Dasas.Dasas.NakshatraLord NakshatraLord
+		public NakshatraLord NakshatraLord
 		{
 			get;
 			set;

@@ -613,15 +613,9 @@ public static class ZodiacHouses
 		return ((ZodiacHouse) znum);
 	}
 
-	public static int Normalize(this ZodiacHouse zodiacHouse)
-	{
-		return zodiacHouse.Index ().NormalizeInc(1, 12);
-	}
+	public static int Normalize(this ZodiacHouse zodiacHouse) => zodiacHouse.Index ().NormalizeInc(1, 12);
 
-	public static int NumHousesBetweenReverse(this ZodiacHouse zodiacHouse, ZodiacHouse zrel)
-	{
-		return (14 - zodiacHouse.NumHousesBetween(zrel)).NormalizeInc(1, 12);
-	}
+	public static int NumHousesBetweenReverse(this ZodiacHouse zodiacHouse, ZodiacHouse zrel) => (14 - zodiacHouse.NumHousesBetween(zrel)).NormalizeInc(1, 12);
 
 	public static int NumHousesBetween(this ZodiacHouse zodiacHouse, ZodiacHouse zrel)
 	{
@@ -630,10 +624,7 @@ public static class ZodiacHouses
 		return ret;
 	}
 
-	public static Longitude Origin (this ZodiacHouse zodiacHouse)
-	{
-		return new Longitude((zodiacHouse.Index() - 1) * 30.0);
-	}
+	public static Longitude Origin (this ZodiacHouse zodiacHouse) => new((zodiacHouse.Index() - 1) * 30.0);
 
 	public static Longitude DivisionalLongitude(this ZodiacHouse zodiacHouse, Longitude longitude, int nrOfDivisions)
 	{
@@ -674,4 +665,96 @@ public static class ZodiacHouses
 		return perc;
 	}
 
+	public static bool PushkarNavamsa(this Position position)
+	{
+		var navamsa     = position.ToDivisionPosition(DivisionType.Navamsa).Longitude.ToZodiacHouse();
+		switch (position.Longitude.ToZodiacHouse())
+		{
+			case ZodiacHouse.Ari:
+			case ZodiacHouse.Leo:
+			case ZodiacHouse.Sag:
+				switch (navamsa)
+				{
+					case ZodiacHouse.Ari:
+					case ZodiacHouse.Sag:
+						return true;
+				}
+				break;
+
+			case ZodiacHouse.Tau:
+			case ZodiacHouse.Vir:
+			case ZodiacHouse.Cap:
+				switch (navamsa)
+				{
+					case ZodiacHouse.Pis:
+					case ZodiacHouse.Tau:
+						return true;
+				}
+				break;
+
+			case ZodiacHouse.Gem:
+			case ZodiacHouse.Lib:
+			case ZodiacHouse.Aqu:
+				switch (navamsa)
+				{
+					case ZodiacHouse.Pis:
+					case ZodiacHouse.Tau:
+						return true;
+				}
+				break;
+
+			case ZodiacHouse.Can:
+			case ZodiacHouse.Sco:
+			case ZodiacHouse.Pis:
+				switch (navamsa)
+				{
+					case ZodiacHouse.Can:
+					case ZodiacHouse.Vir:
+						return true;
+				}
+				break;
+		}
+
+		return false;
+	}
+
+	// 21º Aries (Libra Navamsa)
+	// 19º Leo (Virgo navamsa)
+	// 23º Sagittarius (Libra Navamsa)
+	// These three in Venus nakshatras and Fire signs
+	// 
+	// 14º Taurus (Taurus navamsa and vargotamma- Moon nakshatra),
+	// 9º Virgo (Pisces navamsa- Sun nakshatra),
+	// 14º Capricorn (Taurus Navamsa- Moon nakshatra)
+	// Above Three in Earth signs
+	// 
+	// 18º Gemini (Pisces navamsa- Rahu nakshatra),
+	// 24º Libra (Taurus Navamsa- Jupiter nakshatra),
+	// 19º Aquarius (Pisces Navamsa- Rahu nakshatra)
+	// Above three in Air signs
+	// 
+	// 8º Cancer (Virgo Navamsa)
+	// 11º Scorpio (Libra Navamsa),
+	// 9º Pisces (Virgo Navamsa)
+	// Above three in Saturn nakshatras and Water signs
+	public static bool PushkaraBhaga(this Position position)
+	{
+		var navamsa     = position.ToDivisionPosition(DivisionType.Navamsa).Longitude.ToZodiacHouse();
+		return position.Longitude.ToZodiacHouse() switch
+		{
+			ZodiacHouse.Ari => navamsa == ZodiacHouse.Lib,
+			ZodiacHouse.Leo => navamsa == ZodiacHouse.Vir,
+			ZodiacHouse.Sag => navamsa == ZodiacHouse.Lib,
+			ZodiacHouse.Tau => navamsa == ZodiacHouse.Tau,
+			ZodiacHouse.Vir => navamsa == ZodiacHouse.Pis,
+			ZodiacHouse.Cap => navamsa == ZodiacHouse.Tau,
+			ZodiacHouse.Gem => navamsa == ZodiacHouse.Pis,
+			ZodiacHouse.Lib => navamsa == ZodiacHouse.Tau,
+			ZodiacHouse.Aqu => navamsa == ZodiacHouse.Pis,
+			ZodiacHouse.Can => navamsa == ZodiacHouse.Vir,
+			ZodiacHouse.Sco => navamsa == ZodiacHouse.Lib,
+			ZodiacHouse.Pis => navamsa == ZodiacHouse.Vir,
+			_               => throw new IndexOutOfRangeException()
+		};
+	}
 }

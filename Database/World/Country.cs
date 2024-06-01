@@ -150,13 +150,7 @@ public class Country : SQLiteBaseObject, IComparable
 	}
 
 	[SQLiteColumn(Ignore = true)]
-	public TimeZone TimeZone
-	{
-		get
-		{
-			return TimeZone.TimeZones.FindId(Timezones[0].zoneName);
-		}
-	}
+	public TimeZone TimeZone => TimeZone.TimeZones.FindId(Timezones[0].zoneName);
 
 	[SQLiteColumn(Ignore = true)]
 	public Dictionary<string, string> Translations
@@ -191,10 +185,7 @@ public class Country : SQLiteBaseObject, IComparable
 		return 0;
 	}
 
-	public override string ToString()
-	{
-		return $"{Name} ({Region?.Name})";
-	}
+	public override string ToString() => $"{Name} ({Region?.Name})";
 
 	private class TzInfo
 	{

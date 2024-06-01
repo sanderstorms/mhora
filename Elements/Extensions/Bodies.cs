@@ -101,6 +101,18 @@ public static class Bodies
 		Body.Rahu
 	];
 
+	public static readonly Body[] WeekDayOrder =
+	[
+		Body.Sun,
+		Body.Moon,
+		Body.Mars,
+		Body.Jupiter,
+		Body.Mercury,
+		Body.Venus,
+		Body.Saturn,
+		Body.Rahu,
+	];
+
 
 	public static readonly string[] Karakas =
 	[
@@ -148,18 +160,6 @@ public static class Bodies
 		"DK"
 	];
 
-	public static readonly int[] LattaAspects =
-	[
-		12,
-		22,
-		3,
-		7,
-		6,
-		5,
-		8,
-		9
-	];
-
 	public static int SwephBody(this Body b)
 	{
 		return b switch
@@ -171,6 +171,9 @@ public static class Bodies
 			       Body.Jupiter => sweph.SE_JUPITER,
 			       Body.Venus   => sweph.SE_VENUS,
 			       Body.Saturn  => sweph.SE_SATURN,
+				   Body.Uranus	=> sweph.SE_URANUS,
+				   Body.Pluto   => sweph.SE_PLUTO,
+				   Body.Neptune => sweph.SE_NEPTUNE,
 			       Body.Lagna   => sweph.SE_BIT_NO_REFRACTION,
 			       Body.Rahu    => sweph.SE_MEAN_NODE,
 			       Body.Ketu    => sweph.SE_MEAN_NODE,
@@ -197,10 +200,7 @@ public static class Bodies
 		return new Longitude(d);
 	}
 
-	public static Longitude DebilitationDegree(this Body b)
-	{
-		return ExaltationDegree(b).Add(180.0);
-	}
+	public static Longitude DebilitationDegree(this Body b) => ExaltationDegree(b).Add(180.0);
 
 	public static string Name(this Body b)
 	{
@@ -214,6 +214,9 @@ public static class Bodies
 			       Body.Jupiter => "Jupiter",
 			       Body.Venus   => "Venus",
 			       Body.Saturn  => "Saturn",
+				   Body.Uranus  => "Uranus",
+				   Body.Pluto	=> "Pluto",
+				   Body.Neptune => "Neptune",
 			       Body.Rahu    => "Rahu",
 			       Body.Ketu    => "Ketu",
 			       _            => string.Empty
@@ -222,37 +225,41 @@ public static class Bodies
 
 	public static string ToShortString(this Body b)
 	{
-		switch (b)
-		{
-			case Body.Lagna:        return "As";
-			case Body.Sun:          return "Su";
-			case Body.Moon:         return "Mo";
-			case Body.Mars:         return "Ma";
-			case Body.Mercury:      return "Me";
-			case Body.Jupiter:      return "Ju";
-			case Body.Venus:        return "Ve";
-			case Body.Saturn:       return "Sa";
-			case Body.Rahu:         return "Ra";
-			case Body.Ketu:         return "Ke";
-			case Body.AL:           return "AL";
-			case Body.A2:           return "A2";
-			case Body.A3:           return "A3";
-			case Body.A4:           return "A4";
-			case Body.A5:           return "A5";
-			case Body.A6:           return "A6";
-			case Body.A7:           return "A7";
-			case Body.A8:           return "A8";
-			case Body.A9:           return "A9";
-			case Body.A10:          return "A10";
-			case Body.A11:          return "A11";
-			case Body.UL:           return "UL";
-			case Body.GhatiLagna:   return "GL";
-			case Body.BhavaLagna:   return "BL";
-			case Body.HoraLagna:    return "HL";
-			case Body.VighatiLagna: return "ViL";
-			case Body.SreeLagna:    return "SL";
-			case Body.Pranapada:    return "PL";
-		}
+		return b switch
+	       {
+		       Body.Lagna        => "As",
+		       Body.Sun          => "Su",
+		       Body.Moon         => "Mo",
+		       Body.Mars         => "Ma",
+		       Body.Mercury      => "Me",
+		       Body.Jupiter      => "Ju",
+		       Body.Venus        => "Ve",
+		       Body.Saturn       => "Sa",
+		       Body.Uranus       => "Ur",
+		       Body.Pluto        => "Pl",
+		       Body.Neptune      => "Ne",
+		       Body.Rahu         => "Ra",
+		       Body.Ketu         => "Ke",
+		       Body.AL           => "AL",
+		       Body.A2           => "A2",
+		       Body.A3           => "A3",
+		       Body.A4           => "A4",
+		       Body.A5           => "A5",
+		       Body.A6           => "A6",
+		       Body.A7           => "A7",
+		       Body.A8           => "A8",
+		       Body.A9           => "A9",
+		       Body.A10          => "A10",
+		       Body.A11          => "A11",
+		       Body.UL           => "UL",
+		       Body.GhatiLagna   => "GL",
+		       Body.BhavaLagna   => "BL",
+		       Body.HoraLagna    => "HL",
+		       Body.VighatiLagna => "ViL",
+		       Body.SreeLagna    => "SL",
+		       Body.Pranapada    => "PL",
+		       _                 => throw new ArgumentOutOfRangeException(nameof(b), b, null)
+	       };
 
 		Trace.Assert(false, "Basics.Body.toShortString");
 		return "   ";

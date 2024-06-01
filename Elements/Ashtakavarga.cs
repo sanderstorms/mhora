@@ -96,10 +96,7 @@ public class Ashtakavarga
 
 	}
 
-	public int BodyToInt(Body b)
-	{
-		return Array.IndexOf(_avBodies, b);
-	}
+	public int BodyToInt(Body b) => Array.IndexOf(_avBodies, b);
 
 	public Body[] Bodies => _avBodies;
 

@@ -13,10 +13,7 @@ namespace Mhora.Util
 			_nr   = value.Index();
 		}
 
-		public override string ToString()
-		{
-			return Description;
-		}
+		public override string ToString() => Description;
 
 		public static implicit operator Enum(EnumValue enumValue) => enumValue.Value;
 		public static implicit operator EnumValue (Enum value) => new EnumValue (value);

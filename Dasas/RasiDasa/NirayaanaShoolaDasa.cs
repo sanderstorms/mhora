@@ -38,10 +38,7 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 		_options = new RasiDasaUserOptions(_h, _h.RulesNarayanaDasaRasi());
 	}
 
-	public double ParamAyus()
-	{
-		return 96;
-	}
+	public double ParamAyus() => 96;
 
 	public void RecalculateOptions()
 	{
@@ -93,15 +90,9 @@ public class NirayaanaShoolaDasa : Dasa, IDasa
 		return nd.AntarDasa(pdi);
 	}
 
-	public string Description()
-	{
-		return "Niryaana Shoola Dasa" + " seeded from " + _options.SeedZodiacHouse;
-	}
+	public string Description() => "Niryaana Shoola Dasa" + " seeded from " + _options.SeedZodiacHouse;
 
-	public object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public object GetOptions() => _options.Clone();
 
 	public object SetOptions(object a)
 	{

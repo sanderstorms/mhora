@@ -30,8 +30,5 @@ public class TransitItem : ListViewItem
 		h = _h;
 	}
 
-	public Horoscope GetHoroscope()
-	{
-		return h;
-	}
+	public Horoscope GetHoroscope() => h;
 }

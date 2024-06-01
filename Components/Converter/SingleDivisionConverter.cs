@@ -36,10 +36,7 @@ internal class SingleDivisionConverter : ExpandableObjectConverter
 		return base.CanConvertFrom(context, t);
 	}
 
-	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
-	{
-		return new Division.SingleDivision(DivisionType.Rasi);
-	}
+	public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value) => new Division.SingleDivision(DivisionType.Rasi);
 
 	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destType)
 	{

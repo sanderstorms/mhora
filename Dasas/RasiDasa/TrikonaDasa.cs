@@ -59,10 +59,7 @@ public class TrikonaDasa : Dasa, IDasa
 		_options.Recalculate();
 	}
 
-	public double ParamAyus()
-	{
-		return 144;
-	}
+	public double ParamAyus() => 144;
 
 	public List<DasaEntry> Dasa(int cycle)
 	{
@@ -127,15 +124,9 @@ public class TrikonaDasa : Dasa, IDasa
 		return nd.AntarDasa(pdi);
 	}
 
-	public string Description()
-	{
-		return "Trikona Dasa seeded from " + _options.SeedZodiacHouse;
-	}
+	public string Description() => "Trikona Dasa seeded from " + _options.SeedZodiacHouse;
 
-	public object GetOptions()
-	{
-		return _options.Clone();
-	}
+	public object GetOptions() => _options.Clone();
 
 	public object SetOptions(object a)
 	{

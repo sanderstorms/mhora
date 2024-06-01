@@ -9,7 +9,7 @@ namespace Mhora.Yoga
 	{
 		//The Sun in Simha Lagna, under the association or aspect of Mars and Jupiter.
 		//Strong Lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
-		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
+		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts.
 		public static bool DhanaSurya(this Grahas grahas)
 		{
 			byte yoga = 0;
@@ -47,7 +47,7 @@ namespace Mhora.Yoga
 
 		//The Jupiter occupying the 5th house identical with its own rashi (Dhanu/Meena), and Mercury in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable to examine the
-		//dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
+		//dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaGuru5th(this Grahas grahas)
 		{
 			var jupiter = grahas.Find(Body.Jupiter);
@@ -105,7 +105,7 @@ namespace Mhora.Yoga
 
 		//The Moon in Karka Lagna, under the influence of Mercury and Jupiter.
 		//Strong Lagna should be there. This combination lead to excessive wealth. This yoga generally related
-		//to one’s profession, it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
+		//to one’s profession, it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts.
 		public static bool DhanaChandra(this Grahas grahas)
 		{
 			var moon = grahas.Find(Body.Moon);
@@ -131,7 +131,7 @@ namespace Mhora.Yoga
 
 		//The 2nd lord is associtating with the 5th or the 9th or the 11th lord.
 		//This Yoga is for wealth and financial prosperity. This yoga generally related to one’s profession,
-		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
+		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool Dhana2ndHouseLord(this Grahas grahas)
 		{
 			var lord  = grahas.Rashis.Find(Bhava.DhanaBhava).Lord;
@@ -156,7 +156,7 @@ namespace Mhora.Yoga
 
 		//The Venus in its own rashi (Vrischika/Tula) in the lagna, under the influence of Mercury and Saturn.
 		//Strong lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
-		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
+		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts.
 		public static bool DanaShukraLagna(this Grahas grahas)
 		{
 			var  venus = grahas.Find(Body.Venus);
@@ -218,7 +218,7 @@ namespace Mhora.Yoga
 
 		//The Mercury occupying the 5th house identical with its own rashi(Mithuna/Kanya), with the Moon, Mars and Jupiter in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable to examine the
-		//dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
+		//dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaBuddh5th(this Grahas grahas)
 		{
 			var mercury = grahas.Find(Body.Mercury);
@@ -257,7 +257,7 @@ namespace Mhora.Yoga
 
 		//The Mercury in its own rashi(Mithuna/Kanya) in the Lagna, under the influence of Jupiter and Saturn.
 		//Strong lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
-		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts
+		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts
 		public static bool DhanaBuddhLagna(this Grahas grahas)
 		{
 			var mercury = grahas.Find(Body.Mercury);
@@ -286,7 +286,7 @@ namespace Mhora.Yoga
 
 		//The Venus occupying the 5th house identical with its own rashi(Vrisha/Tula), and Mars placed in the Lagna.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable
-		//to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
+		//to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaShukra5th (this Grahas grahas)
 		{
 			var venus = grahas.Find(Body.Venus);
@@ -310,7 +310,7 @@ namespace Mhora.Yoga
 
 		//The Jupiter in its own rashi(Dhanu/Meena) in the lagna, under the influence of Mars and Mercury.
 		//Strong lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
-		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
+		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts.
 		public static bool DhanaGuruLagna(this Grahas grahas)
 		{
 			var jupiter = grahas.Find(Body.Jupiter);
@@ -339,7 +339,7 @@ namespace Mhora.Yoga
 
 		//The Saturn in its own rashi (Makara/Kumbha) in the lagna, under the influence of Mars and Jupiter.
 		//Strong lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
-		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
+		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts.
 		public static bool DhanaShaniLagna(this Grahas grahas)
 		{
 			var saturn = grahas.Find(Body.Saturn);
@@ -367,7 +367,7 @@ namespace Mhora.Yoga
 
 		//The Saturn occupying the 5th house identical with its own sign (Makara/Kumbha), and the /Sun and the Moon in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable to examine the
-		//dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
+		//dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaShani5th(this Grahas grahas)
 		{
 			var saturn = grahas.Find(Body.Saturn);
@@ -401,7 +401,7 @@ namespace Mhora.Yoga
 
 		//The Mars occupying the 5th house identical with its own rashi(Mesha/Vrischika), and Venus in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable
-		//to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
+		//to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaMangal5th (this Grahas grahas)
 		{
 			var mars = grahas.Find(Body.Mars);
@@ -426,7 +426,7 @@ namespace Mhora.Yoga
 
 		//The Moon in its own rashi (Karka) in the 5th house, and Saturn in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession,
-		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
+		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaChandra5th(this Grahas grahas)
 		{
 			var moon = grahas.Find(Body.Moon);
@@ -450,7 +450,7 @@ namespace Mhora.Yoga
 
 		//The Sun occupying the 5th house identical with its own rashi (Simha), and the Moon, Jupiter and Saturn in the 11th house.
 		//This combination lead to excessive wealth. This yoga generally related to one’s profession, it may be desirable to examine the
-		//dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there
+		//dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there
 		public static bool DhanaSurya5th(this Grahas grahas)
 		{
 			var sun = grahas.Find(Body.Sun);
@@ -489,7 +489,7 @@ namespace Mhora.Yoga
 
 		//The 9th lord is associtating with the 11th lord.
 		//This Yoga is for wealth and financial prosperity. This yoga generally related to one’s profession,
-		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there
+		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there
 		public static bool Dhana9thLord(this Grahas grahas)
 		{
 			var lord9  = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
@@ -500,7 +500,7 @@ namespace Mhora.Yoga
 
 		//The 5th lord is associtating with the 9th or the 11th lord.
 		//This Yoga is for wealth and financial prosperity. This yoga generally related to one’s profession,
-		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts and also strong Lagna should be there.
+		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool Dhana5thLord(this Grahas grahas)
 		{
 			var lord5  = grahas.Rashis.Find(Bhava.PutraBhava).Lord;
@@ -521,7 +521,7 @@ namespace Mhora.Yoga
 
 		//The Mars in its own rashi(Mesha/Vrischika) in the Lagna, under the influence of Mercury, Venus and Saturn.
 		//Strong Lagna should be there. This combination lead to excessive wealth. This yoga generally related to one’s profession,
-		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsha charts.
+		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts.
 		public static bool DhanaMangalLagna(this Grahas grahas)
 		{
 			var mars = grahas.Find(Body.Mars);
@@ -580,9 +580,9 @@ namespace Mhora.Yoga
 			return false;
 		}
 
-		//If the native born in Night time and the Moon located in its own navamsha, or that of a friend's house and aspected by Venus.
+		//If the native born in Night time and the Moon located in its own navamsa, or that of a friend's house and aspected by Venus.
 		//The native is very wealthy. According to one interpretation, irrespective of the birth being during daytime or night-time,
-		//the placement of the Moon in a favorable navamsha, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
+		//the placement of the Moon in a favorable navamsa, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
 		public static bool DhanaNight(this Grahas grahas)
 		{
 			if (grahas.Horoscope.Vara.IsDayBirth)
@@ -590,11 +590,11 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			var navamsha = grahas.Horoscope.FindGrahas( DivisionType.Navamsa);
-			var moon     = navamsha.Find(Body.Moon);
+			var navamsa = grahas.Horoscope.FindGrahas( DivisionType.Navamsa);
+			var moon     = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
-				throw new Exception("Navamsha not calculated!");
+				throw new Exception("Navamsa not calculated!");
 			}
 
 			moon = grahas.Find(Body.Moon);
@@ -616,9 +616,9 @@ namespace Mhora.Yoga
 			return (false);
 		}
 
-		//If the native born in Day time and the Moon located in its own navamsha, or that of a friend's house and aspected by Jupiter.
+		//If the native born in Day time and the Moon located in its own navamsa, or that of a friend's house and aspected by Jupiter.
 		//The native is very wealthy. According to one interpretation, irrespective of the birth being during daytime or night-time,
-		//the placement of the Moon in a favorable navamsha, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
+		//the placement of the Moon in a favorable navamsa, under the aspect of Jupiter or Venus or both, is a combination of great wealth.
 		public static bool DhanaDay(this Grahas grahas)
 		{
 			if (grahas.Horoscope.Vara.IsDayBirth == false)
@@ -626,11 +626,11 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			var navamsha = grahas.Horoscope.FindGrahas( DivisionType.Navamsa);
-			var moon     = navamsha.Find(Body.Moon);
+			var navamsa = grahas.Horoscope.FindGrahas( DivisionType.Navamsa);
+			var moon     = navamsa.Find(Body.Moon);
 			if (moon == null)
 			{
-				throw new Exception("Navamsha not calculated!");
+				throw new Exception("Navamsa not calculated!");
 			}
 
 			moon = grahas.Find(Body.Moon);

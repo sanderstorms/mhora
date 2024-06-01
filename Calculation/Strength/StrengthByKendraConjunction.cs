@@ -26,10 +26,7 @@ namespace Mhora.Calculation.Strength;
 // StrengthByKendraConjunction Graha is in such a rasi
 public static class KendraConjunction
 {
-	public static int StrengthByKendraConjunction(this Grahas grahas, Body m, Body n)
-	{
-		return grahas.StrengthByKendraConjunction(grahas [m].Rashi, grahas [n].Rashi);
-	}
+	public static int StrengthByKendraConjunction(this Grahas grahas, Body m, Body n) => grahas.StrengthByKendraConjunction(grahas [m].Rashi, grahas [n].Rashi);
 
 	public static int StrengthByKendraConjunction(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{

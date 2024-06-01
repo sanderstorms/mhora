@@ -129,10 +129,7 @@ public class Retrogression
 		return BinaryLonSearch(utNext, utCurr, lonToFind, false);
 	}
 
-	public double GetStep()
-	{
-		return 5.0;
-	}
+	public double GetStep() => 5.0;
 
 	public JulianDate GetLagnaTransitForward(JulianDate ut, Longitude lonToFind)
 	{

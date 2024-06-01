@@ -454,7 +454,7 @@ public class MhoraChild : Form
 			}
 			else
 			{
-				new Mhd(mJhdFileName).ToFile(h.Info);
+				h.Info.Export (mJhdFileName);
 			}
 		}
 		catch (ArgumentNullException)

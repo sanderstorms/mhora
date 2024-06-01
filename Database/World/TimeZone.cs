@@ -81,20 +81,39 @@ public class TimeZone
 		}
 	}
 
-	public int Offset
+	public Time Offset
 	{
 		get
 		{
-			var hours = float.Parse(offsets[0]);
-			return (int) (hours * 60);
+			var time = TimeSpan.Zero;
+			var str = offsets[0].Split(':');
+
+			if (float.TryParse(str[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var hours))
+			{
+				time = TimeSpan.FromHours(hours);
+			}
+
+			if (str.Length == 2)
+			{
+				if (float.TryParse(str[1], NumberStyles.Any, CultureInfo.InvariantCulture, out var minutes))
+				{
+					if (hours < 0)
+					{
+						minutes = -minutes;
+					}
+					time = time.Add(TimeSpan.FromMinutes(minutes));
+				}
+			}
+
+			return (time);
 		}
 	}
 
-	public TimeSpan DstOffset
+	public Time DstOffset
 	{
 		get
 		{
-			TimeSpan time = TimeSpan.Zero;
+			var time = TimeSpan.Zero;
 			if (offsets.Count == 2)
 			{
 				var str  = offsets[1].Split(':');
@@ -163,15 +182,13 @@ public class TimeZone
 		try
 		{
 			var name         = id.Split('/');
-			var minutes      = Offset;
 			var dst          = DstOffset;
 			var displayName  = id;
 			var standardName = name.Last();
-			var offset       = new TimeSpan(minutes / 60, minutes % 60, 0);
 
 			if (dst.TotalHours == 0)
 			{
-				return TimeZoneInfo.CreateCustomTimeZone(id, offset, displayName, standardName);
+				return TimeZoneInfo.CreateCustomTimeZone(id, Offset, displayName, standardName);
 			}
 
 			var endTransition   = TimeZoneInfo.TransitionTime.CreateFloatingDateRule(new DateTime(1, 1, 1, 4, 0, 0), 10, 2, DayOfWeek.Sunday);
@@ -184,7 +201,7 @@ public class TimeZone
 			[
 				adjustment
 			];
-			return TimeZoneInfo.CreateCustomTimeZone(id, offset, displayName, standardName, standardName + " (DST)", adjustments);
+			return TimeZoneInfo.CreateCustomTimeZone(id, Offset, displayName, standardName, standardName + " (DST)", adjustments);
 		}
 		catch (Exception e)
 		{
