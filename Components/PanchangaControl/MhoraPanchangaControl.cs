@@ -104,6 +104,11 @@ public class MhoraPanchangaControl : MhoraControl
 		AddViewsToContextMenu(contextMenu);
 		mutexProgress = new Mutex(false);
 		OnRedisplay(MhoraGlobalOptions.Instance.TableBackgroundColor);
+	}
+
+	protected override void OnLoad(EventArgs e)
+	{
+		base.OnLoad(e);
 		bCompute_Click(null, null);
 	}
 

@@ -76,6 +76,7 @@ public class MhoraChild : Form
 		// Required for Windows Form Designer support
 		//
 		InitializeComponent();
+		Dock = DockStyle.Fill;
 
 		//
 		// TODO: Add any constructor code after InitializeComponent call
@@ -124,44 +125,44 @@ public class MhoraChild : Form
 	/// </summary>
 	private void InitializeComponent()
 	{
-            this.components = new System.ComponentModel.Container();
-            this.childMenu = new System.Windows.Forms.MainMenu(this.components);
-            this.menuItemFile = new System.Windows.Forms.MenuItem();
-            this.menuItemFileSave = new System.Windows.Forms.MenuItem();
-            this.menuItemFileSaveAs = new System.Windows.Forms.MenuItem();
-            this.menuItemFileClose = new System.Windows.Forms.MenuItem();
-            this.menuItem5 = new System.Windows.Forms.MenuItem();
-            this.menuItemPrintPreview = new System.Windows.Forms.MenuItem();
-            this.menuItemFilePrint = new System.Windows.Forms.MenuItem();
-            this.menuItem6 = new System.Windows.Forms.MenuItem();
-            this.menuItemChartNotes = new System.Windows.Forms.MenuItem();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.menuDobOptions = new System.Windows.Forms.MenuItem();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
-            this.menuLayoutJhora = new System.Windows.Forms.MenuItem();
-            this.menuLayoutTabbed = new System.Windows.Forms.MenuItem();
-            this.menuLayout2by2 = new System.Windows.Forms.MenuItem();
-            this.menuLayout3by3 = new System.Windows.Forms.MenuItem();
-            this.menuItem3 = new System.Windows.Forms.MenuItem();
-            this.menuItem4 = new System.Windows.Forms.MenuItem();
-            this.menuStrengthOpts = new System.Windows.Forms.MenuItem();
-            this.menuCalcOpts = new System.Windows.Forms.MenuItem();
-            this.menuItemTimeAdjustment = new System.Windows.Forms.MenuItem();
-            this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
-            this.timeAdjustment = new Mhora.Components.Controls.TimeAdjustment();
-            this.SuspendLayout();
-            // 
-            // childMenu
-            // 
-            this.childMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+			this.components = new System.ComponentModel.Container();
+			this.childMenu = new System.Windows.Forms.MainMenu(this.components);
+			this.menuItemFile = new System.Windows.Forms.MenuItem();
+			this.menuItemFileSave = new System.Windows.Forms.MenuItem();
+			this.menuItemFileSaveAs = new System.Windows.Forms.MenuItem();
+			this.menuItemFileClose = new System.Windows.Forms.MenuItem();
+			this.menuItem5 = new System.Windows.Forms.MenuItem();
+			this.menuItemPrintPreview = new System.Windows.Forms.MenuItem();
+			this.menuItemFilePrint = new System.Windows.Forms.MenuItem();
+			this.menuItem6 = new System.Windows.Forms.MenuItem();
+			this.menuItemChartNotes = new System.Windows.Forms.MenuItem();
+			this.menuItem1 = new System.Windows.Forms.MenuItem();
+			this.menuDobOptions = new System.Windows.Forms.MenuItem();
+			this.menuItem2 = new System.Windows.Forms.MenuItem();
+			this.menuLayoutJhora = new System.Windows.Forms.MenuItem();
+			this.menuLayoutTabbed = new System.Windows.Forms.MenuItem();
+			this.menuLayout2by2 = new System.Windows.Forms.MenuItem();
+			this.menuLayout3by3 = new System.Windows.Forms.MenuItem();
+			this.menuItem3 = new System.Windows.Forms.MenuItem();
+			this.menuItem4 = new System.Windows.Forms.MenuItem();
+			this.menuStrengthOpts = new System.Windows.Forms.MenuItem();
+			this.menuCalcOpts = new System.Windows.Forms.MenuItem();
+			this.menuItemTimeAdjustment = new System.Windows.Forms.MenuItem();
+			this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
+			this.timeAdjustment = new Mhora.Components.Controls.TimeAdjustment();
+			this.SuspendLayout();
+			// 
+			// childMenu
+			// 
+			this.childMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItemFile,
             this.menuItem1,
             this.menuItemTimeAdjustment});
-            // 
-            // menuItemFile
-            // 
-            this.menuItemFile.Index = 0;
-            this.menuItemFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+			// 
+			// menuItemFile
+			// 
+			this.menuItemFile.Index = 0;
+			this.menuItemFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItemFileSave,
             this.menuItemFileSaveAs,
             this.menuItemFileClose,
@@ -170,178 +171,178 @@ public class MhoraChild : Form
             this.menuItemFilePrint,
             this.menuItem6,
             this.menuItemChartNotes});
-            this.menuItemFile.MergeType = System.Windows.Forms.MenuMerge.MergeItems;
-            this.menuItemFile.Text = "&File";
-            // 
-            // menuItemFileSave
-            // 
-            this.menuItemFileSave.Index = 0;
-            this.menuItemFileSave.MergeOrder = 1;
-            this.menuItemFileSave.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
-            this.menuItemFileSave.Text = "&Save";
-            this.menuItemFileSave.Click += new System.EventHandler(this.menuItemFileSave_Click);
-            // 
-            // menuItemFileSaveAs
-            // 
-            this.menuItemFileSaveAs.Index = 1;
-            this.menuItemFileSaveAs.MergeOrder = 1;
-            this.menuItemFileSaveAs.Shortcut = System.Windows.Forms.Shortcut.CtrlA;
-            this.menuItemFileSaveAs.Text = "Save &As";
-            this.menuItemFileSaveAs.Click += new System.EventHandler(this.menuItemFileSaveAs_Click);
-            // 
-            // menuItemFileClose
-            // 
-            this.menuItemFileClose.Index = 2;
-            this.menuItemFileClose.MergeOrder = 1;
-            this.menuItemFileClose.Shortcut = System.Windows.Forms.Shortcut.CtrlW;
-            this.menuItemFileClose.Text = "&Close";
-            this.menuItemFileClose.Click += new System.EventHandler(this.menuItemFileClose_Click);
-            // 
-            // menuItem5
-            // 
-            this.menuItem5.Index = 3;
-            this.menuItem5.MergeOrder = 1;
-            this.menuItem5.Text = "-";
-            // 
-            // menuItemPrintPreview
-            // 
-            this.menuItemPrintPreview.Index = 4;
-            this.menuItemPrintPreview.MergeOrder = 1;
-            this.menuItemPrintPreview.Text = "Print Pre&view";
-            this.menuItemPrintPreview.Click += new System.EventHandler(this.menuItemPrintPreview_Click);
-            // 
-            // menuItemFilePrint
-            // 
-            this.menuItemFilePrint.Index = 5;
-            this.menuItemFilePrint.MergeOrder = 1;
-            this.menuItemFilePrint.Shortcut = System.Windows.Forms.Shortcut.CtrlP;
-            this.menuItemFilePrint.Text = "&Print";
-            this.menuItemFilePrint.Click += new System.EventHandler(this.menuItemFilePrint_Click);
-            // 
-            // menuItem6
-            // 
-            this.menuItem6.Index = 6;
-            this.menuItem6.MergeOrder = 1;
-            this.menuItem6.Text = "-";
-            // 
-            // menuItemChartNotes
-            // 
-            this.menuItemChartNotes.Index = 7;
-            this.menuItemChartNotes.MergeOrder = 1;
-            this.menuItemChartNotes.Text = "Chart Notes";
-            this.menuItemChartNotes.Click += new System.EventHandler(this.menuItemChartNotes_Click);
-            // 
-            // menuItem1
-            // 
-            this.menuItem1.Index = 1;
-            this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+			this.menuItemFile.MergeType = System.Windows.Forms.MenuMerge.MergeItems;
+			this.menuItemFile.Text = "&File";
+			// 
+			// menuItemFileSave
+			// 
+			this.menuItemFileSave.Index = 0;
+			this.menuItemFileSave.MergeOrder = 1;
+			this.menuItemFileSave.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
+			this.menuItemFileSave.Text = "&Save";
+			this.menuItemFileSave.Click += new System.EventHandler(this.menuItemFileSave_Click);
+			// 
+			// menuItemFileSaveAs
+			// 
+			this.menuItemFileSaveAs.Index = 1;
+			this.menuItemFileSaveAs.MergeOrder = 1;
+			this.menuItemFileSaveAs.Shortcut = System.Windows.Forms.Shortcut.CtrlA;
+			this.menuItemFileSaveAs.Text = "Save &As";
+			this.menuItemFileSaveAs.Click += new System.EventHandler(this.menuItemFileSaveAs_Click);
+			// 
+			// menuItemFileClose
+			// 
+			this.menuItemFileClose.Index = 2;
+			this.menuItemFileClose.MergeOrder = 1;
+			this.menuItemFileClose.Shortcut = System.Windows.Forms.Shortcut.CtrlW;
+			this.menuItemFileClose.Text = "&Close";
+			this.menuItemFileClose.Click += new System.EventHandler(this.menuItemFileClose_Click);
+			// 
+			// menuItem5
+			// 
+			this.menuItem5.Index = 3;
+			this.menuItem5.MergeOrder = 1;
+			this.menuItem5.Text = "-";
+			// 
+			// menuItemPrintPreview
+			// 
+			this.menuItemPrintPreview.Index = 4;
+			this.menuItemPrintPreview.MergeOrder = 1;
+			this.menuItemPrintPreview.Text = "Print Pre&view";
+			this.menuItemPrintPreview.Click += new System.EventHandler(this.menuItemPrintPreview_Click);
+			// 
+			// menuItemFilePrint
+			// 
+			this.menuItemFilePrint.Index = 5;
+			this.menuItemFilePrint.MergeOrder = 1;
+			this.menuItemFilePrint.Shortcut = System.Windows.Forms.Shortcut.CtrlP;
+			this.menuItemFilePrint.Text = "&Print";
+			this.menuItemFilePrint.Click += new System.EventHandler(this.menuItemFilePrint_Click);
+			// 
+			// menuItem6
+			// 
+			this.menuItem6.Index = 6;
+			this.menuItem6.MergeOrder = 1;
+			this.menuItem6.Text = "-";
+			// 
+			// menuItemChartNotes
+			// 
+			this.menuItemChartNotes.Index = 7;
+			this.menuItemChartNotes.MergeOrder = 1;
+			this.menuItemChartNotes.Text = "Chart Notes";
+			this.menuItemChartNotes.Click += new System.EventHandler(this.menuItemChartNotes_Click);
+			// 
+			// menuItem1
+			// 
+			this.menuItem1.Index = 1;
+			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuDobOptions,
             this.menuItem2,
             this.menuItem3,
             this.menuItem4});
-            this.menuItem1.MergeOrder = 1;
-            this.menuItem1.MergeType = System.Windows.Forms.MenuMerge.MergeItems;
-            this.menuItem1.Text = "&Options";
-            // 
-            // menuDobOptions
-            // 
-            this.menuDobOptions.Index = 0;
-            this.menuDobOptions.Shortcut = System.Windows.Forms.Shortcut.CtrlD;
-            this.menuDobOptions.Text = "&Birth Data && Events";
-            this.menuDobOptions.Click += new System.EventHandler(this.menuDobOptions_Click);
-            // 
-            // menuItem2
-            // 
-            this.menuItem2.Index = 1;
-            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+			this.menuItem1.MergeOrder = 1;
+			this.menuItem1.MergeType = System.Windows.Forms.MenuMerge.MergeItems;
+			this.menuItem1.Text = "&Options";
+			// 
+			// menuDobOptions
+			// 
+			this.menuDobOptions.Index = 0;
+			this.menuDobOptions.Shortcut = System.Windows.Forms.Shortcut.CtrlD;
+			this.menuDobOptions.Text = "&Birth Data && Events";
+			this.menuDobOptions.Click += new System.EventHandler(this.menuDobOptions_Click);
+			// 
+			// menuItem2
+			// 
+			this.menuItem2.Index = 1;
+			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuLayoutJhora,
             this.menuLayoutTabbed,
             this.menuLayout2by2,
             this.menuLayout3by3});
-            this.menuItem2.Text = "Layout";
-            // 
-            // menuLayoutJhora
-            // 
-            this.menuLayoutJhora.Index = 0;
-            this.menuLayoutJhora.Text = "2 x &1";
-            this.menuLayoutJhora.Click += new System.EventHandler(this.menuLayoutJhora_Click);
-            // 
-            // menuLayoutTabbed
-            // 
-            this.menuLayoutTabbed.Index = 1;
-            this.menuLayoutTabbed.Text = "2 x 1 (&Tabbed)";
-            this.menuLayoutTabbed.Click += new System.EventHandler(this.menuLayoutTabbed_Click);
-            // 
-            // menuLayout2by2
-            // 
-            this.menuLayout2by2.Index = 2;
-            this.menuLayout2by2.Text = "&2 x 2";
-            this.menuLayout2by2.Click += new System.EventHandler(this.menuLayout2by2_Click);
-            // 
-            // menuLayout3by3
-            // 
-            this.menuLayout3by3.Index = 3;
-            this.menuLayout3by3.Text = "&3 x 3";
-            this.menuLayout3by3.Click += new System.EventHandler(this.menuLayout3by3_Click);
-            // 
-            // menuItem3
-            // 
-            this.menuItem3.Index = 2;
-            this.menuItem3.Text = "-";
-            // 
-            // menuItem4
-            // 
-            this.menuItem4.Index = 3;
-            this.menuItem4.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+			this.menuItem2.Text = "Layout";
+			// 
+			// menuLayoutJhora
+			// 
+			this.menuLayoutJhora.Index = 0;
+			this.menuLayoutJhora.Text = "2 x &1";
+			this.menuLayoutJhora.Click += new System.EventHandler(this.menuLayoutJhora_Click);
+			// 
+			// menuLayoutTabbed
+			// 
+			this.menuLayoutTabbed.Index = 1;
+			this.menuLayoutTabbed.Text = "2 x 1 (&Tabbed)";
+			this.menuLayoutTabbed.Click += new System.EventHandler(this.menuLayoutTabbed_Click);
+			// 
+			// menuLayout2by2
+			// 
+			this.menuLayout2by2.Index = 2;
+			this.menuLayout2by2.Text = "&2 x 2";
+			this.menuLayout2by2.Click += new System.EventHandler(this.menuLayout2by2_Click);
+			// 
+			// menuLayout3by3
+			// 
+			this.menuLayout3by3.Index = 3;
+			this.menuLayout3by3.Text = "&3 x 3";
+			this.menuLayout3by3.Click += new System.EventHandler(this.menuLayout3by3_Click);
+			// 
+			// menuItem3
+			// 
+			this.menuItem3.Index = 2;
+			this.menuItem3.Text = "-";
+			// 
+			// menuItem4
+			// 
+			this.menuItem4.Index = 3;
+			this.menuItem4.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuStrengthOpts,
             this.menuCalcOpts});
-            this.menuItem4.MergeOrder = 2;
-            this.menuItem4.Text = "Advanced Options";
-            // 
-            // menuStrengthOpts
-            // 
-            this.menuStrengthOpts.Index = 0;
-            this.menuStrengthOpts.MergeOrder = 2;
-            this.menuStrengthOpts.Text = "Edit Chart &Strength Options";
-            this.menuStrengthOpts.Click += new System.EventHandler(this.menuStrengthOpts_Click);
-            // 
-            // menuCalcOpts
-            // 
-            this.menuCalcOpts.Index = 1;
-            this.menuCalcOpts.MergeOrder = 2;
-            this.menuCalcOpts.Shortcut = System.Windows.Forms.Shortcut.CtrlL;
-            this.menuCalcOpts.Text = "Edit Chart &Calculation Options";
-            this.menuCalcOpts.Click += new System.EventHandler(this.menuCalcOpts_Click);
-            // 
-            // menuItemTimeAdjustment
-            // 
-            this.menuItemTimeAdjustment.Index = 2;
-            this.menuItemTimeAdjustment.Text = "Time Adjustment";
-            this.menuItemTimeAdjustment.Click += new System.EventHandler(this.OnAdjustTime);
-            // 
-            // timeAdjustment
-            // 
-            this.timeAdjustment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.timeAdjustment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.timeAdjustment.Horoscope = null;
-            this.timeAdjustment.Location = new System.Drawing.Point(496, 4);
-            this.timeAdjustment.Margin = new System.Windows.Forms.Padding(4);
-            this.timeAdjustment.Name = "timeAdjustment";
-            this.timeAdjustment.Size = new System.Drawing.Size(249, 39);
-            this.timeAdjustment.TabIndex = 0;
-            // 
-            // MhoraChild
-            // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(758, 266);
-            this.Controls.Add(this.timeAdjustment);
-            this.Menu = this.childMenu;
-            this.Name = "MhoraChild";
-            this.Text = "MhoraChild";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Closing += new System.ComponentModel.CancelEventHandler(this.MhoraChild_Closing);
-            this.Load += new System.EventHandler(this.MhoraChild_Load);
-            this.ResumeLayout(false);
+			this.menuItem4.MergeOrder = 2;
+			this.menuItem4.Text = "Advanced Options";
+			// 
+			// menuStrengthOpts
+			// 
+			this.menuStrengthOpts.Index = 0;
+			this.menuStrengthOpts.MergeOrder = 2;
+			this.menuStrengthOpts.Text = "Edit Chart &Strength Options";
+			this.menuStrengthOpts.Click += new System.EventHandler(this.menuStrengthOpts_Click);
+			// 
+			// menuCalcOpts
+			// 
+			this.menuCalcOpts.Index = 1;
+			this.menuCalcOpts.MergeOrder = 2;
+			this.menuCalcOpts.Shortcut = System.Windows.Forms.Shortcut.CtrlL;
+			this.menuCalcOpts.Text = "Edit Chart &Calculation Options";
+			this.menuCalcOpts.Click += new System.EventHandler(this.menuCalcOpts_Click);
+			// 
+			// menuItemTimeAdjustment
+			// 
+			this.menuItemTimeAdjustment.Index = 2;
+			this.menuItemTimeAdjustment.Text = "Time Adjustment";
+			this.menuItemTimeAdjustment.Click += new System.EventHandler(this.OnAdjustTime);
+			// 
+			// timeAdjustment
+			// 
+			this.timeAdjustment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.timeAdjustment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.timeAdjustment.Horoscope = null;
+			this.timeAdjustment.Location = new System.Drawing.Point(463, 220);
+			this.timeAdjustment.Margin = new System.Windows.Forms.Padding(4);
+			this.timeAdjustment.Name = "timeAdjustment";
+			this.timeAdjustment.Size = new System.Drawing.Size(299, 45);
+			this.timeAdjustment.TabIndex = 0;
+			// 
+			// MhoraChild
+			// 
+			this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
+			this.ClientSize = new System.Drawing.Size(758, 266);
+			this.Controls.Add(this.timeAdjustment);
+			this.Menu = this.childMenu;
+			this.Name = "MhoraChild";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+			this.Text = "MhoraChild";
+			this.Closing += new System.ComponentModel.CancelEventHandler(this.MhoraChild_Closing);
+			this.Load += new System.EventHandler(this.MhoraChild_Load);
+			this.ResumeLayout(false);
 
 	}
 

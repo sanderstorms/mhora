@@ -107,6 +107,7 @@ namespace Mhora
 			this.toolbarButtonDisp = new System.Windows.Forms.ToolBarButton();
 			this.toolbarButtonHelp = new System.Windows.Forms.ToolBarButton();
 			this.MdiImageList = new System.Windows.Forms.ImageList(this.components);
+			this.tabForms = new System.Windows.Forms.TabControl();
 			this.SuspendLayout();
 			// 
 			// MdiMenu
@@ -303,9 +304,9 @@ namespace Mhora
 			// 
 			// MdiStatusBar
 			// 
-			this.MdiStatusBar.Location = new System.Drawing.Point(0, 264);
+			this.MdiStatusBar.Location = new System.Drawing.Point(0, 676);
 			this.MdiStatusBar.Name = "MdiStatusBar";
-			this.MdiStatusBar.Size = new System.Drawing.Size(456, 25);
+			this.MdiStatusBar.Size = new System.Drawing.Size(934, 25);
 			this.MdiStatusBar.TabIndex = 1;
 			// 
 			// MdiToolBar
@@ -324,7 +325,7 @@ namespace Mhora
 			this.MdiToolBar.Location = new System.Drawing.Point(0, 0);
 			this.MdiToolBar.Name = "MdiToolBar";
 			this.MdiToolBar.ShowToolTips = true;
-			this.MdiToolBar.Size = new System.Drawing.Size(456, 28);
+			this.MdiToolBar.Size = new System.Drawing.Size(934, 28);
 			this.MdiToolBar.TabIndex = 2;
 			this.MdiToolBar.ButtonClick += new System.Windows.Forms.ToolBarButtonClickEventHandler(this.MdiToolBar_ButtonClick);
 			// 
@@ -386,10 +387,23 @@ namespace Mhora
 			this.MdiImageList.ImageSize = new System.Drawing.Size(16, 16);
 			this.MdiImageList.TransparentColor = System.Drawing.Color.Transparent;
 			// 
+			// tabForms
+			// 
+			this.tabForms.Dock = System.Windows.Forms.DockStyle.Top;
+			this.tabForms.Location = new System.Drawing.Point(0, 28);
+			this.tabForms.Margin = new System.Windows.Forms.Padding(4);
+			this.tabForms.Name = "tabForms";
+			this.tabForms.SelectedIndex = 0;
+			this.tabForms.Size = new System.Drawing.Size(934, 30);
+			this.tabForms.TabIndex = 4;
+			this.tabForms.Visible = false;
+			this.tabForms.SelectedIndexChanged += new System.EventHandler(this.SelectedTabChanged);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
-			this.ClientSize = new System.Drawing.Size(456, 289);
+			this.ClientSize = new System.Drawing.Size(934, 701);
+			this.Controls.Add(this.tabForms);
 			this.Controls.Add(this.MdiToolBar);
 			this.Controls.Add(this.MdiStatusBar);
 			this.IsMdiContainer = true;
@@ -398,11 +412,14 @@ namespace Mhora
 			this.Text = "Mudgala Hora 0.3";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MhoraContainer_Closing);
+			this.MdiChildActivate += new System.EventHandler(this.MhoraChildActivate);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
 
 		#endregion
+
+		private TabControl tabForms;
 	}
 }

@@ -375,5 +375,43 @@ namespace Mhora
 		{
 			OnClosing();
 		}
+
+		private void MhoraChildActivate(object sender, EventArgs e)
+		{
+			if (this.ActiveMdiChild == null)
+				tabForms.Visible = false; // If no any child form, hide tabControl
+			else
+			{
+				this.ActiveMdiChild.WindowState = FormWindowState.Maximized; // Child form always maximized
+
+				// If child form is new and no has tabPage, create new tabPage
+				if (this.ActiveMdiChild.Tag == null)
+				{
+					// Add a tabPage to tabControl with child form caption
+					TabPage tp = new TabPage(this.ActiveMdiChild.Text);
+					tp.Tag               = this.ActiveMdiChild;
+					tp.Parent            = tabForms;
+					tabForms.SelectedTab = tp;
+
+					this.ActiveMdiChild.Tag        =  tp;
+					this.ActiveMdiChild.FormClosed += new FormClosedEventHandler(ActiveMdiChildClosed);
+				}
+
+				if (!tabForms.Visible) tabForms.Visible = true;
+			}
+		}
+
+		// If child form closed, remove tabPage
+		private void ActiveMdiChildClosed(object sender, FormClosedEventArgs e)
+		{
+			((sender as Form).Tag as TabPage).Dispose();
+		}
+
+		private void SelectedTabChanged(object sender, EventArgs e)
+		{
+			if ((tabForms.SelectedTab != null) && (tabForms.SelectedTab.Tag != null))
+				(tabForms.SelectedTab.Tag as Form).Select();
+		}
+
 	}
 }

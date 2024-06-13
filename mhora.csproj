@@ -175,6 +175,12 @@
     <Compile Include="Components\Controls\TimeAdjustment.Designer.cs">
       <DependentUpon>TimeAdjustment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\DivisionView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\DivisionView.Designer.cs">
+      <DependentUpon>DivisionView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Definitions\Bala.cs" />
     <Compile Include="Definitions\DateType.cs" />
     <Compile Include="Definitions\Element.cs" />
@@ -651,6 +657,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\Controls\TimeAdjustment.resx">
       <DependentUpon>TimeAdjustment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\DivisionView.resx">
+      <DependentUpon>DivisionView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\MhoraChild.resx">
       <DependentUpon>MhoraChild.cs</DependentUpon>
