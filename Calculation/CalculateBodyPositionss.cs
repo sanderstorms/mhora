@@ -14,7 +14,7 @@ namespace Mhora.Calculation
 		public static List<DivisionPosition> CalculateDivisionPositions(this List<Position> positionList, DivisionType d)
 		{
 			var al = new List<DivisionPosition>();
-			foreach (Position bp in positionList)
+			foreach (var bp in positionList)
 			{
 				if (bp.BodyType != BodyType.Other)
 				{

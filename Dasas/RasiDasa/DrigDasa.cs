@@ -135,7 +135,7 @@ public class DrigDasa : Dasa, IDasa
 			backward = true;
 		}
 
-		int[] order = ((int) zh % 3) switch
+		var order = ((int) zh % 3) switch
 		              {
 			              1 => orderMoveable,
 			              2 => orderFixed,

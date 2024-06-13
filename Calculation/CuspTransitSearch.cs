@@ -69,7 +69,7 @@ public static class CuspTransitSearch
 
 		var r = new Retrogression(h, SearchBody);
 
-		JulianDate julday_ut = h.UniversalTime(StartDate);
+		var julday_ut = h.UniversalTime(StartDate);
 		var found_ut  = julday_ut;
 
 		if (Forward)

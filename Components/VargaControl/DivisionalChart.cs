@@ -1704,7 +1704,7 @@ public class DivisionalChart : MhoraControl //System.Windows.Forms.UserControl
 
 	private void mExtrapolate_Click(object sender, EventArgs e)
 	{
-		foreach (Position bp in h.PositionList)
+		foreach (var bp in h.PositionList)
 		{
 			var dp      = bp.ToDivisionPosition(options.Varga);
 			var lLower  = dp.Cusp.Lower;

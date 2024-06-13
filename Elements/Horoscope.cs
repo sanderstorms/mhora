@@ -132,7 +132,7 @@ public partial class Horoscope : ICloneable
 
 	public Rashis FindRashis(Division division) => (FindRashis(division.MultipleDivisions[0].Varga));
 
-	public Rashis FindRashis(DivisionType varga) => FindGrahas(varga);
+	public Rashis FindRashis(DivisionType varga) => FindGrahas(varga).Rashis;
 
 	public Grahas FindGrahas(Division division) => (FindGrahas(division.MultipleDivisions[0].Varga));
 
@@ -144,16 +144,7 @@ public partial class Horoscope : ICloneable
 			_grahas.Add(varga, grahas);
 			grahas.Examine();
 		}
-		try
-		{
-			return (grahas);
-		}
-		catch (Exception e)
-		{
-			Application.Log.Exception(e);
-		}
-
-		return null;
+		return (grahas);
 	}
 
 
@@ -199,7 +190,7 @@ public partial class Horoscope : ICloneable
 	#region birth time rectification
 	int CheckBirthTime()
 	{
-		int correct = 0;
+		var correct = 0;
 
 		if (CheckSunLagna())
 		{
@@ -359,7 +350,7 @@ public partial class Horoscope : ICloneable
 	public bool CheckAtmaKaraka()
 	{
 		//Check what sign AtmaKaraka planet is in in the Navamsa chart
-		var ak = FindGrahas(DivisionType.Rasi).Find(Karaka8.Atma);
+		var ak = FindGrahas(DivisionType.Rasi)[Karaka8.Atma];
 		var sv = FindGrahas(DivisionType.Navamsa)[ak];
 		var m9 = FindGrahas(DivisionType.Navamsa)[Body.Moon];
 
@@ -421,7 +412,7 @@ public partial class Horoscope : ICloneable
 	//4) The Navamsa-Dwadasamsa longitude of Lagna (Lagna longitude x 108) should fall in the Moon Nakshatra or its trines.
 	public int CheckMoon()
 	{
-		int correct = 0;
+		var correct = 0;
 
 		if (CheckLagnaMoon(DivisionType.Navamsa))
 		{

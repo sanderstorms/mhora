@@ -100,7 +100,7 @@ public class NarayanaDasa : Dasa, IDasa
 		var al       = new List<DasaEntry> ();
 		var backward = true;
 
-		int[] order = ((int) Options.SeedZodiacHouse % 3) switch
+		var order = ((int) Options.SeedZodiacHouse % 3) switch
 		              {
 			              1 => orderMoveable,
 			              2 => orderFixed,
@@ -158,7 +158,7 @@ public class NarayanaDasa : Dasa, IDasa
 		}
 
 		var cycleLength = cycle * ParamAyus();
-		foreach (DasaEntry di in al)
+		foreach (var di in al)
 		{
 			di.Start += cycleLength;
 		}

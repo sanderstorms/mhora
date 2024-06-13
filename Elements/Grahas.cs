@@ -26,12 +26,12 @@ namespace Mhora.Elements
 
 			_dpList = h.PositionList.CalculateDivisionPositions(varga);
 
-			foreach (DivisionPosition dp in _dpList)
+			foreach (var dp in _dpList)
 			{
 				if ((dp.BodyType == BodyType.Graha) || (dp.BodyType == BodyType.Lagna))
 				{
 					var position = h.GetPosition(dp.Body);
-					var graha    = new Graha(position, dp, _rashis.Find(dp.ZodiacHouse));
+					var graha    = new Graha(position, dp, _rashis[dp.ZodiacHouse]);
 					_grahas.Add(graha);
 				}
 			}
@@ -41,26 +41,28 @@ namespace Mhora.Elements
 
 
 		public static implicit operator Horoscope(Grahas grahas) => grahas._horoscope;
-		public static implicit operator Rashis(Grahas    grahas) => grahas.Rashis;
 
-		public Graha this [Body body] => Find(body);
+		public Graha this [Body    body]  => Find(body);
+		public Graha this [Karaka7 karaka] => Karaka7[karaka.Index()];
+		public Graha this [Karaka8 karaka] => Karaka8[karaka.Index()];
+
+		public List<Graha> this[ZodiacHouse zh] => Rashis[zh].Grahas;
+		public List<Graha> this[Bhava    bhava] => Rashis[bhava].Grahas;
+
+		public Grahas this[DivisionType varga] => Horoscope.FindGrahas(varga);
 
 		public Horoscope Horoscope => _horoscope;
 
 		public DivisionType Varga => _varga;
 
-		public Graha Find(Karaka8 karaka) => Karaka8[karaka.Index()];
-
-		public Graha Find(Karaka7 karaka) => Karaka7[karaka.Index()];
-
-		public Graha Find(Body body)
+		private Graha Find(Body body)
 		{
 			var graha = _grahas.Find(graha => graha == body);
 			if (graha == null)
 			{
 				var position = Horoscope.GetPosition(body);
 				var dp       = position.ToDivisionPosition(Varga);
-				graha        = new Graha(position, dp, _rashis.Find(dp.ZodiacHouse));
+				graha        = new Graha(position, dp, _rashis[dp.ZodiacHouse]);
 				_grahas.Add(graha);
 			}
 

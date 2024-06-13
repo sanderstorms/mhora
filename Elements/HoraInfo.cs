@@ -247,12 +247,12 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 	public void Export(string filename)
 	{
 		FileType = EFileType.MudgalaHora;
-		JsonSerializer serializer = new JsonSerializer
+		var serializer = new JsonSerializer
 		{
 			NullValueHandling = NullValueHandling.Ignore,
 		};
 
-		using (StreamWriter sw = new StreamWriter(filename))
+		using (var sw = new StreamWriter(filename))
 		{
 			using (JsonWriter writer = new JsonTextWriter(sw))
 			{
@@ -264,7 +264,7 @@ public class HoraInfo : MhoraSerializableOptions, ICloneable
 
 	public static HoraInfo Import(string filename)
 	{
-		using (StreamReader sr = new StreamReader(filename))
+		using (var sr = new StreamReader(filename))
 		{
 			var serializer = new JsonSerializer();
 			try

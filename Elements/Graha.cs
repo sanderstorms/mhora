@@ -48,7 +48,7 @@ namespace Mhora.Elements
 
 		public bool Owns(Bhava bhava)
 		{
-			var rashi = _grahas.Rashis.Find(bhava);
+			var rashi = _grahas.Rashis[bhava];
 			return (Owns(rashi));
 		}
 
@@ -109,7 +109,7 @@ namespace Mhora.Elements
 
 		public bool IsAssociatedWith(Body body)
 		{
-			var graha = _grahas.Find(body);
+			var graha = _grahas[body];
 			return IsAssociatedWith(graha);
 		}
 
@@ -146,7 +146,7 @@ namespace Mhora.Elements
 
 		public bool IsAssociatedBy(Body body)
 		{
-			var graha = _grahas.Find(body);
+			var graha = _grahas[body];
 			return (IsAssociatedBy(graha));
 		}
 
@@ -175,7 +175,7 @@ namespace Mhora.Elements
 
 		public bool IsAspecting(Body body)
 		{
-			var graha = _grahas.Find(body);
+			var graha = _grahas[body];
 			return IsAspecting(graha);
 		}
 
@@ -195,7 +195,7 @@ namespace Mhora.Elements
 
 		public bool IsAspectedBy(Body body)
 		{
-			var graha = _grahas.Find(body);
+			var graha = _grahas[body];
 			return IsAspectedBy(graha);
 		}
 
@@ -215,7 +215,7 @@ namespace Mhora.Elements
 		#region conjunct
 		public bool IsConjuctWith(Body body)
 		{
-			var graha = _grahas.Find(body);
+			var graha = _grahas[body];
 			return (IsConjuctWith(graha));
 		}
 
@@ -266,7 +266,7 @@ namespace Mhora.Elements
 
 		public bool IsUnderInfluenceOf(Body body)
 		{
-			var graha = _grahas.Find(body);
+			var graha = _grahas[body];
 			return IsUnderInfluenceOf(graha);
 		}
 
@@ -309,7 +309,7 @@ namespace Mhora.Elements
 
 				if (Body == Body.Moon)
 				{
-					var sun = _grahas.Find(Body.Sun);
+					var sun = _grahas[Body.Sun];
 					var tithi = _position.Longitude.Sub(sun._position.Longitude).ToTithi();
 					if (tithi >= Tithi.KrishnaPratipada)
 					{
@@ -320,7 +320,7 @@ namespace Mhora.Elements
 
 				if (Body == Body.Mercury)
 				{
-					var jupiter = _grahas.Find(Body.Jupiter);
+					var jupiter = _grahas[Body.Jupiter];
 					if (jupiter.Strength >= 2)
 					{
 						return (true);
@@ -402,7 +402,7 @@ namespace Mhora.Elements
 
 					if (rashi.Bhava.IsKendra())
 					{
-						var lagna = _grahas.Find(Body.Lagna);
+						var lagna = _grahas[Body.Lagna];
 						if (lagna.Body.IsFriend(Body))
 						{
 							return (true);
@@ -451,7 +451,7 @@ namespace Mhora.Elements
 				if (_houseLord == null)
 				{
 					var lord = _dp.ZodiacHouse.SimpleLordOfZodiacHouse(); 
-					_houseLord = _grahas.Find(lord);
+					_houseLord = _grahas[lord];
 				}
 
 				return (_houseLord);
@@ -465,7 +465,7 @@ namespace Mhora.Elements
 			{
 				if (_before == null)
 				{
-					for (int index = 0; index < _grahas.Count; index++)
+					for (var index = 0; index < _grahas.Count; index++)
 					{
 						if (_grahas[index].Body == Body)
 						{
@@ -492,7 +492,7 @@ namespace Mhora.Elements
 			{
 				if (_after == null)
 				{
-					for (int index = 0; index < _grahas.Count; index++)
+					for (var index = 0; index < _grahas.Count; index++)
 					{
 						if (_grahas[index].Body == Body)
 						{
@@ -670,7 +670,7 @@ namespace Mhora.Elements
 					}
 				}
 
-				int st = 0;
+				var st = 0;
 				foreach (var graha in Conjunct)
 				{
 					if (graha.IsNaturalBenefic)
@@ -1097,7 +1097,7 @@ namespace Mhora.Elements
 				}
 
 				//The debilitated planet is associated with or aspected by its exaltation sign's lord.
-				var lord = _grahas.Rashis.Find(Body.ExaltationSign()).Lord;
+				var lord = _grahas.Rashis[Body.ExaltationSign()].Lord;
 				if (IsAspectedBy(lord))
 				{
 					return (true);
@@ -1121,7 +1121,7 @@ namespace Mhora.Elements
 				}
 
 				//The debilitated planet is associated with or aspected by its debilitation sign's lord.
-				lord = _grahas.Rashis.Find(Body.DebilitationSign()).Lord;
+				lord = _grahas.Rashis[Body.DebilitationSign()].Lord;
 				if (IsAssociatedWith(lord))
 				{
 					return (true);
@@ -1155,7 +1155,7 @@ namespace Mhora.Elements
 
 		public Bhava HouseFrom(Body body)
 		{
-			var graha = _grahas.Find(body);
+			var graha = _grahas[body];
 			return HouseFrom(graha);
 		}
 
@@ -1163,7 +1163,7 @@ namespace Mhora.Elements
 
 		public bool IsBefore(Body body)
 		{
-			var graha = _grahas.Find(body);
+			var graha = _grahas[body];
 			return (IsBefore(graha));
 		}
 
@@ -1171,7 +1171,7 @@ namespace Mhora.Elements
 
 		public bool IsAfter(Body body)
 		{
-			var graha = _grahas.Find(body);
+			var graha = _grahas[body];
 			return (IsAfter(graha));
 		}
 
@@ -1322,7 +1322,7 @@ namespace Mhora.Elements
 		public int CompareTo(Graha graha, bool bSimpleLord, List<GrahaStrength> rules, out int winner)
 		{
 			winner = 0;
-			foreach (GrahaStrength s in rules)
+			foreach (var s in rules)
 			{
 				var result = _grahas.GetStronger(this, graha, bSimpleLord, s);
 				if (result == 0)
@@ -1365,6 +1365,102 @@ namespace Mhora.Elements
 			}
 
 			return bp.Longitude;
+		}
+
+		// Nakshtra			Visha Ghati	Longitude of Moon (from) 	Moon Zodiac Ends
+		// Ashwini			51 to 54	Aries		11° 06′ 40″		12° 00′ 00″
+		// Bharani			25 to 28	Aries		18° 40′ 00″		19° 33′ 20″
+		// Krittika			31 to 34	Taurus		03° 20′ 00″		04° 13′ 20″
+		// Rohini			41 to 44	Taurus		18° 53′ 20″		19° 46′ 40″
+		// Mrigshira		15 to 18	Taurus		26° 26′ 40″		27° 20′ 00″
+		// Ardra			22 to 25	Gemini		11° 20′ 00″		12° 13′ 20″
+		// Punarvasu		31 to 34	Gemini		26° 40′ 00″		27° 33′ 20″
+		// Pushya			21 to 24	Cancer		07° 46′ 40″		08° 40′ 00″
+		// Ashlesha			33 to 36	Cancer		23° 46′ 40″		24° 40′ 00″
+		// Magha			31 to 34	Leo			06° 40′ 00″		07° 33′ 20″
+		// P. Phalguni		21 to 24	Leo			17° 46′ 40″		18° 40′ 00″
+		// U. Phalguni		19 to 22	Virgo		00° 40′ 00″		01° 33′ 20″
+		// Hasta			22 to 25	Virgo		14° 40′ 00″		15° 33′ 20″
+		// Chitra			21 to 24	Virgo		27° 46′ 40″		28° 40′ 00″
+		// Swati			15 to 18	Libra		09° 46′ 40″		10° 40′ 00″
+		// Vishakha			15 to 18	Libra		23° 06′ 40″		24° 00′ 00″
+		// Anuradha			11 to 14	Scorpio		05° 33′ 20″		06° 26′ 40″
+		// Jyeshtha			15 to 18	Scorpio		19° 46′ 40″		20° 40′ 00″
+		// Moola			57 to 60	Sagittarius	12° 26′ 40″		13° 20′ 00″
+		// P. Ashada		25 to 28	Sagittarius	18° 40′ 00″		19° 33′ 20″
+		// U. Ashada		21 to 24	Capricorn	01° 06′ 40″		02° 00′ 00″
+		// Sravana			11 to 14	Capricorn	12° 13′ 20″		13° 06′ 40″
+		// Dhanishta		11 to 14	Capricorn	25° 33′ 20″		26° 26′ 40″
+		// Shatbhisha		19 to 22	Aquarius	10° 40′ 00″		11° 33′ 20″
+		// P. Bhadrapada	17 to 20	Aquarius	23° 33′ 20″		24° 26′ 40″
+		// U. Bhadrapada	25 to 28	Pisces		08° 40′ 00″		09° 33′ 40″
+		// Revati			31 to 34	Pisces		23° 20′ 00″		24° 13′ 20″
+
+		//Vishanadi is inauspicious for 4 Nadis. The 1st Nadi is said to bring ruin; the 2nd to adversely affect
+		//the life of the individual; the 3rd to ruin everything and everyone; and the 4th is said to hurt the
+		//prosperity of the family.
+		// Exception: Rohini, Mrigshira, Ardra, Swati, Anuradha, Uttara Ashadha and Sravana have no significant Vishanadi.
+		// Exception: The Moon in the 9th or 10th aspected by Jupiter overcomes Vishanadi.
+		// Exception: The waxing Moon in exaltation, in own Navamsa, in the Lagna, or in Simhasanamsa removes the ill effects of Vishanadi.
+		public bool VishaGhati
+		{
+			get
+			{
+				var l = Position.Longitude.ToZodiacHouseOffset();
+				return Position.Longitude.ToNakshatra() switch
+				{
+					Nakshatra.Aswini         => l > new DmsPoint(11,  6, 40) && (l < new DmsPoint(12,  0,  0)),
+					Nakshatra.Bharani        => l > new DmsPoint(18, 40,  0) && (l < new DmsPoint(19, 33, 20)),
+					Nakshatra.Krittika       => l > new DmsPoint( 3, 20,  0) && (l < new DmsPoint( 4, 13, 20)),
+					Nakshatra.Rohini         => l > new DmsPoint(18, 53, 20) && (l < new DmsPoint(19, 46, 40)),
+					Nakshatra.Mrigarirsa     => l > new DmsPoint(26, 26, 40) && (l < new DmsPoint(27, 20,  0)),
+					Nakshatra.Aridra         => l > new DmsPoint(11, 20,  0) && (l < new DmsPoint(12, 13, 20)),
+					Nakshatra.Punarvasu      => l > new DmsPoint(26, 40,  0) && (l < new DmsPoint(27, 33, 20)),
+					Nakshatra.Pushya         => l > new DmsPoint( 7, 46, 40) && (l < new DmsPoint( 8, 40,  0)),
+					Nakshatra.Aslesha        => l > new DmsPoint(23, 46, 40) && (l < new DmsPoint(24, 40,  0)),
+					Nakshatra.Makha          => l > new DmsPoint( 6, 40,  0) && (l < new DmsPoint( 7, 33, 20)),
+					Nakshatra.PoorvaPhalguni => l > new DmsPoint(17, 46, 40) && (l < new DmsPoint(18, 40,  0)),
+					Nakshatra.UttaraPhalguni => l > new DmsPoint( 0, 40,  0) && (l < new DmsPoint( 1, 33, 20)),
+					Nakshatra.Hasta          => l > new DmsPoint(14, 40,  0) && (l < new DmsPoint(15, 33, 20)),
+					Nakshatra.Chittra        => l > new DmsPoint(27, 46, 40) && (l < new DmsPoint(28, 40,  0)),
+					Nakshatra.Swati          => l > new DmsPoint( 9, 46, 40) && (l < new DmsPoint(10, 40,  0)),
+					Nakshatra.Vishaka        => l > new DmsPoint(23,  6, 40) && (l < new DmsPoint(44,  0,  0)),
+					Nakshatra.Anuradha       => l > new DmsPoint( 5, 33, 40) && (l < new DmsPoint( 6, 26, 40)),
+					Nakshatra.Jyestha        => l > new DmsPoint( 9, 46, 40) && (l < new DmsPoint(20, 40,  0)),
+					Nakshatra.Moola          => l > new DmsPoint(12, 26, 40) && (l < new DmsPoint(13, 20,  0)),
+					Nakshatra.PoorvaShada    => l > new DmsPoint(18, 40,  0) && (l < new DmsPoint(19, 33, 20)),
+					Nakshatra.UttaraShada    => l > new DmsPoint( 1,  6, 40) && (l < new DmsPoint( 2,  0,  0)),
+					Nakshatra.Sravana        => l > new DmsPoint(12, 13, 20) && (l < new DmsPoint(13,  6, 40)),
+					Nakshatra.Dhanishta      => l > new DmsPoint(25, 33, 20) && (l < new DmsPoint(26, 26, 40)),
+					Nakshatra.Satabisha      => l > new DmsPoint(10, 40,  0) && (l < new DmsPoint(11, 33, 20)),
+					Nakshatra.PoorvaBhadra   => l > new DmsPoint(23, 33, 20) && (l < new DmsPoint(24, 26, 40)),
+					Nakshatra.UttaraBhadra   => l > new DmsPoint( 8, 40,  0) && (l < new DmsPoint( 9, 33, 40)),
+					Nakshatra.Revati         => l > new DmsPoint(23, 20,  0) && (l < new DmsPoint(24, 13, 20)),
+					_                        => false
+				};
+			}
+		}
+
+		// Fatal Planetary Positions
+		// Sign/Planet	La	Su	Mo  Ma	Me	Ju	Ve	Sa	Ra	Ke	Mandi
+		// Aries		1	20	26	19	15	19	28	10	14	8	23
+		// Taurus		9	9	12	28	14	29	15	4	13	18	24
+		// Gemini		22	12	13	25	13	12	11	7	12	20	11
+		// Cancer		22	6	25	23	12	27	17	9	11	10	12
+		// Leo			25	8	24	28	9	6	10	12	24	21	13
+		// Virgo		2	24	11	28	18	4	13	16	23	22	14
+		// Libra		4	16	26	14	20	13	4	3	22	23	8
+		// Scorpio		23	17	14	21	10	10	6	18	21	24	18
+		// Sagittarius	18	22	13	2	21	17	27	28	10	11	20
+		// Capricorn	20	2	25	15	22	11	12	14	20	12	10
+		// Aquarius		10	3	5	11	7	15	29	13	18	13	21
+		// Pisces		10	23	12	6	5	28	19	15	8	14	22
+		public bool FatalDegree
+		{
+			get
+			{
+				return (false);
+			}
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace Mhora.Yoga
 		public static bool DhanaSurya(this Grahas grahas)
 		{
 			byte yoga = 0;
-			var sun  = grahas.Find(Body.Sun);
+			var sun  = grahas[Body.Sun];
 			if (sun.Rashi.ZodiacHouse != ZodiacHouse.Leo)
 			{
 				return (false);
@@ -50,7 +50,7 @@ namespace Mhora.Yoga
 		//dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaGuru5th(this Grahas grahas)
 		{
-			var jupiter = grahas.Find(Body.Jupiter);
+			var jupiter = grahas[Body.Jupiter];
 			if (jupiter.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -61,7 +61,7 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			var mercury = grahas.Find(Body.Mercury);
+			var mercury = grahas[Body.Mercury];
 			if (mercury.Bhava == Bhava.LabhaBhava)
 			{
 				return (true);
@@ -75,26 +75,26 @@ namespace Mhora.Yoga
 		//specially when the participating planet’s is in it’s mahadasha.
 		public static bool DhanaLagna(this Grahas grahas)
 		{
-			var lagnaLord = grahas.Rashis.Find(Bhava.LagnaBhava).Lord;
-			var graha     = grahas.Rashis.Find(Bhava.DhanaBhava).Lord;
+			var lagnaLord = grahas.Rashis[Bhava.LagnaBhava].Lord;
+			var graha     = grahas.Rashis[Bhava.DhanaBhava].Lord;
 			if (lagnaLord.IsAssociatedWith(graha) == false)
 			{
 				return (true);
 			}
 
-			graha = grahas.Rashis.Find(Bhava.PutraBhava).Lord;
+			graha = grahas.Rashis[Bhava.PutraBhava].Lord;
 			if (lagnaLord.IsAssociatedWith(graha) == false)
 			{
 				return (true);
 			}
 
-			graha = grahas.Rashis.Find(Bhava.DhanaBhava).Lord;
+			graha = grahas.Rashis[Bhava.DhanaBhava].Lord;
 			if (lagnaLord.IsAssociatedWith(graha) == false)
 			{
 				return (true);
 			}
 
-			graha = grahas.Rashis.Find(Bhava.LabhaBhava).Lord;
+			graha = grahas.Rashis[Bhava.LabhaBhava].Lord;
 			if (lagnaLord.IsAssociatedWith(graha) == false)
 			{
 				return (true);
@@ -108,19 +108,19 @@ namespace Mhora.Yoga
 		//to one’s profession, it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts.
 		public static bool DhanaChandra(this Grahas grahas)
 		{
-			var moon = grahas.Find(Body.Moon);
+			var moon = grahas[Body.Moon];
 			if (moon.Rashi.ZodiacHouse != ZodiacHouse.Can)
 			{
 				return (false);
 			}
 
-			var mercury = grahas.Find(Body.Mercury);
+			var mercury = grahas[Body.Mercury];
 			if (moon.IsUnderInfluenceOf(mercury) == false)
 			{
 				return (false);
 			}
 
-			var jupiter = grahas.Find(Body.Jupiter);
+			var jupiter = grahas[Body.Jupiter];
 			if (moon.IsUnderInfluenceOf(jupiter) == false)
 			{
 				return (false);
@@ -134,18 +134,18 @@ namespace Mhora.Yoga
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool Dhana2ndHouseLord(this Grahas grahas)
 		{
-			var lord  = grahas.Rashis.Find(Bhava.DhanaBhava).Lord;
-			var graha = grahas.Rashis.Find(Bhava.PutraBhava).Lord;
+			var lord  = grahas.Rashis[Bhava.DhanaBhava].Lord;
+			var graha = grahas.Rashis[Bhava.PutraBhava].Lord;
 			if (lord.IsAssociatedWith(graha) == false)
 			{
 				return (false);
 			}
-			graha = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
+			graha = grahas.Rashis[Bhava.DharmaBhava].Lord;
 			if (lord.IsAssociatedWith(graha) == false)
 			{
 				return (false);
 			}
-			graha = grahas.Rashis.Find(Bhava.LabhaBhava).Lord;
+			graha = grahas.Rashis[Bhava.LabhaBhava].Lord;
 			if (lord.IsAssociatedWith(graha) == false)
 			{
 				return (false);
@@ -159,7 +159,7 @@ namespace Mhora.Yoga
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts.
 		public static bool DanaShukraLagna(this Grahas grahas)
 		{
-			var  venus = grahas.Find(Body.Venus);
+			var  venus = grahas[Body.Venus];
 			if (venus.IsInOwnHouse == false)
 			{
 				return (false);
@@ -188,15 +188,15 @@ namespace Mhora.Yoga
 		//specially when the participating planet’s is in it’s Mahadasha.
 		public static bool DhanaGuru9th(this Grahas grahas)
 		{
-			var jupiter = grahas.Find(Body.Jupiter);
+			var jupiter = grahas[Body.Jupiter];
 			if (jupiter.Bhava != Bhava.DharmaBhava)
 			{
 				return (false);
 			}
 
 			//Todo: Examine all dhana yoga's
-			var venus = grahas.Find(Body.Venus);
-			var lord  = grahas.Rashis.Find(Bhava.PutraBhava).Lord;
+			var venus = grahas[Body.Venus];
+			var lord  = grahas.Rashis[Bhava.PutraBhava].Lord;
 
 			if (grahas.Dhana5thLord ())
 			{
@@ -221,7 +221,7 @@ namespace Mhora.Yoga
 		//dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaBuddh5th(this Grahas grahas)
 		{
-			var mercury = grahas.Find(Body.Mercury);
+			var mercury = grahas[Body.Mercury];
 			if (mercury.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -233,7 +233,7 @@ namespace Mhora.Yoga
 			}
 
 			byte yoga  = 0x00;
-			var  rashi = grahas.Rashis.Find(Bhava.LabhaBhava);
+			var  rashi = grahas.Rashis[Bhava.LabhaBhava];
 			foreach (var graha in grahas.Planets)
 			{
 				if (graha.Body == Body.Moon)
@@ -260,7 +260,7 @@ namespace Mhora.Yoga
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts
 		public static bool DhanaBuddhLagna(this Grahas grahas)
 		{
-			var mercury = grahas.Find(Body.Mercury);
+			var mercury = grahas[Body.Mercury];
 			if (mercury.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -289,7 +289,7 @@ namespace Mhora.Yoga
 		//to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaShukra5th (this Grahas grahas)
 		{
-			var venus = grahas.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -299,7 +299,7 @@ namespace Mhora.Yoga
 			{
 				return (false);
 			}
-			var mars = grahas.Find(Body.Mars);
+			var mars = grahas[Body.Mars];
 			if (mars.Bhava == Bhava.LagnaBhava)
 			{
 				return (true);
@@ -313,7 +313,7 @@ namespace Mhora.Yoga
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts.
 		public static bool DhanaGuruLagna(this Grahas grahas)
 		{
-			var jupiter = grahas.Find(Body.Jupiter);
+			var jupiter = grahas[Body.Jupiter];
 			if (jupiter.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -342,7 +342,7 @@ namespace Mhora.Yoga
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts.
 		public static bool DhanaShaniLagna(this Grahas grahas)
 		{
-			var saturn = grahas.Find(Body.Saturn);
+			var saturn = grahas[Body.Saturn];
 			if (saturn.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -370,7 +370,7 @@ namespace Mhora.Yoga
 		//dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaShani5th(this Grahas grahas)
 		{
-			var saturn = grahas.Find(Body.Saturn);
+			var saturn = grahas[Body.Saturn];
 			if (saturn.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -382,7 +382,7 @@ namespace Mhora.Yoga
 			}
 
 			byte yoga  = 0x00;
-			var  rashi = grahas.Rashis.Find(Bhava.LabhaBhava);
+			var  rashi = grahas.Rashis[Bhava.LabhaBhava];
 			foreach (var graha in rashi.Grahas)
 			{
 				if (graha == Body.Sun)
@@ -404,7 +404,7 @@ namespace Mhora.Yoga
 		//to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaMangal5th (this Grahas grahas)
 		{
-			var mars = grahas.Find(Body.Mars);
+			var mars = grahas[Body.Mars];
 			if (mars.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -415,7 +415,7 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			var venus = grahas.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava == Bhava.LabhaBhava)
 			{
 				return (true);
@@ -429,7 +429,7 @@ namespace Mhora.Yoga
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool DhanaChandra5th(this Grahas grahas)
 		{
-			var moon = grahas.Find(Body.Moon);
+			var moon = grahas[Body.Moon];
 			if (moon.Bhava != Bhava.PutraBhava)
 			{
 				return (false);
@@ -439,7 +439,7 @@ namespace Mhora.Yoga
 			{
 				return (false);
 			}
-			var saturn = grahas.Find(Body.Saturn);
+			var saturn = grahas[Body.Saturn];
 			if (saturn.Bhava != Bhava.LabhaBhava)
 			{
 				return (false);
@@ -453,7 +453,7 @@ namespace Mhora.Yoga
 		//dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there
 		public static bool DhanaSurya5th(this Grahas grahas)
 		{
-			var sun = grahas.Find(Body.Sun);
+			var sun = grahas[Body.Sun];
 			if (sun.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -465,7 +465,7 @@ namespace Mhora.Yoga
 			}
 
 			byte yoga = 0x00;
-			var  rash = grahas.Rashis.Find(Bhava.PutraBhava);
+			var  rash = grahas.Rashis[Bhava.PutraBhava];
 			foreach (var graha in rash.Grahas)
 			{
 				if (graha == Body.Moon)
@@ -492,8 +492,8 @@ namespace Mhora.Yoga
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there
 		public static bool Dhana9thLord(this Grahas grahas)
 		{
-			var lord9  = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
-			var lord11 = grahas.Rashis.Find(Bhava.LabhaBhava).Lord;
+			var lord9  = grahas.Rashis[Bhava.DharmaBhava].Lord;
+			var lord11 = grahas.Rashis[Bhava.LabhaBhava].Lord;
 
 			return (lord9.IsAssociatedWith(lord11));
 		}
@@ -503,9 +503,9 @@ namespace Mhora.Yoga
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts and also strong Lagna should be there.
 		public static bool Dhana5thLord(this Grahas grahas)
 		{
-			var lord5  = grahas.Rashis.Find(Bhava.PutraBhava).Lord;
-			var lord9  = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
-			var lord11 = grahas.Rashis.Find(Bhava.LabhaBhava).Lord;
+			var lord5  = grahas.Rashis[Bhava.PutraBhava].Lord;
+			var lord9  = grahas.Rashis[Bhava.DharmaBhava].Lord;
+			var lord11 = grahas.Rashis[Bhava.LabhaBhava].Lord;
 
 			if (lord5.IsAssociatedWith(lord9))
 			{
@@ -524,7 +524,7 @@ namespace Mhora.Yoga
 		//it may be desirable to examine the dashamamsha chart along with the rashi & the navamsa charts.
 		public static bool DhanaMangalLagna(this Grahas grahas)
 		{
-			var mars = grahas.Find(Body.Mars);
+			var mars = grahas[Body.Mars];
 			if (mars.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -590,14 +590,14 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			var navamsa = grahas.Horoscope.FindGrahas( DivisionType.Navamsa);
-			var moon     = navamsa.Find(Body.Moon);
+			var navamsa = grahas[DivisionType.Navamsa];
+			var moon     = navamsa[Body.Moon];
 			if (moon == null)
 			{
 				throw new Exception("Navamsa not calculated!");
 			}
 
-			moon = grahas.Find(Body.Moon);
+			moon = grahas[Body.Moon];
 			if (moon.IsInOwnHouse)
 			{
 				return (true);
@@ -626,14 +626,14 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			var navamsa = grahas.Horoscope.FindGrahas( DivisionType.Navamsa);
-			var moon     = navamsa.Find(Body.Moon);
+			var navamsa = grahas[DivisionType.Navamsa];
+			var moon     = navamsa[Body.Moon];
 			if (moon == null)
 			{
 				throw new Exception("Navamsa not calculated!");
 			}
 
-			moon = grahas.Find(Body.Moon);
+			moon = grahas[Body.Moon];
 			if (moon.IsInOwnHouse)
 			{
 				return (true);

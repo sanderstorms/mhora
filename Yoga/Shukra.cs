@@ -8,16 +8,16 @@ namespace Mhora.Yoga
 		//Conjunction between Venus and Mars.
 		//A cheat, a liar or gambler, addicted to other's wives, opposed to all, skilled in math’s,
 		//a shepherd, a wrestler, distinguished among men because of his virtues.
-		public static bool ShukraMangal(this Grahas grahaList)
+		public static bool ShukraMangal(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			return venus.IsConjuctWith(Body.Mars);
 		}
 
 		//Addicted to base women, indulges in probated deeds, wastes money on women, short-lived.
-		public static bool ShukraMangal1(this Grahas grahaList)
+		public static bool ShukraMangal1(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -26,9 +26,9 @@ namespace Mhora.Yoga
 		}
 
 		//Worried, miserable, bereft of relatives, friends and children.
-		public static bool ShukraMangal4(this Grahas grahaList)
+		public static bool ShukraMangal4(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.SukhaBhava)
 			{
 				return (false);
@@ -37,9 +37,9 @@ namespace Mhora.Yoga
 		}
 
 		//Greedy, immoral, tormented by women.
-		public static bool ShukraMangal7(this Grahas grahaList)
+		public static bool ShukraMangal7(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.JayaBhava)
 			{
 				return (false);
@@ -48,9 +48,9 @@ namespace Mhora.Yoga
 		}
 
 		//Quarrelsome, lives in a foreign land, harsh, not loyal to his wife, cunning, fond of metallurgy.
-		public static bool ShukraMangal9(this Grahas grahaList)
+		public static bool ShukraMangal9(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.DharmaBhava)
 			{
 				return (false);
@@ -59,9 +59,9 @@ namespace Mhora.Yoga
 		}
 
 		//A distinguished teacher for use of weapons, wise, blessed, with learning, wealth and fine clothes, famous, a minister.
-		public static bool ShukraMangal10(this Grahas grahaList)
+		public static bool ShukraMangal10(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.KarmaBhava)
 			{
 				return (false);
@@ -71,17 +71,17 @@ namespace Mhora.Yoga
 
 		//A Fighter, a wanderer, a fine sculptor, a writer or painter, an athlete, looks after herds of cattle, shortsighted,
 		//his marriage holds the key to his financial prosperity.
-		public static bool ShukraShani(this Grahas grahaList)
+		public static bool ShukraShani(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			return venus.IsConjuctWith(Body.Saturn);
 
 		}
 
 		//Associates with many women, handsome, blessed with physical comforts, suffers from mental torment financially.
-		public static bool ShukraShani1(this Grahas grahaList)
+		public static bool ShukraShani1(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -91,9 +91,9 @@ namespace Mhora.Yoga
 		}
 
 		//Helped by friends, honored by the ruler.
-		public static bool ShukraShani4(this Grahas grahaList)
+		public static bool ShukraShani4(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.SukhaBhava)
 			{
 				return (false);
@@ -103,9 +103,9 @@ namespace Mhora.Yoga
 		}
 
 		//Blessed with women, wealth, comforts and fame.
-		public static bool ShukraShani7(this Grahas grahaList)
+		public static bool ShukraShani7(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.JayaBhava)
 			{
 				return (false);
@@ -115,9 +115,9 @@ namespace Mhora.Yoga
 		}
 
 		//Ailing, liked by the ruler, famous, amiable, blessed with progeny and wealth.
-		public static bool ShukraShani9(this Grahas grahaList)
+		public static bool ShukraShani9(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.DharmaBhava)
 			{
 				return (false);
@@ -127,9 +127,9 @@ namespace Mhora.Yoga
 		}
 
 		//Widely renowned, of a high status, without worries
-		public static bool ShukraShani10(this Grahas grahaList)
+		public static bool ShukraShani10(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.KarmaBhava)
 			{
 				return (false);
@@ -139,9 +139,9 @@ namespace Mhora.Yoga
 		}
 
 		//Renowned, famous, of clear intellect, equal to a king even if born under ordinary circumstances.
-		public static bool ShukraGuruShani(this Grahas grahaList)
+		public static bool ShukraGuruShani(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.IsConjuctWith(Body.Jupiter) == false)
 			{
 				return (false);
@@ -151,9 +151,9 @@ namespace Mhora.Yoga
 		}
 
 		//Blessed with wife, children and comforts, liked by the ruler, associates with good people.
-		public static bool ShukraMangalGuru(this Grahas grahaList)
+		public static bool ShukraMangalGuru(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.IsConjuctWith(Body.Mars) == false)
 			{
 				return (false);
@@ -163,9 +163,9 @@ namespace Mhora.Yoga
 		}
 
 		//Foreign residence, bad children, suffers humiliation at the hands of a pretty woman.
-		public static bool ShukraMangalShani(this Grahas grahaList)
+		public static bool ShukraMangalShani(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.IsConjuctWith(Body.Mars) == false)
 			{
 				return (false);

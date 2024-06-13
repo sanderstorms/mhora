@@ -24,8 +24,8 @@ namespace Mhora.Elements
 		public Grahas       Base => _grahas;
 
 		public Rashi this [ZodiacHouse zh] => Find(zh);
-		public Rashi this[int index] => _rashis [index];
-
+		public Rashi this [Bhava       bhava] => Find(bhava);
+		public Rashi this[int          index] => _rashis [index];
 
 		internal void Examine()
 		{
@@ -35,18 +35,15 @@ namespace Mhora.Elements
 			}
 		}
 
-
-		public Rashi Find(Bhava bhava)
+		private Rashi Find(Bhava bhava)
 		{
 			return (_rashis.Find(rashi => rashi.Bhava == bhava));
 		}
 
-
-		public Rashi Find(ZodiacHouse zh)
+		private Rashi Find(ZodiacHouse zh)
 		{
 			return _rashis.Find (rashi => rashi == zh);
 		}
-
 
 		public  IEnumerator<Rashi> GetEnumerator() => (_rashis.GetEnumerator());
 

@@ -120,7 +120,7 @@ namespace Mhora.Util
 		public override string ToString()
 		{
 			var    sign = Math.Sign(TotalHours) < 0 ? "-" : "";
-			string str = string.Empty;
+			var str = string.Empty;
 			if (Hours != 0)
 			{
 				str = _timeSpan.ToString("h'h 'm'm 's's'");

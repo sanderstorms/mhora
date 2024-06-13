@@ -198,11 +198,11 @@ public static partial class sweph
 	 ******************************************************/
 	public static double CalcNextSolarEvent(this Horoscope h, EventType type, JulianDate jd)
 	{
-		StringBuilder err  = new StringBuilder(256);
+		var err  = new StringBuilder(256);
 		var           rsmi = new double [3];
 		double        tret = 0;
 
-		int flag = h.Options.SunrisePosition switch
+		var flag = h.Options.SunrisePosition switch
 		           {
 			           HoroscopeOptions.SunrisePositionType.TrueDiscEdge       => SE_BIT_NO_REFRACTION,
 			           HoroscopeOptions.SunrisePositionType.TrueDiscCenter     => SE_BIT_NO_REFRACTION | SE_BIT_DISC_CENTER,

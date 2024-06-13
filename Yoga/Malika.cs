@@ -8,14 +8,14 @@ namespace Mhora.Yoga
 	{
 		//All seven planets occupying one house each from the lagna to seventh house starting with the 11th house.
 		//Very competent, blessed with lovely women, of royal mien.
-		public static bool LabhaMalika(this Grahas grahaList)
+		public static bool LabhaMalika(this Grahas grahas)
 		{
-			if (grahaList.Rashis.Find(Bhava.LabhaBhava).Grahas.Count != 1)
+			if (grahas.Rashis[Bhava.LabhaBhava].Grahas.Count != 1)
 			{
 				return (false);
 			}
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.IsConjunctWithPlanet)
 				{
@@ -33,14 +33,14 @@ namespace Mhora.Yoga
 
 		//All seven planets occupying one house each from the lagna to seventh house starting with the Second House.
 		//A wealthy king, devoted to his parents, aggressive, resolute, unsympathetic, virtuous.
-		public static bool DhanuMalika(this Grahas grahaList)
+		public static bool DhanuMalika(this Grahas grahas)
 		{
-			if (grahaList.Rashis.Find(Bhava.DhanaBhava).Grahas.Count != 1)
+			if (grahas.Rashis[Bhava.DhanaBhava].Grahas.Count != 1)
 			{
 				return (false);
 			}
 
-			var  planets = grahaList.Planets;
+			var  planets = grahas.Planets;
 			byte yoga    = 0x00;
 			foreach (var graha in planets)
 			{
@@ -71,14 +71,14 @@ namespace Mhora.Yoga
 
 		//All seven planets occupying one house each from the lagna to seventh house starting with the 9th house.
 		//Powerful well to do, saintly, a devout performer of sacrifices.
-		public static bool BhagyaMalika(this Grahas grahaList)
+		public static bool BhagyaMalika(this Grahas grahas)
 		{
-			if (grahaList.Rashis.Find(Bhava.DharmaBhava).Grahas.Count != 1)
+			if (grahas.Rashis[Bhava.DharmaBhava].Grahas.Count != 1)
 			{
 				return (false);
 			}
 
-			var  planets = grahaList.Planets;
+			var  planets = grahas.Planets;
 			byte yoga    = 0x00;
 			foreach (var graha in planets)
 			{
@@ -103,14 +103,14 @@ namespace Mhora.Yoga
 
 
 		//All seven planets occupying one house each from the lagna to seventh house starting with the Lagna.
-		public static bool LagnaMalika(this Grahas grahaList)
+		public static bool LagnaMalika(this Grahas grahas)
 		{
-			if (grahaList.Rashis.Find(Bhava.LagnaBhava).Grahas.Count != 1)
+			if (grahas.Rashis[Bhava.LagnaBhava].Grahas.Count != 1)
 			{
 				return (false);
 			}
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.IsConjunctWithPlanet)
 				{
@@ -127,21 +127,21 @@ namespace Mhora.Yoga
 
 		//All seven planets occupying one house each from the lagna to seventh house starting with the 7th house.
 		//Long-lived, a king associating with several wives (spouses), influential.
-		public static bool KalatraMalika(this Grahas grahaList)
+		public static bool KalatraMalika(this Grahas grahas)
 		{
-			if (grahaList.Rashis.Find(Bhava.JayaBhava).Grahas.Count != 1)
+			if (grahas.Rashis[Bhava.JayaBhava].Grahas.Count != 1)
 			{
 				return (false);
 			}
 
-			var planets = grahaList.Planets;
+			var planets = grahas.Planets;
 
 			if (planets[0].Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
 			}
 
-			for (int index = 1; index < planets.Count; index++)
+			for (var index = 1; index < planets.Count; index++)
 			{
 				if (planets[index].Bhava.Index() != index + 6)
 				{
@@ -154,14 +154,14 @@ namespace Mhora.Yoga
 
 		//All seven planets occupying one house each from the lagna to seventh house starting with the 10th house.
 		//Virtuous highly esteemed, given to good deeds.
-		public static bool KarmaMalika(this Grahas grahaList)
+		public static bool KarmaMalika(this Grahas grahas)
 		{
-			if (grahaList.Rashis.Find(Bhava.KarmaBhava).Grahas.Count != 1)
+			if (grahas.Rashis[Bhava.KarmaBhava].Grahas.Count != 1)
 			{
 				return (false);
 			}
 
-			var  planets = grahaList.Planets;
+			var  planets = grahas.Planets;
 			byte yoga    = 0x00;
 			foreach (var graha in planets)
 			{
@@ -186,14 +186,14 @@ namespace Mhora.Yoga
 
 		//All seven planets occupying one house each from the lagna to seventh house starting with the 5th house.
 		//Famous religious, performing sacrificial rituals.
-		public static bool PutraMalika(this Grahas grahaList)
+		public static bool PutraMalika(this Grahas grahas)
 		{
-			if (grahaList.Rashis.Find(Bhava.PutraBhava).Grahas.Count != 1)
+			if (grahas.Rashis[Bhava.PutraBhava].Grahas.Count != 1)
 			{
 				return (false);
 			}
 
-			var  planets = grahaList.Planets;
+			var  planets = grahas.Planets;
 			byte yoga    = 0x00;
 			foreach (var graha in planets)
 			{
@@ -219,14 +219,14 @@ namespace Mhora.Yoga
 
 		//All seven planets occupying one house each from the lagna to seventh house starting with the 8th house.
 		//Long-lived, distinguished, poor and henpecked.
-		public static bool RandhraMalika(this Grahas grahaList)
+		public static bool RandhraMalika(this Grahas grahas)
 		{
-			if (grahaList.Rashis.Find(Bhava.MrtyuBhava).Grahas.Count != 1)
+			if (grahas.Rashis[Bhava.MrtyuBhava].Grahas.Count != 1)
 			{
 				return (false);
 			}
 
-			var  planets = grahaList.Planets;
+			var  planets = grahas.Planets;
 			byte yoga    = 0x00;
 			foreach (var graha in planets)
 			{
@@ -245,14 +245,14 @@ namespace Mhora.Yoga
 		}
 
 		//All seven planets occupying one house each from the lagna to seventh house starting with the 6th house.
-		public static bool SatruMalika(this Grahas grahaList)
+		public static bool SatruMalika(this Grahas grahas)
 		{
-			if (grahaList.Rashis.Find(Bhava.ShatruBhava).Grahas.Count != 1)
+			if (grahas.Rashis[Bhava.ShatruBhava].Grahas.Count != 1)
 			{
 				return (false);
 			}
 
-			var  planets = grahaList.Planets;
+			var  planets = grahas.Planets;
 			byte yoga    = 0x00;
 			foreach (var graha in planets)
 			{
@@ -278,14 +278,14 @@ namespace Mhora.Yoga
 
 		//All seven planets occupying one house each from the lagna to seventh house starting with the 4th house.
 		//Liberal ruler of several countries.
-		public static bool SukhaMalika(this Grahas grahaList)
+		public static bool SukhaMalika(this Grahas grahas)
 		{
-			if (grahaList.Rashis.Find(Bhava.SukhaBhava).Grahas.Count != 1)
+			if (grahas.Rashis[Bhava.SukhaBhava].Grahas.Count != 1)
 			{
 				return (false);
 			}
 
-			var  planets = grahaList.Planets;
+			var  planets = grahas.Planets;
 			byte yoga    = 0x00;
 			foreach (var graha in planets)
 			{
@@ -311,14 +311,14 @@ namespace Mhora.Yoga
 
 		//All seven planets occupying one house each from the lagna to seventh house starting with the 12th house.
 		//Widely respected honored liberal indulges in lavish spendings.
-		public static bool VrayaMalika(this Grahas grahaList)
+		public static bool VrayaMalika(this Grahas grahas)
 		{
-			if (grahaList.Rashis.Find(Bhava.VyayaBhava).Grahas.Count != 1)
+			if (grahas.Rashis[Bhava.VyayaBhava].Grahas.Count != 1)
 			{
 				return (false);
 			}
 
-			var  planets = grahaList.Planets;
+			var  planets = grahas.Planets;
 			byte yoga    = 0x00;
 			foreach (var graha in planets)
 			{

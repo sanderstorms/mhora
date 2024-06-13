@@ -222,7 +222,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 		_minCycle = _maxCycle = 0;
 
 		var a = _id.Dasa(0);
-		foreach (DasaEntry de in a)
+		foreach (var de in a)
 		{
 			var di = new DasaItem(de);
 			di.PopulateListViewItemMembers(_td, _id);
@@ -836,7 +836,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var a        = _id.AntarDasa(di.Entry);
 		var compress = DasaOptions.Compression == 0.0 ? 0.0 : DasaOptions.Compression / _id.ParamAyus();
 
-		foreach (DasaEntry de in a)
+		foreach (var de in a)
 		{
 			var pdi = new DasaItem(de);
 			pdi.PopulateListViewItemMembers(_td, _id);
@@ -888,7 +888,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 			a.AddRange(b);
 		}
 
-		foreach (DasaEntry de in a)
+		foreach (var de in a)
 		{
 			var di = new DasaItem(de);
 			di.PopulateListViewItemMembers(_td, _id);
@@ -912,7 +912,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 		var a = _id.Dasa(_minCycle);
 		var i = 0;
 		_dasaItemList.Items.Clear();
-		foreach (DasaEntry de in a)
+		foreach (var de in a)
 		{
 			var di = new DasaItem(de);
 			di.PopulateListViewItemMembers(_td, _id);
@@ -926,7 +926,7 @@ public class MhoraDasaControl : MhoraControl //System.Windows.Forms.UserControl
 		_maxCycle++;
 		var a = _id.Dasa(_maxCycle);
 		_dasaItemList.Items.Clear();
-		foreach (DasaEntry de in a)
+		foreach (var de in a)
 		{
 			var di = new DasaItem(de);
 			di.PopulateListViewItemMembers(_td, _id);

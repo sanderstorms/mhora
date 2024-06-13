@@ -97,7 +97,7 @@ public class KalachakraDasa : Dasa, IDasa
 		var offsetLength = mLon.NakshatraPadaPercentage() / 100.0 * dasaLength;
 
 		var start   = -offsetLength;
-		int skipped = 0;
+		var skipped = 0;
 		for (var i = 0; i < 9; i++)
 		{
 			var zh  = mLon.DasaPeriod(i, out var savya);

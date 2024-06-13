@@ -513,7 +513,7 @@ public class BasicCalculationsControl : MhoraControl
 		var al = h.CalculateArudhaDivisionPositions(options.DivisionType);
 		al.AddRange(h.CalculateVarnadaDivisionPositions(options.DivisionType));
 
-		foreach (DivisionPosition dp in al)
+		foreach (var dp in al)
 		{
 			var desc = string.Empty;
 			if (dp.Body == Body.Other)
@@ -609,7 +609,7 @@ public class BasicCalculationsControl : MhoraControl
 		for (var i = (int)Body.Sun; i <= (int)Body.Rahu; i++)
 		{
 			var  b          = (Body) i;
-			bool dirForward = (i % 2) == 0;
+			var dirForward = (i % 2) == 0;
 
 			var       bp = h.GetPosition(b);
 			var       n  = bp.Longitude.ToNakshatra();
@@ -874,7 +874,7 @@ public class BasicCalculationsControl : MhoraControl
 		var parts = options.DivisionType.NumPartsInDivision();
 
 
-		foreach (Position bp in h.PositionList)
+		foreach (var bp in h.PositionList)
 		{
 			if (false == CheckBodyForCurrentView(bp))
 			{

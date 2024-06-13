@@ -115,7 +115,7 @@ public class SuDasa : Dasa, IDasa
 
 		cycleLength -= offsetLength;
 
-		foreach (DasaEntry di in al)
+		foreach (var di in al)
 		{
 			di.Start += cycleLength;
 		}

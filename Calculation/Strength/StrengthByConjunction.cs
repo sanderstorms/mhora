@@ -27,16 +27,16 @@ public static class Conjunction
 {
 	public static int StrengthByConjunction(this Grahas grahas, Body m, Body n)
 	{
-		var gm = grahas.Find(m);
-		var gn = grahas.Find(n);
+		var gm = grahas[m];
+		var gn = grahas[n];
 
 		return gm.Conjunct.Count.CompareTo(gn.Conjunct.Count);
 	}
 
 	public static int StrengthByConjunction(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var rashi1 = grahas.Rashis.Find(za);
-		var rashi2 = grahas.Rashis.Find(zb);
+		var rashi1 = grahas.Rashis[za];
+		var rashi2 = grahas.Rashis[zb];
 
 		return rashi1.Grahas.Count.CompareTo(rashi2.Grahas.Count);
 	}

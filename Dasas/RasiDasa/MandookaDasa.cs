@@ -101,7 +101,7 @@ public class MandookaDasa : Dasa, IDasa
 		}
 
 		var cycleLength = cycle * ParamAyus();
-		foreach (DasaEntry di in al)
+		foreach (var di in al)
 		{
 			di.Start += cycleLength;
 		}

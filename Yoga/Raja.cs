@@ -10,17 +10,17 @@ namespace Mhora.Yoga
 	{
 		//Exchange between lords of the 4th and 10th houses, and they associates with the 5th or the 9th lords.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja1(this Grahas grahaList)
+		public static bool Raja1(this Grahas grahas)
 		{
-			var lord4  = grahaList.Rashis.Find(Bhava.SukhaBhava).Lord;
-			var lord10 = grahaList.Rashis.Find(Bhava.KarmaBhava).Lord;
+			var lord4  = grahas.Rashis[Bhava.SukhaBhava].Lord;
+			var lord10 = grahas.Rashis[Bhava.KarmaBhava].Lord;
 
 			if (lord4.Exchange != lord10)
 			{
 				return (false);
 			}
-			var lord5 = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
-			var lord9 = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord5 = grahas.Rashis[Bhava.PutraBhava].Lord;
+			var lord9 = grahas.Rashis[Bhava.DharmaBhava].Lord;
 
 			if ((lord4.IsAssociatedWith(lord5) == false) && 
 			    (lord4.IsAssociatedWith(lord9) == false))
@@ -39,10 +39,10 @@ namespace Mhora.Yoga
 
 		//The 9th lord & the Atmakarka located in Lagna, 5th house or the 7th house & aspected by benefices.
 		//Brings fourth king.
-		public static bool Raja2(this Grahas grahaList)
+		public static bool Raja2(this Grahas grahas)
 		{
-			var atmakaraka = grahaList.Find(Karaka8.Atma);
-			var lord9      = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var atmakaraka = grahas[Karaka8.Atma];
+			var lord9      = grahas.Rashis[Bhava.DharmaBhava].Lord;
 
 			switch (atmakaraka.Bhava)
 			{
@@ -80,15 +80,15 @@ namespace Mhora.Yoga
 		//Debilitated planets occupying 3rd, 6th, 8th or 11th house in the presence of strong Lagna lord,
 		//which is aspecting the Lagna.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja3(this Grahas grahaList)
+		public static bool Raja3(this Grahas grahas)
 		{
-			var lord1 = grahaList.Rashis.Find(Bhava.LagnaBhava).Lord;
+			var lord1 = grahas.Rashis[Bhava.LagnaBhava].Lord;
 			if (lord1.IsAspecting(Body.Lagna) == false)
 			{
 				return (false);
 			}
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.IsDebilitated)
 				{
@@ -110,10 +110,10 @@ namespace Mhora.Yoga
 
 		//The lord of the 9th house is associtating with the lord of the 10th house.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja4(this Grahas grahaList)
+		public static bool Raja4(this Grahas grahas)
 		{
-			var lord9  = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
-			var lord10 = grahaList.Rashis.Find(Bhava.KarmaBhava).Lord;
+			var lord9  = grahas.Rashis[Bhava.DharmaBhava].Lord;
+			var lord10 = grahas.Rashis[Bhava.KarmaBhava].Lord;
 			if (lord9.IsAssociatedWith(lord10))
 			{
 				return (true);
@@ -124,10 +124,10 @@ namespace Mhora.Yoga
 
 		//A conjunction or mutual aspect between the lord of the 5th house and the lord of the 9th house.
 		//The 9th Lord is a minister, the 5th is a chief minister. By kingship is meant a high govt. status in the modern context.
-		public static bool Raja5(this Grahas grahaList)
+		public static bool Raja5(this Grahas grahas)
 		{
-			var lord5 = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
-			var lord9  = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord5 = grahas.Rashis[Bhava.PutraBhava].Lord;
+			var lord9  = grahas.Rashis[Bhava.DharmaBhava].Lord;
 
 			if (lord5.IsConjuctWith(lord9))
 			{
@@ -139,16 +139,16 @@ namespace Mhora.Yoga
 
 		//When placement of Rahu/Ketu in kendras in association with trikona lords.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja6(this Grahas grahaList)
+		public static bool Raja6(this Grahas grahas)
 		{
-			var rahu = grahaList.Find(Body.Rahu);
-			var ketu = grahaList.Find(Body.Ketu);
+			var rahu = grahas[Body.Rahu];
+			var ketu = grahas[Body.Ketu];
 			if (rahu.Bhava.IsKendra() == false)
 			{
 				return (false);
 			}
 
-			bool yoga = false;
+			var yoga = false;
 			foreach (var graha in rahu.Association)
 			{
 				if (graha.Bhava.IsTrikona())
@@ -179,13 +179,13 @@ namespace Mhora.Yoga
 		//when benefices associate with houses 2, 4, and 5 as reckoned from Lagna or the Atmakarka,
 		//and melefics occupy the houses 3 and 6 from them
 		//The native attains kingship
-		public static bool Raja7(this Grahas grahaList)
+		public static bool Raja7(this Grahas grahas)
 		{
 			byte yoga       = 0x00;
 			byte yoga2      = 0x00;
-			var  atmakaraka = grahaList.Find(Karaka8.Atma);
+			var  atmakaraka = grahas[Karaka8.Atma];
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.IsNaturalBenefic)
 				{
@@ -287,22 +287,22 @@ namespace Mhora.Yoga
 
 		//Jupiter is in conjunction with Venus in the 9th house or associated with the 5th lord.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja8(this Grahas grahaList)
+		public static bool Raja8(this Grahas grahas)
 		{
-			var jupiter = grahaList.Find(Body.Jupiter);
+			var jupiter = grahas[Body.Jupiter];
 
 			if (jupiter.Bhava != Bhava.DharmaBhava)
 			{
 				return (false);
 			}
 
-			var lord9   = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord9   = grahas.Rashis[Bhava.DharmaBhava].Lord;
 			if (jupiter.IsConjuctWith(lord9))
 			{
 				return (true);
 			}
 
-			var lord5 = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
+			var lord5 = grahas.Rashis[Bhava.PutraBhava].Lord;
 			if (jupiter.IsAssociatedWith(lord5))
 			{
 				return (true);
@@ -312,17 +312,17 @@ namespace Mhora.Yoga
 
 		//Exchange between lords of the 4th and 10th houses, and they are being aspected by the 5th or the 9th lords.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja9(this Grahas grahaList)
+		public static bool Raja9(this Grahas grahas)
 		{
-			var lord4 = grahaList.Rashis.Find(Bhava.SukhaBhava).Lord;
-			var lord10 = grahaList.Rashis.Find(Bhava.KarmaBhava).Lord;
+			var lord4 = grahas.Rashis[Bhava.SukhaBhava].Lord;
+			var lord10 = grahas.Rashis[Bhava.KarmaBhava].Lord;
 
 			if (lord4.Exchange != lord10)
 			{
 				return (false);
 			}
-			var lord5 = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
-			var lord9 = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord5 = grahas.Rashis[Bhava.PutraBhava].Lord;
+			var lord9 = grahas.Rashis[Bhava.DharmaBhava].Lord;
 
 			if (lord4.IsAspectedBy(lord5) || lord4.IsAspectedBy(lord9))
 			{
@@ -334,9 +334,9 @@ namespace Mhora.Yoga
 
 		//All benefices in kendra and all malefics located in houses 3, 6, 11.
 		//This Raja Yoga brings fourth king.
-		public static bool Raja10(this Grahas grahaList)
+		public static bool Raja10(this Grahas grahas)
 		{
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.IsFunctionalBenefic)
 				{
@@ -365,13 +365,13 @@ namespace Mhora.Yoga
 
 		//Lords of the 4th and the 10th are in conjunction with the lords of the 5th or the 9th house.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja11(this Grahas grahaList)
+		public static bool Raja11(this Grahas grahas)
 		{
-			var lord4  = grahaList.Rashis.Find(Bhava.SukhaBhava).Lord;
-			var lord10 = grahaList.Rashis.Find(Bhava.KarmaBhava).Lord;
+			var lord4  = grahas.Rashis[Bhava.SukhaBhava].Lord;
+			var lord10 = grahas.Rashis[Bhava.KarmaBhava].Lord;
 
-			var lord5 = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
-			var lord9 = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord5 = grahas.Rashis[Bhava.PutraBhava].Lord;
+			var lord9 = grahas.Rashis[Bhava.DharmaBhava].Lord;
 
 			if ((lord4.IsConjuctWith(lord5) == false) && (lord4.IsConjuctWith(lord9) == false))
 			{
@@ -388,11 +388,11 @@ namespace Mhora.Yoga
 
 		//Lord of the 5th house associated with the Lagna lord or the 9th lord, and is located in Lagna or 4th or 10th house.
 		//Brings fourth king.
-		public static bool Raja12(this Grahas grahaList)
+		public static bool Raja12(this Grahas grahas)
 		{
-			var lord1 = grahaList.Rashis.Find(Bhava.LagnaBhava).Lord;
-			var lord5 = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
-			var lord9 = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord1 = grahas.Rashis[Bhava.LagnaBhava].Lord;
+			var lord5 = grahas.Rashis[Bhava.PutraBhava].Lord;
+			var lord9 = grahas.Rashis[Bhava.DharmaBhava].Lord;
 
 			if ((lord5.IsAssociatedWith(lord1) == false) && (lord5.IsAssociatedWith(lord9) == false))
 			{
@@ -412,9 +412,9 @@ namespace Mhora.Yoga
 
 		//The Lagna lord is associtating with the lord of the 4th or 5th or 7th or 9th or 10th house.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja13(this Grahas grahaList)
+		public static bool Raja13(this Grahas grahas)
 		{
-			var lord1 = grahaList.Rashis.Find(Bhava.LagnaBhava).Lord;
+			var lord1 = grahas.Rashis[Bhava.LagnaBhava].Lord;
 			foreach (var graha in lord1.Association)
 			{
 				if (graha.Owns(Bhava.ShatruBhava))
@@ -443,9 +443,9 @@ namespace Mhora.Yoga
 
 		//10th lord exalted or in its own house aspecting the Lagna at the same time.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja14(this Grahas grahaList)
+		public static bool Raja14(this Grahas grahas)
 		{
-			var lord10 = grahaList.Rashis.Find(Bhava.KarmaBhava).Lord;
+			var lord10 = grahas.Rashis[Bhava.KarmaBhava].Lord;
 			if ((lord10.IsExalted == false) && (lord10.IsInOwnHouse == false))
 			{
 				return (false);
@@ -456,11 +456,11 @@ namespace Mhora.Yoga
 
 		//The lord of the 4th house is associtating with the lord of the 5th or 9th house.
 		//This Yoga confers status of the individual in terms of success recognition and status.
-		public static bool Raja15(this Grahas grahaList)
+		public static bool Raja15(this Grahas grahas)
 		{
-			var lord4 = grahaList.Rashis.Find(Bhava.SukhaBhava).Lord;
-			var lord5 = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
-			var lord9 = grahaList.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord4 = grahas.Rashis[Bhava.SukhaBhava].Lord;
+			var lord5 = grahas.Rashis[Bhava.PutraBhava].Lord;
+			var lord9 = grahas.Rashis[Bhava.DharmaBhava].Lord;
 
 			if (lord4.IsAssociatedWith(lord5))
 			{
@@ -478,15 +478,15 @@ namespace Mhora.Yoga
 		//when benefices associate with houses 2, 4, and 5 as reckoned from Lagna or the Atmakarka,
 		//and melefics occupy the houses 3 and 6 from them
 		//The native attains kingship.
-		public static bool Raja16(this Grahas grahaList)
+		public static bool Raja16(this Grahas grahas)
 		{
-			var atmakaraka = grahaList.Find(Karaka8.Atma).Bhava.Index();
+			var atmakaraka = grahas[Karaka8.Atma].Bhava.Index();
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.IsNaturalBenefic)
 				{
-					bool yoga = true;
+					var yoga = true;
 					if (graha.IsAssociatedWith(Bhava.DhanaBhava) == false)
 					{
 						yoga = false;
@@ -517,7 +517,7 @@ namespace Mhora.Yoga
 					}
 
 					yoga  = false;
-					var  rashi = grahaList.Rashis.Find(graha.Bhava.Add(3));
+					var  rashi = grahas.Rashis[graha.Bhava.Add(3)];
 					foreach (var gr in rashi.Grahas)
 					{
 						if (gr.IsNaturalBenefic)
@@ -534,7 +534,7 @@ namespace Mhora.Yoga
 					if (yoga)
 					{
 						yoga  = false;
-						rashi = grahaList.Rashis.Find(graha.Bhava.Add(6));
+						rashi = grahas.Rashis[graha.Bhava.Add(6)];
 						foreach (var gr in rashi.Grahas)
 						{
 							if (gr.IsNaturalBenefic)
@@ -561,10 +561,10 @@ namespace Mhora.Yoga
 
 		//When placement of Rahu/Ketu in trikonas in association with kendra lords.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja17(this Grahas grahaList)
+		public static bool Raja17(this Grahas grahas)
 		{
-			var rahu = grahaList.Find(Body.Rahu);
-			var ketu = grahaList.Find(Body.Ketu);
+			var rahu = grahas[Body.Rahu];
+			var ketu = grahas[Body.Ketu];
 			if (rahu.Bhava.IsTrikona() == false)
 			{
 				return (false);
@@ -572,7 +572,7 @@ namespace Mhora.Yoga
 
 			byte yoga = 0x00;
 
-			foreach (var rashi in grahaList.Rashis)
+			foreach (var rashi in grahas.Rashis)
 			{
 				if (rashi.Bhava.IsKendra())
 				{
@@ -592,11 +592,11 @@ namespace Mhora.Yoga
 
 		//The lord of the 5th house is associtating with the lord of 7th or the 10th house.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja18(this Grahas grahaList)
+		public static bool Raja18(this Grahas grahas)
 		{
-			var lord5  = grahaList.Rashis.Find(Bhava.PutraBhava).Lord;
-			var lord7  = grahaList.Rashis.Find(Bhava.JayaBhava).Lord;
-			var lord10 = grahaList.Rashis.Find(Bhava.KarmaBhava).Lord;
+			var lord5  = grahas.Rashis[Bhava.PutraBhava].Lord;
+			var lord7  = grahas.Rashis[Bhava.JayaBhava].Lord;
+			var lord10 = grahas.Rashis[Bhava.KarmaBhava].Lord;
 
 			if (lord5.IsAssociatedWith(lord7))
 			{
@@ -611,13 +611,13 @@ namespace Mhora.Yoga
 
 		//Debilitated lords of the 6th, the 8th or the 12th house when aspecting the lagna produce Raja Yoga.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja19(this Grahas grahaList)
+		public static bool Raja19(this Grahas grahas)
 		{
 			var lords = new List<Graha>
 			{
-				grahaList.Rashis.Find(Bhava.ShatruBhava).Lord,
-				grahaList.Rashis.Find(Bhava.MrtyuBhava).Lord,
-				grahaList.Rashis.Find(Bhava.VyayaBhava).Lord
+				grahas.Rashis[Bhava.ShatruBhava].Lord,
+				grahas.Rashis[Bhava.MrtyuBhava].Lord,
+				grahas.Rashis[Bhava.VyayaBhava].Lord
 			};
 
 			foreach (var lord in lords)
@@ -633,9 +633,9 @@ namespace Mhora.Yoga
 
 		//All benefices in Kendras and all malefics occupy the Trishadaya houses 3, 6 and 11.
 		//This Raja Yoga brings fourth king.
-		public static bool Raja20(this Grahas grahaList)
+		public static bool Raja20(this Grahas grahas)
 		{
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.IsNaturalBenefic)
 				{
@@ -659,20 +659,20 @@ namespace Mhora.Yoga
 		
 		//The lord of the 7th house is associtating with the lord of the 9th house.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja21(this Grahas grahaList)
+		public static bool Raja21(this Grahas grahas)
 		{
-			var lord7 = grahaList.Rashis.Find(Bhava.JayaBhava).Lord;
-			var lord9 = grahaList.Rashis.Find(Bhava.DharmaBhava).Bhava;
+			var lord7 = grahas.Rashis[Bhava.JayaBhava].Lord;
+			var lord9 = grahas.Rashis[Bhava.DharmaBhava].Bhava;
 
 			return (lord7.IsAssociatedWith(lord9));
 		}
 
 		//When placement of Rahu/Ketu in the signs of natural benefic planets.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja22(this Grahas grahaList)
+		public static bool Raja22(this Grahas grahas)
 		{
-			var rahu = grahaList.Find(Body.Rahu);
-			var ketu = grahaList.Find(Body.Ketu);
+			var rahu = grahas[Body.Rahu];
+			var ketu = grahas[Body.Ketu];
 
 			if (rahu.Rashi.Lord.IsNaturalBenefic == false)
 			{
@@ -688,9 +688,9 @@ namespace Mhora.Yoga
 
 		//Venus occupying the Lagna and aspected by or associated with the Moon or Jupiter.
 		//This Yoga confers the status of the individual in terms of success recognition and status.
-		public static bool Raja23(this Grahas grahaList)
+		public static bool Raja23(this Grahas grahas)
 		{
-			var venus = grahaList.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava != Bhava.LagnaBhava)
 			{
 				return (false);
@@ -712,18 +712,18 @@ namespace Mhora.Yoga
 		//The 6th lord is in the 6th, 8th or 12th house.
 		//This is supposed to confer happiness health and fame. The person will conquer his/her enemies
 		//and will hesitate in indulging in sinful deeds. Friends will be illustrious and with class.
-		public static bool ViparitaHarshaRaja(this Grahas grahaList)
+		public static bool ViparitaHarshaRaja(this Grahas grahas)
 		{
-			var lord6 = grahaList.Rashis.Find(Bhava.ShatruBhava).Lord;
+			var lord6 = grahas.Rashis[Bhava.ShatruBhava].Lord;
 			return lord6.Bhava.IsDushtana();
 		}
 
 		//The 8th lord is in the 6th, 8th or 12th house.
 		//This confers learning longevity and prosperity. The person will be successful
 		//in all ventures conqueror of foes and a great celebrity.
-		public static bool ViparitaSaralaRaja(this Grahas grahaList)
+		public static bool ViparitaSaralaRaja(this Grahas grahas)
 		{
-			var lord8 = grahaList.Rashis.Find(Bhava.MrtyuBhava).Lord;
+			var lord8 = grahas.Rashis[Bhava.MrtyuBhava].Lord;
 			return lord8.Bhava.IsDushtana();
 		}
 
@@ -731,9 +731,9 @@ namespace Mhora.Yoga
 		//This makes the person virtuous and contented. The person will be equipped with good behavior
 		//towards others will enjoy happiness will be independent following a respectable profession or
 		//conduct and will be known for good qualities.
-		public static bool ViparitaVimalaRaja(this Grahas grahaList)
+		public static bool ViparitaVimalaRaja(this Grahas grahas)
 		{
-			var lord12 = grahaList.Rashis.Find(Bhava.VyayaBhava).Lord;
+			var lord12 = grahas.Rashis[Bhava.VyayaBhava].Lord;
 			return lord12.Bhava.IsDushtana();
 		}
 	}

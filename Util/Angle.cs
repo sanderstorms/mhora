@@ -177,11 +177,11 @@ namespace Mhora.Util
 		/// <returns>True if obj is equal to this instance; False otherwise.</returns>
 		public override bool Equals(object obj)
 		{
-			bool returnValue = false;
+			var returnValue = false;
 
 			if (obj is Angle)
 			{
-				Angle compare = obj as Angle;
+				var compare = obj as Angle;
 				returnValue = _value.Equals(compare._value);
 			}
 
@@ -298,7 +298,7 @@ namespace Mhora.Util
 		/// <returns>True if the two angle are the same, False otherwise.</returns>
 		public static bool operator ==(Angle a, Angle b)
 		{
-			bool returnValue = false;
+			var returnValue = false;
 
 			if ((object)a == null && (object)b == null)
 			{
@@ -320,7 +320,7 @@ namespace Mhora.Util
 		/// <returns>True if the two angle are the not same, False otherwise.</returns>
 		public static bool operator !=(Angle a, Angle b)
 		{
-			bool returnValue = true;
+			var returnValue = true;
 
 			if ((object)a == null && (object)b == null)
 			{
@@ -403,7 +403,7 @@ namespace Mhora.Util
 		/// <returns>The decimal-precision floating-point value of the specified angle.</returns>
 		public static decimal ToDegrees(int degrees, int arcminute, decimal arcsecond)
 		{
-			decimal returnValue = 0M;
+			var returnValue = 0M;
 
 			//
 			// Ensure all parameters are the same sing
@@ -425,7 +425,7 @@ namespace Mhora.Util
 		/// <returns>The angle in degree units.</returns>
 		public static decimal ToDegrees(decimal radians)
 		{
-			decimal returnValue = 0M;
+			var returnValue = 0M;
 
 			//
 			// Factor = 180 / pi 
@@ -443,7 +443,7 @@ namespace Mhora.Util
 		/// <returns>The angle in radian units.</returns>
 		public static decimal ToRadians(decimal degrees)
 		{
-			decimal returnValue = 0M;
+			var returnValue = 0M;
 
 			//
 			// Factor = pi / 180 
@@ -461,7 +461,7 @@ namespace Mhora.Util
 		/// <returns>A new instance of the System.Angle class.</returns>
 		public static Angle FromRadians(decimal radians)
 		{
-			Angle returnValue = new Angle();
+			var returnValue = new Angle();
 
 			returnValue = new Angle(ToDegrees(radians));
 
@@ -484,7 +484,7 @@ namespace Mhora.Util
 		/// <returns>The arcminute of the specified angle.</returns>
 		public static int GetArcminute(Angle angle)
 		{
-			decimal degreesDecimal = (decimal)angle - angle.Degrees;
+			var degreesDecimal = (decimal)angle - angle.Degrees;
 			return (int)(degreesDecimal * 60M).Floor();
 		}
 
@@ -496,11 +496,11 @@ namespace Mhora.Util
 		/// <returns>The arcminute of the specified angle.</returns>
 		public static decimal GetArcsecond(Angle angle)
 		{
-			decimal returnValue = 0M;
+			var returnValue = 0M;
 
-			decimal degreesDecimal = (decimal)angle - angle.Degrees;
-			decimal totalMinutes   = degreesDecimal * 60;
-			decimal secondsDecimal = totalMinutes - totalMinutes.Floor();
+			var degreesDecimal = (decimal)angle - angle.Degrees;
+			var totalMinutes   = degreesDecimal * 60;
+			var secondsDecimal = totalMinutes - totalMinutes.Floor();
 
 			returnValue = Convert.ToDecimal(secondsDecimal * 60);
 
@@ -514,7 +514,7 @@ namespace Mhora.Util
 		/// <returns>A representation of the given Angle in degrees where the value is between 0 and 360.</returns>
 		public static Angle Reduce(Angle angle)
 		{
-			Angle returnValue = Empty;
+			var returnValue = Empty;
 
 			returnValue = new Angle((decimal)angle - Math.Floor((decimal)angle / 360.0M) * 360.0M);
 
@@ -529,7 +529,7 @@ namespace Mhora.Util
 		/// <returns>An instance of System.Angle instantiated with the parsed value.</returns>
 		public static Angle Parse(string s)
 		{
-			Angle returnValue = Empty;
+			var returnValue = Empty;
 
 			if (!TryParse(s, out returnValue))
 			{
@@ -549,10 +549,10 @@ namespace Mhora.Util
 		/// <returns>True if s was converted successfully; False otherwise.</returns>
 		public static bool TryParse(string s, out Angle result)
 		{
-			bool returnValue = false;
+			var returnValue = false;
 			result = null;
 
-			if (Decimal.TryParse(s, out decimal value))
+			if (Decimal.TryParse(s, out var value))
 			{
 				result = new Angle(value);
 				returnValue = true;
@@ -661,7 +661,7 @@ namespace Mhora.Util
 		/// follows obj or obj is null.</returns>
 		public int CompareTo(object obj)
 		{
-			int returnValue = 1;
+			var returnValue = 1;
 
 			if (obj is Angle)
 			{
@@ -682,7 +682,7 @@ namespace Mhora.Util
 		/// <returns>The string representation of the value of this instance as specified by format and provider.</returns>
 		public string ToString(string format, IFormatProvider formatProvider)
 		{
-			string returnValue = String.Empty;
+			var returnValue = String.Empty;
 
 			if (formatProvider != null)
 			{
@@ -711,7 +711,7 @@ namespace Mhora.Util
 		/// follows other or other is null.</returns>
 		public int CompareTo(Angle other)
 		{
-			int returnValue = 1;
+			var returnValue = 1;
 
 			if ((object)other != null)
 			{
@@ -730,7 +730,7 @@ namespace Mhora.Util
 		/// <returns>True if the value of the other parameter is the same as this Angle; False otherwise</returns>
 		public bool Equals(Angle other)
 		{
-			bool returnValue = false;
+			var returnValue = false;
 
 			if (other != null)
 			{

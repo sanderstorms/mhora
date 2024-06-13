@@ -56,7 +56,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 		var        cycleStart = ParamAyus() * cycle;
 		TimeOffset curr       = 0.0;
 		var        al         = new List<DasaEntry> ();
-		foreach (Body b in _options.GrahaStrengths.grahas)
+		foreach (var b in _options.GrahaStrengths.grahas)
 		{
 			var dasaLength = LengthOfDasa(grahas [b]);
 			al.Add(new DasaEntry(b, cycleStart + curr, dasaLength, 1, b.ToShortString()));
@@ -87,7 +87,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 		var bOrder = new List <Body> ();
 		var bFound = false;
-		foreach (Body b in _options.GrahaStrengths.grahas)
+		foreach (var b in _options.GrahaStrengths.grahas)
 		{
 			if (b != pdi.Graha && bFound == false)
 			{
@@ -98,7 +98,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 			bOrder.Add(b);
 		}
 
-		foreach (Body b in _options.GrahaStrengths.grahas)
+		foreach (var b in _options.GrahaStrengths.grahas)
 		{
 			if (b == pdi.Graha)
 			{
@@ -110,7 +110,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 
 
 		var dasaLength = pdi.DasaLength / 9.0;
-		foreach (Body b in bOrder)
+		foreach (var b in bOrder)
 		{
 			al.Add(new DasaEntry(b, curr, dasaLength, pdi.Level + 1, pdi.DasaName + " " + b.ToShortString()));
 			curr += dasaLength;
@@ -372,7 +372,7 @@ public class KarakaKendradiGrahaDasa : Dasa, IDasa
 			GrahaStrengths = new OrderedGrahas();
 			foreach (var oz in RasiStrengths)
 			{
-				foreach (ZodiacHouse zn in oz)
+				foreach (var zn in oz)
 				{
 					var rashi   = grahas.Rashis[zn];
 					var tempArr = new Body[rashi.Grahas.Count];

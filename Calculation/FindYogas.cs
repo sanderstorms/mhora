@@ -751,7 +751,7 @@ public class FindYogas
 		var alVals = GetValues(sTerm);
 
 		var hash = new Hashtable();
-		foreach (string s in alVals)
+		foreach (var s in alVals)
 		{
 			var sRep = ReplaceBasicNodeTermHelper(varga, sCat, s);
 			if (!hash.ContainsKey(sRep))
@@ -777,7 +777,7 @@ public class FindYogas
 
 		alSort.Sort();
 
-		foreach (string s in alSort)
+		foreach (var s in alSort)
 		{
 			if (bStart)
 			{

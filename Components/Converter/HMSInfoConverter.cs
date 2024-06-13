@@ -44,7 +44,7 @@ internal class HMSInfoConverter : ExpandableObjectConverter
 
 		int hour = 1, min = 1, sec = 1;
 
-		bool isLongitude = false;
+		var isLongitude = false;
 		var _arr = s.Split('.', ' ', ':','\'');
 		var arr  = new List <string> (_arr);
 

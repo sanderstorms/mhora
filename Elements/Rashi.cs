@@ -48,7 +48,7 @@ namespace Mhora.Elements
 			{
 				if (_bhava == Bhava.None)
 				{
-					var lagna  = Base.Find(Body.Lagna).Rashi.ZodiacHouse;
+					var lagna  = Base[Body.Lagna].Rashi.ZodiacHouse;
 					_bhava = (Bhava) lagna.NumHousesBetween(ZodiacHouse);
 				}
 
@@ -58,7 +58,7 @@ namespace Mhora.Elements
 
 		public bool HasDirshtiOn(ZodiacHouse zh) => ZodiacHouse.RasiDristi(zh);
 
-		public Graha Lord => Base.Find(_zh.LordOfSign());
+		public Graha Lord => Base[_zh.LordOfSign()];
 
 		public List<Graha> Grahas { get; set;}
 
@@ -70,7 +70,7 @@ namespace Mhora.Elements
 		public int CompareTo(Rashi rashi, bool simpleLord, List<RashiStrength> rules, out int winner)
 		{
 			winner = 0;
-			foreach (RashiStrength s in rules)
+			foreach (var s in rules)
 			{
 				var result = Base.GetStronger(this, rashi, simpleLord, s);
 				if (result == 0)

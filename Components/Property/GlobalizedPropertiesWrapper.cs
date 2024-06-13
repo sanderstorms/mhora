@@ -91,7 +91,7 @@ public class GlobalizedPropertiesWrapper : ICustomTypeDescriptor
 		}
 
 		orderedProperties.Sort();
-		foreach (PropertyOrderPair pop in orderedProperties)
+		foreach (var pop in orderedProperties)
 		{
 			Application.Log.Debug("Adding sorted {0}", pop.Name);
 			retProps.Add(new GlobalizedPropertyDescriptor(pop.Property));

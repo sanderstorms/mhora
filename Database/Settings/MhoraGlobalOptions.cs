@@ -623,7 +623,7 @@ public class MhoraGlobalOptions : MhoraSerializableOptions
 		{
 			try
 			{
-				using (StreamReader sr = new StreamReader(filename))
+				using (var sr = new StreamReader(filename))
 				{
 					var serializer = new JsonSerializer();
 					try
@@ -652,12 +652,12 @@ public class MhoraGlobalOptions : MhoraSerializableOptions
 		Application.Log.Debug("Saving Preferences to {0}", filename);
 		try
 		{
-			JsonSerializer serializer = new JsonSerializer
+			var serializer = new JsonSerializer
 			{
 				NullValueHandling = NullValueHandling.Ignore,
 			};
 
-			using (StreamWriter sw = new StreamWriter(filename))
+			using (var sw = new StreamWriter(filename))
 			{
 				using (JsonWriter writer = new JsonTextWriter(sw))
 				{

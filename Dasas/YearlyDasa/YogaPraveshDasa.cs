@@ -72,7 +72,7 @@ public class YogaPraveshDasa : Dasa, IDasa
 			return [];
 		}
 
-		TimeOffset start  = TimeOffset.Zero; 
+		var start  = TimeOffset.Zero; 
 		TimeOffset length = 0.0;
 		var        level  = 0;
 

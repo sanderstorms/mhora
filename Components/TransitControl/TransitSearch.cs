@@ -645,7 +645,7 @@ public class TransitSearch : MhoraControl
 		var degToProgress = GetProgressionDegree();
 		var lonProgress   = new Longitude(degToProgress);
 
-		foreach (Position bp in h.PositionList)
+		foreach (var bp in h.PositionList)
 		{
 			bp.Longitude = bp.Longitude.Add(lonProgress);
 		}

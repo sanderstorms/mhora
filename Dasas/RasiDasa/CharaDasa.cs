@@ -54,7 +54,7 @@ public class CharaDasa : Dasa, IDasa
 
 		var bIsZodiacal = zhSeed.Add(9).IsOddFooted();
 
-		TimeOffset dasaLengthSum = TimeOffset.Zero;
+		var dasaLengthSum = TimeOffset.Zero;
 		;
 		for (var i = 1; i <= 12; i++)
 		{
@@ -87,7 +87,7 @@ public class CharaDasa : Dasa, IDasa
 
 
 		var cycleLength = cycle * ParamAyus();
-		foreach (DasaEntry di in al)
+		foreach (var di in al)
 		{
 			di.Start += cycleLength;
 		}

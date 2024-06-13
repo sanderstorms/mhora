@@ -317,7 +317,7 @@ public static class ShadBalas
 		var diff = ut_noon - ut_arghana;
 		if (diff >= 0)
 		{
-			int quo = (int) (diff / 360.0).Floor();
+			var quo = (int) (diff / 360.0).Floor();
 			diff -= quo * 360.0;
 		}
 		else

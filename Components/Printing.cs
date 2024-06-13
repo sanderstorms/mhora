@@ -225,7 +225,7 @@ public class MhoraPrintDocument : PrintDocument
 		g.DrawString(id.Description(), f_u, b, 0, 0);
 		top += f.Height * 2;
 
-		foreach (DasaEntry de in alDasa)
+		foreach (var de in alDasa)
 		{
 			g.ResetTransform();
 			g.TranslateTransform(left, top);
@@ -350,7 +350,7 @@ public class MhoraPrintDocument : PrintDocument
 		g.DrawString(s, f_u, b, 0, 0);
 		top += f.Height + pad_height;
 
-		foreach (DasaEntry de in al_dasa)
+		foreach (var de in al_dasa)
 		{
 			g.ResetTransform();
 			g.TranslateTransform(left, top);
@@ -531,7 +531,7 @@ public class MhoraPrintDocument : PrintDocument
 		dc_nav.DrawChart(g, width / 2, width / 2);
 		top += width / 2 + pad_height;
 
-		Time dstOffset = h.Info.DstOffset;
+		var dstOffset = h.Info.DstOffset;
 		if (h.Info.UseDst == false)
 		{
 			dstOffset -= h.Info.DstCorrection;
@@ -562,7 +562,7 @@ public class MhoraPrintDocument : PrintDocument
 		top += pad_height;
 
 		// Calculation Details
-		foreach (Position bp in h.PositionList)
+		foreach (var bp in h.PositionList)
 		{
 			switch (bp.BodyType)
 			{

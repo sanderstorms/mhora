@@ -124,7 +124,7 @@ namespace Mhora.Elements
 
 		public void AddSpecialLagnaPositions()
 		{
-			Time ishtaghati = Vara.Isthaghati;
+			var ishtaghati = Vara.Isthaghati;
 
 			for (var i = 1; i <= 12; i++)
 			{

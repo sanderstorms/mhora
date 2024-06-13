@@ -131,8 +131,8 @@ public class Position
 	private DivisionPosition ToRegularDivisionPosition(int n)
 	{
 		var cusp     = new Cusp(Longitude, n);
-		var zhouse   = Longitude.ToZodiacHouse().Index();
-		var numParts = (zhouse - 1) * n + Longitude.PartOfZodiacHouse(n);
+		var zh   = Longitude.ToZodiacHouse().Index();
+		var numParts = (zh - 1) * n + Longitude.PartOfZodiacHouse(n);
 		var divHouse = ZodiacHouse.Ari.Add(numParts);
 		var dp       = new DivisionPosition(Name, BodyType, divHouse, cusp);
 
@@ -150,7 +150,7 @@ public class Position
 
 	private DivisionPosition ToRegularDivisionPositionFromCurrentHouseOddEven(int n)
 	{
-		var zhouse   = (int) Longitude.ToZodiacHouse();
+		var zh   = (int) Longitude.ToZodiacHouse();
 		var numParts = Longitude.PartOfZodiacHouse(n);
 		var divHouse = Longitude.ToZodiacHouse().Add(numParts);
 		var cusp     = new Cusp(Longitude, n);
@@ -352,9 +352,9 @@ public class Position
 			5,
 			9
 		};
-		var zhouse = Longitude.ToZodiacHouse();
+		var zh = Longitude.ToZodiacHouse();
 		var part   = Longitude.PartOfZodiacHouse(n);
-		var dhouse = zhouse.Add(offset[part % 3]);
+		var dhouse = zh.Add(offset[part % 3]);
 		var cusp   = new Cusp(Longitude, n);
 		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
@@ -449,9 +449,9 @@ public class Position
 			7,
 			10
 		};
-		var zhouse = Longitude.ToZodiacHouse();
+		var zh = Longitude.ToZodiacHouse();
 		var part   = Longitude.PartOfZodiacHouse(n);
-		var dhouse = zhouse.Add(offset[part % 4]);
+		var dhouse = zh.Add(offset[part % 4]);
 		var cusp   = new Cusp(Longitude, n);
 		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
@@ -600,8 +600,8 @@ public class Position
 	private DivisionPosition ToDivisionPositionRudramsa()
 	{
 		var zari   = ZodiacHouse.Ari;
-		var zhouse = Longitude.ToZodiacHouse();
-		var diff   = zari.NumHousesBetween(zhouse);
+		var zh = Longitude.ToZodiacHouse();
+		var diff   = zari.NumHousesBetween(zh);
 		var zstart = zari.AddReverse(diff);
 		var part   = Longitude.PartOfZodiacHouse(11);
 		var zend   = zstart.Add(part);
@@ -634,8 +634,8 @@ public class Position
 			9,
 			1
 		};
-		var zhouse = Longitude.ToZodiacHouse();
-		var dhouse = zhouse.Add(offset[(int) zhouse % 2]);
+		var zh = Longitude.ToZodiacHouse();
+		var dhouse = zh.Add(offset[(int) zh % 2]);
 		var part   = Longitude.PartOfZodiacHouse(n);
 		dhouse = dhouse.Add(part);
 		var cusp = new Cusp(Longitude, n);
@@ -658,9 +658,9 @@ public class Position
 
 	private DivisionPosition ToDivisionPositionDwadasamsa(int n)
 	{
-		var zhouse = Longitude.ToZodiacHouse();
+		var zh = Longitude.ToZodiacHouse();
 		var part   = Longitude.PartOfZodiacHouse(n);
-		var dhouse = zhouse.Add(part);
+		var dhouse = zh.Add(part);
 		var cusp   = new Cusp(Longitude, n);
 		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp);
 		if (n == 12)
@@ -694,7 +694,7 @@ public class Position
 	private DivisionPosition ToDivisionPositionVimsamsa(int n)
 	{
 		var              mod = (int) Longitude.ToZodiacHouse() % 3;
-		ZodiacHouse dhousename = mod switch
+		var dhousename = mod switch
 		                         {
 			                         1 => ZodiacHouse.Ari,
 			                         2 => ZodiacHouse.Sag,
@@ -758,7 +758,7 @@ public class Position
 	private DivisionPosition ToDivisionPositionNakshatramsa(int n)
 	{
 		var              mod = (int) Longitude.ToZodiacHouse() % 4;
-		ZodiacHouse dhousename = mod switch
+		var dhousename = mod switch
 		                         {
 			                         1 => ZodiacHouse.Ari,
 			                         2 => ZodiacHouse.Can,
@@ -786,9 +786,9 @@ public class Position
 
 	private DivisionPosition ToDivisionPositionTrimsamsaSimple()
 	{
-		var zhouse = Longitude.ToZodiacHouse();
+		var zh = Longitude.ToZodiacHouse();
 		var part   = Longitude.PartOfZodiacHouse(30);
-		var dhouse = zhouse.Add(part);
+		var dhouse = zh.Add(part);
 		var cusp   = new Cusp(Longitude, 30);
 		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
@@ -919,7 +919,7 @@ public class Position
 	private DivisionPosition ToDivisionPositionAkshavedamsa(int n)
 	{
 		var              mod = (int) Longitude.ToZodiacHouse() % 3;
-		ZodiacHouse dhousename = mod switch
+		var dhousename = mod switch
 		                         {
 			                         1 => ZodiacHouse.Ari,
 			                         2 => ZodiacHouse.Leo,
@@ -951,9 +951,9 @@ public class Position
 
 	private DivisionPosition ToDivisionPositionShashtyamsa()
 	{
-		var zhouse = Longitude.ToZodiacHouse();
+		var zh = Longitude.ToZodiacHouse();
 		var part   = Longitude.PartOfZodiacHouse(60);
-		var dhouse = zhouse.Add(part);
+		var dhouse = zh.Add(part);
 		var cusp   = new Cusp(Longitude, 60);
 		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
@@ -974,22 +974,22 @@ public class Position
 	private DivisionPosition ToDivisionPositionNadiamsa()
 	{
 #if DND
-			Rasis.Rasi zhouse = m_lon.toZodiacHouse();
+			Rasis.Rasi zh = m_lon.toZodiacHouse();
 			int part = partOfZodiacHouse(150);
 			Rasis.Rasi dhouse = null;
-			switch ((int)zhouse.value % 3)
+			switch ((int)zh.value % 3)
 			{
-				case 1:	dhouse = zhouse.add(part); break;
-				case 2:	dhouse = zhouse.addReverse(part); break;
+				case 1:	dhouse = zh.add(part); break;
+				case 2:	dhouse = zh.addReverse(part); break;
 				default:
 				case 0:
-					dhouse = zhouse.add(part-75); break;
+					dhouse = zh.add(part-75); break;
 			}
 			DivisionPosition dp = new DivisionPosition (name, type, dhouse, 0, 0, 0);
 #endif
-		var zhouse = Longitude.ToZodiacHouse();
+		var zh = Longitude.ToZodiacHouse();
 		var part   = Longitude.PartOfZodiacHouse(150);
-		var dhouse = zhouse.Add(part);
+		var dhouse = zh.Add(part);
 		var cusp   = new Cusp(Longitude, 150);
 		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{
@@ -1086,21 +1086,21 @@ public class Position
 		part++;
 
 #if DND
-			Rasis.Rasi zhouse = m_lon.toZodiacHouse();
+			Rasis.Rasi zh = m_lon.toZodiacHouse();
 			Rasis.Rasi dhouse = null;
-			switch ((int)zhouse.value % 3)
+			switch ((int)zh.value % 3)
 			{
-				case 1:	dhouse = zhouse.add(part); break;
-				case 2:	dhouse = zhouse.addReverse(part); break;
+				case 1:	dhouse = zh.add(part); break;
+				case 2:	dhouse = zh.addReverse(part); break;
 				default:
 				case 0:
-					dhouse = zhouse.add(part-75); break;
+					dhouse = zh.add(part-75); break;
 			}
 			DivisionPosition dp = new DivisionPosition (name, type, dhouse, 0, 0, 0);
 #endif
 
-		var zhouse = Longitude.ToZodiacHouse();
-		var dhouse = zhouse.Add(part);
+		var zh = Longitude.ToZodiacHouse();
+		var dhouse = zh.Add(part);
 		var cusp   = new Cusp(Longitude, 150);
 		var dp     = new DivisionPosition(Name, BodyType, dhouse, cusp)
 		{

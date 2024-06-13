@@ -201,7 +201,7 @@ namespace Mhora.Dasas.NakshatraDasa
 
 	    public static ZodiacHouse BhuktiDirect(this ZodiacHouse zh, int cycle, out bool direct)
 	    {
-		    var dp = zh.DasaPackDirect(cycle, out ZodiacHouse bhukti);
+		    var dp = zh.DasaPackDirect(cycle, out var bhukti);
 		    if ((dp % 2) == 1)
 		    {
 			    direct = false;

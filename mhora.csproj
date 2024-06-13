@@ -214,6 +214,8 @@
     <Compile Include="Divisions\D24\SecondMethod.cs" />
     <Compile Include="Divisions\D27\Parashari.cs" />
     <Compile Include="Divisions\D2\Cyclic.cs" />
+    <Compile Include="Divisions\D60\Parashari.cs" />
+    <Compile Include="Divisions\D60\Shastiamsa.cs" />
     <Compile Include="Divisions\Hora.cs" />
     <Compile Include="Divisions\D2\LabhMandook.cs" />
     <Compile Include="Divisions\D2\Parashari.cs" />
@@ -270,6 +272,7 @@
     <Compile Include="Yoga\Aakriti.cs" />
     <Compile Include="Yoga\Buddh.cs" />
     <Compile Include="Yoga\Chandra.cs" />
+    <Compile Include="Yoga\Death.cs" />
     <Compile Include="Yoga\Dhana.cs" />
     <Compile Include="Elements\DpList.cs" />
     <Compile Include="Yoga\FindYoga.cs" />

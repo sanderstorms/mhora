@@ -16,7 +16,7 @@ namespace Mhora.Dasas
 			{
 				case NakshatraLord.Ashtottari:
 				{
-					var rahu = grahas.Find(Body.Rahu);
+					var rahu = grahas[Body.Rahu];
 					if (rahu.Bhava == Bhava.LagnaBhava)
 					{
 						return (false);
@@ -33,7 +33,7 @@ namespace Mhora.Dasas
 				case NakshatraLord.Dwadashottari:
 				{
 					var navamsa = h.FindGrahas(DivisionType.Navamsa);
-					var lagna   = navamsa.Find(Body.Lagna);
+					var lagna   = navamsa[Body.Lagna];
 					if (lagna.Rashi.Lord == Body.Venus)
 					{
 						return (true);
@@ -44,7 +44,7 @@ namespace Mhora.Dasas
 				case NakshatraLord.Panchottari:
 				{
 					var dasamsa = h.FindGrahas(DivisionType.Dasamsa);
-					var lagna   = dasamsa.Find(Body.Lagna);
+					var lagna   = dasamsa[Body.Lagna];
 					if (lagna.Rashi == ZodiacHouse.Can)
 					{
 						return (true);
@@ -55,8 +55,8 @@ namespace Mhora.Dasas
 				case NakshatraLord.Shatabdika:
 				{
 					var navamsa = h.FindGrahas(DivisionType.Navamsa);
-					var lagnaD1 = grahas.Find(Body.Lagna);
-					var lagnaD9 = navamsa.Find(Body.Lagna);
+					var lagnaD1 = grahas[Body.Lagna];
+					var lagnaD9 = navamsa[Body.Lagna];
 
 					if (lagnaD1.Rashi == lagnaD9.Rashi)
 					{
@@ -67,7 +67,7 @@ namespace Mhora.Dasas
 				//10th lord is in the 10th house
 				case NakshatraLord.ChaturashitiSama:
 				{
-					var rashi = grahas.Rashis.Find(Bhava.KarmaBhava);
+					var rashi = grahas.Rashis[Bhava.KarmaBhava];
 					if (rashi.Lord.Bhava == Bhava.KarmaBhava)
 					{
 						return (true);
@@ -77,13 +77,13 @@ namespace Mhora.Dasas
 				//Lagna lord is in the 7th house OR 7th lord is in the Lagna
 				case NakshatraLord.DwisaptatiSama:
 				{
-					var lagna = grahas.Find(Body.Lagna);
+					var lagna = grahas [Body.Lagna];
 					if (lagna.Bhava == Bhava.JayaBhava)
 					{
 						return (true);
 					}
 
-					var lord = grahas.Rashis.Find(Bhava.JayaBhava).Lord;
+					var lord = grahas.Rashis[Bhava.JayaBhava].Lord;
 					if (lord.Bhava == Bhava.LagnaBhava)
 					{
 						return (true);
@@ -95,7 +95,7 @@ namespace Mhora.Dasas
 				case NakshatraLord.ShatTrimshaSama:
 				{
 					var hora = h.FindGrahas(DivisionType.HoraParasara);
-					var sun  = hora.Find(Body.Sun);
+					var sun  = hora[Body.Sun];
 					if (sun.Rashi == ZodiacHouse.Leo)
 					{
 						return h.Vara.IsDayBirth;

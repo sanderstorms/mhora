@@ -75,7 +75,7 @@ public class TrikonaDasa : Dasa, IDasa
 
 		var bIsZodiacal = zhSeed.IsOdd();
 
-		TimeOffset dasaLengthSum = TimeOffset.Zero;
+		var dasaLengthSum = TimeOffset.Zero;
 		for (var i = 0; i < 12; i++)
 		{
 			ZodiacHouse zhDasa;
@@ -107,7 +107,7 @@ public class TrikonaDasa : Dasa, IDasa
 
 
 		var cycleLength = cycle * ParamAyus();
-		foreach (DasaEntry di in al)
+		foreach (var di in al)
 		{
 			di.Start += cycleLength;
 		}

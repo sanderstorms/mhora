@@ -114,7 +114,7 @@ public static class Reflection
 
 	public static Type Type(this MemberInfo member)
 	{
-		Type type = member.MemberType switch
+		var type = member.MemberType switch
 		            {
 			            MemberTypes.Field    => ((FieldInfo) member).FieldType,
 			            MemberTypes.Property => ((PropertyInfo) member).PropertyType,

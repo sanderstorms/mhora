@@ -215,4 +215,35 @@ namespace Mhora.Definitions
 		ViparitaSaralaRaja = 0x02000000,
 		ViparitaVimalaRaja = 0x04000000
 	}
+
+	[Flags]
+	public enum CauseOfDeath : uint
+	{
+		FallFromMountain      = 0x00000001,
+		FallIntoWell          = 0x00000002,
+		Poisoning             = 0x00000004,
+		WateryGrave           = 0x00000008,
+		Dropsy                = 0x00000010,
+		WeaponsOrFire         = 0x00000020,
+		Consumption           = 0x00000040,
+		Hanging_Fire_or_Fall  = 0x00000080,
+		Prison                = 0x00000100,
+		Captivity             = 0x00000200,
+		OnAaccountOfAWoman    = 0x00000400,
+		Impalement            = 0x00000800,
+		BeatenWithWoodenClubs = 0x00001000,
+		BeatenWithWoodenClub  = 0x00002000,
+		Suffocation           = 0x00004000,
+		RoyalDispleasure      = 0x00008000,
+		WoundsOrWorms         = 0x00010000,
+		FallFromAVehicle      = 0x00020000,
+		Machine               = 0x00040000,
+		FilthAndNightSoil     = 0x00080000,
+		FilthAndNightSoil2    = 0x00100000,
+		Tumour                = 0x00200000,
+		FallOfWall            = 0x00400000,
+		Suffocation2          = 0x00800000,
+		InWater               = 0x01000000,
+		Poison                = 0x02000000,
+	}
 }

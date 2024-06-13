@@ -65,7 +65,7 @@ public class LagnaKendradiRasiDasa : Dasa, IDasa
 			9,
 			12
 		];
-		TimeOffset dasaLengthSum = TimeOffset.Zero;
+		var dasaLengthSum = TimeOffset.Zero;
 
 		var zhStart = _options.GetSeed();
 		zhStart = _options.FindStrongerRasi(_options.SeventhStrengths, zhStart, zhStart.Add(7));

@@ -156,7 +156,7 @@ public static class Hora
 		var dayLord = dateTime.DayLord();
 		var index   = Array.IndexOf(Bodies.HoraOrder, dayLord);
 
-		int hour = (dateTime.Hour - 6);
+		var hour = (dateTime.Hour - 6);
 		if (hour < 0)
 		{
 			hour += 24;

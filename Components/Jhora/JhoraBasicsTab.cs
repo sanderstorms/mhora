@@ -218,7 +218,7 @@ public class JhoraBasicsTab : MhoraControl
 
 		if (tp == _tabYogas && _bTabYogasLoaded == false)
 		{
-			//this.AddControlToTab(tabYogas, new YogaControl(h));
+			AddControlToTab(_tabYogas, new YogaControl(h));
 			_bTabYogasLoaded = true;
 		}
 	}

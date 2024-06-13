@@ -17,6 +17,7 @@ namespace Mhora.Yoga
 			public MahapurushaYoga     MahapurushaYoga;
 			public MalikaYoga          MalikaYoga;
 			public RajaYoga            RajaYoga;
+			public CauseOfDeath        CauseOfDeath;
 		}
 
 		public static Yogas FindYogas(this Grahas grahas)
@@ -86,6 +87,13 @@ namespace Mhora.Yoga
 				}
 			}
 
+			foreach (CauseOfDeath yoga in Enum.GetValues(typeof(CauseOfDeath)))
+			{
+				if (grahas.Find(yoga))
+				{
+					yogas.CauseOfDeath |= yoga;
+				}
+			}
 			return (yogas);
 		}
 
@@ -267,7 +275,7 @@ namespace Mhora.Yoga
 
 				case GenericYoga.SankhyaYoga:
 				{
-					for (int count = 1; count <= 7;count++)
+					for (var count = 1; count <= 7;count++)
 					{
 						if (grahas.SankhyaYoga(count))
 						{
@@ -360,6 +368,40 @@ namespace Mhora.Yoga
 				       RajaYoga.ViparitaVimalaRaja => grahas.ViparitaVimalaRaja(),
 				       _                           => (false)
 			       };
+		}
+
+		public static bool Find(this Grahas grahas, CauseOfDeath causeOfDeath)
+		{
+			return causeOfDeath switch
+			{
+				CauseOfDeath.FallFromMountain      => grahas.FallFromMountain (),
+				CauseOfDeath.BeatenWithWoodenClub  => grahas.BeatenWithWoodenClub(),
+				CauseOfDeath.BeatenWithWoodenClubs => grahas.BeatenWithWoodenClubs(),
+				CauseOfDeath.Captivity             => grahas.Captivity(),
+				CauseOfDeath.Consumption           => grahas.Consumption(),
+				CauseOfDeath.Dropsy                => grahas.Dropsy(),
+				CauseOfDeath.FallFromAVehicle      => grahas.FallFromAVehicle(),
+				CauseOfDeath.FallIntoWell          => grahas.FallIntoWell(),
+				CauseOfDeath.FilthAndNightSoil     => grahas.FilthAndNightSoil(),
+				CauseOfDeath.FilthAndNightSoil2    => grahas.FilthAndNightSoil2(),
+				CauseOfDeath.FallOfWall            => grahas.FallOfWall(),
+				CauseOfDeath.Hanging_Fire_or_Fall  => grahas.Hanging_Fire_or_Fall(),
+				CauseOfDeath.Impalement            => grahas.Impalement(),
+				CauseOfDeath.InWater               => grahas.InWater(),
+				CauseOfDeath.Machine               => grahas.Machine(),
+				CauseOfDeath.OnAaccountOfAWoman    => grahas.OnAaccountOfAWoman(),
+				CauseOfDeath.Poison                => grahas.Poison(),
+				CauseOfDeath.Poisoning             => grahas.Poisoning(),
+				CauseOfDeath.Prison                => grahas.Prison(),
+				CauseOfDeath.RoyalDispleasure      => grahas.RoyalDispleasure(),
+				CauseOfDeath.Suffocation           => grahas.Suffocation(),
+				CauseOfDeath.Suffocation2          => grahas.Suffocation2(),
+				CauseOfDeath.Tumour                => grahas.Tumour(),
+				CauseOfDeath.WateryGrave           => grahas.WateryGrave(),
+				CauseOfDeath.WeaponsOrFire         => grahas.WeaponsOrFire(),
+				CauseOfDeath.WoundsOrWorms         => grahas.WoundsOrWorms(),
+				_                                  => false,
+			};
 		}
 
 		public static uint FindAakritiYoga (this Grahas grahas)

@@ -27,7 +27,7 @@ public static class AtmaKaraka
 {
 	public static int StrengthByAtmaKaraka(this Grahas grahas, Body m, Body n)
 	{
-		var ak = grahas.Karaka8[0];
+		var ak = grahas [Karaka8.Atma];
 		if (m == ak)
 		{
 			return 1;
@@ -43,9 +43,9 @@ public static class AtmaKaraka
 
 	public static int StrengthByAtmaKaraka(this Grahas grahas, ZodiacHouse za, ZodiacHouse zb)
 	{
-		var ala = grahas.Rashis[za].Grahas;
-		var alb = grahas.Rashis[zb].Grahas;
-		var ak  = grahas.Karaka8[0];
+		var ala = grahas[za];
+		var alb = grahas[zb];
+		var ak  = grahas [Karaka8.Atma];
 		foreach (Body ba in ala)
 		{
 			if (ba == ak)

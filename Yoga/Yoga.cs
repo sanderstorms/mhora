@@ -90,7 +90,7 @@ namespace Mhora.Yoga
 		{
 			var planets = grahas.Planets;
 
-			bool positiveYoga = true;
+			var positiveYoga = true;
 
 			foreach (var graha in planets)
 			{
@@ -110,7 +110,7 @@ namespace Mhora.Yoga
 		{
 			var planets = grahas.Planets;
 
-			bool negativeYoga = true;
+			var negativeYoga = true;
 
 			foreach (var graha in planets)
 			{
@@ -128,14 +128,14 @@ namespace Mhora.Yoga
 		//One born in this yoga is of a royal bearing, of noble birth, well- behaved, well with wife, sons and fame, bereft of disease.
 		public static bool Bheri(this Grahas grahas)
 		{
-			var lord9 = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord9 = grahas.Rashis[Bhava.DharmaBhava].Lord;
 
 			if (lord9.IsStrong)
 			{
 				return (true);
 			}
 
-			bool yoga= true;
+			var yoga= true;
 			foreach (var g in grahas.Planets)
 			{
 				if ((g.Bhava != Bhava.DhanaBhava) && (g.Bhava != Bhava.JayaBhava) && (g.Bhava != Bhava.VyayaBhava))
@@ -151,19 +151,19 @@ namespace Mhora.Yoga
 			}
 
 
-			var lord1 = grahas.Rashis.Find(Bhava.LagnaBhava).Lord;
+			var lord1 = grahas.Rashis[Bhava.LagnaBhava].Lord;
 			if (lord1.Bhava.IsKendra() == false)
 			{
 				return (false);
 			}
 
-			var jupiter = grahas.Find(Body.Jupiter);
+			var jupiter = grahas[Body.Jupiter];
 			if (jupiter.Bhava.IsKendra() == false)
 			{
 				return (false);
 			}
 
-			var venus = grahas.Find(Body.Venus);
+			var venus = grahas[Body.Venus];
 			if (venus.Bhava.IsKendra() == false)
 			{
 				return (false);
@@ -178,7 +178,7 @@ namespace Mhora.Yoga
 		//wisdom, knowledge of several subjects and a longevity of 71 years.
 		public static bool Chaamara1(this Grahas grahas)
 		{
-			var lagnaLord = grahas.Find(Body.Lagna).HouseLord;
+			var lagnaLord = grahas[Body.Lagna].HouseLord;
 			if (lagnaLord.IsExalted == false)
 			{
 				return (false);
@@ -296,7 +296,7 @@ namespace Mhora.Yoga
 		//One born in this yoga is blessed with constant enjoyments, vehicles, good food and clothes and association with lovely women.
 		public static bool DalaMala(this Grahas grahas)
 		{
-			int yoga    = 0;
+			var yoga    = 0;
 			byte kendra = 0;
 
 			foreach (var graha in grahas.Planets)
@@ -373,7 +373,7 @@ namespace Mhora.Yoga
 		//One born in this yoga is scheming, wicked, miserable, destitute, and dependent upon others for his subsistence.
 		public static bool DalaSarpa(this Grahas grahas)
 		{
-			int  yoga   = 0;
+			var  yoga   = 0;
 			byte kendra = 0;
 
 			foreach (var graha in grahas.Planets)
@@ -451,7 +451,7 @@ namespace Mhora.Yoga
 		//One born in this yoga is blessed with constant enjoyments, vehicles, good food and clothes and association with lovely women.
 		public static bool DalaMaala(this Grahas grahas)
 		{
-			int  yoga   = 0;
+			var  yoga   = 0;
 			byte kendra = 0;
 
 			foreach (var graha in grahas.Planets)
@@ -569,14 +569,14 @@ namespace Mhora.Yoga
 		//The native suffers death as a consequence of some stupidly egotistical action of his.
 		public static bool HathaHantaa(this Grahas grahas)
 		{
-			var moon = grahas.Find(Body.Moon);
+			var moon = grahas[Body.Moon];
 			return (moon.Bhava == Bhava.LabhaBhava);
 		}
 
 		public static int HousesFrom(this Grahas grahas, Body body, Body from)
 		{
-			var graha  = grahas.Find(body);
-			var graha2 = grahas.Find(from);
+			var graha  = grahas[body];
+			var graha2 = grahas[from];
 			return (graha.Bhava.HousesFrom(graha2.Bhava));
 		}
 
@@ -611,13 +611,13 @@ namespace Mhora.Yoga
 		//The native with this yoga is aggressive, courageous, ignorant, commander of an army, owner (ruler) of several villages.
 		public static bool Kaahala1(this Grahas grahas)
 		{
-			var lord4 = grahas.Rashis.Find(Bhava.SukhaBhava).Lord;
+			var lord4 = grahas.Rashis[Bhava.SukhaBhava].Lord;
 			if (lord4.IsExalted == false)
 			{
 				return (false);
 			}
 
-			var lord10 = grahas.Rashis.Find(Bhava.KarmaBhava).Lord;
+			var lord10 = grahas.Rashis[Bhava.KarmaBhava].Lord;
 			if (lord4.IsAssociatedWith(lord10))
 			{
 				return (true);
@@ -634,9 +634,9 @@ namespace Mhora.Yoga
 		//The native with this yoga is aggressive, courageous, ignorant, commander of an army, owner (ruler) of several villages.
 		public static bool Kaahala2(this Grahas grahas)
 		{
-			var lord1 = grahas.Rashis.Find(Bhava.LagnaBhava).Lord;
-			var lord4 = grahas.Rashis.Find(Bhava.SukhaBhava).Lord;
-			var lord9 = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord1 = grahas.Rashis[Bhava.LagnaBhava].Lord;
+			var lord4 = grahas.Rashis[Bhava.SukhaBhava].Lord;
+			var lord9 = grahas.Rashis[Bhava.DharmaBhava].Lord;
 
 			if (lord4.Bhava.IsKendra() == false)
 			{
@@ -682,8 +682,8 @@ namespace Mhora.Yoga
 		//This yoga produces criminal tendencies, ill health, unwholesome food, excessive sexual urge, intention to grab the wealth of others.
 		public static bool PaapaKartari(this Grahas grahas)
 		{
-			bool yoga  = false;
-			var  rashi = grahas.Rashis.Find(Bhava.DhanaBhava);
+			var yoga  = false;
+			var  rashi = grahas.Rashis[Bhava.DhanaBhava];
 			foreach (var graha in rashi.Grahas)
 			{
 				if (graha.IsNaturalBenefic)
@@ -702,7 +702,7 @@ namespace Mhora.Yoga
 			}
 
 			yoga  = false;
-			rashi = grahas.Rashis.Find(Bhava.VyayaBhava);
+			rashi = grahas.Rashis[Bhava.VyayaBhava];
 			foreach (var graha in rashi.Grahas)
 			{
 				if (graha.IsNaturalBenefic)
@@ -722,8 +722,8 @@ namespace Mhora.Yoga
 		//This yoga confers on the native eloquence, good health, handsome appearance, much wealth and fame.
 		public static bool ShubhaKartari(this Grahas grahas)
 		{
-			bool yoga  = false;
-			var  rashi = grahas.Rashis.Find(Bhava.DhanaBhava);
+			var yoga  = false;
+			var  rashi = grahas.Rashis[Bhava.DhanaBhava];
 			foreach (var graha in rashi.Grahas)
 			{
 				if (graha.IsNaturalMalefic)
@@ -742,7 +742,7 @@ namespace Mhora.Yoga
 			}
 
 			yoga  = false;
-			rashi = grahas.Rashis.Find(Bhava.VyayaBhava);
+			rashi = grahas.Rashis[Bhava.VyayaBhava];
 			foreach (var graha in rashi.Grahas)
 			{
 				if (graha.IsNaturalMalefic)
@@ -763,8 +763,8 @@ namespace Mhora.Yoga
 		//The native born in this yoga is immersed in the study of sacred scriptures, dignified, skillful, wealthy, blessed with wisdom, kindness
 		public static bool Khadga(this Grahas grahas)
 		{
-			var lord2 = grahas.Rashis.Find(Bhava.DhanaBhava).Lord;
-			var lord9 = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord2 = grahas.Rashis[Bhava.DhanaBhava].Lord;
+			var lord9 = grahas.Rashis[Bhava.DharmaBhava].Lord;
 			if (lord2.Rashi.ZodiacHouse.LordOfSign() != lord9)
 			{
 				return (false);
@@ -775,7 +775,7 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			var lord1 = grahas.Rashis.Find(Bhava.LagnaBhava).Lord;
+			var lord1 = grahas.Rashis[Bhava.LagnaBhava].Lord;
 			if (lord1.Bhava.IsKendra() || lord1.Bhava.IsTrikona())
 			{
 				return (true);
@@ -858,13 +858,13 @@ namespace Mhora.Yoga
 		//an illustrious king, widely renowned, blessed with wives and children.
 		public static bool Lakshmi(this Grahas grahas)
 		{
-			var lord1 = grahas.Rashis.Find(Bhava.LagnaBhava).Lord;
+			var lord1 = grahas.Rashis[Bhava.LagnaBhava].Lord;
 			if (lord1.Strength < 2)
 			{
 				return false;
 			}
 
-			var lord9 = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord9 = grahas.Rashis[Bhava.DharmaBhava].Lord;
 			if (lord9.Bhava.IsKendra())
 			{
 				return (true);
@@ -892,17 +892,17 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			var lagna = grahas.Find(Body.Lagna);
+			var lagna = grahas[Body.Lagna];
 			if ((lagna.Rashi.ZodiacHouse.Index() % 2) != 0)
 			{
 				return (false);
 			}
-			var sun = grahas.Find(Body.Sun);
+			var sun = grahas[Body.Sun];
 			if ((sun.Rashi.ZodiacHouse.Index() % 2) != 0)
 			{
 				return (false);
 			}
-			var moon = grahas.Find(Body.Moon);
+			var moon = grahas[Body.Moon];
 			if ((moon.Rashi.ZodiacHouse.Index() % 2) != 0)
 			{
 				return (false);
@@ -920,17 +920,17 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			var lagna = grahas.Find(Body.Lagna);
+			var lagna = grahas[Body.Lagna];
 			if ((lagna.Rashi.ZodiacHouse.Index() % 2) == 0)
 			{
 				return (false);
 			}
-			var sun = grahas.Find(Body.Sun);
+			var sun = grahas[Body.Sun];
 			if ((sun.Rashi.ZodiacHouse.Index() % 2) == 0)
 			{
 				return (false);
 			}
-			var moon = grahas.Find(Body.Moon);
+			var moon = grahas[Body.Moon];
 			if ((moon.Rashi.ZodiacHouse.Index() % 2) == 0)
 			{
 				return (false);
@@ -943,7 +943,7 @@ namespace Mhora.Yoga
 		//The person is a heinous sinner.
 		public static bool MahaPataka(this Grahas grahas)
 		{
-			var moon = grahas.Find(Body.Moon);
+			var moon = grahas[Body.Moon];
 			if (moon.IsConjuctWith(Body.Rahu) == false)
 			{
 				return (false);
@@ -954,7 +954,7 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			var jupiter = grahas.Find(Body.Jupiter);
+			var jupiter = grahas[Body.Jupiter];
 			if (jupiter.IsAssociatedWith(Nature.Malefic, true))
 			{
 				return (true);
@@ -968,7 +968,7 @@ namespace Mhora.Yoga
 		//wealthy, an orator, charitable, learned.
 		public static bool ParvataKendra(this Grahas grahas)
 		{
-			int yoga = 0;
+			var yoga = 0;
 			foreach (var rashi in grahas.Rashis)
 			{
 				switch (rashi.Bhava)
@@ -1021,8 +1021,8 @@ namespace Mhora.Yoga
 		//wealthy, an orator, charitable, learned, very lustful.
 		public static bool ParvataLagna(this Grahas grahas)
 		{
-			var lord1  = grahas.Rashis.Find(Bhava.LagnaBhava).Lord;
-			var lord12 = grahas.Rashis.Find(Bhava.VyayaBhava).Lord;
+			var lord1  = grahas.Rashis[Bhava.LagnaBhava].Lord;
+			var lord12 = grahas.Rashis[Bhava.VyayaBhava].Lord;
 
 			if (lord1.Bhava.IsKendra() == false)
 			{
@@ -1065,9 +1065,9 @@ namespace Mhora.Yoga
 		{
 			var list = new List<Graha>
 			{
-				grahas.Find(Body.Mercury),
-				grahas.Find(Body.Jupiter),
-				grahas.Find(Body.Venus),
+				grahas[Body.Mercury],
+				grahas[Body.Jupiter],
+				grahas[Body.Venus],
 			};
 
 			foreach (var graha in list)
@@ -1080,7 +1080,7 @@ namespace Mhora.Yoga
 				}
 			}
 
-			var jupiter = grahas.Find(Body.Jupiter);
+			var jupiter = grahas[Body.Jupiter];
 			if ((jupiter.IsInOwnHouse) || (jupiter.IsExalted) || (jupiter.FriendlySign))
 			{
 				return (true);
@@ -1092,7 +1092,7 @@ namespace Mhora.Yoga
 		//It produces a native who is destitute, indigent, ever toiling, disliked by all.
 		public static bool Shakata(this Grahas grahas)
 		{
-			var jupiter = grahas.Find(Body.Jupiter);
+			var jupiter = grahas[Body.Jupiter];
 			if (jupiter.Bhava.IsKendra())
 			{
 				return (false);
@@ -1114,9 +1114,9 @@ namespace Mhora.Yoga
 		//morally sound, owns lands, lives long(upto 81)
 		public static bool Shankha(this Grahas grahas)
 		{
-			var lagna = grahas.Find(Body.Lagna);
-			var lord5 = grahas.Rashis.Find(Bhava.PutraBhava).Lord;
-			var lord6 = grahas.Rashis.Find(Bhava.ShatruBhava).Lord;
+			var lagna = grahas[Body.Lagna];
+			var lord5 = grahas.Rashis[Bhava.PutraBhava].Lord;
+			var lord6 = grahas.Rashis[Bhava.ShatruBhava].Lord;
 
 			if (lord5.Bhava.IsKendra() && lord6.Bhava.IsKendra())
 			{
@@ -1126,9 +1126,9 @@ namespace Mhora.Yoga
 				}
 			}
 
-			var lord1  = grahas.Rashis.Find(Bhava.LagnaBhava).Lord;
-			var lord9  = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
-			var lord10 = grahas.Rashis.Find(Bhava.KarmaBhava).Lord;
+			var lord1  = grahas.Rashis[Bhava.LagnaBhava].Lord;
+			var lord9  = grahas.Rashis[Bhava.DharmaBhava].Lord;
+			var lord10 = grahas.Rashis[Bhava.KarmaBhava].Lord;
 
 			if (lord1.Rashi.ZodiacHouse.IsMoveableSign() == false)
 			{
@@ -1146,7 +1146,7 @@ namespace Mhora.Yoga
 		//The person is glorious like Indra the king of gods.
 		public static bool Shrinatha(this Grahas grahas)
 		{
-			var lord7 = grahas.Rashis.Find(Bhava.JayaBhava).Lord;
+			var lord7 = grahas.Rashis[Bhava.JayaBhava].Lord;
 			if (lord7.IsExalted == false)
 			{
 				return (false);
@@ -1157,7 +1157,7 @@ namespace Mhora.Yoga
 				return (false);
 			}
 
-			var lord9 = grahas.Rashis.Find(Bhava.DharmaBhava).Lord;
+			var lord9 = grahas.Rashis[Bhava.DharmaBhava].Lord;
 			if (lord9.Bhava == Bhava.KarmaBhava)
 			{
 				return (true);
@@ -1191,7 +1191,7 @@ namespace Mhora.Yoga
 		//This produces ordinary wealth, learning, efficiency and fame of native.
 		public static bool AlpaUttamadi(this Grahas grahas)
 		{
-			var moon = grahas.Find(Body.Moon);
+			var moon = grahas[Body.Moon];
 			return (moon.HouseFrom(Body.Sun).IsKendra());
 		}
 
@@ -1199,7 +1199,7 @@ namespace Mhora.Yoga
 		//This produces medium wealth, learning, efficiency and fame of native.
 		public static bool MadhyaUttamadi(this Grahas grahas)
 		{
-			var moon = grahas.Find(Body.Moon);
+			var moon = grahas[Body.Moon];
 			return (moon.HouseFrom(Body.Sun).IsPanaphara());
 		}
 
@@ -1208,7 +1208,7 @@ namespace Mhora.Yoga
 		// The manasagari ascribes : Many sons, trouble from daughters.
 		public static bool UttamaUttamadi(this Grahas grahas)
 		{
-			var moon = grahas.Find(Body.Moon);
+			var moon = grahas[Body.Moon];
 			return (moon.HouseFrom(Body.Sun).IsApoklima());
 		}
 
@@ -1216,7 +1216,7 @@ namespace Mhora.Yoga
 		//This yoga produces an individual who is extremely wealthy and enjoys comforts while staying at home.
 		public static bool Vasumna(this Grahas grahas)
 		{
-			var moon = grahas.Find(Body.Moon);
+			var moon = grahas[Body.Moon];
 			return (moon.HouseFrom(Body.Sun).IsUpachay());
 		}
 	}

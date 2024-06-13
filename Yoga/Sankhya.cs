@@ -11,11 +11,11 @@ namespace Mhora.Yoga
 	// and in the other paired house there is only one or more malefics.
 	public static class Sankhya
 	{
-		public static bool SankhyaYoga(this Grahas grahaList, int count)
+		public static bool SankhyaYoga(this Grahas grahas, int count)
 		{
-			int yoga = 0;
+			var yoga = 0;
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				yoga |= (ushort) (1 << graha.Bhava.Index());
 			}
@@ -24,26 +24,26 @@ namespace Mhora.Yoga
 		}
 
 		//The native is wealthy, liberal, renowned, learned, contented.
-		public static bool SankhyaDaama(this Grahas grahaList) => grahaList.SankhyaYoga(6);
+		public static bool SankhyaDaama(this Grahas grahas) => grahas.SankhyaYoga(6);
 
 		//The native with such a yoga is destitute, illiterate, wicked, miserable, ever wandering.
-		public static bool SankhyaGola(this Grahas grahaList) => grahaList.SankhyaYoga(1);
+		public static bool SankhyaGola(this Grahas grahas) => grahas.SankhyaYoga(1);
 
 		//The native with this yoga is truthful, wealthy, virtues, doing good to others, resorts to agriculture.
-		public static bool SankhyaKedaara(this Grahas grahaList) => grahaList.SankhyaYoga(4);
+		public static bool SankhyaKedaara(this Grahas grahas) => grahas.SankhyaYoga(4);
 
 		//One born in this yoga has a large family, is adept in work, skillful in earning wealth,
 		//impolite, fond of dwelling forests, drawbacks.
-		public static bool SankhyaPaasha(this Grahas grahaList) => grahaList.SankhyaYoga(5);
+		public static bool SankhyaPaasha(this Grahas grahas) => grahas.SankhyaYoga(5);
 
 		//The native is lazy, cruel, socially rejected, injured, and scarred, a fighter.
-		public static bool SankhyaShoola(this Grahas grahaList) => grahaList.SankhyaYoga(3);
+		public static bool SankhyaShoola(this Grahas grahas) => grahas.SankhyaYoga(3);
 
 		//The native is prosperous, versed in scared scriptures, fond of dance and music, a leader,
 		//looks after the sustenance of many.
-		public static bool SankhyaVeena(this Grahas grahaList) => grahaList.SankhyaYoga(7);
+		public static bool SankhyaVeena(this Grahas grahas) => grahas.SankhyaYoga(7);
 
 		//The native is poor, heretic, shameless, socially rejected, devoid of mother, father and virtue.
-		public static bool SankhyaYuga(this Grahas grahaList) => grahaList.SankhyaYoga(2);
+		public static bool SankhyaYuga(this Grahas grahas) => grahas.SankhyaYoga(2);
 	}
 }

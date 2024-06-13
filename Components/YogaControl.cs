@@ -53,7 +53,7 @@ public class YogaControl : MhoraControl
 		AddViewsToContextMenu(mContext);
 		h.Changed += OnRecalculate;
 
-		evaluateYogas();
+		EvaluateYogas();
 		// TODO: Add any initialization after the InitializeComponent call
 	}
 
@@ -63,6 +63,7 @@ public class YogaControl : MhoraControl
 	private void OnRecalculate(object o)
 	{
 		mList.Items.Clear();
+		EvaluateYogas();
 	}
 
 	protected override void Dispose(bool disposing)
@@ -160,11 +161,9 @@ public class YogaControl : MhoraControl
 	{
 		mList.Columns.Clear();
 		mList.Items.Clear();
-		mList.Columns.Add("True", 30, HorizontalAlignment.Left);
-		mList.Columns.Add("Cat", 70, HorizontalAlignment.Left);
-		mList.Columns.Add("Yoga", 70, HorizontalAlignment.Left);
-		mList.Columns.Add("Result", 500, HorizontalAlignment.Left);
-		mList.Columns.Add("Rule", 500, HorizontalAlignment.Left);
+		mList.Columns.Add("Yoga", 200, HorizontalAlignment.Left);
+		mList.Columns.Add("Result", 200, HorizontalAlignment.Left);
+		mList.Columns.Add("Rule", 200, HorizontalAlignment.Left);
 	}
 
 	private void evaluateYoga(XmlYogaNode n)
@@ -181,11 +180,119 @@ public class YogaControl : MhoraControl
 		mList.Items.Add(li);
 	}
 
-	private void evaluateYogas()
+	private void EvaluateYogas()
 	{
+		resetColumns();
 		try
 		{
-			evaluateYogasHelper();
+			var yogas = h.FindGrahas(DivisionType.Rasi).Yogas;
+			foreach (AakritiYoga yoga in Enum.GetValues(typeof(AakritiYoga)))
+			{
+				if ((yogas.AakritiYoga & yoga) != 0)
+				{
+					var li = new ListViewItem
+					{
+						Text = yoga.ToString(),
+					};
+					mList.Items.Add(li);
+				}
+			}
+
+			foreach (ChandraYoga yoga in Enum.GetValues(typeof(ChandraYoga)))
+			{
+				if ((yogas.ChandraYoga & yoga) != 0)
+				{
+					var li = new ListViewItem
+					{
+						Text = yoga.ToString(),
+					};
+					mList.Items.Add(li);
+				}
+			}
+
+			foreach (DhanaYoga yoga in Enum.GetValues(typeof(DhanaYoga)))
+			{
+				if ((yogas.DhanaYoga & yoga) != 0)
+				{
+					var li = new ListViewItem
+					{
+						Text = yoga.ToString(),
+					};
+					mList.Items.Add(li);
+				}
+			}
+
+			foreach (GenericYoga yoga in Enum.GetValues(typeof(GenericYoga)))
+			{
+				if ((yogas.GenericYoga & yoga) != 0)
+				{
+					var li = new ListViewItem
+					{
+						Text = yoga.ToString(),
+					};
+					mList.Items.Add(li);
+				}
+			}
+
+			foreach (MahaParivartanaYoga yoga in Enum.GetValues(typeof(MahaParivartanaYoga)))
+			{
+				if ((yogas.MahaParivartanaYoga & yoga) != 0)
+				{
+					var li = new ListViewItem
+					{
+						Text = yoga.ToString(),
+					};
+					mList.Items.Add(li);
+				}
+			}
+
+			foreach (MahapurushaYoga yoga in Enum.GetValues(typeof(MahapurushaYoga)))
+			{
+				if ((yogas.MahapurushaYoga & yoga) != 0)
+				{
+					var li = new ListViewItem
+					{
+						Text = yoga.ToString(),
+					};
+					mList.Items.Add(li);
+				}
+			}
+
+			foreach (MalikaYoga yoga in Enum.GetValues(typeof(MalikaYoga)))
+			{
+				if ((yogas.MalikaYoga & yoga) != 0)
+				{
+					var li = new ListViewItem
+					{
+						Text = yoga.ToString(),
+					};
+					mList.Items.Add(li);
+				}
+			}
+
+			foreach (RajaYoga yoga in Enum.GetValues(typeof(RajaYoga)))
+			{
+				if ((yogas.RajaYoga & yoga) != 0)
+				{
+					var li = new ListViewItem
+					{
+						Text = yoga.ToString(),
+					};
+					mList.Items.Add(li);
+				}
+			}
+
+			foreach (CauseOfDeath yoga in Enum.GetValues(typeof(CauseOfDeath)))
+			{
+				if ((yogas.CauseOfDeath & yoga) != 0)
+				{
+					var li = new ListViewItem
+					{
+						Text = yoga.ToString(),
+					};
+					mList.Items.Add(li);
+				}
+			}
 		}
 		catch
 		{
@@ -195,7 +302,6 @@ public class YogaControl : MhoraControl
 
 	private void evaluateYogasHelper()
 	{
-		resetColumns();
 		XmlYogaNode yn    = null;
 		var         sLine = string.Empty;
 		var         sType = string.Empty;
@@ -280,6 +386,6 @@ public class YogaControl : MhoraControl
 
 	private void mReset_Click(object sender, EventArgs e)
 	{
-		evaluateYogas();
+		EvaluateYogas();
 	}
 }

@@ -28,7 +28,7 @@ public static class LordIsAtmaKaraka
 	{
 		var lora = grahas.Horoscope.LordOfZodiacHouse(za, grahas.Varga, simpleLord);
 		var lorb = grahas.Horoscope.LordOfZodiacHouse(zb, grahas.Varga, simpleLord);
-		var ak   = grahas.Karaka8[0];
+		var ak   = grahas[Karaka8.Atma];
 		if (lora == ak)
 		{
 			return 1;

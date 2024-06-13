@@ -48,7 +48,7 @@ public static class LordsNature
 
 	public static int NaturalValueForRasi(this Grahas grahas, ZodiacHouse zha)
 	{
-		var bl  = grahas.Rashis.Find(zha).Lord;
+		var bl  = grahas.Rashis[zha].Lord;
 		var zhl = bl.Rashi;
 
 		int[] vals =

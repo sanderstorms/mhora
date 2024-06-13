@@ -149,7 +149,7 @@ namespace Mhora.Elements
 		{
 			var index = Array.IndexOf(Bodies.KalaOrder, DayLord);
 			var hour  = hoursAfterSunrise.TotalHours;
-			int part  = 0;
+			var part  = 0;
 
 			if (equalParts)
 			{
@@ -240,11 +240,11 @@ namespace Mhora.Elements
 		private double[] _houseCusps;
 		public bool CalcSunriseSunset(Horoscope h, JulianDate jd, out JulianDate sunrise, out JulianDate sunset, out JulianDate noon, out JulianDate midnight)
 		{
-			bool      daybirth = true;
-			double [] r        = new double[6];
-			double[]  cusps    = new double[13];
-			double [] ascmc    = new double [10];
-			double[]  rsmi     = new double [3];
+			var      daybirth = true;
+			var r        = new double[6];
+			var  cusps    = new double[13];
+			var ascmc    = new double [10];
+			var  rsmi     = new double [3];
 
 			h.Calc(jd, Body.Sun.SwephBody(), 0, r);
 			h.HousesEx(jd, sweph.SEFLG_SIDEREAL, h.Info.Latitude, h.Info.Longitude, h.SwephHouseSystem, cusps, ascmc);
@@ -438,7 +438,7 @@ namespace Mhora.Elements
 				tatva = (Tatva) (4 - tatva.Index());
 			}
 
-			bool reverse    = (part % 2) == 1;
+			var reverse    = (part % 2) == 1;
 			(subPeriod, yamaSpan, part) = CalculateTatva(ref tatva, yamaSpan, subPeriod, reverse);
 
 			reverse = (part % 2) == 1;
@@ -450,8 +450,8 @@ namespace Mhora.Elements
 
 		private (Time, Time, int) CalculateTatva(ref Tatva tatva, Time span, Time subPeriod, bool reverse)
 		{
-			Time tatvaPeriod = subPeriod;
-			int  index = 0;
+			var tatvaPeriod = subPeriod;
+			var  index = 0;
 			for (index = 0; index < 5; index++)
 			{
 				tatvaPeriod = (span / 90) * Tatvas.Duration[tatva.Index()];

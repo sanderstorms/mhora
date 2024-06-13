@@ -38,7 +38,7 @@ public static class KendraConjunction
 
 	public static int KendraConjunctionStrength(this Grahas grahas, ZodiacHouse zodiacHouse)
 	{
-		int numGrahas = 0;
+		var numGrahas = 0;
 
 		foreach (var graha in grahas)
 		{

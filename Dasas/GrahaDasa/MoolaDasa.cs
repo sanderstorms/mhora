@@ -55,7 +55,7 @@ public class MoolaDasa : Dasa, IDasa
 		var cycleStart = ParamAyus() * cycle;
 		TimeOffset curr        = 0.0;
 		var al          = new List<DasaEntry> ();
-		foreach (Body b in _options.GrahaStrengths.grahas)
+		foreach (var b in _options.GrahaStrengths.grahas)
 		{
 			var dasaLength = LengthOfDasa(b);
 			al.Add(new DasaEntry(b, cycleStart + curr, dasaLength, 1, b.ToShortString()));
@@ -81,7 +81,7 @@ public class MoolaDasa : Dasa, IDasa
 
 		var bOrder = new List <Body> ();
 		var bFound = false;
-		foreach (Body b in _options.GrahaStrengths.grahas)
+		foreach (var b in _options.GrahaStrengths.grahas)
 		{
 			if (b != pdi.Graha && bFound == false)
 			{
@@ -92,7 +92,7 @@ public class MoolaDasa : Dasa, IDasa
 			bOrder.Add(b);
 		}
 
-		foreach (Body b in _options.GrahaStrengths.grahas)
+		foreach (var b in _options.GrahaStrengths.grahas)
 		{
 			if (b == pdi.Graha)
 			{
@@ -103,7 +103,7 @@ public class MoolaDasa : Dasa, IDasa
 		}
 
 
-		foreach (Body b in bOrder)
+		foreach (var b in bOrder)
 		{
 			var dasaLength = _vd.LengthOfDasa(b) / _vd.ParamAyus() * pdi.DasaLength;
 			al.Add(new DasaEntry(b, curr, dasaLength, pdi.Level + 1, pdi.DasaName + " " + b.ToShortString()));
@@ -344,7 +344,7 @@ public class MoolaDasa : Dasa, IDasa
 			GrahaStrengths = new OrderedGrahas();
 			foreach (var oz in RasiStrengths)
 			{
-				foreach (ZodiacHouse zn in oz.houses)
+				foreach (var zn in oz.houses)
 				{
 					var rashi   = grahas.Rashis[zn];
 					var tempArr = new Body[rashi.Grahas.Count];

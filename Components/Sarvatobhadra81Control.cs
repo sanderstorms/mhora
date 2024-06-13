@@ -176,7 +176,7 @@ public class Sarvatobhadra81Control : MhoraControl
 			items[i] = 0;
 		}
 
-		foreach (Position bp in h.PositionList)
+		foreach (var bp in h.PositionList)
 		{
 			if (bp.BodyType != BodyType.Graha && bp.BodyType != BodyType.Lagna)
 			{

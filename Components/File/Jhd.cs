@@ -114,7 +114,7 @@ public class Jhd : IFileToHoraInfo
 
 	private static void WriteHmsInfoLine(StreamWriter sw, DmsPoint hi)
 	{
-		string q = string.Empty;
+		var q = string.Empty;
 
 		if (hi.IsLongitude)
 		{

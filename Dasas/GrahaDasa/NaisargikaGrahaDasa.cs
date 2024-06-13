@@ -82,7 +82,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 		var kendraStart = (int) Calculations.NormalizeExcLower((int) lzh % 3, 0, 3);
 		for (var i = kendraStart; i <= 2; i++)
 		{
-			foreach (Body b in _options.GrahaStrengths[i].grahas)
+			foreach (var b in _options.GrahaStrengths[i].grahas)
 			{
 				orderedAntar.grahas.Add(b);
 			}
@@ -90,7 +90,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 
 		for (var i = 0; i < kendraStart; i++)
 		{
-			foreach (Body b in _options.GrahaStrengths[i].grahas)
+			foreach (var b in _options.GrahaStrengths[i].grahas)
 			{
 				orderedAntar.grahas.Add(b);
 			}
@@ -398,7 +398,7 @@ public class NaisargikaGrahaDasa : Dasa, IDasa
 			{
 				GrahaStrengths[i] = new OrderedGrahas();
 				var oz = RasiStrengths[i];
-				foreach (ZodiacHouse zn in oz.houses)
+				foreach (var zn in oz.houses)
 				{
 					var rashi   = grahas.Rashis[zn]; 
 					var tempArr = new Body[rashi.Grahas.Count];

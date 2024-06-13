@@ -8,11 +8,11 @@ namespace Mhora.Yoga
 	public static class HariHaraBramha
 	{
 		//Benefices placed in house4 8 9 from the lord of the 7nd house.
-		public static bool HariHaraBramha7th(this Grahas grahaList)
+		public static bool HariHaraBramha7th(this Grahas grahas)
 		{
-			var lord = grahaList.Rashis.Find(Bhava.JayaBhava).Lord;
+			var lord = grahas.Rashis[Bhava.JayaBhava].Lord;
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.IsNaturalBenefic)
 				{
@@ -28,11 +28,11 @@ namespace Mhora.Yoga
 		}
 
 		//Benefices placed in house 2 8 12 from the lord of the 2nd house.
-		public static bool HariHaraBramha2nd(this Grahas grahaList)
+		public static bool HariHaraBramha2nd(this Grahas grahas)
 		{
-			var lord = grahaList.Rashis.Find(Bhava.DhanaBhava).Lord;
+			var lord = grahas.Rashis[Bhava.DhanaBhava].Lord;
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.IsNaturalBenefic)
 				{
@@ -49,11 +49,11 @@ namespace Mhora.Yoga
 		}
 
 		//Benefices placed in house 4 10 11 from the lord of the Lagna.
-		public static bool HariHaraBramha1st(this Grahas grahaList)
+		public static bool HariHaraBramha1st(this Grahas grahas)
 		{
-			var lord = grahaList.Rashis.Find(Bhava.LagnaBhava).Lord;
+			var lord = grahas.Rashis[Bhava.LagnaBhava].Lord;
 
-			foreach (var graha in grahaList.Planets)
+			foreach (var graha in grahas.Planets)
 			{
 				if (graha.IsNaturalBenefic)
 				{
