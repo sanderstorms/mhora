@@ -209,6 +209,13 @@ public partial class BirthDetailsDialog : Form
 		_cities.Sort();
 		_timeZone = Country.TimeZone;
 
+		txtTimezone.Text   = _timeZone.offsets[0];
+
+		if (_timeZone.offsets.Count > 1)
+		{
+			txtDst.Text = _timeZone.offsets[1];
+		}
+
 		comboBoxCity.DataSource = _cities;
 	}
 
@@ -223,12 +230,6 @@ public partial class BirthDetailsDialog : Form
 
 		txtLongitude2.Text = str[0];
 		txtLatitude2.Text  = str[1];
-		txtTimezone.Text   = _timeZone.offsets[0];
-
-		if (_timeZone.offsets.Count > 1)
-		{
-			txtDst.Text = _timeZone.offsets[1];
-		}
 
 		if (_manualEnter)
 		{
