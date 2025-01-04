@@ -84,17 +84,12 @@ public class City : SQLiteBaseObject, IComparable
 
 	public int CompareTo(object obj)
 	{
-		if (obj is string str)
+		return obj switch
 		{
-			return string.Compare(ToString(), str, StringComparison.Ordinal);
-		}
-
-		if (obj is City city)
-		{
-			return CompareTo(obj.ToString());
-		}
-
-		return 0;
+			string str => string.Compare(ToString(), str, StringComparison.Ordinal),
+			City city  => CompareTo(city.ToString()),
+			_          => 0
+		};
 	}
 
 	public override string ToString() => $"{Name} ({State.Name}";

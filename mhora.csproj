@@ -181,6 +181,7 @@
     <Compile Include="Components\DivisionView.Designer.cs">
       <DependentUpon>DivisionView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Database\GeoName.cs" />
     <Compile Include="Definitions\Bala.cs" />
     <Compile Include="Definitions\DateType.cs" />
     <Compile Include="Definitions\Element.cs" />
